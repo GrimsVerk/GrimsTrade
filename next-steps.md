@@ -27,8 +27,20 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 - A run with no new data since a strategy's last decision writes no new decision.
 - Gymnasium env wrapper deferred (BACKLOG).
 
-## M1 (next)
+## M1 (branch `m1`, brief: chief-of-staff/briefs/grimstrade-m1.md)
 
-Classic strategies live in paper (time-series momentum, cross-sectional momentum, vol targeting,
-risk parity, crypto mean reversion), each registered in `ledger/tries.jsonl`; deflated Sharpe in
-the scoreboard; weekly one-screen summary for the owner.
+Goal: classic strategies live in paper, deflated Sharpe in the scoreboard, weekly one-screen
+summary (`reports/weekly.md`), backtests reported apart from the forward record.
+
+Done:
+- (nothing yet)
+
+Doing:
+- Shared signal helpers + time-series momentum.
+
+Next (in order):
+- Cross-sectional momentum, volatility targeting, risk parity, crypto mean reversion.
+- Funding-rate carry -> BACKLOG (gym is long-only spot; carry needs a short perp leg).
+- Deflated Sharpe in the scoreboard; tries = ledger/tries.jsonl + research lane's tries.
+- Backtest report (`reports/backtest.md`), weekly summary (`reports/weekly.md`).
+- Mark PR ready, try `gh pr merge --rebase --delete-branch`.
