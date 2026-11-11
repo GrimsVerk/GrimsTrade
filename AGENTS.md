@@ -49,4 +49,4 @@ uv sync && uv run ruff check . && uv run ruff format --check . && uv run mypy &&
 
 ## Licensing
 
-Don't add a LICENSE or license field. The owner picks one per repo.
+MIT (owner's choice, 2026-11-11). See `LICENSE`.

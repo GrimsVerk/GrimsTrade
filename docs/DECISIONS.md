@@ -11,4 +11,4 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
 - 2026-11-11: Sharpe uses 365 calendar days and a zero risk-free rate. Why: crypto trades every day;
   one convention for all strategies.
 - 2026-11-11: No real-money broker, ever, without the owner's explicit decision. No keys in git.
-- 2026-11-11: No LICENSE until the owner picks one.
+- 2026-11-11: License is MIT. Why: owner's ruling.

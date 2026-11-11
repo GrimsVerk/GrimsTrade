@@ -16,7 +16,6 @@ uv run pre-commit install   # checks on every commit
 ## Set up GitHub (once)
 
 After the first commit, the repo owner (admin) runs `scripts/setup-github.sh --public`: it creates the repo, pushes, and sets merge settings and `main` protection.
-Pick a license first; this template adds none.
 
 ## Template updates
 

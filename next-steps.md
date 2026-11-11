@@ -11,7 +11,7 @@ M0 checklist (see docs/DESIGN.md):
 - [ ] README.md for the owner
 
 Assumptions so far:
-- No LICENSE until the owner picks one.
+- License: MIT (owner ruling via Chief of Staff).
 - CSV instead of parquet; stdlib only (no pandas). Raw prices, no dividends yet.
 - Daily bot commits to orphan branch `paper-trail` because `main` requires PRs.
 - Live fetch (Kraken/Coinbase/Yahoo/Stooq) unverified: container can't reach them.
