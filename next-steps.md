@@ -41,9 +41,11 @@ Done:
   `stats.py` deflated Sharpe (matches the paper's example), column in scoreboard; try-count rule
   in DECISIONS (`ledger.research_tries`). Runner writes `reports/backtest.md` (two windows).
 
-Doing:
-- Weekly summary (`reports/weekly.md`), written every run.
+  `weekly.py` writes `reports/weekly.md` every run (plain language, tested).
+
+Stopped 2026-11-11 ~23:20 UTC: usage limit reached. PR #3 still draft, not merged.
 
 Next (in order):
+- Run the checks, mark PR #3 ready, try `gh pr merge --rebase --delete-branch`.
 - README (owner) mention of weekly.md/backtest.md; workflow passes `--repo .` (default already).
 - Mark PR ready, try `gh pr merge --rebase --delete-branch`.

@@ -13,7 +13,7 @@ import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from grimstrade import data, gym, ledger, report, sources
+from grimstrade import data, gym, ledger, report, sources, weekly
 from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
@@ -77,6 +77,7 @@ def run(
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "scoreboard.md").write_text(report.render(root, history, repo))
     (reports / "backtest.md").write_text(report.render_backtest(root, history, repo))
+    (reports / "weekly.md").write_text(weekly.render(root, history, repo))
     return problems
 
 
