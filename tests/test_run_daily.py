@@ -55,7 +55,13 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     btc = state["buy_hold_btc"]
     assert btc["fills"] == 1 and set(btc["positions"]) == {"BTC"}
     assert btc["equity"] > 10_000  # fake prices only go up
-    assert (tmp_path / "reports" / "scoreboard.md").read_text().startswith("# Scoreboard")
+    board = (tmp_path / "reports" / "scoreboard.md").read_text()
+    assert board.startswith("# Scoreboard") and "Deflated Sharpe" in board
+    # Backtests live in their own, clearly labelled report, never in the scoreboard.
+    assert "Backtest" not in board
+    backtest = (tmp_path / "reports" / "backtest.md").read_text()
+    assert backtest.startswith("# Backtest (hindsight, NOT the record)")
+    assert all(f"| {name} |" in backtest for name in LIVE)
 
 
 def test_a_failing_source_is_reported_but_the_rest_still_runs(tmp_path: Path) -> None:

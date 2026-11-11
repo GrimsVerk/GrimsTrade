@@ -20,8 +20,13 @@ from grimstrade.strategies import LIVE, NOTES
 BOOTSTRAP_DAYS = 700
 
 
-def run(root: Path, now: datetime, get: sources.Get = sources.http_get) -> list[str]:
-    """One daily run. Returns the list of data problems (empty if all went well)."""
+def run(
+    root: Path, now: datetime, get: sources.Get = sources.http_get, repo: Path = Path(".")
+) -> list[str]:
+    """One daily run. Returns the list of data problems (empty if all went well).
+
+    `repo` is the code checkout, whose `research/` files (and research-* branches) count towards
+    the number of strategies tried."""
     for rel in (ledger.DECISIONS, ledger.TRIES):
         ledger.check_append_only(root / rel)
 
@@ -68,18 +73,20 @@ def run(root: Path, now: datetime, get: sources.Get = sources.http_get) -> list[
     state_path = root / "state" / "portfolio.json"
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
-    board = root / "reports" / "scoreboard.md"
-    board.parent.mkdir(parents=True, exist_ok=True)
-    board.write_text(report.render(root, history))
+    reports = root / "reports"
+    reports.mkdir(parents=True, exist_ok=True)
+    (reports / "scoreboard.md").write_text(report.render(root, history, repo))
+    (reports / "backtest.md").write_text(report.render_backtest(root, history, repo))
     return problems
 
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--root", type=Path, default=Path("trail"))
+    p.add_argument("--repo", type=Path, default=Path("."), help="code checkout (research/ files)")
     args = p.parse_args()
     try:
-        problems = run(args.root, datetime.now(UTC))
+        problems = run(args.root, datetime.now(UTC), repo=args.repo)
     except ledger.LedgerTampered as e:
         print(f"REFUSING TO RUN: {e}", file=sys.stderr)
         sys.exit(2)
