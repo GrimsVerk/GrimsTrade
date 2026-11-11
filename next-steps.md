@@ -6,9 +6,9 @@ M0 checklist (see docs/DESIGN.md):
 - [x] gym.py: simulated broker (next-open fills, fees, spread, long-only, $10k). Gymnasium wrapper deferred (BACKLOG)
 - [x] strategies/: benchmarks (BTC hold, SPY hold, 60/40, equal weight)
 - [x] ledger.py: append-only JSONL + tries counter + git-history integrity test
-- [ ] run_daily.py + .github/workflows/daily.yml (writes to `paper-trail` branch) (in progress)
+- [x] run_daily.py + .github/workflows/daily.yml (writes to `paper-trail` branch; not yet run on Actions)
 - [x] report.py: scoreboard (live ledger + optional --backtest)
-- [ ] README.md for the owner
+- [ ] README.md for the owner (in progress)
 
 Assumptions so far:
 - License: MIT (owner ruling via Chief of Staff).
