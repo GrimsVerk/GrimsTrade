@@ -4,9 +4,9 @@ M0 checklist (see docs/DESIGN.md):
 - [x] Scaffold from grimsverk-template (PLAN.md folded into docs/)
 - [x] data.py + sources.py: daily-bar ingest (BTC, ETH, SPY, QQQ, GLD, TLT), append-only CSV
 - [x] gym.py: simulated broker (next-open fills, fees, spread, long-only, $10k). Gymnasium wrapper deferred (BACKLOG)
-- [ ] strategies/: benchmarks (BTC hold, SPY hold, 60/40, equal weight) (in progress)
-- [ ] ledger.py: append-only JSONL + tries counter + integrity test
-- [ ] run_daily.py + .github/workflows/daily.yml (writes to `paper-trail` branch)
+- [x] strategies/: benchmarks (BTC hold, SPY hold, 60/40, equal weight)
+- [x] ledger.py: append-only JSONL + tries counter + git-history integrity test
+- [ ] run_daily.py + .github/workflows/daily.yml (writes to `paper-trail` branch) (in progress)
 - [ ] report.py: scoreboard
 - [ ] README.md for the owner
 
