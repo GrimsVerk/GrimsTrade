@@ -1,14 +1,17 @@
 # Next steps (repo agent, M0)
 
-M0 checklist (see PLAN.md):
-- [ ] Scaffold from grimsverk-template (in progress)
-- [ ] data/: daily-bar ingest (BTC, ETH, SPY, QQQ, GLD, TLT), idempotent appends
-- [ ] gym/: simulated broker (next-open fills, fees, spread, long-only, $10k)
+M0 checklist (see docs/DESIGN.md):
+- [x] Scaffold from grimsverk-template (PLAN.md folded into docs/)
+- [x] data.py + sources.py: daily-bar ingest (BTC, ETH, SPY, QQQ, GLD, TLT), append-only CSV
+- [ ] gym.py: simulated broker (next-open fills, fees, spread, long-only, $10k) (in progress)
 - [ ] strategies/: benchmarks (BTC hold, SPY hold, 60/40, equal weight)
-- [ ] ledger/: append-only JSONL + tries counter + integrity test
-- [ ] runner + .github/workflows/daily.yml
-- [ ] reports/: scoreboard
+- [ ] ledger.py: append-only JSONL + tries counter + integrity test
+- [ ] run_daily.py + .github/workflows/daily.yml (writes to `paper-trail` branch)
+- [ ] report.py: scoreboard
 - [ ] README.md for the owner
 
 Assumptions so far:
 - No LICENSE until the owner picks one.
+- CSV instead of parquet; stdlib only (no pandas). Raw prices, no dividends yet.
+- Daily bot commits to orphan branch `paper-trail` because `main` requires PRs.
+- Live fetch (Kraken/Coinbase/Yahoo/Stooq) unverified: container can't reach them.
