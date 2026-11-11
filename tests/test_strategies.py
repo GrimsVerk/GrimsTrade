@@ -7,7 +7,7 @@ import pytest
 
 from grimstrade import gym, signals
 from grimstrade.data import UNIVERSE, Bar, History
-from grimstrade.strategies import LIVE, NOTES, ts_momentum
+from grimstrade.strategies import LIVE, NOTES, ts_momentum, xs_momentum
 
 END = date(2026, 11, 10)
 
@@ -101,3 +101,27 @@ def test_ts_momentum_waits_for_twelve_months() -> None:
         {},
         "ts momentum: no asset has 12 months of history yet, stay in cash",
     )
+
+
+# --- cross-sectional momentum ---
+
+
+def test_month_end_rolls_over_years() -> None:
+    assert xs_momentum.month_end(2026, 2) == date(2026, 2, 28)
+    assert xs_momentum.month_end(2026, 12) == date(2026, 12, 31)
+    assert xs_momentum.month_end(2026, 11 - 12) == date(2025, 11, 30)
+    assert xs_momentum.month_end(2026, 0) == date(2025, 12, 31)
+
+
+def test_xs_momentum_holds_the_top_third_in_every_cohort() -> None:
+    trends = {"BTC": 0.002, "ETH": -0.002, "SPY": 0.0005, "QQQ": 0.001, "GLD": -0.0003, "TLT": 0.0}
+    weights, _ = xs_momentum.decide(universe(400, trends))
+    assert weights == pytest.approx({"BTC": 0.5, "QQQ": 0.5})
+
+
+def test_xs_momentum_keeps_cash_for_cohorts_older_than_the_data() -> None:
+    # 200 days back from 2026-11-10 starts 2026-04-25: only the October cohort (formed over
+    # May-October) has a full 6-month window.
+    weights, reason = xs_momentum.decide(universe(200, {"BTC": 0.002, "ETH": 0.001, "SPY": 0.0}))
+    assert weights == pytest.approx({"BTC": 1 / 6})
+    assert "2026-10: BTC" in reason and "2026-09: cash" in reason
