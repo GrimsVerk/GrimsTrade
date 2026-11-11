@@ -6,6 +6,7 @@ import pytest
 
 from grimstrade import ledger, report, run_daily
 from grimstrade.gym import Fill, Result
+from grimstrade.strategies import LIVE
 
 DAY0 = date(2026, 10, 1)
 
@@ -30,12 +31,7 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     first = datetime(2026, 11, 2, 22, 30, tzinfo=UTC)
     assert run_daily.run(tmp_path, first, fake_market) == []
     rows = ledger.decisions(tmp_path)
-    assert {r["strategy"] for r in rows} == {
-        "buy_hold_btc",
-        "buy_hold_spy",
-        "sixty_forty",
-        "equal_weight",
-    }
+    assert {r["strategy"] for r in rows} == set(LIVE)
     # Decided at 22:30 on 11-02: crypto seen through 11-01, ETFs through 11-02.
     assert rows[0]["data_through"]["BTC"] == "2026-11-01"
     assert rows[0]["data_through"]["SPY"] == "2026-11-02"
@@ -48,8 +44,8 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     # Next evening: one more decision each, appended.
     run_daily.run(tmp_path, first + timedelta(days=1), fake_market)
     assert (tmp_path / ledger.DECISIONS).read_text().startswith(text_after_first)
-    assert len(ledger.decisions(tmp_path)) == 8
-    assert ledger.tries(tmp_path) == 4
+    assert len(ledger.decisions(tmp_path)) == 2 * len(LIVE)
+    assert ledger.tries(tmp_path) == len(LIVE)
 
     # The first decision fills at the 11-03 open, which is only stored once that bar closes.
     state = json.loads((tmp_path / "state" / "portfolio.json").read_text())

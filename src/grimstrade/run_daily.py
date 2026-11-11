@@ -14,7 +14,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from grimstrade import data, gym, ledger, report, sources
-from grimstrade.strategies import LIVE
+from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
 BOOTSTRAP_DAYS = 700
@@ -44,7 +44,7 @@ def run(root: Path, now: datetime, get: sources.Get = sources.http_get) -> list[
     seen = data.visible_history(history, now)
     through = {s: b[-1].date.isoformat() for s, b in seen.items() if b}
     for name, decide in LIVE.items():
-        ledger.register_try(root, name, "benchmark (M0)", now)
+        ledger.register_try(root, name, NOTES[name], now)
         previous = ledger.decisions(root, name)
         if previous and previous[-1]["data_through"] == through:
             print(f"{name}: no new data since the last decision, skipped")

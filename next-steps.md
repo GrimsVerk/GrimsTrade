@@ -33,13 +33,14 @@ Goal: classic strategies live in paper, deflated Sharpe in the scoreboard, weekl
 summary (`reports/weekly.md`), backtests reported apart from the forward record.
 
 Done:
-- (nothing yet)
+- Draft PR #3. `signals.py` (trailing return, realized/EWMA vol). `ts_momentum` live + tested.
+  Strategies' try notes live in `strategies.NOTES`.
 
 Doing:
-- Shared signal helpers + time-series momentum.
+- Cross-sectional momentum.
 
 Next (in order):
-- Cross-sectional momentum, volatility targeting, risk parity, crypto mean reversion.
+- Volatility targeting, risk parity, crypto mean reversion.
 - Funding-rate carry -> BACKLOG (gym is long-only spot; carry needs a short perp leg).
 - Deflated Sharpe in the scoreboard; tries = ledger/tries.jsonl + research lane's tries.
 - Backtest report (`reports/backtest.md`), weekly summary (`reports/weekly.md`).
