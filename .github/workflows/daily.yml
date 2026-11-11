@@ -1,0 +1,52 @@
+name: Daily paper trading
+
+# Every day after the US close: fetch bars, decide, append to the ledger, commit it to the
+# paper-trail branch before any outcome exists. Plain Python, no LLM.
+on:
+  schedule:
+    - cron: "30 22 * * *" # 22:30 UTC: after the US close in summer and winter
+  workflow_dispatch:
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - name: Check out the paper trail into trail/
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch origin paper-trail:paper-trail; then
+            git worktree add trail paper-trail
+          else
+            git worktree add --orphan -b paper-trail trail
+          fi
+      - name: Run
+        id: run
+        run: uv run python -m grimstrade.run_daily --root trail
+      - name: Commit the record
+        if: always() && steps.run.outcome != 'skipped'
+        working-directory: trail
+        run: |
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -q -m "Daily run $(date -u +%Y-%m-%dT%H:%MZ)"
+          for wait in 2 4 8 16; do
+            git push origin paper-trail && exit 0
+            sleep "$wait"
+          done
+          exit 1
