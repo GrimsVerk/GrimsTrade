@@ -2,6 +2,19 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-12: Counting tries for the deflated Sharpe (N). N = strategies in `ledger/tries.jsonl`
+  (benchmarks included; live strategies count before their first run) + the research lane's
+  tries. Research tries = distinct (idea, variant) rows of `research/tries.md` (columns: date |
+  idea | variant | period), unioned over the code checkout and every local/remote `research-*`
+  branch; a held-out check of a variant already counted is not a new try. If `research/ideas.md`
+  shows more ideas with status testing/live/dead than that, the ideas count is used instead.
+  Dead tries stay counted forever. Why: overcounting only makes us more cautious; undercounting
+  is the dishonest direction. `ledger.research_tries` implements it.
+- 2026-11-12: Deflated Sharpe inputs. Per-day Sharpe, skew and kurtosis of each strategy's daily
+  equity returns; the variance of Sharpes across trials is the larger of 1/T (pure luck over T
+  days) and the sample variance of the Sharpes on the same table. Shown only after 30 days. The
+  backtest report is deflated with the same N.
+
 - 2026-11-12: M1 classic strategies use the papers' standard parameters, never tuned on our data
   (every tuning run would be a hidden try). Where the paper doesn't fit a 6-asset, long-only,
   unlevered gym, the textbook default was picked once, here:

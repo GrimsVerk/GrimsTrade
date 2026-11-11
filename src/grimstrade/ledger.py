@@ -10,8 +10,9 @@ Git history is the tamper evidence: `check_append_only` fails if any committed l
 from __future__ import annotations
 
 import json
+import re
 import subprocess
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -81,6 +82,79 @@ def register_try(root: Path, name: str, note: str, now: datetime) -> bool:
 
 def tries(root: Path) -> int:
     return len(_read(root / TRIES))
+
+
+# --- the research lane's tries (research/ on main and on research-* branches) ---
+
+RESEARCH_TRIES = "research/tries.md"
+RESEARCH_IDEAS = "research/ideas.md"
+_TRIED = re.compile(r"\b(testing|tested|live|dead)\b", re.IGNORECASE)
+
+
+def _research_texts(repo: Path, rel: str) -> list[str]:
+    """`rel` from the working tree and from every local or remote `research-*` branch."""
+    texts = []
+    if (repo / rel).exists():
+        texts.append((repo / rel).read_text())
+    try:
+        refs = _git(
+            repo, "for-each-ref", "--format=%(refname)", "refs/heads/research-*",
+            "refs/remotes/*/research-*",
+        ).decode().split()  # fmt: skip
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return texts
+    for ref in refs:
+        try:
+            texts.append(_git(repo, "show", f"{ref}:{rel}").decode())
+        except subprocess.CalledProcessError:
+            continue  # branch without the file
+    return texts
+
+
+def _table_rows(text: str) -> list[list[str]]:
+    """Data rows of every markdown table (header and separator rows dropped), plus bullets."""
+    rows: list[list[str]] = []
+    in_table = False
+    for line in text.splitlines():
+        s = line.strip()
+        if s.startswith("|"):
+            cells = [c.strip() for c in s.strip("|").split("|")]
+            if not in_table:
+                in_table = True  # the header row
+            elif not all(set(c) <= set("-: ") for c in cells):
+                rows.append(cells)
+            continue
+        in_table = False
+        if s.startswith(("- ", "* ")):
+            rows.append([s[2:].strip()])
+    return rows
+
+
+def research_tries(repo: Path) -> int:
+    """How many strategy variants the research lane has tried (rule in docs/DECISIONS.md).
+
+    Distinct (idea, variant) rows of `research/tries.md`, the union over the working tree and all
+    `research-*` branches; at least the number of ideas in `research/ideas.md` whose status shows
+    they were tested (testing, live or dead).
+    """
+    variants: set[tuple[str, ...]] = set()
+    for text in _research_texts(repo, RESEARCH_TRIES):
+        for cells in _table_rows(text):
+            key = cells[1:3] if len(cells) >= 4 else cells  # date | idea | variant | period
+            variants.add(tuple(c.lower() for c in key))
+    ideas: set[str] = set()
+    for text in _research_texts(repo, RESEARCH_IDEAS):
+        for cells in _table_rows(text):
+            if _TRIED.search(" ".join(cells)):
+                ideas.add(cells[0].lower())
+    return max(len(variants), len(ideas))
+
+
+def total_tries(root: Path, repo: Path, also: Iterable[str] = ()) -> int:
+    """Every strategy tried anywhere: the ledger's tries (plus any names in `also` not yet
+    registered, e.g. live strategies before their first run) and the research lane's."""
+    names = {r["name"] for r in _read(root / TRIES)} | set(also)
+    return len(names) + research_tries(repo)
 
 
 def _git(cwd: Path, *args: str) -> bytes:

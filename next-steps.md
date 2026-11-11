@@ -38,10 +38,12 @@ Done:
   `vol_target_spy` (10%, 1-month vol) and `risk_parity` (inverse vol, 3y window) live.
   `crypto_mean_reversion` (Connors RSI(2)) live. Parameters recorded in DECISIONS.
   Funding-rate carry -> BACKLOG (gym is long-only spot; carry needs a short perp leg).
+  `stats.py` deflated Sharpe (matches the paper's example), column in scoreboard; try-count rule
+  in DECISIONS (`ledger.research_tries`). Runner writes `reports/backtest.md` (two windows).
 
 Doing:
-- Deflated Sharpe in the scoreboard; tries = ledger/tries.jsonl + research lane's tries.
+- Weekly summary (`reports/weekly.md`), written every run.
 
 Next (in order):
-- Backtest report (`reports/backtest.md`), weekly summary (`reports/weekly.md`).
+- README (owner) mention of weekly.md/backtest.md; workflow passes `--repo .` (default already).
 - Mark PR ready, try `gh pr merge --rebase --delete-branch`.
