@@ -7,7 +7,7 @@ M0 checklist (see docs/DESIGN.md):
 - [x] strategies/: benchmarks (BTC hold, SPY hold, 60/40, equal weight)
 - [x] ledger.py: append-only JSONL + tries counter + git-history integrity test
 - [ ] run_daily.py + .github/workflows/daily.yml (writes to `paper-trail` branch) (in progress)
-- [ ] report.py: scoreboard
+- [x] report.py: scoreboard (live ledger + optional --backtest)
 - [ ] README.md for the owner
 
 Assumptions so far:
