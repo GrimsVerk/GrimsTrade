@@ -10,6 +10,7 @@ from grimstrade.data import UNIVERSE, Bar, History
 from grimstrade.strategies import (
     LIVE,
     NOTES,
+    crypto_mean_reversion,
     risk_parity,
     ts_momentum,
     vol_target,
@@ -167,3 +168,35 @@ def test_risk_parity_weights_are_inverse_to_volatility() -> None:
 def test_risk_parity_skips_assets_without_a_year_of_history() -> None:
     hist = {"BTC": series(400, 0.0), "SPY": series(200, 0.0, etf=True)}
     assert risk_parity.decide(hist)[0] == {"BTC": pytest.approx(1.0)}
+
+
+# --- crypto mean reversion ---
+
+
+def closes(values: list[float]) -> list[Bar]:
+    d0 = date(2026, 1, 1)
+    return [Bar(d0 + timedelta(days=i), c, c, c, c, 1.0) for i, c in enumerate(values)]
+
+
+UPTREND = [100 + 0.5 * i for i in range(250)]  # last close 224.5, 200-day average ~175
+
+
+def test_mean_reversion_buys_a_sharp_dip_in_an_uptrend() -> None:
+    weights, reason = crypto_mean_reversion.decide({"BTC": closes([*UPTREND, 221, 217])})
+    assert weights == {"BTC": 0.5}
+    assert "BTC holding" in reason and "ETH under 200 days" in reason
+
+
+def test_mean_reversion_sells_once_the_price_recovers() -> None:
+    weights, reason = crypto_mean_reversion.decide({"BTC": closes([*UPTREND, 221, 217, 226])})
+    assert weights == {}
+    assert "exit" in reason
+
+
+def test_mean_reversion_ignores_dips_in_a_downtrend() -> None:
+    downtrend = [300 - 0.5 * i for i in range(250)]
+    assert crypto_mean_reversion.decide({"BTC": closes([*downtrend, 170, 160])})[0] == {}
+
+
+def test_mean_reversion_needs_200_days() -> None:
+    assert crypto_mean_reversion.decide({"BTC": closes([*UPTREND[:150], 140, 130])})[0] == {}

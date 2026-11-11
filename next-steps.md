@@ -36,12 +36,12 @@ Done:
 - Draft PR #3. `signals.py` (trailing return, realized/EWMA vol). `ts_momentum` live + tested.
   Strategies' try notes live in `strategies.NOTES`. `xs_momentum` (J&T 6/6, top third) live.
   `vol_target_spy` (10%, 1-month vol) and `risk_parity` (inverse vol, 3y window) live.
+  `crypto_mean_reversion` (Connors RSI(2)) live. Parameters recorded in DECISIONS.
+  Funding-rate carry -> BACKLOG (gym is long-only spot; carry needs a short perp leg).
 
 Doing:
-- Crypto short-term mean reversion.
+- Deflated Sharpe in the scoreboard; tries = ledger/tries.jsonl + research lane's tries.
 
 Next (in order):
-- Funding-rate carry -> BACKLOG (gym is long-only spot; carry needs a short perp leg).
-- Deflated Sharpe in the scoreboard; tries = ledger/tries.jsonl + research lane's tries.
 - Backtest report (`reports/backtest.md`), weekly summary (`reports/weekly.md`).
 - Mark PR ready, try `gh pr merge --rebase --delete-branch`.
