@@ -12,6 +12,7 @@ from grimstrade.strategies import (
     equal_weight,
     sixty_forty,
     ts_momentum,
+    xs_momentum,
 )
 
 # name -> strategy. Names are permanent: they key the ledger.
@@ -21,6 +22,7 @@ LIVE: dict[str, Strategy] = {
     "sixty_forty": sixty_forty.decide,
     "equal_weight": equal_weight.decide,
     "ts_momentum": ts_momentum.decide,
+    "xs_momentum": xs_momentum.decide,
 }
 
 # The yardsticks every other strategy must beat after costs.
@@ -30,4 +32,5 @@ BENCHMARKS = ("buy_hold_btc", "buy_hold_spy", "sixty_forty", "equal_weight")
 NOTES: dict[str, str] = {
     **{name: "benchmark (M0)" for name in BENCHMARKS},
     "ts_momentum": "M1 classic: time-series momentum, Moskowitz/Ooi/Pedersen 2012, paper params",
+    "xs_momentum": "M1 classic: cross-sectional momentum 6/6, Jegadeesh/Titman 1993, top third",
 }
