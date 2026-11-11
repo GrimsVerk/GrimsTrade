@@ -7,7 +7,14 @@ import pytest
 
 from grimstrade import gym, signals
 from grimstrade.data import UNIVERSE, Bar, History
-from grimstrade.strategies import LIVE, NOTES, ts_momentum, xs_momentum
+from grimstrade.strategies import (
+    LIVE,
+    NOTES,
+    risk_parity,
+    ts_momentum,
+    vol_target,
+    xs_momentum,
+)
 
 END = date(2026, 11, 10)
 
@@ -125,3 +132,38 @@ def test_xs_momentum_keeps_cash_for_cohorts_older_than_the_data() -> None:
     weights, reason = xs_momentum.decide(universe(200, {"BTC": 0.002, "ETH": 0.001, "SPY": 0.0}))
     assert weights == pytest.approx({"BTC": 1 / 6})
     assert "2026-10: BTC" in reason and "2026-09: cash" in reason
+
+
+# --- volatility targeting ---
+
+
+def test_vol_target_cuts_stock_when_markets_get_wild() -> None:
+    calm = series(60, 0.0, wiggle=0.002, etf=True)  # ~6% vol: under target, fully invested
+    wild = series(60, 0.0, wiggle=0.01, etf=True)  # ~32% vol
+    assert vol_target.decide({"SPY": calm})[0] == {"SPY": 1.0}
+    (w,) = vol_target.decide({"SPY": wild})[0].values()
+    vol = signals.realized_vol(signals.daily_returns(wild[-22:]), 252)
+    assert vol is not None and w == pytest.approx(0.10 / vol)
+
+
+def test_vol_target_only_looks_at_the_last_month() -> None:
+    wild_then_calm = series(60, 0.0, wiggle=0.01, etf=True)[:-22] + [
+        Bar(b.date, 100.0, 100.0, 100.0, 100.0 * (1.002 if i % 2 else 1.0), 1.0)
+        for i, b in enumerate(series(60, 0.0, etf=True)[-22:])
+    ]
+    assert vol_target.decide({"SPY": wild_then_calm})[0] == {"SPY": 1.0}
+
+
+# --- risk parity ---
+
+
+def test_risk_parity_weights_are_inverse_to_volatility() -> None:
+    hist = {"BTC": series(400, 0.0, wiggle=0.02), "ETH": series(400, 0.0, wiggle=0.01)}
+    weights, _ = risk_parity.decide(hist)
+    # Same zigzag shape, half the size: about half the volatility, twice the weight.
+    assert weights == pytest.approx({"BTC": 1 / 3, "ETH": 2 / 3}, rel=1e-3)
+
+
+def test_risk_parity_skips_assets_without_a_year_of_history() -> None:
+    hist = {"BTC": series(400, 0.0), "SPY": series(200, 0.0, etf=True)}
+    assert risk_parity.decide(hist)[0] == {"BTC": pytest.approx(1.0)}

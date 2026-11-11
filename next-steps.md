@@ -35,12 +35,12 @@ summary (`reports/weekly.md`), backtests reported apart from the forward record.
 Done:
 - Draft PR #3. `signals.py` (trailing return, realized/EWMA vol). `ts_momentum` live + tested.
   Strategies' try notes live in `strategies.NOTES`. `xs_momentum` (J&T 6/6, top third) live.
+  `vol_target_spy` (10%, 1-month vol) and `risk_parity` (inverse vol, 3y window) live.
 
 Doing:
-- Volatility targeting.
+- Crypto short-term mean reversion.
 
 Next (in order):
-- Risk parity, crypto mean reversion.
 - Funding-rate carry -> BACKLOG (gym is long-only spot; carry needs a short perp leg).
 - Deflated Sharpe in the scoreboard; tries = ledger/tries.jsonl + research lane's tries.
 - Backtest report (`reports/backtest.md`), weekly summary (`reports/weekly.md`).

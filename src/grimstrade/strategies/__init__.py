@@ -10,8 +10,10 @@ from grimstrade.strategies import (
     buy_hold_btc,
     buy_hold_spy,
     equal_weight,
+    risk_parity,
     sixty_forty,
     ts_momentum,
+    vol_target,
     xs_momentum,
 )
 
@@ -23,6 +25,8 @@ LIVE: dict[str, Strategy] = {
     "equal_weight": equal_weight.decide,
     "ts_momentum": ts_momentum.decide,
     "xs_momentum": xs_momentum.decide,
+    "vol_target_spy": vol_target.decide,
+    "risk_parity": risk_parity.decide,
 }
 
 # The yardsticks every other strategy must beat after costs.
@@ -33,4 +37,6 @@ NOTES: dict[str, str] = {
     **{name: "benchmark (M0)" for name in BENCHMARKS},
     "ts_momentum": "M1 classic: time-series momentum, Moskowitz/Ooi/Pedersen 2012, paper params",
     "xs_momentum": "M1 classic: cross-sectional momentum 6/6, Jegadeesh/Titman 1993, top third",
+    "vol_target_spy": "M1 classic: SPY vol targeting 10%, 1-month vol, Moreira/Muir 2017",
+    "risk_parity": "M1 classic: inverse-vol risk parity, 3y vol, Asness/Frazzini/Pedersen 2012",
 }
