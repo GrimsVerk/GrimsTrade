@@ -98,6 +98,10 @@ def check_append_only(path: Path) -> int:
     except (subprocess.CalledProcessError, FileNotFoundError):
         return 0
     rel = path.resolve().relative_to(top).as_posix()
+    try:
+        _git(top, "rev-parse", "--verify", "-q", "HEAD")
+    except subprocess.CalledProcessError:
+        return 0  # a branch with no commits yet (the first run's fresh paper-trail)
     commits = _git(top, "log", "--format=%H", "--reverse", "--", rel).decode().split()
     versions = []
     for c in commits:

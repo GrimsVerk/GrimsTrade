@@ -34,6 +34,14 @@ def decide_and_commit(repo: Path, strategy: str) -> None:
     git(repo, "commit", "-qm", strategy)
 
 
+def test_a_branch_with_no_commits_yet_passes(repo: Path) -> None:
+    # The first daily run starts on a fresh orphan paper-trail branch with no commits.
+    assert ledger.check_append_only(repo / ledger.DECISIONS) == 0
+    seen = {"BTC": [Bar(date(2026, 11, 9), 1, 1, 1, 100.0, 1)]}
+    ledger.write_decision(repo, T, "a", {"BTC": 1.0}, seen, "test")
+    assert ledger.check_append_only(repo / ledger.DECISIONS) == 0
+
+
 def test_appending_passes_the_history_check(repo: Path) -> None:
     decide_and_commit(repo, "a")
     decide_and_commit(repo, "b")
