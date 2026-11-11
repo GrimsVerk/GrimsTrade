@@ -90,12 +90,14 @@ def _git(cwd: Path, *args: str) -> bytes:
 def check_append_only(path: Path) -> int:
     """Raise LedgerTampered if any committed version of `path` is not a prefix of the next one,
     or of the file on disk. Returns how many committed versions were checked (0 outside git)."""
-    cwd = path.parent if path.parent.exists() else Path(".")
+    cwd = path.resolve().parent
+    while not cwd.exists():
+        cwd = cwd.parent
     try:
-        top = Path(_git(cwd, "rev-parse", "--show-toplevel").decode().strip())
+        top = Path(_git(cwd, "rev-parse", "--show-toplevel").decode().strip()).resolve()
     except (subprocess.CalledProcessError, FileNotFoundError):
         return 0
-    rel = path.resolve().relative_to(top.resolve()).as_posix()
+    rel = path.resolve().relative_to(top).as_posix()
     commits = _git(top, "log", "--format=%H", "--reverse", "--", rel).decode().split()
     versions = []
     for c in commits:
