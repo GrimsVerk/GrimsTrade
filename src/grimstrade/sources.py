@@ -1,0 +1,147 @@
+"""Keyless public data sources for daily bars. Each symbol tries its sources in order.
+
+Formats are from the providers' public docs; live fetching is proven on GitHub Actions
+(the dev container can't reach these hosts). Tests use small fixture files.
+"""
+
+from __future__ import annotations
+
+import csv
+import io
+import json
+import urllib.request
+from collections.abc import Callable
+from datetime import UTC, date, datetime, timedelta
+from typing import Any
+
+from grimstrade.data import UNIVERSE, Bar, settled
+
+Get = Callable[[str], bytes]
+
+USER_AGENT = "grimstrade/0.1 (paper trading research)"
+
+
+def http_get(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        body: bytes = resp.read()
+        return body
+
+
+def _ts(d: date) -> int:
+    return int(datetime(d.year, d.month, d.day, tzinfo=UTC).timestamp())
+
+
+def _day(ts: float) -> date:
+    return datetime.fromtimestamp(ts, tz=UTC).date()
+
+
+# --- crypto ---
+
+
+def kraken(pair: str, since: date, get: Get) -> list[Bar]:
+    """Kraken public OHLC, daily. Returns at most the last 720 bars; the last one is in progress."""
+    url = f"https://api.kraken.com/0/public/OHLC?pair={pair}&interval=1440&since={_ts(since) - 1}"
+    payload: dict[str, Any] = json.loads(get(url))
+    if payload.get("error"):
+        raise ValueError(f"kraken error: {payload['error']}")
+    result: dict[str, Any] = payload["result"]
+    rows = next(v for k, v in result.items() if k != "last")
+    # [time, open, high, low, close, vwap, volume, count]
+    return [
+        Bar(_day(r[0]), float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[6]))
+        for r in rows
+        if _day(r[0]) >= since
+    ]
+
+
+def coinbase(product: str, since: date, get: Get) -> list[Bar]:
+    """Coinbase Exchange public candles, daily, newest first, at most 300 per call."""
+    start = max(since, datetime.now(UTC).date() - timedelta(days=299))
+    url = (
+        f"https://api.exchange.coinbase.com/products/{product}/candles"
+        f"?granularity=86400&start={start.isoformat()}T00:00:00Z"
+    )
+    rows: list[list[float]] = json.loads(get(url))
+    # [time, low, high, open, close, volume]
+    bars = [
+        Bar(_day(r[0]), float(r[3]), float(r[2]), float(r[1]), float(r[4]), float(r[5]))
+        for r in rows
+        if _day(r[0]) >= since
+    ]
+    return sorted(bars, key=lambda b: b.date)
+
+
+# --- ETFs ---
+
+
+def yahoo(ticker: str, since: date, get: Get) -> list[Bar]:
+    """Yahoo Finance chart API, daily. Raw (split-adjusted, not dividend-adjusted) OHLC."""
+    period2 = int(datetime.now(UTC).timestamp()) + 86400
+    url = (
+        f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+        f"?period1={_ts(since)}&period2={period2}&interval=1d&events=history"
+    )
+    payload: dict[str, Any] = json.loads(get(url))
+    chart = payload["chart"]
+    if chart.get("error"):
+        raise ValueError(f"yahoo error: {chart['error']}")
+    res = chart["result"][0]
+    q = res["indicators"]["quote"][0]
+    bars = []
+    for i, ts in enumerate(res.get("timestamp") or []):
+        vals = [q["open"][i], q["high"][i], q["low"][i], q["close"][i]]
+        if any(v is None for v in vals):
+            continue
+        d = _day(ts)
+        if d >= since:
+            o, h, lo, c = (float(v) for v in vals)
+            bars.append(Bar(d, o, h, lo, c, float(q["volume"][i] or 0)))
+    return bars
+
+
+def stooq(ticker: str, since: date, get: Get) -> list[Bar]:
+    """Stooq daily CSV: Date,Open,High,Low,Close,Volume."""
+    url = f"https://stooq.com/q/d/l/?s={ticker}&i=d&d1={since:%Y%m%d}"
+    text = get(url).decode("utf-8-sig")
+    if not text.startswith("Date"):
+        raise ValueError(f"stooq: unexpected response {text[:80]!r}")
+    bars = []
+    for r in csv.DictReader(io.StringIO(text)):
+        d = date.fromisoformat(r["Date"])
+        if d >= since:
+            bars.append(
+                Bar(
+                    d,
+                    float(r["Open"]),
+                    float(r["High"]),
+                    float(r["Low"]),
+                    float(r["Close"]),
+                    float(r.get("Volume") or 0),
+                )  # fmt: skip
+            )
+    return bars
+
+
+Source = Callable[[str, date, Get], list[Bar]]
+
+# symbol -> [(source, ticker at that source), ...] in order of preference
+SOURCES: dict[str, list[tuple[Source, str]]] = {
+    "BTC": [(kraken, "XBTUSD"), (coinbase, "BTC-USD")],
+    "ETH": [(kraken, "ETHUSD"), (coinbase, "ETH-USD")],
+    "SPY": [(yahoo, "SPY"), (stooq, "spy.us")],
+    "QQQ": [(yahoo, "QQQ"), (stooq, "qqq.us")],
+    "GLD": [(yahoo, "GLD"), (stooq, "gld.us")],
+    "TLT": [(yahoo, "TLT"), (stooq, "tlt.us")],
+}
+
+
+def fetch(symbol: str, since: date, now: datetime, get: Get = http_get) -> list[Bar]:
+    """Settled bars from `since` on, from the first source that answers. Raises if all fail."""
+    errors = []
+    for source, ticker in SOURCES[symbol]:
+        try:
+            return settled(source(ticker, since, get), UNIVERSE[symbol], now)
+        except Exception as e:  # noqa: BLE001 - any failure means: try the next source
+            errors.append(f"{source.__name__}: {e}")
+    raise RuntimeError(f"{symbol}: all sources failed: {'; '.join(errors)}")
