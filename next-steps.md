@@ -1,5 +1,30 @@
 # Next steps
 
+## Ingest 1 (branch `ingest-1`, draft PR #14, not merged)
+
+Brief: chief-of-staff/briefs/grimstrade-ingest-1.md. Cache and job state: `docs/data-inventory.md`.
+
+- Done: rolling windows saved 2026-11-12 (Yahoo 1h SPY/QQQ/GLD/TLT ~730 days, Kraken Futures
+  funding + open interest PF_XBTUSD/PF_ETHUSD) with `scripts/snapshot_rolling.py`. Write-once
+  cache with manifest (`grimstrade.cache`), root in git-ignored `local.toml`
+  (`local.example.toml` committed). Backfill scripts in `scripts/backfill/`.
+- Doing (detached background jobs, PIDs in `<cache>/pids/`): `binance`, `rest_1m-coinbase`,
+  `rest_1m-bitstamp`, `rest_1m-bitfinex`, `small`. Check with the commands in
+  `docs/data-inventory.md`; when all logs say `DONE`, fill in real sizes/rows there.
+- Next:
+  - [ ] Rerun `scripts/snapshot_rolling.py` daily until the daily collection below exists (each
+        day is a new dated folder; nothing older than the windows can be recovered).
+  - [ ] Alpaca: start `scripts/backfill/alpaca.py` once `~/.config/grimstrade/alpaca.env` exists
+        (it did not on 2026-11-12); note which feed (SIP or IEX) the log reports.
+  - [ ] Coin Metrics community API returned 403 to our client: try a browser-like User-Agent or
+        smaller `page_size`.
+  - [ ] Kraken OI snapshot holds only the last 2,000 hours (one call); page back with `since`.
+  - [ ] Daily collection (data-sources.md section 9, items 1 and 2): not started. Plan first;
+        fetchers with `available_at`, append-only, offline tests; wire into the daily runner only
+        when finished and unable to break it.
+  - [ ] Stooq is behind a bot check (seen 2026-11-12): the ETF fallback in `sources.py` is dead.
+        Not fixed (see the audit item above; Alpaca may become the second ETF source).
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
