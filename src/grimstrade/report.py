@@ -12,8 +12,9 @@ import math
 import statistics
 from collections.abc import Sequence
 from dataclasses import dataclass, replace
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 from grimstrade import data, gym, ledger, stats
 from grimstrade.data import History
@@ -101,6 +102,21 @@ def live_results(root: Path, history: History) -> dict[str, Result]:
     for counts_from, row in ledger.in_force(root)[0]:
         by_strategy.setdefault(row["strategy"], []).append(Decision(counts_from, row["weights"]))
     return {name: gym.simulate(decs, history) for name, decs in by_strategy.items()}
+
+
+def restarted(
+    counted: Sequence[tuple[datetime, dict[str, Any]]], history: History, name: str, at: datetime
+) -> Result:
+    """Strategy `name` as if it had started at `at` with fresh cash: the weights it had in force
+    at `at`, then its later decisions (`counted` = `ledger.in_force(root)[0]`). The fair yardstick
+    for a strategy that started at `at`: same cash, same first opens, same costs. Comparing with
+    the yardstick's own curve instead gives it (or denies it) the gap between the starter's
+    decision and its first fills, for good."""
+    mine = [(t, row["weights"]) for t, row in counted if row["strategy"] == name]
+    in_force_then = [w for t, w in mine if t <= at]
+    decisions = [Decision(at, in_force_then[-1])] if in_force_then else []
+    decisions += [Decision(t, w) for t, w in mine if t > at]
+    return gym.simulate(decisions, history)
 
 
 def backtest_results(

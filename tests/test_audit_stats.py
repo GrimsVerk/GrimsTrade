@@ -232,3 +232,39 @@ def test_a_deflated_sharpe_is_never_printed_as_certain() -> None:
     s = report.score("x", result_from_returns([0.01] * 40))
     row = report.table([s.__class__(**{**s.__dict__, "dsr": 0.9996})]).splitlines()[2]
     assert "| >99% |" in row and "100%" not in row
+
+
+@pytest.mark.parametrize(
+    ("hour", "bars"),
+    [
+        # Decided Monday 22:30; SPY gaps down 5% overnight. The yardstick's own curve from
+        # Monday's close carries that loss; the copy, in cash overnight, does not.
+        (22, [(100, 100), (95, 95), (95, 95), (95, 95)]),
+        # Decided Monday 10:00, before the open: the copy is filled at Monday's open and has
+        # Monday's 5% rise. The yardstick's curve from the end of Monday does not.
+        (10, [(100, 105), (105, 105), (105, 105), (105, 105)]),
+    ],
+)
+def test_an_exact_copy_of_a_yardstick_never_beats_it(
+    tmp_path: Path, hour: int, bars: list[tuple[float, float]]
+) -> None:
+    """Audit S8 (fixed; found by the independent reviewer): the weekly page compared a strategy
+    with each yardstick's own curve from the end of the strategy's first day. That hands one of
+    the two the move between the strategy's decision and its first fills, for good: over 149
+    real start days the reviewer measured a mean gap of 0.54% and up to 4.9 points for an exact
+    copy of buy-and-hold SPY. Now the yardstick is restarted with fresh cash at the same moment."""
+    history: History = {
+        "SPY": [Bar(DAY1 + timedelta(days=i), o, max(o, c), min(o, c), c, 1.0)
+                for i, (o, c) in enumerate(bars)],
+        "BTC": [Bar(DAY1 + timedelta(days=i), 1.0, 1.0, 1.0, 1.0, 1.0) for i in range(-7, 4)],
+    }  # fmt: skip
+    seen: History = {"SPY": [Bar(DAY1 - timedelta(days=8), 100, 100, 100, 100, 1)]}
+    week_before = datetime.combine(DAY1 - timedelta(days=7), time(22, 30), tzinfo=UTC)
+    ledger.write_decision(tmp_path, week_before, "buy_hold_spy", {"SPY": 1.0}, seen, "yardstick")
+    started = datetime.combine(DAY1, time(hour, 0), tzinfo=UTC)
+    ledger.write_decision(tmp_path, started, "vol_target_spy", {"SPY": 1.0}, seen, "exact copy")
+    from grimstrade import weekly
+
+    text = weekly.render(tmp_path, history, tmp_path)
+    row = next(line for line in text.splitlines() if line.startswith("| Stocks, but less"))
+    assert "| 0 of 1 |" in row

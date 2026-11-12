@@ -10,7 +10,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 from pathlib import Path
 
-from grimstrade import gym, report
+from grimstrade import gym, ledger, report
 from grimstrade.data import History
 from grimstrade.gym import Result
 from grimstrade.strategies import BENCHMARKS
@@ -114,11 +114,19 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "| Strategy | Now (USD) | This week | Since start | Beats yardsticks* | How sure** |",
         "|---|---:|---:|---:|---|---|",
     ]
+    counted = ledger.in_force(root)[0]
     for name in sorted(others, key=lambda n: scores[n].total_return, reverse=True):
         s = scores[name]
-        # The strategy's first mark (its decision day) is still all cash: compare from its end.
-        start = s.start or today
-        beaten = [b for b in benches if s.total_return > change(results[b], start, today)]
+        # Against each yardstick restarted with fresh cash at the moment this strategy started:
+        # same first prices, same costs. (The yardstick's own curve would hand one of the two
+        # the move between this strategy's first decision and its first fills.)
+        began = next(t for t, row in counted if row["strategy"] == name)
+        beaten = [
+            b
+            for b in benches
+            if s.total_return
+            > report.score(b, report.restarted(counted, history, b, began)).total_return
+        ]
         ahead = bool(benches) and len(beaten) == len(benches)
         if ahead:
             ahead_of_all.append(name)
@@ -134,7 +142,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     ]
     lines += [
         "",
-        "\\* Compared over the same days the strategy has been running.  ",
+        "\\* Compared with each yardstick started afresh at the moment the strategy started "
+        "(same first prices, same costs).  ",
         "\\*\\* How confident we can be that its return for the risk taken is real and not "
         f"luck, allowing for all {trials.count} strategies we have tried (deflated Sharpe). It "
         "does not by itself mean it beats the yardsticks. Real money is only discussed after 6 "

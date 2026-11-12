@@ -65,6 +65,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
+| G5 | Small gym and table quirks (turnover, one-sided band, tiny weights) | low | open |
 | L1 | A decision written after the outcome was accepted | high | fixed |
 | L2 | History could be rewritten with an ordinary push | high | fixed |
 | L4 | Stored bars could be edited unnoticed | high | fixed |
@@ -75,6 +76,8 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | L5 | A failed fetch started a brand-new record | medium | fixed |
 | L8 | The daily job could be started from any branch | medium | fixed |
 | G1 | NaN weights were accepted | medium | fixed (also on main) |
+| S7 | A fill on a strategy's first day was left out of Sharpe and drawdown | medium | fixed |
+| S8 | The weekly page let a late starter "beat" a yardstick it merely copied | medium | fixed |
 | S5 | Sharpe assumed a point every calendar day | low | fixed |
 | T1 | A decision could be filled before it could have been pushed | low | fixed |
 
@@ -260,6 +263,13 @@ ordinary tests that pin the numbers quoted here.
   same date shows another number the next day
   (`tests/test_audit_stats.py::test_todays_equity_is_provisional_and_changes_tomorrow`).
   Proposed: label the last row, or score only fully marked days.
+- **G5. Small gym and table quirks** (found and reproduced by the independent reviewer; none
+  flatters a strategy). Turnover per year annualises the one-off first purchase: a month-old
+  buy-and-hold shows 11.8, a year-old one 1.0. With no cash left the 1% band works in one
+  direction only: in the real 700-day replay `equal_weight` held ETH 1.1-2.6% of equity under
+  target for 19 days in a row, because no other holding was 1% over target and so nothing was
+  sold. Target weights under 1% never fill, silently. A duplicate date in a bar file would
+  crash the gym (`data.append` prevents it; a hand-edited file would not be caught on load).
 - **L6. Outside a git checkout the ledger check checks nothing.** With `--root` on a plain
   folder, or on a `trail/` that is not a worktree, `check_append_only` returns 0 and the runner
   ignores that (`tests/test_audit_ledger.py::test_outside_a_git_checkout_the_check_silently_checks_nothing`).
@@ -351,6 +361,24 @@ One commit per fix, except the three workflow changes, which share the same line
   an unreachable remote always stops it. The job has `if: github.ref == 'refs/heads/main'`.
   Tests: `tests/test_audit_workflow.py` (throwaway repos).
 
+### S7, S8. Two start-up effects in the scores (medium; found by the independent reviewer)
+
+- **S7. A fill on the first day was left out.** `score()` used the first equity point as its
+  baseline. Normally that is the untouched start cash. But a decision made before the US open
+  fills ETFs the same day, and that day's result then vanished from Sharpe, deflated Sharpe and
+  max drawdown (a one-day record even showed "Return +0.0%" next to a changed equity). This is
+  not hypothetical: the five M1 strategies' first decisions were made by a manual run at 01:51
+  UTC on 2026-11-12 and fill at that day's open. **Fix (`report.py`, `gym.py`):** every day's
+  return is measured, the first from the start cash, which `Result` now carries.
+  `tests/test_audit_stats.py::test_a_fill_on_the_first_day_counts_in_sharpe_and_drawdown`.
+- **S8. A late starter could "beat" a yardstick it merely copied.** `weekly.md` compared each
+  strategy with the yardstick's own curve from the end of the strategy's first day. That hands
+  one of the two the move between the strategy's decision and its first fills, for good: for an
+  exact copy of buy-and-hold SPY the reviewer measured, over 149 real start days, a mean gap of
+  0.54% and up to 4.9 points. **Fix (`weekly.py`, `report.restarted`):** the yardstick is
+  restarted with fresh cash at the moment the strategy started: same first prices, same costs.
+  `tests/test_audit_stats.py::test_an_exact_copy_of_a_yardstick_never_beats_it`.
+
 ### G1, S5, T1 (medium to low)
 
 - **G1. NaN weights were accepted.** NaN is neither below 0 nor above 1, so it passed; the gym
@@ -395,11 +423,12 @@ One commit per fix, except the three workflow changes, which share the same line
 ## Status
 
 - **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
-  statistics) against M0 and again after the M1 merge. 25 findings: 12 fixed or guarded, 3 more
-  half done (L3, L7, S4), 10 open; all with tests except G3. Checks green (160 passed, 3 xfailed).
-- **Doing:** waiting for two independent reviewers (subagents, read-only) who were asked to find
-  what this report missed; their findings, if any, get added below the table.
-- **Next, in order of value:** D1 (revision log, see the traps noted there); S3 (rank the
-  scoreboard by excess over the yardsticks); the second halves of L7 and S4; D5; G2.
+  statistics) against M0 and again after the M1 merge. 28 findings: 14 fixed or guarded, 4 more
+  half done (D1, L3, L7, S4), 10 open; all with tests except G3 and G5. Checks green.
+- **Doing:** the first of two independent reviewers (subagents, read-only, asked to find what
+  this report missed) is in: S7, S8 and G5 are theirs. Waiting for the second (ledger, runner,
+  sources).
+- **Next, in order of value:** S3 (rank the scoreboard by excess over restarted yardsticks,
+  as `weekly.py` now does); the second halves of L7 and S4; D5; G2.
 - **To resume:** read this section, run the checks in `AGENTS.md`, look at the three remaining
   `xfail` tests (`uv run pytest -rx tests/`).
