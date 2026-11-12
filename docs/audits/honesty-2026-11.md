@@ -7,47 +7,37 @@ merged during the audit (merged into this branch). Record audited, read-only: `p
 
 ## Summary for the owner
 
-I tried to make the scoreboard lie. The part that matters most held: no strategy can see a
-price before the market has printed it, summer or winter time, weekends and holidays included,
-and the record so far (two runs) is clean.
+I tried to make the scoreboard lie.
 
-The logbook, though, could be made to lie in four ways. All four are demonstrated by tests:
+**What held.** No strategy can see a price before the market has printed it: summer or winter
+time, weekends and holidays included. The record so far (two runs) is clean.
 
-1. Add a "decision" afterwards with an old date and be paid as if it had been made in time.
-2. Rewrite old lines and hide the change behind a merge.
-3. Edit a stored price.
-4. Replace the whole record branch.
+**What did not.** The logbook could be made to lie in four ways: add a "decision" afterwards
+with an old date, rewrite old lines behind a merge, edit a stored price, or replace the whole
+record branch. The first three are closed in this branch. The fourth is now detected, but only
+a setting of yours can prevent it. Two independent reviewers then found a way around one of my
+own fixes (closed since). These checks are new and deserve another attack before they are
+trusted.
 
-The first three are closed in this branch. The fourth is now detected (the daily job asks
-GitHub's own log before it runs), but only a setting of yours can prevent it. Two independent
-reviewers then attacked the result. They found a way around my fix for the first one (closed
-since) and several quieter ways for the data to stop or go wrong unnoticed (also closed). Take
-that as a measure of how easy this is to get wrong: the checks that guard the logbook are new
-and deserve another attack before they are trusted.
+**What the numbers can and cannot say.**
 
-What to know about the numbers:
+- Six months will not tell skill from luck. Nine strategies with no skill at all, run for six
+  months: the best one looks like a star more often than not. The "deflated Sharpe" column
+  corrects for that, and it is strict: a world-class strategy has an even chance of reading
+  "95% sure" after about five years, a good one after about twenty. Six months can rule out
+  disasters. It cannot prove skill.
+- The yardsticks are set a little low: dividends are not counted (about 4% a year for the bond
+  fund, 2.3% for 60/40, nothing for Bitcoin).
+- Prices are stored an hour after the US close, before Yahoo's numbers are final. Stored
+  prices are never changed; every later difference is now logged and counted on the scoreboard.
+- The backup source for the four funds is dead. If Yahoo stops answering, their prices freeze;
+  the scoreboard and the weekly page now say so in bold.
 
-- **Six months will not tell skill from luck.** Nine strategies with no skill at all, run for
-  six months: the best one looks like a star more often than not. The new "deflated Sharpe"
-  column corrects for that, and it is strict: a world-class strategy has an even chance of
-  reading "95% sure" after about five years, a good one after about twenty. The plan's "at least
-  6 months" can rule out disasters. It cannot prove skill.
-- **The yardsticks are set a little low.** Dividends are not counted: about 4% a year for the
-  bond fund, 2.3% for 60/40, nothing for Bitcoin.
-- **Prices are stored an hour after the US close, before Yahoo's numbers are final.** After one
-  day the stored rows already differed slightly from what Yahoo showed. Tiny so far. Stored
-  prices are never changed, but every such difference is now logged and counted on the
-  scoreboard.
-- **The backup source for the four funds is dead.** If Yahoo stops answering, fund prices
-  freeze. The scoreboard and the weekly page now say so in bold, and the run reports it.
+**What I need from you.**
 
-What I need from you:
-
-1. Add a rule for the `paper-trail` branch: block force pushes and deletion (GitHub, Settings,
+1. A rule for the `paper-trail` branch: block force pushes and deletion (GitHub, Settings,
    Rules; two minutes; agents cannot do it).
-2. Decide what "graduation" means, knowing the point above (finding S2).
-3. After this PR is merged, the very first run on a new record must be started by hand with
-   "start a new record" ticked. The current record is not affected.
+2. A decision on what "graduation" means, given the first point above (finding S2).
 
 ## All findings at a glance
 
@@ -486,6 +476,8 @@ One commit per fix, except the three workflow changes, which share the same line
   and G5. Checks green.
 - **Not proven live:** the workflow changes. The first run after merging is the test: its log
   must show "GitHub's activity log agrees with the paper-trail history".
+- **Changed for whoever starts a brand-new record:** the first run must be started by hand with
+  "start a new record" ticked. The existing record is not affected.
 - **Next, in order of value:** S3 (rank the scoreboard by excess over restarted yardsticks, as
   `weekly.py` now does); a second adversarial pass over `ledger.in_force` and
   `scripts/check-trail-activity.sh` (new code that guards the record); the second halves of L7
