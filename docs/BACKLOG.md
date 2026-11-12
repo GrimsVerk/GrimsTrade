@@ -30,3 +30,31 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   never today's revised numbers, or it is look-ahead); few cycles means few independent tests.
   Bar to beat: the 12-month trend rule, which already reacts to these cycles with a lag. FRED
   csv downloads (`fredgraph.csv?id=...`) are keyless.
+- Own reinforcement-learning trading agent (owner's main interest, 2026-11-12). Train it on the
+  5080 in the gym; the classic strategies are the baselines it must beat, and their data is its
+  training data. Daily bars are thin for RL (about 30 years of ETFs, 12 of crypto), so better
+  data comes first (next item). Ladder rung 4 in `docs/DESIGN.md`.
+- Data search lane (owner, 2026-11-12, "we really really need"): hunt for more and better data:
+  longer history, more assets, intraday bars, order books, crypto funding, on-chain, macro, news,
+  sentiment. Free and keyless first. Paid only if very, very cheap: list it with its price for the
+  owner, who alone decides; agents never sign up or pay.
+- Investing agent (owner, 2026-11-12): a second agent in this repo with a long horizon (months to
+  decades), next to the trading agent (hours to days; minutes for crypto). Same gym, ledger and
+  honesty rules; only the horizon differs.
+- Where GPU models run (decide when M3 starts): small models are trained on the 5080 and their
+  weights committed, so the Actions runner (no GPU) can use them. Big ones (a local news LLM)
+  run on the owner's PC and write a dated signal file before the 22:30 UTC run; if the PC is
+  off, those strategies skip that day. "No LLM in the runner" is about Claude and about not
+  needing the desktop, not about models in general.
+- Idea sources from the owner (2026-11-12), to read for hypotheses, never as truth:
+  - YouTube channels, fetched with GrimsVerk/YT-Harvest (transcripts stay local, never in git;
+    cite video + timestamp on each card): Andrei Jikh (@AndreiJikh), Bravos Research
+    (@bravosresearch), Real Vision (UCGXWKlq1Oxr3ddEtmKhAkPg), Raoul Pal The Journey Man
+    (UCVFSzL3VuZKP3cN9IXdLOtw), EC Krown (@ECKrown, @ECKrown4), EllioTrades
+    (@elliotrades_official), George Gammon (@GeorgeGammon), Mark Tilbury (@marktilbury), MoneyZG
+    (@MoneyZG), New Money (@NewMoneyYouTube), How Money Works (@HowMoneyWorks), Miles Deutscher
+    Finance (@milesdeutscher1357; reviews FOSS trading repos).
+  - FOSS trading repos (from Miles Deutscher's video yuckuVqd01k): TauricResearch/TradingAgents,
+    ZhuLinsen/daily_stock_analysis, HKUDS/Vibe-Trading, anthropics/financial-services,
+    freqtrade/freqtrade, Jakeschincariol/day-trader-skill, virattt/ai-hedge-fund,
+    LuckyOne7777/LLM-Trading-Lab. Read code and docs for ideas; never run their code here.

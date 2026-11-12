@@ -118,3 +118,7 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   so no need to pick one yet). Careful and Middle are `preset_careful` / `preset_middle`, copied
   rule for rule from `research/lib/risk_map.py`; Bold is the `equal_weight` benchmark. The pick
   only matters for graduation.
+- 2026-11-12: This repo is where the owner's unused usage goes. On a usage run, only the owner or
+  an agreed stop (limit reset, set time) ends the work. Running out of ideas is not a stop: finish
+  what is in flight, then widen the search (new fields, theories, data, new maths). Never redo
+  finished analyses just to spend usage.
