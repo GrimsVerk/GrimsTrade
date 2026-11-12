@@ -214,7 +214,40 @@ forecasts are a coin toss (AUC 0.48 to 0.51); a planted signal is found, so the 
 - A limit no harness can fix: an agent's own memory of how markets moved in 2025-26 is not
   fenced off by a date cut.
 
-### 5. The luck check: right arithmetic, and the conclusion survives its weak points
+### 5. Two fitted rules were graded on a default in the stretch that decided everything
+
+**What the runs say.** `hmm-regime` is dead because it loses to the 200-day average (0.89 against
+1.01) and "sat through the dot-com bust (-57%): a slow grind down at moderate volatility looks
+calm to it". `hawkes-clustering` is "equal weight minus a few days".
+
+**What I found.** Both rules, and their twin `vol-calm`, hold an asset by default until it has
+1,000 bars and a yearly fit. First fitted model per asset: SPY 1998-01, QQQ 2004-01, TLT
+2007-01, GLD 2009-01, BTC 2015-01, ETH 2020-01. So through the whole dot-com bust there was no
+model for QQQ, the asset that lost 83%. Re-run: share of the bust in which each slot was held:
+
+| Rule | SPY slot | QQQ slot |
+|---|---:|---:|
+| `hmm-regime` (hard) | 13% | 100% |
+| `hawkes-clustering` | 85% | 100% |
+| `vol-calm` (their twin) | 0% | 100% |
+| `sma200` | 22% | 18% |
+| `tsmom12` | 27% | 26% |
+
+The hidden Markov model did not sleep through the bust: on SPY, where it existed, it was out
+87% of the time. The 57% loss is the QQQ slot held by default. The stated cause of death is
+wrong.
+
+The verdict still holds on later data. `hmm-regime` (hard) against the 200-day average: -0.12
+over 1994-2025, +0.04 without the bust, -0.05 from 2004 (p = 0.64), -0.18 from 2017-06. Against
+equal weight it is within 0.02 in every window before 2017 and behind after. `hawkes-clustering`
+is within 0.05 of equal weight in every window.
+
+**What it changes.** No verdict. It answers the brief's question: I found no idea killed by a
+bug, and one given the wrong reason. For later fitted rules: a rule that needs four years of
+bars before it acts should be compared only from the day it acts, or borrow history the way
+the ML tests did. Otherwise it is graded on its default.
+
+### 6. The luck check: right arithmetic, and the conclusion survives its weak points
 
 **What the runs say.** The best of 52 selectable variants beat equal weight by 0.22 Sharpe; luck
 alone would give about 0.24; so no rule has shown an edge.
@@ -224,20 +257,21 @@ alone would give about 0.24; so no rule has shown an edge.
 - The formula (Bailey and López de Prado's expected maximum) is coded correctly. With 52 tries
   and a standard error of 0.11 I get 0.25.
 - It treats the 52 tries as independent. They are not: 31 are ML models on the same features,
-  and the top six rows of `results/deflation.md` are one bet, "be out of stocks in a long bear
-  market", made six ways. With ten independent tries the luck figure would be 0.17, below the
-  0.22 seen. So as written the check leans towards "luck" more than the data force it to.
+  and the top six rows of `results/deflation.md` are one bet, "hold less when markets are
+  falling or wild", made six ways. With ten independent tries the luck figure would be 0.17,
+  below the 0.22 seen. So as written the check leans towards "luck" more than the data force it
+  to.
 - That does not rescue the top six, because of finding 1: their +0.14 to +0.22 over equal
-  weight is the dot-com bust on the two-asset book. From 2003-09 the best three are +0.18,
-  +0.13 and +0.12, each with p between 0.10 and 0.16 before any allowance for having been
-  picked out of 52.
+  weight is the dot-com bust on the two-asset book. Of the four I re-ran from 2003-09, the
+  best three are +0.18, +0.13 and +0.12, each with p between 0.10 and 0.16 before any
+  allowance for having been picked out of 52.
 - Some choices have no row: the twins themselves (`tsmom12` +0.17, `sma200` +0.13) and the
   12-month lookback (9 months gives +0.25 and 15 months +0.01 in my re-run). Small next to 52.
 
 **What it changes.** Nothing in the conclusion: no rule has shown an edge beyond luck. For the
 M1 lane's deflated Sharpe, counting the 52 rows as independent errs on the safe side.
 
-### 6. The out-of-universe sets are thin, and the coin set is tilted
+### 7. The out-of-universe sets are thin, and the coin set is tilted
 
 **What the runs say.** Each idea is re-run on 8 other ETFs, 6 other coins and 4 stock indexes;
 bar 4 asks for the right sign in two of the three.
@@ -253,10 +287,11 @@ bar 4 asks for the right sign in two of the three.
   short and noisy: it starts in 2017-08 with one coin, and its Sharpe ratios carry a standard
   error of 0.34.
 - **Indexes.** The "next open" is often not a price anyone could trade. Share of days on which
-  the open equals the previous close: S&P 500 index 65% to 92% in each decade from the 1960s to
+  the open equals the previous close: S&P 500 index 64% to 92% in each decade from the 1960s to
   the 2000s; FTSE 95% to 100% from 2000 to 2025 (the protocol says "before about 2010"). There
-  a fill is at the close the signal was computed from. For the Nikkei before 1990 and the DAX
-  before about 1994 the open equals that day's own close, so the fill is one day late instead.
+  a fill is at the close the signal was computed from. For the Nikkei until the late 1980s and
+  the DAX into the 1990s the open equals that day's own close, so the fill is one day late
+  instead.
   Slow rules hardly notice. Fast ones do: `dip-rsi2`'s index results on the S&P and FTSE are in
   effect close-fill results.
 - The DAX series (`^GDAXI`) includes dividends; the protocol calls all four "price indexes, no
@@ -269,7 +304,7 @@ bar 4 asks for the right sign in two of the three.
 set as a weak vote that leans against anything that sells losers, and state the fill caveat for
 the FTSE through 2025.
 
-### 7. Smaller things
+### 8. Smaller things
 
 - `results/baselines.md` shows the Nikkei, FTSE and DAX alone from 1994-02-01. The code
   (`common.ctx`) and every idea test use each index's whole history (from 1966, 1985 and 1988),
