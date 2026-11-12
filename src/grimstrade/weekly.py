@@ -146,8 +146,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     rewrites = report.accepted_rewrites(root)
     if rewrites or report.unwitnessed(root):  # the page the owner reads must say it too
         what = (
-            f"the record branch was rewritten or back-dated ({len(rewrites)} accepted event"
-            f"{'s' * (len(rewrites) != 1)})"
+            "the record branch was rewritten, back-dated or written to by someone other than "
+            f"the daily job ({len(rewrites)} accepted event{'s' * (len(rewrites) != 1)})"
             if rewrites
             else "the last run could not check whether the record branch was rewritten"
         )

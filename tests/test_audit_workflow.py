@@ -207,7 +207,7 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     from grimstrade import report
 
     board = report.render(trail, {}, tmp_path)
-    assert "**The record branch itself was rewritten or back-dated (1 event)" in board
+    assert "written to by someone other than the daily job (1 event), and a person" in board
     assert "force_push by github-actions[bot] at 2026-11-12T01:00:51Z" in board
     # A later, new force-push stops the job again; the variable is not a blanket off-switch...
     events.append((T0 + timedelta(days=2), "force_push", a, a))
@@ -219,7 +219,7 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     # run, so it vanished if that answer ever stopped listing the event. It is kept for good.
     assert activity(tmp_path, trail, [created]).returncode == 0
     assert "force_push by github-actions[bot]" in note.read_text()
-    assert "rewritten or back-dated (1 event)" in report.render(trail, {}, tmp_path)
+    assert "the daily job (1 event), and a person" in report.render(trail, {}, tmp_path)
     # The owner's page says it too (it used to say nothing).
     from grimstrade import data, ledger, weekly
     from grimstrade.data import Bar
@@ -228,7 +228,8 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     data.append(trail, "BTC", bars)
     ledger.write_decision(trail, T0, "buy_hold_btc", {"BTC": 1.0}, {"BTC": bars[:1]}, "t")
     page = weekly.render(trail, data.load_all(trail), tmp_path)
-    assert "**Warning:** the record branch was rewritten or back-dated (1 accepted event)" in page
+    assert "**Warning:** the record branch was rewritten, back-dated or written to" in page
+    assert "the daily job (1 accepted event); see the end of `scoreboard.md`" in page
 
 
 def test_a_planted_symlink_cannot_swallow_the_accepted_rewrite(tmp_path: Path, trail: Path) -> None:

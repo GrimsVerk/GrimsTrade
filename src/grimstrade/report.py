@@ -376,9 +376,10 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     if events:
         out += [
             "",
-            f"**The record branch itself was rewritten or back-dated ({len(events)} event"
-            f"{'s' * (len(events) != 1)}), and a person accepted it:** {'; '.join(events)}. "
-            "What the record said before that cannot be checked from here.",
+            "**The record branch was rewritten, back-dated or written to by someone other than "
+            f"the daily job ({len(events)} event{'s' * (len(events) != 1)}), and a person "
+            f"accepted it:** {'; '.join(events)}. What the record said before a rewrite cannot "
+            "be checked from here.",
         ]
     unchecked = unwitnessed(root)
     if unchecked:
