@@ -174,6 +174,14 @@ def backtest_scores(history: History, trials: Trials, start: date | None = None)
     return deflate([score(n, r) for n, r in backtest_results(history, start=start).items()], trials)
 
 
+def _left_out(scores: Sequence[Score]) -> list[str]:
+    """A note naming live strategies missing from a backtest table (they raised in the replay)."""
+    from grimstrade.strategies import LIVE
+
+    missing = sorted(set(LIVE) - {s.name for s in scores})
+    return [f"Left out, the replay raised an error: {', '.join(missing)}.", ""] if missing else []
+
+
 def render_backtest(root: Path, history: History, repo: Path = Path(".")) -> str:
     trials = count_tries(root, repo)
     lasts = [b[-1].date for b in history.values() if b]
@@ -188,13 +196,15 @@ def render_backtest(root: Path, history: History, repo: Path = Path(".")) -> str
     ]
     if not lasts:
         return "\n".join([*out, "No stored history yet."]) + "\n"
+    full = backtest_scores(history, trials)
     out += [
         "## All stored history",
         "",
         "Strategies that need a year of history sit in cash at first.",
         "",
-        table(backtest_scores(history, trials)),
+        table(full),
         "",
+        *_left_out(full),
         f"## Last {RECENT_DAYS} days",
         "",
         "With under two years stored, a strategy needing a year of history may still start this "

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import contextlib
 import json
+import math
 import subprocess
 from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime
@@ -163,6 +164,8 @@ def _visible_research(repo: Path) -> dict[Key, float | None]:
         if kind == "variant" and period == "train":
             with contextlib.suppress(ValueError):
                 sharpe = float(r.get("sharpe", ""))
+            if sharpe is not None and not math.isfinite(sharpe):
+                sharpe = None  # never write NaN/inf into the append-only record
         if out.get(key) is None:
             out[key] = sharpe
     for text in _research_texts(repo, RESEARCH_IDEAS):
