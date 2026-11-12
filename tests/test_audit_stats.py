@@ -104,13 +104,9 @@ def test_the_scoreboard_says_how_fresh_each_assets_data_is(tmp_path: Path) -> No
     assert "2026-11-06" in text  # e.g. "SPY: last bar 2026-11-06 (14 days old)"
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit S5: Sharpe is annualised with sqrt(365) whatever the spacing of the equity "
-    "points; if a day has no point (no crypto bar, or an ETF-only history) it is overstated, "
-    "by 20% when only weekdays are present",
-)
 def test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point() -> None:
+    """Audit S5 (fixed): Sharpe was annualised with sqrt(365) whatever the spacing of the equity
+    points; with a point on weekdays only (an ETF-only history) it came out 20% too high."""
     rng = random.Random(4)
     days = [DAY1 + timedelta(days=i) for i in range(3 * 365)]
     spy, px = [], 100.0
@@ -124,8 +120,9 @@ def test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point() -> None
     with_weekends = report.score("a", gym.simulate([decision], {"SPY": spy, "BTC": btc}))
     weekdays_only = report.score("a", gym.simulate([decision], {"SPY": spy}))
     assert with_weekends.days > weekdays_only.days
-    # Same portfolio, same prices: the Sharpe ratio must be the same.
+    # Same portfolio, same prices: the Sharpe ratio and the turnover must be the same.
     assert weekdays_only.sharpe == pytest.approx(with_weekends.sharpe, rel=0.03)
+    assert weekdays_only.turnover == pytest.approx(with_weekends.turnover, rel=0.01)
 
 
 def test_sharpe_with_365_days_matches_the_trading_day_convention_for_etfs() -> None:

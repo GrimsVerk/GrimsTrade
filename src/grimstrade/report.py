@@ -48,13 +48,18 @@ def score(name: str, res: Result) -> Score:
         return Score(name, res.equity[0][0] if eq else None, len(eq), last, 0.0, 0.0, 0.0, 0.0)
     rets = [b / a - 1 for a, b in zip(eq, eq[1:], strict=False)]
     sd = statistics.pstdev(rets)
-    sharpe = statistics.fmean(rets) / sd * math.sqrt(DAYS_PER_YEAR) if sd > 0 else 0.0
+    # Returns per year from the real time span, not from an assumed spacing: 365 when there is a
+    # point every calendar day (the live record: crypto has a bar every day), fewer when days are
+    # missing (an ETF-only history has ~252), so the Sharpe does not depend on the spacing.
+    span_days = max((res.equity[-1][0] - res.equity[0][0]).days, 1)
+    per_year = len(rets) * DAYS_PER_YEAR / span_days
+    sharpe = statistics.fmean(rets) / sd * math.sqrt(per_year) if sd > 0 else 0.0
     peak, mdd = eq[0], 0.0
     for e in eq:
         peak = max(peak, e)
         mdd = max(mdd, 1 - e / peak)
     traded = sum(abs(f.qty) * f.price for f in res.fills)
-    turnover = traded / statistics.fmean(eq) * DAYS_PER_YEAR / len(eq)
+    turnover = traded / statistics.fmean(eq) * DAYS_PER_YEAR / (span_days + 1)
     return Score(name, res.equity[0][0], len(eq), eq[-1], eq[-1] / gym.START_CASH - 1, sharpe,
                  mdd, turnover, stats.moments(rets))  # fmt: skip
 

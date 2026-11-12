@@ -244,7 +244,7 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Proposed fix (`report.py`):** a "data through" line per asset with a loud warning when one
   is older than its last expected session, and a count of days without a decision.
 
-### S5. The Sharpe formula assumes one equity point per calendar day (low today, a trap later)
+### S5. The Sharpe formula assumes one equity point per calendar day (low today, a trap later) - FIXED in this branch
 
 - **What:** `score()` multiplies by sqrt(365) whatever the spacing of the points. The live record
   has a point every day because crypto has a bar every day; that case is correct, and it matches
@@ -252,10 +252,9 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   But any history without a daily crypto bar (an ETF-only backtest, a crypto data gap) gets fewer
   points and a Sharpe overstated by up to 20%.
 - **Evidence:** `tests/test_audit_stats.py::test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point`
-  (fails, 2.23 vs 1.89), `...::test_sharpe_with_365_days_matches_the_trading_day_convention_for_etfs`
-  (passes).
-- **Proposed fix (small, `report.py`):** annualise by the real time span:
-  `sqrt(returns / years between first and last point)`.
+  (was 2.23 vs 1.89), `...::test_sharpe_with_365_days_matches_the_trading_day_convention_for_etfs`.
+- **Fix (done, `report.py`):** Sharpe and turnover are annualised by the real time span between
+  the first and last point. With a point every day, as in the live record, nothing changes.
 
 ### S6. The newest row of the scoreboard is provisional (low)
 
