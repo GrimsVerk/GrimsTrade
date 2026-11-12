@@ -53,28 +53,41 @@ def flat(start: str, n: int, px: float) -> list[Bar]:
 D10, D11, D12 = date(2026, 11, 10), date(2026, 11, 11), date(2026, 11, 12)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit D1: a bar taken soon after the close is frozen for ever; when the source later "
-    "shows different numbers for that day nobody is told (the day is never even asked for again)",
-)
 def test_a_revised_bar_is_reported(tmp_path: Path) -> None:
+    """Audit D1 (fixed): a bar taken soon after the close was frozen for ever, and when the
+    source later showed different numbers for that day nobody was told (the day was never even
+    asked for again)."""
     # The first real run, 2026-11-11 22:00 UTC, one hour after the close: Yahoo's row for the day
     # was still provisional (its volume, 37,707,134, is the only one of 481 not rounded to 100).
     early = yahoo_body([(D11, 756.8, 762.51, 754.91, 759.81, 37_707_134)])
-    run_daily.run(tmp_path, datetime(2026, 11, 11, 22, 0, tzinfo=UTC), only("yahoo", early))
+    first = run_daily.run(tmp_path, datetime(2026, 11, 11, 22, 0, tzinfo=UTC), only("yahoo", early))
     assert data.load(tmp_path, "SPY")[-1].close == 759.81
+    assert data.revisions(tmp_path) == [] and not any("SPY" in p for p in first)
 
     # Next evening the source has the final row for the 11th (another close), plus the 12th.
     final = yahoo_body(
         [(D11, 756.8, 762.51, 754.91, 760.25, 61_254_300), (D12, 761.0, 764.0, 758.0, 763.0, 5e7)]
     )
-    problems = run_daily.run(
-        tmp_path, datetime(2026, 11, 12, 22, 30, tzinfo=UTC), only("yahoo", final)
-    )
-    # Keeping the stored row is right (append-only). Staying silent about the difference is not.
+    evening = datetime(2026, 11, 12, 22, 30, tzinfo=UTC)
+    problems = run_daily.run(tmp_path, evening, only("yahoo", final))
+    # The stored row is kept (append-only)...
     assert data.load(tmp_path, "SPY")[-2].close == 759.81
-    assert any("SPY" in p and "2026-11-11" in p for p in problems)
+    # ...and the difference is now on the record, in the run's problems and on the scoreboard.
+    (entry,) = data.revisions(tmp_path)
+    assert (entry["symbol"], entry["date"], entry["source"]) == ("SPY", "2026-11-11", "yahoo")
+    assert entry["stored"] == {"open": 756.8, "high": 762.51, "low": 754.91, "close": 759.81}
+    assert entry["source_now"] == {"open": 756.8, "high": 762.51, "low": 754.91, "close": 760.25}
+    assert any(p.startswith("SPY 2026-11-11: yahoo now shows prices 0.06%") for p in problems)
+    board = (tmp_path / "reports" / "scoreboard.md").read_text()
+    assert "Stored bars whose source later showed other prices: 1 (largest difference 0.06%)" in (
+        board
+    )
+    # Seeing the same revision again logs nothing new; a volume-only change is not a revision.
+    volume_only = yahoo_body(
+        [(D11, 756.8, 762.51, 754.91, 760.25, 61_999_999), (D12, 761.0, 764.0, 758.0, 763.0, 6e7)]
+    )
+    later = run_daily.run(tmp_path, evening + timedelta(hours=1), only("yahoo", volume_only))
+    assert len(data.revisions(tmp_path)) == 1 and not any("SPY" in p for p in later)
 
 
 def test_a_split_is_not_stored_as_a_crash(tmp_path: Path) -> None:

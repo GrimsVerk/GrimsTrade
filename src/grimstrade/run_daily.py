@@ -31,6 +31,7 @@ def run(
         ledger.check_append_only(root / rel)
     for sym in data.UNIVERSE:  # the bars are the record too: every score is recomputed from them
         ledger.check_append_only(data.bars_path(root, sym))
+    ledger.check_append_only(root / data.REVISIONS)
 
     problems = []
     for sym in data.UNIVERSE:
@@ -47,6 +48,7 @@ def run(
             problems.append(str(e))
             print(f"{sym}: FAILED {e}", file=sys.stderr)
 
+    problems += _revisions(root, now, get)
     history = data.load_all(root)
     seen = data.visible_history(history, now)
     through = {s: b[-1].date.isoformat() for s, b in seen.items() if b}
@@ -87,6 +89,31 @@ def run(
     (reports / "backtest.md").write_text(report.render_backtest(root, history, repo))
     (reports / "weekly.md").write_text(weekly.render(root, history, repo))
     return problems
+
+
+def _revisions(root: Path, now: datetime, get: sources.Get) -> list[str]:
+    """Ask each symbol's first-choice source again for the last few stored days and log what it
+    now says differently (a bar is stored soon after its close; sources correct theirs later).
+    Best effort: a failure here is not a data problem, the ingest above already reported those.
+    Returns a problem line for each new difference of 1 basis point or more."""
+    out = []
+    for sym in data.UNIVERSE:
+        stored = data.load(root, sym)
+        if not stored:
+            continue
+        source, ticker = sources.SOURCES[sym][0]
+        since = stored[-1].date - timedelta(days=data.REVISION_DAYS)
+        try:
+            again = data.settled(source(ticker, since, get), data.UNIVERSE[sym], now)
+            sources.check_sane(again)
+        except Exception:  # noqa: BLE001, S112 - best effort, see the docstring
+            continue
+        for day, diff in data.log_revisions(root, sym, source.__name__, again, ledger.iso(now)):
+            print(f"{sym} {day}: the source now differs from the stored bar by {diff:.4%}")
+            if diff >= 1e-4:
+                out.append(f"{sym} {day}: {source.__name__} now shows prices {diff:.2%} away from "
+                           "the stored bar (kept as stored; see data/revisions.jsonl)")  # fmt: skip
+    return out
 
 
 def main() -> None:

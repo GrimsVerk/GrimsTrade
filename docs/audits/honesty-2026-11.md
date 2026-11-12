@@ -53,7 +53,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | # | Finding | Severity | State |
 |---|---|---|---|
 | S2 | Six months cannot separate skill from luck; the corrected number says "no" for years | high | open: owner decision |
-| D1 | Bars are stored before the source is final; later corrections are never seen | high | open: proposed |
+| D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged; cause open |
 | L3 | The record branch can be replaced (force-push, delete) | high | detected; owner action open |
 | G4 | Dividends not credited, cash earns nothing: yardsticks understated | medium | open: known, now sized |
 | G3 | Crypto fee looks like the maker fee, fills are taker | medium | open: unverified |
@@ -79,7 +79,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | T1 | A decision could be filled before it could have been pushed | low | fixed |
 
 Tests: `tests/test_audit_*.py`. A finding that is still open and has a crisp expected behaviour
-is an `xfail(strict=True)` test (3 left: D1, D5, G2); findings about size or judgement are
+is an `xfail(strict=True)` test (2 left: D5, G2); findings about size or judgement are
 ordinary tests that pin the numbers quoted here.
 
 ## Open findings
@@ -120,11 +120,11 @@ ordinary tests that pin the numbers quoted here.
   entered the forward test: a strategy promoted from 200 backtests is one new forward try, and
   the forward record is exactly what protects against the other 199.
 
-### D1. Bars are stored before the source is final, and later corrections are never seen (high)
+### D1. Bars are stored before the source is final (high; differences are now logged, the cause remains)
 
-- **What:** an ETF bar is stored once it is 15 minutes past 21:00 UTC and is never looked at
-  again: the next run asks the source only for newer days. If the source's numbers for that day
-  were not final yet, the record keeps the early ones for ever and nobody is told they differ.
+- **What:** an ETF bar is stored once it is 15 minutes past 21:00 UTC and was never looked at
+  again: the next run asked the source only for newer days. If the source's numbers for that day
+  were not final yet, the record keeps the early ones for ever, and nobody was told they differ.
   Every fill and every mark on that day uses them.
 - **Evidence (real):** the first run stored the 2026-11-11 ETF bars at 22:00:49 UTC, one hour
   after the close. In all four ETF files that row is the only one of 481 whose volume is not a
@@ -133,15 +133,19 @@ ordinary tests that pin the numbers quoted here.
   687.275 (stored: 687.280), QQQ volume 42,821,615 (stored 42,505,260), TLT volume 26,433,481
   (stored 26,421,050), and `close: null` for all four ETFs, i.e. the row was still being
   rewritten. The price difference is tiny this time (0.07 basis points on an open, the price
-  fills use); the point is that the record already differs from its source after one day and
-  nothing reports it. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported` (xfail).
-- **Proposed fix (medium, `run_daily.py` + `data.py`):** each run, also fetch the last ~5 stored
-  days and compare prices; never change stored rows, but append every difference to
-  `data/revisions.jsonl` and show the count and the largest difference on the scoreboard. Do not
-  fail the run on it (volumes are revised every day). Two traps for whoever builds it: the D4
-  hole check must not look at days already stored (Yahoo had `close: null` for a stored day
-  tonight), and a second request per symbol doubles the load on Yahoo. Moving the cron later is
-  not obviously safer: Yahoo's row was complete at 22:00 and had lost its close again by 01:38.
+  fills use); the point is that the record already differed from its source after one day.
+- **Fix (done, `data.py`, `run_daily.py`, 10 lines in `report.py`):** each run asks every
+  symbol's first-choice source again for the last 5 stored days and compares prices (not volume,
+  which changes daily). Stored rows are never changed; each difference is appended once to
+  `data/revisions.jsonl`, the scoreboard shows how many bars differ and by how much at most, and
+  a difference of 1 basis point or more is reported as a problem of that run. The second request
+  is best effort: if it fails, nothing is logged that day. Tried live against a scratch copy of
+  the real bars: runs clean (Yahoo's 2026-11-11 rows still had no close, so there was nothing to
+  compare yet). Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
+- **What is left:** the record still keeps the early numbers; the log makes that visible, it
+  does not make them right. Whether to store ETF bars a day later (once final) is a design
+  decision with a cost: every strategy would decide on day-old ETF prices. Moving the cron later
+  is not obviously safer: Yahoo's row was complete at 22:00 and had lost its close again by 01:38.
 
 ### L3. The record branch can be replaced, and the repo itself cannot tell (high; detected, owner action open)
 

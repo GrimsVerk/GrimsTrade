@@ -205,6 +205,16 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         footnote(trials),
     ]
+    revised = data.revisions(root)
+    if revised:
+        days = {(str(r["symbol"]), str(r["date"])) for r in revised}
+        worst = max(float(str(r["largest_diff"])) for r in revised)
+        out += [
+            "",
+            f"Stored bars whose source later showed other prices: {len(days)} (largest "
+            f"difference {worst:.2%}). The stored values are kept; details in "
+            "`data/revisions.jsonl`.",
+        ]
     late = ledger.in_force(root)[1]
     if late:
         out += [

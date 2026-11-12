@@ -7,6 +7,7 @@ or before T; an order decided at T fills at the open of the first bar that opens
 from __future__ import annotations
 
 import csv
+import json
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
@@ -158,3 +159,62 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
 
 def _num(x: float) -> str:
     return repr(float(x))
+
+
+# --- revisions: what the source says now about bars we already hold ---
+
+REVISIONS = Path("data/revisions.jsonl")
+# Look this many days back for changed bars on each run.
+REVISION_DAYS = 5
+
+
+def _prices(b: Bar) -> dict[str, float]:
+    return {"open": b.open, "high": b.high, "low": b.low, "close": b.close}
+
+
+def log_revisions(
+    root: Path, symbol: str, source: str, fetched: Iterable[Bar], seen: str, tolerance: float = 1e-7
+) -> list[tuple[date, float]]:
+    """Compare freshly fetched bars with the stored ones for the same days. Stored rows are never
+    changed; each difference in a price (not volume, which sources revise all the time) is
+    appended once to `data/revisions.jsonl`. Returns (day, largest relative difference) for the
+    newly logged ones. `tolerance` absorbs float noise (Yahoo serves 32-bit floats)."""
+    stored = {b.date: b for b in load(root, symbol)}
+    path = root / REVISIONS
+    logged = set()
+    if path.exists():
+        for line in path.read_text().splitlines():
+            if line.strip():
+                r = json.loads(line)
+                logged.add((r["symbol"], r["date"], json.dumps(r["source_now"], sort_keys=True)))
+    new = []
+    for b in fetched:
+        old = stored.get(b.date)
+        if old is None:
+            continue
+        pairs = zip(_prices(old).values(), _prices(b).values(), strict=True)
+        diff = max(abs(now / was - 1) for was, now in pairs)
+        key = (symbol, b.date.isoformat(), json.dumps(_prices(b), sort_keys=True))
+        if diff <= tolerance or key in logged:
+            continue
+        entry = {
+            "symbol": symbol,
+            "date": b.date.isoformat(),
+            "seen": seen,
+            "source": source,
+            "stored": _prices(old),
+            "source_now": _prices(b),
+            "largest_diff": diff,
+        }
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a") as f:
+            f.write(json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
+        new.append((b.date, diff))
+    return new
+
+
+def revisions(root: Path) -> list[dict[str, object]]:
+    path = root / REVISIONS
+    if not path.exists():
+        return []
+    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
