@@ -50,18 +50,24 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   with its version in each parent, instead of trusting the simplified log. A ledger deleted from
   the working tree is also refused now.
 
-### L3. A force-push or delete-and-recreate of `paper-trail` leaves no trace in the repo (high)
+### L3. A force-push or delete-and-recreate of `paper-trail` leaves no trace in the repo (high) - GUARDED in this branch, owner action open
 
 - **What:** if the whole branch is replaced, the new history is self-consistent; no check that
-  only reads the branch can know an older one existed. Today nothing stops it: the only ruleset
+  only reads the branch can know an older one existed. Nothing stops it today: the only ruleset
   (`protect-main`) covers the default branch only, and GrimsBot (all agents) has push rights.
 - **Evidence:** `tests/test_audit_ledger.py::test_a_force_pushed_history_passes_the_check`;
   `gh api repos/GrimsVerk/GrimsTrade/rulesets` lists only `protect-main` with
   `include: ["~DEFAULT_BRANCH"]`.
-- **Proposed fix:** (owner, needs admin) add a ruleset for `paper-trail`: block force pushes and
-  deletion, no bypass. (Workflow, small) before running, ask GitHub's activity log for
-  `force_push` / `branch_deletion` events on `paper-trail` and refuse to run if there are any:
-  `tests/test_audit_workflow.py::test_the_job_checks_githubs_activity_log_for_a_rewritten_trail`.
+- **Guard (done, workflow):** before running, `scripts/check-trail-activity.sh` asks GitHub's
+  activity log, which no pusher can edit, and refuses to run if `paper-trail` was ever
+  force-pushed, deleted or created twice, or if any commit reached GitHub more than 10 minutes
+  after the time it claims (a back-dated commit, see L1). Tried against the real repository: it
+  passes, both real pushes arrived 1 second after their commits. If GitHub cannot be asked the
+  job goes on with a warning. After looking at a reported event the owner sets the repository
+  variable `TRAIL_REVIEWED_UNTIL` to move on. Tests: `tests/test_audit_workflow.py` (4 tests,
+  fake `gh`).
+- **Owner action (needs admin, 2 minutes):** add a ruleset for `paper-trail` that blocks force
+  pushes and deletion, with no bypass. The guard detects; only the ruleset prevents.
 
 ### L4. Stored bars can be edited and nothing notices (high) - FIXED in this branch
 
@@ -73,17 +79,16 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Fix (done, `run_daily.py`):** the run applies the same append-only check to every file in
   `data/bars/` and refuses to run if a committed row changed.
 
-### L5. A failed fetch starts a brand-new record (medium)
+### L5. A failed fetch starts a brand-new record (medium) - FIXED in this branch
 
-- **What:** the workflow does `git fetch origin paper-trail || git worktree add --orphan`. If
-  the branch was deleted, the bot silently starts a fresh record and the old one is gone from
-  the scoreboard. If the fetch only failed for a moment (network), it also builds an orphan; the
-  push is then rejected, so that day's decisions are lost.
-- **Evidence:** `.github/workflows/daily.yml` lines 33-37;
-  `tests/test_audit_workflow.py::test_a_failed_fetch_does_not_start_a_new_record`.
-- **Proposed fix (small, workflow):** ask `git ls-remote` whether the branch exists; create the
-  orphan only when the remote answers "no such branch" and the run was started by hand with an
-  explicit "start a new record" input.
+- **What:** the workflow did `git fetch origin paper-trail || git worktree add --orphan`. If the
+  branch was deleted, the bot silently started a fresh record and the old one was gone from the
+  scoreboard. If the fetch only failed for a moment (network), it also built an orphan; the push
+  was then rejected, so that day's decisions were lost.
+- **Fix (done, workflow):** `scripts/checkout-trail.sh` asks the remote whether the branch
+  exists. Missing branch: the job stops, unless it was started by hand with the new "start a
+  new record" box ticked. Unreachable remote: the job stops, always.
+  Tests: `tests/test_audit_workflow.py` (3 tests on throwaway repos).
 
 ### L6. Outside a git checkout the check silently checks nothing (low)
 
@@ -106,14 +111,15 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   scoreboard should flag (or start a new row for) a strategy whose own file changed between two
   of its decisions, and such a change should count as a new try.
 
-### L8. The daily job can be started from any branch (medium)
+### L8. The daily job can be started from any branch (medium) - FIXED in this branch
 
 - **What:** `workflow_dispatch` runs the workflow file and code of whatever branch is chosen
-  (`gh workflow run daily.yml --ref m1`). That code then writes to the one official record:
-  unmerged strategies, a different gym, a different report.
-- **Evidence:** `.github/workflows/daily.yml` has no branch condition;
-  `tests/test_audit_workflow.py::test_the_job_only_runs_code_from_main`.
-- **Proposed fix (small, workflow):** `if: github.ref == 'refs/heads/main'` on the job.
+  (`gh workflow run daily.yml --ref some-branch`). That code then writes to the one official
+  record: unmerged strategies, a different gym, a different report.
+- **Fix (done, workflow):** `if: github.ref == 'refs/heads/main'` on the job
+  (`tests/test_audit_workflow.py::test_the_workflow_uses_the_guards_and_only_runs_code_from_main`).
+  Note: a branch can still carry its own edited copy of the workflow file; the real lock is the
+  ruleset in L3 plus restricting who may push to `paper-trail`.
 
 ### D1. A bar taken soon after the close is frozen, and later corrections are never seen (high)
 

@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: "30 22 * * *" # 22:30 UTC: after the US close in summer and winter
   workflow_dispatch:
+    inputs:
+      start_new_record:
+        description: "Start a new record (only if the paper-trail branch does not exist yet)"
+        type: boolean
+        default: false
 
 concurrency:
   group: daily
@@ -16,6 +21,8 @@ permissions:
 
 jobs:
   run:
+    # Only code that is on main may write the record (a manual start can pick any branch).
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -27,14 +34,17 @@ jobs:
           enable-cache: true
       - run: uv sync --locked
       - name: Check out the paper trail into trail/
+        env:
+          START_NEW_RECORD: ${{ inputs.start_new_record }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git fetch origin paper-trail:paper-trail; then
-            git worktree add trail paper-trail
-          else
-            git worktree add --orphan -b paper-trail trail
-          fi
+          scripts/checkout-trail.sh
+      - name: Ask GitHub whether the trail was rewritten or back-dated
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRAIL_REVIEWED_UNTIL: ${{ vars.TRAIL_REVIEWED_UNTIL }}
+        run: scripts/check-trail-activity.sh trail
       - name: Run
         id: run
         run: uv run python -m grimstrade.run_daily --root trail
