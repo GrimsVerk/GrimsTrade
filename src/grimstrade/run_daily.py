@@ -54,8 +54,13 @@ def run(
         if previous and previous[-1]["data_through"] == through:
             print(f"{name}: no new data since the last decision, skipped")
             continue
-        weights, reason = decide(seen)
-        gym.validate(weights)
+        try:
+            weights, reason = decide(seen)
+            gym.validate(weights)
+        except Exception as e:  # noqa: BLE001 - one broken strategy must not stop the others
+            problems.append(f"{name}: {e}")
+            print(f"{name}: FAILED {e}", file=sys.stderr)
+            continue
         ledger.write_decision(root, now, name, weights, seen, reason)
         print(f"{name}: {weights} ({reason})")
 

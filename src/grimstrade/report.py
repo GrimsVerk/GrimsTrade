@@ -23,7 +23,7 @@ from grimstrade.stats import Moments
 DAYS_PER_YEAR = 365
 # Under this many days the deflated Sharpe isn't shown: too early to say anything.
 MIN_DAYS_FOR_DSR = 30
-# The backtest report's second window: recent enough that every strategy has warmed up.
+# The backtest report's second window: the most recent year.
 RECENT_DAYS = 365
 
 
@@ -100,7 +100,8 @@ def backtest_results(
     history: History, names: list[str] | None = None, start: date | None = None
 ) -> dict[str, Result]:
     """Replay the live strategies from `start` (default: the day after the latest first bar, so
-    every asset has data) to the last stored bar."""
+    every asset has data) to the last stored bar. A strategy that raises is left out (the daily
+    runner already reports it as a problem)."""
     from grimstrade.strategies import LIVE
 
     firsts = [b[0].date for b in history.values() if b]
@@ -108,10 +109,13 @@ def backtest_results(
     if not firsts:
         return {}
     start, end = start or max(firsts) + timedelta(days=1), max(lasts)
-    return {
-        name: gym.simulate(gym.backtest(LIVE[name], history, start, end), history)
-        for name in (names or list(LIVE))
-    }
+    out = {}
+    for name in names or list(LIVE):
+        try:
+            out[name] = gym.simulate(gym.backtest(LIVE[name], history, start, end), history)
+        except Exception:  # noqa: BLE001, S112 - one broken strategy must not hide the others
+            continue
+    return out
 
 
 def table(scores: list[Score]) -> str:
@@ -191,7 +195,10 @@ def render_backtest(root: Path, history: History, repo: Path = Path(".")) -> str
         "",
         table(backtest_scores(history, trials)),
         "",
-        f"## Last {RECENT_DAYS} days (every strategy warmed up)",
+        f"## Last {RECENT_DAYS} days",
+        "",
+        "With under two years stored, a strategy needing a year of history may still start this "
+        "window in cash.",
         "",
         table(backtest_scores(history, trials, max(lasts) - timedelta(days=RECENT_DAYS - 1))),
         "",

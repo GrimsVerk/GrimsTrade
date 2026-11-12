@@ -59,4 +59,8 @@ maths in `stats.py` and (b) each strategy's faithfulness to its paper; then fix 
 Fable final review of PR #3.
 
 Next (in order):
-- Fable final review of PR #3 (running); fix; mark ready; try `gh pr merge --rebase --delete-branch`.
+- Fable final review done: merge after fixes. Fixed: research tries recorded by identity (not a
+  count) and reports read-only; weekly yardstick window off by one day; weekly wording no longer
+  overclaims (strong needs beating every yardstick, nothing proven before 6 months); one broken
+  strategy no longer stops the others or the reports; NaN weights rejected; runner tests isolated.
+- Mark ready; try `gh pr merge --rebase --delete-branch`.

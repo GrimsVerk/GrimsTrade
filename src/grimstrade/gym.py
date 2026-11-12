@@ -7,6 +7,7 @@ The same replay serves the live ledger and backtests, so they can't disagree on 
 
 from __future__ import annotations
 
+import math
 from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime, time, timedelta
@@ -59,6 +60,8 @@ def validate(weights: Mapping[str, float]) -> None:
     unknown = set(weights) - set(UNIVERSE)
     if unknown:
         raise ValueError(f"unknown symbols: {sorted(unknown)}")
+    if not all(math.isfinite(w) for w in weights.values()):
+        raise ValueError("weights must be finite numbers")
     if any(w < 0 for w in weights.values()):
         raise ValueError("long-only: weights must be >= 0")
     if sum(weights.values()) > 1 + 1e-9:
