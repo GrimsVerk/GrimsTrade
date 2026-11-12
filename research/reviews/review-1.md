@@ -112,10 +112,11 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
   | `trend-vol` (tv40) | 1.24 | +0.03 (0.37) | +0.06 (0.34) | 22.0% | 14.2% |
   | `ensemble-tsmom` | 1.29 | +0.09 (0.13) | +0.12 (0.16) | 24.5% | 20.1% |
   | `drawdown-control` (d1.0) | 1.31 | +0.10 (0.10) | +0.13 (0.10) | 27.6% | 18.8% |
+  | `kelly-shrunk` (k0.1, not the card's main setting) | 1.36 | +0.15 (0.23) | +0.18 (0.10) | 29.4% | 14.0% |
 
-  None of this is proof: I looked at five rules in a window I chose after seeing finding 1. It
-  does show the order among the trend-family rules is open, and that `tsmom12` is not the best
-  of them on any measure in this window.
+  None of this is proof: these are the five rules I looked at, in a window I chose after seeing
+  finding 1. It does show the order among the cautious rules is open. In this window `tsmom12`
+  has the lowest Sharpe and the largest worst loss of them, and the highest growth.
 
 **What it changes.**
 
@@ -125,3 +126,46 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
 - Which trend-family rule runs live (`tsmom12`, `ensemble-tsmom`, `drawdown-control`,
   `trend-vol`) is a choice of risk profile that the backtests cannot settle. The forward ledger
   can say more than another night of backtests.
+
+### 3. Machine learning: "no skill found" holds; the Sharpe comparison says little
+
+**What the runs say.** Every model lost to the trend rule (0.67 to 0.94 against 1.05); their
+forecasts are a coin toss (AUC 0.48 to 0.51); a planted signal is found, so the test works.
+
+**What I found.**
+
+- The numbers reproduce. Re-run unlogged: `ml-linear/logit` 0.89, `ml-gbm/gbm` 0.81,
+  `ml-sizing/gbm-low` 0.80; AUC 0.494 and 0.509 against 0.522 for the 12-month flag alone. All
+  as reported.
+- No look-ahead in the code as I read it: features come from the bars visible at the decision,
+  labels from bars 28 days later, and a fit on day F uses only rows decided 35 days or more
+  before F. The earlier code review checked the same by scrambling later bars.
+- The gap to the trend rule is the dot-com bust again:
+
+  | Model | Against `tsmom12`, 1994-2025 | Without the dot-com bust | From 2003-09 (p) |
+  |---|---:|---:|---:|
+  | `logit` | -0.16 | +0.01 | -0.03 (0.59) |
+  | `gbm` | -0.24 | -0.12 | -0.10 (0.70) |
+  | `gbm-low` | -0.25 | -0.11 | -0.08 (0.64) |
+
+  In the bust the models were 79% (`logit`) and 52% (`gbm`) invested, the trend rule 26%. They
+  had been trained on the S&P 500 of 1962 to 1999, where the trend rule did not beat holding
+  (0.45 against 0.49 in `results/baselines.md`), so there was nothing to learn it from.
+- The trend flag's own forecast skill sits in the early years: AUC 0.61 on the 593 forecasts
+  before 2003 (SPY and QQQ only), 0.51 on the 5,621 since. The README's "the only signal in
+  the features is the weak trend effect" is, since 2003, hardly a signal.
+- The Sharpe bars could not have been passed. By the runs' own control
+  (`results/ml-control.md`), a planted signal with a true correlation of about 0.12 with next
+  month's return, stronger than any published forecast, ends at 0.80 to 0.90 Sharpe: no better
+  than equal weight. So the Sharpe tables cannot tell "no signal" from "a real, ordinary
+  signal". The result file says this; the README summary only half says it.
+- That leaves the AUC. With about 1,500 independent asset-months its standard error is about
+  0.015, so 0.49 to 0.51 is consistent with no skill and also with the trend flag's 0.52.
+
+**What it changes.**
+
+- "No ML slot" stands. No model showed skill, in any window.
+- Read "coin toss" as: on 15 price features and six assets no skill could be seen, by a test
+  that could only have seen a very large one. Run 2 is not evidence that ML cannot help with
+  other information or a wider book. The README's own "Next" says the same; the plain-language
+  summary should too.
