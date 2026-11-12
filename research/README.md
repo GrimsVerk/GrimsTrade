@@ -67,10 +67,11 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
   `results/<idea>.md` each end with a dated verdict; `ideas.md` has every status.
 - The summary and ranking above.
 
+- `survey-2026-11.md`: verdict per family and all 165 source entries with links.
+
 **Doing**
 
-- `survey-2026-11.md`: compiling the six parts (verdict per family, key links). If this file is
-  missing or stops mid-way, finish it from the "Verdict for this family" sections of the parts.
+- Run 2 (see Next). Nothing half-finished: every file on the branch is complete as it stands.
 
 **Next (only if usage is left before the hard stop)**
 
