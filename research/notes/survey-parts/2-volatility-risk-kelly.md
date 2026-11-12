@@ -184,3 +184,74 @@ Grossman, S. J., Zhou, Z. (1993). Mathematical Finance 3(3), 241-276. Not opened
 
 - Content from memory: if wealth must never fall below a fraction alpha of its running maximum, the optimal policy invests a constant-proportion (Merton-like) fraction of the cushion, wealth minus alpha times the peak, so exposure shrinks toward zero as the drawdown approaches the limit.
 - Implication (my inference): this is the formal version of "cut risk as drawdown grows" (D2). A simple testable form: exposure = min(1, k x (1 - drawdown / D_max)) with D_max fixed in advance. It sells after losses and buys after recoveries, so it behaves like trend-following and will be whipsawed in choppy markets; costs matter for crypto.
+
+---
+
+## E. Rebalancing premium and "volatility harvesting"
+
+### E1. Fernholz & Shay (1982); Shannon's demon; Luenberger's volatility pumping `[from memory, unverified]`
+Fernholz, R., Shay, B. (1982). "Stochastic Portfolio Theory and Stock Market Equilibrium." Journal of Finance 37(2), 615-624. Luenberger, D. (1997). Investment Science, chapter on volatility pumping. Not opened; the quotes below are as reproduced in E2.
+
+- The claim as summarized and quoted by E2: a constant-weight cash-stock portfolio "will buy on a downtick and sell on an uptick", so if the risky asset and cash have equal expected growth (both normalized to zero), a 50/50 rebalanced mix has expected growth sigma^2/8. Luenberger: "The pumping effect is obviously most dramatic when the original variance is high... you will likely begin to enjoy volatility, seeking it out".
+- My arithmetic, not from a source: for BTC with annual volatility around 70%, sigma^2/8 is about 6% a year, which is why BTC/cash rebalancing looks attractive on paper.
+
+### E2. Cuthbertson, Hayley, Motson & Nitzsche, "What Does Rebalancing Really Achieve?" `[opened: full text]`
+Cuthbertson, K., Hayley, S., Motson, N., Nitzsche, D. (2016). International Journal of Finance & Economics 21(3), 224-240. DOI 10.1002/ijfe.1545. Accepted version dated 2016-02-04.
+URL: https://openaccess.city.ac.uk/id/eprint/13733/1/What%20Does%20Rebalancing%20Really%20Achieve%204-Feb-2016.pdf
+
+- Method: analytics plus simulation with IID returns (the case least favorable to buy-and-hold). No empirical backtest.
+- Claim 1: "in the absence of mean reversion in relative asset prices the greater expected growth of rebalanced strategies is entirely explained by their lower portfolio volatilities rather than... being due to the rebalancing trades themselves being profitable." Unrebalanced portfolios also earn "excess growth" while they stay diversified.
+- Claim 2 (one risky asset plus cash): rebalanced and buy-and-hold portfolios start with equal expected growth; over finite horizons "expected portfolio final wealth for an unrebalanced portfolio is greater than for a rebalanced portfolio". Rebalancing wins on paths that mean-revert and loses when the risky asset "makes large cumulative moves in either direction (i.e. tends instead to trend)".
+- Claim 3: "Rebalancing will be profitable in markets which tend to mean-revert, and loss-making in markets which tend to show momentum." Following the volatility-pumping argument leads to "insufficient diversification and excessive transactions costs".
+- Implication (my inference): a fixed BTC/cash or BTC/GLD mix rebalanced often is a bet on mean reversion in the BTC/cash ratio, and in effect short a trend (the payoff is like selling volatility on large moves). Part 3 of this survey found BTC trends at weekly horizons. So frequent rebalancing of a BTC mix should not be expected to add return; rebalance for risk control only, rarely or with wide bands, since every rebalance costs about 30 bps per side in crypto.
+
+---
+
+## F. Crypto in a multi-asset portfolio
+
+### F1. Platanakis & Urquhart, "Should investors include Bitcoin in their portfolios? A portfolio theory approach" `[opened: abstract page]`
+Platanakis, E., Urquhart, A. (2020). The British Accounting Review 52(4), 100837. DOI 10.1016/j.bar.2019.100837. SSRN 3215321.
+URL: https://ideas.repec.org/a/eee/bracre/v52y2020i4s0890838919300605.html (the CORE full-text PDF returned 403)
+
+- Sample: traditional stock and bond benchmark portfolio plus Bitcoin, data up to June 2018 (start date not on the page). Eight asset-allocation strategies tested out of sample (which eight is not on the page).
+- Claim: "the benefits of Bitcoin are quite considerable with substantially higher risk-adjusted returns"; robust to rolling windows, "the incorporation of transaction costs", a commodity portfolio, alternative indices, short selling, and higher-moment optimizers. Conclusion: "investors should include Bitcoin in their portfolio."
+- Caveat (mine): the sample ends June 2018, so it includes the 2013 and 2017 BTC run-ups and only the start of the 2018 bear market. Out of sample in the rolling-window sense, but not out of sample in time relative to BTC's bubble phase. No numbers checked.
+- Implication (my inference): academic support for "some BTC improves a stock-bond portfolio" exists but rests on a sample dominated by BTC's early growth. Treat the size of the benefit as unknown going forward.
+
+### F2. Howard (FTSE Russell), "Risk-friendly ways to consider a Bitcoin allocation" `[opened: full text, practitioner note]`
+Howard, M. (November 2020). FTSE Russell Education note.
+URL: https://www.lseg.com/content/dam/ftse-russell/en_us/documents/research/ftse_russell-education_risk_friendly_ways_to_consider_a_bitcoin_allocation_0.pdf
+
+- Sample: 2014-12-31 to 2020-09-30, hypothetical index data; Russell 1000 as the equity leg. No transaction costs mentioned.
+- Numbers (Exhibit 1): Russell 1000 return 10.71% a year, volatility 18.49%, return/risk 0.58, max drawdown -34.58%. Bitcoin 80.59%, 72.86%, 1.11, -83.00%. Bitcoin 50% / cash 50% rebalanced daily: 43.75%, 36.43%, 1.20, -55.22%. Bitcoin 25% target volatility: 38.49%, 24.39%, 1.58, -42.07%, with "around 45% allocated to Bitcoin and 55% allocated to cash" on average. Russell 1000 + 2.5% BTC, quarterly rebalanced: 13.31%, 18.46%, 0.72, -34.54%. With 5% BTC: 15.87%, 18.72%, 0.85, -34.63%.
+- The author notes the target-volatility version "essentially represents an all or nothing exposure to the digital asset".
+- Correlation: average 12-month rolling BTC/Russell 1000 correlation 0.06 since 2015; about 0.26 since the start of 2020.
+- Implication (my inference): in this window, volatility targeting BTC raised return per unit risk from 1.11 to 1.58 and cut the drawdown from 83% to 42%, without leverage (BTC weight below 100% by construction at a 25% target). That is the de-risk-only case that matters for us. But it is one bull-dominated sample, no costs, daily rebalancing, and an index provider's marketing-adjacent note. It must be retested with 60 bps round trips, next-open fills, and 2021-2025 data.
+
+### F3. Goodall & Abou Zeid (Man Group), "Crypto: Too Hot to Handle?" `[opened: practitioner article]`
+Goodall, R., Abou Zeid, T. (2025-03-21). Man Group Insights.
+URL: https://www.man.com/insights/crypto-too-hot-to-handle
+
+- Sample: BTC 2012-09-01 to 2024-12-31 for the volatility-scaling exhibits.
+- Claims: BTC volatility range fell from "20-130%" in the 2010s to "closer to 30-60%" in the 2020s; drawdowns could reach "up to 50%" at current volatility versus "roughly 70%" when volatility was near 130%. Scaling BTC ex ante to 30% volatility adds "around 40 Sharpe points in each instance", regardless of the volatility-estimate half-life; vol of vol and expected shortfall also improve (figures only in a chart I could not read). For a 1% BTC sleeve in a 60/40, the unscaled sleeve's share of portfolio risk "oscillates between 0 and 6%"; the scaled one stays in a tight range. BTC-equity correlation has risen since 2020.
+- Costs and leverage: not stated in the text. Scaling to 30% volatility when BTC runs at 30-60% means exposure mostly at or below 1, so it is close to our de-risk-only case, but at times of 20% BTC volatility it would lever.
+- Implication (my inference): two independent practitioner sources (F2, F3) agree that volatility-scaling BTC improves risk-adjusted returns, and Harvey et al. (A3) give the mechanism (a leverage effect acting like momentum). Crypto is the one asset in our universe where de-risk-only volatility timing has a plausible case. It is also where costs are highest, so exposure changes need bands.
+
+---
+
+## Verdict for this family
+
+**Held up.** (1) Volatility targeting reliably cuts tail losses, vol of vol and drawdowns across assets (A3), and the scaled series uses only past data. (2) Simple beats optimized: 1/N and volatility-only rules match or beat mean-variance out of sample (B2), and a long-only constraint already does most of what covariance shrinkage does (C2). (3) Risk parity has a higher Sharpe than 60/40 over 1926-2010 (B1: 0.52 unlevered versus 0.40). (4) Kelly's core lessons are robust: never bet above Kelly, errors in means dominate (about 20:2:1 versus variances and covariances), so shrink bets (D2, D3). (5) Volatility-scaling BTC improved risk-adjusted returns in two practitioner samples (F2, F3).
+
+**Failed or weaker than claimed.** Moreira-Muir alphas do not become real-time gains: out of sample the scaled market lost to the plain market (Sharpe 0.42 versus 0.46), and leverage caps of 1.0 or 1.5 did not fix it (A2). With the look-ahead removed and leverage allowed, drawdowns reached 68-93% (A4). After costs, volatility management of factors other than the market earns nothing (A5). Sharpe gains from volatility scaling are absent for bonds, currencies and commodities, and negative for US bonds 1963-2017 (A3). Unlevered risk parity earns a low absolute return (2.20% a year excess in B1), and the stock-bond hedge failed in 2022 (B4). "Rebalancing premium" and volatility pumping are mostly diversification, and rebalancing loses on trending paths (E2).
+
+**Biggest caveats for our setup.** Our cap at 100% removes the lever-up half that produces most published volatility-timing gains; only the de-risk half is left, and its evidence is mostly about tails, not return. Cash earns 0 here, so every de-risked dollar gives up the full risk premium. Crypto evidence is from short, bull-dominated samples with no costs (F1, F2). Daily volatility estimates move weights daily: at 60 bps a crypto round trip, unbanded rebalancing can eat the benefit. Kelly with estimated crypto drift is close to meaningless; SPY Kelly almost always exceeds 1, so the cap binds.
+
+**Testable ideas for our universe (fix parameters before looking at our data).**
+1. Inverse-volatility weights across all six assets (60-day realized volatility, monthly rebalance, weights sum to 1), against 1/N and buy-and-hold SPY, with 2022 reported separately.
+2. BTC and ETH de-risk-only targeting: weight = min(1, 40% / 20-day realized volatility), traded only when the target weight moves by more than 10 percentage points.
+3. The same min(1, target / realized volatility) rule on SPY and QQQ, target = trailing 5-year median volatility from past data only; judge it on drawdown and Sharpe, not total return.
+4. A fixed 5% BTC sleeve in an equal-weight SPY/GLD/TLT core, rebalanced quarterly versus never, to measure whether rebalancing adds anything after costs.
+5. Equal risk contribution (or HRP) versus plain inverse volatility on the same six assets: a single comparison to see whether accounting for the BTC-ETH and SPY-QQQ correlations matters.
+
+**Source count.** 17 sources opened (7 as full text, one of them a practitioner note; 8 as abstract or landing pages; 2 as practitioner web articles); 5 entries rest on memory or search snippets only and are tagged `[not opened]` or `[from memory, unverified]`.

@@ -25,7 +25,7 @@ on a single asset is a "long or cash" switch, which keeps only part of the effec
 Moskowitz, T.J., Ooi, Y.H., Pedersen, L.H. (2012). Journal of Financial Economics 104(2), 228-250. DOI 10.1016/j.jfineco.2011.11.003.
 URL: https://pages.stern.nyu.edu/~lpederse/papers/TimeSeriesMomentum.pdf
 
-- Sample: 58 liquid futures and forwards (24 commodities, 9 developed equity indexes, 13 developed government bonds, 9 currency forwards per the paper's data section; also 12 cross-currency pairs). Main evaluation January 1985 to December 2009; data back to 1965.
+- Sample: 58 liquid futures and forwards across equity indexes, currencies, commodities and government bonds (per the abstract; a search summary gives 24 commodities, 9 equity indexes, 13 bonds and 12 cross-currency pairs, which I did not check against the data table). Main evaluation January 1985 to December 2009; data back to 1965.
 - Claim: "the past 12-month excess return of each instrument is a positive predictor of its future return." The effect "persists for about a year and then partially reverses over longer horizons." All 58 contracts show positive 12-month TSMOM returns and 52 are significant at 5%.
 - Construction: TSMOM = sign of the past 12-month excess return, 1-month hold, each position scaled to 40% ex-ante annual volatility; the equal-weighted portfolio has about 12% annual volatility. This is long-short and implicitly levered.
 - Key numbers: diversified portfolio Sharpe "greater than one", "roughly 2.5 times the Sharpe ratio for the equity market portfolio". Alpha about 1.58% per month (t = 7.99) against MSCI World and Fama-French SMB, HML, UMD; loads positively on UMD (cross-sectional momentum). Regressing each instrument's TSMOM on a constant long position gives positive alpha in 90% of cases, 26% significant.
@@ -147,3 +147,103 @@ URL: https://www.man.com/insights/trend-following-2022-review
 - Stock-bond correlation turned positive because inflation acted as "a common risk factor."
 - Implication (my inference): in our universe the 2022 equity trend was choppy (several sharp rallies), so a long-or-cash filter on SPY/QQQ likely whipsawed several times. The cleaner long-only trend in 2022 was TLT staying below its trend all year (stay in cash) and the US dollar, which we do not hold.
 
+### C4. Hamill, Rattray, Van Hemert, "Trend Following: Equity and Bond Crisis Alpha" `[opened: abstract page]` (Man Group overview page; full PDF not opened)
+Hamill, C., Rattray, S., Van Hemert, O. (2016). Man Group / Oxford-Man working paper, September 2016 (SSRN, per search snippet).
+URL: https://www.man.com/insights/trend-following-equity-and-bond-crisis-alpha (full paper link on that page: https://www.man.com/documents/download/CDWr8-fphNP-AYg1X-K2TYR, not opened)
+
+- Sample: TSMOM in bonds, commodities, currencies and equity indexes, 1960-2015, monthly; pre-futures history proxied by cash returns financed at the short rate.
+- Claims (overview): performance "consistently" good both before 1985 (bond bear market) and after (bond bull market), so not just a product of the 30-year bond rally. Returns positively skewed, more so for shorter-term strategies. Best in the worst equity AND worst bond environments ("equity smile" and a more pronounced "bond smile").
+- Restriction test: barring LONG positions in equities or bonds improved crisis performance but cut average returns and weakened protection in the other asset class.
+- No numbers on the overview page; costs not described there.
+- Implication (my inference): the crisis protection of trend comes mostly from the ability to be short. Our long-only filter can only exit, so its crisis value is "not losing", and it gives up the convexity that made trend a hedge.
+
+### C5. Man AHL, "The Need for Speed in Trend-Following Strategies" `[opened: full text]` (practitioner article; tables are in charts I could not read)
+Man Group (January 2023). Man Institute.
+URL: https://www.man.com/insights/need-for-speed-trend-following
+
+- Sample: 50 most liquid futures and FX forwards, 1995-2022; equal risk across equity, fixed income, FX, commodities; five speeds of double exponentially weighted moving-average crossovers; each scaled to 10% volatility. Correlation between fastest and slowest speed: 0.17.
+- Claims: Sharpe ratios "all significantly positive" and risk-adjusted returns "increase with slower speed"; after costs, faster speeds are "materially lower over the long-term." Skewness and crisis performance (worst S&P 500 quintile) are better for fast speeds; "The slowest trend speed cannot shift to a short position over a one- or three-month horizon." Costs are modelled for a USD 5bn book with Man's own execution; no bps figures in the text.
+- Implication (my inference): there is a real trade-off. Slow signals (6-12 months) earn more over time; fast signals (weeks) protect better in sudden crashes but pay more costs and whipsaw. For crypto at 60 bps a round trip only slow signals are affordable; for ETFs at 4 bps a blend of speeds is affordable.
+
+---
+
+## D. Cross-sectional momentum across asset classes
+
+### D1. Asness, Moskowitz, Pedersen, "Value and Momentum Everywhere" `[opened: full text]`
+Asness, C.S., Moskowitz, T.J., Pedersen, L.H. (2013). Journal of Finance 68(3), 929-985. DOI 10.1111/jofi.12021.
+URL: https://pages.stern.nyu.edu/~lpederse/papers/ValMomEverywhere.pdf
+
+- Sample: eight markets: individual stocks in the US, UK, Europe, Japan, plus country equity index futures (from January 1978), currencies (from January 1979), government bonds (from January 1982), commodities (from January 1972); all to July 2011. Momentum = past 12-month return skipping the most recent month; tercile portfolios P1 (losers) to P3 (winners) and long-short P3-P1.
+- Key numbers (Table I, Panel B, gross, long-short P3-P1 momentum): country indexes mean 8.7% a year, Sharpe 0.73 (t = 4.14); currencies 3.5%, Sharpe 0.34 (t = 1.90); FIXED INCOME 0.4%, Sharpe 0.06 (t = 0.35); commodities 12.4%, Sharpe 0.53 (t = 3.29); global non-stock asset classes 4.6%, Sharpe 0.63. Value and momentum are negatively correlated (about -0.60 on average for stock strategies); a 50/50 combination has Sharpe 1.42-1.59 across all asset classes.
+- Long-only angle: the winner tercile P3 for country indexes had Sharpe 0.65 versus 0.14 for the loser tercile P1; for bonds P3 0.61 versus P1 0.64 (no spread).
+- Costs: results gross; no transaction cost deduction in the table.
+- Implication (my inference): cross-asset momentum worked in equity indexes and commodities, not in government bonds. For us, ranking SPY/QQQ/GLD/TLT/BTC/ETH by 12-1 month return is a cross-asset-class rank, not a within-class rank as in AMP, and it would mostly measure which asset class had the best year. AMP gives no evidence that this is profitable with six assets.
+
+### D2. Daniel & Moskowitz, "Momentum Crashes" `[opened: abstract page]`
+Daniel, K., Moskowitz, T.J. (2016). Journal of Financial Economics 122(2), 221-247. NBER WP 20439 (2014). DOI 10.1016/j.jfineco.2015.12.002.
+URL: https://www.nber.org/papers/w20439
+
+- Claim (abstract, as summarized by the page): momentum earns strong average returns across asset classes but has "infrequent, persistent" crashes. Crashes are partly forecastable: they occur in "panic" states, after market declines and in high volatility, coinciding with market rebounds, when past losers (high beta) jump. A dynamic strategy forecasting momentum's mean and variance "roughly doubles" the alpha and Sharpe of static momentum. Holds across periods, international equities and other asset classes.
+- Costs / numbers: not on the abstract page. The famous examples (1932, 2009) I recall from the paper are `[from memory, unverified]`.
+- Implication (my inference): crashes are a long-short problem (the short leg of past losers rallies). For a long-only rank-and-hold-winners rule, the analogous risk is a sharp rotation after a bear market bottom, when we sit in the defensive winner (TLT or cash) while equities rebound. This is the same "missed rebound" cost seen in Faber's 2009 record (B1).
+
+### D3. Jegadeesh & Titman, "Returns to Buying Winners and Selling Losers: Implications for Stock Market Efficiency" `[opened: abstract page]`
+Jegadeesh, N., Titman, S. (1993). Journal of Finance 48(1), 65-91.
+URL: https://ideas.repec.org/a/bla/jfinan/v48y1993i1p65-91.html
+
+- Sample: US individual stocks (the 1965-1989 sample period is `[from memory, unverified]`; not on the abstract page).
+- Claim (abstract): buying past winners and selling past losers generates "significant positive returns over three- to twelve-month holding periods"; not explained by systematic risk; part of the first-year abnormal return dissipates over the following two years.
+- Costs: not on the abstract page.
+- Implication (my inference): the founding result is about ranking hundreds of stocks within one asset class. It does not carry over to ranking six assets from four different classes.
+
+### D4. Is cross-sectional ranking meaningful with six assets? (my inference, no single source)
+- Every result above (D1-D3) sorts many assets into terciles or deciles within an asset class and holds a long-short spread. With six assets, "top 2 by 12-month return" is a concentrated asset-class bet whose result depends on a handful of regime switches per decade.
+- AMP (D1) found no momentum in government bonds (Sharpe 0.06) and Goyal-Jegadeesh (A5) found that scaling matters when assets have "heterogeneous return distributions." BTC/ETH are several times as volatile as SPY and far more volatile than TLT (my rough estimate, not from a source); a raw return rank will pick crypto whenever crypto trends, so the "rotation" becomes mostly a crypto-or-not switch. Ranking on volatility-adjusted returns reduces that, but adds a parameter.
+- The CXO test in E1 is the closest evidence: an eight-ETF universe gave only about 30 independent ranking periods in 12 years. Statistical power with six assets will be low.
+
+---
+
+## E. Trend and momentum in small ETF universes, after costs and whipsaw
+
+### E1. CXO Advisory, "Simple Asset Class ETF Maximum Momentum Strategy" `[opened: full text]` (practitioner backtest, not peer reviewed)
+CXO Advisory (about 2015).
+URL: https://www.cxoadvisory.com/momentum-investing/simple-asset-class-etf-maximum-momentum-strategy/
+
+- Universe: DBC, EEM, EFA, GLD, IWB, IWM, RWR, TLT plus 3-month T-bills; July 2002 to December 2014 (150 months), monthly rebalancing at month-end close, all-in on the single top asset.
+- Results (gross): baseline "5-1" (top past-5-month return): 1.51% average monthly return, 5.50% monthly standard deviation, maximum drawdown -24%, 58 switches. A variant measured from the 105-day low: 1.63%, 5.70%, -40%, 55 switches. No buy-and-hold benchmark numbers in the text.
+- Caveats stated: frictions and taxes ignored; about 30 independent five-month ranking intervals; only one full equity bear market; the difference between variants "not compelling."
+- Implication (my inference): monthly top-1 rotation trades about 5 times a year, so at 4 bps per ETF round trip costs are negligible. The binding problem is sample size and parameter choice, not costs.
+
+### E2. Fang, Jacobsen, Qin, "Predictability of the simple technical trading rules: An out-of-sample test" `[opened: abstract page]`
+Fang, J., Jacobsen, B., Qin, Y. (2014). Review of Financial Economics 23(1), 30-45. DOI 10.1016/j.rfe.2013.05.004.
+URL: https://ideas.repec.org/a/eee/revfin/v23y2014i1p30-45.html
+
+- Sample: the moving-average and trading-range rules that Brock, Lakonishok and LeBaron (1992) found best on the Dow Jones (1897-1986), re-tested on fresh data 1987-2011 (and, per a search snippet, also on 1885-1896).
+- Claim (abstract): "In a true out-of-sample test based on fresh data we find no evidence" of predictive power; the poor out-of-sample performance "most likely is not due to the market becoming more efficient" but to biases in the original testing.
+- Costs: gross returns per search snippet; not verified.
+- Implication (my inference): short-horizon daily moving-average crossovers on an equity index (Brock et al. used daily rules such as price versus 50-, 150- and 200-day averages, `[from memory, unverified]`) did not survive out of sample. Slow monthly-checked trend filters (B1, B4) are a different and better-supported object; do not confuse them with daily crossover trading.
+
+---
+
+## Verdict for this family
+
+**Held up out of sample.** (1) Trend exists as a broad phenomenon: diversified long-short futures trend was positive in every decade since 1880 and in the 1966-1985 holdout (A1, A2), and did what it promised in the slow bear markets of 2008 and 2022 (C2, C3). (2) Slow, monthly-checked long-or-cash filters on equity indexes reduce volatility and maximum drawdown versus buy-and-hold, including out of sample in 2008 (B1, B4). (3) Slow signals beat fast ones after costs; fast ones only buy better crash protection (C5).
+
+**Failed or weak.** (1) Trend as a return enhancer for a single asset: without volatility scaling, time-series momentum is about the same as buy-and-hold (A4), and much of its profit is "be long assets with positive average returns" (A3, A5). (2) Post-publication records: Faber's model returned 4.95% a year versus 11.64% for buy-and-hold over 2009-2012 (B1); the SG Trend Index had a Sharpe of 0.05 over 2010-2018 (C1). (3) Daily technical crossover rules on equity indexes failed on fresh data (E2), and optimized timing rules overstate performance (B3). (4) Cross-sectional momentum in government bonds was nil even in-sample (D1); dual-momentum lookback choice looks like luck (B2).
+
+**Biggest caveats for our setup.**
+- The headline literature is long-short, volatility-scaled and levered across 50-67 markets. Our book can neither short nor lever TLT and GLD up to equal risk, so the two biggest sources of the published returns (crisis shorts and volatility scaling) are out of reach (A4, C4).
+- Six assets that often move together give few independent trends; AQR links high cross-market correlation to weak trend returns (A2).
+- The cost of a long-or-cash filter is missed rebounds after bottoms (2009 in B1) and no protection in sudden crashes such as 1987 (A2), which can mean years behind buy-and-hold.
+- Next-open fills barely matter for monthly signals, but checking a 200-day rule every day instead of at month-end will add whipsaw; test both.
+- Judge every rule against same-asset buy-and-hold on Sharpe and maximum drawdown, not against zero.
+
+**Testable ideas for our universe.**
+1. Faber filter: each month-end, hold each of SPY, QQQ, GLD, TLT at equal weight if its close is above its 10-month (about 210-day) simple moving average, else cash; compare with equal-weight buy-and-hold on Sharpe and maximum drawdown.
+2. Ensemble time-series momentum: for each asset, weight = share of the 1-, 3-, 6- and 12-month past returns that are positive (0, 0.25, ..., 1), rebalanced monthly, long-only, sum of weights at most 1.
+3. Separate scaling from timing: run unlevered inverse-volatility weights (60-day volatility) across the four ETFs with and without idea 2's trend weight, to see whether any gain is timing or just risk balancing (A4).
+4. GEM-style switch: hold SPY when its 12-month return is positive, otherwise TLT (or cash when TLT's 12-month return is also negative), averaged over 3-, 6-, 9- and 12-month lookbacks to avoid picking a lucky one.
+5. Null check for cross-sectional ranking: monthly hold the top 2 of the 6 assets by 12-1 month volatility-adjusted return versus equal weight; expect no edge and treat a large edge as overfitting.
+6. Whipsaw cost: the same 200-day SMA rule on SPY evaluated daily versus only at month-end, net of 4 bps per round trip, over 2000-2009, 2010-2019 and 2020-now separately.
+
+**Source count.** 21 sources opened: 4 papers as full text (A1, A2, C1, D1), 4 practitioner articles read in full (C2, C3, C5, E1), 8 abstract or landing pages (A3, A4, A5, B3, C4, D2, D3, E2), and 5 secondary summaries (Quantpedia for A4; CXO and Canadian Couch Potato for B1; the ReSolve repost for B2; CXO for B4). Items tagged `[from memory, unverified]` or `[not opened]` are marked inline.

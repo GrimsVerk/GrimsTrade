@@ -126,3 +126,117 @@ Secondary summary read: Portfolio Optimizer blog, "The absorption ratio: measuri
 - Related `[from memory, unverified]`: Kritzman and Li (2010, Financial Analysts Journal), "Skulls, financial turbulence, and risk management", define turbulence as the Mahalanobis distance of today's return vector from its historical mean and covariance; turbulent periods are persistent and have worse returns. I did not open it and found no independent costed out-of-sample test within my budget.
 - Implication (my inference): with 6 assets of different classes, the first principal component is not a "market mode" in the RMT sense; it mixes equity beta and crypto beta, and the AR would mostly track whether BTC/ETH and SPY/QQQ are moving together. The replication suggests the AR is a coincident volatility-and-correlation gauge, not a leading indicator. It may add little beyond realised volatility. A Mahalanobis turbulence score on our 6 assets is cheap to compute and worth one test as a de-risking trigger, but the prior should be that it duplicates a volatility filter.
 
+---
+
+## D. Hawkes processes
+
+### D1. Bacry, Mastromatteo & Muzy, "Hawkes processes in finance" `[opened: abstract page]`
+Bacry, E., Mastromatteo, I., Muzy, J.-F. (2015). Market Microstructure and Liquidity 1(1). arXiv 1502.04592. (Journal venue from memory, unverified; the arXiv page lists none.)
+URL: https://arxiv.org/abs/1502.04592
+
+- Content: review of Hawkes (self- and mutually-exciting point process) applications, all at high frequency: volatility from transaction data, market stability, systemic risk contagion, optimal execution, order-book dynamics.
+- No daily-frequency trading application in the abstract.
+- Implication (my inference): the mainstream Hawkes literature is about tick data and order flow. It does not transfer to a daily bar strategy with next-open fills.
+
+### D2. Filimonov & Sornette, "Quantifying reflexivity in financial markets: towards a prediction of flash crashes" `[opened: abstract page]`
+Filimonov, V., Sornette, D. (2012). Physical Review E 85(5), 056108. arXiv 1201.3572.
+URL: https://arxiv.org/abs/1201.3572
+
+- Sample: E-mini S&P 500 futures, 1998-2010, intraday price changes.
+- Claim: the Hawkes branching ratio measures endogeneity; about 70% of price changes in 1998 were tied to external information, below 30% since 2007, so markets moved closer to criticality.
+- Implication (my inference): a market-structure diagnostic built on intraday event times. Not a daily signal.
+
+### D3. Hardiman, Bercot & Bouchaud, "Critical reflexivity in financial markets: a Hawkes process analysis" `[opened: abstract page]`
+Hardiman, S. J., Bercot, N., Bouchaud, J.-P. (2013). European Physical Journal B 86, 442 (DOI 10.1140/epjb/e2013-40107-3). arXiv 1302.1405.
+URL: https://arxiv.org/abs/1302.1405
+
+- Sample: E-mini S&P mid-price changes, 1998-2011.
+- Claim: the Hawkes kernel is a power law (exponent about -1.15 below about 10^3 seconds, about -1.45 from 10^3 to 10^6 seconds) and integrates to one over the whole period: markets "are, and have long been, close to criticality." This challenges the reported rise in endogeneity (the abstract does not name Filimonov and Sornette, but D2 is the obvious target).
+- Implication (my inference): even the headline Hawkes indicator (the branching ratio) is sensitive to kernel choice and estimation method; two respected groups reached opposite conclusions on the same contract. That fragility is a further reason not to build a daily trading rule on it.
+
+### D4. Ait-Sahalia, Cacho-Diaz & Laeven, "Modeling financial contagion using mutually exciting jump processes" `[not opened]` (abstract text seen only through a search-engine summary)
+Ait-Sahalia, Y., Cacho-Diaz, J., Laeven, R. J. A. (2015). Journal of Financial Economics 117(3), 585-606. NBER Working Paper 15850 (2010).
+URL: https://www.nber.org/papers/w15850
+
+- Model: returns with drift, diffusion and Hawkes jumps that excite each other within and across regions; jump intensities mean-revert between jumps.
+- Claim: self-excitation in the US and other world markets; asymmetric cross-excitation, with the US driving others more than the reverse. The authors propose filtered jump intensities as a market-stress gauge and test out-of-sample forecasting; the abstract does not give numbers or a trading test.
+- Implication (my inference): evidence that crash days cluster, which is a risk-model fact, already captured to first order by any volatility estimator (a GARCH or a short EWMA reacts to the same days).
+
+### D5. Gresnigt, Kole & Franses, "Exploiting spillovers to forecast crashes" `[opened: full text]`
+Gresnigt, F., Kole, E., Franses, P. H. (2015). Tinbergen Institute Discussion Paper TI 2015-118/III. (A version appeared in Journal of Forecasting, per a search snippet; not verified.)
+URL: https://papers.tinbergen.nl/15118.pdf
+
+- Sample: daily returns of S&P 500, NASDAQ, DJIA, a US bond index, EUR/USD and GBP/USD. In-sample 1 January 1990 to 1 January 2013 (6,653 trading days); out-of-sample 1 January 2013 to 1 July 2015.
+- Method: Hawkes (ETAS-style) models of extreme returns with self- and cross-excitation from S&P 500 crashes.
+- Claim: out-of-sample, models with spillovers forecast the probability of an extreme and the 95% Value-at-Risk significantly more accurately (Diebold-Mariano tests) than self-excitation-only models. Mixed elsewhere: "VaR predictions for the S&P 500 index at the 99% confidence level are significantly less accurate" for one model variant.
+- No trading strategy, no costs, a two-and-a-half-year out-of-sample window with few crashes in it.
+- Implication (my inference): this is the best daily-frequency Hawkes evidence I found, and it is a risk-forecast result, not a return signal. The relevant comparison for us is whether a Hawkes crash probability beats a simple EWMA volatility in deciding when to de-risk; no paper I found makes that comparison.
+
+### D6. Hawkes for Bitcoin crashes `[not opened]`
+- Search found a February 2026 FinTech (MDPI) paper using a 7-day Hawkes excitation kernel plus logistic regression to give real-time probabilities of extreme daily Bitcoin returns, reporting Brier scores that improve as events accumulate (search snippet only). A 2022 European Journal of Finance paper (Mark, Sila, Weber) fits Hawkes kernels to high-frequency Bitcoin trades and finds power-law long memory (search snippet only). Neither, as far as the snippets show, contains a costed trading test.
+- Implication (my inference): nothing tradable at daily frequency for BTC/ETH in this literature. Hawkes is a risk model. If used at all, it should be as a crash-probability input to position sizing, tested against EWMA volatility.
+
+---
+
+## E. Optimal stopping, stop-loss rules, drawdown control
+
+### E1. Kaminski & Lo, "When do stop-loss rules stop losses?" `[opened: abstract page]`
+Kaminski, K. M., Lo, A. W. (2014). Journal of Financial Markets 18, 234-254. DOI 10.1016/j.finmar.2013.07.001. Earlier: SIFR Research Report 63 (2008).
+URL: https://econpapers.repec.org/RePEc:hhs:sifrwp:0063 (author PDF at https://dspace.mit.edu/handle/1721.1/114876 returned HTTP 429 to my fetch, not read)
+
+- Theory: under a random walk, a simple 0/1 stop-loss rule always lowers expected return (it periodically moves the money into a lower-yielding asset). With momentum (positive serial correlation) or regime switching, a stop can add value; the paper derives the conditions.
+- Empirics: buy-and-hold US equities with long-term US government bonds as the stop-out asset, MONTHLY returns, January 1950 to December 2004. Certain rules "add 50 to 100 basis points per month" during stop-out periods (abstract). That is per month while stopped out, not per year overall. A regime-switching model with periodic "flights to quality" is offered as the explanation.
+- Costs and out-of-sample: not described on the abstract page.
+- Implication (my inference): the gain comes from switching from stocks to long Treasuries during stock sell-offs, in a period (1950-2004) when that switch usually paid. For us the stop-out asset matters as much as the rule: stopping SPY/QQQ into TLT or GLD, not into cash, is the version with evidence. The 2022 episode (stocks and bonds falling together) is the obvious failure case to check.
+
+### E2. Lo & Remorov, "Stop-loss strategies with serial correlation, regime switching, and transaction costs" `[opened: secondary summary]`
+Lo, A. W., Remorov, A. (2017). Journal of Financial Markets 34, 1-15 (venue from memory, unverified). SSRN working paper November 2015.
+Secondary summary read: CXO Advisory, "Stop-losses on stock positions in depth". URL: https://www.cxoadvisory.com/equity-premium/stop-losses-on-stock-positions-in-depth
+
+- Sample: US common stocks, daily returns and bid-ask spreads, 1964-2014. Stops measured over 1 day (0% to -6%) or 10 days (0% to -14%); stopped money goes to T-bills; re-entry on a cumulative-return threshold. Costs: half-spreads (0.2% average in 2013-2014 for simulations; actual half-spreads in the empirical tests).
+- Findings (as summarised): tight stops "significantly lower returns compared to buy-and-hold," mostly through trading costs. Wide 10-day stops "generally perform about as well as buy-and-hold" risk-adjusted, by cutting downside volatility; they raise skewness and lower maximum drawdown. Tight stops help only when volatility and autocorrelation are high enough. Stock autocorrelations were positive in the first half of the sample and "significantly negative over the second half", so recent decades were unfavourable for tight stops. Delayed execution (next-day) worked marginally better than immediate, and much better for tight stops.
+- Caveat from the summary: many stop/re-entry settings tested on the same data (snooping); broker fees and impact ignored.
+- Implication (my inference): this is the cleanest statement of the key question. Stops pay only with positive serial correlation. Daily S&P 500 autocorrelation has been negative since about 2000 (see Part 3, D1), so tight stops on SPY/QQQ should hurt. BTC has shown positive daily/weekly autocorrelation in some samples (Part 3, A1), which is the only one of our assets where a stop has a theoretical reason to help, and it is also the asset where each whipsaw costs 60 bps.
+
+### E3. Han, Zhou & Zhu, "Taming momentum crashes: a simple stop-loss strategy" `[opened: secondary summary]`
+Han, Y., Zhou, G., Zhu, Y. (2016). Working paper (SSRN 2407199, versions 2014-2016; venue not verified).
+Secondary summary read: CXO Advisory, "Stop-losses to avoid stock momentum crashes". URL: https://www.cxoadvisory.com/technical-trading/stop-losses-to-avoid-stock-momentum-crashes/
+
+- Sample: US common stocks, January 1926 to December 2013. Six-month momentum deciles, long winners and short losers, equal-weighted, one-month hold; daily monitoring with a 10%, 15% or 20% stop from the formation price; proceeds earn T-bill yields for the rest of the month.
+- Numbers (equal-weighted, gross): conventional momentum 0.99% a month, SD 6.01%, monthly Sharpe 0.17, worst month -49.8%; with a 15% stop 1.93% a month, SD 4.61%, Sharpe 0.40, worst month -17.4%. Sharpe 0.50 with a 10% stop.
+- Key caveat stated in the paper (as quoted by the summary): "Most of the improvement over the conventional strategy comes from the loser side of the portfolio", i.e. stops on the SHORT leg, which caps short squeezes. All results gross of costs; turnover rises.
+- Search snippets indicate an Alpha Architect replication found that for a long-only momentum portfolio the plain version beat the 5% and 10% stop versions on CAGR and Sharpe, while the stop versions had lower drawdowns and higher Sortino ratios. I could not open that page (403), so this is unverified.
+- Implication (my inference): not evidence for stops in a long-only book. The headline gain is a short-squeeze cap. For long-only, the honest summary is "smaller drawdowns, lower return."
+
+### E4. Leung & Li, "Optimal mean reversion trading with transaction costs and stop-loss exit" `[opened: abstract page]`
+Leung, T., Li, X. (2015). International Journal of Theoretical and Applied Finance 18(3). arXiv 1411.5062.
+URL: https://arxiv.org/abs/1411.5062
+
+- Content: optimal double stopping (enter, then exit) for an Ornstein-Uhlenbeck spread with transaction costs, motivated by pairs trading. The optimal entry region is a bounded interval strictly above the stop-loss level; a higher stop-loss level implies a lower optimal take-profit level.
+- No backtest on market data described on the abstract page; results are analytical and numerical.
+- Implication (my inference): only relevant if we had a stationary spread. None of our six assets is mean-reverting in levels, and a long-only book cannot trade a spread with a short leg. At best, a long-only version (buy GLD when GLD/TLT ratio is far below its mean) could borrow the entry/exit band logic, but the OU fit on such a ratio would be fragile and untested. Decoration for us.
+
+### E5. Dai, Zhang & Zhu, "Trend following trading under a regime switching model" and "Optimal trend following trading rules" `[opened: full text of the 2011 SSRN version of the second paper]`
+Dai, M., Zhang, Q., Zhu, Q. J. (2010). SIAM Journal on Financial Mathematics 1, 780-810 (not opened). Follow-up: Dai, M., Zhang, Q., Zhu, Q. J., "Optimal trend following trading rules", SSRN 1762118, July 2011 (later in Mathematics of Operations Research 2016, with an added co-author per search; not verified).
+URL: https://operators.macro-ops.com/wp-content/uploads/2017/01/SSRN-id1762118.pdf (copy of SSRN 1762118)
+
+- Model: the drift switches between a bull and a bear value by an unobserved Markov chain; the investor is long or flat; with proportional costs the optimal rule is to buy when the filtered bull probability crosses one threshold and sell when it crosses a lower one (simulation parameters: cost K = 0.001 per trade, buy threshold 0.948, sell threshold 0.796).
+- Market test ("ex-ante": parameters from bull/bear episodes of at least 20%, first 10 years of data, then updated yearly): S&P 500 1972-2011, trend rule 11.03% a year (quarterly Sharpe 0.217) versus buy-and-hold 9.8% (0.128). Shanghai Composite 2001-2011: 14.0% (0.263) versus 2.58% (0.083). The cost used in the market test is not stated in the parts I read. The authors warn that "sensitivity with respect to parameters is still to be expected."
+- No moving-average benchmark in the market tests. The simulations show strong sensitivity to the individual path.
+- Implication (my inference): this is the formal justification that "trend filter plus hysteresis band" is the optimal stopping rule under a two-state drift model. In practice it reduces to a long-or-flat trend rule with separate entry and exit thresholds, which a simple moving-average band also approximates. The theory is useful for one thing: it says the exit threshold should sit below the entry threshold, and the band should widen as costs rise. That argues for a wider band on BTC/ETH than on SPY/QQQ.
+
+### E6. Trailing stops in crypto trend following: Zarattini, Pagani & Barbon, "Catching crypto trends: a tactical approach for Bitcoin and altcoins" `[opened: secondary summary]`
+Zarattini, C., Pagani, A., Barbon, A. (2025). SSRN working paper, April 2025.
+Secondary summary read: CXO Advisory, https://www.cxoadvisory.com/technical-trading/crypto-asset-trend-following-strategies/
+
+- Sample: Bitcoin and liquid altcoins (median daily volume at least $2 million), survivorship-bias-free, roughly 2015 to mid-March 2025 (the summary is inconsistent on start date and universe).
+- Rule: enter long when the close exceeds the highest close of a lookback (5 to 360 days, ensembled); exit on a daily trailing stop at the higher of the prior stop and the midpoint of the lookback high and low. Volatility targeting at 25% a year with leverage up to 200%.
+- Claim (as summarised): 18% net CAGR and 11% annualised net alpha versus Bitcoin buy-and-hold at 0.10% costs; costs of 0.25% and 0.50% also tested (results not shown in the summary).
+- No ablation separating the trailing stop from the entry signal in what I read. Uses leverage, which we cannot.
+- Implication (my inference): the evidence for stops on BTC is really evidence for trend following, where the stop is the exit half of a breakout rule. A trailing stop as a stand-alone overlay on a buy-and-hold BTC position is untested in the literature I found. Our 60 bps round trip is between their 0.25% and 0.50% one-way cases, so read their higher-cost results before trusting the headline.
+
+### E7. Drawdown control and trailing-stop theory `[from memory, unverified]`
+- Grossman & Zhou (1993, Mathematical Finance), "Optimal investment strategies for controlling drawdowns": with a constraint that wealth never falls below a fixed fraction of its running maximum, the optimal policy keeps risky exposure proportional to the cushion (current wealth minus the floor). It is a CPPI-like rule; it assumes continuous trading and constant parameters. I did not open it.
+- Glynn & Iglehart (1995, Management Science), "Trading securities using trailing stops": under a random walk (geometric Brownian motion), trailing stops do not improve expected discounted value in their setting, consistent with Kaminski and Lo's random-walk result. Not opened; stated from memory.
+- Implication (my inference): a drawdown-floor rule (exposure = k x (wealth - 0.8 x peak wealth), capped at 100%) is the long-only, unlevered form of Grossman-Zhou. It is a risk-control choice, not a return enhancer, and it locks in de-risking after a drawdown, which costs return when markets recover fast (2020).
+

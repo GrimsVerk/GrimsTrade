@@ -122,3 +122,134 @@ URL read: https://c.mql5.com/forextsd/forum/208/All%20that%20Glitters%20Is%20Not
 - Caveats they state: the IS period was a calm bull market and the OOS period a flat-to-bear market, so part of the gap is regime.
 - Implication (my inference): risk carries over from backtest to live; return does not. We should size positions on backtest volatility and drawdown, but treat the backtest return as close to uninformative. Counting backtest runs per strategy (which our ledger does) is justified by their finding that more runs mean a bigger shortfall.
 
+---
+
+## A3. Technical trading rules, data snooping, return predictors
+
+### 12. Sullivan, Timmermann & White, "Data-Snooping, Technical Trading Rule Performance, and the Bootstrap" `[not opened]`
+Sullivan, R., Timmermann, A., White, H. (1999). Journal of Finance 54(5).
+URL tried: https://onlinelibrary.wiley.com/doi/abs/10.1111/0022-1082.00163 (HTTP 403).
+
+- What I know comes from entry 13, which reuses their universe: 7,846 technical rules (filters, moving averages, support and resistance, channel breakouts, on-balance volume) on daily Dow Jones prices, tested with White's Reality Check bootstrap so that the best rule is judged against the whole search.
+- Entry 13 says that "as reported in, e.g., STW ... the rules did poorly in more recent periods." `[from memory, unverified]`: STW found the best rule significant on 1897-1986 even after the Reality Check, but not in the 1987-1996 out-of-sample decade.
+- Implication (my inference): the canonical data-snooping-controlled test of technical rules on a US index found the edge gone by the late 1980s.
+
+### 13. Bajgrowicz & Scaillet, "Technical trading revisited: False discoveries, persistence tests, and transaction costs" `[opened: full text]`
+Bajgrowicz, P., Scaillet, O. (2012). Journal of Financial Economics 106(3), 473-491. DOI 10.1016/j.jfineco.2012.06.001.
+URL read: https://bashtage.github.io/kevinsheppard.com/files/teaching/mfe/advanced-econometrics/Bajgrowicz_Scaillet.pdf (copy of the journal PDF)
+
+- Sample: daily Dow Jones Industrial Average, 1897 to 2011, the same 7,846 rules as STW, split into six subperiods. Data snooping controlled with the false discovery rate (FDR), which admits more true rules than the Reality Check.
+- Claim (abstract): "even with the more powerful FDR technique, an investor would never have been able to select ex ante the future best-performing rules. Moreover, even in-sample, the performance is completely offset by the introduction of low transaction costs."
+- Costs: one-way costs of 16, 35 and 70 bps are enough to remove all detected outperformers in the three subperiods covering 1897-1962. "In the three most recent sample periods (1962-2011), we do not detect any positive performance ... already under zero transaction costs." In 1962-1986 most rules with positive in-sample performance "require costs below 10 basis points to break even."
+- Rule horizon: without costs the best 1939-1962 rule uses a 2-day window; with 12.5 bps one-way costs the best rule needs 250 days of data. Costs push the survivors toward slow, long-window rules.
+- Implication (my inference): fast technical rules on a liquid US index have had no edge since the 1960s, even before costs. If any technical rule is worth testing on SPY/QQQ, it is a slow one (around 200-250 days), and it should be judged as a risk filter against buy-and-hold, not as alpha.
+
+### 14. Goyal, Welch & Zafirov, "A Comprehensive 2022 Look at the Empirical Performance of Equity Premium Prediction" `[opened: abstract page]`
+Goyal, A., Welch, I., Zafirov, A. (2024). Review of Financial Studies 37(11), 3490-3557. Working paper SFI 21-85 (2021).
+URL: https://ideas.repec.org/a/oup/rfinst/v37y2024i11p3490-3557..html
+
+- Sample: 29 variables from 26 papers published after Goyal and Welch (2008), plus the original 17, for predicting the US equity premium, with data to the end of 2021.
+- Claim (abstract): "More than one-third of these new variables no longer have empirical significance even in-sample. Of those that do, half have poor out-of-sample performance. A small number of variables still perform reasonably well both in-sample and out-of-sample." The abstract does not name the survivors.
+- Background `[from memory, unverified]`: Welch and Goyal (2008, RFS) found that the classic predictors (dividend yield, earnings yield, term spread and others) mostly failed to beat the historical mean out of sample.
+- Implication (my inference): market timing of SPY with macro or valuation variables has a poor record. A daily-bar system should not expect to time the equity premium; the default should be to hold the asset and use rules mainly to manage risk.
+
+### 15. Hudson & Urquhart, "Technical trading and cryptocurrencies" `[not opened]`
+Hudson, R., Urquhart, A. (2021). Annals of Operations Research 297, 191-220. DOI 10.1007/s10479-019-03357-1.
+URL tried: https://centaur.reading.ac.uk/85715 (bot-protection page, access denied).
+
+- From the search summary only: almost 15,000 technical rules from five classes, on two Bitcoin markets and three other cryptocurrencies. They report significant predictability and profitability in every class and coin, robust to multiple-hypothesis (data-snooping) procedures, with higher risk-adjusted returns than buy-and-hold. I could not check the sample period, costs, or whether there is a true out-of-sample period.
+- Implication (my inference): unlike the Dow, crypto technical rules have at least survived data-snooping corrections in-sample. That is a weaker claim than out-of-sample profit after 60 bps.
+
+### 16. Deprez & Frommel, "Are simple technical trading rules profitable in bitcoin markets?" `[opened: abstract page]`
+Deprez, N., Frommel, M. (2024). International Review of Economics & Finance 93(PB), 858-874. DOI 10.1016/j.iref.2024.05.003.
+URL: https://ideas.repec.org/a/eee/reveco/v93y2024ipbp858-874.html
+
+- Sample: Bitcoin; 75,360 simple technical rules in 6 classes, daily and intraday. Dates not on the abstract page.
+- Method (abstract): select the best rules after transaction costs with a multiple-hypothesis procedure, combine the selected rules into portfolios, then evaluate out of sample.
+- Claim: "especially risk-return wise, simple technical trading rules can outperform a buy-and-hold strategy in the bitcoin market out-of-sample." No cost level, Sharpe or return figures on the page.
+- Implication (my inference): this is the most directly relevant design (costs, snooping control, out-of-sample) and it comes out positive for Bitcoin, mainly on risk-adjusted terms. That fits the common finding that trend filters on BTC mostly cut drawdowns. Their cost assumption is unknown to me and may be below our 60 bps.
+
+### 17. Detzel, Liu, Strauss, Zhou & Zhu, "Learning and predictability via technical analysis: Evidence from bitcoin and stocks with hard-to-value fundamentals" `[opened: abstract page]`
+Detzel, A., Liu, H., Strauss, J., Zhou, G., Zhu, Y. (2021). Financial Management 50(1), 107-137. DOI 10.1111/fima.12310.
+URL: https://ideas.repec.org/a/bla/finmgt/v50y2021i1p107-137.html
+
+- Claim (abstract): "ratios of prices to their moving averages forecast daily Bitcoin returns in and out of sample. Trading strategies based on these ratios generate an economically significant alpha and Sharpe ratio gains relative to a buy-and-hold position." Similar results for small-cap, young-firm, low-coverage stocks and NASDAQ stocks in the dotcom era. They give an equilibrium model where learning about hard-to-value fundamentals makes moving averages informative.
+- Costs and numbers: not on the abstract page. A CXO Advisory summary of the January 2018 working paper (seen only as a search snippet, `[not opened]`) mentions 5- to 100-day moving averages and gross annualized returns of roughly 203% to 216%, gross of costs.
+- Implication (my inference): there is a stated economic reason (hard-to-value assets, learning) for trend rules to work in BTC and not in SPY. That is the kind of prior the AHM protocol (entry 5) asks for. It also predicts that the effect weakens as Bitcoin matures, so later data should be weighted more.
+
+---
+
+## B1. Machine learning for return prediction
+
+### 18. Gu, Kelly & Xiu, "Empirical Asset Pricing via Machine Learning" `[opened: abstract page]`
+Gu, S., Kelly, B., Xiu, D. (2018, revised 2019). NBER Working Paper 25398; published in Review of Financial Studies 33(5), 2020.
+URL: https://www.nber.org/papers/w25398
+
+- Sample `[from memory, unverified]`: about 30,000 US stocks, 1957-2016, monthly, about 900 predictors (94 firm characteristics interacted with macro variables), with an out-of-sample period starting in 1987.
+- Claim (abstract page, paraphrased by the fetch tool): ML forecasts give large economic gains, "in some cases" doubling the performance of leading regression strategies. Trees and neural networks do best, through nonlinear interactions. All methods agree on a small set of dominant signals: variations on momentum, liquidity and volatility. The page shows no Sharpe or R² figures. `[from memory, unverified]`: the monthly out-of-sample R² for individual stocks is well under 1% (about 0.4% for the best neural net).
+- Critique (entry 20, Israel, Kelly & Moskowitz, one of whom is a co-author here): the benchmark is OLS with only size, value and momentum, and all results are gross of trading costs.
+- Implication (my inference): the gains come from thousands of stocks in the cross-section. With six assets there is no cross-section to learn from, and the dominant signals (momentum, volatility) are ones we can code directly with two or three parameters.
+
+### 19. Avramov, Cheng & Metzker, "Machine Learning vs. Economic Restrictions: Evidence from Stock Return Predictability" `[opened: abstract page]`
+Avramov, D., Cheng, S., Metzker, L. (2023). Management Science 69(5), 2587-2619. DOI 10.1287/mnsc.2022.4449.
+URL: https://econpapers.repec.org/RePEc:inm:ormnsc:v:69:y:2023:i:5:p:2587-2619
+
+- Claim (abstract): deep learning signals "extract profitability from difficult-to-arbitrage stocks". Excluding microcaps, distressed stocks, or high-volatility episodes considerably weakens profitability. "Machine learning-based performance further deteriorates in the presence of reasonable trading costs", due to high turnover and extreme positions. On the positive side, ML identifies mispriced stocks consistent with most anomalies, and deep learning signals stay profitable on the long side, in recent years, with low downside risk.
+- Implication (my inference): the ML premium in equities lives where we are not (microcaps, distressed names, crisis periods) and is eaten by turnover. For six liquid instruments, the ML edge reported in the cross-section should be assumed to be zero.
+
+### 20. Israel, Kelly & Moskowitz, "Can Machines 'Learn' Finance?" `[opened: full text]`
+Israel, R., Kelly, B., Moskowitz, T. J. (2020). Journal of Investment Management 18(2), 23-36. AQR version.
+URL read: https://www.aqr.com/-/media/AQR/Documents/Alternative-Thinking/AQR-Alternative-Thinking-2Q19-Can-Machines-Learn-Finance.pdf
+
+- Small data: for macro instruments (currencies, government bonds, commodity futures) "a few decades of data, or a few hundred observations per asset" at monthly frequency. "This is 'tiny' data as it can only support a model with a handful of parameters if one hopes to achieve a degree of model stability." The number of independent observations of the target, not the number of predictors, limits the model.
+- Correlation shrinks the effective sample: 71% average pairwise correlation among the Fama-French 100 portfolios; 3 principal components explain at least 80% of their covariance over 1927-2019.
+- Low signal-to-noise is enforced by competition: informed traders trade until little predictability remains. In-sample CAPE regressions on the US market (1926-2018): R² 0.5% at 1 month (1,115 observations), 7.7% at 12 months (93), 28.3% at 36 months (31), 29.6% at 60 months (19 independent observations). Longer horizons have more signal but far fewer observations.
+- On Gu, Kelly & Xiu: gains are "economically and statistically significant, but the gains are by no means revolutionary"; the benchmark is a 3-predictor OLS and results are gross of costs. Higher-frequency prediction runs into trading costs that open "a large gap between what a statistical prediction model says and what can actually be implemented".
+- Their suggestion: ML is better suited to areas with stronger signal-to-noise (risk management, transaction cost modelling, factor construction) than to return prediction.
+- Implication (my inference): for six daily series this is decisive. Daily data adds observations but not independent signal, and costs grow with frequency. A model with more than a handful of parameters per asset will mostly fit noise. If we use ML at all, use it for volatility and risk forecasts, where signal-to-noise is high.
+
+### 21. Lim, Zohren & Roberts, "Enhancing Time Series Momentum Strategies Using Deep Neural Networks" `[opened: abstract page]`
+Lim, B., Zohren, S., Roberts, S. (2019). Journal of Financial Data Science, Fall 2019. arXiv 1904.04912.
+URL: https://arxiv.org/abs/1904.04912
+
+- Sample: backtest on 88 continuous futures contracts; dates not on the abstract page (`[from memory, unverified]`: roughly 1990s to 2015, with testing from the mid-1990s).
+- Claim: an LSTM trained to maximize Sharpe directly (deep momentum network) "improved traditional methods by more than two times in the absence of transactions costs". It keeps outperforming only with costs up to about 2-3 basis points.
+- Implication (my inference): the edge is fragile to costs even on futures. At 60 bps per crypto round trip, or even 4 bps per ETF round trip, a net-of-cost advantage over plain time-series momentum is unlikely. A deep model also has far more parameters than six daily series can support (entry 20).
+
+### 22. Kelly, Malamud & Zhou, "The Virtue of Complexity in Return Prediction" `[opened: abstract page]`
+Kelly, B. T., Malamud, S., Zhou, K. (2022, revised 2022). NBER Working Paper 30217; published in Journal of Finance 79(1), 2024, 459-503. DOI 10.1111/jofi.13298.
+URL: https://www.nber.org/papers/w30217
+
+- Claim (abstract): "we theoretically prove that simple models severely understate return predictability compared to 'complex' models" in which parameters exceed observations; "Our findings establish the rationale for modeling expected returns through machine learning." The empirical application is US stock market timing (abstract page gives no Sharpe or sample numbers). `[from memory, unverified]`: the application uses about 15 predictors from Welch and Goyal, expanded into thousands of random Fourier features, trained on rolling 12-month windows, monthly.
+
+### 23. Nagel, "Seemingly Virtuous Complexity in Return Prediction" `[opened: abstract page]`
+Nagel, S. (2025). NBER Working Paper 34104, August 2025.
+URL: https://www.nber.org/papers/w34104
+
+- Claim (abstract): the random Fourier features approach "appears to yield a successful out-of-sample stock market index timing strategy even when trained in rolling windows as small as T = 12 months with P in the thousands." But when P is much larger than T, the forecast "becomes a weighted average of the T training sample returns". In short windows it "reduces to a recency-weighted average of the T return observations in the training data, essentially a momentum strategy", and since similarity falls as predictor volatility rises, "the result is a volatility-timed momentum strategy." The performance comes from the fact that "a volatility-timed momentum strategy happened to perform well in historical data." On artificial data with reversals instead of momentum, "the RFF approach still constructs the same volatility-timed momentum strategy, which then performs poorly."
+- Other critics named in the brief (Buncic 2025; Cartea et al.) were not opened.
+- Implication (my inference): the strongest recent "complexity" result for timing an index is, underneath, a volatility-scaled 12-month momentum rule. We can test that rule directly with two parameters. This is a general warning: before trusting any ML timing model, check whether a simple trend or volatility rule replicates its returns.
+
+---
+
+## B2. Time-series foundation models on financial returns
+
+### 24. Rahimikia, Ni & Wang, "Re(Visiting) Time Series Foundation Models in Finance" `[opened: full text, first ~80% of the HTML]`
+Rahimikia, E., Ni, H., Wang, W. (2025). arXiv 2511.18578, November 2025.
+URL: https://arxiv.org/html/2511.18578v1
+
+- Sample: daily firm-level excess returns in 94 countries from 1990, about two billion observations; expanding-window out-of-sample test 2001-2023 (US test set: 10,171 securities). Context windows of 5, 21, 252 and 512 trading days.
+- Models: Chronos (tiny to large), TimesFM (8M to 500M), and twelve more TSFM architectures said to behave similarly; benchmarks are linear models, tree ensembles (XGBoost, CatBoost, LightGBM) and neural nets. R² is measured against a zero forecast.
+- Claim: "Off-the-shelf TSFMs perform poorly." Zero-shot out-of-sample R²: Chronos-large -1.37% (window 512, direction accuracy just above 51%), TimesFM-500M -2.80% (accuracy just below 50%). Every model, including the benchmarks, has negative R² against a zero forecast (OLS about -0.47%, CatBoost about -0.10%). Fine-tuning mostly made TSFMs worse. Pre-training from scratch on financial data helps (Chronos-small R² -0.59% at window 512). "Generic time series pre-training does not directly transfer to financial domains."
+- Portfolios: daily-rebalanced, equal-weighted long-short decile sorts across thousands of stocks, before transaction costs (stated for CatBoost; I did not reach the cost section for the TSFM portfolios). CatBoost US Sharpe 6.79; zero-shot TimesFM-500M annual return -1.47%. Such Sharpes come from daily cross-sectional sorts over thousands of small stocks and would not survive costs (my inference).
+- Implication (my inference): on daily returns, no model in this large study beat a zero forecast in R². A foundation model run zero-shot on six daily series has no reason to do better. For our book, the honest benchmark is "predict zero, hold the asset" and none of these models clears it.
+
+### 25. Noguer i Alonso & Pereira Franklin, "Pretrained Time-Series Foundation Models for Financial Return Forecasting" `[opened: abstract page]`
+Noguer i Alonso, M., Pereira Franklin, R. (2026). arXiv 2606.27100, June 2026.
+URL: https://arxiv.org/abs/2606.27100
+
+- Sample: five liquid US stocks (AAPL, AMZN, GOOG, JPM, META), rolling-origin evaluation; frequency not on the abstract page.
+- Models: TimeGPT, TimesFM-2.5, Moirai-2.0, Chronos, Chronos-2 versus train-from-scratch nets (N-BEATS, N-HiTS, PatchTST, iTransformer, KAN) and a random walk.
+- Claim: pretrained models win 8 of 10 task-level rankings against the scratch-trained nets, but "gains over the random-walk benchmark are small and sparse." A one-sided Diebold-Mariano test shows superiority over the random walk only for Chronos on AMZN and Moirai-2.0 on GOOG, i.e. 2 cases in a grid of models and stocks. No trading test, no costs.
+- Implication (my inference): two significant cells out of a grid is about what chance produces. On a handful of liquid series (our setup), TSFMs do not beat a naive forecast in a way that could pay 4 to 60 bps per round trip.
+
