@@ -11,10 +11,25 @@ from __future__ import annotations
 import json
 import sys
 import time
+import urllib.request
+from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
 
 from grimstrade.cache import cache_root, fetch_file, start_job
 from grimstrade.sources import http_get
+
+
+def plain_get(url: str) -> bytes:
+    """FRED/ALFRED stall an unknown User-Agent (probed 2026-11-12); send a generic one."""
+    req = urllib.request.Request(url, headers={"User-Agent": "curl/8.10.1"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        body: bytes = resp.read()
+        return body
+
+
+def get_for(url: str) -> Callable[[str], bytes]:
+    return plain_get if "stlouisfed.org" in url else http_get
+
 
 TODAY = datetime.now(UTC).date()
 NOW = int(time.time())
@@ -92,9 +107,7 @@ FRENCH_FILES = [
     "10_Industry_Portfolios_daily_CSV.zip",
 ]
 BLOCKCHAIN = "hash-rate miners-revenue transaction-fees-usd n-transactions n-unique-addresses"
-COINMETRICS = (
-    "AdrActCnt,CapMVRVCur,CapMrktCurUSD,CapRealUSD,HashRate,TxCnt,FeeTotUSD,SplyCur,PriceUSD"
-)
+COINMETRICS = "AdrActCnt,CapMVRVCur,CapMrktCurUSD,HashRate,TxCnt,FeeTotNtv,SplyCur,PriceUSD"
 
 
 def whole_history() -> list[tuple[str, str]]:
@@ -235,7 +248,7 @@ def main() -> int:
         if (root / rel).exists():
             continue
         try:
-            fetch_file(root, rel, url, http_get)
+            fetch_file(root, rel, url, get_for(url))
         except Exception as e:  # noqa: BLE001
             print(f"FAIL {rel}: {e!r}", flush=True)
             errors += 1
