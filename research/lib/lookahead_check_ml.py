@@ -22,6 +22,11 @@ if __name__ == "__main__":
         "gbm": ml.strategy(ml.GBM),
         "gbm-reg": ml.strategy(ml.GBM_REG),
         "meta-gbm": ml.strategy(ml.META_GBM),
+        "gbm-low": ml.strategy(ml.GBM, sizing="low"),
+        "gbm-pay": ml.strategy(ml.GBM_PAY, sizing="hard"),
+        "logit-pay": ml.strategy(ml.LOGIT_PAY, sizing="hard"),
+        "tree-pay": ml.strategy(ml.TREE_PAY, sizing="hard"),
+        "gbm-raw": ml.strategy(ml.GBM_RAW, sizing="hard"),
     }
     for name, rule in rules.items():
         harness.check_against_gym(c.weekly(rule), six.hist, DAYS)

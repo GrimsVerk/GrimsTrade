@@ -261,3 +261,10 @@ Never edit or delete a row.
 | 2026-11-12 02:27 | ml-sizing | gbm-prop@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.19 | +24.5% | 24.1% | 9.81 |
 | 2026-11-12 02:27 | ml-sizing | gbm-prop@coin | robustness | train | 2023-01-06 | 2025-11-09 | 0.76 | +83.4% | 32.8% | 11.44 |
 | 2026-11-12 02:27 | ml-sizing | gbm-prop@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.61 | +773.3% | 26.9% | 9.34 |
+| 2026-11-12 06:34 | ml-payoff | gbm-pay | variant | train | 1994-02-01 | 2025-11-09 | 0.68 | +2382.6% | 55.0% | 6.52 |
+| 2026-11-12 06:34 | ml-payoff | logit-pay | variant | train | 1994-02-01 | 2025-11-09 | 0.77 | +5962.7% | 52.7% | 2.30 |
+| 2026-11-12 06:34 | ml-payoff | tree-pay | variant | train | 1994-02-01 | 2025-11-09 | 0.67 | +2784.1% | 58.7% | 3.21 |
+| 2026-11-12 06:34 | ml-payoff | gbm-raw | variant | train | 1994-02-01 | 2025-11-09 | 0.74 | +3348.9% | 55.7% | 5.65 |
+| 2026-11-12 06:34 | ml-payoff | gbm-pay@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.21 | +40.8% | 38.9% | 11.65 |
+| 2026-11-12 06:34 | ml-payoff | gbm-pay@coin | robustness | train | 2023-01-06 | 2025-11-09 | 0.77 | +102.8% | 41.6% | 10.07 |
+| 2026-11-12 06:34 | ml-payoff | gbm-pay@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.61 | +2222.5% | 43.8% | 7.05 |
