@@ -24,18 +24,23 @@ Brief: `chief-of-staff/briefs/grimstrade-research-1.md`. Branch `research-1`. Ha
 - Survey parts 3 (crypto, reversal, calendar) and 6 (exotic maths, econophysics, ecology) in
   `notes/survey-parts/`.
 
+- All six survey parts in `notes/survey-parts/` (1 trend, 2 volatility/risk/Kelly, 3 crypto and
+  calendar, 4 regimes/RMT/Hawkes/stopping, 5 overfitting and ML, 6 exotic maths).
+- Nine hypothesis cards in `cards/`, committed before any test (commit 6ad40cc).
+- `ideas.md`: every idea with its status.
+- Baselines and plain twins on all universes: `results/baselines.md` (39 logged tries).
+
 **Doing**
 
-- Survey parts 1 (trend), 2 (volatility, risk, Kelly), 4 (regimes, RMT, Hawkes, stopping),
-  5 (overfitting, ML): reading agents write `notes/survey-parts/<n>-*.md`. If a part is missing,
-  rerun its reader; then compile all six into `survey-2026-11.md`.
-- Hypothesis cards in `cards/` (written and committed before any result is looked at).
+- Idea tests, one script per idea in `lib/` (`test_<idea>.py`), one result file per idea in
+  `results/`. An idea is done when `results/<idea>.md` exists and its line in `ideas.md` no longer
+  says `testing`. Check a script with `DRY=1` first (120 days, nothing logged), then run it once.
 
 **Next**
 
-- Baselines and twins on the full history (`lib/baselines.py`, results in `results/`).
-- Train-period tests of the cards, strongest first; one held-out check per idea that passes.
-- Ranking in `ideas.md` and the summary above.
+- Compile the six survey parts into `survey-2026-11.md` (verdict per family, links).
+- One held-out check per idea that passed train (the harness refuses a second look).
+- Ranking in `ideas.md` and the plain-language summary at the top of this file.
 
 ## Layout
 

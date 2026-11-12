@@ -225,6 +225,8 @@ def ctx(name: str = "six", period: str = "train", adjusted: bool = True) -> Ctx:
         start = max(TRAIN_START, first + timedelta(days=366)) if name != "six" else TRAIN_START
         if name in ("GSPC", "idx"):
             start = date(1962, 1, 2)
+        elif name in OOU_INDEXES:
+            start = first + timedelta(days=366)  # all the history an index has
         end = min(TRAIN_END, max(b[-1].date for b in hist.values()) - timedelta(days=1))
     else:
         start, end = HELD_START, HELD_END
@@ -290,7 +292,8 @@ def table(runs: Sequence[Run], versus: Run | None = None, eras: bool = True) -> 
     paired block-bootstrap p-value, and in how many eras the run's Sharpe beats it."""
     head = "| Variant | Sharpe (SE) | CAGR | Vol | Max DD | Turnover/yr | Avg exposure |"
     sep = "|---|---:|---:|---:|---:|---:|---:|"
-    names = [n for n, _, _ in ERAS]
+    all_es = [era_sharpes(r) for r in runs]
+    names = [n for n, _, _ in ERAS if any(not math.isnan(e[n]) for e in all_es)]
     if eras:
         head += "".join(f" {n} |" for n in names)
         sep += "---:|" * len(names)
