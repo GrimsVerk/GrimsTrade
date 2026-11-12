@@ -1,0 +1,5 @@
+# Machine-specific settings. Copy to local.toml (git-ignored) and edit.
+
+[cache]
+# Raw data cache for backfills and snapshots (never committed). ~300 GB budget.
+root = "~/data/grimstrade"
