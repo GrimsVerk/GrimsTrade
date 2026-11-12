@@ -14,12 +14,16 @@ Run 2, machine learning:
 - **Result:** every version lost to the trend rule (Sharpe 0.67 to 0.94 against 1.05), and all
   but three lost to simply holding everything (0.88).
 - **Why:** the models cannot tell good months from bad ones; their ranking is a coin toss.
-  Boosting did not beat the plain linear model. Using a model to filter the trend rule's
-  trades made the rule worse. Training on the size of gains instead of their direction, and
-  on 33 markets instead of six (five times the data), changed nothing.
-- **The test is not broken:** a fake signal planted in the data is found. It has to be at
-  least twice as strong as the best published forecasts before it beats the trend rule: six
-  assets decided once a month are too few bets for forecasting to pay.
+  The only signal in the features is the weak trend effect the simple rule already uses, and
+  fitting a model on top lost it rather than sharpened it. Boosting did not beat the plain
+  linear model. A model filtering the trend rule's trades made the rule worse. Training on
+  the size of gains instead of their direction, and on 33 markets instead of six (five times
+  the data), changed nothing.
+- **The test is not broken:** a fake signal planted in the data is found, and a second agent
+  that did not write the code hunted for errors and found none that changes a result. The
+  fake signal has to be at least twice as strong as the best published forecasts before it
+  beats the trend rule: six assets decided once a month are too few bets for forecasting to
+  pay.
 - **What it means:** no ML slot in paper trading on price features. The trend rule does not
   win by forecasting either: it is right less often than "always up". It wins by sitting out
   the large losses.
@@ -77,8 +81,10 @@ weight 0.88; details in `results/ml-*.md`):
   than "always up".
 - `ml-pooled` (0.68-0.92): 33 markets and five times the rows gave the same coin toss.
 - Forecast skill for all of them: AUC 0.48 to 0.51 (0.50 is a coin toss), below the single
-  12-month flag at 0.52. `results/ml-control.md` shows a planted signal is found, and that it
-  takes a correlation of 0.2 to 0.3 with next month's return to beat `tsmom12` on this book.
+  12-month flag at 0.52 and below most trend features left alone (0.52 to 0.54,
+  `results/ml-feature-skill.md`). `results/ml-control.md` shows a planted signal is found, and
+  that it takes a correlation of 0.2 to 0.3 with next month's return to beat `tsmom12` on
+  this book.
 
 Dead in run 1, with the one-line reason (details in `ideas.md` and `results/`):
 
@@ -107,8 +113,9 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
   each written before the test that uses it.
 - `lib/ml.py` (features, purged walk-forward fits, sizing, payoff weights, pooled rows),
   `lib/mltest.py` (the card test), `lib/lookahead_check_ml.py` (passes for every model kind:
-  cached models give the same weights as models refitted on history truncated by the gym, and
-  pooled rows are the same when built from truncated history).
+  cached models give the same weights as models refitted on history truncated by the gym,
+  pooled rows are the same when built from truncated history, and forecasts do not move by a
+  bit when every later bar is scrambled).
 - Six cards, all tested, all dead, each `results/ml-*.md` ending in a dated verdict:
   `ml-linear`, `ml-gbm` (9 settings), `ml-filter` (carded before any model was fitted);
   `ml-sizing`, `ml-payoff`, `ml-pooled` (each carded after the ones before it had failed, and
@@ -119,13 +126,15 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
 - Dividends (brief, item 4): nothing to add. The research harness has used dividend-adjusted
   prices for every ETF since run 1 (`data/adj/`), so every ML test already credits them;
   `results/robustness.md` has the raw-price view. The request to the M1 lane stands.
+- Independent code review of `lib/ml.py` and the harness by a subagent: no bug that could
+  change a verdict ("Code review" below). It led to `results/ml-feature-skill.md`
+  (`lib/feature_skill.py`, no backtest): single features scored without a model.
 - Summary and ranking above; `ideas.md` statuses.
 - The held-out year is untouched: nothing passed its train bar.
 
 **Doing**
 
-- Independent review of `lib/ml.py` by a subagent (started 06:33 UTC). Findings go under
-  "Code review" below.
+- Nothing half-finished: every file on the branch is complete as it stands.
 
 **Next (a later run; nothing here is started)**
 
@@ -135,12 +144,34 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
   (30 or more ETFs, long only), where a weak forecast has more bets to work on.
 - A shorter horizon (weekly labels) is the one cheap variation left untested.
 
+**Code review (2026-11-12, by an agent that did not write the code).** It recomputed features
+and labels from the raw price files (same to 1e-14), scrambled every bar after a fit day (rows,
+chosen settings and forecasts unchanged to the bit) and read the purge arithmetic, cache keys
+and weights. No leak, no misalignment. What it did find, none of it able to change a verdict:
+
+- The results said "the features hold no signal" when only the models had been scored.
+  Corrected in `results/ml-control.md`, `ml-gbm.md`, `ml-payoff.md`, `ml-pooled.md`; the
+  measurement is `results/ml-feature-skill.md`.
+- The planted control signals are about 0.02 stronger than their labels (chance of the noise
+  draw). Noted in the control's reading.
+- The S&P 500 warm-up rows, and SPY's rows until QQQ joins in 2000, have cross-asset features
+  that only repeat the asset's own (one asset in the set). Early models cannot learn those
+  four features. Pushes towards a null; `ml-pooled`, which has no warm-up rows, was null too.
+- On market-holiday Fridays before crypto exists the weekly decision slips to Monday (32 of
+  1,658 Fridays on the six assets), for the models and the twins alike.
+- The 0.05 floor of the confidence ratio is in the wrong units for the `raw` target. Only
+  `gbm-raw` uses it, with the hold-or-not rule, where the floor plays no part. Fix before
+  using `raw` with another position rule.
+- Labels run from the Friday close, one bar before the earliest fill, so the skill tables
+  slightly flatter what could be traded. Works against a false null.
+- With payoff weights the scaler in the linear pipeline is fitted unweighted. Cosmetic.
+
 **Run 2 in one paragraph:** machine learning on 15 simple features did not beat `tsmom12`.
 Linear models found nothing and became equal weight (0.89 Sharpe against 1.05); boosting found
 nothing and traded on the noise (0.72-0.86 over nine settings); a model filtering the trend
 rule made it worse (0.73-0.94); sharper position rules, payoff-weighted training and five
-times the training data did not help (0.67-0.92). Forecast skill is nil (AUC 0.48-0.51, below
-the single 12-month flag at 0.52). A planted signal is detected, and it has to reach a
+times the training data did not help (0.67-0.92). The models' forecast skill is nil (AUC
+0.48-0.51, below the single 12-month flag at 0.52 and below the trend features left alone). A planted signal is detected, and it has to reach a
 correlation of 0.2 to 0.3 before it beats `tsmom12`: six assets decided monthly are too few
 bets for return forecasting to pay.
 
