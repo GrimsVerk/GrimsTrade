@@ -180,3 +180,34 @@ def trend_vol(target: float) -> ResearchStrategy:
         return {s: vol_cap(view, s, target) / len(held) for s in held if tsmom_signal(view, s)}
 
     return f
+
+
+# --- run 3: trend-to-safe, crypto-slot-size ---
+
+SAFE = ("TLT", "GLD", "IEF", "LQD")
+
+
+def trend_to_safe(view: View) -> Weights:
+    held = live(view)
+    if not held:
+        return {}
+    slot = 1 / len(held)
+    on = [s for s in held if tsmom_signal(view, s)]
+    out = {s: slot for s in on}
+    safe = [s for s in on if s in SAFE]
+    for s in safe:
+        out[s] += slot * (len(held) - len(on)) / len(safe)
+    return out
+
+
+def crypto_slot(size: float) -> ResearchStrategy:
+    def f(view: View) -> Weights:
+        held = live(view)
+        coins = [s for s in held if UNIVERSE[s] == CRYPTO]
+        rest = [s for s in held if UNIVERSE[s] != CRYPTO]
+        out = {s: size for s in coins} if size > 0 else {}
+        left = 1 - size * len(coins)
+        out.update({s: left / len(rest) for s in rest})
+        return out
+
+    return f

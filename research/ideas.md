@@ -27,6 +27,13 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | ensemble-tsmom | Trend | dead (tested) | [card](cards/ensemble-tsmom.md) | +0.05 over tsmom12 (p = 0.21), right sign in all three other sets, 2x turnover. Indistinguishable from 12-month momentum. [result](results/ensemble-tsmom.md) |
 | trend-vol | Trend + volatility | failed bar; paper candidate on drawdown only | [card](cards/trend-vol.md) | Same Sharpe as tsmom12 (1.03 vs 1.05) but worst loss 26% vs 37% (equal weight 69%), growth 13.3% vs 17.8% a year. A risk choice, not an edge. [result](results/trend-vol.md) |
 
+## Cards for run 3
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| trend-to-safe | Trend / regime allocation | testing | [card](cards/trend-to-safe.md) | Out-of-trend slots go to TLT/GLD if those are in trend; twin tsmom12 |
+| crypto-slot-size | Allocation | testing | [card](cards/crypto-slot-size.md) | 5% / 10% / 0% per coin against 1/6; descriptive, no out-of-universe set |
+
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 
 | Idea | Field | Status | Card | Note |
@@ -60,7 +67,5 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
 | ensemble-tsmom | Trend | new | - | Weight = share of 1/3/6/12-month returns that are positive (part 1) |
-| hmm-switch-to-bonds | Regime models | new | - | Risk-off into TLT/GLD instead of cash, as in Shu, Yu, Mulvey 2024 (part 4) |
 | turbulence | Statistics | new | - | Mahalanobis distance of the six returns; test only against a volatility trigger (part 4) |
 | vol-shift | Volatility | new | - | Risk assets to cash when SPY's 20-day volatility jumps 1 sd above its 1-year norm. Was the plain twin of absorption-ratio and beat equal weight there (1.17 vs 1.04, not significant). Needs its own card |
-| fixed-btc-sleeve | Allocation | new | - | 5% BTC in an SPY/GLD/TLT core, rebalanced quarterly versus never (part 2) |
