@@ -163,3 +163,40 @@ def test_todays_equity_is_provisional_and_changes_tomorrow() -> None:
     last_day, last_equity = tonight.equity[-1]
     assert last_day == today and last_equity == pytest.approx(10_000)
     assert dict(tomorrow.equity)[today] == pytest.approx(13_000)
+
+
+def test_the_deflated_sharpe_bar_is_out_of_reach_for_years() -> None:
+    """Audit S7, sized: the scoreboard's deflated Sharpe allows for every strategy "tried", and
+    that count includes every backtest variant the research lane logs: 219 on 2026-11-12, one
+    day in. The Sharpe a strategy must then show before "95% sure" is about 6.3 after six months,
+    4.4 after a year, 2.0 after five. A strategy with a true Sharpe of 1.0 (very good) passes
+    after three years in about 1 world in 100. Cautious, not dishonest, but the board will say
+    "no sign of skill" about everything for years, and DESIGN.md's graduation bar ("at least 6
+    months") cannot be met by any realistic strategy."""
+    from statistics import NormalDist
+
+    from grimstrade import stats
+
+    def needed(tries: int, days: int) -> float:
+        luck = stats.expected_max_sharpe(tries, stats.null_sharpe_variance(days))
+        return (luck + NormalDist().inv_cdf(0.95) / math.sqrt(days - 1)) * math.sqrt(365)
+
+    assert needed(219, 182) == pytest.approx(6.3, abs=0.1)
+    assert needed(219, 365) == pytest.approx(4.4, abs=0.1)
+    assert needed(219, 5 * 365) == pytest.approx(2.0, abs=0.1)
+    assert needed(9, 182) == pytest.approx(4.5, abs=0.1)  # even counting only the 9 live ones
+
+    rng = random.Random(12)
+    days, daily_sd = 3 * 365, 0.01
+    daily_mean = 1.0 / math.sqrt(365) * daily_sd  # true annualised Sharpe 1.0
+    scores = [
+        report.score(f"good{i}", result_from_returns([rng.gauss(daily_mean, daily_sd)
+                                                      for _ in range(days)]))
+        for i in range(100)
+    ]  # fmt: skip
+    passed = 0
+    for s in scores:  # each one alone on the board, 219 strategies tried
+        (deflated,) = report.deflate([s], report.Trials(count=219))
+        passed += (deflated.dsr or 0) >= 0.95
+    assert statistics.fmean(s.sharpe for s in scores) == pytest.approx(1.0, abs=0.15)
+    assert passed <= 3
