@@ -201,3 +201,13 @@ Never edit or delete a row.
 | 2026-11-12 02:00 | trend-vol | tv40@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.38 | +372.2% | 36.0% | 2.71 |
 | 2026-11-12 02:00 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
 | 2026-11-12 02:00 | trend-vol | tv40@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.40 | +490.7% | 58.9% | 1.78 |
+| 2026-11-12 02:01 | robustness | equal-weight-raw | robustness | train | 1994-02-01 | 2025-11-09 | 0.82 | +13224.7% | 69.3% | 1.28 |
+| 2026-11-12 02:01 | robustness | tsmom12-raw | robustness | train | 1994-02-01 | 2025-11-09 | 0.95 | +10638.4% | 37.7% | 2.73 |
+| 2026-11-12 02:01 | robustness | sma200-raw | robustness | train | 1994-02-01 | 2025-11-09 | 0.96 | +8005.7% | 45.4% | 4.21 |
+| 2026-11-12 02:01 | robustness | ensemble-tsmom-raw | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +8122.7% | 35.8% | 5.32 |
+| 2026-11-12 02:01 | robustness | trend-vol-raw | robustness | train | 1994-02-01 | 2025-11-09 | 0.91 | +2988.5% | 23.6% | 3.03 |
+| 2026-11-12 02:01 | robustness | equal-weight-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 0.88 | +19557.5% | 68.8% | 1.27 |
+| 2026-11-12 02:01 | robustness | tsmom12-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +17327.1% | 37.1% | 2.74 |
+| 2026-11-12 02:01 | robustness | sma200-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 0.99 | +9763.3% | 44.6% | 4.32 |
+| 2026-11-12 02:01 | robustness | ensemble-tsmom-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.08 | +10192.6% | 36.0% | 5.29 |
+| 2026-11-12 02:01 | robustness | trend-vol-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.02 | +4792.1% | 25.7% | 2.91 |

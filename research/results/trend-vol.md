@@ -77,3 +77,20 @@ Annualised log growth: tv40 +12.4%, tsmom12 +16.4%, equal-weight +16.7%
 - PASS: 5. Beats equal weight on Sharpe (1.03 vs 0.88)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Fails its (stricter) bar: the Sharpe is the same as plain 12-month trend (1.03 against 1.05,
+p = 0.57), and out of universe the difference is +0.01 (ETFs), +0.10 (coins), 0.00 (indexes).
+The volatility cap adds no return per unit of risk.
+
+What it does change is the level of risk, and by a lot: worst loss 25.7% against 36.5% for plain
+trend and 68.8% for equal weight; volatility 12.8% against 17.1% and 21.7%; every stress window
+milder. The price is growth: +13.3% a year against +17.8%. Equal weight, trend, and trend with a
+volatility cap sit on roughly one line of return per unit of risk; they differ in how far along
+it they go.
+
+This is the lowest-drawdown rule of the twelve tested. It did not pass, so it is not an M3
+candidate by the protocol. If the owner's limit is the size of the worst loss (the graduation bar
+names "a drawdown the owner can stomach"), it is the one to put in forward paper, labelled as a
+risk choice and not as an edge. The held-out year was not looked at.

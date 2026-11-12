@@ -85,3 +85,13 @@ Annualised log growth: e4 +14.9%, tsmom12 +16.4%, sma200 +14.7%, equal-weight +1
 - PASS: 5. Beats equal weight on Sharpe (1.10 vs 0.88)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Fails the bar: +0.05 Sharpe over 12-month momentum (p = 0.21), ahead in 3 of 5 eras. Not dead in
+the way the others are: the difference has the right sign on the six assets and in all three
+out-of-universe sets (+0.02 ETFs, +0.14 coins, +0.03 indexes), with slightly lower volatility
+and drawdown, at twice the turnover (5.3 against 2.7 a year). The honest reading is "as good as
+12-month momentum, possibly a little more robust, not distinguishable from it in 32 years". Not
+worth a separate paper slot next to the M1 lane's momentum rule; worth remembering if that rule
+is ever revised.

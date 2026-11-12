@@ -9,7 +9,7 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
-| kelly-shrunk | Kelly / information theory | dead (tested) | [card](cards/kelly-shrunk.md) | Equals inverse-vol (+0.01 Sharpe): the no-leverage cap removes the Kelly scale. On high-volatility coins the scale halves drawdown at equal growth: see `vol-target-crypto`. [result](results/kelly-shrunk.md) |
+| kelly-shrunk | Kelly / information theory | dead (tested) | [card](cards/kelly-shrunk.md) | Equals inverse-vol (+0.01 Sharpe): the no-leverage cap removes the Kelly scale. On high-volatility coins the scale halves drawdown at equal growth: see `vol-target`. [result](results/kelly-shrunk.md) |
 | hmm-regime | Regime models | dead (tested) | [card](cards/hmm-regime.md) | Beats a volatility threshold (+0.14, p = 0.03) but equals equal weight (0.89 vs 0.88) and loses to the 200-day average (1.01); sat through the dot-com bust. [result](results/hmm-regime.md) |
 | fracdiff-momentum | Fractional differentiation | dead (tested) | [card](cards/fracdiff-momentum.md) | Worse than 12-month momentum everywhere (-0.25 Sharpe, 3x turnover): it is a fast trend rule. [result](results/fracdiff-momentum.md) |
 | drawdown-control | Optimal stopping / control | dead (tested) | [card](cards/drawdown-control.md) | Same as the 200-day switch (+0.07, p = 0.14; mixed out of universe). A smoother trend rule, not a better one. [result](results/drawdown-control.md) |
@@ -23,9 +23,9 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
-| vol-target | Volatility targeting | testing | [card](cards/vol-target.md) | Slot x min(1, 40% / 20-day vol); twin equal weight |
-| ensemble-tsmom | Trend | testing | [card](cards/ensemble-tsmom.md) | Share of 1/3/6/12-month returns positive; twin tsmom12 |
-| trend-vol | Trend + volatility | testing | [card](cards/trend-vol.md) | tsmom12 with the vol-target cap; stricter bar because both parts were seen in run 1 |
+| vol-target | Volatility targeting | dead (tested) | [card](cards/vol-target.md) | Same Sharpe as equal weight (0.87 vs 0.88); cuts volatility, and on coins halves it at equal growth. A risk dial, not an edge. No help in slow bear markets. [result](results/vol-target.md) |
+| ensemble-tsmom | Trend | dead (tested) | [card](cards/ensemble-tsmom.md) | +0.05 over tsmom12 (p = 0.21), right sign in all three other sets, 2x turnover. Indistinguishable from 12-month momentum. [result](results/ensemble-tsmom.md) |
+| trend-vol | Trend + volatility | failed bar; paper candidate on drawdown only | [card](cards/trend-vol.md) | Same Sharpe as tsmom12 (1.03 vs 1.05) but worst loss 26% vs 37% (equal weight 69%), growth 13.3% vs 17.8% a year. A risk choice, not an edge. [result](results/trend-vol.md) |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 
@@ -59,7 +59,6 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
-| vol-target-crypto | Volatility targeting | new | - | BTC/ETH weight = min(1, 40% / 20-day vol), trade only on 10-point moves (part 2). Supported by the kelly-shrunk coin result (same growth, half the drawdown). Overlaps the M1 lane's volatility targeting |
 | ensemble-tsmom | Trend | new | - | Weight = share of 1/3/6/12-month returns that are positive (part 1) |
 | hmm-switch-to-bonds | Regime models | new | - | Risk-off into TLT/GLD instead of cash, as in Shu, Yu, Mulvey 2024 (part 4) |
 | turbulence | Statistics | new | - | Mahalanobis distance of the six returns; test only against a volatility trigger (part 4) |

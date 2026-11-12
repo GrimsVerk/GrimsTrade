@@ -55,3 +55,12 @@ Annualised log growth: t40 +13.3%, t25 +12.0%, equal-weight +16.7%, inverse-vol 
 - FAIL: 5. Beats equal weight on Sharpe (0.87 vs 0.88)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Dead as a way to earn more; alive as a way to choose the risk level. Sharpe is equal weight's
+(0.87 against 0.88; 0.94 at the 25% target, p = 0.23). What changes is the ride: volatility 16.8%
+instead of 21.7% on the six assets, and on the six other coins the same growth (+29.8% a year
+against +27.5%) at 45% volatility instead of 95%, with a 58% worst loss instead of 92%. It did
+nothing for the dot-com bust (-66%): SPY and QQQ fell 50-80% without their volatility staying
+above 40%. A volatility cap protects against wild assets, not against slow bear markets.
