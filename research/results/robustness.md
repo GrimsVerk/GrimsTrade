@@ -21,3 +21,12 @@ Six live assets, train period. Same rules as in their own result files.
 | sma200-2xcost | 0.99 (0.18) | +15.5% | 15.8% | 44.6% | 4.3 | 70% | 1.13 | 0.13 | 1.56 | 1.50 | 0.72 | +0.12 (p=0.19; -0.10..+0.33) | 2/5 |
 | ensemble-tsmom-2xcost | 1.08 (0.18) | +15.7% | 14.5% | 36.0% | 5.3 | 68% | 1.31 | 0.16 | 1.58 | 1.63 | 0.83 | +0.20 (p=0.03; +0.02..+0.40) | 3/5 |
 | trend-vol-2xcost | 1.02 (0.18) | +13.0% | 12.8% | 25.7% | 2.9 | 72% | 1.35 | 0.24 | 1.61 | 1.44 | 0.92 | +0.14 (p=0.13; -0.06..+0.36) | 3/5 |
+
+## Reading (2026-11-12)
+
+Nothing changes order. On raw prices every Sharpe is 0.05-0.12 lower (the dividends the live gym
+does not credit) and the trend rules keep their lead over equal weight and their halved
+drawdowns. Doubling costs moves Sharpe by 0.01-0.02: these rules trade 3-5 times their equity a
+year, so costs are not what limits them. The rules that failed their bar in the idea tests still
+fail it here; these tables are about whether the live scoreboard will tell the same story as the
+research, and it will.
