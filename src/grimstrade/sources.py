@@ -168,15 +168,23 @@ def fetch_from(
     symbol: str, since: date, now: datetime, get: Get = http_get
 ) -> tuple[str, list[Bar]]:
     """Settled, sane bars from `since` on, and the name of the source that gave them: the first
-    one that answers properly. Raises if all fail."""
+    one that has any. A source that answers with nothing new is not trusted on that alone: the
+    next one is asked too (an empty or cut-short answer looks exactly like "no news"). Raises if
+    every source fails."""
     errors = []
+    nothing_new_from = None
     for source, ticker in SOURCES[symbol]:
         try:
             bars = settled(source(ticker, since, get), UNIVERSE[symbol], now)
             check_sane(bars)
-            return source.__name__, bars
         except Exception as e:  # noqa: BLE001 - any failure means: try the next source
             errors.append(f"{source.__name__}: {e}")
+            continue
+        if bars:
+            return source.__name__, bars
+        nothing_new_from = nothing_new_from or source.__name__
+    if nothing_new_from is not None:
+        return nothing_new_from, []
     raise RuntimeError(f"{symbol}: all sources failed: {'; '.join(errors)}")
 
 

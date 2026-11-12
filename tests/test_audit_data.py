@@ -215,3 +215,37 @@ def test_stooq_browser_check_page_is_an_error_not_data() -> None:
         sources.stooq("spy.us", D10, lambda url: page)
     with pytest.raises(RuntimeError, match="all sources failed"):
         sources.fetch("SPY", D10, datetime(2026, 11, 12, 22, 30, tzinfo=UTC), lambda url: page)
+
+
+def test_an_empty_answer_is_not_taken_as_no_news(tmp_path: Path) -> None:
+    """Audit D7 (fixed; found by the independent reviewer): a source that answered with an empty
+    list counted as success. The second source was never asked, no problem was reported, nothing
+    changed, nothing was committed: frozen data behind green runs."""
+    now = datetime(2026, 11, 12, 22, 30, tzinfo=UTC)
+
+    def kraken_empty(url: str) -> bytes:
+        if "kraken" in url:
+            return json.dumps({"error": [], "result": {"XXBTZUSD": [], "last": 0}}).encode()
+        if "coinbase" in url:
+            ts = int(datetime(2026, 11, 11, tzinfo=UTC).timestamp())
+            return json.dumps([[ts, 99.0, 101.0, 100.0, 100.5, 10.0]]).encode()
+        raise OSError("blocked")
+
+    # The second source is asked, and it has the day.
+    assert sources.fetch_from("BTC", D11, now, kraken_empty) == (
+        "coinbase", [Bar(D11, 100.0, 101.0, 99.0, 100.5, 10.0)],
+    )  # fmt: skip
+
+    # When every source keeps saying "nothing new", the run says so once a bar is overdue.
+    def nothing_new(url: str) -> bytes:
+        if "kraken" in url:
+            return json.dumps({"error": [], "result": {"XXBTZUSD": [], "last": 0}}).encode()
+        if "coinbase" in url:
+            return b"[]"
+        raise OSError("blocked")
+
+    data.append(tmp_path, "BTC", flat("2026-11-08", 3, 100.0))  # through 2026-11-10
+    on_time = run_daily.run(tmp_path, datetime(2026, 11, 11, 22, 30, tzinfo=UTC), nothing_new)
+    assert not any(p.startswith("BTC") for p in on_time)  # the 10th closed 22.5 hours ago: fine
+    late = run_daily.run(tmp_path, datetime(2026, 11, 14, 22, 30, tzinfo=UTC), nothing_new)
+    assert "BTC: no new bar for 3 days (newest stored: 2026-11-10)" in late

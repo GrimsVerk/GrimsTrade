@@ -55,6 +55,7 @@ def run(
             problems.append(str(e))
             print(f"{sym}: FAILED {e}", file=sys.stderr)
 
+    problems += _overdue(root, now)
     problems += _revisions(root, now, get)
     history = data.load_all(root)
     seen = data.visible_history(history, now)
@@ -96,6 +97,24 @@ def run(
     (reports / "backtest.md").write_text(report.render_backtest(root, history, repo))
     (reports / "weekly.md").write_text(weekly.render(root, history, repo))
     return problems
+
+
+# A new bar is overdue when the newest stored one closed longer ago than this. Crypto closes
+# every day; ETFs can pause four calendar days (Thursday to Monday around a Friday holiday).
+OVERDUE = {data.CRYPTO: timedelta(hours=36), data.ETF: timedelta(days=4, hours=12)}
+
+
+def _overdue(root: Path, now: datetime) -> list[str]:
+    """A problem line per symbol whose newest stored bar is older than it can honestly be. Sources
+    that answer "nothing new" for days produce no error anywhere else: the data just stops, and
+    whoever holds that asset looks calm."""
+    out = []
+    for sym, cls in data.UNIVERSE.items():
+        stored = data.load(root, sym)
+        if stored and now - data.close_time(cls, stored[-1].date) > OVERDUE[cls]:
+            days = (now - data.close_time(cls, stored[-1].date)).days
+            out.append(f"{sym}: no new bar for {days} days (newest stored: {stored[-1].date})")
+    return out
 
 
 def _revisions(root: Path, now: datetime, get: sources.Get) -> list[str]:
