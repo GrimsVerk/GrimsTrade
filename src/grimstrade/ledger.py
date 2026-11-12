@@ -340,8 +340,9 @@ LATE = timedelta(minutes=30)
 
 
 def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
-    """Each non-blank line of `path` on disk with the committer time of the earliest commit that
-    holds it; None if it is not committed yet (or outside git). Relies on the file being
+    """Each non-blank line of `path` on disk with the time of the earliest commit that holds it
+    (its committer time, or its parents' if that is later); None if it is not committed yet (or
+    outside git). Relies on the file being
     append-only (`check_append_only`): a commit's new lines are the bytes past its parents'.
 
     Everything is counted in bytes and split at "\n" only, exactly as git stores the file. (Text
@@ -359,15 +360,21 @@ def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
     if where is None:
         return list(zip(lines, times, strict=True))
     top, rel, _ = where
-    log = _git(top, "rev-list", "--parents", "--timestamp", "HEAD").decode().splitlines()
-    rows = [r.split() for r in log if r]  # timestamp, commit, parents...
+    log = _git(top, "rev-list", "--topo-order", "--parents", "--timestamp", "HEAD")
+    rows = [r.split() for r in log.decode().splitlines() if r]  # timestamp, commit, parents...
     size = {c: n for c, (_, n) in _blobs(top, [r[1] for r in rows], rel).items()}
-    # Bytes (lo, hi] of the file first appear in this commit, made at `stamp`.
+    # A commit's date is written by whoever commits, but a commit cannot be older than its
+    # parents: it counts from the latest time on its path. A back-dated commit on top of the
+    # record then gains nothing before the commit under it.
+    made: dict[str, int] = {}
+    for stamp, commit, *parents in reversed(rows):  # topo order lists children first
+        made[commit] = max([int(stamp), *(made.get(p, 0) for p in parents)])
+    # Bytes (lo, hi] of the file first appear in this commit.
     spans = []
-    for stamp, commit, *parents in rows:
+    for _, commit, *parents in rows:
         lo = max((size[p] for p in parents), default=0)
         if size[commit] > lo:
-            spans.append((int(stamp), lo, size[commit]))
+            spans.append((made[commit], lo, size[commit]))
     for seconds, lo, hi in sorted(spans):  # earliest commit first: it wins
         for i in range(bisect.bisect_right(ends, lo), bisect.bisect_right(ends, hi)):
             if times[i] is None:

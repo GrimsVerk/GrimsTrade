@@ -85,6 +85,34 @@ def test_a_backdated_decision_is_not_credited(repo: Path) -> None:
     assert "**Late decisions: 1.**" in report.render(repo, history)
 
 
+def test_a_backdated_commit_gains_nothing_before_the_commit_under_it(repo: Path) -> None:
+    """Audit L1 (second pass): `in_force` believed every commit's own date. A forger who back-dates
+    the commit as well as the line was caught only from outside (GitHub's activity log), and not
+    at all where that log cannot be asked. A commit cannot be older than its parent, whatever it
+    claims: it now counts from the latest time on its path."""
+    history: History = {"BTC": btc([(100, 100), (100, 150), (150, 200), (200, 200), (200, 200)])}
+    decide(repo, at(DAY1), "honest", {})
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 31))
+    decide(repo, at(DAY1 + timedelta(days=2)), "honest", {})
+    commit(repo, "Daily run day 3", when=at(DAY1 + timedelta(days=2), 22, 31))
+    # Day 4: BTC has doubled. A line dated day 1, in a commit that says day 1 as well.
+    decide(repo, at(DAY1, 22, 32), "cheat", {"BTC": 1.0})
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 33))
+
+    ledger.check_append_only(repo / ledger.DECISIONS)
+    # It counts from the day-3 commit under it: filled at the day-4 open (200), not at day 2's.
+    (fill,) = report.live_results(repo, history)["cheat"].fills
+    assert fill.time == datetime(2026, 11, 4, tzinfo=UTC)
+    assert fill.price == pytest.approx(200 * 1.0005)
+    counted, late = ledger.in_force(repo)
+    assert late == 1
+    # The honest strategy's two decisions are untouched.
+    assert [t for t, row in counted if row["strategy"] == "honest"] == [
+        at(DAY1, 22, 31),
+        at(DAY1 + timedelta(days=2), 22, 31),
+    ]
+
+
 def test_padding_with_blank_lines_does_not_move_a_backdated_decision(repo: Path) -> None:
     """Found by the independent reviewer in the first version of the L1 fix: line positions were
     counted in text characters, commits in bytes. Blank "\\r\\n" lines are two bytes but one

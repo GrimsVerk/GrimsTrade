@@ -257,10 +257,18 @@ One commit per fix, except the three workflow changes, which share the same line
   in bytes and each row is parsed from the same bytes that date it
   (`...::test_padding_with_blank_lines_does_not_move_a_backdated_decision`). The lesson stands
   beyond this bug: this check is new, security-like code and deserves another adversarial pass.
-- **What is left:** commit dates are written by whoever commits. The L3 guard closes most of
-  that from outside: a commit that reaches GitHub more than 10 minutes after its claimed time
-  stops the job. A forger is left with a 10-minute window, and with the L3 owner action undone
-  could still replace the branch (which the guard then reports).
+- **A second hole, found in the second pass and closed:** the fix believed every commit's own
+  date, and that date is written by whoever commits. A line dated day 1 inside a commit dated
+  day 1, pushed on day 4, was credited from day 1 and even displaced the strategy's real
+  decisions of days 2 and 3. Only the outside check (L3) would have caught it, and that check is
+  skipped where GitHub's log cannot be asked. Now a commit counts from the latest time on its
+  path: it can never be older than the commit under it, so back-dating gains nothing before the
+  previous run (`...::test_a_backdated_commit_gains_nothing_before_the_commit_under_it`).
+- **What is left:** between two runs (a day at most) the commit date is still the forger's to
+  choose. The L3 guard closes most of that from outside: a commit that reaches GitHub more than
+  10 minutes after its claimed time stops the job. A forger is left with a 10-minute window,
+  and with the L3 owner action undone could still replace the branch (which the guard then
+  reports).
 
 ### L2. History could be rewritten with an ordinary push (high)
 
