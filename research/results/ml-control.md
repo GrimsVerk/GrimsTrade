@@ -76,14 +76,19 @@ Not a strategy and not a try: a 16th feature `peek` is planted that knows the fu
 | gbm+peek0.20 | 6214 | 59.3% | 0.562 | 58.4% | 79.9% | 0.522 | 56.6% |
 | gbm+peek0.30 | 6214 | 59.3% | 0.612 | 61.1% | 75.5% | 0.522 | 56.6% |
 
-## Reading (2026-11-12; point 4 added after the 0.30 control)
+## Reading (2026-11-12; point 4 added after the 0.30 control, point 2 corrected after the code review)
 
 1. **The machinery works.** A planted signal comes through: AUC 0.50 at correlation 0.05,
    0.52 at 0.10, 0.57 at 0.20, 0.62 at 0.30, for both model kinds, and Sharpe rises with it
    under every position rule. The null results of the cards are not a plumbing fault.
-2. **The real features hold less than a 0.05 signal.** The real models score AUC 0.49 to 0.51,
-   which is where planted correlations of 0 to 0.05 land. With 6,214 overlapping forecasts
-   (about 1,500 independent asset-months) nothing below roughly 0.10 can be told from zero.
+2. **The real models get less out of the real features than out of a planted 0.05.** They
+   score AUC 0.49 to 0.51, which is where models given planted correlations of 0 to 0.05
+   land. This measures the models, not the features: the pipeline loses about half of a
+   planted signal (the "0.10" feature scores 0.548 alone, 0.524 through a model), and single
+   trend features score 0.52 to 0.54 alone (`results/ml-feature-skill.md`). An earlier version
+   of this point said the features held less than a 0.05 signal; that was not shown. With
+   6,214 overlapping forecasts (about 1,500 independent asset-months) nothing below roughly
+   0.10 can be told from zero.
 3. **Even a forecaster far better than any real one only ties the trend rule.** At planted
    correlation 0.20 the portfolios reach 0.96 to 1.08 Sharpe against 1.05 for `tsmom12`,
    whichever of the three position rules is used; at 0.10 they are at 0.80 to 0.90, no better
@@ -92,7 +97,9 @@ Not a strategy and not a try: a 16th feature `peek` is planted that knows the fu
 4. **At a planted correlation of 0.30 the machinery does beat the trend rule:** 1.22 to 1.42
    Sharpe against 1.05 (+0.17 to +0.37; p from 0.00 to 0.09 over the six combinations of model
    and position rule). So the Sharpe bar of the cards could be passed, by a forecast of about
-   that strength. The threshold on this book lies between 0.20 and 0.30.
+   that strength. The threshold on this book lies between 0.20 and 0.30. (The correlations
+   actually planted are about 0.02 above their labels, by the chance of the noise draw:
+   `results/ml-feature-skill.md`.)
 
 Why point 3 is not a surprise in hindsight: a forecast's worth grows with the number of
 independent bets it is used on (Grinold's rule: skill x square root of breadth). Six assets

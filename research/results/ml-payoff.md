@@ -156,5 +156,7 @@ It did not rediscover it:
 - Purged CV chose the strongest shrinkage for the logistic model at all 32 fits: its own
   validation says there is nothing to fit.
 
-Same reading as the other four ML cards: nothing in these 15 features forecasts the next month
-on six assets, whichever target the model is given. The held-out year was not looked at.
+Same reading as the other four ML cards: no model fitted on these 15 features forecasts the
+next month on six assets, whichever target it is given. (The trend features do rank months
+slightly better than chance on their own, which is what `tsmom12` uses:
+`results/ml-feature-skill.md`.) The held-out year was not looked at.

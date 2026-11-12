@@ -114,6 +114,7 @@ for years, it holds 85% on average instead of everything. Purged CV again chose 
 shrinkage at 31 of 32 fits. On the other sets the pooled model ties `tsmom12` on the other
 ETFs (+0.01), and is behind on the coins and the indexes.
 
-So "too little data" is answered as far as free daily prices can answer it: the same features
-on 33 markets back to 1962 forecast next month no better than on six. More markets of the
+So "too little data" is answered as far as free daily prices can answer it: the same models
+on 33 markets back to 1962 forecast next month no better than on six, and still worse than a
+single trend feature left alone (`results/ml-feature-skill.md`). More markets of the
 same kind are not the missing ingredient. The held-out year was not looked at.

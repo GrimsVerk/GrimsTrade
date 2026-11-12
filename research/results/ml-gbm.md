@@ -139,3 +139,7 @@ smaller than the gap to the trend rule.
   other coins over three years (+0.24, p = 0.29), where plain holding beat both.
 
 The held-out year was not looked at.
+
+Note added 2026-11-12 after the code review: "the features hold no signal the model can use"
+above is about the models. On their own the trend features rank months slightly better than
+chance (AUC 0.52 to 0.54), better than any fitted model here: `results/ml-feature-skill.md`.
