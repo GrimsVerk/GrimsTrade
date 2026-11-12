@@ -14,7 +14,7 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | fracdiff-momentum | Fractional differentiation | dead (tested) | [card](cards/fracdiff-momentum.md) | Worse than 12-month momentum everywhere (-0.25 Sharpe, 3x turnover): it is a fast trend rule. [result](results/fracdiff-momentum.md) |
 | drawdown-control | Optimal stopping / control | dead (tested) | [card](cards/drawdown-control.md) | Same as the 200-day switch (+0.07, p = 0.14; mixed out of universe). A smoother trend rule, not a better one. [result](results/drawdown-control.md) |
 | universal-portfolio | Information theory | dead (tested) | [card](cards/universal-portfolio.md) | Indistinguishable from the constant mix it starts from; 30 years is too short for its guarantee. [result](results/universal-portfolio.md) |
-| absorption-ratio | Random matrix theory / PCA | testing | [card](cards/absorption-ratio.md) | Kritzman et al. 2011, post-publication test; twin vol-shift |
+| absorption-ratio | Random matrix theory / PCA | dead (tested) | [card](cards/absorption-ratio.md) | Worked inside the paper's sample (0.97 vs 0.56 to 2010), behind its plain twin ever since (1.13 vs 1.44); missed 2022. [result](results/absorption-ratio.md) |
 | hawkes-clustering | Hawkes processes | dead (tested) | [card](cards/hawkes-clustering.md) | Self-excitation at daily bars is weak; the rule is equal weight minus a few days (0.87 vs 0.88), 7x the turnover. [result](results/hawkes-clustering.md) |
 | month-end-liquidity | Calendar / microstructure | testing | [card](cards/month-end-liquidity.md) | Etula et al. 2020, post-sample test |
 | dip-rsi2 | Short-term reversal | testing | [card](cards/dip-rsi2.md) | Connors 2008, post-publication test, next-open fills |
@@ -55,4 +55,5 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | ensemble-tsmom | Trend | new | - | Weight = share of 1/3/6/12-month returns that are positive (part 1) |
 | hmm-switch-to-bonds | Regime models | new | - | Risk-off into TLT/GLD instead of cash, as in Shu, Yu, Mulvey 2024 (part 4) |
 | turbulence | Statistics | new | - | Mahalanobis distance of the six returns; test only against a volatility trigger (part 4) |
+| vol-shift | Volatility | new | - | Risk assets to cash when SPY's 20-day volatility jumps 1 sd above its 1-year norm. Was the plain twin of absorption-ratio and beat equal weight there (1.17 vs 1.04, not significant). Needs its own card |
 | fixed-btc-sleeve | Allocation | new | - | 5% BTC in an SPY/GLD/TLT core, rebalanced quarterly versus never (part 2) |

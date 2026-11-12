@@ -2,7 +2,7 @@
 
 Card: `cards/absorption-ratio.md`. All runs start 2002-01-01.
 
-Share of weeks-days with the signal on (shift > 1): absorption ratio 29%, volatility twin 17%; correlation of the two shifts 0.30.
+Share of days with the signal on (shift > 1): absorption ratio 29%, volatility twin 17%; correlation of the two shifts 0.30.
 
 ## The six live assets
 
@@ -82,3 +82,21 @@ Sharpe, rule vs twin, before and after publication: 2002-2010: 0.40 vs 0.34; 201
 - FAIL: 6. (card) Not behind the twin after publication, 2011-2025 (-0.32)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Dead, and a clean example of a published signal that stopped working when the paper came out.
+Inside the paper's own sample (2002-2010) the rule did what the authors said: Sharpe 0.97 against
+0.56 for the volatility twin on the six assets, and +7% through the 2008 crisis against -10%.
+After publication (2011-2025) it is behind the twin on the six assets (1.13 against 1.44), on SPY
+alone (0.60 against 0.84), on the other ETFs and on all three foreign indexes. It missed the 2022
+sell-off entirely (-37%, the same as equal weight) and was switched off 29% of the time.
+
+Over the whole period it fails every line of the bar, including "beats equal weight". With six
+assets there is no random-matrix cleaning to do, and the one eigenvalue statistic that can be
+computed carries nothing that survived 2010.
+
+Side note, not a result: the plain twin (step out of risk assets when SPY's 20-day volatility
+jumps more than one standard deviation above its one-year norm) was ahead of equal weight here
+(1.17 against 1.04 since 2002, about p = 0.14) and on the other ETFs, but not on the FTSE or DAX.
+It was a twin, not a card; it is listed in `ideas.md` as `vol-shift` for a card of its own.
