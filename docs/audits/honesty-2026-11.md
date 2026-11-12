@@ -61,7 +61,6 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L7 | A decision did not say which code made it | medium | half fixed |
 | S4 | Frozen data looks like a calm strategy | medium | half fixed |
-| D5 | The record does not say where a bar came from | low | open: proposed |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
@@ -80,9 +79,10 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | S8 | The weekly page let a late starter "beat" a yardstick it merely copied | medium | fixed |
 | S5 | Sharpe assumed a point every calendar day | low | fixed |
 | T1 | A decision could be filled before it could have been pushed | low | fixed |
+| D5 | The record did not say where a bar came from | low | fixed |
 
 Tests: `tests/test_audit_*.py`. A finding that is still open and has a crisp expected behaviour
-is an `xfail(strict=True)` test (2 left: D5, G2); findings about size or judgement are
+is an `xfail(strict=True)` test (1 left: G2); findings about size or judgement are
 ordinary tests that pin the numbers quoted here.
 
 ## Open findings
@@ -244,13 +244,6 @@ ordinary tests that pin the numbers quoted here.
 
 ### Low
 
-- **D5. The record does not say where a bar came from.** When Kraken fails the bar comes from
-  Coinbase, another exchange with slightly other prices (2026-11-10 BTC: open 75,253.1 vs
-  75,257.8, low 72,584.6 vs 72,643.5, about 8 basis points apart at worst). When Yahoo fails it
-  would come from Stooq, whose history is, as far as I know, dividend-adjusted where Yahoo's is
-  raw (unverified: Stooq is unreachable). Nothing in `paper-trail` says which source was used.
-  Test: `tests/test_audit_data.py::test_the_record_says_which_source_each_bar_came_from`
-  (xfail). Proposed: an append-only `data/sources.jsonl`, one line per run and symbol.
 - **G2. An order that cannot be paid for at its open is dropped.** Each asset's order executes at
   that asset's next open and is then forgotten. Moving from an ETF to crypto, BTC opens at 00:00
   UTC, before the ETF can be sold at 13:30: the buy finds no cash and is dropped; the money sits
@@ -390,6 +383,14 @@ One commit per fix, except the three workflow changes, which share the same line
   the usual 252-trading-day one, 1.26 vs 1.24). But a history without a daily crypto bar came out
   20% too high. Sharpe and turnover are now annualised by the real time span.
   `tests/test_audit_stats.py::test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point`.
+- **D5. The record did not say where a bar came from.** When Kraken fails the bar comes from
+  Coinbase, another exchange with slightly other prices (2026-11-10 BTC: open 75,253.1 vs
+  75,257.8, low 72,584.6 vs 72,643.5, about 8 basis points apart at worst). When Yahoo fails it
+  would come from Stooq, whose history is, as far as I know, dividend-adjusted where Yahoo's is
+  raw (unverified: Stooq is unreachable). Now every run appends to `data/sources.jsonl` which
+  source supplied which days of which symbol. The two runs before this fix used Kraken and
+  Yahoo (the stored values match those sources' formats and my live probes).
+  `tests/test_audit_data.py::test_the_record_says_which_source_each_bar_came_from`.
 - **T1. A decision could be filled before it could have been pushed.** A run starting at
   23:59:30 UTC was filled at the 00:00:00 crypto open, though its commit lands after that price
   exists. Covered by the L1 fix: it now fills at the next open after its commit.
@@ -429,6 +430,6 @@ One commit per fix, except the three workflow changes, which share the same line
   this report missed) is in: S7, S8 and G5 are theirs. Waiting for the second (ledger, runner,
   sources).
 - **Next, in order of value:** S3 (rank the scoreboard by excess over restarted yardsticks,
-  as `weekly.py` now does); the second halves of L7 and S4; D5; G2.
+  as `weekly.py` now does); the second halves of L7 and S4; G2.
 - **To resume:** read this section, run the checks in `AGENTS.md`, look at the three remaining
   `xfail` tests (`uv run pytest -rx tests/`).

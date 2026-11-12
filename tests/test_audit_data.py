@@ -180,12 +180,10 @@ def test_a_hole_in_the_sources_answer_is_not_skipped_silently() -> None:
     assert [b.date for b in bars] == [D10, D11, D12]
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit D5: the record does not say which source a bar came from, so a switch "
-    "(Kraken -> Coinbase, Yahoo -> Stooq) in the middle of the history cannot be seen afterwards",
-)
 def test_the_record_says_which_source_each_bar_came_from(tmp_path: Path) -> None:
+    """Audit D5 (fixed): the record did not say which source a bar came from, so a switch
+    (Kraken -> Coinbase, Yahoo -> Stooq) in the middle of the history could not be seen later."""
+
     def coinbase_only(url: str) -> bytes:
         if "coinbase" in url:
             ts = int(datetime(2026, 11, 10, tzinfo=UTC).timestamp())
@@ -194,8 +192,15 @@ def test_the_record_says_which_source_each_bar_came_from(tmp_path: Path) -> None
 
     run_daily.run(tmp_path, datetime(2026, 11, 12, 22, 30, tzinfo=UTC), coinbase_only)
     assert data.load(tmp_path, "BTC")  # the bar is in, from the second-choice exchange
-    written = "".join(p.read_text() for p in tmp_path.rglob("*") if p.is_file())
-    assert "coinbase" in written
+    lines = [json.loads(x) for x in (tmp_path / data.SOURCES_LOG).read_text().splitlines()]
+    assert lines == [
+        {"symbol": s, "source": "coinbase", "first": "2026-11-10", "last": "2026-11-10",
+         "rows": 1, "seen": "2026-11-12T22:30:00Z"}
+        for s in ("BTC", "ETH")
+    ]  # fmt: skip
+    # A run that stores nothing new writes no line.
+    run_daily.run(tmp_path, datetime(2026, 11, 12, 22, 45, tzinfo=UTC), coinbase_only)
+    assert len((tmp_path / data.SOURCES_LOG).read_text().splitlines()) == 2
 
 
 def test_stooq_browser_check_page_is_an_error_not_data() -> None:

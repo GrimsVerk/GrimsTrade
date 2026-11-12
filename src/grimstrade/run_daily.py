@@ -31,7 +31,8 @@ def run(
         ledger.check_append_only(root / rel)
     for sym in data.UNIVERSE:  # the bars are the record too: every score is recomputed from them
         ledger.check_append_only(data.bars_path(root, sym))
-    ledger.check_append_only(root / data.REVISIONS)
+    for rel in (data.REVISIONS, data.SOURCES_LOG):
+        ledger.check_append_only(root / rel)
 
     problems = []
     for sym in data.UNIVERSE:
@@ -42,8 +43,14 @@ def run(
             else now.date() - timedelta(days=BOOTSTRAP_DAYS)
         )
         try:
-            added = data.append(root, sym, sources.fetch(sym, since, now, get))
-            print(f"{sym}: +{added} bars")
+            source, bars = sources.fetch_from(sym, since, now, get)
+            before = len(stored)
+            try:
+                added = data.append(root, sym, bars)
+            finally:  # append may store some bars and then refuse the rest: log what got in
+                new = data.load(root, sym)[before:]
+                data.log_source(root, sym, source, new, ledger.iso(now))
+            print(f"{sym}: +{added} bars ({source})")
         except Exception as e:  # noqa: BLE001 - one bad source must not stop the others
             problems.append(str(e))
             print(f"{sym}: FAILED {e}", file=sys.stderr)

@@ -164,15 +164,21 @@ def check_sane(bars: list[Bar]) -> None:
             raise ValueError(f"nonsense bar {b.date}: o={b.open} h={b.high} l={b.low} c={b.close}")
 
 
-def fetch(symbol: str, since: date, now: datetime, get: Get = http_get) -> list[Bar]:
-    """Settled, sane bars from `since` on, from the first source that gives them. Raises if all
-    fail."""
+def fetch_from(
+    symbol: str, since: date, now: datetime, get: Get = http_get
+) -> tuple[str, list[Bar]]:
+    """Settled, sane bars from `since` on, and the name of the source that gave them: the first
+    one that answers properly. Raises if all fail."""
     errors = []
     for source, ticker in SOURCES[symbol]:
         try:
             bars = settled(source(ticker, since, get), UNIVERSE[symbol], now)
             check_sane(bars)
-            return bars
+            return source.__name__, bars
         except Exception as e:  # noqa: BLE001 - any failure means: try the next source
             errors.append(f"{source.__name__}: {e}")
     raise RuntimeError(f"{symbol}: all sources failed: {'; '.join(errors)}")
+
+
+def fetch(symbol: str, since: date, now: datetime, get: Get = http_get) -> list[Bar]:
+    return fetch_from(symbol, since, now, get)[1]

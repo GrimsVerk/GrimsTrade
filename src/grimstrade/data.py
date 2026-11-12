@@ -161,6 +161,31 @@ def _num(x: float) -> str:
     return repr(float(x))
 
 
+# --- provenance: which source each stored bar came from ---
+
+SOURCES_LOG = Path("data/sources.jsonl")
+
+
+def log_source(root: Path, symbol: str, source: str, bars: Sequence[Bar], seen: str) -> None:
+    """One line per run and symbol that stored bars: the source and the days it supplied. The
+    sources are different exchanges and vendors (Kraken/Coinbase, Yahoo/Stooq) with slightly
+    different prices; without this a mixed series cannot be recognised afterwards."""
+    if not bars:
+        return
+    entry = {
+        "symbol": symbol,
+        "source": source,
+        "first": bars[0].date.isoformat(),
+        "last": bars[-1].date.isoformat(),
+        "rows": len(bars),
+        "seen": seen,
+    }
+    path = root / SOURCES_LOG
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a") as f:
+        f.write(json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
+
+
 # --- revisions: what the source says now about bars we already hold ---
 
 REVISIONS = Path("data/revisions.jsonl")
