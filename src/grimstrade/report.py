@@ -280,6 +280,22 @@ def undecided_days(root: Path, history: History) -> dict[str, int]:
     return out
 
 
+def code_changes(root: Path) -> dict[str, int]:
+    """Per strategy, how often the code behind it changed between two of its decisions (the
+    `code_hash` each decision carries). The table shows one row and one unbroken record per
+    name; after a change it is in truth another strategy, and another try."""
+    last: dict[str, str] = {}
+    out: dict[str, int] = {}
+    for row in ledger.decisions(root):
+        name, seen = row["strategy"], row.get("code_hash")
+        if not seen:
+            continue  # written before decisions carried a fingerprint, or by hand
+        if last.get(name, seen) != seen:
+            out[name] = out.get(name, 0) + 1
+        last[name] = seen
+    return out
+
+
 def count_tries(root: Path, repo: Path) -> Trials:
     """All strategies tried: registered ones, live ones not yet registered, the research lane's
     (visible or recorded), with the research variants' Sharpes. Read-only."""
@@ -311,6 +327,15 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         footnote(trials),
     ]
+    changed = code_changes(root)
+    if changed:
+        out += [
+            "",
+            "**Code changed under the same name:** "
+            + ", ".join(f"{name} ({n}x)" for name, n in sorted(changed.items()))
+            + ". Such a row joins the records of different versions of the strategy; judge it "
+            "from the last change on, and count each version as one more strategy tried.",
+        ]
     idle = undecided_days(root, history)
     if idle:
         out += [

@@ -32,6 +32,7 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     assert run_daily.run(tmp_path, first, fake_market, tmp_path) == []
     rows = ledger.decisions(tmp_path)
     assert {r["strategy"] for r in rows} == set(LIVE)
+    assert all(r["code_hash"] == run_daily.fingerprint(LIVE[r["strategy"]]) for r in rows)
     # Decided at 22:30 on 11-02: crypto seen through 11-01, ETFs through 11-02.
     assert rows[0]["data_through"]["BTC"] == "2026-11-01"
     assert rows[0]["data_through"]["SPY"] == "2026-11-02"

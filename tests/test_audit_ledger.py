@@ -268,6 +268,31 @@ def test_a_decision_records_the_code_version(repo: Path, monkeypatch: pytest.Mon
     assert "code" not in second
 
 
+def test_a_strategy_changed_under_its_name_is_flagged(repo: Path) -> None:
+    """Audit L7 (second half, fixed): a strategy's code or parameters could change under the same
+    name and the scoreboard went on showing one unbroken record. Each decision now carries a
+    fingerprint of the strategy's own code and the scoreboard says when it changed."""
+    from grimstrade import report, run_daily
+    from grimstrade.strategies import LIVE
+
+    same = run_daily.fingerprint(LIVE["ts_momentum"])
+    assert same == run_daily.fingerprint(LIVE["ts_momentum"]) and len(same) == 12
+    assert same != run_daily.fingerprint(LIVE["xs_momentum"])  # another file, another fingerprint
+
+    bars = btc([(100.0, 100.0)] * 5)
+    seen: History = {"BTC": bars[:1]}
+    decide(repo, at(DAY1), "s", {"BTC": 1.0})  # an old line, from before fingerprints
+    for day, version in ((1, "aaaaaaaaaaaa"), (2, "aaaaaaaaaaaa")):
+        when = at(DAY1 + timedelta(days=day))
+        ledger.write_decision(repo, when, "s", {"BTC": 1.0}, seen, "t", version)
+    assert report.code_changes(repo) == {}
+    assert "Code changed" not in report.render(repo, {"BTC": bars})
+    when = at(DAY1 + timedelta(days=3))
+    ledger.write_decision(repo, when, "s", {"BTC": 0.5}, seen, "t", "bbbbbbbbbbbb")
+    assert report.code_changes(repo) == {"s": 1}
+    assert "**Code changed under the same name:** s (1x)" in report.render(repo, {"BTC": bars})
+
+
 def test_a_lost_final_newline_does_not_glue_lines_together(tmp_path: Path) -> None:
     """Audit L9 (fixed; found by the independent reviewer): a ledger or bar file whose last line
     had lost its newline got the next line glued on ("}{"). Every later run then failed to parse

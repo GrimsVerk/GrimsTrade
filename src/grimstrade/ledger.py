@@ -69,6 +69,7 @@ def write_decision(
     weights: Mapping[str, float],
     seen: History,
     reason: str,
+    code_hash: str | None = None,
 ) -> dict[str, Any]:
     entry = {
         "time": iso(time),
@@ -83,6 +84,10 @@ def write_decision(
     code = os.environ.get("GITHUB_SHA")
     if code:
         entry["code"] = code
+    # ...and a fingerprint of the strategy's own code (`run_daily.fingerprint`): the commit changes
+    # with every merge, this only when the strategy does. The scoreboard flags such a change.
+    if code_hash:
+        entry["code_hash"] = code_hash
     _append(root / DECISIONS, entry)
     return entry
 

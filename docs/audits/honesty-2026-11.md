@@ -52,7 +52,6 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | L3 | The record branch can be replaced (force-push, delete) | high | detected; owner action open |
 | G4 | Dividends not credited, cash earns nothing: yardsticks understated | medium | open: known, now sized |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
-| L7 | A decision did not say which code made it | medium | half fixed |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
@@ -67,6 +66,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | D4 | A hole in a source's answer became a permanent gap | medium | fixed |
 | L5 | A failed fetch started a brand-new record | medium | fixed |
 | L8 | The daily job could be started from any branch | medium | fixed |
+| L7 | A strategy could change under its name and keep one unbroken record | medium | fixed |
 | G1 | NaN weights were accepted | medium | fixed (also on main) |
 | S7 | A fill on a strategy's first day was left out of Sharpe and drawdown | medium | fixed |
 | S8 | The weekly page let a late starter "beat" a yardstick it merely copied | medium | fixed |
@@ -205,17 +205,6 @@ ordinary tests that pin the numbers quoted here.
 - **Evidence:** live probe; `tests/test_audit_data.py::test_stooq_browser_check_page_is_an_error_not_data`.
 - **Proposed fix:** a second real ETF source. Alpaca's free data is in the BACKLOG; it needs a
   key stored as an Actions secret, which is the owner's call.
-
-### L7. A decision did not say which code made it (medium, half fixed)
-
-- **What:** strategy names key the ledger, but a strategy's code or parameters can change under
-  the same name. The scoreboard then shows one unbroken track record, and `tries.jsonl` counts
-  one try, for what were really two strategies. The daily job runs whatever is on `main`.
-- **Fix (done, `ledger.py`):** each new decision line carries `code`, the commit the daily job
-  ran (`GITHUB_SHA`); a local run has no such field
-  (`tests/test_audit_ledger.py::test_a_decision_records_the_code_version`).
-- **Still open:** nothing reads it yet. The scoreboard should flag (or start a new row for) a
-  strategy whose own file changed between two of its decisions, and count that as a new try.
 
 ### Low
 
@@ -370,6 +359,24 @@ One commit per fix, except the three workflow changes, which share the same line
   `ledger/problems.jsonl`; the scoreboard shows how many runs had problems and the latest ones,
   the weekly page says how many this week.
   `tests/test_audit_data.py::test_a_runs_problems_are_kept_in_the_record`.
+
+### L7. A strategy could change under its name and keep one unbroken record (medium)
+
+- **What:** strategy names key the ledger, but a strategy's code or parameters can change under
+  the same name. The scoreboard then shows one unbroken track record, and `tries.jsonl` counts
+  one try, for what were really two strategies. The daily job runs whatever is on `main`.
+- **Fix (`ledger.py`, `run_daily.py`, `report.py`):** each new decision line carries `code`, the
+  commit the daily job ran (`GITHUB_SHA`), and `code_hash`, a fingerprint of the strategy's own
+  file and the shared signal helpers. The commit changes with every merge, the fingerprint only
+  when the strategy does. The scoreboard prints, in bold, every strategy whose fingerprint
+  changed between two of its decisions and says to judge it from the last change on
+  (`tests/test_audit_ledger.py::test_a_strategy_changed_under_its_name_is_flagged`,
+  `...::test_a_decision_records_the_code_version`).
+- **What is left:** the 13 decisions already on record carry no fingerprint, so a change before
+  the first run of this code is not seen. A change of the gym's rules or costs or of the list of
+  assets changes every strategy at once and is not fingerprinted (it is a DECISIONS entry). The
+  flag is a sentence under the table; the row is not split and the new version is not added to
+  the count of tries automatically.
 
 ### L5, L8. The daily job could start a new record by accident, or run unmerged code (medium)
 

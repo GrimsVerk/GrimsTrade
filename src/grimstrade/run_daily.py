@@ -8,16 +8,32 @@ Plain Python, no LLM. Exits 1 if any data source failed (after still doing what 
 from __future__ import annotations
 
 import argparse
+import hashlib
+import inspect
 import json
 import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from grimstrade import data, gym, ledger, report, sources, weekly
+from grimstrade import data, gym, ledger, report, signals, sources, weekly
 from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
 BOOTSTRAP_DAYS = 700
+
+
+def fingerprint(decide: gym.Strategy) -> str:
+    """A short hash of the code behind a strategy: its own file plus the shared signal helpers.
+    Written into each decision, so a strategy that changes under the same name cannot pass as
+    one unbroken track record. The raw text is hashed (stable across Python versions), so a
+    change of comments or layout shows up as a change too. Empty if the source can't be read:
+    a missing fingerprint must never cost a decision."""
+    try:
+        files = [sys.modules[decide.__module__], signals]
+        text = "".join(inspect.getsource(m) for m in files)
+    except (OSError, TypeError, KeyError):
+        return ""
+    return hashlib.sha256(text.encode()).hexdigest()[:12]
 
 
 def run(
@@ -74,7 +90,7 @@ def run(
             problems.append(f"{name}: {e}")
             print(f"{name}: FAILED {e}", file=sys.stderr)
             continue
-        ledger.write_decision(root, now, name, weights, seen, reason)
+        ledger.write_decision(root, now, name, weights, seen, reason, fingerprint(decide))
         print(f"{name}: {weights} ({reason})")
 
     ledger.record_research(root, repo, now)
