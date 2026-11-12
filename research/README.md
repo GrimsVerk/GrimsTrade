@@ -7,18 +7,18 @@ Two research runs, night of 2026-11-12. **Neither the clever maths (run 1) nor m
 
 Run 2, machine learning:
 
-- **Done:** six ideas written down with their pass mark before testing; 28 model versions, 46
-  backtests, all logged. Linear models, gradient boosting and a small decision tree on 15
+- **Done:** seven ideas written down with their pass mark before testing; 31 model versions,
+  52 backtests, all logged. Linear models, gradient boosting and a small decision tree on 15
   simple features (trend, volatility, drawdown, what the other assets are doing), tested so
   that no model ever saw its own future.
 - **Result:** every version lost to the trend rule (Sharpe 0.67 to 0.94 against 1.05), and all
-  but three lost to simply holding everything (0.88).
+  but four lost to simply holding everything (0.88); those four beat it by 0.06 at most.
 - **Why:** the models cannot tell good months from bad ones; their ranking is a coin toss.
   The only signal in the features is the weak trend effect the simple rule already uses, and
   fitting a model on top lost it rather than sharpened it. Boosting did not beat the plain
   linear model. A model filtering the trend rule's trades made the rule worse. Training on
-  the size of gains instead of their direction, and on 33 markets instead of six (five times
-  the data), changed nothing.
+  the size of gains instead of their direction, on 33 markets instead of six (five times the
+  data), or to forecast a week ahead instead of a month, changed nothing.
 - **The test is not broken:** a fake signal planted in the data is found, and a second agent
   that did not write the code hunted for errors and found none that changes a result. The
   fake signal has to be at least twice as strong as the best published forecasts before it
@@ -44,7 +44,7 @@ Run 1, ideas from the literature (unchanged):
 
 Both runs:
 
-- **Luck check:** the best of the 49 versions tried beat "hold everything" by 0.22 Sharpe; luck
+- **Luck check:** the best of the 52 versions tried beat "hold everything" by 0.22 Sharpe; luck
   alone would give about 0.24. No new rule has shown an edge.
 - **Still clean:** the last 12 months of prices were never looked at, for any idea.
 
@@ -80,6 +80,7 @@ weight 0.88; details in `results/ml-*.md`):
 - `ml-payoff` (0.67-0.77): trained on the size of gains, the models were worse at exactly that
   than "always up".
 - `ml-pooled` (0.68-0.92): 33 markets and five times the rows gave the same coin toss.
+- `ml-weekly` (0.82-0.89): forecasting a week ahead, four times the bets, the same coin toss.
 - Forecast skill for all of them: AUC 0.48 to 0.51 (0.50 is a coin toss), below the single
   12-month flag at 0.52 and below most trend features left alone (0.52 to 0.54,
   `results/ml-feature-skill.md`). `results/ml-control.md` shows a planted signal is found, and
@@ -116,13 +117,13 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
   cached models give the same weights as models refitted on history truncated by the gym,
   pooled rows are the same when built from truncated history, and forecasts do not move by a
   bit when every later bar is scrambled).
-- Six cards, all tested, all dead, each `results/ml-*.md` ending in a dated verdict:
+- Seven cards, all tested, all dead, each `results/ml-*.md` ending in a dated verdict:
   `ml-linear`, `ml-gbm` (9 settings), `ml-filter` (carded before any model was fitted);
-  `ml-sizing`, `ml-payoff`, `ml-pooled` (each carded after the ones before it had failed, and
-  saying so).
+  `ml-sizing`, `ml-payoff`, `ml-pooled`, `ml-weekly` (each carded after the ones before it had
+  failed, and saying so). `ml-weekly` runs with `ML_HORIZON=7` in front of the command.
 - `results/ml-control.md` (`lib/control_ml.py`): planted signals of correlation 0 to 0.30. The
   machinery finds them; 0.20 ties `tsmom12`, 0.30 beats it.
-- `results/deflation.md` refreshed (49 selectable variants; +0.24 from luck, +0.22 seen).
+- `results/deflation.md` refreshed (52 selectable variants; +0.24 from luck, +0.22 seen).
 - Dividends (brief, item 4): nothing to add. The research harness has used dividend-adjusted
   prices for every ETF since run 1 (`data/adj/`), so every ML test already credits them;
   `results/robustness.md` has the raw-price view. The request to the M1 lane stands.
@@ -134,9 +135,7 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
 
 **Doing**
 
-- `ml-weekly` (7-day labels): card, protocol rule and code committed before the run. If
-  `results/ml-weekly.md` has no verdict, run the look-ahead check and the card with
-  `ML_HORIZON=7` and write it; then `lib/deflation.py`, `ideas.md`, and the counts above.
+- Nothing half-finished: every file on the branch is complete as it stands.
 
 **Next (a later run; nothing here is started)**
 
@@ -144,7 +143,6 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
   in kind: other information (interest rates and credit spreads from FRED, keyless; funding
   rates need perpetual futures, which the gym does not have), or a much wider book to rank
   (30 or more ETFs, long only), where a weak forecast has more bets to work on.
-- A shorter horizon (weekly labels) is the one cheap variation left untested.
 
 **Code review (2026-11-12, by an agent that did not write the code).** It recomputed features
 and labels from the raw price files (same to 1e-14), scrambled every bar after a fit day (rows,
@@ -171,8 +169,8 @@ and weights. No leak, no misalignment. What it did find, none of it able to chan
 **Run 2 in one paragraph:** machine learning on 15 simple features did not beat `tsmom12`.
 Linear models found nothing and became equal weight (0.89 Sharpe against 1.05); boosting found
 nothing and traded on the noise (0.72-0.86 over nine settings); a model filtering the trend
-rule made it worse (0.73-0.94); sharper position rules, payoff-weighted training and five
-times the training data did not help (0.67-0.92). The models' forecast skill is nil (AUC
+rule made it worse (0.73-0.94); sharper position rules, payoff-weighted training, five times
+the training data and a one-week horizon did not help (0.67-0.92). The models' forecast skill is nil (AUC
 0.48-0.51, below the single 12-month flag at 0.52 and below the trend features left alone). A planted signal is detected, and it has to reach a
 correlation of 0.2 to 0.3 before it beats `tsmom12`: six assets decided monthly are too few
 bets for return forecasting to pay.
@@ -204,9 +202,7 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
 
 **Doing**
 
-- `ml-weekly` (7-day labels): card, protocol rule and code committed before the run. If
-  `results/ml-weekly.md` has no verdict, run the look-ahead check and the card with
-  `ML_HORIZON=7` and write it; then `lib/deflation.py`, `ideas.md`, and the counts above.
+- Nothing half-finished: every file on the branch is complete as it stands.
 
 **Next (a later run; nothing here is started)**
 
@@ -230,7 +226,7 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
 ## Requests to the M1 lane (code in `src/`)
 
 - **Count the idea lab's tries in the deflated Sharpe.** `research/tries.md` has one row per
-  backtest; the rows with kind `variant` (49 on the six assets so far, plus the timing rules run
+  backtest; the rows with kind `variant` (52 on the six assets so far, plus the timing rules run
   per asset) are the ones that could have been selected. `lib/deflation.py` shows one way to
   read them.
 - **Credit dividends in the gym** (already in `docs/BACKLOG.md`; this makes it urgent). Raw TLT is

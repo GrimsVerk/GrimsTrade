@@ -274,3 +274,9 @@ Never edit or delete a row.
 | 2026-11-12 06:39 | ml-pooled | gbm-pool@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.48 | +118.5% | 18.3% | 6.79 |
 | 2026-11-12 06:39 | ml-pooled | gbm-pool@coin | robustness | train | 2023-01-06 | 2025-11-09 | 0.50 | +35.9% | 32.1% | 11.17 |
 | 2026-11-12 06:39 | ml-pooled | gbm-pool@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.62 | +1787.1% | 47.6% | 7.75 |
+| 2026-11-12 06:46 | ml-weekly | gbm-wk | variant | train | 1994-02-01 | 2025-11-09 | 0.82 | +4057.7% | 45.7% | 11.76 |
+| 2026-11-12 06:46 | ml-weekly | logit-wk | variant | train | 1994-02-01 | 2025-11-09 | 0.89 | +9744.1% | 57.1% | 2.14 |
+| 2026-11-12 06:46 | ml-weekly | gbm-wk-low | variant | train | 1994-02-01 | 2025-11-09 | 0.83 | +6376.1% | 54.7% | 9.13 |
+| 2026-11-12 06:46 | ml-weekly | gbm-wk@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.24 | +45.9% | 37.4% | 14.58 |
+| 2026-11-12 06:46 | ml-weekly | gbm-wk@coin | robustness | train | 2023-01-06 | 2025-11-09 | 1.01 | +111.5% | 23.1% | 18.32 |
+| 2026-11-12 06:46 | ml-weekly | gbm-wk@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.67 | +1988.7% | 31.5% | 12.42 |

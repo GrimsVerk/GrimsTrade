@@ -1,8 +1,8 @@
 # How much of the best result could be luck?
 
-Variants that could have been selected, on the six assets: 49. Typical standard error of a Sharpe difference to equal weight over the train period: 0.11.
+Variants that could have been selected, on the six assets: 52. Typical standard error of a Sharpe difference to equal weight over the train period: 0.11.
 
-If none of the 49 had any edge at all, the best of them would still be expected to beat equal weight by about **+0.24** Sharpe (Bailey & Lopez de Prado's expected maximum). The best one actually seen: **+0.22** (`ensemble-tsmom/e4`).
+If none of the 52 had any edge at all, the best of them would still be expected to beat equal weight by about **+0.24** Sharpe (Bailey & Lopez de Prado's expected maximum). The best one actually seen: **+0.22** (`ensemble-tsmom/e4`).
 
 Sharpe difference to equal weight, every selectable variant, best first:
 
@@ -21,6 +21,7 @@ Sharpe difference to equal weight, every selectable variant, best first:
 | crypto-slot-size/c05 | +0.02 |
 | hmm-regime/hard | +0.01 |
 | ml-linear/logit | +0.01 |
+| ml-weekly/logit-wk | +0.01 |
 | hmm-regime/soft | +0.00 |
 | ml-linear/logit-hard | -0.00 |
 | vol-target/t40 | -0.01 |
@@ -32,6 +33,8 @@ Sharpe difference to equal weight, every selectable variant, best first:
 | universal-portfolio/up | -0.04 |
 | ml-linear/ridge | -0.04 |
 | kelly-shrunk/k0.4 | -0.04 |
+| ml-weekly/gbm-wk-low | -0.05 |
+| ml-weekly/gbm-wk | -0.06 |
 | ml-sizing/logit-low | -0.06 |
 | ml-sizing/ridge-prop | -0.07 |
 | ml-gbm/gbm | -0.07 |
