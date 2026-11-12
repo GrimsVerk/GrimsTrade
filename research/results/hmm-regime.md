@@ -86,4 +86,25 @@ Annualised log growth: hard +13.6%, soft +13.2%, vol-calm +10.5%, sma200 +14.7%,
 - PASS: 4. Same sign out of universe in at least 2 of 3 sets (etf +0.16, coin -0.08, idx +0.01)
 - PASS: 5. Beats equal weight on Sharpe (0.89 vs 0.88)
 
-**PASSES train.**
+- FAIL: 6. (card's extra bar) Not behind twin B `sma200` on Sharpe on the six assets (0.89 vs 1.01)
+
+**FAILS train** (passes the default bar against the volatility switch, fails the card's stricter bar).
+
+## Verdict (2026-11-12)
+
+Dead by the card's own bar, and the default bar flatters it. The hidden Markov model is a better
+regime detector than a volatility threshold (+0.14 Sharpe, p = 0.03, ahead in 4 of 5 eras, also
+ahead on the other ETFs). But that twin is worse than doing nothing (0.74 against 0.88 for equal
+weight), so beating it proves little. Against what matters:
+
+- Equal weight: 0.89 against 0.88. Nothing, for seven times the trading (8.8 turns a year).
+- The 200-day average: 0.89 against 1.01, and a 57% maximum drawdown against 44%. The model sat
+  through the dot-com bust (-57%): a slow grind down at moderate volatility looks "calm" to it.
+- Out of universe it loses to the 200-day average on the old S&P 500 index (0.33 against 0.74)
+  and the DAX, ties on the Nikkei, and wins only on the FTSE and the coins (where both lose to
+  simply holding).
+
+This answers the question survey part 4 left open: the published regime-switching results beat
+buy-and-hold, but nobody compared them with a moving average. On our data the moving average is
+better and simpler. Regimes defined by volatility alone miss the point; what protects is trend.
+No held-out look was spent.

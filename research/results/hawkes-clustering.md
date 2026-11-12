@@ -77,3 +77,13 @@ Annualised log growth: down2 +15.2%, vol-calm +10.5%, equal-weight +16.7%
 - FAIL: 5. Beats equal weight on Sharpe (0.87 vs 0.88)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Dead. Fitted note: mu was tied to the observed event rate and (memory, branching ratio) chosen by
+likelihood on a grid, with the exact discrete-time branching ratio in place of the card's
+continuous-time alpha/beta. The fitted self-excitation is weak (branching ratio 0.1-0.4, memory
+of 1-8 days), so the rule steps aside for a few days after a large down day and is back in.
+Result: equal weight with a few missed days. Sharpe 0.87 against 0.88, the same 69% drawdown,
+seven times the turnover. It beats the volatility switch only because that switch is out of the
+market far more. As the survey said, at daily bars a Hawkes process is a risk model, not a signal.
