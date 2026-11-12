@@ -59,6 +59,7 @@ def run(
         ledger.write_decision(root, now, name, weights, seen, reason)
         print(f"{name}: {weights} ({reason})")
 
+    ledger.record_research(root, repo, now)
     results = report.live_results(root, history)
     state = {
         name: {

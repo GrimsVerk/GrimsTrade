@@ -9,9 +9,10 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   runs included; a held-out run of a variant already counted is not a new try) + ideas in
   `research/ideas.md` whose Status is anything but `new` and that have no row in `tries.md`. Both
   files are unioned over the code checkout, `main` (local and remote) and every local/remote
-  `research-*` branch. Each new high of the research count is appended to
-  `ledger/research_tries.jsonl` on the record branch, and N never uses less than that high, so a
-  deleted or unfetched branch cannot hide tries. Dead tries stay counted forever. Why:
+  `research-*` branch. The daily runner appends every research try it sees (idea, variant, train
+  Sharpe, time) to `ledger/research_tries.jsonl` on the record branch, and N and the Sharpes come
+  from the union of that file and what is visible, so a deleted or unfetched branch cannot hide
+  tries. Reports only read. Dead tries stay counted forever. Why:
   overcounting only makes us more cautious; undercounting is the dishonest direction.
   `ledger.research_tries` / `ledger.total_tries` implement it. (Revised after a Fable review
   found undercounting paths in the first version.)
