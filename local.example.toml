@@ -1,0 +1,9 @@
+# Machine-specific settings. Copy to local.toml (git-ignored) and edit.
+
+[cache]
+# Raw data cache for backfills and snapshots (never committed). ~300 GB budget.
+root = "~/data/grimstrade"
+
+[alpaca]
+# Market-data keys (free account), outside the repo, chmod 600. Never commit or print them.
+env_file = "~/.config/grimstrade/alpaca.env"

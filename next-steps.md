@@ -1,5 +1,36 @@
 # Next steps
 
+## Ingest 1 (branch `ingest-1`, draft PR #14, not merged)
+
+Brief: chief-of-staff/briefs/grimstrade-ingest-1.md. Cache and job state: `docs/data-inventory.md`.
+
+- Done: rolling windows saved 2026-11-12 (Yahoo 1h SPY/QQQ/GLD/TLT ~730 days, Kraken Futures
+  funding + open interest PF_XBTUSD/PF_ETHUSD) with `scripts/snapshot_rolling.py`. Write-once
+  cache with manifest (`grimstrade.cache`), root in git-ignored `local.toml`
+  (`local.example.toml` committed). Backfill scripts in `scripts/backfill/`.
+- Done: daily collection module `grimstrade.intraday` (Coinbase crypto 1h, Yahoo ETF 1h, Kraken
+  funding; `available_at` on every row; append-only; each series fails on its own), offline
+  tests in `tests/test_intraday.py`, checked once against the live APIs (second run adds 0 rows).
+  **Not wired into `run_daily`** yet.
+- Doing (detached background jobs, PIDs in `<cache>/pids/`): `binance`, `rest_1m-coinbase`,
+  `rest_1m-bitstamp`, `rest_1m-bitfinex`, `small`, `alpaca` (SIP feed, started by the CoS). Check with the commands in
+  `docs/data-inventory.md`; when all logs say `DONE`, fill in real sizes/rows there.
+- Next:
+  - [ ] Rerun `scripts/snapshot_rolling.py` daily until the daily collection below exists (each
+        day is a new dated folder; nothing older than the windows can be recovered).
+  - [ ] Owner: FRED/ALFRED CSV endpoints stall our honest User-Agent (curl's default gets 200),
+        so `small.py` skips them (`SKIP_HOSTS`). We don't disguise the client. Options: a free
+        FRED API key (owner's account; its JSON API also gives real-time vintages exactly), or
+        ask FRED. Until then no FRED/ALFRED macro data; the Treasury curve covers rates.
+  - [ ] Kraken OI snapshot holds only the last 2,000 hours (one call); page back with `since`.
+  - [ ] Wire `intraday.collect(trail/data/intraday, now, http_get)` into `run_daily` after the
+        ledger commit step, inside its own try/except. First check that `run_daily.check_record`
+        accepts the new files (it checks bar files under `data/`; maybe exempt
+        `data/intraday/`) and that nothing in the record checks reads them. Add
+        `revisions.jsonl` lines when a re-fetched past row differs (not done yet).
+  - [ ] Stooq is behind a bot check (seen 2026-11-12): the ETF fallback in `sources.py` is dead.
+        Not fixed (see the audit item above; Alpaca may become the second ETF source).
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
