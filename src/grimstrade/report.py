@@ -224,6 +224,17 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         footnote(trials),
     ]
+    troubled = ledger.problem_runs(root)
+    if troubled:
+        last = troubled[-1]
+        shown = "; ".join(str(x)[:140] for x in last["problems"][:3])
+        more = len(last["problems"]) - 3
+        out += [
+            "",
+            f"Runs that reported problems: {len(troubled)}. Latest, {last['time']}: {shown}"
+            + (f"; and {more} more" if more > 0 else "")
+            + ". All of them: `ledger/problems.jsonl`.",
+        ]
     revised = data.revisions(root)
     if revised:
         days = {(str(r["symbol"]), str(r["date"])) for r in revised}

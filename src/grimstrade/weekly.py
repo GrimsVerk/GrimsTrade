@@ -140,6 +140,13 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         f"yardstick so far; {verdict(days, len(proven), len(strong) - len(proven))}",
         "",
     ]
+    week = [r for r in ledger.problem_runs(root) if r["time"][:10] > week_ago.isoformat()]
+    if week:
+        lines[4:4] = [
+            f"**Note:** {len(week)} run{'s' * (len(week) != 1)} this week reported problems "
+            "(a price source or a strategy failing); see the end of `scoreboard.md`.",
+            "",
+        ]
     fresh = report.freshness(history)
     if "STALE" in fresh:  # a stopped price source makes whoever holds that asset look calm
         lines[4:4] = [f"**Warning, old prices.** {fresh}", ""]

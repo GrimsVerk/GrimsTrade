@@ -78,6 +78,7 @@ def run(
         print(f"{name}: {weights} ({reason})")
 
     ledger.record_research(root, repo, now)
+    ledger.record_problems(root, now, problems)
     results = report.live_results(root, history)
     state = {
         name: {

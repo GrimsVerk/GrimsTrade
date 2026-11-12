@@ -274,3 +274,26 @@ def test_a_day_the_source_leaves_out_is_not_skipped(tmp_path: Path) -> None:
     # A symbol that is merely behind (its newest day is older) has no hole.
     data.append(tmp_path, "TLT", week[:3])
     assert len(run_daily._etf_holes(tmp_path)) == 1
+
+
+def test_a_runs_problems_are_kept_in_the_record(tmp_path: Path) -> None:
+    """Audit D9 (fixed; found by the independent reviewer): failed sources and strategies that
+    raised left no trace under trail/, only in that run's log and its exit code."""
+    from grimstrade import ledger, weekly
+
+    def crypto_only(url: str) -> bytes:
+        if "kraken" in url:
+            rows = [(D10 - timedelta(days=i), 100.0, 101.0, 99.0, 100.0) for i in range(9, -1, -1)]
+            return kraken_body(rows)
+        raise OSError("blocked")
+
+    now = datetime(2026, 11, 11, 22, 30, tzinfo=UTC)
+    problems = run_daily.run(tmp_path, now, crypto_only)
+    assert len(problems) == 4  # the four ETFs
+    (line,) = ledger.problem_runs(tmp_path)
+    assert line["time"] == "2026-11-11T22:30:00Z" and line["problems"] == problems
+    board = (tmp_path / "reports" / "scoreboard.md").read_text()
+    assert "Runs that reported problems: 1. Latest, 2026-11-11T22:30:00Z: SPY: all sources" in board
+    assert "; and 1 more. All of them: `ledger/problems.jsonl`." in board
+    page = weekly.render(tmp_path, data.load_all(tmp_path), tmp_path)
+    assert "**Note:** 1 run this week reported problems" in page

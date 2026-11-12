@@ -3,6 +3,7 @@
 - `ledger/decisions.jsonl`: one line per decision (UTC time, strategy, weights, prices seen,
   last bar date seen per asset, reason, commit of the code that decided).
 - `ledger/tries.jsonl`: one line per strategy ever tried, live or dead (for the deflated Sharpe).
+- `ledger/problems.jsonl`: one line per run that reported problems, with what they were.
 - `ledger/research_tries.jsonl`: every research-lane try ever seen (idea, variant, Sharpe), so none
   can disappear from the count.
 
@@ -28,7 +29,8 @@ from grimstrade.data import History
 DECISIONS = Path("ledger/decisions.jsonl")
 TRIES = Path("ledger/tries.jsonl")
 RESEARCH_FLOOR = Path("ledger/research_tries.jsonl")
-APPEND_ONLY = (DECISIONS, TRIES, RESEARCH_FLOOR)
+PROBLEMS = Path("ledger/problems.jsonl")
+APPEND_ONLY = (DECISIONS, TRIES, RESEARCH_FLOOR, PROBLEMS)
 
 
 class LedgerTampered(Exception):
@@ -91,6 +93,19 @@ def register_try(root: Path, name: str, note: str, now: datetime) -> bool:
         return False
     _append(root / TRIES, {"name": name, "first_tried": iso(now), "note": note})
     return True
+
+
+def record_problems(root: Path, now: datetime, problems: Iterable[str]) -> None:
+    """Keep a run's problems (a source that failed, a strategy that raised, stale or revised
+    data) in the record itself. Otherwise they exist only in that run's log, and later "held its
+    position", "crashed" and "had no data" all look the same."""
+    found = list(problems)
+    if found:
+        _append(root / PROBLEMS, {"time": iso(now), "problems": found})
+
+
+def problem_runs(root: Path) -> list[dict[str, Any]]:
+    return _read(root / PROBLEMS)
 
 
 def tries(root: Path) -> int:
