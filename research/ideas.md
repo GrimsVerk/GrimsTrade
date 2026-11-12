@@ -42,6 +42,7 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | ml-gbm | Machine learning | testing | [card](cards/ml-gbm.md) | Gradient boosting on the same features; 9 settings, all logged |
 | ml-filter | Machine learning | testing | [card](cards/ml-filter.md) | `tsmom12` with a model grading its trades (meta-labelling) |
 | ml-sizing | Machine learning | testing | [card](cards/ml-sizing.md) | Same models, position follows the forecast. Written after the first three failed and a control showed their sizing rule was blunt |
+| ml-payoff | Machine learning | testing | [card](cards/ml-payoff.md) | Same features, trained on payoff (months weighted by size) instead of direction. Written after the first four failed |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 

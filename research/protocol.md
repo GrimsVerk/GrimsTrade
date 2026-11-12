@@ -184,3 +184,16 @@ Sharpe. These two rules apply to later tests only; the three cards above stay ju
 
 A converter is only worth believing if the control shows it works: planted correlation 0.10
 must come out ahead of `tsmom12` on the six assets. The control is rerun with each rule.
+
+## Payoff-weighted training (added 2026-11-12 02:30 UTC, run 2)
+
+Written after `ml-linear`, `ml-gbm`, `ml-filter`, `ml-sizing` and the control had been seen.
+For later tests only.
+
+A classifier on `up` treats a month that lost 30% like one that lost 1%. With "payoff weights"
+each training row counts in proportion to the size of its 28-day log return (|return| divided
+by the mean |return| of the training rows). The weighted chance of "up" is above one half
+exactly when the expected log return is positive, so "hold the full slot when the weighted
+P(up) > 0.5" is the hold-or-not rule that would have grown the training rows' money fastest.
+Purged CV scores use the same weights. The `raw` regression target is the 28-day log return
+itself, unscaled and unclipped; hold the full slot when the forecast is positive.
