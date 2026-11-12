@@ -166,8 +166,9 @@ def test_todays_equity_is_provisional_and_changes_tomorrow() -> None:
 
 
 def test_the_deflated_sharpe_bar_is_out_of_reach_for_years() -> None:
-    """Audit S7, sized: the scoreboard's deflated Sharpe allows for every strategy "tried", and
-    that count includes every backtest variant the research lane logs: 219 on 2026-11-12, one
+    """Audit S2 (part 2), sized: the scoreboard's deflated Sharpe allows for every strategy
+    "tried", and that count includes every backtest variant the research lane logs: 219 on
+    2026-11-12, one
     day in. The Sharpe a strategy must then show before "95% sure" is about 6.3 after six months,
     4.4 after a year, 2.0 after five. A strategy with a true Sharpe of 1.0 (very good) passes
     after three years in about 1 world in 100. Cautious, not dishonest, but the board will say

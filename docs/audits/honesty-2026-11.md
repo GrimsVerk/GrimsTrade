@@ -1,127 +1,126 @@
 # Honesty audit 1 (2026-11-12)
 
-Auditor: lane C agent, branch `audit-1`. Scope: everything that could make the scoreboard say
-something that is not true. Code audited: `main` at `8e26333` (M0), then `552e521` after the M1 merge
-(merged into this branch on 2026-11-12). Record audited: `paper-trail` at
-`0d3bc31` (one daily run, 2026-11-11 22:00 UTC), read-only.
+Auditor: lane C agent, branch `audit-1` (PR #5). Scope: every way this system could show a
+result that is not true. Code audited: `main` at `8e26333` (M0), then at `552e521` after M1 was
+merged during the audit (merged into this branch). Record audited, read-only: `paper-trail` at
+`6bd5f18` (two runs: 2026-11-11 22:00 UTC and 2026-11-12 01:51 UTC).
 
 ## Summary for the owner
 
-(Being written as findings land; see Status at the end for what is done.)
+I tried to make the scoreboard lie. The part that matters most held: no strategy can see a
+price before the market has printed it, summer or winter time, weekends and holidays included,
+and the record so far (two runs) is clean.
 
-## Findings, ranked by how much they could mislead
+The logbook, though, could be made to lie in four ways. All four are demonstrated by tests:
 
-Severity: **high** = the scoreboard can show a result that never happened, and nothing warns;
-**medium** = numbers are biased or a safeguard is weaker than the docs say; **low** = small or
-unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
+1. Add a "decision" afterwards with an old date and be paid as if it had been made in time.
+2. Rewrite old lines and hide the change behind a merge.
+3. Edit a stored price.
+4. Replace the whole record branch.
 
-### L1. A decision written after the outcome is accepted (high) - FIXED in this branch
+The first three are closed in this branch. The fourth is now detected (the daily job asks
+GitHub's own log before it runs), but only a setting of yours can prevent it.
 
-- **What:** the ledger check only proves that old lines were not changed. It did not prove a
-  line was written when it says it was. Anyone who can push to `paper-trail` (the agents all act
-  as GrimsBot, which has write access) could append "on day 1 at 22:31 I bought BTC" on day 4,
-  after BTC doubled. The gym filled it at the day-2 open and the scoreboard showed +99%.
-- **Evidence:** `tests/test_audit_ledger.py::test_a_backdated_decision_is_not_credited`.
-  `gym.simulate` sorted decisions by their own `time` field; `check_append_only` passes because
-  the file only grew. Nothing compared a line's `time` with the commit that first carried it.
-- **Fix (done, `ledger.py` + 3 lines in `report.py`):** a committed decision now counts from its
-  commit time when that is later than its own timestamp (`ledger.in_force`). The back-dated line
-  is filled at the first open after it was committed, so hindsight buys nothing. Decisions
-  recorded more than 30 minutes after their timestamp are counted as "late" and the scoreboard
-  says how many. On the real record nothing changes: the two runs so far were committed 2 and 22
-  seconds after their timestamps.
-- **Still open:** commit dates are written by whoever makes the commit, so a determined forger
-  can fake them too. The outside witness is GitHub's own push log:
-  `gh api "repos/GrimsVerk/GrimsTrade/activity?ref=refs/heads/paper-trail"` lists every push with
-  a server-side time (checked: creation by `github-actions[bot]` at 22:00:52Z, one second after
-  the first commit). Proposed: a step in the daily job that compares each pushed commit's date
-  with its push time and fails on a difference over 30 minutes; and the ruleset in L3.
+What to know about the numbers:
 
-### L2. History can be rewritten with an ordinary push (high) - FIXED in this branch
+- **Six months will not tell skill from luck.** Nine strategies with no skill at all, run for
+  six months: the best one looks like a star more often than not. The new "deflated Sharpe"
+  column corrects for that, and it is strict: a world-class strategy has an even chance of
+  reading "95% sure" after about five years, a good one after about twenty. The plan's "at least
+  6 months" can rule out disasters. It cannot prove skill.
+- **The yardsticks are set a little low.** Dividends are not counted: about 4% a year for the
+  bond fund, 2.3% for 60/40, nothing for Bitcoin.
+- **Prices are stored an hour after the US close, before Yahoo's numbers are final.** After one
+  day the stored rows already differ slightly from what Yahoo shows now. Tiny so far, but nothing
+  reports it. Not fixed.
+- **The backup source for the four funds is dead.** If Yahoo stops answering, fund prices
+  freeze. The scoreboard now says so in bold.
 
-- **What:** `check_append_only` reads `git log -- <file>`. Git simplifies that log at merges: when
-  a merge keeps one parent's version of the file, the other parent's history is skipped. So a
-  forger builds a parallel history with a changed ledger, merges the honest branch into it keeping
-  the forged file, and pushes. The result descends from the honest head, so it is a normal
-  fast-forward push: no force-push needed, and a "block force pushes" rule would not stop it.
-- **Evidence:** `tests/test_audit_ledger.py::test_a_rewrite_hidden_behind_a_merge_is_caught`
-  (a losing all-in decision becomes "stayed in cash"; the check passes).
-- **Fix (done, `ledger.py`):** `check_append_only` now walks every commit and compares the file
-  with its version in each parent, instead of trusting the simplified log. A ledger deleted from
-  the working tree is also refused now.
+What I need from you:
 
-### L3. A force-push or delete-and-recreate of `paper-trail` leaves no trace in the repo (high) - GUARDED in this branch, owner action open
+1. Add a rule for the `paper-trail` branch: block force pushes and deletion (GitHub, Settings,
+   Rules; two minutes; agents cannot do it).
+2. Decide what "graduation" means, knowing the point above (finding S2).
+3. After this PR is merged, the very first run on a new record must be started by hand with
+   "start a new record" ticked. The current record is not affected.
 
-- **What:** if the whole branch is replaced, the new history is self-consistent; no check that
-  only reads the branch can know an older one existed. Nothing stops it today: the only ruleset
-  (`protect-main`) covers the default branch only, and GrimsBot (all agents) has push rights.
-- **Evidence:** `tests/test_audit_ledger.py::test_a_force_pushed_history_passes_the_check`;
-  `gh api repos/GrimsVerk/GrimsTrade/rulesets` lists only `protect-main` with
-  `include: ["~DEFAULT_BRANCH"]`.
-- **Guard (done, workflow):** before running, `scripts/check-trail-activity.sh` asks GitHub's
-  activity log, which no pusher can edit, and refuses to run if `paper-trail` was ever
-  force-pushed, deleted or created twice, or if any commit reached GitHub more than 10 minutes
-  after the time it claims (a back-dated commit, see L1). Tried against the real repository: it
-  passes, both real pushes arrived 1 second after their commits. If GitHub cannot be asked the
-  job goes on with a warning. After looking at a reported event the owner sets the repository
-  variable `TRAIL_REVIEWED_UNTIL` to move on. Tests: `tests/test_audit_workflow.py` (4 tests,
-  fake `gh`).
-- **Owner action (needs admin, 2 minutes):** add a ruleset for `paper-trail` that blocks force
-  pushes and deletion, with no bypass. The guard detects; only the ruleset prevents.
+## All findings at a glance
 
-### L4. Stored bars can be edited and nothing notices (high) - FIXED in this branch
+Severity: **high** = the scoreboard can show a result that never happened, or will be read wrongly,
+and nothing warns; **medium** = numbers are biased or a safeguard is weaker than the docs say;
+**low** = small or unlikely. Ranked by how much each could mislead, open ones first.
 
-- **What:** the scoreboard is recomputed from `data/bars/*.csv` on every run, so the bars are as
-  much "the record" as the decisions. AGENTS.md forbids rewriting them, but only the two ledger
-  files are checked. Changing one cell (the open a strategy bought at) rewrites its whole result.
-- **Evidence:** `tests/test_audit_ledger.py::test_a_rewritten_bar_is_caught`: one edited open
-  turns a small loss into +99%, and the next run accepts it.
-- **Fix (done, `run_daily.py`):** the run applies the same append-only check to every file in
-  `data/bars/` and refuses to run if a committed row changed.
+| # | Finding | Severity | State |
+|---|---|---|---|
+| S2 | Six months cannot separate skill from luck; the corrected number says "no" for years | high | open: owner decision |
+| D1 | Bars are stored before the source is final; later corrections are never seen | high | open: proposed |
+| L3 | The record branch can be replaced (force-push, delete) | high | detected; owner action open |
+| G4 | Dividends not credited, cash earns nothing: yardsticks understated | medium | open: known, now sized |
+| G3 | Crypto fee looks like the maker fee, fills are taker | medium | open: unverified |
+| S3 | Returns over different periods ranked in one table | medium | open (weekly page is right) |
+| D6 | The ETF fallback source does not work | medium | open: owner decision |
+| L7 | A decision did not say which code made it | medium | half fixed |
+| S4 | Frozen data looks like a calm strategy | medium | half fixed |
+| D5 | The record does not say where a bar came from | low | open: proposed |
+| G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
+| S6 | The newest row of the scoreboard is provisional | low | open |
+| L6 | Outside a git checkout the ledger check checks nothing | low | open |
+| L1 | A decision written after the outcome was accepted | high | fixed |
+| L2 | History could be rewritten with an ordinary push | high | fixed |
+| L4 | Stored bars could be edited unnoticed | high | fixed |
+| S1 | A Sharpe ratio was printed from day two | high | fixed |
+| D2 | A stock split would be booked as a crash | high, unlikely | guarded |
+| D3 | No sanity check before a bar became permanent | medium | fixed |
+| D4 | A hole in a source's answer became a permanent gap | medium | fixed |
+| L5 | A failed fetch started a brand-new record | medium | fixed |
+| L8 | The daily job could be started from any branch | medium | fixed |
+| G1 | NaN weights were accepted | medium | fixed (also on main) |
+| S5 | Sharpe assumed a point every calendar day | low | fixed |
+| T1 | A decision could be filled before it could have been pushed | low | fixed |
 
-### L5. A failed fetch starts a brand-new record (medium) - FIXED in this branch
+Tests: `tests/test_audit_*.py`. A finding that is still open and has a crisp expected behaviour
+is an `xfail(strict=True)` test (3 left: D1, D5, G2); findings about size or judgement are
+ordinary tests that pin the numbers quoted here.
 
-- **What:** the workflow did `git fetch origin paper-trail || git worktree add --orphan`. If the
-  branch was deleted, the bot silently started a fresh record and the old one was gone from the
-  scoreboard. If the fetch only failed for a moment (network), it also built an orphan; the push
-  was then rejected, so that day's decisions were lost.
-- **Fix (done, workflow):** `scripts/checkout-trail.sh` asks the remote whether the branch
-  exists. Missing branch: the job stops, unless it was started by hand with the new "start a
-  new record" box ticked. Unreachable remote: the job stops, always.
-  Tests: `tests/test_audit_workflow.py` (3 tests on throwaway repos).
+## Open findings
 
-### L6. Outside a git checkout the check silently checks nothing (low)
+### S2. Six months cannot separate skill from luck (high)
 
-- **What:** with `--root` on a plain folder, or on a `trail/` folder that is not a worktree
-  (`/trail/` is gitignored in the code repo), `check_append_only` returns 0 and the runner ignores
-  that. Mostly a trap for local runs.
-- **Evidence:** `tests/test_audit_ledger.py::test_outside_a_git_checkout_the_check_silently_checks_nothing`.
-- **Proposed fix:** the runner prints how many committed versions it verified and refuses a
-  non-empty ledger with none.
+- **What, part 1: the raw numbers flatter.** The uncertainty of a yearly Sharpe ratio measured
+  from daily returns is about sqrt(365 / days): +-3.7 at 30 days, +-1.4 at 180 days, +-1.0 at one
+  year, +-0.7 at two (one standard error; double it for a 95% band). Nine strategies with zero
+  skill, run for 180 days: the best one shows a Sharpe of about 2.1 on average and above 2 in more
+  than half of all cases. Returns are as noisy: over 180 days an asset like BTC with no drift at
+  all ends anywhere between -48% and +94% (5th to 95th percentile), one like SPY between -17% and
+  +21%. "Beat buy-and-hold BTC by 10% in six months" is well inside luck. The scoreboard still
+  sorts by raw return.
+- **What, part 2: the corrected number will say "no" for years.** M1 added the deflated Sharpe
+  (the right tool) and counts every strategy "tried", which includes every backtest variant the
+  research lane logs: 136, then 176, then 219 within one hour on 2026-11-12, and growing nightly.
+  With 219 tries a strategy must show a Sharpe of 6.3 after six months, 4.4 after one year, 2.6
+  after three, 2.0 after five and 1.4 after ten before the column reads 95%. A strategy whose
+  true Sharpe is 1.0 (very good) reads 95% after three years in fewer than 1 case in 100, after
+  ten years in 1 in 10, and has an even chance only after about twenty. A world-class one (true
+  Sharpe 2) has an even chance after five years. Even counting only the 9 live strategies the
+  bar is 4.5 at six months and 1.8 at three years.
+- **What, part 3: the 95% is about the wrong question.** The deflated Sharpe asks "is this
+  better than doing nothing?", not "is it better than the yardstick?". In a long rally
+  buy-and-hold itself would pass. `weekly.md` guards against that by also requiring the strategy
+  to be ahead of every yardstick, but that part is a plain comparison of two noisy returns.
+- **Evidence:** `tests/test_audit_stats.py::test_nine_strategies_with_no_skill_after_six_months_the_best_looks_skilled`,
+  `...::test_the_deflated_sharpe_bar_is_out_of_reach_for_years` (both seeded, numbers as quoted).
+- **Why it matters:** not a bug. Over-counting tries is the cautious direction (DECISIONS,
+  2026-11-12) and stays. But DESIGN.md's graduation bar, "at least 6 months ... deflated Sharpe
+  significant", cannot be met by any realistic strategy, and the owner will read "no sign of
+  skill yet" about everything for years without knowing that this is what an honest board says.
+- **Proposed:** (1) the owner decides what graduation means; an honest wording is "six months
+  shows a strategy is not broken; proof of skill takes years". (2) Print the bar: "Sharpe needed
+  for 95% today: x", next to each row. (3) Apply the deflated test to the return in excess of
+  the best yardstick. (4) Consider counting, for the forward record, only strategies that
+  entered the forward test: a strategy promoted from 200 backtests is one new forward try, and
+  the forward record is exactly what protects against the other 199.
 
-### L7. A decision does not say which code made it (medium) - HALF FIXED in this branch
-
-- **What:** strategy names key the ledger, but a strategy's code or parameters can change under
-  the same name. The scoreboard then shows one unbroken track record, and `tries.jsonl` counts one
-  try, for what were really two strategies. The daily job runs whatever is on `main` that day.
-- **Evidence:** `tests/test_audit_ledger.py::test_a_decision_records_the_code_version`; the
-  first real ledger lines have no code reference.
-- **Fix (done, `ledger.py`):** each new decision line carries `code`, the commit the daily job
-  ran (`GITHUB_SHA`); a local run has no such field. **Still open:** nothing reads it yet. The
-  scoreboard should flag (or start a new row for) a strategy whose own file changed between two
-  of its decisions, and such a change should count as a new try.
-
-### L8. The daily job can be started from any branch (medium) - FIXED in this branch
-
-- **What:** `workflow_dispatch` runs the workflow file and code of whatever branch is chosen
-  (`gh workflow run daily.yml --ref some-branch`). That code then writes to the one official
-  record: unmerged strategies, a different gym, a different report.
-- **Fix (done, workflow):** `if: github.ref == 'refs/heads/main'` on the job
-  (`tests/test_audit_workflow.py::test_the_workflow_uses_the_guards_and_only_runs_code_from_main`).
-  Note: a branch can still carry its own edited copy of the workflow file; the real lock is the
-  ruleset in L3 plus restricting who may push to `paper-trail`.
-
-### D1. A bar taken soon after the close is frozen, and later corrections are never seen (high)
+### D1. Bars are stored before the source is final, and later corrections are never seen (high)
 
 - **What:** an ETF bar is stored once it is 15 minutes past 21:00 UTC and is never looked at
   again: the next run asks the source only for newer days. If the source's numbers for that day
@@ -135,194 +134,234 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   (stored 26,421,050), and `close: null` for all four ETFs, i.e. the row was still being
   rewritten. The price difference is tiny this time (0.07 basis points on an open, the price
   fills use); the point is that the record already differs from its source after one day and
-  nothing reports it. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
-- **Proposed fix (medium, `run_daily.py` + `data.py`):** each run, re-fetch the last ~5 stored
-  days and compare (with a small tolerance); never change stored rows, but write every difference
-  to an append-only `data/revisions.jsonl` and to the run's problem list. Cheap extra safety: move
-  the cron later (e.g. 23:30 UTC) so the row has had 2.5 hours instead of 1.5 to settle.
+  nothing reports it. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported` (xfail).
+- **Proposed fix (medium, `run_daily.py` + `data.py`):** each run, also fetch the last ~5 stored
+  days and compare prices; never change stored rows, but append every difference to
+  `data/revisions.jsonl` and show the count and the largest difference on the scoreboard. Do not
+  fail the run on it (volumes are revised every day). Two traps for whoever builds it: the D4
+  hole check must not look at days already stored (Yahoo had `close: null` for a stored day
+  tonight), and a second request per symbol doubles the load on Yahoo. Moving the cron later is
+  not obviously safer: Yahoo's row was complete at 22:00 and had lost its close again by 01:38.
 
-### D2. A stock split would be booked as a crash (high impact, unlikely for today's four ETFs) - GUARDED in this branch
+### L3. The record branch can be replaced, and the repo itself cannot tell (high; detected, owner action open)
 
-- **What:** Yahoo's prices are split-adjusted backwards. After a split, new rows arrive in
-  post-split prices; stored rows and the units a strategy holds are pre-split. The gym would show
-  -50% overnight for a 2-for-1 split, for ever.
-- **Evidence:** `tests/test_audit_data.py::test_a_split_is_not_stored_as_a_crash`. Real stored
-  history is clean so far: the largest overnight gap in 481 days is 6.0% (GLD).
-- **Guard (done, `data.py`):** `append` stores the bars before it and then refuses a bar whose
-  open is more than 40% (`MAX_GAP`) away from the previous close; the run reports it every day
-  until a person decides. Still open (larger): fetch split events (`events=div,splits`) and
-  adjust held units, so a split is handled instead of only stopped.
+- **What:** if `paper-trail` is force-pushed, or deleted and recreated, the new history is
+  self-consistent; no check that only reads the branch can know an older one existed. Nothing
+  prevents it today: the only ruleset (`protect-main`) covers the default branch, and GrimsBot,
+  which all agents act as, has push rights.
+- **Evidence:** `tests/test_audit_ledger.py::test_a_force_pushed_history_passes_the_check`;
+  `gh api repos/GrimsVerk/GrimsTrade/rulesets` lists only `protect-main` with
+  `include: ["~DEFAULT_BRANCH"]`.
+- **Guard (done, workflow):** before running, `scripts/check-trail-activity.sh` asks GitHub's
+  activity log, which no pusher can edit, and refuses to run if `paper-trail` was ever
+  force-pushed, deleted or created twice, or if any commit reached GitHub more than 10 minutes
+  after the time it claims (a back-dated commit, see L1). Tried against the real repository: it
+  passes; both real pushes arrived 1 second after their commits. If GitHub cannot be asked, the
+  job goes on with a warning. After looking at a reported event the owner sets the repository
+  variable `TRAIL_REVIEWED_UNTIL` to move on. Tests: `tests/test_audit_workflow.py` (fake `gh`).
+- **Not proven live:** the script ran with GrimsBot's token, not yet with the job's own token
+  inside Actions. If that token may not read the activity log, the step prints a warning and
+  checks nothing; look at the first run's log after merging.
+- **Owner action (needs admin):** add a ruleset for `paper-trail` that blocks force pushes and
+  deletion, with no bypass. The guard detects; only the ruleset prevents.
 
-### D3. No sanity check before a bar becomes permanent (medium) - FIXED in this branch
+### G4. Dividends are not credited and cash earns nothing (medium, known, now sized)
 
-- **What:** zero, negative or inconsistent prices (low above open, and so on) go straight into
-  the store. A zero open makes the gym divide by zero, so the daily run crashes every day and the
-  bad row cannot be removed without breaking the append-only rule.
-- **Evidence:** `tests/test_audit_data.py::test_a_nonsense_bar_is_not_stored`.
-- **Fix (done, `sources.py`):** `fetch` runs `check_sane` on every bar (finite, positive, low
-  and high consistent with open and close, 0.1% slack); a bad bar counts as a failed source, so
-  the next source is tried and the problem is reported. All 3,324 real stored bars pass.
+- **What:** a settled decision (raw prices, dividends "not credited yet") that DECISIONS.md
+  calls "a little". Sized: TLT pays roughly 4% a year, SPY about 1.1%, QQQ about 0.5%. The 60/40
+  yardstick is understated by about 2.3% a year, buy-and-hold SPY by 1.1%, equal weight by about
+  1%, crypto by nothing. Cash earning 0% and the zero risk-free rate in the Sharpe ratio lean the
+  same way. The yardsticks are therefore easier to beat than they should be, most of all for a
+  strategy that holds crypto or cash while the yardstick holds bonds.
+- **Evidence:** `tests/test_audit_gym.py::test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year`.
+- **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (in the
+  BACKLOG). `weekly.md` already says "dividends not yet credited"; add the size.
 
-### D4. A hole in the middle of a source's answer becomes a permanent gap (medium) - FIXED in this branch
+### G3. The crypto fee looks like the maker fee (medium, not verified)
 
-- **What:** `yahoo()` skips rows whose prices are null. That is right for the newest row (not
-  published yet, retried tomorrow). But if a null row is followed by good rows, the good ones are
-  stored and the skipped day can never be added, because only bars newer than the last stored one
-  are appended. The gym then treats it as a market holiday.
-- **Evidence:** `tests/test_audit_data.py::test_a_hole_in_the_sources_answer_is_not_skipped_silently`.
-  Real stored history has no holes (crypto: 700 consecutive days; the four ETFs share one calendar).
-- **Fix (done, `sources.py`):** an empty Yahoo day with priced days after it makes `yahoo()`
-  raise, so the next source is tried and the run reports it; an empty newest day is still just
-  retried tomorrow. Assumption: Yahoo lists no row at all for market holidays (true for all 481
-  stored sessions); if it ever lists an empty one, ETF ingest stops loudly until someone adds an
-  exception. Still open: a day the source omits completely (a calendar check across symbols).
+- **What:** the gym charges 25 basis points plus 5 of slippage for crypto. A fill at the open is
+  a market (taker) order. Kraken Pro's lowest tier was 0.25% maker / 0.40% taker when I last knew
+  it; I could not confirm today's schedule (the fee page is script-rendered, the public API
+  returns empty fee lists, and Kraken's simple "instant buy" costs 1% or more). If 0.40% holds,
+  each crypto trade is undercharged by 15 basis points: nothing for buy-and-hold, but about 15% a
+  year for a strategy that turns its book over 100 times a year, which is what
+  `crypto_mean_reversion` is built to do.
+- **Evidence:** `gym.COSTS`; no test, because the fact is unverified.
+- **Proposed fix:** check the taker fee for a 10,000 USD account at the venue the prices come
+  from and set it; when unsure, use the higher number. Changing it is a DECISIONS entry.
 
-### D5. The record does not say where a bar came from (low)
+### S3. Returns over different periods are ranked in one table (medium)
 
-- **What:** when Kraken fails the bar comes from Coinbase (another exchange, slightly other
-  prices: on 2026-11-10 BTC open 75,253.1 vs 75,257.8, low 72,584.6 vs 72,643.5, about 8 basis
-  points apart at worst). When Yahoo fails it comes from Stooq, whose history is, as far as I
-  know, dividend-adjusted where Yahoo's is raw (not verified, see D6). Nothing in `paper-trail`
-  records which source was used, so a mixed series cannot be recognised later.
-- **Evidence:** `tests/test_audit_data.py::test_the_record_says_which_source_each_bar_came_from`.
-- **Proposed fix (small-medium):** an append-only `data/sources.jsonl`: one line per run and
-  symbol (source, first and last date, rows).
+- **What:** each row's return runs from that strategy's own first decision, and the scoreboard
+  table is sorted by it. Two strategies holding exactly the same thing rank apart by start date
+  alone. It is already true of the real record: the four yardsticks started on 2026-11-11, the
+  five M1 strategies on 2026-11-12. `weekly.md` does this right (it compares each strategy with
+  the yardsticks "over the same days"); `scoreboard.md` does not.
+- **Evidence:** `tests/test_audit_stats.py::test_the_same_strategy_started_later_ranks_differently`.
+- **Proposed fix (`report.py`):** show each yardstick's return over the row's own period and
+  sort by the difference, as `weekly.py` already computes it.
 
 ### D6. The ETF fallback source does not work (medium, for "runs without anyone")
 
 - **What:** on 2026-11-12 `https://stooq.com/q/d/l/?s=spy.us&i=d` answered HTTP 200 with a
   JavaScript "verify your browser" page instead of CSV. The code treats that as a failed source
   (good, and pinned by a test), so the ETFs have one working source. If Yahoo blocks GitHub's
-  runners, ETF prices stop; strategies holding ETFs then look calm and flat (see S4).
+  runners, ETF prices stop.
 - **Evidence:** live probe; `tests/test_audit_data.py::test_stooq_browser_check_page_is_an_error_not_data`.
-- **Proposed fix:** a second real ETF source (Alpaca's free data is in the BACKLOG; needs a key
-  as an Actions secret, the owner's call).
+- **Proposed fix:** a second real ETF source. Alpaca's free data is in the BACKLOG; it needs a
+  key stored as an Actions secret, which is the owner's call.
 
-### S1. A Sharpe ratio is printed from day two (high, because it is the number people read) - FIXED in this branch
+### L7. A decision did not say which code made it (medium, half fixed)
 
-- **What:** the table showed Sharpe to two decimals for any record of two days or more. For
-  short records it is noise: four up-days read as "Sharpe 30"; a strategy that only paid 2 basis
-  points of slippage once showed -4.6. After 30 days a strategy with no skill at all shows a
-  Sharpe outside +-3.7 a third of the time (95% band +-7.3).
-- **Evidence:** `tests/test_audit_stats.py::test_a_record_of_a_few_days_shows_no_sharpe_number`.
-- **Fix (done, `report.py`):** no Sharpe under 30 days (the same threshold the deflated Sharpe
-  already had); from then on it is printed with its standard error, e.g. `0.80 ±1.4`, and the
-  footnote says what the ± means.
+- **What:** strategy names key the ledger, but a strategy's code or parameters can change under
+  the same name. The scoreboard then shows one unbroken track record, and `tries.jsonl` counts
+  one try, for what were really two strategies. The daily job runs whatever is on `main`.
+- **Fix (done, `ledger.py`):** each new decision line carries `code`, the commit the daily job
+  ran (`GITHUB_SHA`); a local run has no such field
+  (`tests/test_audit_ledger.py::test_a_decision_records_the_code_version`).
+- **Still open:** nothing reads it yet. The scoreboard should flag (or start a new row for) a
+  strategy whose own file changed between two of its decisions, and count that as a new try.
 
-### S2. After six months the board still mostly measures luck (high)
-
-- **What:** the graduation bar says "at least 6 months". The uncertainty of an annualised Sharpe
-  from daily returns is about sqrt(365/days): +-3.7 (one standard error) at 30 days, +-1.4 at
-  180 days, +-1.0 at one year, +-0.7 at two. With nine strategies of zero skill running for 180
-  days, the best one shows a Sharpe of about 2.1 on average and above 2 in more than half of all
-  cases. Returns are as noisy: over 180 days a BTC-like asset with no drift ends anywhere between
-  -48% and +94% (5th to 95th percentile), a SPY-like one between -17% and +21%. "Beat buy-and-hold
-  BTC by 10% over six months" is well inside luck.
-- **Evidence:** `tests/test_audit_stats.py::test_nine_strategies_with_no_skill_after_six_months_the_best_looks_skilled`
-  (seeded simulation, numbers above reproduced).
-- **Proposed fix:** the M1 branch is adding the deflated Sharpe, which is the right tool; it
-  should be the headline column, not a footnote. Print the error band next to every Sharpe.
-  Change the graduation bar from "6 months" to "deflated Sharpe above 95%, and at least 6
-  months": for a true Sharpe of 1 that takes roughly 3-4 years of daily data, and the owner should
-  know that now rather than in May.
-
-### S3. Returns over different periods are ranked in one table (medium)
-
-- **What:** each row's return runs from that strategy's own first decision, and the table is
-  sorted by it. Two strategies holding exactly the same thing rank apart by start date alone, and
-  every M1 strategy starts later than the four benchmarks it has to beat.
-- **Evidence:** `tests/test_audit_stats.py::test_the_same_strategy_started_later_ranks_differently`.
-- **Proposed fix (`report.py`):** next to each strategy show every benchmark's return over that
-  strategy's own period (same start day), and rank by the difference.
-
-### S4. Frozen data looks like a calm strategy (medium) - HALF FIXED in this branch
+### S4. Frozen data looks like a calm strategy (medium, half fixed)
 
 - **What:** if a source stops (see D6), the gym keeps valuing that asset at its last price. The
   strategy's line goes flat: no losses, no swings, a better drawdown and a distorted Sharpe. The
-  scoreboard never said how old each asset's newest bar is, nor how many days a strategy made no
-  decision (missed or failed runs: GitHub's cron is best-effort, a rejected push loses the day,
-  and since M1 a strategy that raises an error is skipped for the day and keeps its old position).
-- **Evidence:** `tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`.
+  scoreboard never said how old each asset's newest bar is, nor on how many days a strategy made
+  no decision (GitHub's cron is best-effort, a rejected push loses the day, and a strategy that
+  raises an error is skipped for the day and keeps its old position).
 - **Fix (done, `report.py`):** the scoreboard has a "Prices through" line with the newest bar of
-  each asset and a loud **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
-  behind the newest one. **Still open:** a count of days on which a strategy made no decision,
-  and the same line in `weekly.md`, the page the owner actually reads.
+  each asset and a bold **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
+  behind the newest one (`tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`).
+- **Still open:** the same line in `weekly.md`, the page the owner reads, and a count of days on
+  which a strategy made no decision.
 
-### S5. The Sharpe formula assumes one equity point per calendar day (low today, a trap later) - FIXED in this branch
+### Low
 
-- **What:** `score()` multiplies by sqrt(365) whatever the spacing of the points. The live record
-  has a point every day because crypto has a bar every day; that case is correct, and it matches
-  the usual 252-trading-day Sharpe for ETF-only strategies (checked: 1.26 vs 1.24 over 4 years).
-  But any history without a daily crypto bar (an ETF-only backtest, a crypto data gap) gets fewer
-  points and a Sharpe overstated by up to 20%.
-- **Evidence:** `tests/test_audit_stats.py::test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point`
-  (was 2.23 vs 1.89), `...::test_sharpe_with_365_days_matches_the_trading_day_convention_for_etfs`.
-- **Fix (done, `report.py`):** Sharpe and turnover are annualised by the real time span between
-  the first and last point. With a point every day, as in the live record, nothing changes.
+- **D5. The record does not say where a bar came from.** When Kraken fails the bar comes from
+  Coinbase, another exchange with slightly other prices (2026-11-10 BTC: open 75,253.1 vs
+  75,257.8, low 72,584.6 vs 72,643.5, about 8 basis points apart at worst). When Yahoo fails it
+  would come from Stooq, whose history is, as far as I know, dividend-adjusted where Yahoo's is
+  raw (unverified: Stooq is unreachable). Nothing in `paper-trail` says which source was used.
+  Test: `tests/test_audit_data.py::test_the_record_says_which_source_each_bar_came_from`
+  (xfail). Proposed: an append-only `data/sources.jsonl`, one line per run and symbol.
+- **G2. An order that cannot be paid for at its open is dropped.** Each asset's order executes at
+  that asset's next open and is then forgotten. Moving from an ETF to crypto, BTC opens at 00:00
+  UTC, before the ETF can be sold at 13:30: the buy finds no cash and is dropped; the money sits
+  in cash until a later decision repeats the order, a day later in the live setup. It makes
+  rotation strategies look slightly worse, never better. Test:
+  `tests/test_audit_gym.py::test_a_switch_from_etf_to_crypto_ends_up_in_crypto` (xfail).
+  Proposed (changes gym behaviour, so not done): keep an unfilled buy pending until cash arrives.
+- **S6. The newest row of the scoreboard is provisional.** At 22:30 UTC today's crypto bar is
+  still open, so today's equity mixes today's ETF close with crypto at yesterday's close; the
+  same date shows another number the next day
+  (`tests/test_audit_stats.py::test_todays_equity_is_provisional_and_changes_tomorrow`).
+  Proposed: label the last row, or score only fully marked days.
+- **L6. Outside a git checkout the ledger check checks nothing.** With `--root` on a plain
+  folder, or on a `trail/` that is not a worktree, `check_append_only` returns 0 and the runner
+  ignores that (`tests/test_audit_ledger.py::test_outside_a_git_checkout_the_check_silently_checks_nothing`).
+  A trap for local runs only. Proposed: refuse a non-empty ledger with no committed version.
 
-### S6. The newest row of the scoreboard is provisional (low)
+## Fixed in this branch
 
-- **What:** at 22:30 UTC today's crypto bar is still open, so today's equity mixes today's ETF
-  close with crypto at yesterday's close. The same date shows another number the next day.
-- **Evidence:** `tests/test_audit_stats.py::test_todays_equity_is_provisional_and_changes_tomorrow`.
-- **Proposed fix:** label the last row "provisional", or score only fully marked days.
+One commit per fix, except the three workflow changes, which share the same lines of
+`daily.yml`.
 
-### G1. NaN weights are accepted (medium, likely to bite M1's volatility maths) - FIXED in this branch
+### L1. A decision written after the outcome was accepted (high)
 
-- **What:** `validate` checks `w < 0` and `sum > 1`; NaN passes both. The gym then neither buys
-  nor sells that asset (every comparison with NaN is false), so the portfolio silently keeps what
-  it had, and the ledger line contains `NaN`. A division by a zero volatility is all it takes.
-- **Evidence:** `tests/test_audit_gym.py::test_non_finite_weights_are_rejected`.
-- **Fix (done, `gym.py`):** `validate` rejects NaN and infinite weights. Note for M1: one
-  strategy raising in the runner still stops the strategies after it for that day (`run_daily.py`
-  has no per-strategy error handling); worth a try/except there that records the failure.
+- **What:** the ledger check only proves that old lines were not changed, not that a line was
+  written when it says it was. Anyone who can push to `paper-trail` could append "on day 1 at
+  22:31 I bought BTC" on day 4, after BTC doubled. The gym filled it at the day-2 open and the
+  scoreboard showed +99%.
+- **Fix (`ledger.py`, 3 lines in `report.py`):** a committed decision counts from its commit
+  time when that is later than its own timestamp (`ledger.in_force`). The back-dated line is
+  filled at the first open after it was committed, so hindsight buys nothing. Decisions recorded
+  more than 30 minutes after their timestamp are "late" and the scoreboard says how many. On the
+  real record nothing changes: the two runs were committed 2 and 22 seconds after their
+  timestamps. Tests: `tests/test_audit_ledger.py::test_a_backdated_decision_is_not_credited` and
+  three more beside it.
+- **What is left:** commit dates are written by whoever commits. The L3 guard closes most of
+  that from outside: a commit that reaches GitHub more than 10 minutes after its claimed time
+  stops the job. A forger is left with a 10-minute window, and with the L3 owner action undone
+  could still replace the branch (which the guard then reports).
 
-### G2. An order that cannot be paid for at its open is dropped (low, biased against the strategy)
+### L2. History could be rewritten with an ordinary push (high)
 
-- **What:** each asset's order executes at that asset's next open and is then forgotten. Moving
-  from an ETF to crypto, BTC opens at 00:00 UTC, before the ETF can be sold at 13:30: the buy finds
-  no cash and is dropped. The money sits in cash until a later decision repeats the order, a full
-  day later in the live setup. The other direction (crypto to ETF) works at once.
-- **Evidence:** `tests/test_audit_gym.py::test_a_switch_from_etf_to_crypto_ends_up_in_crypto`.
-- **Proposed fix (medium, changes gym behaviour, so proposed only):** keep an unfilled buy
-  pending until cash arrives. It makes rotation strategies look slightly worse than they would
-  be, never better, so it is not urgent.
+- **What:** `check_append_only` read `git log -- <file>`, which skips one side of a merge when
+  the merge keeps the other side's version of the file. A forger builds a parallel history with
+  a changed ledger, merges the honest branch into it keeping the forged file, and pushes. The
+  result descends from the honest head, so it is a normal push: no force needed, and a "block
+  force pushes" rule would not stop it.
+- **Fix (`ledger.py`):** the check walks every commit and compares the file with its version in
+  each parent. A ledger deleted from the working tree is refused too. Test:
+  `tests/test_audit_ledger.py::test_a_rewrite_hidden_behind_a_merge_is_caught`.
 
-### G3. Crypto fee is set at the maker level (medium, not verified tonight)
+### L4. Stored bars could be edited and nothing noticed (high)
 
-- **What:** the gym charges 25 basis points plus 5 of slippage for crypto. A fill at the open is
-  a market (taker) order. Kraken Pro's lowest tier was 0.25% maker / 0.40% taker when last I knew
-  it; I could not confirm today's schedule (the fee page is script-rendered and the public API
-  returns empty fee lists). If that still holds, each crypto trade is undercharged by 15 basis
-  points: nothing for buy-and-hold, about 15% a year for a strategy that turns its book over 100
-  times a year (crypto mean reversion).
-- **Evidence:** `gym.COSTS`; no test (the fact is unverified).
-- **Proposed fix:** the owner or M1 checks the venue's taker fee for a 10,000 USD account and
-  sets it; when unsure, use the higher number.
+- **What:** the scoreboard is recomputed from `data/bars/*.csv` on every run, so the bars are as
+  much the record as the decisions, but only the ledger files were checked. One edited cell (the
+  open a strategy bought at) turned a small loss into +99%.
+- **Fix (`run_daily.py`, 2 lines):** the run applies the append-only check to every bar file.
+  Test: `tests/test_audit_ledger.py::test_a_rewritten_bar_is_caught`.
 
-### G4. Dividends are not credited (medium, known, now sized)
+### S1. A Sharpe ratio was printed from day two (high, because it is the number people read)
 
-- **What:** a settled decision (raw prices, dividends "not credited yet") that DECISIONS.md calls
-  "a little". Sized: TLT pays roughly 4% a year, SPY about 1.1%, QQQ about 0.5%. The 60/40
-  benchmark is understated by about 2.3% a year, buy-and-hold SPY by 1.1%, equal weight by about
-  1%; crypto by nothing. Cash earning 0% and the zero risk-free rate in Sharpe lean the same way.
-  The yardsticks a strategy must beat are therefore set too low, most of all for strategies that
-  hold crypto or cash while the benchmark holds bonds.
-- **Evidence:** `tests/test_audit_gym.py::test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year`.
-- **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (it is in
-  the BACKLOG). Until then say so under the scoreboard.
+- **What:** four up-days read as "Sharpe 30"; a strategy that only paid 2 basis points of
+  slippage once showed -4.6.
+- **Fix (`report.py`):** no Sharpe under 30 days (the threshold the deflated Sharpe already
+  had); after that it is printed with its standard error, e.g. `0.80 ±1.4`, and the footnote
+  says what the ± means. Test: `tests/test_audit_stats.py::test_a_record_of_a_few_days_shows_no_sharpe_number`.
 
-### T1. A decision can be filled before it could have been pushed (low) - FIXED in this branch
+### D2. A stock split would be booked as a crash (high impact, unlikely for today's four ETFs)
 
-- **What:** the timing rules themselves held up (see "Checked and sound"). One gap: a fill only
-  had to be after the decision's own timestamp. A run that starts at 23:59:30 UTC was filled at
-  the 00:00:00 crypto open, but its commit reaches GitHub after that price exists. No information
-  leaks (inputs are still cut off at the timestamp), but "committed before the outcome exists"
-  was no longer provable for that decision. GitHub's scheduled runs are often late; 22:30 leaves
-  90 minutes before 00:00.
-- **Evidence and fix:** the L1 fix covers it: the decision counts from its commit, so it is
-  filled at the next open after that
-  (`tests/test_audit_ledger.py::test_a_decision_counts_from_its_commit`).
+- **What:** Yahoo adjusts its whole history backwards after a split. New rows arrive in
+  post-split prices; stored rows and the units a strategy holds are pre-split. The gym would show
+  -50% overnight for a 2-for-1 split, for ever.
+- **Guard (`data.py`):** `append` stores the bars before it and then refuses a bar that opens
+  more than 40% (`MAX_GAP`) from the previous close; the run reports it every day until a person
+  decides. The whole real history passes (largest gap in two years: 6.0%, GLD). Test:
+  `tests/test_audit_data.py::test_a_split_is_not_stored_as_a_crash`.
+- **What is left:** a split is stopped, not handled. Handling it means fetching split events
+  and adjusting held units.
+
+### D3, D4. Nonsense bars and holes were stored for ever (medium)
+
+- **What:** nothing checked a bar before it became permanent. A zero open makes the gym divide
+  by zero, so every later run would crash, and the row could not be removed. And when Yahoo
+  listed a day without prices followed by priced days, the later days were stored and the hole
+  could never be filled.
+- **Fix (`sources.py`):** `fetch` runs `check_sane` on every bar (finite, positive, high and low
+  consistent with open and close, 0.1% slack); `yahoo()` raises on an empty day that has priced
+  days after it. Either counts as a failed source: the next one is tried and the run reports
+  it. All 3,324 real stored bars pass. Assumption: Yahoo lists no row at all for market holidays
+  (true for all 481 stored sessions). Tests: `tests/test_audit_data.py`.
+- **What is left:** a day the source omits completely is still invisible. A calendar check
+  across the four ETFs (they share one) and "crypto has every day" would catch it.
+
+### L5, L8. The daily job could start a new record by accident, or run unmerged code (medium)
+
+- **What:** the workflow did `git fetch origin paper-trail || git worktree add --orphan`: a
+  deleted branch, or just a network blip, made it build a fresh empty record. And a manual start
+  could pick any branch, whose code then wrote into the one official record.
+- **Fix (workflow):** `scripts/checkout-trail.sh` asks the remote whether the branch exists; a
+  missing branch stops the job unless it was started by hand with "start a new record" ticked,
+  an unreachable remote always stops it. The job has `if: github.ref == 'refs/heads/main'`.
+  Tests: `tests/test_audit_workflow.py` (throwaway repos).
+
+### G1, S5, T1 (medium to low)
+
+- **G1. NaN weights were accepted.** NaN is neither below 0 nor above 1, so it passed; the gym
+  then kept the old position and the ledger recorded `NaN`. Fixed here and, independently, on
+  `main` by M1 (which also made the runner carry on past a strategy that raises).
+  `tests/test_audit_gym.py::test_non_finite_weights_are_rejected`.
+- **S5. The Sharpe formula assumed a point every calendar day.** True for the live record
+  (crypto has a bar every day; checked: the 365-day Sharpe of an ETF-only strategy then equals
+  the usual 252-trading-day one, 1.26 vs 1.24). But a history without a daily crypto bar came out
+  20% too high. Sharpe and turnover are now annualised by the real time span.
+  `tests/test_audit_stats.py::test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point`.
+- **T1. A decision could be filled before it could have been pushed.** A run starting at
+  23:59:30 UTC was filled at the 00:00:00 crypto open, though its commit lands after that price
+  exists. Covered by the L1 fix: it now fills at the next open after its commit.
+  `tests/test_audit_ledger.py::test_a_decision_counts_from_its_commit`.
 
 ## Checked and sound
 
@@ -334,19 +373,29 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   a decision sees exactly the bars closed at or before it and fills at exactly the first open
   after it (`...::test_random_decision_times_never_see_or_fill_at_the_wrong_bar`). Weekends and
   holidays are just missing bars; orders wait.
-- **Unfinished bars.** A bar is never stored before its close plus 15 minutes, for any clock
-  time (`...::test_a_bar_still_in_progress_is_never_final`). Kraken's and Coinbase's days are UTC
-  days; Yahoo's and Stooq's dates are exchange dates, equal to UTC dates for US sessions.
+- **Unfinished bars.** A bar is never stored before its close plus 15 minutes, at any clock time
+  (`...::test_a_bar_still_in_progress_is_never_final`). Kraken's and Coinbase's days are UTC
+  days; Yahoo's dates are exchange dates, equal to UTC dates for US sessions. (What "final"
+  means an hour after the close is D1.)
 - **The gym's arithmetic.** Random trading at constant prices never creates money, cash never
   goes negative, positions never go short, fees and slippage are both charged; buy-and-hold earns
   exactly first-fill-open to last close (`tests/test_audit_gym.py`).
-- **The real record so far.** `paper-trail` at `0d3bc31`: 700 consecutive crypto days, four ETFs
-  on one identical calendar of 481 sessions, no bad or duplicate rows, no crypto open more than
-  0.2% from the previous close. GitHub's activity log shows one event on the branch: its creation
-  by `github-actions[bot]` at 2026-11-11 22:00:52 UTC, 3 seconds after the decisions' timestamp.
+- **The real record so far.** 700 consecutive crypto days, four ETFs on one identical calendar
+  of 481 sessions, no bad or duplicate rows, no crypto open more than 0.2% from the previous
+  close. All nine files pass the new append-only check. GitHub's activity log shows two events
+  on `paper-trail`, both by `github-actions[bot]`: its creation at 2026-11-11 22:00:52 UTC and a
+  push at 2026-11-12 01:51:50 UTC, each one second after its commit.
+- **The M1 strategies** use no clock, no randomness and no files: they see only the bars the
+  runner hands them. I did not review their trading logic (the M1 lane had its own review).
 
 ## Status
 
-- **Done:** all areas audited; L1-L8, D1-D6, S1-S6, G1-G4, T1 written up with tests.
-- **Doing:** small fixes, one commit each.
-- **Next:** owner summary on top and final ranking; re-probe Yahoo for the final 2026-11-11 bars (D1).
+- **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
+  statistics) against M0 and again after the M1 merge. 25 findings: 12 fixed or guarded, 3 more
+  half done (L3, L7, S4), 10 open; all with tests except G3. Checks green (160 passed, 3 xfailed).
+- **Doing:** waiting for two independent reviewers (subagents, read-only) who were asked to find
+  what this report missed; their findings, if any, get added below the table.
+- **Next, in order of value:** D1 (revision log, see the traps noted there); S3 (rank the
+  scoreboard by excess over the yardsticks); the second halves of L7 and S4; D5; G2.
+- **To resume:** read this section, run the checks in `AGENTS.md`, look at the three remaining
+  `xfail` tests (`uv run pytest -rx tests/`).
