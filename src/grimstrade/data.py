@@ -38,6 +38,8 @@ SETTLE = timedelta(minutes=15)
 # for crypto the open and the previous close are the same instant.
 MAX_GAP = 0.4
 
+DAY = timedelta(days=1)
+
 FIELDS = ["date", "open", "high", "low", "close", "volume"]
 
 
@@ -136,6 +138,14 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
                 f"{symbol} {b.date}: open {b.open} is {b.open / prev.close - 1:+.0%} from the "
                 f"previous close {prev.close} ({prev.date}): split or bad data? Not stored."
             )
+        # Crypto trades every day, so a skipped day is the source's mistake, and once a later
+        # day is stored the missing one could never be added.
+        elif prev is not None and UNIVERSE.get(symbol) == CRYPTO and b.date - prev.date != DAY:
+            jump = (
+                f"{symbol}: the source skips from {prev.date} to {b.date}; a day left out now "
+                "could never be added later. Not stored."
+            )
+        if jump:
             rows = rows[:i]
             break
         prev = b

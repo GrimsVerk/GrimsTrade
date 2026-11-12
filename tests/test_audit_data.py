@@ -249,3 +249,28 @@ def test_an_empty_answer_is_not_taken_as_no_news(tmp_path: Path) -> None:
     assert not any(p.startswith("BTC") for p in on_time)  # the 10th closed 22.5 hours ago: fine
     late = run_daily.run(tmp_path, datetime(2026, 11, 14, 22, 30, tzinfo=UTC), nothing_new)
     assert "BTC: no new bar for 3 days (newest stored: 2026-11-10)" in late
+
+
+def test_a_day_the_source_leaves_out_is_not_skipped(tmp_path: Path) -> None:
+    """Audit D8 (fixed for crypto, reported for ETFs; found by the independent reviewer): a day
+    simply absent from a source's answer became a silent, permanent hole, because only bars newer
+    than the last stored one are ever appended."""
+    data.append(tmp_path, "BTC", flat("2026-11-01", 2, 100.0))  # 1st and 2nd
+    skipping = [*flat("2026-11-04", 2, 100.0)]  # the answer has the 4th and 5th, not the 3rd
+    with pytest.raises(ValueError, match="BTC: the source skips from 2026-11-02 to 2026-11-04"):
+        data.append(tmp_path, "BTC", skipping)
+    assert [b.date.day for b in data.load(tmp_path, "BTC")] == [1, 2]
+    # Once a source has the 3rd, everything goes in.
+    assert data.append(tmp_path, "BTC", [*flat("2026-11-03", 1, 100.0), *skipping]) == 3
+
+    # ETFs have holidays, so a skipped day alone proves nothing; the four share one calendar,
+    # though, and a session one lacks while the others have it is reported.
+    week = flat("2026-11-02", 5, 100.0)  # Monday to Friday
+    data.append(tmp_path, "SPY", week)
+    data.append(tmp_path, "QQQ", [b for b in week if b.date.day != 4])  # no Wednesday
+    assert run_daily._etf_holes(tmp_path) == [
+        "QQQ: no bar for 2026-11-04, a session the other ETFs have"
+    ]
+    # A symbol that is merely behind (its newest day is older) has no hole.
+    data.append(tmp_path, "TLT", week[:3])
+    assert len(run_daily._etf_holes(tmp_path)) == 1

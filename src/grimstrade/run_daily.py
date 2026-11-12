@@ -56,6 +56,7 @@ def run(
             print(f"{sym}: FAILED {e}", file=sys.stderr)
 
     problems += _overdue(root, now)
+    problems += _etf_holes(root)
     problems += _revisions(root, now, get)
     history = data.load_all(root)
     seen = data.visible_history(history, now)
@@ -114,6 +115,26 @@ def _overdue(root: Path, now: datetime) -> list[str]:
         if stored and now - data.close_time(cls, stored[-1].date) > OVERDUE[cls]:
             days = (now - data.close_time(cls, stored[-1].date)).days
             out.append(f"{sym}: no new bar for {days} days (newest stored: {stored[-1].date})")
+    return out
+
+
+def _etf_holes(root: Path, recent: int = 10) -> list[str]:
+    """The ETFs trade on one calendar, so a session one of them lacks while another has it (and
+    has later ones too) is a hole in the data, not a holiday. It can't be filled any more (only
+    newer bars are appended); it can at least be said."""
+    days = {
+        sym: [b.date for b in data.load(root, sym)[-recent:]]
+        for sym, cls in data.UNIVERSE.items()
+        if cls == data.ETF
+    }
+    days = {sym: d for sym, d in days.items() if d}
+    out = []
+    for sym, mine in days.items():
+        others = {d for other, theirs in days.items() if other != sym for d in theirs}
+        missing = sorted(d for d in others if mine[0] < d < mine[-1] and d not in mine)
+        if missing:
+            listed = ", ".join(d.isoformat() for d in missing)
+            out.append(f"{sym}: no bar for {listed}, a session the other ETFs have")
     return out
 
 
