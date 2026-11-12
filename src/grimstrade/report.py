@@ -133,17 +133,29 @@ def table(scores: list[Score]) -> str:
         dsr = "-" if s.dsr is None else f"{s.dsr:.0%}"
         lines.append(
             f"| {s.name} | {s.start or '-'} | {s.days} | {s.equity:,.0f} | {s.total_return:+.1%} "
-            f"| {s.sharpe:.2f} | {dsr} | {s.max_drawdown:.1%} | {s.turnover:.2f} |"
+            f"| {sharpe_cell(s)} | {dsr} | {s.max_drawdown:.1%} | {s.turnover:.2f} |"
         )
     return "\n".join(lines)
+
+
+def sharpe_cell(s: Score) -> str:
+    """The Sharpe ratio with its standard error, or "-" while the record is too short to mean
+    anything (four good days annualise to "Sharpe 30"). Standard error of a Sharpe estimate from
+    T daily returns: sqrt((1 + SR^2 / 2) / T) per day (Lo 2002), annualised like the Sharpe."""
+    if s.moments is None or s.days < MIN_DAYS_FOR_DSR:
+        return "-"
+    error = math.sqrt((1 + s.moments.sharpe**2 / 2) / s.moments.periods * DAYS_PER_YEAR)
+    return f"{s.sharpe:.2f} ±{error:.1f}"
 
 
 def footnote(trials: Trials) -> str:
     return (
         f"Strategies tried so far (the record's plus the research lane's): {trials.count}. "
-        "Sharpe: daily, 365 days/yr, zero risk-free rate. Deflated Sharpe: how confident we can be "
-        "that the Sharpe beats the best that luck alone would give across all the strategies "
-        f"tried (Bailey & López de Prado 2014); shown after {MIN_DAYS_FOR_DSR} days."
+        "Sharpe: daily, 365 days/yr, zero risk-free rate, with its standard error (±): the true "
+        "value lies within about two of those, 19 times in 20. Deflated Sharpe: how confident we "
+        "can be that the Sharpe beats the best that luck alone would give across all the "
+        f"strategies tried (Bailey & López de Prado 2014). Both are shown after {MIN_DAYS_FOR_DSR} "
+        "days; before that they mean nothing."
     )
 
 

@@ -198,15 +198,16 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Proposed fix:** a second real ETF source (Alpaca's free data is in the BACKLOG; needs a key
   as an Actions secret, the owner's call).
 
-### S1. A Sharpe ratio is printed from day two (high, because it is the number people read)
+### S1. A Sharpe ratio is printed from day two (high, because it is the number people read) - FIXED in this branch
 
-- **What:** the table shows Sharpe to two decimals for any record of two days or more. For short
-  records it is noise: four up-days read as "Sharpe 30"; a strategy that only paid 2 basis points
-  of slippage once shows -4.6. After 30 days a strategy with no skill at all shows a Sharpe
-  outside +-3.7 a third of the time (95% band +-7.3).
+- **What:** the table showed Sharpe to two decimals for any record of two days or more. For
+  short records it is noise: four up-days read as "Sharpe 30"; a strategy that only paid 2 basis
+  points of slippage once showed -4.6. After 30 days a strategy with no skill at all shows a
+  Sharpe outside +-3.7 a third of the time (95% band +-7.3).
 - **Evidence:** `tests/test_audit_stats.py::test_a_record_of_a_few_days_shows_no_sharpe_number`.
-- **Proposed fix (small, `report.py`, M1 is editing it):** no Sharpe (and no ranking by it)
-  under 30 days; from then on print it with its error band, e.g. `0.8 +-2.8`.
+- **Fix (done, `report.py`):** no Sharpe under 30 days (the same threshold the deflated Sharpe
+  already had); from then on it is printed with its standard error, e.g. `0.80 ±1.4`, and the
+  footnote says what the ± means.
 
 ### S2. After six months the board still mostly measures luck (high)
 

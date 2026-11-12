@@ -34,17 +34,18 @@ def sharpe_cell(row: str) -> str:
     return [c.strip() for c in row.strip("|").split("|")][names.index("Sharpe")]
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit S1: the scoreboard prints a Sharpe ratio to two decimals from the second day; "
-    "under ~30 days it is pure noise (four good days read as 'Sharpe 30')",
-)
 def test_a_record_of_a_few_days_shows_no_sharpe_number() -> None:
+    """Audit S1 (fixed): the scoreboard printed a Sharpe ratio to two decimals from the second
+    day. Under ~30 days it is pure noise: four good days read as "Sharpe 30"."""
     s = report.score("lucky", result_from_returns([0.01, 0.02, 0.005, 0.015]))
     assert s.sharpe > 20  # what four up-days annualise to
+    assert sharpe_cell(report.table([s]).splitlines()[2]) == "-"
+    # From 30 days on the number comes with its standard error: here 180 days of coin flips.
+    rng = random.Random(1)
+    s = report.score("coin", result_from_returns([rng.gauss(0, 0.02) for _ in range(180)]))
     cell = sharpe_cell(report.table([s]).splitlines()[2])
-    with pytest.raises(ValueError):
-        float(cell)  # should be "-" or "too early", not a number
+    assert cell == f"{s.sharpe:.2f} ±1.4"
+    assert abs(s.sharpe) < 2 * 1.4  # and the truth (zero) is inside two standard errors
 
 
 def test_nine_strategies_with_no_skill_after_six_months_the_best_looks_skilled() -> None:
