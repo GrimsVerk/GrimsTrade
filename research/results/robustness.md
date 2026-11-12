@@ -1,0 +1,32 @@
+# Robustness of the front-runners
+
+Six live assets, train period. Same rules as in their own result files.
+
+## Raw prices (what the live scoreboard will show: no dividends)
+
+| Variant | Sharpe (SE) | CAGR | Vol | Max DD | Turnover/yr | Avg exposure | 1994-99 | 2000-09 | 2010-16 | 2017-21 | 2022-25 | dSharpe vs equal-weight-raw (p; 90% range) | Eras ahead |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| equal-weight-raw | 0.82 (0.18) | +16.6% | 21.7% | 69.3% | 1.3 | 100% | 1.24 | -0.04 | 1.58 | 1.52 | 0.63 | - | - |
+| tsmom12-raw | 0.95 (0.18) | +15.8% | 17.0% | 37.7% | 2.7 | 72% | 1.12 | 0.10 | 1.40 | 1.45 | 0.88 | +0.13 (p=0.13; -0.06..+0.32) | 2/5 |
+| sma200-raw | 0.96 (0.18) | +14.8% | 15.7% | 45.4% | 4.2 | 67% | 1.07 | 0.08 | 1.49 | 1.50 | 0.73 | +0.14 (p=0.15; -0.08..+0.36) | 2/5 |
+| ensemble-tsmom-raw | 1.04 (0.18) | +14.9% | 14.4% | 35.8% | 5.3 | 65% | 1.19 | 0.09 | 1.52 | 1.64 | 0.85 | +0.22 (p=0.03; +0.03..+0.41) | 3/5 |
+| trend-vol-raw | 0.91 (0.18) | +11.4% | 12.8% | 23.6% | 3.0 | 69% | 1.13 | 0.14 | 1.41 | 1.43 | 0.94 | +0.09 (p=0.23; -0.11..+0.31) | 2/5 |
+
+## Total-return prices, double costs (120 bps crypto, 8 bps ETF round trip)
+
+| Variant | Sharpe (SE) | CAGR | Vol | Max DD | Turnover/yr | Avg exposure | 1994-99 | 2000-09 | 2010-16 | 2017-21 | 2022-25 | dSharpe vs equal-weight-2xcost (p; 90% range) | Eras ahead |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| equal-weight-2xcost | 0.88 (0.18) | +18.1% | 21.7% | 68.8% | 1.3 | 100% | 1.35 | 0.02 | 1.65 | 1.53 | 0.66 | - | - |
+| tsmom12-2xcost | 1.04 (0.18) | +17.6% | 17.1% | 37.1% | 2.7 | 76% | 1.34 | 0.19 | 1.53 | 1.48 | 0.87 | +0.16 (p=0.08; -0.03..+0.36) | 2/5 |
+| sma200-2xcost | 0.99 (0.18) | +15.5% | 15.8% | 44.6% | 4.3 | 70% | 1.13 | 0.13 | 1.56 | 1.50 | 0.72 | +0.12 (p=0.19; -0.10..+0.33) | 2/5 |
+| ensemble-tsmom-2xcost | 1.08 (0.18) | +15.7% | 14.5% | 36.0% | 5.3 | 68% | 1.31 | 0.16 | 1.58 | 1.63 | 0.83 | +0.20 (p=0.03; +0.02..+0.40) | 3/5 |
+| trend-vol-2xcost | 1.02 (0.18) | +13.0% | 12.8% | 25.7% | 2.9 | 72% | 1.35 | 0.24 | 1.61 | 1.44 | 0.92 | +0.14 (p=0.13; -0.06..+0.36) | 3/5 |
+
+## Reading (2026-11-12)
+
+Nothing changes order. On raw prices every Sharpe is 0.05-0.12 lower (the dividends the live gym
+does not credit) and the trend rules keep their lead over equal weight and their halved
+drawdowns. Doubling costs moves Sharpe by 0.01-0.02: these rules trade 3-5 times their equity a
+year, so costs are not what limits them. The rules that failed their bar in the idea tests still
+fail it here; these tables are about whether the live scoreboard will tell the same story as the
+research, and it will.
