@@ -27,7 +27,7 @@ def run(
 
     `repo` is the code checkout, whose `research/` files (and research-* branches) count towards
     the number of strategies tried."""
-    for rel in (ledger.DECISIONS, ledger.TRIES):
+    for rel in ledger.APPEND_ONLY:
         ledger.check_append_only(root / rel)
 
     problems = []

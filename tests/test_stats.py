@@ -54,7 +54,7 @@ def equity_result(daily: list[float]) -> Result:
 def test_deflate_needs_thirty_days_and_penalises_tries() -> None:
     good = report.score("good", equity_result([0.004, -0.002] * 100))
     short = report.score("short", equity_result([0.004, -0.002] * 10))
-    few, many = report.deflate([good, short], 2), report.deflate([good, short], 200)
+    few, many = (report.deflate([good, short], report.Trials(n)) for n in (2, 200))
     assert few[1].dsr is None
     assert few[0].dsr is not None and many[0].dsr is not None
     assert few[0].dsr > many[0].dsr
@@ -108,3 +108,75 @@ def test_research_ideas_count_when_tries_are_not_logged(tmp_path: Path) -> None:
     assert ledger.research_tries(tmp_path) == 2
     ledger.register_try(tmp_path, "x", "", datetime(2026, 11, 12, tzinfo=UTC))
     assert ledger.total_tries(tmp_path, tmp_path) == 3
+
+
+TRIES_REAL = """# Tries
+
+- `period`: `train` or `heldout`.
+- `kind`: `variant`, `baseline`, `robustness`.
+
+| UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
+|---|---|---|---|---|---|---|---:|---:|---:|---:|
+| 11-12T01:00 | kelly | full | variant | train | 2020 | 2023 | 0.9 | 1 | 1 | 1 |
+
+| 11-12T01:05 | kelly | half | variant | train | 2020 | 2023 | 0.5 | 1 | 1 | 1 |
+| 11-12T01:06 | kelly | half | variant | heldout | 2024 | 2025 | -2.0 | 1 | 1 | 1 |
+| 11-12T01:07 | kelly | buy-hold | baseline | train | 2020 | 2023 | 3.0 | 1 | 1 | 1 |
+"""
+
+IDEAS_REAL = """# Ideas
+
+Status: `new`, `testing`, `live`, `dead`.
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| kelly | sizing | dead | k.md | costs |
+| hmm | regimes | rejected: costs | h.md | |
+| tda | topology | killed | t.md | |
+| lstm | ml | new | | |
+"""
+
+
+def _research(tmp_path: Path, tries: str = TRIES_REAL, ideas: str = IDEAS_REAL) -> None:
+    (tmp_path / "research").mkdir(exist_ok=True)
+    (tmp_path / "research" / "tries.md").write_text(tries)
+    (tmp_path / "research" / "ideas.md").write_text(ideas)
+
+
+def test_research_tries_on_the_real_file_layout(tmp_path: Path) -> None:
+    _research(tmp_path)
+    # Variants (kelly full, half, buy-hold; a blank line inside the table loses none, bullets are
+    # not tries) plus tested ideas without a logged variant (hmm, tda; any status but `new`).
+    assert ledger.research_tries(tmp_path) == 3 + 2
+
+
+def test_research_tries_reads_main_too(tmp_path: Path) -> None:
+    git(tmp_path, "init", "-q", "-b", "main")
+    _research(tmp_path)
+    git(tmp_path, "add", "-A")
+    git(tmp_path, "commit", "-qm", "research merged")
+    git(tmp_path, "checkout", "-qb", "m1")
+    git(tmp_path, "rm", "-rq", "research")
+    git(tmp_path, "commit", "-qm", "a branch without research/")
+    assert ledger.research_tries(tmp_path) == 5
+
+
+def test_research_count_never_shrinks(tmp_path: Path) -> None:
+    _research(tmp_path)
+    assert ledger.total_tries(tmp_path, tmp_path) == 5
+    (tmp_path / "research" / "tries.md").unlink()
+    (tmp_path / "research" / "ideas.md").unlink()
+    assert ledger.research_tries(tmp_path) == 0
+    assert ledger.total_tries(tmp_path, tmp_path) == 5
+
+
+def test_research_sharpes_are_train_variants_only(tmp_path: Path) -> None:
+    _research(tmp_path)
+    assert sorted(ledger.research_sharpes(tmp_path)) == [0.5, 0.9]
+
+
+def test_research_sharpes_widen_the_luck_benchmark() -> None:
+    good = report.score("good", equity_result([0.004, -0.002] * 100))
+    alone = report.deflate([good], report.Trials(50))[0].dsr
+    spread = report.deflate([good], report.Trials(50, (-3.0, 0.0, 3.0)))[0].dsr
+    assert alone is not None and spread is not None and spread < alone

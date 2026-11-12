@@ -77,7 +77,7 @@ def test_deleting_a_committed_line_fails(repo: Path) -> None:
 def test_the_real_ledgers_are_append_only() -> None:
     # On the paper-trail checkout (trail/) or wherever the ledger lives.
     for root in (REPO_ROOT, REPO_ROOT / "trail"):
-        for rel in (ledger.DECISIONS, ledger.TRIES):
+        for rel in ledger.APPEND_ONLY:
             if (root / rel).exists():
                 ledger.check_append_only(root / rel)
 

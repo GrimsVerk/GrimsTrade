@@ -116,7 +116,7 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         "\\* Compared over the same days the strategy has been running.  ",
         "\\*\\* The chance its edge is skill rather than luck, allowing for all "
-        f"{trials} strategies we have tried (deflated Sharpe). Real money is only discussed "
+        f"{trials.count} strategies we have tried (deflated Sharpe). Real money is only discussed "
         "after 6 months, beating every yardstick, and strong evidence (95%+).",
         "",
         "Details: `scoreboard.md`. Backtests (hindsight, not evidence): `backtest.md`.",
