@@ -14,21 +14,27 @@ Extra = Callable[[c.Ctx, dict[str, c.Run]], list[str]]
 Bar = tuple[str, bool, str]
 
 
-def skill_table(u: c.Ctx, tags: Mapping[str, float]) -> list[str]:
-    """Forecast skill of each tagged model on this universe (`tags`: name -> neutral forecast)."""
-    out = [
+def skill_table(u: c.Ctx, tags: Mapping[str, float], payoff: bool = False) -> list[str]:
+    """Forecast skill of each tagged model on this universe (`tags`: name -> neutral forecast).
+    `payoff`: also the hit rates with every month counted by the size of its move."""
+    head = (
         "| Model | Forecasts | Share that went up | AUC | Hit rate | Said up | "
-        "AUC of `up_12m` alone | Hit rate of `up_12m` alone |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|",
-    ]
+        "AUC of `up_12m` alone | Hit rate of `up_12m` alone |"
+    )
+    if payoff:
+        head += " Size-weighted hit rate | ...of always up | ...of `up_12m` alone |"
+    out = [head, "|---|" + "---:|" * (head.count("|") - 2)]
     for tag, neutral in tags.items():
         k = ml.skill(u.panel, tag, neutral)
         if "auc" not in k:
             continue
-        out.append(
+        row = (
             f"| {tag} | {k['n']:.0f} | {k['up_share']:.1%} | {k['auc']:.3f} | {k['hit']:.1%} | "
-            f"{k['said_up']:.1%} | {k['auc_up12']:.3f} | {k['hit_up12']:.1%} |"
+            f"{k['said_up']:.1%} | {c._f(k['auc_up12'], '.3f')} | {k['hit_up12']:.1%} |"
         )
+        if payoff:
+            row += f" {k['gain']:.1%} | {k['gain_always']:.1%} | {k['gain_up12']:.1%} |"
+        out.append(row)
     return out
 
 
@@ -43,6 +49,7 @@ def standard(
     extra: Extra | None = None,
     more_bars: Callable[[dict[str, c.Run]], list[Bar]] | None = None,
     skill_tags: Mapping[str, float] | None = None,
+    payoff: bool = False,
     note: str = "",
 ) -> None:
     """`variants`: first is the primary. `twins`: first is THE twin. `also`: runs shown for
@@ -68,7 +75,7 @@ def standard(
     out += [""]
     if skill_tags:
         out += ["## Forecast skill on the six assets (walk-forward forecasts, 28 days ahead)", ""]
-        out += skill_table(six, skill_tags) + [""]
+        out += skill_table(six, skill_tags, payoff) + [""]
     if extra:
         out += extra(six, by_name)
 
@@ -97,7 +104,7 @@ def standard(
         out += [f"## Out of universe: {name}, from {s0}", "", c.table([pu, *tu, eu], versus=tu[0])]
         out += [""]
         if skill_tags:
-            out += skill_table(u, {primary: skill_tags.get(primary, 0.5)}) + [""]
+            out += skill_table(u, {primary: skill_tags.get(primary, 0.5)}, payoff) + [""]
         x, y = c.align(pu, tu[0])
         signs[name] = stats.sharpe(x) - stats.sharpe(y)
 

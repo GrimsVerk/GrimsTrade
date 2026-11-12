@@ -77,15 +77,33 @@ Question: does machine learning on simple features beat `tsmom12` after costs? H
   not plumbing; and even a planted correlation of 0.20 only ties `tsmom12` on six assets.
 - `ml-sizing` (card written after the first three; two sharper position rules): dead.
 
-**Doing**
+**Doing (cut off by the usage limit at 02:32 UTC)**
 
-- Deciding the last follow-up cards (a payoff-aligned target; more training data).
+- `ml-payoff`: card and protocol rule committed, code written (`lib/idea_ml_payoff.py`,
+  payoff weights in `lib/ml.py`), `DRY=1` plumbing check passed. **Not yet run for real**: no
+  result seen, no try logged. Next step is the real run, then the verdict in
+  `results/ml-payoff.md`. Rerun `lib/lookahead_check_ml.py` first (ml.py changed since its
+  last pass).
 
 **Next**
 
-- Dividends note; refresh `results/deflation.md` with the ML tries.
-- Summary and ranking at the top of this file; `ideas.md` statuses.
-- The held-out year stays untouched unless a card passes its whole train bar.
+- An independent code review of `lib/ml.py` by a subagent was started and not collected; rerun
+  one before trusting the nulls further (the positive control already shows signals get through).
+- Optional: control at planted correlation 0.30 (add to `RHOS` in `lib/control_ml.py`) to back
+  the "would need above 0.3" remark in `results/ml-control.md`, which is an extrapolation.
+- Optional: more training data (pool the other ETFs, sectors, indexes, coins); dividends note.
+- Refresh `results/deflation.md` (16 new selectable variants so far, all below equal weight).
+- Summary and ranking at the top of this file (not yet updated for run 2); `ideas.md` statuses
+  (the four tested ML cards still say "testing": all four are dead).
+- The held-out year is untouched: nothing passed its train bar.
+
+**Run 2 so far, in one paragraph:** machine learning on 15 simple features did not beat
+`tsmom12`. Linear models found nothing and became equal weight (0.89 Sharpe against 1.05);
+boosting found nothing and traded on the noise (0.72-0.86 over nine settings); a model
+filtering the trend rule made it worse (0.73-0.94); sharper position rules made it worse still.
+Forecast skill is nil (AUC 0.49-0.51, below the single 12-month flag at 0.52). A planted
+signal is detected, and even a planted correlation of 0.20 only ties `tsmom12`: six assets
+decided monthly are too few bets for return forecasting to pay.
 
 Run any card with `uv run --with numpy --with scikit-learn python research/lib/idea_ml_<x>.py`
 (`DRY=1` first for a plumbing check: a real run appends tries).

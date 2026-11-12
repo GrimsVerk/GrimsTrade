@@ -35,6 +35,7 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics import log_loss, roc_auc_score
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
 
 HORIZON = 28  # label: log return over the next 28 days
 EMBARGO = 7  # extra gap between the last usable label and the fit date
@@ -206,10 +207,11 @@ class Spec:
     every fit. `meta`: train only on rows where the 12-month trend rule was holding."""
 
     name: str
-    family: str  # "logit" | "ridge" | "gbm"
-    target: str  # "up" | "ra"
+    family: str  # "logit" | "ridge" | "gbm" | "tree"
+    target: str  # "up" | "ra" | "raw"
     grid: tuple[tuple[tuple[str, float], ...], ...]
     meta: bool = False
+    weight: str = ""  # "pay": rows weighted by |28-day log return| (protocol: payoff weights)
 
 
 def _grid(*settings: Mapping[str, float]) -> tuple[tuple[tuple[str, float], ...], ...]:
@@ -241,6 +243,12 @@ GBM_SWEEP = [
     gbm_spec("gbm-n400", max_iter=400),
     gbm_spec("gbm-leaf20", min_samples_leaf=20),
 ]
+GBM_PAY = Spec("gbm-pay", "gbm", "up", _grid(GBM_BASE), weight="pay")
+LOGIT_PAY = Spec("logit-pay", "logit", "up", LOGIT.grid, weight="pay")
+TREE_PAY = Spec(
+    "tree-pay", "tree", "up", _grid({"max_depth": 2, "min_samples_leaf": 200}), weight="pay"
+)
+GBM_RAW = gbm_spec("gbm-raw", target="raw")
 META_GBM = gbm_spec("meta-gbm", meta=True)
 META_LOGIT = Spec("meta-logit", "logit", "up", LOGIT.grid, meta=True)
 
@@ -251,6 +259,12 @@ def _estimator(spec: Spec, setting: tuple[tuple[str, float], ...]) -> Any:
         return make_pipeline(StandardScaler(), LogisticRegression(C=p["C"], max_iter=2000))
     if spec.family == "ridge":
         return make_pipeline(StandardScaler(), Ridge(alpha=p["alpha"]))
+    if spec.family == "tree":
+        return DecisionTreeClassifier(
+            max_depth=int(p["max_depth"]),
+            min_samples_leaf=int(p["min_samples_leaf"]),
+            random_state=0,
+        )
     kw = {
         "learning_rate": p["learning_rate"],
         "max_iter": int(p["max_iter"]),
@@ -267,8 +281,33 @@ def _estimator(spec: Spec, setting: tuple[tuple[str, float], ...]) -> Any:
 def target(spec: Spec, rows: Rows) -> np.ndarray:
     if spec.target == "up":
         return (rows.fwd > 0).astype(float)
+    if spec.target == "raw":
+        return rows.fwd.copy()
     vol = np.exp(rows.x[:, LOG_VOL])
     return np.clip(rows.fwd / (vol * math.sqrt(HORIZON / 365)), -3, 3)
+
+
+def row_weights(spec: Spec, rows: Rows) -> np.ndarray | None:
+    """Payoff weights: |28-day log return| over its mean in these rows. None = unweighted."""
+    if spec.weight != "pay":
+        return None
+    w = np.abs(rows.fwd)
+    return w / w.mean()
+
+
+def _fit_est(
+    spec: Spec,
+    setting: tuple[tuple[str, float], ...],
+    x: np.ndarray,
+    y: np.ndarray,
+    w: np.ndarray | None,
+) -> Any:
+    est = _estimator(spec, setting)
+    if w is None:
+        return est.fit(x, y)
+    if hasattr(est, "steps"):
+        return est.fit(x, y, **{f"{est.steps[-1][0]}__sample_weight": w})
+    return est.fit(x, y, sample_weight=w)
 
 
 def _forecast(spec: Spec, est: Any, x: np.ndarray) -> np.ndarray:
@@ -290,15 +329,17 @@ def purged_folds(day: np.ndarray, k: int = CV_FOLDS) -> list[tuple[np.ndarray, n
 
 
 def cv_score(spec: Spec, setting: tuple[tuple[str, float], ...], rows: Rows) -> float:
-    y = target(spec, rows)
+    y, w = target(spec, rows), row_weights(spec, rows)
     scores = []
     for train, val in purged_folds(rows.day):
-        est = _estimator(spec, setting).fit(rows.x[train], y[train])
+        est = _fit_est(spec, setting, rows.x[train], y[train], None if w is None else w[train])
         f = _forecast(spec, est, rows.x[val])
+        wv = None if w is None else w[val]
         if spec.target == "up":
-            scores.append(log_loss(y[val], np.clip(f, 1e-6, 1 - 1e-6), labels=[0.0, 1.0]))
+            f = np.clip(f, 1e-6, 1 - 1e-6)
+            scores.append(log_loss(y[val], f, labels=[0.0, 1.0], sample_weight=wv))
         else:
-            scores.append(float(((f - y[val]) ** 2).mean()))
+            scores.append(float(np.average((f - y[val]) ** 2, weights=wv)))
     return float(np.mean(scores))
 
 
@@ -328,8 +369,9 @@ def fit(spec: Spec, rows: Rows) -> Fitted:
     setting = spec.grid[0]
     if len(spec.grid) > 1:
         setting = min(spec.grid, key=lambda g: cv_score(spec, g, rows))
-    y = target(spec, rows)
-    return Fitted(spec, _estimator(spec, setting).fit(rows.x, y), float(y.mean()), setting, len(y))
+    y, w = target(spec, rows), row_weights(spec, rows)
+    est = _fit_est(spec, setting, rows.x, y, w)
+    return Fitted(spec, est, float(np.average(y, weights=w)), setting, len(y))
 
 
 def oof_quantile(model: Fitted, rows: Rows, q: float = LOW_QUANTILE) -> float:
@@ -339,10 +381,12 @@ def oof_quantile(model: Fitted, rows: Rows, q: float = LOW_QUANTILE) -> float:
     if spec.meta:
         keep = rows.x[:, UP12] == 1
         rows = Rows(rows.day[keep], rows.x[keep], rows.fwd[keep], [])
-    y = target(spec, rows)
+    y, w = target(spec, rows), row_weights(spec, rows)
     parts = []
     for train, val in purged_folds(rows.day):
-        est = _estimator(spec, model.setting).fit(rows.x[train], y[train])
+        est = _fit_est(
+            spec, model.setting, rows.x[train], y[train], None if w is None else w[train]
+        )
         parts.append(_forecast(spec, est, rows.x[val]))
     return float(np.quantile(np.concatenate(parts), q))
 
@@ -445,7 +489,7 @@ def skill(panel: Panel, tag: str, neutral: float = 0.5) -> dict[str, float]:
     """How well the walk-forward forecasts ranked the realised 28-day outcomes."""
     log: dict[tuple[date, str], float] = panel.cache.get(("ml-fc", tag), {})  # type: ignore[assignment]
     last = max(date.fromordinal(int(o[-1])) for o in panel.ord.values() if len(o))
-    fc, up, base = [], [], []
+    fc, up, base, size = [], [], [], []
     for (d, s), p in log.items():
         if d.weekday() != 4 or d + timedelta(HORIZON) > last:
             continue
@@ -455,7 +499,8 @@ def skill(panel: Panel, tag: str, neutral: float = 0.5) -> dict[str, float]:
             fc.append(p)
             up.append(rows.fwd[k] > 0)
             base.append(rows.x[k, UP12])
-    f, u, b = np.array(fc), np.array(up), np.array(base)
+            size.append(abs(rows.fwd[k]))
+    f, u, b, w = np.array(fc), np.array(up), np.array(base), np.array(size)
     if len(f) < 50 or u.all() or not u.any():
         return {"n": float(len(f))}
     return {
@@ -466,6 +511,10 @@ def skill(panel: Panel, tag: str, neutral: float = 0.5) -> dict[str, float]:
         "said_up": float((f > neutral).mean()),
         "auc_up12": float(roc_auc_score(u, b)) if 0 < b.mean() < 1 else math.nan,
         "hit_up12": float(((b == 1) == u).mean()),
+        # the same hit rates with each month counted by the size of its move
+        "gain": float(np.average((f > neutral) == u, weights=w)),
+        "gain_always": float(np.average(u, weights=w)),
+        "gain_up12": float(np.average((b == 1) == u, weights=w)),
     }
 
 
