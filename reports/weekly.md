@@ -24,6 +24,6 @@ Fake money on real prices. Every strategy started with 10,000 USD; all figures a
 | Buy sharp crypto dips in an uptrend | 10,000 | +0.0% | +0.0% | 0 of 4 | too early to tell |
 
 \* Compared over the same days the strategy has been running.  
-\*\* How confident we can be that its return for the risk taken is real and not luck, allowing for all 112 strategies we have tried (deflated Sharpe). It does not by itself mean it beats the yardsticks. Real money is only discussed after 6 months, beating every yardstick, and strong evidence (95%+).
+\*\* How confident we can be that its return for the risk taken is real and not luck, allowing for all 256 strategies we have tried (deflated Sharpe). It does not by itself mean it beats the yardsticks. Real money is only discussed after 6 months, beating every yardstick, and strong evidence (95%+).
 
 Details: `scoreboard.md`. Backtests (hindsight, not evidence): `backtest.md`.
