@@ -469,6 +469,10 @@ One commit per fix, except the three workflow changes, which share the same line
   reviewers. 32 findings: 20 fixed or guarded, 4 half done (D1, L3, L7, S4), 8 open (S2, G4, G3,
   D6 need a decision or outside facts; G2, S6, L6, G5 are low). All with tests except G3
   and G5. Checks green.
+- **Doing (session 3, from 06:35 UTC, hard stop 08:40 UTC):** the second adversarial pass over
+  `ledger.in_force`, `check_append_only` and the two trail scripts (two independent reviewers);
+  re-checking the record after its third run (`paper-trail` at `e7c43e0`); then final summary
+  and ranking, and PR #5 marked ready for review.
 - **Not proven live:** the workflow changes. The first run after merging is the test: its log
   must show "GitHub's activity log agrees with the paper-trail history".
 - **Changed for whoever starts a brand-new record:** the first run must be started by hand with
