@@ -13,8 +13,8 @@ ideas and nothing tuned: these are the rules from runs 1 and 2 at different sett
 
 **How to read it.** Each dot is one choice. Higher means the account grew faster. Further right
 means its worst fall from a high was deeper. Colour is the rule; a bigger dot holds more crypto.
-The dots form one rising band: every step up in growth came with a deeper drop. There is no dot
-in the top-left corner, and the research found no rule that puts one there.
+The dots form one rising band: more growth came with a deeper drop. There is no dot in the
+top-left corner, and the research found no rule that puts one there.
 
 ## Three presets
 
@@ -29,12 +29,12 @@ bottom of its worst drop.
 
 - **Careful.** Hold an asset only while it is up over the last year, hold less of anything
   that swings a lot, and keep crypto small. 10,000 fell to about 8,820 at
-  worst. The worst drop ran from February 2020 to March 2020; the account was back at its old high in July 2020. The price is slow growth: 9% a year where Bold made
+  worst. The worst drop ran from February 2020 to March 2020; the account was back at its old high in July 2020. Its longest stretch below an earlier high was 2.2 years. The price is slow growth: 9% a year where Bold made
   25%.
 - **Middle.** The plain trend rule, with 10% of the account for each coin. 10,000 fell to
-  about 7,730 at worst. The worst drop ran from February 2020 to March 2020; the account was back at its old high in July 2020.
+  about 7,730 at worst. The worst drop ran from February 2020 to March 2020; the account was back at its old high in July 2020. Its longest stretch below an earlier high was 2.4 years.
 - **Bold.** Hold all six in equal parts, always. The fastest growth on the menu, and 10,000
-  fell to about 5,300: nearly half gone. The worst drop ran from January 2018 to December 2018; the account was back at its old high in February 2020.
+  fell to about 5,300: nearly half gone. The worst drop ran from January 2018 to December 2018; the account was back at its old high in February 2020. Its longest stretch below an earlier high was 2.3 years.
 - **Where the paper lane is today.** Its trend strategy uses equal slots and a medium swing
   cap, so the nearest row is "Trend rule + medium swing cap" with a sixth per coin. That
   lands beside Middle by another route: growth 14% a year, worst drop
@@ -56,6 +56,11 @@ only the worst so far.
   jumpy, which mostly means it shrinks crypto. The trend rule at a sixth per coin, from no cap
   to the tight cap: growth 21% to 11% a year, worst drop 36% to 12%. Crypto actually held falls from
   23% to 8% of the account.
+- **Under the tight cap the slot size hardly matters.** The cap decides how much crypto is
+  held (2% of the account at 5% per coin, 8%
+  at a sixth) and the worst drop stays near 12%. The extra growth at a
+  sixth (10.6% a year against 8.7%) is Bitcoin's
+  decade again, not a better rule.
 
 ## The whole menu
 

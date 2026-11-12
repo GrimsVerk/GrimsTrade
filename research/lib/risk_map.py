@@ -348,7 +348,8 @@ def recovery(r: Row) -> str:
 def story(r: Row) -> str:
     return (
         f"The worst drop ran from {month(r.peak)} to {month(r.trough)}; the account was back at"
-        f" its old high in {month(r.back)}."
+        f" its old high in {month(r.back)}. Its longest stretch below an earlier high was"
+        f" {span(r.under_days, r.under_open)}."
     )
 
 
@@ -394,8 +395,8 @@ ideas and nothing tuned: these are the rules from runs 1 and 2 at different sett
 
 **How to read it.** Each dot is one choice. Higher means the account grew faster. Further right
 means its worst fall from a high was deeper. Colour is the rule; a bigger dot holds more crypto.
-The dots form one rising band: every step up in growth came with a deeper drop. There is no dot
-in the top-left corner, and the research found no rule that puts one there.
+The dots form one rising band: more growth came with a deeper drop. There is no dot in the
+top-left corner, and the research found no rule that puts one there.
 
 ## Three presets
 
@@ -437,6 +438,11 @@ only the worst so far.
   jumpy, which mostly means it shrinks crypto. The trend rule at a sixth per coin, from no cap
   to the tight cap: {pair("tsmom12-c17", "tv20-c17")}. Crypto actually held falls from
   {held["tsmom12-c17"][0]:.0%} to {held["tv20-c17"][0]:.0%} of the account.
+- **Under the tight cap the slot size hardly matters.** The cap decides how much crypto is
+  held ({held["tv20-c05"][0]:.0%} of the account at 5% per coin, {held["tv20-c17"][0]:.0%}
+  at a sixth) and the worst drop stays near {n["tv20-c05"].mdd:.0%}. The extra growth at a
+  sixth ({n["tv20-c17"].cagr:.1%} a year against {n["tv20-c05"].cagr:.1%}) is Bitcoin's
+  decade again, not a better rule.
 
 ## The whole menu
 
