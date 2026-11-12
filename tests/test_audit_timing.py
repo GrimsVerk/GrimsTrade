@@ -1,7 +1,8 @@
 """Honesty audit 2026-11: the timing rules (no look-ahead).
 
-The rules in docs/DESIGN.md held up: the first tests here pin them against the real US session
-calendar and random decision times. One gap is left (T1 in docs/audits/honesty-2026-11.md).
+The rules in docs/DESIGN.md held up: these tests pin them against the real US session calendar
+and random decision times. The one gap found (T1 in docs/audits/honesty-2026-11.md: a decision
+filled before it could have been pushed) is tested in test_audit_ledger.py.
 """
 
 import random
@@ -91,22 +92,3 @@ def test_a_bar_still_in_progress_is_never_final() -> None:
     for minutes in range(0, 21 * 60 + 15, 5):  # up to 21:14 UTC
         assert data.settled(b, ETF, start + timedelta(minutes=minutes)) == []
     assert data.settled(b, ETF, start + timedelta(hours=21, minutes=15)) == b
-
-
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit T1: a decision stamped seconds before an open is filled at that open, though "
-    "it cannot have been committed and pushed before that price existed",
-)
-def test_a_decision_is_not_filled_before_it_could_have_been_pushed() -> None:
-    history: History = {
-        "BTC": [Bar(date(2026, 11, d), 100.0 * d, 100.0 * d, 100.0 * d, 100.0 * d, 1.0)
-                for d in (1, 2, 3)]
-    }  # fmt: skip
-    # A late run (GitHub's cron can slip by an hour or more): decided 23:59:30 on the 1st.
-    decided = datetime(2026, 11, 1, 23, 59, 30, tzinfo=UTC)
-    res = gym.simulate([Decision(decided, {"BTC": 1.0})], history, costs=NO_COSTS)
-    (fill,) = res.fills
-    # Today: filled 30 seconds later, at the open of the 2nd. The commit that proves the decision
-    # lands after that open, so from outside it looks the same as a decision made knowing it.
-    assert fill.time - decided >= timedelta(minutes=10)

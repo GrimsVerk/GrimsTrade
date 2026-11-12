@@ -2,6 +2,19 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-12 (honesty audit 1): A decision counts from the time its commit was made, when that
+  is later than its own timestamp (`ledger.in_force`, used by every score). Why: "append-only" did
+  not stop a line being added afterwards with an old timestamp and filled at an open already
+  known; the commit is the only evidence of when a line was written. Lines not yet committed
+  (the run scoring its own fresh decisions) keep their timestamp. A decision recorded more than 30
+  minutes after its timestamp is reported as late on the scoreboard. A decision is left out if a
+  later line of the same strategy counts from the same moment or earlier. Commit dates can be
+  forged by whoever can push, so GitHub's push log stays the outside witness (audit report, L1).
+- 2026-11-12 (honesty audit 1): Ingest refuses a bar that opens more than 40% from the previous
+  close (`data.MAX_GAP`) and any bar that fails `sources.check_sane`; an empty Yahoo day followed
+  by priced days is an error. Why: stored rows can never be corrected, so a split, a glitch or a
+  hole must be stopped and reported before it becomes permanent. Largest real gap in two stored
+  years: 6%.
 - 2026-11-12: Counting tries for the deflated Sharpe (N). N = strategies in `ledger/tries.jsonl`
   (benchmarks included; live strategies count before their first run) + the research lane's
   tries. Research tries = distinct (Idea, Variant) rows of any markdown table in

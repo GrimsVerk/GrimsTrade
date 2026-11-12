@@ -90,9 +90,9 @@ def deflate(scores: Sequence[Score], trials: Trials) -> list[Score]:
 
 def live_results(root: Path, history: History) -> dict[str, Result]:
     by_strategy: dict[str, list[Decision]] = {}
-    for row in ledger.decisions(root):
-        d = Decision(ledger.parse_time(row["time"]), row["weights"])
-        by_strategy.setdefault(row["strategy"], []).append(d)
+    # A decision counts from when it reached the record (its commit), see `ledger.in_force`.
+    for counts_from, row in ledger.in_force(root)[0]:
+        by_strategy.setdefault(row["strategy"], []).append(Decision(counts_from, row["weights"]))
     return {name: gym.simulate(decs, history) for name, decs in by_strategy.items()}
 
 
@@ -167,6 +167,14 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         footnote(trials),
     ]
+    late = ledger.in_force(root)[1]
+    if late:
+        out += [
+            "",
+            f"**Late decisions: {late}.** They reached the record more than "
+            f"{ledger.LATE // timedelta(minutes=1)} minutes after their own timestamp, so they "
+            "count from the time they were committed, not from the time they claim.",
+        ]
     return "\n".join(out) + "\n"
 
 

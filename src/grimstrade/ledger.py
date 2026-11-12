@@ -11,13 +11,14 @@ Git history is the tamper evidence: `check_append_only` fails if any committed l
 
 from __future__ import annotations
 
+import bisect
 import contextlib
 import functools
 import json
 import math
 import subprocess
 from collections.abc import Iterable, Mapping
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -240,24 +241,16 @@ def check_append_only(path: Path) -> int:
     content must start with its content in each parent (merges included, so a rewrite can't hide
     on a side branch), and the file on disk must start with HEAD's. Returns how many commits
     changed the file (0 outside git)."""
-    cwd = path.resolve().parent
-    while not cwd.exists():
-        cwd = cwd.parent
-    try:
-        top = Path(_git(cwd, "rev-parse", "--show-toplevel").decode().strip()).resolve()
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    where = _locate(path)
+    if where is None:
         return 0
-    rel = path.resolve().relative_to(top).as_posix()
-    try:
-        head = _git(top, "rev-parse", "--verify", "-q", "HEAD").decode().strip()
-    except subprocess.CalledProcessError:
-        return 0  # a branch with no commits yet (the first run's fresh paper-trail)
+    top, rel, head = where
     # Every commit with its parents. Not `git log -- file`: that skips one side of a merge.
     graph = [
         line.split() for line in _git(top, "rev-list", "--parents", "HEAD").decode().split("\n")
     ]
     graph = [g for g in graph if g]
-    blob = _blobs(top, [g[0] for g in graph], rel)
+    blob = {c: b for c, (b, _) in _blobs(top, [g[0] for g in graph], rel).items()}
 
     @functools.lru_cache(maxsize=4)  # a child's version is the next commit's parent version
     def read(blob_id: str) -> bytes:
@@ -280,14 +273,92 @@ def check_append_only(path: Path) -> int:
     return changed
 
 
-def _blobs(top: Path, commits: list[str], rel: str) -> dict[str, str]:
-    """Blob id of `rel` in each commit ("" where the file is absent), in one git call."""
+def _locate(path: Path) -> tuple[Path, str, str] | None:
+    """(repo top, `path` relative to it, HEAD commit); None outside git or on a branch with no
+    commits yet (the first run's fresh paper-trail)."""
+    cwd = path.resolve().parent
+    while not cwd.exists():
+        cwd = cwd.parent
+    try:
+        top = Path(_git(cwd, "rev-parse", "--show-toplevel").decode().strip()).resolve()
+        head = _git(top, "rev-parse", "--verify", "-q", "HEAD").decode().strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+    return top, path.resolve().relative_to(top).as_posix(), head
+
+
+def _blobs(top: Path, commits: list[str], rel: str) -> dict[str, tuple[str, int]]:
+    """(blob id, size in bytes) of `rel` in each commit, ("", 0) where the file is absent, in one
+    git call."""
     query = "".join(f"{c}:{rel}\n" for c in commits).encode()
     out = subprocess.run(
         ["git", "cat-file", "--batch-check"], cwd=top, check=True, capture_output=True, input=query
     ).stdout.decode()
-    ids = {}
+    found = {}
     for commit, line in zip(commits, out.splitlines(), strict=True):
         fields = line.split()
-        ids[commit] = fields[0] if len(fields) == 3 and fields[1] == "blob" else ""
-    return ids
+        is_file = len(fields) == 3 and fields[1] == "blob"
+        found[commit] = (fields[0], int(fields[2])) if is_file else ("", 0)
+    return found
+
+
+# --- when a decision counts from ---
+
+# A decision that reaches the record later than this after its own timestamp is called late.
+LATE = timedelta(minutes=30)
+
+
+def recorded_at(path: Path) -> list[datetime | None]:
+    """For each non-blank line of `path` on disk: the committer time of the earliest commit that
+    holds it; None if it is not committed yet (or outside git). Relies on the file being
+    append-only (`check_append_only`): a commit's new lines are the bytes past its parents'."""
+    ends, pos = [], 0
+    text = path.read_text() if path.exists() else ""
+    for line in text.splitlines(keepends=True):  # the same splitting as `_read`
+        pos += len(line.encode())
+        if line.strip():
+            ends.append(pos)
+    out: list[datetime | None] = [None] * len(ends)
+    where = _locate(path)
+    if where is None:
+        return out
+    top, rel, _ = where
+    log = _git(top, "rev-list", "--parents", "--timestamp", "HEAD").decode().splitlines()
+    rows = [r.split() for r in log if r]  # timestamp, commit, parents...
+    size = {c: n for c, (_, n) in _blobs(top, [r[1] for r in rows], rel).items()}
+    # Bytes (lo, hi] of the file first appear in this commit, made at `stamp`.
+    spans = []
+    for stamp, commit, *parents in rows:
+        lo = max((size[p] for p in parents), default=0)
+        if size[commit] > lo:
+            spans.append((int(stamp), lo, size[commit]))
+    for seconds, lo, hi in sorted(spans):  # earliest commit first: it wins
+        for i in range(bisect.bisect_right(ends, lo), bisect.bisect_right(ends, hi)):
+            if out[i] is None:
+                out[i] = datetime.fromtimestamp(seconds, tz=UTC)
+    return out
+
+
+def in_force(root: Path) -> tuple[list[tuple[datetime, dict[str, Any]]], int]:
+    """Every decision that counts, with the time it counts from, and how many were late.
+
+    The ledger's promise is "written before the outcome exists", and only the commit shows when
+    a line was written. So a committed decision counts from its commit time if that is later than
+    its own timestamp (in a normal run: seconds). A line appended afterwards with an old
+    timestamp gains nothing: it takes effect when it reached the record. Lines not committed yet
+    (today's run, before its commit) keep their timestamp. A decision is left out if a later
+    line of the same strategy counts from the same moment or earlier: it was never provably in
+    force. `late` = lines recorded more than LATE after their own timestamp."""
+    rows = decisions(root)
+    recorded = recorded_at(root / DECISIONS)
+    kept: dict[str, list[tuple[datetime, dict[str, Any]]]] = {}
+    late = 0
+    for row, at in zip(rows, recorded, strict=True):
+        stamped = parse_time(row["time"])
+        counts_from = max(stamped, at) if at is not None else stamped
+        late += counts_from - stamped > LATE
+        mine = kept.setdefault(row["strategy"], [])
+        while mine and mine[-1][0] >= counts_from:
+            mine.pop()
+        mine.append((counts_from, row))
+    return sorted((d for ds in kept.values() for d in ds), key=lambda d: d[0]), late

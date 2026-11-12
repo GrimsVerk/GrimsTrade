@@ -15,21 +15,27 @@ Severity: **high** = the scoreboard can show a result that never happened, and n
 **medium** = numbers are biased or a safeguard is weaker than the docs say; **low** = small or
 unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 
-### L1. A decision written after the outcome is accepted (high)
+### L1. A decision written after the outcome is accepted (high) - FIXED in this branch
 
-- **What:** the ledger check only proves that old lines were not changed. It does not prove a
-  line was written when it says it was. Anyone who can push to `paper-trail` (the three agents all
-  act as GrimsBot, which has write access) can append "on day 1 at 22:31 I bought BTC" on day 4,
-  after BTC doubled. The gym fills it at the day-2 open and the scoreboard shows +100%.
+- **What:** the ledger check only proves that old lines were not changed. It did not prove a
+  line was written when it says it was. Anyone who can push to `paper-trail` (the agents all act
+  as GrimsBot, which has write access) could append "on day 1 at 22:31 I bought BTC" on day 4,
+  after BTC doubled. The gym filled it at the day-2 open and the scoreboard showed +99%.
 - **Evidence:** `tests/test_audit_ledger.py::test_a_backdated_decision_is_not_credited`.
-  `gym.simulate` sorts decisions by their own `time` field; `check_append_only` passes because
-  the file only grew. Nothing compares a line's `time` with the commit that first carried it.
-- **Proposed fix:** (1) in the runner, refuse a ledger where a decision's `time` is not within
-  ~30 minutes before the commit that introduced it; (2) since commit dates can be forged too, use
-  GitHub's own push log as the outside witness: `gh api repos/GrimsVerk/GrimsTrade/activity?ref=refs/heads/paper-trail`
-  already lists every push with a server-side timestamp (checked 2026-11-12: it shows the branch
-  creation by `github-actions[bot]` at 22:00:52Z, 3 s after the first decisions); (3) owner:
-  a ruleset on `paper-trail` (see L2).
+  `gym.simulate` sorted decisions by their own `time` field; `check_append_only` passes because
+  the file only grew. Nothing compared a line's `time` with the commit that first carried it.
+- **Fix (done, `ledger.py` + 3 lines in `report.py`):** a committed decision now counts from its
+  commit time when that is later than its own timestamp (`ledger.in_force`). The back-dated line
+  is filled at the first open after it was committed, so hindsight buys nothing. Decisions
+  recorded more than 30 minutes after their timestamp are counted as "late" and the scoreboard
+  says how many. On the real record nothing changes: the two runs so far were committed 2 and 22
+  seconds after their timestamps.
+- **Still open:** commit dates are written by whoever makes the commit, so a determined forger
+  can fake them too. The outside witness is GitHub's own push log:
+  `gh api "repos/GrimsVerk/GrimsTrade/activity?ref=refs/heads/paper-trail"` lists every push with
+  a server-side time (checked: creation by `github-actions[bot]` at 22:00:52Z, one second after
+  the first commit). Proposed: a step in the daily job that compares each pushed commit's date
+  with its push time and fails on a difference over 30 minutes; and the ruleset in L3.
 
 ### L2. History can be rewritten with an ordinary push (high) - FIXED in this branch
 
@@ -115,9 +121,13 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   Every fill and every mark on that day uses them.
 - **Evidence (real):** the first run stored the 2026-11-11 ETF bars at 22:00:49 UTC, one hour
   after the close. In all four ETF files that row is the only one of 481 whose volume is not a
-  multiple of 100 (SPY 37,707,134), the mark of a row Yahoo had not finalised. At 01:38 UTC,
-  4.5 hours after the close, Yahoo's chart API returned that same SPY row with `close: null` and
-  the same volume: still being rewritten. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
+  multiple of 100 (SPY 37,707,134), the mark of a row Yahoo had not finalised. Five hours after
+  the close (02:00 UTC) Yahoo's chart API showed other numbers for the same day: QQQ open
+  687.275 (stored: 687.280), QQQ volume 42,821,615 (stored 42,505,260), TLT volume 26,433,481
+  (stored 26,421,050), and `close: null` for all four ETFs, i.e. the row was still being
+  rewritten. The price difference is tiny this time (0.07 basis points on an open, the price
+  fills use); the point is that the record already differs from its source after one day and
+  nothing reports it. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
 - **Proposed fix (medium, `run_daily.py` + `data.py`):** each run, re-fetch the last ~5 stored
   days and compare (with a small tolerance); never change stored rows, but write every difference
   to an append-only `data/revisions.jsonl` and to the run's problem list. Cheap extra safety: move
@@ -291,18 +301,17 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (it is in
   the BACKLOG). Until then say so under the scoreboard.
 
-### T1. A decision can be filled before it could have been pushed (low)
+### T1. A decision can be filled before it could have been pushed (low) - FIXED in this branch
 
 - **What:** the timing rules themselves held up (see "Checked and sound"). One gap: a fill only
-  has to be after the decision's own timestamp. A run that starts at 23:59:30 UTC is filled at the
-  00:00:00 crypto open, but its commit reaches GitHub after that price exists. No information
-  leaks (inputs are still cut off at the timestamp), but the promise "committed before the outcome
-  exists" is no longer provable for that decision, and with the fix for L1 it would leave a
-  30-minute window for a forger.
-- **Evidence:** `tests/test_audit_timing.py::test_a_decision_is_not_filled_before_it_could_have_been_pushed`.
-  GitHub's scheduled runs are often late; 22:30 leaves 90 minutes before 00:00.
-- **Proposed fix (small, `gym.py`):** fill at the first open at least 30 minutes after the
-  decision (the same 30 minutes L1 allows between decision and commit).
+  had to be after the decision's own timestamp. A run that starts at 23:59:30 UTC was filled at
+  the 00:00:00 crypto open, but its commit reaches GitHub after that price exists. No information
+  leaks (inputs are still cut off at the timestamp), but "committed before the outcome exists"
+  was no longer provable for that decision. GitHub's scheduled runs are often late; 22:30 leaves
+  90 minutes before 00:00.
+- **Evidence and fix:** the L1 fix covers it: the decision counts from its commit, so it is
+  filled at the next open after that
+  (`tests/test_audit_ledger.py::test_a_decision_counts_from_its_commit`).
 
 ## Checked and sound
 

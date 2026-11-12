@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from grimstrade import gym, ledger, report
+from grimstrade import ledger, report
 from grimstrade.data import Bar, History
 
 DAY1 = date(2026, 11, 1)
@@ -58,32 +58,78 @@ def commit(repo: Path, message: str, when: datetime) -> None:
     git(repo, "commit", "-qm", message, when=when)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit L1: a decision appended after the outcome, stamped with an earlier time, is "
-    "accepted and filled at the old open (append-only is not the same as written-in-time)",
-)
 def test_a_backdated_decision_is_not_credited(repo: Path) -> None:
-    # BTC: flat on day 1, opens day 2 at 100 and then doubles by the close of day 3.
-    history: History = {"BTC": btc([(100, 100), (100, 150), (150, 200), (200, 200)])}
+    """Audit L1 (fixed): append-only is not the same as written-in-time. A line appended after
+    the outcome, stamped with an earlier time, used to be filled at the old open. Now a decision
+    counts from the moment its commit was made."""
+    # BTC: flat on day 1, opens day 2 at 100, doubles by day 3, then stays at 200.
+    history: History = {"BTC": btc([(100, 100), (100, 150), (150, 200), (200, 200), (200, 200)])}
     # Day 1, 22:30: the honest run. Everyone stays in cash. Committed the same minute.
     decide(repo, at(DAY1), "honest", {})
     commit(repo, "Daily run day 1", when=at(DAY1, 22, 31))
-
     # Day 4: BTC has doubled. Someone appends a line that claims "on day 1 at 22:31 I went all in".
     decide(repo, at(DAY1, 22, 31), "cheat", {"BTC": 1.0})
     commit(repo, "Daily run day 4", when=at(DAY1 + timedelta(days=3), 22, 31))
 
-    # The append-only check is satisfied: nothing that was committed has changed.
+    # It is an append, so the append-only check has nothing to say...
     ledger.check_append_only(repo / ledger.DECISIONS)
-    # ...and the scoreboard books the hindsight trade at the day-2 open, doubling the money.
-    results = report.live_results(repo, history)
-    cheat = report.score("cheat", results["cheat"])
-    assert cheat.total_return > 0.9
+    # ...but the order is filled at the first open after it was committed (day 5, at 200), not at
+    # the day-2 open (100) it was aiming for: no profit from hindsight.
+    (fill,) = report.live_results(repo, history)["cheat"].fills
+    assert fill.time == datetime(2026, 11, 5, tzinfo=UTC)
+    assert fill.price == pytest.approx(200 * 1.0005)
+    assert report.score("cheat", report.live_results(repo, history)["cheat"]).total_return < 0
+    # And the scoreboard says so.
+    (_, late) = ledger.in_force(repo)
+    assert late == 1
+    assert "**Late decisions: 1.**" in report.render(repo, history)
 
-    # What honesty needs: a line whose time is days older than the commit that first carried it
-    # must not count. (Today nothing compares a decision's time with when it was committed.)
-    assert cheat.total_return == pytest.approx(0.0) or cheat.equity == gym.START_CASH
+
+def test_a_decision_counts_from_its_commit(repo: Path) -> None:
+    """Audit T1 (fixed with L1): a late run stamped 23:59:30 whose commit lands after midnight
+    is not filled at the 00:00 open that already existed when it was recorded."""
+    history: History = {"BTC": btc([(100, 100), (200, 200), (300, 300), (300, 300)])}
+    stamped = datetime(2026, 11, 1, 23, 59, 30, tzinfo=UTC)
+    decide(repo, stamped, "s", {"BTC": 1.0})
+    # Before the commit exists (the run itself, scoring its own fresh line): the timestamp counts.
+    assert ledger.in_force(repo)[0][0][0] == stamped
+    commit(repo, "Daily run", when=datetime(2026, 11, 2, 0, 0, 40, tzinfo=UTC))
+    ((counts_from, _),), late = ledger.in_force(repo)
+    assert counts_from == datetime(2026, 11, 2, 0, 0, 40, tzinfo=UTC) and late == 0
+    (fill,) = report.live_results(repo, history)["s"].fills
+    assert fill.time == datetime(2026, 11, 3, tzinfo=UTC) and fill.price == pytest.approx(300.15)
+
+
+def test_normal_runs_and_one_commit_for_two_days(repo: Path) -> None:
+    # Two ordinary runs, each committed a minute later: both count, in order, nothing is late.
+    decide(repo, at(DAY1), "s", {"BTC": 1.0})
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 31))
+    decide(repo, at(DAY1 + timedelta(days=1)), "s", {})
+    commit(repo, "Daily run day 2", when=at(DAY1 + timedelta(days=1), 22, 31))
+    counted, late = ledger.in_force(repo)
+    assert [(t, r["weights"]) for t, r in counted] == [
+        (at(DAY1, 22, 31), {"BTC": 1.0}),
+        (at(DAY1 + timedelta(days=1), 22, 31), {}),
+    ]
+    assert late == 0
+    # A sloppy local run: days 3 and 4 decided on time but committed together on day 4. Day 3's
+    # line was never provably in force before day 4's replaced it, so only day 4's counts.
+    decide(repo, at(DAY1 + timedelta(days=2)), "s", {"BTC": 0.5})
+    decide(repo, at(DAY1 + timedelta(days=3)), "s", {"BTC": 0.25})
+    decide(repo, at(DAY1 + timedelta(days=3)), "other", {})
+    commit(repo, "two days at once", when=at(DAY1 + timedelta(days=3), 22, 31))
+    counted, late = ledger.in_force(repo)
+    assert [r["weights"] for _, r in counted if r["strategy"] == "s"] == [
+        {"BTC": 1.0}, {}, {"BTC": 0.25},
+    ]  # fmt: skip
+    assert late == 1
+    assert len(ledger.recorded_at(repo / ledger.DECISIONS)) == len(ledger.decisions(repo)) == 5
+
+
+def test_outside_git_decisions_count_from_their_own_time(tmp_path: Path) -> None:
+    decide(tmp_path, at(DAY1), "s", {"BTC": 1.0})
+    assert ledger.in_force(tmp_path) == ([(at(DAY1), ledger.decisions(tmp_path)[0])], 0)
+    assert ledger.in_force(tmp_path / "nothing-here") == ([], 0)
 
 
 def _honest_two_days(repo: Path) -> Path:

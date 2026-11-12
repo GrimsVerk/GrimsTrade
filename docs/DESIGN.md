@@ -35,6 +35,9 @@ keeps score per strategy against the benchmarks.
   the open of that asset's first bar with open > `T`. Crypto trades every day; ETFs only on bars
   that exist (weekends/holidays just have no bar).
 - Ingest stores only bars that have closed (plus 15 min), and never changes stored rows.
+- A committed decision counts from its commit time (`ledger.in_force`), not from its own
+  timestamp, if that is later: only the commit shows when a line was written. In a normal run
+  the two are seconds apart. A line appended later with an old timestamp gains nothing.
 
 ## Where the record lives
 
