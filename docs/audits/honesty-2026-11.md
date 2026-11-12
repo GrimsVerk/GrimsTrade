@@ -235,15 +235,18 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Proposed fix (`report.py`):** next to each strategy show every benchmark's return over that
   strategy's own period (same start day), and rank by the difference.
 
-### S4. Frozen data looks like a calm strategy (medium)
+### S4. Frozen data looks like a calm strategy (medium) - HALF FIXED in this branch
 
 - **What:** if a source stops (see D6), the gym keeps valuing that asset at its last price. The
   strategy's line goes flat: no losses, no swings, a better drawdown and a distorted Sharpe. The
-  scoreboard never says how old each asset's newest bar is, nor how many days a strategy made no
-  decision (missed or failed runs: GitHub's cron is best-effort and a rejected push loses the day).
+  scoreboard never said how old each asset's newest bar is, nor how many days a strategy made no
+  decision (missed or failed runs: GitHub's cron is best-effort, a rejected push loses the day,
+  and since M1 a strategy that raises an error is skipped for the day and keeps its old position).
 - **Evidence:** `tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`.
-- **Proposed fix (`report.py`):** a "data through" line per asset with a loud warning when one
-  is older than its last expected session, and a count of days without a decision.
+- **Fix (done, `report.py`):** the scoreboard has a "Prices through" line with the newest bar of
+  each asset and a loud **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
+  behind the newest one. **Still open:** a count of days on which a strategy made no decision,
+  and the same line in `weekly.md`, the page the owner actually reads.
 
 ### S5. The Sharpe formula assumes one equity point per calendar day (low today, a trap later) - FIXED in this branch
 

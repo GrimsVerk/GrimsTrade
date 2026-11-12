@@ -159,6 +159,25 @@ def footnote(trials: Trials) -> str:
     )
 
 
+def freshness(history: History) -> str:
+    """The newest stored bar per asset, with a loud note on any asset that has fallen behind.
+
+    When a source stops, the gym keeps valuing that asset at its last price: no swings, no
+    losses, a flat line that reads as a calm strategy. The table can't show that; this line does.
+    Crypto has a bar every day; ETFs may lag by a long weekend."""
+    lasts = {s: bars[-1].date for s, bars in history.items() if bars}
+    if not lasts:
+        return "No prices stored yet."
+    newest = max(lasts.values())
+    parts = []
+    for sym, last in lasts.items():
+        behind = (newest - last).days
+        allowed = 2 if data.UNIVERSE[sym] == data.CRYPTO else 5
+        stale = f" (**STALE: {behind} days behind, valued at its last price**)"
+        parts.append(f"{sym} {last}" + (stale if behind > allowed else ""))
+    return "Prices through: " + ", ".join(parts) + "."
+
+
 def count_tries(root: Path, repo: Path) -> Trials:
     """All strategies tried: registered ones, live ones not yet registered, the research lane's
     (visible or recorded), with the research variants' Sharpes. Read-only."""
@@ -181,6 +200,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "Fills at the next open after each decision, after fees and slippage.",
         "",
         table(live) if live else "No decisions yet.",
+        "",
+        freshness(history),
         "",
         footnote(trials),
     ]

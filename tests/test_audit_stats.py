@@ -86,12 +86,10 @@ def test_the_same_strategy_started_later_ranks_differently() -> None:
     assert rows[0].startswith("| benchmark") and rows[1].startswith("| newcomer")
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit S4: when a source stops, the scoreboard keeps marking that asset at its last "
-    "price and does not say so: frozen prices look like a calm, flat strategy",
-)
 def test_the_scoreboard_says_how_fresh_each_assets_data_is(tmp_path: Path) -> None:
+    """Audit S4 (fixed): when a source stopped, the scoreboard kept valuing that asset at its
+    last price and did not say so: frozen prices look like a calm, flat strategy."""
+
     def flat(n: int, px: float) -> list[Bar]:
         return [Bar(DAY1 + timedelta(days=i), px, px, px, px, 1.0) for i in range(n)]
 
@@ -102,7 +100,11 @@ def test_the_scoreboard_says_how_fresh_each_assets_data_is(tmp_path: Path) -> No
     ledger.write_decision(tmp_path, when, "buy_hold_spy", {"SPY": 1.0}, seen, "t")
     text = report.render(tmp_path, data.load_all(tmp_path))
     assert "buy_hold_spy" in text
-    assert "2026-11-06" in text  # e.g. "SPY: last bar 2026-11-06 (14 days old)"
+    assert "Prices through: BTC 2026-11-20, SPY 2026-11-06 (**STALE: 14 days behind" in text
+    # An ordinary weekend (ETFs two days behind crypto) is not stale.
+    data.append(tmp_path, "QQQ", flat(18, 600.0)[:17])  # through Wednesday 2026-11-18
+    assert report.freshness(data.load_all(tmp_path)).endswith(", QQQ 2026-11-18.")
+    assert report.freshness({}) == "No prices stored yet."
 
 
 def test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point() -> None:
