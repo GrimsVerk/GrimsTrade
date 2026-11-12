@@ -3,6 +3,7 @@
 - `ledger/decisions.jsonl`: one line per decision (UTC time, strategy, weights, prices seen,
   last bar date seen per asset, reason).
 - `ledger/tries.jsonl`: one line per strategy ever tried, live or dead (for the deflated Sharpe).
+- `ledger/research_tries.jsonl`: each new high of the research lane's try count (it never shrinks).
 
 Git history is the tamper evidence: `check_append_only` fails if any committed line was changed.
 """
@@ -10,7 +11,6 @@ Git history is the tamper evidence: `check_append_only` fails if any committed l
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime
@@ -21,6 +21,8 @@ from grimstrade.data import History
 
 DECISIONS = Path("ledger/decisions.jsonl")
 TRIES = Path("ledger/tries.jsonl")
+RESEARCH_FLOOR = Path("ledger/research_tries.jsonl")
+APPEND_ONLY = (DECISIONS, TRIES, RESEARCH_FLOOR)
 
 
 class LedgerTampered(Exception):
@@ -88,19 +90,17 @@ def tries(root: Path) -> int:
 
 RESEARCH_TRIES = "research/tries.md"
 RESEARCH_IDEAS = "research/ideas.md"
-_TRIED = re.compile(r"\b(testing|tested|live|dead)\b", re.IGNORECASE)
+_RESEARCH_REFS = ("refs/heads/main", "refs/remotes/*/main", "refs/heads/research-*",
+                  "refs/remotes/*/research-*")  # fmt: skip
 
 
 def _research_texts(repo: Path, rel: str) -> list[str]:
-    """`rel` from the working tree and from every local or remote `research-*` branch."""
+    """`rel` from the working tree, `main` and every local or remote `research-*` branch."""
     texts = []
     if (repo / rel).exists():
         texts.append((repo / rel).read_text())
     try:
-        refs = _git(
-            repo, "for-each-ref", "--format=%(refname)", "refs/heads/research-*",
-            "refs/remotes/*/research-*",
-        ).decode().split()  # fmt: skip
+        refs = _git(repo, "for-each-ref", "--format=%(refname)", *_RESEARCH_REFS).decode().split()
     except (subprocess.CalledProcessError, FileNotFoundError):
         return texts
     for ref in refs:
@@ -111,50 +111,90 @@ def _research_texts(repo: Path, rel: str) -> list[str]:
     return texts
 
 
-def _table_rows(text: str) -> list[list[str]]:
-    """Data rows of every markdown table (header and separator rows dropped), plus bullets."""
-    rows: list[list[str]] = []
-    in_table = False
-    for line in text.splitlines():
-        s = line.strip()
-        if s.startswith("|"):
-            cells = [c.strip() for c in s.strip("|").split("|")]
-            if not in_table:
-                in_table = True  # the header row
-            elif not all(set(c) <= set("-: ") for c in cells):
-                rows.append(cells)
+def _cells(line: str) -> list[str]:
+    return [c.strip() for c in line.strip().strip("|").split("|")]
+
+
+def _is_separator(cells: list[str]) -> bool:
+    return all(c and set(c) <= set("-: ") for c in cells)
+
+
+def _table_rows(text: str) -> list[dict[str, str]]:
+    """Data rows of every markdown table, keyed by lower-cased header. A header is the row just
+    above a `|---|` separator; it stays in force across blank lines until the next header."""
+    lines = [line.strip() for line in text.splitlines()]
+    rows: list[dict[str, str]] = []
+    header: list[str] | None = None
+    for i, s in enumerate(lines):
+        if not s.startswith("|"):
             continue
-        in_table = False
-        if s.startswith(("- ", "* ")):
-            rows.append([s[2:].strip()])
+        cells = _cells(s)
+        if _is_separator(cells):
+            continue
+        nxt = lines[i + 1] if i + 1 < len(lines) else ""
+        if nxt.startswith("|") and _is_separator(_cells(nxt)):
+            header = [c.lower() for c in cells]
+        elif header is not None:
+            rows.append(dict(zip(header, cells, strict=False)))
     return rows
+
+
+def _variant_rows(repo: Path) -> list[dict[str, str]]:
+    return [r for t in _research_texts(repo, RESEARCH_TRIES) for r in _table_rows(t)]
 
 
 def research_tries(repo: Path) -> int:
     """How many strategy variants the research lane has tried (rule in docs/DECISIONS.md).
 
-    Distinct (idea, variant) rows of `research/tries.md`, the union over the working tree and all
-    `research-*` branches; at least the number of ideas in `research/ideas.md` whose status shows
-    they were tested (testing, live or dead).
+    Distinct (idea, variant) rows of `research/tries.md` (any kind: baselines and robustness runs
+    count too), plus the ideas in `research/ideas.md` past status `new` that have no such row. Both
+    files are read from the working tree, `main` and every `research-*` branch, and unioned.
     """
-    variants: set[tuple[str, ...]] = set()
-    for text in _research_texts(repo, RESEARCH_TRIES):
-        for cells in _table_rows(text):
-            key = cells[1:3] if len(cells) >= 4 else cells  # date | idea | variant | period
-            variants.add(tuple(c.lower() for c in key))
-    ideas: set[str] = set()
+    variants = {
+        (r.get("idea", "").lower(), r.get("variant", "").lower()) for r in _variant_rows(repo)
+    }
+    logged = {idea for idea, _ in variants}
+    tried: set[str] = set()
     for text in _research_texts(repo, RESEARCH_IDEAS):
-        for cells in _table_rows(text):
-            if _TRIED.search(" ".join(cells)):
-                ideas.add(cells[0].lower())
-    return max(len(variants), len(ideas))
+        for r in _table_rows(text):
+            status = r.get("status", "").strip().lower()
+            idea = r.get("idea", "").strip().lower()
+            if idea and status and not status.startswith("new"):
+                tried.add(idea)
+    return len(variants) + len(tried - logged)
+
+
+def research_sharpes(repo: Path) -> list[float]:
+    """Annualised Sharpe of each research variant (`kind` variant, `train` period, as logged)."""
+    out: dict[tuple[str, str], float] = {}
+    for r in _variant_rows(repo):
+        if r.get("kind", "variant").lower() != "variant":
+            continue
+        if r.get("period", "train").lower() != "train":
+            continue
+        try:
+            sharpe = float(r.get("sharpe", ""))
+        except ValueError:
+            continue
+        out[(r.get("idea", "").lower(), r.get("variant", "").lower())] = sharpe
+    return list(out.values())
+
+
+def research_floor(root: Path, count: int) -> int:
+    """Never let the research count shrink (a deleted or unfetched branch would hide tries):
+    record `count` in `ledger/research_tries.jsonl` if it is a new high, return the high."""
+    high = max((int(r["count"]) for r in _read(root / RESEARCH_FLOOR)), default=0)
+    if count > high:
+        _append(root / RESEARCH_FLOOR, {"count": count})
+    return max(count, high)
 
 
 def total_tries(root: Path, repo: Path, also: Iterable[str] = ()) -> int:
     """Every strategy tried anywhere: the ledger's tries (plus any names in `also` not yet
-    registered, e.g. live strategies before their first run) and the research lane's."""
+    registered, e.g. live strategies before their first run) and the research lane's (never less
+    than its recorded high)."""
     names = {r["name"] for r in _read(root / TRIES)} | set(also)
-    return len(names) + research_tries(repo)
+    return len(names) + research_floor(root, research_tries(repo))
 
 
 def _git(cwd: Path, *args: str) -> bytes:

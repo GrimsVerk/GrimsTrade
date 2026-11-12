@@ -59,21 +59,32 @@ def score(name: str, res: Result) -> Score:
                  mdd, turnover, stats.moments(rets))  # fmt: skip
 
 
-def deflate(scores: Sequence[Score], trials: int) -> list[Score]:
-    """Fill in each score's deflated Sharpe, given `trials` strategies tried in all.
+@dataclass(frozen=True)
+class Trials:
+    """Every strategy tried anywhere (`count`), and the annualised Sharpes we know of tries that
+    are not on the table being scored (the research lane's variants)."""
+
+    count: int
+    other_sharpes: tuple[float, ...] = ()
+
+
+def deflate(scores: Sequence[Score], trials: Trials) -> list[Score]:
+    """Fill in each score's deflated Sharpe, given all the strategies tried.
 
     The variance of Sharpe ratios across trials is the larger of (a) what pure luck gives over this
-    record's length and (b) the spread of the Sharpes in `scores` (rule in docs/DECISIONS.md).
+    record's length and (b) the spread of the Sharpes in `scores` together with the other tries'
+    known Sharpes (rule in docs/DECISIONS.md).
     """
     ready = [s.moments for s in scores if s.moments and s.days >= MIN_DAYS_FOR_DSR]
-    spread = statistics.variance([m.sharpe for m in ready]) if len(ready) >= 2 else 0.0
+    daily = [m.sharpe for m in ready] + [x / math.sqrt(DAYS_PER_YEAR) for x in trials.other_sharpes]
+    spread = statistics.variance(daily) if len(daily) >= 2 else 0.0
     out = []
     for s in scores:
         if s.moments is None or s.days < MIN_DAYS_FOR_DSR:
             out.append(s)
             continue
         var = max(stats.null_sharpe_variance(s.moments.periods), spread)
-        out.append(replace(s, dsr=stats.deflated_sharpe(s.moments, max(trials, 1), var)))
+        out.append(replace(s, dsr=stats.deflated_sharpe(s.moments, max(trials.count, 1), var)))
     return out
 
 
@@ -118,23 +129,24 @@ def table(scores: list[Score]) -> str:
     return "\n".join(lines)
 
 
-def footnote(trials: int) -> str:
+def footnote(trials: Trials) -> str:
     return (
-        f"Strategies tried so far (the record's plus the research lane's): {trials}. "
-        "Sharpe: daily, 365 days/yr, zero risk-free rate. Deflated Sharpe: the probability that "
-        "the true Sharpe is above zero after allowing for luck across all the strategies tried "
-        f"(Bailey & López de Prado 2014); shown after {MIN_DAYS_FOR_DSR} days."
+        f"Strategies tried so far (the record's plus the research lane's): {trials.count}. "
+        "Sharpe: daily, 365 days/yr, zero risk-free rate. Deflated Sharpe: how confident we can be "
+        "that the Sharpe beats the best that luck alone would give across all the strategies "
+        f"tried (Bailey & López de Prado 2014); shown after {MIN_DAYS_FOR_DSR} days."
     )
 
 
-def count_tries(root: Path, repo: Path) -> int:
-    """All strategies tried: registered ones, live ones not yet registered, the research lane's."""
+def count_tries(root: Path, repo: Path) -> Trials:
+    """All strategies tried: registered ones, live ones not yet registered, the research lane's
+    (never fewer than its recorded high), with the research variants' Sharpes."""
     from grimstrade.strategies import LIVE
 
-    return ledger.total_tries(root, repo, LIVE)
+    return Trials(ledger.total_tries(root, repo, LIVE), tuple(ledger.research_sharpes(repo)))
 
 
-def live_scores(root: Path, history: History, trials: int) -> list[Score]:
+def live_scores(root: Path, history: History, trials: Trials) -> list[Score]:
     return deflate([score(n, r) for n, r in live_results(root, history).items()], trials)
 
 
@@ -154,7 +166,7 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     return "\n".join(out) + "\n"
 
 
-def backtest_scores(history: History, trials: int, start: date | None = None) -> list[Score]:
+def backtest_scores(history: History, trials: Trials, start: date | None = None) -> list[Score]:
     return deflate([score(n, r) for n, r in backtest_results(history, start=start).items()], trials)
 
 
