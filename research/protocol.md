@@ -106,3 +106,62 @@ of variants per idea is kept small because each one raises the bar the deflated 
 "Cash earns 0 ... biases against timing rules" (Data section) was checked afterwards in
 `results/cash-interest.md`: with T-bill interest on cash the cautious rules gain 0.5-0.8% a year
 and no ranking changes. The rule stays as written; the bias is small.
+
+## Machine-learning tests (added 2026-11-12 02:15 UTC, run 2, before any model was fitted)
+
+Everything above still applies. These rules are for models fitted on features (`lib/ml.py`).
+
+**Rows.** One row per asset per Friday, for every Friday the asset is eligible (a year of bars)
+and every feature exists. Pooled across the assets of the universe: one model for all of them.
+
+**Features (15, all from closes visible at the decision; fixed here, never tuned).**
+With `vol` = EWMA volatility (60-bar half-life, annualised) and `z(h)` = the log return over the
+last `h` calendar days divided by `vol x sqrt(h/365)`, clipped to +-5:
+
+- Trend: `z(7)`, `z(30)`, `z(91)`, `z(182)`, `z(365)`; `up_12m` (1 if the 365-day return is
+  positive: the `tsmom12` signal); `sma_gap` = log(close / 200-day average) / `vol`.
+- Volatility: `log_vol` = log(`vol`); `vol_shock` = log(10-bar-half-life vol / `vol`).
+- Drawdown: `dd_1y` = log(close / highest close of the last year) / `vol`; `since_high` = bars
+  since that high, as a share of a year.
+- Cross-asset (the same for every asset on a given Friday): `breadth` = share of eligible assets
+  with a positive 365-day return; `univ_mom_1m` = mean `z(30)` over eligible assets;
+  `univ_vol_shock` = mean `vol_shock`; and per asset `rank_12m` = rank of its `z(365)` among the
+  eligible assets, 0 to 1 (0.5 when alone).
+
+**Labels.** The log return over the next 28 days, between the closes visible at the two Friday
+decisions. `up` = 1 if positive (classifiers). `ra` = that return divided by
+`vol x sqrt(28/365)`, clipped to +-3 (regressors).
+
+**Walk-forward with purge and embargo (López de Prado).** A model is refitted on the first Friday
+of each calendar year (run 1's schedule for fitted rules), on an expanding window. A row may be
+used at a fit only if its 28-day label window ended at least 7 days before the fit date: the
+purge removes every label that overlaps the period the model will trade, the 7 days are the
+embargo. That model then decides every Friday until the next fit. Nothing is ever fitted,
+scaled or selected on data from after the decision.
+
+**Choosing a setting inside the walk-forward.** Where a card says a setting is "chosen by purged
+CV", the choice is redone at every fit, on the training rows only: 5 folds in time order; for
+each validation fold the training rows whose label window comes within 28 days of it are dropped
+(purge), as are the rows in the 28 days after it (embargo); score = log loss (classifiers) or
+squared error (regressors); the best mean score wins. The backtest then is one try, and the
+settings chosen each year are listed in the result.
+
+**From forecast to position (long only, no leverage).** Each eligible asset has an equal slot,
+like the twins. Confidence `q` = (forecast - neutral) / (average label in the training rows -
+neutral), where neutral is 0.5 for P(up) and 0 for `ra`. The slot is held in proportion:
+weight = slot x clip(q, 0, 1). So: nothing when the model expects a loss, the full slot when it
+is at least as confident as the long-run average, in between otherwise. A model with no skill
+forecasts the average and so holds everything: it becomes equal weight. `-hard` variants hold
+the full slot whenever q > 0.
+
+**First model and warm-up.** The first model is fitted at the first yearly fit date that has at
+least 1,000 rows; trading starts there, and the twins are re-scored from the same day (same
+configuration as the logged baseline, so not logged again). For any universe that contains SPY,
+the S&P 500 index from 1962 to 1993-01-28 (the 30 years before SPY existed) is added to the
+training rows, so the six-asset test covers the usual 1994-2025.
+
+**Out of universe.** The procedure is refitted, unchanged, on each set's own history: the 8
+other ETFs, the 6 other coins, and the four indexes as one pooled portfolio.
+
+**Tries.** Every backtested model configuration is a row in `tries.md`, sweeps included.
+Forecast-skill numbers (AUC and the like) are read from those same runs. Seeds are fixed.

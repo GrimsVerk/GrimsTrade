@@ -34,6 +34,14 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | trend-to-safe | Trend / regime allocation | dead (tested) | [card](cards/trend-to-safe.md) | Equals tsmom12 on the six assets (1.02 vs 1.05), behind in 2022. Helped on other ETFs with mid-term bonds as the safe asset (0.68 vs 0.60, p = 0.06): a hint for a universe with IEF. [result](results/trend-to-safe.md) |
 | crypto-slot-size | Allocation | described (no pass bar) | [card](cards/crypto-slot-size.md) | Sharpe is flat from 5% to 1/6 per coin (1.34-1.39); size sets growth and worst loss (5%: +18%/yr, -31%; 1/6: +35%/yr, -47%). The owner's biggest risk setting. [result](results/crypto-slot-size.md) |
 
+## Cards for research run 2: machine learning (written before any model was fitted)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| ml-linear | Machine learning | testing | [card](cards/ml-linear.md) | Logistic / ridge regression on 15 features, purged walk-forward |
+| ml-gbm | Machine learning | testing | [card](cards/ml-gbm.md) | Gradient boosting on the same features; 9 settings, all logged |
+| ml-filter | Machine learning | testing | [card](cards/ml-filter.md) | `tsmom12` with a model grading its trades (meta-labelling) |
+
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 
 | Idea | Field | Status | Card | Note |

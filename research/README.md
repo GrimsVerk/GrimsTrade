@@ -58,7 +58,31 @@ Dead, with the one-line reason (details in `ideas.md` and `results/`):
   change-point momentum, daily crypto reversal, pre-FOMC drift, return forecasts from
   time-series foundation models.
 
-## Research run 1 (resume here)
+## Research run 2 (resume here)
+
+Brief: `chief-of-staff/briefs/grimstrade-research-2.md`. Branch `research-2` (from `research-1`).
+Question: does machine learning on simple features beat `tsmom12` after costs? Hard stop
+2026-11-12 08:40 UTC. Started 02:08 UTC.
+
+**Done**
+
+- ML test rules added to `protocol.md` ("Machine-learning tests") and three cards
+  (`ml-linear`, `ml-gbm`, `ml-filter`), all before any model was fitted.
+
+**Doing**
+
+- `lib/ml.py`: features, purged walk-forward fitting, the strategies. Then `DRY=1` plumbing
+  check and the look-ahead check against the gym.
+
+**Next**
+
+- Run `ml-linear`, then `ml-gbm`, then `ml-filter` (scripts `lib/idea_ml_*.py`); write each
+  verdict in `results/`.
+- Raw prices and double costs for the best model; dividends note; refresh `results/deflation.md`.
+- Summary and ranking at the top of this file; `ideas.md`.
+- The held-out year stays untouched unless a card passes its whole train bar.
+
+## Research run 1 (finished)
 
 Brief: `chief-of-staff/briefs/grimstrade-research-1.md`. Branch `research-1`, draft PR #4. Hard
 stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage limit at about
