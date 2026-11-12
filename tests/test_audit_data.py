@@ -77,23 +77,25 @@ def test_a_revised_bar_is_reported(tmp_path: Path) -> None:
     assert any("SPY" in p and "2026-11-11" in p for p in problems)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit D2: after a split the source's new rows are in post-split prices while stored "
-    "rows and held units are pre-split, so the gym books a crash that never happened",
-)
 def test_a_split_is_not_stored_as_a_crash(tmp_path: Path) -> None:
-    data.append(tmp_path, "SPY", flat("2026-11-02", 5, 100.0))  # Mon-Fri at 100
+    """Audit D2 (guarded): after a split the source's new rows are in post-split prices while
+    stored rows and held units are pre-split, so the gym would book a crash that never happened."""
+    data.append(tmp_path, "SPY", flat("2026-11-02", 4, 100.0))  # Mon-Thu at 100
+    friday = flat("2026-11-06", 1, 100.0)
     after_split = flat("2026-11-09", 2, 50.0)  # 2-for-1 over the weekend: same value, half price
-    history: History = {"SPY": [*data.load(tmp_path, "SPY"), *after_split]}
+    # What the record would say if those rows got in: the holder "lost" half.
+    history: History = {"SPY": [*data.load(tmp_path, "SPY"), *friday, *after_split]}
     decision = Decision(datetime(2026, 11, 2, 22, 30, tzinfo=UTC), {"SPY": 1.0})
-    res = gym.simulate([decision], history, costs=NO_COSTS)
-    assert res.equity[-1][1] == pytest.approx(5_000)  # the holder "lost" half, in the record
+    assert gym.simulate([decision], history, costs=NO_COSTS).equity[-1][1] == pytest.approx(5_000)
 
-    # What should happen: ingest refuses a bar that opens absurdly far from the last close, so a
-    # human looks at it before it becomes permanent.
-    with pytest.raises(ValueError):
-        data.append(tmp_path, "SPY", after_split)
+    # Ingest keeps the good day before the jump and refuses the rest, loudly, every day until
+    # a person has looked at it.
+    for _ in range(2):
+        with pytest.raises(ValueError, match="SPY 2026-11-09: open 50.0 is -50% from"):
+            data.append(tmp_path, "SPY", [*friday, *after_split])
+        assert [b.date for b in data.load(tmp_path, "SPY")][-1] == date(2026, 11, 6)
+    # Ordinary big days are not affected.
+    assert data.append(tmp_path, "SPY", flat("2026-11-09", 1, 80.0)) == 1
 
 
 def test_a_nonsense_bar_is_not_stored() -> None:

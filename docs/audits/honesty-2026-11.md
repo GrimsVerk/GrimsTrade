@@ -121,16 +121,17 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   to an append-only `data/revisions.jsonl` and to the run's problem list. Cheap extra safety: move
   the cron later (e.g. 23:30 UTC) so the row has had 2.5 hours instead of 1.5 to settle.
 
-### D2. A stock split would be booked as a crash (high impact, unlikely for today's four ETFs)
+### D2. A stock split would be booked as a crash (high impact, unlikely for today's four ETFs) - GUARDED in this branch
 
 - **What:** Yahoo's prices are split-adjusted backwards. After a split, new rows arrive in
   post-split prices; stored rows and the units a strategy holds are pre-split. The gym would show
   -50% overnight for a 2-for-1 split, for ever.
 - **Evidence:** `tests/test_audit_data.py::test_a_split_is_not_stored_as_a_crash`. Real stored
   history is clean so far: the largest overnight gap in 481 days is 6.0% (GLD).
-- **Proposed fix (small, `data.py`):** refuse to store a bar whose open is more than 40% away
-  from the previous close; the run then reports it every day until a person decides. Larger:
-  fetch split events (`events=div,splits`) and adjust held units.
+- **Guard (done, `data.py`):** `append` stores the bars before it and then refuses a bar whose
+  open is more than 40% (`MAX_GAP`) away from the previous close; the run reports it every day
+  until a person decides. Still open (larger): fetch split events (`events=div,splits`) and
+  adjust held units, so a split is handled instead of only stopped.
 
 ### D3. No sanity check before a bar becomes permanent (medium) - FIXED in this branch
 

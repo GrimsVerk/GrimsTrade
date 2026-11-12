@@ -32,6 +32,11 @@ ETF_CLOSE_UTC = time(21, 0)
 # Don't store a bar until this long after its close (late prints, provider lag).
 SETTLE = timedelta(minutes=15)
 
+# A bar opening further than this from the previous close is not stored (see `append`). No
+# asset in the universe has gapped half as much: the largest in two stored years is 6% (GLD);
+# for crypto the open and the previous close are the same instant.
+MAX_GAP = 0.4
+
 FIELDS = ["date", "open", "high", "low", "close", "volume"]
 
 
@@ -108,7 +113,9 @@ def load_all(root: Path, symbols: Iterable[str] = UNIVERSE) -> dict[str, list[Ba
 
 
 def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
-    """Append bars newer than the last stored one. Never touches stored rows. Returns rows added."""
+    """Append bars newer than the last stored one. Never touches stored rows. Returns rows added.
+    Raises ValueError, after storing the bars before it, at a bar that opens more than MAX_GAP
+    away from the previous close."""
     path = bars_path(root, symbol)
     existing = load(root, symbol)
     last = existing[-1].date if existing else None
@@ -117,7 +124,23 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
         if last is None or b.date > last:
             fresh[b.date] = b
     rows = [fresh[d] for d in sorted(fresh)]
+    # A split (sources adjust their whole history backwards; stored rows and held units stay as
+    # they were) or bad data would be booked as a real crash or jump, for ever. Keep what comes
+    # before it, refuse the rest, and let a person decide.
+    jump = None
+    prev = existing[-1] if existing else None
+    for i, b in enumerate(rows):
+        if prev is not None and abs(b.open / prev.close - 1) > MAX_GAP:
+            jump = (
+                f"{symbol} {b.date}: open {b.open} is {b.open / prev.close - 1:+.0%} from the "
+                f"previous close {prev.close} ({prev.date}): split or bad data? Not stored."
+            )
+            rows = rows[:i]
+            break
+        prev = b
     if not rows:
+        if jump:
+            raise ValueError(jump)
         return 0
     path.parent.mkdir(parents=True, exist_ok=True)
     write_header = not path.exists()
@@ -128,6 +151,8 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
         for b in rows:
             w.writerow([b.date.isoformat(), _num(b.open), _num(b.high), _num(b.low),
                         _num(b.close), _num(b.volume)])  # fmt: skip
+    if jump:
+        raise ValueError(jump)
     return len(rows)
 
 
