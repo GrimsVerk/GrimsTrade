@@ -149,7 +149,7 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
             "the record branch was rewritten, back-dated or written to by someone other than "
             f"the daily job ({len(rewrites)} accepted event{'s' * (len(rewrites) != 1)})"
             if rewrites
-            else "the last run could not check whether the record branch was rewritten"
+            else "the last run could not check the record branch against GitHub's log"
         )
         lines[4:4] = [f"**Warning:** {what}; see the end of `scoreboard.md`.", ""]
     fresh = report.freshness(history)

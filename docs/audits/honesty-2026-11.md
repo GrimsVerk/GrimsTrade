@@ -656,7 +656,10 @@ running it before it was fixed.
   plain time format, newest first; a deleted branch keeps its log.
 - **The whole daily job, run with this branch's code** against a scratch copy of the real record
   and the live sources (07:06 UTC): clean, no new bars, no decisions (rightly), and the three
-  price differences of D1 on the scoreboard.
+  price differences of D1 on the scoreboard. Then the workflow's own steps, in order and twice
+  in a row, against a scratch copy of the repository (07:13 UTC): check-out, the question to
+  GitHub (the real log), the run, commit and push all work; the second run rightly says that
+  its newest commit is not in GitHub's log; a re-run for an old commit is refused.
 - **The M1 strategies** use no clock, no randomness and no files: they see only the bars the
   runner hands them. I did not review their trading logic (the M1 lane had its own review).
 
@@ -673,7 +676,7 @@ Final for this audit (2026-11-12, 07:10 UTC). PR #5 is ready for review, not mer
 - **Not proven live:** the workflow changes. The whole daily job ran clean with this code on a
   scratch copy of the real record, but not inside Actions. The first run after merging is the
   test: its log must show "GitHub's activity log agrees with the paper-trail history", and the
-  scoreboard must not say "could not ask GitHub".
+  scoreboard must not say "could not check the record branch against GitHub's log".
 - **After merging:** bring `research-1`, `research-2` and `m1-wrapup` up to `main` or delete
   them, and never re-run an old Daily run (L13). Tell the research lane that the crypto fee is
   60 basis points now (G3). If the merge comes after the evening run of 2026-11-12, the rows

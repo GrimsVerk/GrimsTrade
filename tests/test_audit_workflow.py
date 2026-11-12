@@ -330,12 +330,12 @@ def test_when_github_cannot_be_asked_the_job_goes_on_with_a_warning(
     from grimstrade import report
 
     board = report.render(trail, {}, tmp_path)
-    assert "**The last run could not ask GitHub whether the record branch was rewritten:**" in board
+    assert "**The last run could not check the record branch against GitHub's log:**" in board
     assert "GitHub's activity log came back empty" in board
     # ...and it clears once a run can check again.
     a = git(trail, "rev-parse", "HEAD")
     assert activity(tmp_path, trail, [(T0, "branch_creation", ZERO, a)]).returncode == 0
-    assert "could not ask GitHub" not in report.render(trail, {}, tmp_path)
+    assert "could not check the record branch" not in report.render(trail, {}, tmp_path)
 
 
 def test_a_force_push_in_an_answer_that_was_cut_short_still_stops_the_job(

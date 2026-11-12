@@ -387,7 +387,7 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     if unchecked:
         out += [
             "",
-            f"**The last run could not ask GitHub whether the record branch was rewritten:** "
+            f"**The last run could not check the record branch against GitHub's log:** "
             f"{unchecked}. Until a run can, a replaced record would go unnoticed.",
         ]
     troubled = ledger.problem_runs(root)
