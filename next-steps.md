@@ -43,9 +43,13 @@ Done:
 
   `weekly.py` writes `reports/weekly.md` every run (plain language, tested).
 
-Stopped 2026-11-11 ~23:20 UTC: usage limit reached. PR #3 still draft, not merged.
+Stopped 2026-11-11 ~23:20 UTC: usage limit reached. Resumed 2026-11-12 01:32 UTC: checks green (98 tests).
+
+Doing (2026-11-12, new Fable rule in the brief): Fable subagent reviews of (a) the deflated-Sharpe
+maths in `stats.py` and (b) each strategy's faithfulness to its paper; then fix findings; then a
+Fable final review of PR #3.
 
 Next (in order):
-- Run the checks, mark PR #3 ready, try `gh pr merge --rebase --delete-branch`.
+- Fix Fable findings (DSR maths, strategy faithfulness), re-run checks, push.
 - README (owner) mention of weekly.md/backtest.md; workflow passes `--repo .` (default already).
-- Mark PR ready, try `gh pr merge --rebase --delete-branch`.
+- Fable final review of PR #3; fix; mark ready; try `gh pr merge --rebase --delete-branch`.
