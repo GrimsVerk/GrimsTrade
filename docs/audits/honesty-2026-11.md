@@ -360,8 +360,8 @@ One commit per fix, except the three workflow changes, which share the same line
   with no rows, Yahoo with no timestamps) was a success: the second source was never asked, no
   problem was reported, nothing changed, nothing was committed. Frozen data behind green runs.
   **Fix (`sources.py`, `run_daily.py`):** when a source has nothing new the next one is asked
-  too, and a symbol whose newest bar is older than it can honestly be (36 hours for crypto, 4.5
-  days for ETFs) is a problem of the run.
+  too, and a symbol whose newest bar is older than it can honestly be (36 hours for crypto, two
+  missed weekday sessions for ETFs) is a problem of the run.
   `tests/test_audit_data.py::test_an_empty_answer_is_not_taken_as_no_news`.
 - **D8. A day the source left out.** D4 covered a day Yahoo lists without prices; a day simply
   absent from the answer was still stored around, and can never be added. **Fix (`data.py`,

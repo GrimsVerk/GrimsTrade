@@ -250,6 +250,14 @@ def test_an_empty_answer_is_not_taken_as_no_news(tmp_path: Path) -> None:
     late = run_daily.run(tmp_path, datetime(2026, 11, 14, 22, 30, tzinfo=UTC), nothing_new)
     assert "BTC: no new bar for 3 days (newest stored: 2026-11-10)" in late
 
+    # ETFs: one missing weekday session can be a holiday; two in a row never are.
+    data.append(tmp_path, "SPY", flat("2026-11-06", 1, 100.0))  # a Friday
+    monday, tuesday = (datetime(2026, 11, d, 22, 30, tzinfo=UTC) for d in (9, 10))
+    assert not any(p.startswith("SPY") for p in run_daily._overdue(tmp_path, monday))
+    assert "SPY: no new bar for 2 sessions (newest stored: 2026-11-06)" in run_daily._overdue(
+        tmp_path, tuesday
+    )
+
 
 def test_a_day_the_source_leaves_out_is_not_skipped(tmp_path: Path) -> None:
     """Audit D8 (fixed for crypto, reported for ETFs; found by the independent reviewer): a day

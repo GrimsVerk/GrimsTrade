@@ -101,9 +101,11 @@ def run(
     return problems
 
 
-# A new bar is overdue when the newest stored one closed longer ago than this. Crypto closes
-# every day; ETFs can pause four calendar days (Thursday to Monday around a Friday holiday).
-OVERDUE = {data.CRYPTO: timedelta(hours=36), data.ETF: timedelta(days=4, hours=12)}
+# Crypto closes every day: a new bar is overdue when the newest stored one closed longer ago
+# than this. ETFs: when this many weekday sessions have closed since the newest stored bar (one
+# missing session can be a market holiday, two in a row never are).
+CRYPTO_OVERDUE = timedelta(hours=36)
+ETF_SESSIONS_OVERDUE = 2
 
 
 def _overdue(root: Path, now: datetime) -> list[str]:
@@ -113,9 +115,20 @@ def _overdue(root: Path, now: datetime) -> list[str]:
     out = []
     for sym, cls in data.UNIVERSE.items():
         stored = data.load(root, sym)
-        if stored and now - data.close_time(cls, stored[-1].date) > OVERDUE[cls]:
-            days = (now - data.close_time(cls, stored[-1].date)).days
-            out.append(f"{sym}: no new bar for {days} days (newest stored: {stored[-1].date})")
+        if not stored:
+            continue
+        last = stored[-1].date
+        if cls == data.CRYPTO:
+            age = now - data.close_time(cls, last)
+            if age > CRYPTO_OVERDUE:
+                out.append(f"{sym}: no new bar for {age.days} days (newest stored: {last})")
+            continue
+        missed, day = 0, last + timedelta(days=1)
+        while data.close_time(cls, day) + data.SETTLE <= now:
+            missed += day.weekday() < 5
+            day += timedelta(days=1)
+        if missed >= ETF_SESSIONS_OVERDUE:
+            out.append(f"{sym}: no new bar for {missed} sessions (newest stored: {last})")
     return out
 
 
