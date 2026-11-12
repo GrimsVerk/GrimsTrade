@@ -37,6 +37,22 @@ def test_sureness_in_words(dsr: float | None, words: str) -> None:
     assert words in weekly.sureness(dsr)
 
 
+def test_strong_evidence_needs_beating_the_yardsticks() -> None:
+    assert "strong" not in weekly.sureness(0.99, ahead=False)
+    assert "trails a yardstick" in weekly.sureness(0.99, ahead=False)
+
+
+@pytest.mark.parametrize(
+    ("days", "strong", "words"),
+    [(1, 0, "1 day old"), (29, 2, "too early"), (60, 0, "no strategy has shown"),
+     (60, 1, "looks strong, but under 6 months"), (200, 2, "2 beat every yardstick")],
+)  # fmt: skip
+def test_verdict_waits_six_months_before_calling_anything_proven(
+    days: int, strong: int, words: str
+) -> None:
+    assert words in weekly.verdict(days, strong)
+
+
 def write(root: Path, strategy: str, day: date, weights: dict[str, float]) -> None:
     t = datetime.combine(day, datetime.min.time(), tzinfo=UTC).replace(hour=22, minute=30)
     seen = {"BTC": [Bar(day - timedelta(days=1), 1, 1, 1, 1, 1)]}
@@ -67,3 +83,15 @@ def test_summary_compares_a_late_starter_over_its_own_days(tmp_path: Path) -> No
 
 def test_summary_without_any_record(tmp_path: Path) -> None:
     assert "No trading days" in weekly.render(tmp_path, {}, tmp_path)
+
+
+def test_a_late_copy_of_a_yardstick_does_not_beat_it(tmp_path: Path) -> None:
+    # BTC drops 10% on day 5. A strategy that decides to hold BTC that evening fills at day 6's
+    # open, after the drop: it must be compared from the end of day 5, not charged with the drop.
+    prices = [100.0] * 5 + [90.0] * 6
+    history = {"BTC": [Bar(D0 + timedelta(days=i), p, p, p, p, 1) for i, p in enumerate(prices)]}
+    write(tmp_path, "buy_hold_btc", D0, {"BTC": 1.0})
+    write(tmp_path, "ts_momentum", D0 + timedelta(days=5), {"BTC": 1.0})
+    text = weekly.render(tmp_path, history, tmp_path)
+    row = next(line for line in text.splitlines() if line.startswith("| Trend following"))
+    assert "| 0 of 1 |" in row

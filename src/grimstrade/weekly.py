@@ -44,16 +44,36 @@ def change(res: Result, start: date, end: date) -> float:
     return equity_on(res, end) / equity_on(res, start) - 1
 
 
-def sureness(dsr: float | None) -> str:
+# Real money is only discussed after this long (and beating every yardstick, 95%+ sure).
+PROOF_DAYS = 182
+
+
+def sureness(dsr: float | None, ahead: bool = True) -> str:
+    """The deflated Sharpe in words. It says whether the risk-adjusted return beats luck, not
+    whether the strategy beats the yardsticks, so "strong" needs `ahead` (beats all of them)."""
     if dsr is None:
         return "too early to tell"
     if dsr >= 0.95:
+        if not ahead:
+            return f"beats luck, but trails a yardstick ({dsr:.0%})"
         return f"strong evidence ({dsr:.0%})"
     if dsr >= 0.90:
         return f"promising ({dsr:.0%})"
     if dsr >= 0.50:
         return f"maybe, could be luck ({dsr:.0%})"
     return f"no sign of skill yet ({dsr:.0%})"
+
+
+def verdict(days: int, strong: int) -> str:
+    """The "In short" judgement: `strong` strategies beat every yardstick and luck (95%+)."""
+    if days < report.MIN_DAYS_FOR_DSR:
+        return f"the record is only {days} day{'s' * (days != 1)} old, far too early to judge."
+    if strong and days < PROOF_DAYS:
+        return (f"{strong} look{'s' * (strong == 1)} strong, but under 6 months of record that "
+                "can still be the luck of the period; keep watching.")  # fmt: skip
+    if strong:
+        return f"{strong} beat every yardstick with strong evidence over 6+ months."
+    return "no strategy has shown real skill yet; keep watching."
 
 
 def render(root: Path, history: History, repo: Path = Path(".")) -> str:
@@ -78,7 +98,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         f"# Weekly summary: the week to {today:%A %d %B %Y}",
         "",
         "Fake money on real prices. Every strategy started with 10,000 USD; all figures are "
-        "after trading fees. A strategy only matters if it beats the yardsticks below.",
+        "after trading fees and slippage (dividends not yet credited). A strategy only matters "
+        "if it beats the yardsticks below.",
         "",
         "## Yardsticks",
         "",
@@ -93,31 +114,28 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     ]
     for name in sorted(others, key=lambda n: scores[n].total_return, reverse=True):
         s = scores[name]
-        start = s.start - timedelta(days=1) if s.start else today
+        # The strategy's first mark (its decision day) is still all cash: compare from its end.
+        start = s.start or today
         beaten = [b for b in benches if s.total_return > change(results[b], start, today)]
-        if benches and len(beaten) == len(benches):
+        ahead = bool(benches) and len(beaten) == len(benches)
+        if ahead:
             ahead_of_all.append(name)
         beats = f"{len(beaten)} of {len(benches)}"
-        lines.append("| " + " | ".join([*row(name), beats, sureness(s.dsr)]) + " |")
+        lines.append("| " + " | ".join([*row(name), beats, sureness(s.dsr, ahead)]) + " |")
     days = max(s.days for s in scores.values())
-    proven = [n for n in others if (scores[n].dsr or 0) >= 0.95 and n in ahead_of_all]
-    if days < report.MIN_DAYS_FOR_DSR:
-        verdict = f"the record is only {days} days old, far too early to judge anything."
-    elif proven:
-        verdict = f"{len(proven)} strategy(ies) beat every yardstick with strong evidence."
-    else:
-        verdict = "no strategy has shown real skill yet; keep watching."
+    strong = [n for n in ahead_of_all if (scores[n].dsr or 0) >= 0.95]
     lines[2:2] = [
         f"**In short:** {len(ahead_of_all)} of {len(others)} strategies are ahead of every "
-        f"yardstick so far; {verdict}",
+        f"yardstick so far; {verdict(days, len(strong))}",
         "",
     ]
     lines += [
         "",
         "\\* Compared over the same days the strategy has been running.  ",
-        "\\*\\* The chance its edge is skill rather than luck, allowing for all "
-        f"{trials.count} strategies we have tried (deflated Sharpe). Real money is only discussed "
-        "after 6 months, beating every yardstick, and strong evidence (95%+).",
+        "\\*\\* How confident we can be that its return for the risk taken is real and not "
+        f"luck, allowing for all {trials.count} strategies we have tried (deflated Sharpe). It "
+        "does not by itself mean it beats the yardsticks. Real money is only discussed after 6 "
+        "months, beating every yardstick, and strong evidence (95%+).",
         "",
         "Details: `scoreboard.md`. Backtests (hindsight, not evidence): `backtest.md`.",
     ]
