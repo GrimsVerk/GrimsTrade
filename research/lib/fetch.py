@@ -57,6 +57,8 @@ YAHOO_ETFS = {
     ]
 }  # fmt: skip
 YAHOO_INDEXES = {"GSPC": "%5EGSPC", "N225": "%5EN225", "FTSE": "%5EFTSE", "GDAXI": "%5EGDAXI"}
+# 13-week Treasury bill yield in percent (the "close" is the yield): what cash would earn.
+YAHOO_RATES = {"IRX": "%5EIRX"}
 YAHOO_FROM = -631152000  # 1950-01-01
 
 
@@ -164,6 +166,13 @@ def report(sym: str, bars: list[Bar], max_gap: int) -> None:
     print(sym, len(bars), bars[0].date, bars[-1].date, "gaps:", gaps(bars, max_gap), flush=True)
 
 
+def fetch_rates(now: datetime) -> None:
+    for sym, ticker in YAHOO_RATES.items():
+        raw, _ = yahoo_all(ticker, now)
+        write(DATA / "bars" / f"{sym}.csv", raw)
+        report(sym, raw, 7)
+
+
 def main() -> None:
     now = datetime.now(UTC)
     early = bitstamp_all("btcusd", BTC_BITSTAMP_START, BTC_COINBASE_START - timedelta(1), now)
@@ -189,6 +198,7 @@ def main() -> None:
         write(DATA / "bars" / f"{sym}.csv", raw)
         report(sym, raw, 7)
         time.sleep(0.5)
+    fetch_rates(now)
     (DATA / "fetched.txt").write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ") + "\n")
 
 

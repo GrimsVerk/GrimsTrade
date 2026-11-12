@@ -100,3 +100,9 @@ of variants per idea is kept small because each one raises the bar the deflated 
 - 2026-11-12: a data sanity print covered the whole cache and showed the largest one-day moves
   per symbol, two of which fall in the held-out year (GLD and SLV, 2026-01-30). No strategy
   result was involved. Sanity scripts now stop at the train cut.
+
+## Note added 2026-11-12, after the tests
+
+"Cash earns 0 ... biases against timing rules" (Data section) was checked afterwards in
+`results/cash-interest.md`: with T-bill interest on cash the cautious rules gain 0.5-0.8% a year
+and no ranking changes. The rule stays as written; the bias is small.

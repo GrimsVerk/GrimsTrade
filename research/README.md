@@ -21,8 +21,8 @@ rules do not earn more than holding everything: they lose less.**
 - **Crypto:** trend rules did not beat simply holding Bitcoin or Ether, and still lost 70% at
   worst. The size of the crypto slot matters more than the timing rule.
 - **Still clean:** the last 12 months of prices were never looked at, for any idea.
-- **For the M1 lane:** the gym ignores dividends and pays nothing on cash; both distort the
-  scoreboard (requests at the bottom).
+- **For the M1 lane:** the gym ignores dividends, which makes bonds look worthless (requests at
+  the bottom). That it pays nothing on cash turned out to matter little (about 0.6% a year).
 
 ## Ranking after run 1
 
@@ -67,6 +67,8 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
   nine; each says what had been seen). All twelve tested and judged: `results/<idea>.md` each end
   with a dated verdict; `ideas.md` has every status.
 - `results/robustness.md`: front-runners on raw prices and at double costs.
+- `results/cash-interest.md`: what-if with T-bill interest on cash (adds 0.5-0.8% a year to the
+  cautious rules, changes no ranking).
 - `results/deflation.md`: the best edge seen against what luck alone would give (0.22 vs 0.19).
 - `results/crypto-alone.md`: the plain and run-2 rules on BTC alone and ETH alone (trend does
   not beat holding there; it shrinks the winters; the size of the slot matters more).
@@ -106,8 +108,9 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
   0.99x over 2002-2025; with coupons it is 2.28x. SPY: 17x raw, 31x with dividends since 1993. The
   live scoreboard will understate every bond holder and flatter every rule that avoids bonds.
 - **Pay interest on cash** (for example the 3-month T-bill rate), or add a cash-like ETF (BIL/SHV)
-  to the universe. With cash at 0, rules that step aside are punished and "always invested" wins by
-  construction when rates are high.
+  to the universe. Smaller than it sounds: `results/cash-interest.md` puts it at 0.5-0.8% a year
+  for rules that hold a quarter of the book in cash, with no change in ranking. Truthful
+  accounting, low priority.
 - `report.score` annualises with 365 days over the equity rows it gets. If a strategy's history
   ever holds no crypto, the gym reports only trading days and the Sharpe is overstated by about
   20% (sqrt(365/252)). Harmless today (crypto is always in the history); the research harness
