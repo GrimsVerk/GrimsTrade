@@ -161,7 +161,8 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
 
   None of this is proof: these are the five rules I looked at, in a window I chose after seeing
   finding 1. It does show the order among the cautious rules is open. In this window `tsmom12`
-  has the lowest Sharpe and the largest worst loss of them, and the highest growth.
+  has, with `sma200`, the lowest Sharpe of the six cautious rules, the largest worst loss, and
+  the highest growth.
 
 **What it changes.**
 
@@ -238,7 +239,8 @@ forecasts are a coin toss (AUC 0.48 to 0.51); a planted signal is found, so the 
   tables can work out that over the held-out year SPY rose about 11% and TLT fell about 10%.
   They are also mislabelled: they run to November 2026, not 2025.
 - `protocol.md` already discloses one whole-cache print (the largest one-day moves, two of them
-  in the held-out year). This is a second, undisclosed one, from the same early session.
+  in the held-out year). This is a second, undisclosed one. It is in the first version of
+  `protocol.md`, so it too predates the first test.
 - `idea_month_end_liquidity.py` reads every bar date in the cache, held-out year included, to
   count trading days to month end. Dates only, no prices; it does not matter for the result.
 - To confirm the above I computed the same four ratios on the full cache. That is the only
