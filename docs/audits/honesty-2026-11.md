@@ -116,8 +116,8 @@ ordinary tests that pin the numbers quoted here.
   significant", cannot be met by any realistic strategy, and the owner will read "no sign of
   skill yet" about everything for years without knowing that this is what an honest board says.
 - **Done (`report.py`, `weekly.py`):** both pages now say how high the bar is, in numbers
-  computed from the current count of tries ("reads 95% only for a Sharpe above about 6.4 after
-  six months, 4.5 after one year, ..."), and that a low number means a short record, not a bad
+  computed from the current count of tries ("95% needs a Sharpe ratio above about 6.4 after six
+  months, 4.5 after one year, ..."), and that a low number means a short record, not a bad
   strategy (`...::test_the_pages_say_how_high_the_deflated_sharpe_bar_is`).
 - **Proposed:** (1) the owner decides what graduation means; an honest wording is "six months
   shows a strategy is not broken; proof of skill takes years". (2) Sort the scoreboard by

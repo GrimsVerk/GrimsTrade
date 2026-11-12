@@ -260,7 +260,7 @@ def test_the_pages_say_how_high_the_deflated_sharpe_bar_is(tmp_path: Path) -> No
             [report.score("x", result_from_returns(returns))], report.Trials(count=256)
         )
         assert s.dsr is not None and (s.dsr >= 0.95) == passes
-    words = "it reads 95% only for a Sharpe above about 6.4 after six months, 4.5 after one year"
+    words = "above about 6.4 after six months, 4.5 after one year, 2.6 after three"
     assert words in report.footnote(report.Trials(count=256))
     # The owner's page says it too.
     from grimstrade import weekly

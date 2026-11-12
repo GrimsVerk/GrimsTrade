@@ -216,9 +216,9 @@ def years_of_patience(trials: Trials) -> str:
     many tries says that about a good strategy too."""
     need = [f"{sharpe_needed(trials.count, round(y * DAYS_PER_YEAR)):.1f}" for y in (0.5, 1, 3, 5)]
     return (
-        f"with {trials.count} strategies tried it reads 95% only for a Sharpe above about "
-        f"{need[0]} after six months, {need[1]} after one year, {need[2]} after three and "
-        f"{need[3]} after five (a very good strategy has a Sharpe near 1)"
+        f"with {trials.count} strategies tried, 95% needs a Sharpe ratio (return for the risk "
+        f"taken) above about {need[0]} after six months, {need[1]} after one year, {need[2]} after "
+        f"three and {need[3]} after five; a very good strategy has about 1"
     )
 
 
