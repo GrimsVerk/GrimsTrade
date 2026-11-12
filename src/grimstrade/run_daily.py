@@ -29,6 +29,8 @@ def run(
     the number of strategies tried."""
     for rel in ledger.APPEND_ONLY:
         ledger.check_append_only(root / rel)
+    for sym in data.UNIVERSE:  # the bars are the record too: every score is recomputed from them
+        ledger.check_append_only(data.bars_path(root, sym))
 
     problems = []
     for sym in data.UNIVERSE:

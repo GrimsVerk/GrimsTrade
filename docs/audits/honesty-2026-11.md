@@ -1,7 +1,8 @@
 # Honesty audit 1 (2026-11-12)
 
 Auditor: lane C agent, branch `audit-1`. Scope: everything that could make the scoreboard say
-something that is not true. Code audited: `main` at `8e26333`. Record audited: `paper-trail` at
+something that is not true. Code audited: `main` at `8e26333` (M0), then `552e521` after the M1 merge
+(merged into this branch on 2026-11-12). Record audited: `paper-trail` at
 `0d3bc31` (one daily run, 2026-11-11 22:00 UTC), read-only.
 
 ## Summary for the owner
@@ -56,14 +57,15 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   `force_push` / `branch_deletion` events on `paper-trail` and refuse to run if there are any:
   `tests/test_audit_workflow.py::test_the_job_checks_githubs_activity_log_for_a_rewritten_trail`.
 
-### L4. Stored bars can be edited and nothing notices (high)
+### L4. Stored bars can be edited and nothing notices (high) - FIXED in this branch
 
 - **What:** the scoreboard is recomputed from `data/bars/*.csv` on every run, so the bars are as
   much "the record" as the decisions. AGENTS.md forbids rewriting them, but only the two ledger
   files are checked. Changing one cell (the open a strategy bought at) rewrites its whole result.
 - **Evidence:** `tests/test_audit_ledger.py::test_a_rewritten_bar_is_caught`: one edited open
   turns a small loss into +99%, and the next run accepts it.
-- **Proposed fix (small):** run the same append-only check over every file in `data/bars/`.
+- **Fix (done, `run_daily.py`):** the run applies the same append-only check to every file in
+  `data/bars/` and refuses to run if a committed row changed.
 
 ### L5. A failed fetch starts a brand-new record (medium)
 

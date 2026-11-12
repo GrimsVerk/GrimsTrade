@@ -146,12 +146,9 @@ def test_a_force_pushed_history_passes_the_check(repo: Path) -> None:
     assert ledger.check_append_only(path) == 1
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit L4: stored bars are part of the record (the scoreboard is recomputed from them "
-    "every run) but nothing checks that committed rows in data/bars/ stay unchanged",
-)
 def test_a_rewritten_bar_is_caught(repo: Path) -> None:
+    """Audit L4 (fixed): stored bars are part of the record (the scoreboard is recomputed from
+    them every run) but only the ledger files were checked for rewrites."""
     from grimstrade import data, run_daily
 
     data.append(repo, "BTC", btc([(100, 100), (100, 100), (100, 100)]))
@@ -172,7 +169,7 @@ def test_a_rewritten_bar_is_caught(repo: Path) -> None:
     def offline(url: str) -> bytes:
         raise OSError("offline")
 
-    with pytest.raises(ledger.LedgerTampered):
+    with pytest.raises(ledger.LedgerTampered, match="data/bars/BTC.csv"):
         run_daily.run(repo, at(DAY1 + timedelta(days=2)), offline)
 
 
