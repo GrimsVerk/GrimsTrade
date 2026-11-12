@@ -114,24 +114,19 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "| Strategy | Now (USD) | This week | Since start | Beats yardsticks* | How sure** |",
         "|---|---:|---:|---:|---|---|",
     ]
-    counted = ledger.in_force(root)[0]
+    # Against each yardstick restarted with fresh cash at the moment the strategy started: same
+    # first prices, same costs. (The yardstick's own curve would hand one of the two the move
+    # between the strategy's first decision and its first fills.)
+    beaten = report.yardsticks_beaten(root, history, list(scores.values()))
     for name in sorted(others, key=lambda n: scores[n].total_return, reverse=True):
         s = scores[name]
-        # Against each yardstick restarted with fresh cash at the moment this strategy started:
-        # same first prices, same costs. (The yardstick's own curve would hand one of the two
-        # the move between this strategy's first decision and its first fills.)
-        began = next(t for t, row in counted if row["strategy"] == name)
-        beaten = [
-            b
-            for b in benches
-            if s.total_return
-            > report.score(b, report.restarted(counted, history, b, began)).total_return
-        ]
-        ahead = bool(benches) and len(beaten) == len(benches)
+        won, of = beaten.get(name, (0, 0))
+        ahead = of > 0 and won == of
         if ahead:
             ahead_of_all.append(name)
-        beats = f"{len(beaten)} of {len(benches)}"
-        lines.append("| " + " | ".join([*row(name), beats, sureness(s.dsr, ahead)]) + " |")
+        lines.append(
+            "| " + " | ".join([*row(name), f"{won} of {of}", sureness(s.dsr, ahead)]) + " |"
+        )
     days = max(s.days for s in scores.values())
     strong = [n for n in ahead_of_all if (scores[n].dsr or 0) >= 0.95]
     proven = [n for n in strong if scores[n].days >= PROOF_DAYS]

@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 import math
 import statistics
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -141,20 +141,51 @@ def backtest_results(
     return out
 
 
-def table(scores: list[Score]) -> str:
+def table(scores: list[Score], beaten: Mapping[str, tuple[int, int]] | None = None) -> str:
+    """`beaten` (see `yardsticks_beaten`) adds the one column that can be compared between rows
+    that started on different days."""
+    extra = " Beats yardsticks |" if beaten is not None else ""
     lines = [
-        "| Strategy | Since | Days | Equity (USD) | Return | Sharpe | Deflated Sharpe "
+        f"| Strategy | Since | Days | Equity (USD) | Return |{extra} Sharpe | Deflated Sharpe "
         "| Max drawdown | Turnover/yr |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---:|",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|" + ("---:|" if beaten is not None else ""),
     ]
     for s in sorted(scores, key=lambda s: s.total_return, reverse=True):
         # Never print a certainty: 99.6% must not round to "100%".
         dsr = "-" if s.dsr is None else ">99%" if s.dsr > 0.99 else f"{s.dsr:.0%}"
+        beats = ""
+        if beaten is not None:
+            beats = " {} of {} |".format(*beaten[s.name]) if s.name in beaten else " - |"
         lines.append(
             f"| {s.name} | {s.start or '-'} | {s.days} | {s.equity:,.0f} | {s.total_return:+.1%} "
-            f"| {sharpe_cell(s)} | {dsr} | {s.max_drawdown:.1%} | {s.turnover:.2f} |"
+            f"|{beats} {sharpe_cell(s)} | {dsr} | {s.max_drawdown:.1%} | {s.turnover:.2f} |"
         )
     return "\n".join(lines)
+
+
+def yardsticks_beaten(
+    root: Path, history: History, scores: Sequence[Score]
+) -> dict[str, tuple[int, int]]:
+    """For each strategy that is not itself a yardstick: (yardsticks it is ahead of, yardsticks
+    there are). Each yardstick is restarted with fresh cash at the strategy's own start
+    (`restarted`), so a strategy that began later is not judged on days it never traded."""
+    from grimstrade.strategies import BENCHMARKS
+
+    counted = ledger.in_force(root)[0]
+    began: dict[str, datetime] = {}
+    for t, row in counted:
+        began.setdefault(row["strategy"], t)
+    benches = [b for b in BENCHMARKS if b in began]
+    out = {}
+    for s in scores:
+        if s.name in BENCHMARKS or s.name not in began:
+            continue
+        ahead = sum(
+            s.total_return > score(b, restarted(counted, history, b, began[s.name])).total_return
+            for b in benches
+        )
+        out[s.name] = (ahead, len(benches))
+    return out
 
 
 def sharpe_cell(s: Score) -> str:
@@ -218,7 +249,11 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "Forward paper trading on real prices, fake money (10,000 USD start per strategy). "
         "Fills at the next open after each decision, after fees and slippage.",
         "",
-        table(live) if live else "No decisions yet.",
+        table(live, yardsticks_beaten(root, history, live)) if live else "No decisions yet.",
+        "",
+        "Rows started on different days, and Return runs from each row's own start: compare rows "
+        'by "Beats yardsticks" (each yardstick restarted with fresh cash at that row\'s start), '
+        "not by Return.",
         "",
         freshness(history),
         "",

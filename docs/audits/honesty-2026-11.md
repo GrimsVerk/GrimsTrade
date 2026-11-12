@@ -52,7 +52,6 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | L3 | The record branch can be replaced (force-push, delete) | high | detected; owner action open |
 | G4 | Dividends not credited, cash earns nothing: yardsticks understated | medium | open: known, now sized |
 | G3 | Crypto fee looks like the maker fee, fills are taker | medium | open: unverified |
-| S3 | Returns over different periods ranked in one table | medium | open (weekly page is right) |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L7 | A decision did not say which code made it | medium | half fixed |
 | S4 | Frozen data looks like a calm strategy | medium | half fixed |
@@ -72,6 +71,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | G1 | NaN weights were accepted | medium | fixed (also on main) |
 | S7 | A fill on a strategy's first day was left out of Sharpe and drawdown | medium | fixed |
 | S8 | The weekly page let a late starter "beat" a yardstick it merely copied | medium | fixed |
+| S3 | Returns over different periods were ranked in one table | medium | fixed |
 | D7 | An empty answer from a source counted as "no news" | medium | fixed |
 | D8 | A day a source left out became a silent, permanent hole | medium | fixed (crypto), reported (ETFs) |
 | D9 | A run's problems left no trace in the record | medium | fixed |
@@ -198,17 +198,6 @@ ordinary tests that pin the numbers quoted here.
 - **Evidence:** `gym.COSTS`; no test, because the fact is unverified.
 - **Proposed fix:** check the taker fee for a 10,000 USD account at the venue the prices come
   from and set it; when unsure, use the higher number. Changing it is a DECISIONS entry.
-
-### S3. Returns over different periods are ranked in one table (medium)
-
-- **What:** each row's return runs from that strategy's own first decision, and the scoreboard
-  table is sorted by it. Two strategies holding exactly the same thing rank apart by start date
-  alone. It is already true of the real record: the four yardsticks started on 2026-11-11, the
-  five M1 strategies on 2026-11-12. `weekly.md` does this right (it compares each strategy with
-  the yardsticks "over the same days"); `scoreboard.md` does not.
-- **Evidence:** `tests/test_audit_stats.py::test_the_same_strategy_started_later_ranks_differently`.
-- **Proposed fix (`report.py`):** show each yardstick's return over the row's own period and
-  sort by the difference, as `weekly.py` already computes it.
 
 ### D6. The ETF fallback source does not work (medium, for "runs without anyone")
 
@@ -386,7 +375,7 @@ One commit per fix, except the three workflow changes, which share the same line
   an unreachable remote always stops it. The job has `if: github.ref == 'refs/heads/main'`.
   Tests: `tests/test_audit_workflow.py` (throwaway repos).
 
-### S7, S8. Two start-up effects in the scores (medium; found by the independent reviewer)
+### S3, S7, S8. Start dates and start-up effects in the scores (medium; S7 and S8 found by the independent reviewer)
 
 - **S7. A fill on the first day was left out.** `score()` used the first equity point as its
   baseline. Normally that is the untouched start cash. But a decision made before the US open
@@ -396,6 +385,12 @@ One commit per fix, except the three workflow changes, which share the same line
   UTC on 2026-11-12 and fill at that day's open. **Fix (`report.py`, `gym.py`):** every day's
   return is measured, the first from the start cash, which `Result` now carries.
   `tests/test_audit_stats.py::test_a_fill_on_the_first_day_counts_in_sharpe_and_drawdown`.
+- **S3. Returns over different periods were ranked in one table.** Each row's return runs from
+  that strategy's own first decision, and the scoreboard is sorted by it: two strategies holding
+  exactly the same thing rank apart by start date alone, and the five M1 strategies started a
+  day after the four yardsticks. **Fix (`report.py`):** the scoreboard has a "Beats yardsticks"
+  column computed as in S8 below, and says under the table that rows are to be compared by it,
+  not by Return. `tests/test_audit_stats.py::test_the_scoreboard_has_a_column_that_is_fair_to_late_starters`.
 - **S8. A late starter could "beat" a yardstick it merely copied.** `weekly.md` compared each
   strategy with the yardstick's own curve from the end of the strategy's first day. That hands
   one of the two the move between the strategy's decision and its first fills, for good: for an
@@ -471,15 +466,14 @@ One commit per fix, except the three workflow changes, which share the same line
 
 - **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
   statistics) against M0 and again after the M1 merge, then attacked once more by two independent
-  reviewers. 32 findings: 19 fixed or guarded, 4 half done (D1, L3, L7, S4), 9 open (S2, G4, G3,
-  S3, D6 need a decision or outside facts; G2, S6, L6, G5 are low). All with tests except G3
+  reviewers. 32 findings: 20 fixed or guarded, 4 half done (D1, L3, L7, S4), 8 open (S2, G4, G3,
+  D6 need a decision or outside facts; G2, S6, L6, G5 are low). All with tests except G3
   and G5. Checks green.
 - **Not proven live:** the workflow changes. The first run after merging is the test: its log
   must show "GitHub's activity log agrees with the paper-trail history".
 - **Changed for whoever starts a brand-new record:** the first run must be started by hand with
   "start a new record" ticked. The existing record is not affected.
-- **Next, in order of value:** S3 (rank the scoreboard by excess over restarted yardsticks, as
-  `weekly.py` now does); a second adversarial pass over `ledger.in_force` and
+- **Next, in order of value:** a second adversarial pass over `ledger.in_force` and
   `scripts/check-trail-activity.sh` (new code that guards the record); the second halves of L7
   and S4; G2.
 - **To resume:** read this section, run the checks in `AGENTS.md`, look at the remaining `xfail`

@@ -70,8 +70,8 @@ def test_nine_strategies_with_no_skill_after_six_months_the_best_looks_skilled()
 
 def test_the_same_strategy_started_later_ranks_differently() -> None:
     """Audit S3: the table sorts by total return since each strategy's own first day. Two
-    strategies that hold exactly the same thing are ranked apart, by start date alone; a new
-    strategy can never be compared with a benchmark that started earlier."""
+    strategies that hold exactly the same thing are ranked apart, by start date alone. Still
+    true of the Return column; the scoreboard now has a column that can be compared (next test)."""
     bars = [
         Bar(DAY1 + timedelta(days=i), 100.0 + 2 * i, 102.0 + 2 * i, 100.0 + 2 * i, 102.0 + 2 * i, 1)
         for i in range(60)
@@ -277,3 +277,25 @@ def test_an_exact_copy_of_a_yardstick_never_beats_it(
     text = weekly.render(tmp_path, history, tmp_path)
     row = next(line for line in text.splitlines() if line.startswith("| Stocks, but less"))
     assert "| 0 of 1 |" in row
+
+
+def test_the_scoreboard_has_a_column_that_is_fair_to_late_starters(tmp_path: Path) -> None:
+    """Audit S3 (fixed): next to the returns since each row's own start, the scoreboard shows
+    how many yardsticks a strategy beats when each yardstick is restarted at that row's start."""
+    # BTC doubles in 30 days, then goes sideways. A copy of "hold BTC" that starts on day 30
+    # shows about half the yardstick's return, and still has not lost to it.
+    prices = [100.0 + 100.0 * min(i, 30) / 30 for i in range(60)]
+    bars = [Bar(DAY1 + timedelta(days=i), p, p, p, p, 1.0) for i, p in enumerate(prices)]
+    history: History = {"BTC": bars}
+    seen: History = {"BTC": bars[:1]}
+    start = datetime.combine(DAY1, time(22, 30), tzinfo=UTC)
+    ledger.write_decision(tmp_path, start, "buy_hold_btc", {"BTC": 1.0}, seen, "yardstick")
+    late = start + timedelta(days=30)
+    ledger.write_decision(tmp_path, late, "ts_momentum", {"BTC": 1.0}, seen, "a late copy")
+    ledger.write_decision(tmp_path, late, "xs_momentum", {}, seen, "stays in cash")
+    board = report.render(tmp_path, history, tmp_path)
+    rows = {line.split("|")[1].strip(): line for line in board.splitlines() if line.startswith("|")}
+    assert "| +9" in rows["buy_hold_btc"] and "| - |" in rows["buy_hold_btc"]  # +9x%, no verdict
+    assert "| 0 of 1 |" in rows["ts_momentum"]  # the same thing: not ahead, whatever the Return
+    assert "| 1 of 1 |" in rows["xs_momentum"]  # cash beat a sideways BTC bought with costs
+    assert 'compare rows by "Beats yardsticks"' in board
