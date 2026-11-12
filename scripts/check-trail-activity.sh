@@ -64,6 +64,11 @@ fi
 incomplete=0
 events="$(gh api --paginate "repos/$REPO/activity?ref=refs/heads/$BRANCH&per_page=100" \
   --jq '.[] | [.timestamp, .activity_type, .actor.login, .before, .after] | @tsv')" || incomplete=1
+# On an HTTP error (no permission, rate limit, outage) gh prints GitHub's error text to the same
+# place. Only lines that start like an event are events; anything else means "incomplete".
+listed="$events"
+events="$(grep -E $'^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z\t' <<<"$listed" || true)"
+[ "$events" = "$listed" ] || incomplete=1
 if [ -z "$events" ] && [ "$incomplete" -eq 1 ]; then
   echo "::warning::could not read GitHub's activity log for $BRANCH: rewrite check skipped."
   witness "NOT checked at $NOW: GitHub's activity log could not be read"

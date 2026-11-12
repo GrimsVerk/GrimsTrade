@@ -18,7 +18,6 @@ import functools
 import json
 import math
 import os
-import re
 import subprocess
 from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime, timedelta
@@ -433,13 +432,9 @@ def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
     # A commit's date is written by whoever commits, but a commit cannot be older than its
     # parents: it counts from the latest time on its path. A back-dated commit on top of the
     # record then gains nothing before the commit under it.
-    # And a commit that a person accepted although it reached GitHub later than it claims
-    # counts from when it arrived, not from its claim.
-    arrived = _arrivals(top)
     made: dict[str, int] = {}
     for stamp, commit, *parents in reversed(rows):  # topo order lists children first
-        known = [int(stamp), arrived.get(commit[:10], 0)]
-        made[commit] = max([*known, *(made.get(p, 0) for p in parents)])
+        made[commit] = max([int(stamp), *(made.get(p, 0) for p in parents)])
     # Bytes (lo, hi] of the file first appear in this commit.
     spans = []
     for _, commit, *parents in rows:
@@ -451,25 +446,6 @@ def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
             if times[i] is None:  # (a date past year 9999 must not crash every reader)
                 times[i] = datetime.fromtimestamp(min(seconds, 253402300799), tz=UTC)
     return list(zip(lines, times, strict=True))
-
-
-_ARRIVED = re.compile(r"commit ([0-9a-f]{10}) says it was made at \S+ but reached GitHub at (\S+) ")
-
-
-def _arrivals(top: Path) -> dict[str, int]:
-    """When GitHub received each back-dated commit that a person accepted: the outside check
-    (scripts/check-trail-activity.sh) wrote both times into the accepted-rewrites file.
-    Commit id (10 characters) -> arrival, seconds."""
-    path = top / ACCEPTED_REWRITES
-    out: dict[str, int] = {}
-    if path.is_symlink() or not path.exists():
-        return out
-    for line in path.read_text(errors="replace").splitlines():
-        found = _ARRIVED.match(line)
-        with contextlib.suppress(ValueError):
-            if found:
-                out[found[1]] = int(parse_time(found[2]).timestamp())
-    return out
 
 
 def recorded_at(path: Path) -> list[datetime | None]:

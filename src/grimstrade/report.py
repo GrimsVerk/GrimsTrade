@@ -264,22 +264,28 @@ def undecided_days(root: Path, history: History) -> dict[str, int]:
 
     Counted on an asset with a bar every day (crypto). Each decision says which bars it saw
     (`data_through`); a jump of more than one day between two decisions, or any stored day after
-    the last one, was never decided on. A run that is merely late skips nothing."""
+    the last one, was never decided on. A run that is merely late skips nothing: one that slips
+    past midnight sees two new bars at once, so a jump counts only as far as whole days passed
+    between the two decisions."""
     daily = [s for s, cls in data.UNIVERSE.items() if cls == data.CRYPTO and history.get(s)]
     if not daily:
         return {}
     sym = daily[0]
-    saw: dict[str, list[date]] = {}
+    saw: dict[str, list[tuple[date, datetime]]] = {}
     for row in ledger.decisions(root):
         try:  # a line written by hand may lack the field or hold nonsense: not counted here
             through = date.fromisoformat(row["data_through"][sym])
+            when = ledger.parse_time(row["time"])
         except (KeyError, TypeError, ValueError):
             continue
-        saw.setdefault(row["strategy"], []).append(through)
+        saw.setdefault(row["strategy"], []).append((through, when))
     out = {}
-    for name, days in saw.items():
-        between = sum(max((b - a).days - 1, 0) for a, b in zip(days, days[1:], strict=False))
-        missed = between + max((history[sym][-1].date - days[-1]).days, 0)
+    for name, seen in saw.items():
+        between = sum(
+            max(min((b - a).days, (later - earlier) // timedelta(days=1)) - 1, 0)
+            for (a, earlier), (b, later) in zip(seen, seen[1:], strict=False)
+        )
+        missed = between + max((history[sym][-1].date - seen[-1][0]).days, 0)
         if missed:
             out[name] = missed
     return out

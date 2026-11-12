@@ -132,9 +132,12 @@ def test_the_scoreboard_counts_days_a_strategy_never_decided_on(tmp_path: Path) 
         decide("steady", day, evening + timedelta(days=day))
     for day in (1, 2, 5):  # the runs of days 3 and 4 never happened, and it stopped after day 5
         decide("gappy", day, evening + timedelta(days=day))
-    # A run that is hours late (03:12 instead of 22:30) but sees each day's bar skips nothing.
-    for day in range(1, 7):
-        decide("late", day, evening + timedelta(days=day, hours=4, minutes=42))
+    # A run that is hours late (03:12 instead of 22:30, as GitHub's first scheduled run was)
+    # sees two new bars at once. That is not a skipped day (third review).
+    decide("late", 1, evening + timedelta(days=1))
+    decide("late", 3, evening + timedelta(days=2, hours=4, minutes=42))
+    for day in range(3, 6):
+        decide("late", day + 1, evening + timedelta(days=day))
     data.append(tmp_path, "BTC", flat[:6])
     history = data.load_all(tmp_path)
     assert report.undecided_days(tmp_path, history) == {"gappy": 3}

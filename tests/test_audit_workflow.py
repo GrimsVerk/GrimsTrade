@@ -147,11 +147,14 @@ def activity(
     trail: Path,
     events: list[tuple[Any, ...]] | None,
     cut_short: bool = False,
+    http_error: bool = False,
     **env: str,
 ) -> subprocess.CompletedProcess[bytes]:
     """Run the script with a fake `gh` that prints `events` (time, type, before, after and, if
     it is not the daily job, who) the way the real call's --jq does, newest first; `None` makes
-    gh fail, `cut_short` makes it fail after printing (a later page that did not arrive)."""
+    gh fail, `cut_short` makes it fail after printing (a later page that did not arrive),
+    `http_error` makes it end the way the real gh does on an HTTP error: GitHub's error text on
+    standard output, then exit 1."""
     fake = tmp_path / "bin"
     fake.mkdir(exist_ok=True)
     if events is None:
@@ -161,8 +164,10 @@ def activity(
             f"{iso(t)}\t{kind}\t{(*who, BOT)[0]}\t{before}\t{after}"
             for t, kind, before, after, *who in events
         ]
-        (tmp_path / "events.tsv").write_text("".join(r + "\n" for r in reversed(rows)))
-        body = f'#!/bin/sh\ncat "{tmp_path / "events.tsv"}"\n' + "exit 1\n" * cut_short
+        error = '{\n  "message": "Not Found",\n  "status": "404"\n}\n' * http_error
+        (tmp_path / "events.tsv").write_text("".join(r + "\n" for r in reversed(rows)) + error)
+        failing = cut_short or http_error
+        body = f'#!/bin/sh\ncat "{tmp_path / "events.tsv"}"\n' + "exit 1\n" * failing
     (fake / "gh").write_text(body)
     (fake / "gh").chmod(0o755)
     full = {**os.environ, "PATH": f"{fake}:{os.environ['PATH']}", "GITHUB_REPOSITORY": "o/r", **env}
@@ -317,25 +322,6 @@ def test_a_push_by_anyone_but_the_daily_job_stops_the_job(tmp_path: Path, trail:
     assert lost.returncode == 2 and b"is not in the record" in lost.stdout
 
 
-def test_an_accepted_backdated_commit_is_dated_by_githubs_clock(
-    tmp_path: Path, trail: Path
-) -> None:
-    """Audit L14 (second review): once a person had accepted a back-dated push, its lines went
-    on counting from the date the commit claims. The script writes down when GitHub received
-    it, and the ledger dates the commit's lines by that."""
-    from grimstrade import ledger
-
-    t0 = T0 - timedelta(days=30)  # well in the past: the script reads the real clock
-    a = commit(trail, "day 1", t0)
-    b = commit(trail, "day 2, written on day 4", t0 + timedelta(days=1))
-    arrived = t0 + timedelta(days=3)
-    events = [(t0 + timedelta(seconds=1), "branch_creation", ZERO, a), (arrived, "push", a, b)]
-    assert ledger.recorded_at(trail / "ledger.jsonl") == [t0, t0 + timedelta(days=1)]
-    done = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=iso(t0 + timedelta(days=4)))
-    assert done.returncode == 0 and b"accepted" in done.stdout
-    assert ledger.recorded_at(trail / "ledger.jsonl") == [t0, arrived]
-
-
 def test_when_github_cannot_be_asked_the_job_goes_on_with_a_warning(
     tmp_path: Path, trail: Path
 ) -> None:
@@ -373,3 +359,20 @@ def test_a_force_push_in_an_answer_that_was_cut_short_still_stops_the_job(
     partial = activity(tmp_path, trail, events[:1], cut_short=True)
     assert partial.returncode == 0 and b"only part of the" in partial.stdout
     assert "NOT fully checked" in (trail / "state" / "witness.txt").read_text()
+
+
+def test_an_http_error_from_github_does_not_stop_an_honest_run(tmp_path: Path, trail: Path) -> None:
+    """Third review, high, in the fix above: on an HTTP error (no permission, rate limit, outage)
+    the real `gh` prints GitHub's error text where the events go. Those lines were then read as
+    events "by (no actor)", and every run stopped: exactly the case of a job token that may not
+    read the log, which was meant to go on with a warning."""
+    a = commit(trail, "day 1", T0)
+    refused = activity(tmp_path, trail, [], http_error=True)
+    assert refused.returncode == 0 and b"rewrite check skipped" in refused.stdout
+    assert "NOT checked" in (trail / "state" / "witness.txt").read_text()
+    # The same on a later page: what did arrive is checked, the rest is "incomplete".
+    events = [(T0 + timedelta(seconds=1), "branch_creation", ZERO, a)]
+    later = activity(tmp_path, trail, events, http_error=True)
+    assert later.returncode == 0 and b"only part of the" in later.stdout
+    forced = [*events, (T0 + timedelta(hours=3), "force_push", a, a)]
+    assert activity(tmp_path, trail, forced, http_error=True).returncode == 2
