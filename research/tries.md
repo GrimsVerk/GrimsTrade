@@ -119,3 +119,15 @@ Never edit or delete a row.
 | 2026-11-12 01:53 | hawkes-clustering | down2@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.27 | +210.4% | 53.0% | 6.67 |
 | 2026-11-12 01:53 | baselines | vol-calm@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.52 | +658.4% | 33.0% | 1.59 |
 | 2026-11-12 01:53 | hawkes-clustering | down2@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.25 | +179.6% | 59.8% | 6.37 |
+| 2026-11-12 01:55 | absorption-ratio | six | variant | train | 2002-01-01 | 2025-11-09 | 1.02 | +4806.5% | 45.5% | 1.82 |
+| 2026-11-12 01:55 | absorption-ratio | vol-shift | baseline | train | 2002-01-01 | 2025-11-09 | 1.17 | +10494.3% | 37.1% | 2.70 |
+| 2026-11-12 01:55 | absorption-ratio | spy@SPY | variant | train | 2002-01-01 | 2025-11-09 | 0.54 | +339.3% | 25.4% | 1.26 |
+| 2026-11-12 01:55 | absorption-ratio | vol-shift@SPY | baseline | train | 2002-01-01 | 2025-11-09 | 0.62 | +545.4% | 44.0% | 2.55 |
+| 2026-11-12 01:55 | absorption-ratio | six@etf | robustness | train | 2002-01-01 | 2025-11-09 | 0.46 | +157.3% | 20.7% | 1.13 |
+| 2026-11-12 01:55 | absorption-ratio | vol-shift@etf | baseline | train | 2002-01-01 | 2025-11-09 | 0.58 | +323.4% | 32.1% | 2.10 |
+| 2026-11-12 01:55 | absorption-ratio | six@N225 | robustness | train | 2002-01-01 | 2025-11-09 | 0.34 | +175.6% | 40.6% | 1.27 |
+| 2026-11-12 01:55 | absorption-ratio | vol-shift@N225 | baseline | train | 2002-01-01 | 2025-11-09 | 0.45 | +390.0% | 48.2% | 2.58 |
+| 2026-11-12 01:55 | absorption-ratio | six@FTSE | robustness | train | 2002-01-01 | 2025-11-09 | 0.13 | +22.2% | 41.2% | 1.28 |
+| 2026-11-12 01:55 | absorption-ratio | vol-shift@FTSE | baseline | train | 2002-01-01 | 2025-11-09 | 0.16 | +35.9% | 43.6% | 2.67 |
+| 2026-11-12 01:55 | absorption-ratio | six@GDAXI | robustness | train | 2002-01-01 | 2025-11-09 | 0.33 | +149.3% | 44.0% | 1.32 |
+| 2026-11-12 01:55 | absorption-ratio | vol-shift@GDAXI | baseline | train | 2002-01-01 | 2025-11-09 | 0.41 | +296.6% | 49.1% | 2.58 |
