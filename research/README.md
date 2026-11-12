@@ -77,13 +77,18 @@ Question: does machine learning on simple features beat `tsmom12` after costs? H
   not plumbing; and even a planted correlation of 0.20 only ties `tsmom12` on six assets.
 - `ml-sizing` (card written after the first three; two sharper position rules): dead.
 
-**Doing (cut off by the usage limit at 02:32 UTC)**
+- `ml-payoff` (payoff-weighted training, four variants): dead, 0.67-0.77 Sharpe
+  (`results/ml-payoff.md`). `lib/lookahead_check_ml.py` rerun and widened to the payoff
+  models: passes.
+- `results/deflation.md` refreshed: 46 selectable variants, luck alone gives +0.24, best seen
+  +0.22; no ML variant is above +0.06.
 
-- `ml-payoff`: card and protocol rule committed, code written (`lib/idea_ml_payoff.py`,
-  payoff weights in `lib/ml.py`), `DRY=1` plumbing check passed. **Not yet run for real**: no
-  result seen, no try logged. Next step is the real run, then the verdict in
-  `results/ml-payoff.md`. Rerun `lib/lookahead_check_ml.py` first (ml.py changed since its
-  last pass).
+**Doing (resumed 06:32 UTC after the usage limit cut the session at 02:32)**
+
+- Control at planted correlation 0.30 (`lib/control_ml.py`, `RHOS`). It rewrites
+  `results/ml-control.md`; the hand-written "Reading" section must be appended again.
+- Independent review of `lib/ml.py` by a subagent, running.
+- Then: summary and ranking at the top, `ideas.md` statuses.
 
 **Next**
 

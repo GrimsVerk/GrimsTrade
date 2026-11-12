@@ -20,7 +20,7 @@ import ml
 import mltest
 import numpy as np
 
-RHOS = (0.0, 0.03, 0.05, 0.10, 0.20)
+RHOS = (0.0, 0.03, 0.05, 0.10, 0.20, 0.30)
 
 
 def _noise(day: int, sym: str) -> float:
