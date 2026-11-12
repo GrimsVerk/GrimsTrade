@@ -170,8 +170,12 @@ ordinary tests that pin the numbers quoted here.
   `include: ["~DEFAULT_BRANCH"]`.
 - **Guard (done, workflow):** before running, `scripts/check-trail-activity.sh` asks GitHub's
   activity log, which no pusher can edit, and refuses to run if `paper-trail` was ever
-  force-pushed, deleted or created twice, or if any commit reached GitHub more than 10 minutes
-  after the time it claims (a back-dated commit, see L1). Tried against the real repository: it
+  force-pushed, deleted or created twice, if any commit reached GitHub more than 10 minutes
+  after the time it claims (a back-dated commit, see L1), if anyone but the daily job pushed to
+  it, or if a commit GitHub received is no longer in the record. The last two were added in the
+  second pass: until then a person or agent with write access could push a well-formed, on-time
+  commit (a decision in a live strategy's name, say) and the job ran on; and commits that came
+  in by a merged pull request were not looked at. Tried against the real repository: it
   passes; both real pushes arrived 1 second after their commits. If GitHub cannot be asked, the
   job goes on with a warning. After looking at a reported event a person sets the repository
   variable `TRAIL_REVIEWED_UNTIL` to move on. Agents can set that variable too (GrimsBot has
@@ -181,6 +185,11 @@ ordinary tests that pin the numbers quoted here.
 - **Not proven live:** the script ran with GrimsBot's token, not yet with the job's own token
   inside Actions. If that token may not read the activity log, the step prints a warning and
   checks nothing; look at the first run's log after merging.
+- **What no check here can close:** anyone with write access can add a workflow on a branch of
+  their own that pushes to `paper-trail` as `github-actions[bot]`, the same name the daily job
+  has. Such a push must still pass every other check (no rewrite, no back-dating beyond 10
+  minutes), so it can add decisions going forward but not with hindsight. Who has write access
+  is the real boundary.
 - **Owner action (needs admin):** add a ruleset for `paper-trail` that blocks force pushes and
   deletion, with no bypass. The guard detects; only the ruleset prevents.
 

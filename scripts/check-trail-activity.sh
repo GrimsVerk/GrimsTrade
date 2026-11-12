@@ -5,9 +5,10 @@
 #
 #   GITHUB_REPOSITORY=owner/name GH_TOKEN=... scripts/check-trail-activity.sh [trail-dir]
 #
-# Exit 2 if the branch was ever force-pushed, deleted or created twice, or if a commit reached
-# GitHub more than MAX_LAG seconds after the time it claims it was made (a back-dated commit:
-# decisions count from their commit time, so that time has to be real).
+# Exit 2 if the branch was ever force-pushed, deleted or created twice, if anyone but the daily
+# job (TRAIL_BOT) pushed to it, if a pushed commit is no longer in the record, or if a commit
+# reached GitHub more than MAX_LAG seconds after the time it claims it was made (a back-dated
+# commit: decisions count from their commit time, so that time has to be real).
 # Exit 0 otherwise; also, with a warning, when GitHub cannot be asked (then nothing was checked).
 #
 # After a person has looked at a reported event and accepts it, they set the repository variable
@@ -22,6 +23,7 @@ REPO="${GITHUB_REPOSITORY:?set GITHUB_REPOSITORY=owner/name}"
 BRANCH=paper-trail
 REVIEWED_UNTIL="${TRAIL_REVIEWED_UNTIL:-}"
 MAX_LAG="${MAX_LAG:-600}"
+BOT="${TRAIL_BOT:-github-actions[bot]}"
 NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 if [ -n "$REVIEWED_UNTIL" ] && [[ "$REVIEWED_UNTIL" > "$NOW" ]]; then
@@ -70,10 +72,18 @@ while IFS=$'\t' read -r stamp kind actor before after; do
       creations=$((creations + 1))
       [ "$reviewed" -eq 1 ] || new_creations=$((new_creations + 1))
       ;;
-    push) ;;
-    *) continue ;;
+    *) ;; # push, pr_merge, merge_queue_merge, and whatever GitHub adds: all bring commits
   esac
-  # Every commit this push brought must have been made shortly before it arrived.
+  # Only the daily job writes the record. Anyone else's push may be honest; a person must look.
+  if [ "$actor" != "$BOT" ]; then
+    report "$reviewed" "$kind by $actor at $stamp (only the daily job, $BOT, writes the record)"
+  fi
+  # What GitHub received must still be part of the record...
+  if ! git -C "$TRAIL" merge-base --is-ancestor "$after" HEAD 2>/dev/null; then
+    report "$reviewed" "commit ${after:0:10}, which $actor pushed at $stamp, is not in the record"
+    continue
+  fi
+  # ...and every commit this push brought must have been made shortly before it arrived.
   pushed="$(date -u -d "$stamp" +%s)"
   range="$after"
   [[ "$before" =~ ^0+$ ]] || range="$before..$after"

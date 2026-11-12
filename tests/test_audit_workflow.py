@@ -9,6 +9,7 @@ import os
 import subprocess
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -18,6 +19,7 @@ CHECKOUT = ROOT / "scripts" / "checkout-trail.sh"
 ACTIVITY = ROOT / "scripts" / "check-trail-activity.sh"
 T0 = datetime(2026, 11, 11, 22, 0, 51, tzinfo=UTC)
 ZERO = "0" * 40
+BOT = "github-actions[bot]"
 
 
 def git(repo: Path, *args: str, when: datetime | None = None) -> str:
@@ -105,17 +107,19 @@ def iso(t: datetime) -> str:
 
 
 def activity(
-    tmp_path: Path, trail: Path, events: list[tuple[datetime, str, str, str]] | None, **env: str
+    tmp_path: Path, trail: Path, events: list[tuple[Any, ...]] | None, **env: str
 ) -> subprocess.CompletedProcess[bytes]:
-    """Run the script with a fake `gh` that prints `events` (time, type, before, after) the way
-    the real call's --jq does, newest first; `None` makes gh fail."""
+    """Run the script with a fake `gh` that prints `events` (time, type, before, after and, if
+    it is not the daily job, who) the way the real call's --jq does, newest first; `None` makes
+    gh fail."""
     fake = tmp_path / "bin"
     fake.mkdir(exist_ok=True)
     if events is None:
         body = "#!/bin/sh\nexit 1\n"
     else:
         rows = [
-            f"{iso(t)}\t{kind}\tsomeone\t{before}\t{after}" for t, kind, before, after in events
+            f"{iso(t)}\t{kind}\t{(*who, BOT)[0]}\t{before}\t{after}"
+            for t, kind, before, after, *who in events
         ]
         (tmp_path / "events.tsv").write_text("".join(r + "\n" for r in reversed(rows)))
         body = f'#!/bin/sh\ncat "{tmp_path / "events.tsv"}"\n'
@@ -148,7 +152,7 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     a = commit(trail, "day 1", T0)
     created = (T0 + timedelta(seconds=1), "branch_creation", ZERO, a)
     forced = activity(tmp_path, trail, [created, (T0 + timedelta(hours=3), "force_push", a, a)])
-    assert forced.returncode == 2 and b"force_push by someone" in forced.stdout
+    assert forced.returncode == 2 and b"force_push by github-actions[bot]" in forced.stdout
     again = [created, (T0 + timedelta(hours=3), "branch_deletion", a, ZERO), created]
     recreated = activity(tmp_path, trail, again)
     assert recreated.returncode == 2 and b"created 2 times" in recreated.stdout
@@ -159,12 +163,12 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     accepted = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=reviewed)
     assert accepted.returncode == 0 and b"::warning::" in accepted.stdout
     note = trail / "state" / "acknowledged-rewrites.txt"
-    assert note.read_text() == "force_push by someone at 2026-11-12T01:00:51Z\n"
+    assert note.read_text() == "force_push by github-actions[bot] at 2026-11-12T01:00:51Z\n"
     from grimstrade import report
 
     board = report.render(trail, {}, tmp_path)
     assert "**The record branch itself was rewritten or back-dated (1 event)" in board
-    assert "force_push by someone at 2026-11-12T01:00:51Z" in board
+    assert "force_push by github-actions[bot] at 2026-11-12T01:00:51Z" in board
     # A later, new force-push stops the job again; the variable is not a blanket off-switch...
     events.append((T0 + timedelta(days=2), "force_push", a, a))
     assert activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=reviewed).returncode == 2
@@ -189,6 +193,34 @@ def test_a_backdated_commit_stops_the_job(tmp_path: Path, trail: Path) -> None:
     assert b"says it was made at 2026-11-12T22:00:51Z but reached GitHub at 2026-11-14" in (
         done.stdout
     )
+
+
+def test_a_push_by_anyone_but_the_daily_job_stops_the_job(tmp_path: Path, trail: Path) -> None:
+    """Audit L3 (second pass): the guard looked at how the branch was written, not by whom. An
+    agent or a person with write access could push a well-formed, on-time commit (a decision in
+    a live strategy's name, say) and the job ran on. Only the daily job writes the record."""
+    t0 = T0 - timedelta(days=30)  # all of it well in the past: the script reads the real clock
+    a = commit(trail, "day 1", t0)
+    b = commit(trail, "day 2", t0 + timedelta(days=1))
+    created = (t0 + timedelta(seconds=1), "branch_creation", ZERO, a)
+    by_hand = [created, (t0 + timedelta(days=1, seconds=1), "push", a, b, "GrimsBot")]
+    done = activity(tmp_path, trail, by_hand)
+    assert done.returncode == 2 and b"push by GrimsBot at 2026-10-13T22:00:52Z" in done.stdout
+    # A person can accept it; it then stays on the scoreboard like any other accepted event.
+    seen = activity(tmp_path, trail, by_hand, TRAIL_REVIEWED_UNTIL=iso(t0 + timedelta(days=2)))
+    assert seen.returncode == 0
+    assert "push by GrimsBot" in (trail / "state" / "acknowledged-rewrites.txt").read_text()
+    # Commits that arrive by a merged pull request are checked like pushed ones: this one is
+    # by the daily job but back-dated by three days.
+    c = commit(trail, "day 3", t0 + timedelta(days=2))
+    honest = [created, (t0 + timedelta(days=1, seconds=1), "push", a, b)]
+    merged = [*honest, (t0 + timedelta(days=5), "pr_merge", b, c)]
+    late = activity(tmp_path, trail, merged)
+    assert late.returncode == 2 and b"but reached GitHub at 2026-10-17" in late.stdout
+    # A commit GitHub received that is no longer in the record means the record was replaced.
+    gone = [*honest, (t0 + timedelta(days=2, seconds=1), "push", b, "f" * 40)]
+    lost = activity(tmp_path, trail, gone)
+    assert lost.returncode == 2 and b"is not in the record" in lost.stdout
 
 
 def test_when_github_cannot_be_asked_the_job_goes_on_with_a_warning(
