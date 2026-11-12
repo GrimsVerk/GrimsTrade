@@ -152,7 +152,9 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "\\*\\* How confident we can be that its return for the risk taken is real and not "
         f"luck, allowing for all {trials.count} strategies we have tried (deflated Sharpe). It "
         "does not by itself mean it beats the yardsticks. Real money is only discussed after 6 "
-        "months, beating every yardstick, and strong evidence (95%+).",
+        "months, beating every yardstick, and strong evidence (95%+).  ",
+        f"Strong evidence takes years, not months: {report.years_of_patience(trials)}. Until "
+        'then "no sign of skill yet" is what an honest table says about a good strategy too.',
         "",
         "Details: `scoreboard.md`. Backtests (hindsight, not evidence): `backtest.md`.",
     ]

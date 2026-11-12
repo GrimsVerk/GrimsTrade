@@ -242,6 +242,37 @@ def test_the_deflated_sharpe_bar_is_out_of_reach_for_years() -> None:
     assert passed <= 3
 
 
+def test_the_pages_say_how_high_the_deflated_sharpe_bar_is(tmp_path: Path) -> None:
+    """Audit S2 (the part that could be fixed): the pages showed the deflated Sharpe without
+    saying what it takes to pass, so "no sign of skill yet" would read as a verdict on each
+    strategy for years. Both pages now state the Sharpe needed for 95%, and that number agrees
+    with what the column does."""
+    assert report.sharpe_needed(256, 182) == pytest.approx(6.4, abs=0.1)
+    assert report.sharpe_needed(256, 3 * 365) == pytest.approx(2.6, abs=0.1)
+    rng = random.Random(7)
+    days = 365
+    noise = [rng.gauss(0, 1) for _ in range(days)]
+    mean, sd = statistics.fmean(noise), statistics.pstdev(noise)
+    for factor, passes in ((1.1, True), (0.9, False)):  # a record just above the bar, just below
+        daily = report.sharpe_needed(256, days) * factor / math.sqrt(365)
+        returns = [0.01 * ((x - mean) / sd + daily) for x in noise]
+        (s,) = report.deflate(
+            [report.score("x", result_from_returns(returns))], report.Trials(count=256)
+        )
+        assert s.dsr is not None and (s.dsr >= 0.95) == passes
+    words = "it reads 95% only for a Sharpe above about 6.4 after six months, 4.5 after one year"
+    assert words in report.footnote(report.Trials(count=256))
+    # The owner's page says it too.
+    from grimstrade import weekly
+
+    bars = [Bar(DAY1 + timedelta(days=i), 100.0, 100.0, 100.0, 100.0, 1.0) for i in range(3)]
+    data.append(tmp_path, "BTC", bars)
+    when = datetime.combine(DAY1, time(22, 30), tzinfo=UTC)
+    ledger.write_decision(tmp_path, when, "buy_hold_btc", {"BTC": 1.0}, {"BTC": bars[:1]}, "t")
+    page = weekly.render(tmp_path, data.load_all(tmp_path), tmp_path)
+    assert "Strong evidence takes years, not months" in page and "after six months" in page
+
+
 def test_a_fill_on_the_first_day_counts_in_sharpe_and_drawdown() -> None:
     """Audit S7 (fixed; found by the independent reviewer): the first equity point was used as
     the baseline. Normally that is the untouched start cash, but a decision made before the US

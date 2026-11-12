@@ -198,6 +198,30 @@ def sharpe_cell(s: Score) -> str:
     return f"{s.sharpe:.2f} ±{error:.1f}"
 
 
+def sharpe_needed(tries: int, days: int, confidence: float = 0.95) -> float:
+    """The annualised Sharpe a record of `days` days must show before its deflated Sharpe reads
+    `confidence`, with `tries` strategies tried. A floor: ordinary (normal) returns, and tries
+    whose Sharpes differ by luck alone; fat tails or a wider spread of tries raise it.
+
+    Solves PSR(SR) = confidence for SR: (SR - SR0)^2 (T - 1) = z^2 (1 + SR^2 / 2)."""
+    sr0 = stats.expected_max_sharpe(max(tries, 1), stats.null_sharpe_variance(days))
+    z, t = statistics.NormalDist().inv_cdf(confidence), days - 1
+    a, b, c = t - z * z / 2, -2 * sr0 * t, sr0 * sr0 * t - z * z
+    return (-b + math.sqrt(b * b - 4 * a * c)) / (2 * a) * math.sqrt(DAYS_PER_YEAR)
+
+
+def years_of_patience(trials: Trials) -> str:
+    """What the deflated Sharpe column asks for, in numbers: the owner will otherwise read "no
+    sign of skill" about every strategy for years without knowing that an honest board with this
+    many tries says that about a good strategy too."""
+    need = [f"{sharpe_needed(trials.count, round(y * DAYS_PER_YEAR)):.1f}" for y in (0.5, 1, 3, 5)]
+    return (
+        f"with {trials.count} strategies tried it reads 95% only for a Sharpe above about "
+        f"{need[0]} after six months, {need[1]} after one year, {need[2]} after three and "
+        f"{need[3]} after five (a very good strategy has a Sharpe near 1)"
+    )
+
+
 def footnote(trials: Trials) -> str:
     return (
         f"Strategies tried so far (the record's plus the research lane's): {trials.count}. "
@@ -205,7 +229,9 @@ def footnote(trials: Trials) -> str:
         "value lies within about two of those, 19 times in 20. Deflated Sharpe: how confident we "
         "can be that the Sharpe beats the best that luck alone would give across all the "
         f"strategies tried (Bailey & López de Prado 2014). Both are shown after {MIN_DAYS_FOR_DSR} "
-        "days; before that they mean nothing."
+        "days; before that they mean nothing. The deflated Sharpe is strict: "
+        f"{years_of_patience(trials)}. A low number is not a verdict against a strategy; it says "
+        "the record is still too short."
     )
 
 

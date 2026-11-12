@@ -47,7 +47,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 
 | # | Finding | Severity | State |
 |---|---|---|---|
-| S2 | Six months cannot separate skill from luck; the corrected number says "no" for years | high | open: owner decision |
+| S2 | Six months cannot separate skill from luck; the corrected number says "no" for years | high | open: owner decision; the pages now say so |
 | D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged; cause open |
 | L3 | The record branch can be replaced (force-push, delete) | high | detected; owner action open |
 | G4 | Dividends not credited, cash earns nothing: yardsticks understated | medium | open: known, now sized |
@@ -115,9 +115,13 @@ ordinary tests that pin the numbers quoted here.
   2026-11-12) and stays. But DESIGN.md's graduation bar, "at least 6 months ... deflated Sharpe
   significant", cannot be met by any realistic strategy, and the owner will read "no sign of
   skill yet" about everything for years without knowing that this is what an honest board says.
+- **Done (`report.py`, `weekly.py`):** both pages now say how high the bar is, in numbers
+  computed from the current count of tries ("reads 95% only for a Sharpe above about 6.4 after
+  six months, 4.5 after one year, ..."), and that a low number means a short record, not a bad
+  strategy (`...::test_the_pages_say_how_high_the_deflated_sharpe_bar_is`).
 - **Proposed:** (1) the owner decides what graduation means; an honest wording is "six months
-  shows a strategy is not broken; proof of skill takes years". (2) Print the bar: "Sharpe needed
-  for 95% today: x", next to each row. (3) Apply the deflated test to the return in excess of
+  shows a strategy is not broken; proof of skill takes years". (2) Sort the scoreboard by
+  "Beats yardsticks", not by raw return. (3) Apply the deflated test to the return in excess of
   the best yardstick. (4) Consider counting, for the forward record, only strategies that
   entered the forward test: a strategy promoted from 200 backtests is one new forward try, and
   the forward record is exactly what protects against the other 199.
