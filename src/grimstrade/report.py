@@ -224,6 +224,15 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         footnote(trials),
     ]
+    accepted = root / "state" / "acknowledged-rewrites.txt"  # scripts/check-trail-activity.sh
+    if accepted.exists() and accepted.read_text().strip():
+        events = accepted.read_text().strip().splitlines()
+        out += [
+            "",
+            f"**The record branch itself was rewritten or back-dated ({len(events)} event"
+            f"{'s' * (len(events) != 1)}), and a person accepted it:** {'; '.join(events)}. "
+            "What the record said before that cannot be checked from here.",
+        ]
     troubled = ledger.problem_runs(root)
     if troubled:
         last = troubled[-1]

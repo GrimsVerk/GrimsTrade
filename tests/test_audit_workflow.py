@@ -152,10 +152,27 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     again = [created, (T0 + timedelta(hours=3), "branch_deletion", a, ZERO), created]
     recreated = activity(tmp_path, trail, again)
     assert recreated.returncode == 2 and b"created 2 times" in recreated.stdout
-    # Once the owner has looked and set TRAIL_REVIEWED_UNTIL past the event, the job runs again.
+    # Once a person has looked and set TRAIL_REVIEWED_UNTIL past the event, the job runs again,
+    # but the event is not forgotten: it goes into the trail and onto the scoreboard, every run.
     reviewed = iso(T0 + timedelta(hours=4))
     events = [created, (T0 + timedelta(hours=3), "force_push", a, a)]
-    assert activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=reviewed).returncode == 0
+    accepted = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=reviewed)
+    assert accepted.returncode == 0 and b"::warning::" in accepted.stdout
+    note = trail / "state" / "acknowledged-rewrites.txt"
+    assert note.read_text() == "force_push by someone at 2026-11-12T01:00:51Z\n"
+    from grimstrade import report
+
+    board = report.render(trail, {}, tmp_path)
+    assert "**The record branch itself was rewritten or back-dated (1 event)" in board
+    assert "force_push by someone at 2026-11-12T01:00:51Z" in board
+    # A later, new force-push stops the job again; the variable is not a blanket off-switch...
+    events.append((T0 + timedelta(days=2), "force_push", a, a))
+    assert activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=reviewed).returncode == 2
+    # ...and it cannot be set to the future to wave everything through.
+    future = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL="2099-01-01T00:00:00Z")
+    assert future.returncode == 2 and b"is in the future" in future.stdout
+    # With nothing accepted the note disappears.
+    assert activity(tmp_path, trail, [created]).returncode == 0 and not note.exists()
 
 
 def test_a_backdated_commit_stops_the_job(tmp_path: Path, trail: Path) -> None:
@@ -180,3 +197,6 @@ def test_when_github_cannot_be_asked_the_job_goes_on_with_a_warning(
     commit(trail, "day 1", T0)
     done = activity(tmp_path, trail, None)
     assert done.returncode == 0 and b"::warning::" in done.stdout
+    # An empty answer is not agreement either.
+    empty = activity(tmp_path, trail, [])
+    assert empty.returncode == 0 and b"nothing was checked" in empty.stdout
