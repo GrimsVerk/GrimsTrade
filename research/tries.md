@@ -246,3 +246,9 @@ Never edit or delete a row.
 | 2026-11-12 02:19 | ml-gbm | gbm@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.23 | +45.1% | 34.0% | 10.39 |
 | 2026-11-12 02:19 | ml-gbm | gbm@coin | robustness | train | 2023-01-06 | 2025-11-09 | 0.78 | +95.9% | 35.1% | 11.46 |
 | 2026-11-12 02:19 | ml-gbm | gbm@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.59 | +1403.2% | 41.1% | 9.23 |
+| 2026-11-12 02:20 | ml-filter | meta-gbm | variant | train | 1994-02-01 | 2025-11-09 | 0.73 | +1302.2% | 28.3% | 8.03 |
+| 2026-11-12 02:20 | ml-filter | meta-logit | variant | train | 1994-02-01 | 2025-11-09 | 0.94 | +5283.8% | 29.4% | 3.40 |
+| 2026-11-12 02:20 | ml-filter | and-gbm | variant | train | 1994-02-01 | 2025-11-09 | 0.86 | +2662.5% | 29.6% | 7.01 |
+| 2026-11-12 02:20 | ml-filter | meta-gbm@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.38 | +56.2% | 17.2% | 8.20 |
+| 2026-11-12 02:20 | ml-filter | meta-gbm@coin | robustness | train | 2023-01-06 | 2025-11-09 | 0.17 | +2.8% | 39.6% | 10.59 |
+| 2026-11-12 02:20 | ml-filter | meta-gbm@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.62 | +872.8% | 21.7% | 8.10 |
