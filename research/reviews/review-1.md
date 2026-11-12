@@ -167,7 +167,8 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
   assets from 2003-09. Against its own twin, none is ahead with p of 0.05 or less except
   `hmm-regime` (soft, 0.04) and `hawkes-clustering` (0.05), both against `vol-calm`, a twin
   that loses to holding (finding 5). Against equal weight two are: `drawdown-control` d1.5
-  (0.03) and `vol-target` t25 (0.05). In 34 comparisons luck gives about two such results.
+  (0.03) and `vol-target` t25 (0.05). In about thirty comparisons luck gives one or two such
+  results.
 
 **What it changes.**
 
