@@ -2,6 +2,23 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-12 (honesty audit 1): Scoring conventions. (a) Every day in a record has a return, the
+  first measured from the start cash, so a fill on the first day counts in Sharpe and drawdown.
+  (b) Sharpe and turnover are annualised by the real time span (365 per year when there is a
+  point every day). (c) No Sharpe is printed under 30 days; after that it carries its standard
+  error. (d) `weekly.md` compares a strategy with each yardstick restarted with fresh cash at the
+  strategy's own start (`report.restarted`), not with the yardstick's own curve. Why: each of the
+  four made a number say more, or something else, than the record supports.
+- 2026-11-12 (honesty audit 1): Stored bars are never corrected, but each run asks the
+  first-choice source again for the last 5 stored days and appends every price difference to
+  `data/revisions.jsonl`; the scoreboard counts them. Why: bars are stored about an hour after
+  the close, before the source is final (the first stored day already differed).
+- 2026-11-12 (honesty audit 1): The daily job runs only from `main`, never starts a new record
+  unless started by hand with "start a new record", and first asks GitHub's activity log whether
+  `paper-trail` was force-pushed, deleted or fed a back-dated commit
+  (`scripts/check-trail-activity.sh`; the owner acknowledges an event with the repository
+  variable `TRAIL_REVIEWED_UNTIL`). Why: nothing inside the branch can prove the branch itself
+  was not replaced.
 - 2026-11-12 (honesty audit 1): A decision counts from the time its commit was made, when that
   is later than its own timestamp (`ledger.in_force`, used by every score). Why: "append-only" did
   not stop a line being added afterwards with an old timestamp and filled at an open already

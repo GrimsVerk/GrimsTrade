@@ -1,9 +1,16 @@
 # Next steps
 
-## In flight: honesty audit 1 (branch `audit-1`)
+## In flight: honesty audit 1 (branch `audit-1`, draft PR #5)
 
 Adversarial audit of the record's honesty. Report, findings and resume point (Status section):
 `docs/audits/honesty-2026-11.md`. Tests: `tests/test_audit_*.py`.
+
+- [ ] Owner (needs admin): ruleset on `paper-trail` blocking force pushes and deletion (L3).
+- [ ] Owner: decide what "graduation" means; six months cannot prove skill (S2).
+- [ ] After merging: read the first daily run's log; the "Ask GitHub" step must not say
+      "rewrite check skipped" (the job's token was not tried against the activity log).
+- [ ] Open findings to build next: S3, D5, G2, second halves of L7 and S4; verify the crypto
+      taker fee (G3); a second ETF source, Stooq is dead (D6).
 
 ## M0 status: built, not yet proven live
 
