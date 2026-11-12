@@ -3,14 +3,14 @@
 Auditor: lane C agent, branch `audit-1` (PR #5). Scope: every way this system could show a
 result that is not true. Code audited: `main` at `8e26333` (M0), then at `552e521` after M1 was
 merged during the audit (merged into this branch). Record audited, read-only: `paper-trail` at
-`6bd5f18` (two runs: 2026-11-11 22:00 UTC and 2026-11-12 01:51 UTC).
+`e7c43e0` (three runs: 2026-11-11 22:00 UTC, 2026-11-12 01:51 and 03:12 UTC).
 
 ## Summary for the owner
 
 I tried to make the scoreboard lie.
 
 **What held.** No strategy can see a price before the market has printed it: summer or winter
-time, weekends and holidays included. The record so far (two runs) is clean.
+time, weekends and holidays included. The record so far (three runs) is clean.
 
 **What did not.** The logbook could be made to lie in four ways: add a "decision" afterwards
 with an old date, rewrite old lines behind a merge, edit a stored price, or replace the whole
@@ -98,9 +98,9 @@ ordinary tests that pin the numbers quoted here.
   sorts by raw return.
 - **What, part 2: the corrected number will say "no" for years.** M1 added the deflated Sharpe
   (the right tool) and counts every strategy "tried", which includes every backtest variant the
-  research lane logs: 136, then 176, then 219 within one hour on 2026-11-12, and growing nightly.
-  With 219 tries a strategy must show a Sharpe of 6.3 after six months, 4.4 after one year, 2.6
-  after three, 2.0 after five and 1.4 after ten before the column reads 95%. A strategy whose
+  research lane logs: 136, then 176, 219 and 256 in the first hours of 2026-11-12, and growing
+  nightly. With 256 tries a strategy must show a Sharpe of 6.4 after six months, 4.5 after one
+  year, 2.6 after three, 2.0 after five and 1.4 after ten before the column reads 95%. A strategy whose
   true Sharpe is 1.0 (very good) reads 95% after three years in fewer than 1 case in 100, after
   ten years in 1 in 10, and has an even chance only after about twenty. A world-class one (true
   Sharpe 2) has an even chance after five years. Even counting only the 9 live strategies the
@@ -225,8 +225,9 @@ ordinary tests that pin the numbers quoted here.
 - **What:** if a source stops (see D6), the gym keeps valuing that asset at its last price. The
   strategy's line goes flat: no losses, no swings, a better drawdown and a distorted Sharpe. The
   scoreboard never said how old each asset's newest bar is, nor on how many days a strategy made
-  no decision (GitHub's cron is best-effort, a rejected push loses the day, and a strategy that
-  raises an error is skipped for the day and keeps its old position).
+  no decision (GitHub's cron is best-effort: the first scheduled run started 4 hours 42 minutes
+  late; a rejected push loses the day; and a strategy that raises an error is skipped for the
+  day and keeps its old position).
 - **Fix (done, `report.py`):** the scoreboard has a "Prices through" line with the newest bar of
   each asset and a bold **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
   behind the newest one (`tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`).
@@ -275,7 +276,7 @@ One commit per fix, except the three workflow changes, which share the same line
   time when that is later than its own timestamp (`ledger.in_force`). The back-dated line is
   filled at the first open after it was committed, so hindsight buys nothing. Decisions recorded
   more than 30 minutes after their timestamp are "late" and the scoreboard says how many. On the
-  real record nothing changes: the two runs were committed 2 and 22 seconds after their
+  real record nothing changes: its decisions were committed 2 and 22 seconds after their
   timestamps. Tests: `tests/test_audit_ledger.py::test_a_backdated_decision_is_not_credited` and
   three more beside it.
 - **A hole in the first version of this fix,** found by the independent reviewer and closed:
@@ -338,7 +339,7 @@ One commit per fix, except the three workflow changes, which share the same line
 - **Fix (`sources.py`):** `fetch` runs `check_sane` on every bar (finite, positive, high and low
   consistent with open and close, 0.1% slack); `yahoo()` raises on an empty day that has priced
   days after it. Either counts as a failed source: the next one is tried and the run reports
-  it. All 3,324 real stored bars pass. Assumption: Yahoo lists no row at all for market holidays
+  it. All 3,326 real stored bars pass. Assumption: Yahoo lists no row at all for market holidays
   (true for all 481 stored sessions). Tests: `tests/test_audit_data.py`.
 - **What is left:** a day the source omits completely is still invisible. A calendar check
   across the four ETFs (they share one) and "crypto has every day" would catch it.
@@ -415,7 +416,7 @@ One commit per fix, except the three workflow changes, which share the same line
   75,257.8, low 72,584.6 vs 72,643.5, about 8 basis points apart at worst). When Yahoo fails it
   would come from Stooq, whose history is, as far as I know, dividend-adjusted where Yahoo's is
   raw (unverified: Stooq is unreachable). Now every run appends to `data/sources.jsonl` which
-  source supplied which days of which symbol. The two runs before this fix used Kraken and
+  source supplied which days of which symbol. The runs before this fix used Kraken and
   Yahoo (the stored values match those sources' formats and my live probes).
   `tests/test_audit_data.py::test_the_record_says_which_source_each_bar_came_from`.
 - **L9. A lost final newline glued lines together for good** (independent reviewer). A ledger or
@@ -446,11 +447,18 @@ One commit per fix, except the three workflow changes, which share the same line
 - **The gym's arithmetic.** Random trading at constant prices never creates money, cash never
   goes negative, positions never go short, fees and slippage are both charged; buy-and-hold earns
   exactly first-fill-open to last close (`tests/test_audit_gym.py`).
-- **The real record so far.** 700 consecutive crypto days, four ETFs on one identical calendar
-  of 481 sessions, no bad or duplicate rows, no crypto open more than 0.2% from the previous
-  close. All nine files pass the new append-only check. GitHub's activity log shows two events
-  on `paper-trail`, both by `github-actions[bot]`: its creation at 2026-11-11 22:00:52 UTC and a
-  push at 2026-11-12 01:51:50 UTC, each one second after its commit.
+- **The real record so far** (checked again after the third run). 701 consecutive crypto days,
+  four ETFs on one identical calendar of 481 sessions, no bad or duplicate rows, no crypto open
+  more than 0.2% from the previous close. All nine files pass the new append-only check. All 13
+  decisions count from their commit, 2 and 22 seconds after they were made; none is late.
+  GitHub's activity log shows three events on `paper-trail`, all by `github-actions[bot]`: its
+  creation at 2026-11-11 22:00:52 UTC and pushes at 2026-11-12 01:51:50 and 03:12:50 UTC, each
+  at most one second after its commit. The third run wrote no decisions, rightly: no bar had
+  closed since the second.
+- **A late run cannot cheat.** GitHub started the first scheduled run (due 22:30 UTC) at 03:12
+  UTC, 4 hours 42 minutes late. A late decision sees more closed bars and fills at later opens,
+  never earlier ones; the cost is a crypto fill almost a day after the signal. Late or skipped
+  runs are still not counted anywhere (S4).
 - **Independent review.** Two reviewers (subagents with no sight of my conclusions beyond a list
   of titles) attacked the gym and scoring, and the ledger, runner and sources. Their new
   findings are S7, S8, G5, D7, D8, D9, L9 and the hole in L1. What they checked and found sound:

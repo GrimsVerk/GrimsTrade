@@ -176,10 +176,10 @@ def test_todays_equity_is_provisional_and_changes_tomorrow() -> None:
 
 def test_the_deflated_sharpe_bar_is_out_of_reach_for_years() -> None:
     """Audit S2 (part 2), sized: the scoreboard's deflated Sharpe allows for every strategy
-    "tried", and that count includes every backtest variant the research lane logs: 219 on
+    "tried", and that count includes every backtest variant the research lane logs: 256 on
     2026-11-12, one
-    day in. The Sharpe a strategy must then show before "95% sure" is about 6.3 after six months,
-    4.4 after a year, 2.0 after five. A strategy with a true Sharpe of 1.0 (very good) passes
+    day in. The Sharpe a strategy must then show before "95% sure" is about 6.4 after six months,
+    4.5 after a year, 2.0 after five. A strategy with a true Sharpe of 1.0 (very good) passes
     after three years in about 1 world in 100. Cautious, not dishonest, but the board will say
     "no sign of skill" about everything for years, and DESIGN.md's graduation bar ("at least 6
     months") cannot be met by any realistic strategy."""
@@ -191,10 +191,13 @@ def test_the_deflated_sharpe_bar_is_out_of_reach_for_years() -> None:
         luck = stats.expected_max_sharpe(tries, stats.null_sharpe_variance(days))
         return (luck + NormalDist().inv_cdf(0.95) / math.sqrt(days - 1)) * math.sqrt(365)
 
-    assert needed(219, 182) == pytest.approx(6.3, abs=0.1)
-    assert needed(219, 365) == pytest.approx(4.4, abs=0.1)
-    assert needed(219, 5 * 365) == pytest.approx(2.0, abs=0.1)
-    assert needed(9, 182) == pytest.approx(4.5, abs=0.1)  # even counting only the 9 live ones
+    assert needed(256, 182) == pytest.approx(6.4, abs=0.05)
+    assert needed(256, 365) == pytest.approx(4.5, abs=0.05)
+    assert needed(256, 3 * 365) == pytest.approx(2.6, abs=0.05)
+    assert needed(256, 5 * 365) == pytest.approx(2.0, abs=0.05)
+    assert needed(256, 10 * 365) == pytest.approx(1.4, abs=0.05)
+    assert needed(9, 182) == pytest.approx(4.5, abs=0.05)  # even counting only the 9 live ones
+    assert needed(9, 3 * 365) == pytest.approx(1.8, abs=0.05)
 
     rng = random.Random(12)
     days, daily_sd = 3 * 365, 0.01
@@ -205,8 +208,8 @@ def test_the_deflated_sharpe_bar_is_out_of_reach_for_years() -> None:
         for i in range(100)
     ]  # fmt: skip
     passed = 0
-    for s in scores:  # each one alone on the board, 219 strategies tried
-        (deflated,) = report.deflate([s], report.Trials(count=219))
+    for s in scores:  # each one alone on the board, 256 strategies tried
+        (deflated,) = report.deflate([s], report.Trials(count=256))
         passed += (deflated.dsr or 0) >= 0.95
     assert statistics.fmean(s.sharpe for s in scores) == pytest.approx(1.0, abs=0.15)
     assert passed <= 3
