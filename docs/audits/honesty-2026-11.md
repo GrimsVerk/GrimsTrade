@@ -175,7 +175,8 @@ ordinary tests that pin the numbers quoted here.
   strategy that holds crypto or cash while the yardstick holds bonds.
 - **Evidence:** `tests/test_audit_gym.py::test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year`.
 - **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (in the
-  BACKLOG). `weekly.md` already says "dividends not yet credited"; add the size.
+  BACKLOG). Until then `weekly.md` says it with the size: "Dividends are not credited yet, which
+  makes the fund yardsticks 1 to 2% a year too easy to beat."
 
 ### D1. Bars are stored before the source is final (high when found; differences are now logged, the cause remains)
 

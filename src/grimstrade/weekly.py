@@ -100,8 +100,9 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         f"# Weekly summary: the week to {today:%A %d %B %Y}",
         "",
         "Fake money on real prices. Every strategy started with 10,000 USD; all figures are "
-        "after trading fees and slippage (dividends not yet credited). A strategy only matters "
-        "if it beats the yardsticks below.",
+        "after trading fees and slippage. Dividends are not credited yet, which makes the fund "
+        "yardsticks 1 to 2% a year too easy to beat. A strategy only matters if it beats the "
+        "yardsticks below.",
         "",
         "## Yardsticks",
         "",
