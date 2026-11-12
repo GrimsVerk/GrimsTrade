@@ -5,7 +5,17 @@ from __future__ import annotations
 import math
 
 import numpy as np
-from common import ResearchStrategy, View, Weights, bpy, eligible, live, vol_series
+from common import (
+    ResearchStrategy,
+    View,
+    Weights,
+    bpy,
+    eligible,
+    live,
+    trailing_logret,
+    tsmom_signal,
+    vol_series,
+)
 
 from grimstrade.data import CRYPTO, UNIVERSE
 
@@ -132,3 +142,41 @@ def universal_portfolio(view: View) -> Weights:
 
 def uniform_with_cash(view: View) -> Weights:
     return {s: 1 / (len(view.syms) + 1) for s in live(view)}
+
+
+# --- run 2: vol-target, ensemble-tsmom, trend-vol ---
+
+
+def vol20(view: View, s: str) -> float:
+    lr = view.logret(s)[-20:]
+    return float(math.sqrt((lr * lr).mean() * bpy(s)))
+
+
+def vol_cap(view: View, s: str, target: float) -> float:
+    v = vol20(view, s)
+    return min(1.0, target / v) if v > 0 else 1.0
+
+
+def vol_target(target: float) -> ResearchStrategy:
+    def f(view: View) -> Weights:
+        held = live(view)
+        return {s: vol_cap(view, s, target) / len(held) for s in held}
+
+    return f
+
+
+def ensemble_tsmom(view: View) -> Weights:
+    held = live(view)
+    out = {}
+    for s in held:
+        rets = [trailing_logret(view, s, d) for d in (30, 91, 182, 365)]
+        out[s] = sum(1 for r in rets if not math.isnan(r) and r > 0) / 4 / len(held)
+    return out
+
+
+def trend_vol(target: float) -> ResearchStrategy:
+    def f(view: View) -> Weights:
+        held = live(view)
+        return {s: vol_cap(view, s, target) / len(held) for s in held if tsmom_signal(view, s)}
+
+    return f

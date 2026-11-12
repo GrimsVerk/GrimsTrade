@@ -19,6 +19,14 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | month-end-liquidity | Calendar / microstructure | dead (tested) | [card](cards/month-end-liquidity.md) | Real in old data (S&P 1962-93 t = 4.0, FTSE 4.2, Nikkei 3.1), faded since 2014, never in TLT; in-or-out loses to a constant one-third holding on Sharpe. [result](results/month-end-liquidity.md) |
 | dip-rsi2 | Short-term reversal | dead (tested) | [card](cards/dip-rsi2.md) | Bounce is real on SPY (21.6 vs 3.9 bps a day, t = 2.5), halved since publication, weak on 7 other markets, and only 5% exposure: +2.3% a year. [result](results/dip-rsi2.md) |
 
+## Cards for run 2 (written after run 1; each card says what had been seen)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| vol-target | Volatility targeting | testing | [card](cards/vol-target.md) | Slot x min(1, 40% / 20-day vol); twin equal weight |
+| ensemble-tsmom | Trend | testing | [card](cards/ensemble-tsmom.md) | Share of 1/3/6/12-month returns positive; twin tsmom12 |
+| trend-vol | Trend + volatility | testing | [card](cards/trend-vol.md) | tsmom12 with the vol-target cap; stricter bar because both parts were seen in run 1 |
+
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 
 | Idea | Field | Status | Card | Note |
