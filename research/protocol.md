@@ -213,3 +213,15 @@ walk-forward, purge and embargo are unchanged: at a fit, a row of any set is usa
 its label window ended at least 7 days before the fit date. The training rows do not depend on
 which universe is traded. Trading starts on the same day as for the unpooled models (the
 first-model rule applied to the traded universe's own rows), so the tables compare.
+
+## Weekly labels (added 2026-11-12 06:48 UTC, run 2)
+
+Written after the six earlier ML cards, the control and `results/ml-feature-skill.md` had been
+seen. For `ml-weekly` only.
+
+The label horizon is 7 days instead of 28 (`ML_HORIZON=7`): the log return between the closes
+visible at two consecutive Friday decisions; `ra` divides by `vol x sqrt(7/365)`. Everything
+that was 28 days because of the label becomes 7: a row is usable at a fit if its 7-day label
+window ended at least 7 days before the fit date (the embargo stays 7 days), and in purged CV
+the purge and the embargo are 7 days each. Features, yearly refits, first-model rule, position
+rules and weekly decisions are unchanged.

@@ -11,6 +11,7 @@ Needs scikit-learn:  uv run --with numpy --with scikit-learn python research/lib
 from __future__ import annotations
 
 import math
+import os
 from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date, timedelta
@@ -46,7 +47,9 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 
-HORIZON = 28  # label: log return over the next 28 days
+# Label: log return over the next HORIZON days. 28 everywhere except `ml-weekly`, which is run
+# with ML_HORIZON=7 (protocol.md, "Weekly labels"); the horizon is fixed for a whole process.
+HORIZON = int(os.environ.get("ML_HORIZON", "28"))
 EMBARGO = 7  # extra gap between the last usable label and the fit date
 MIN_ROWS = 1000  # no model before this many labelled rows
 CV_FOLDS = 5
@@ -294,6 +297,8 @@ TREE_PAY = Spec(
 GBM_RAW = gbm_spec("gbm-raw", target="raw")
 GBM_POOL = Spec("gbm-pool", "gbm", "up", _grid(GBM_BASE), pool=True)
 LOGIT_POOL = Spec("logit-pool", "logit", "up", LOGIT.grid, pool=True)
+GBM_WK = Spec("gbm-wk", "gbm", "up", _grid(GBM_BASE))  # run with ML_HORIZON=7
+LOGIT_WK = Spec("logit-wk", "logit", "up", LOGIT.grid)  # run with ML_HORIZON=7
 META_GBM = gbm_spec("meta-gbm", meta=True)
 META_LOGIT = Spec("meta-logit", "logit", "up", LOGIT.grid, meta=True)
 

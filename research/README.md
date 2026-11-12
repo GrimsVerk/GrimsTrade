@@ -134,7 +134,9 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
 
 **Doing**
 
-- Nothing half-finished: every file on the branch is complete as it stands.
+- `ml-weekly` (7-day labels): card, protocol rule and code committed before the run. If
+  `results/ml-weekly.md` has no verdict, run the look-ahead check and the card with
+  `ML_HORIZON=7` and write it; then `lib/deflation.py`, `ideas.md`, and the counts above.
 
 **Next (a later run; nothing here is started)**
 
@@ -202,7 +204,9 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
 
 **Doing**
 
-- Nothing half-finished: every file on the branch is complete as it stands.
+- `ml-weekly` (7-day labels): card, protocol rule and code committed before the run. If
+  `results/ml-weekly.md` has no verdict, run the look-ahead check and the card with
+  `ML_HORIZON=7` and write it; then `lib/deflation.py`, `ideas.md`, and the counts above.
 
 **Next (a later run; nothing here is started)**
 

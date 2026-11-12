@@ -47,6 +47,7 @@ seen. Sharpe on the six assets, 1994-2025: `tsmom12` 1.05, equal weight 0.88.
 | ml-sizing | Machine learning | dead (tested) | [card](cards/ml-sizing.md) | Position follows the forecast (two sharper rules): 0.68-0.82. Following a forecast with no skill more closely is worse. [result](results/ml-sizing.md) |
 | ml-payoff | Machine learning | dead (tested) | [card](cards/ml-payoff.md) | Trained on payoff (months weighted by size) instead of direction: 0.67-0.77; size-weighted hit rate 52-54% against 60% for "always up". [result](results/ml-payoff.md) |
 | ml-pooled | Machine learning | dead (tested) | [card](cards/ml-pooled.md) | Same models trained on 33 markets (5x the rows): AUC 0.50, 0.68-0.92. "Too little data" is not the reason. [result](results/ml-pooled.md) |
+| ml-weekly | Machine learning | testing | [card](cards/ml-weekly.md) | Same models, 7-day labels instead of 28: four times the bets. Written after the first six failed |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 

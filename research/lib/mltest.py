@@ -74,7 +74,10 @@ def standard(
     out += ["Annualised log growth: " + ", ".join(f"{r.variant} {c.growth(r):+.1%}" for r in runs)]
     out += [""]
     if skill_tags:
-        out += ["## Forecast skill on the six assets (walk-forward forecasts, 28 days ahead)", ""]
+        out += [
+            f"## Forecast skill on the six assets (walk-forward forecasts, {ml.HORIZON} days ahead)"
+        ]
+        out += [""]
         out += skill_table(six, skill_tags, payoff) + [""]
     if extra:
         out += extra(six, by_name)
