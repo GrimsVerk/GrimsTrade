@@ -172,8 +172,152 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Proposed fix:** a second real ETF source (Alpaca's free data is in the BACKLOG; needs a key
   as an Actions secret, the owner's call).
 
+### S1. A Sharpe ratio is printed from day two (high, because it is the number people read)
+
+- **What:** the table shows Sharpe to two decimals for any record of two days or more. For short
+  records it is noise: four up-days read as "Sharpe 30"; a strategy that only paid 2 basis points
+  of slippage once shows -4.6. After 30 days a strategy with no skill at all shows a Sharpe
+  outside +-3.7 a third of the time (95% band +-7.3).
+- **Evidence:** `tests/test_audit_stats.py::test_a_record_of_a_few_days_shows_no_sharpe_number`.
+- **Proposed fix (small, `report.py`, M1 is editing it):** no Sharpe (and no ranking by it)
+  under 30 days; from then on print it with its error band, e.g. `0.8 +-2.8`.
+
+### S2. After six months the board still mostly measures luck (high)
+
+- **What:** the graduation bar says "at least 6 months". The uncertainty of an annualised Sharpe
+  from daily returns is about sqrt(365/days): +-3.7 (one standard error) at 30 days, +-1.4 at
+  180 days, +-1.0 at one year, +-0.7 at two. With nine strategies of zero skill running for 180
+  days, the best one shows a Sharpe of about 2.1 on average and above 2 in more than half of all
+  cases. Returns are as noisy: over 180 days a BTC-like asset with no drift ends anywhere between
+  -48% and +94% (5th to 95th percentile), a SPY-like one between -17% and +21%. "Beat buy-and-hold
+  BTC by 10% over six months" is well inside luck.
+- **Evidence:** `tests/test_audit_stats.py::test_nine_strategies_with_no_skill_after_six_months_the_best_looks_skilled`
+  (seeded simulation, numbers above reproduced).
+- **Proposed fix:** the M1 branch is adding the deflated Sharpe, which is the right tool; it
+  should be the headline column, not a footnote. Print the error band next to every Sharpe.
+  Change the graduation bar from "6 months" to "deflated Sharpe above 95%, and at least 6
+  months": for a true Sharpe of 1 that takes roughly 3-4 years of daily data, and the owner should
+  know that now rather than in May.
+
+### S3. Returns over different periods are ranked in one table (medium)
+
+- **What:** each row's return runs from that strategy's own first decision, and the table is
+  sorted by it. Two strategies holding exactly the same thing rank apart by start date alone, and
+  every M1 strategy starts later than the four benchmarks it has to beat.
+- **Evidence:** `tests/test_audit_stats.py::test_the_same_strategy_started_later_ranks_differently`.
+- **Proposed fix (`report.py`):** next to each strategy show every benchmark's return over that
+  strategy's own period (same start day), and rank by the difference.
+
+### S4. Frozen data looks like a calm strategy (medium)
+
+- **What:** if a source stops (see D6), the gym keeps valuing that asset at its last price. The
+  strategy's line goes flat: no losses, no swings, a better drawdown and a distorted Sharpe. The
+  scoreboard never says how old each asset's newest bar is, nor how many days a strategy made no
+  decision (missed or failed runs: GitHub's cron is best-effort and a rejected push loses the day).
+- **Evidence:** `tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`.
+- **Proposed fix (`report.py`):** a "data through" line per asset with a loud warning when one
+  is older than its last expected session, and a count of days without a decision.
+
+### S5. The Sharpe formula assumes one equity point per calendar day (low today, a trap later)
+
+- **What:** `score()` multiplies by sqrt(365) whatever the spacing of the points. The live record
+  has a point every day because crypto has a bar every day; that case is correct, and it matches
+  the usual 252-trading-day Sharpe for ETF-only strategies (checked: 1.26 vs 1.24 over 4 years).
+  But any history without a daily crypto bar (an ETF-only backtest, a crypto data gap) gets fewer
+  points and a Sharpe overstated by up to 20%.
+- **Evidence:** `tests/test_audit_stats.py::test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point`
+  (fails, 2.23 vs 1.89), `...::test_sharpe_with_365_days_matches_the_trading_day_convention_for_etfs`
+  (passes).
+- **Proposed fix (small, `report.py`):** annualise by the real time span:
+  `sqrt(returns / years between first and last point)`.
+
+### S6. The newest row of the scoreboard is provisional (low)
+
+- **What:** at 22:30 UTC today's crypto bar is still open, so today's equity mixes today's ETF
+  close with crypto at yesterday's close. The same date shows another number the next day.
+- **Evidence:** `tests/test_audit_stats.py::test_todays_equity_is_provisional_and_changes_tomorrow`.
+- **Proposed fix:** label the last row "provisional", or score only fully marked days.
+
+### G1. NaN weights are accepted (medium, likely to bite M1's volatility maths)
+
+- **What:** `validate` checks `w < 0` and `sum > 1`; NaN passes both. The gym then neither buys
+  nor sells that asset (every comparison with NaN is false), so the portfolio silently keeps what
+  it had, and the ledger line contains `NaN`. A division by a zero volatility is all it takes.
+- **Evidence:** `tests/test_audit_gym.py::test_nan_weights_are_rejected`,
+  `...::test_nan_weights_today_mean_keep_whatever_you_hold`.
+- **Proposed fix (small, `gym.py`):** reject non-finite weights.
+
+### G2. An order that cannot be paid for at its open is dropped (low, biased against the strategy)
+
+- **What:** each asset's order executes at that asset's next open and is then forgotten. Moving
+  from an ETF to crypto, BTC opens at 00:00 UTC, before the ETF can be sold at 13:30: the buy finds
+  no cash and is dropped. The money sits in cash until a later decision repeats the order, a full
+  day later in the live setup. The other direction (crypto to ETF) works at once.
+- **Evidence:** `tests/test_audit_gym.py::test_a_switch_from_etf_to_crypto_ends_up_in_crypto`.
+- **Proposed fix (medium, changes gym behaviour, so proposed only):** keep an unfilled buy
+  pending until cash arrives. It makes rotation strategies look slightly worse than they would
+  be, never better, so it is not urgent.
+
+### G3. Crypto fee is set at the maker level (medium, not verified tonight)
+
+- **What:** the gym charges 25 basis points plus 5 of slippage for crypto. A fill at the open is
+  a market (taker) order. Kraken Pro's lowest tier was 0.25% maker / 0.40% taker when last I knew
+  it; I could not confirm today's schedule (the fee page is script-rendered and the public API
+  returns empty fee lists). If that still holds, each crypto trade is undercharged by 15 basis
+  points: nothing for buy-and-hold, about 15% a year for a strategy that turns its book over 100
+  times a year (crypto mean reversion).
+- **Evidence:** `gym.COSTS`; no test (the fact is unverified).
+- **Proposed fix:** the owner or M1 checks the venue's taker fee for a 10,000 USD account and
+  sets it; when unsure, use the higher number.
+
+### G4. Dividends are not credited (medium, known, now sized)
+
+- **What:** a settled decision (raw prices, dividends "not credited yet") that DECISIONS.md calls
+  "a little". Sized: TLT pays roughly 4% a year, SPY about 1.1%, QQQ about 0.5%. The 60/40
+  benchmark is understated by about 2.3% a year, buy-and-hold SPY by 1.1%, equal weight by about
+  1%; crypto by nothing. Cash earning 0% and the zero risk-free rate in Sharpe lean the same way.
+  The yardsticks a strategy must beat are therefore set too low, most of all for strategies that
+  hold crypto or cash while the benchmark holds bonds.
+- **Evidence:** `tests/test_audit_gym.py::test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year`.
+- **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (it is in
+  the BACKLOG). Until then say so under the scoreboard.
+
+### T1. A decision can be filled before it could have been pushed (low)
+
+- **What:** the timing rules themselves held up (see "Checked and sound"). One gap: a fill only
+  has to be after the decision's own timestamp. A run that starts at 23:59:30 UTC is filled at the
+  00:00:00 crypto open, but its commit reaches GitHub after that price exists. No information
+  leaks (inputs are still cut off at the timestamp), but the promise "committed before the outcome
+  exists" is no longer provable for that decision, and with the fix for L1 it would leave a
+  30-minute window for a forger.
+- **Evidence:** `tests/test_audit_timing.py::test_a_decision_is_not_filled_before_it_could_have_been_pushed`.
+  GitHub's scheduled runs are often late; 22:30 leaves 90 minutes before 00:00.
+- **Proposed fix (small, `gym.py`):** fill at the first open at least 30 minutes after the
+  decision (the same 30 minutes L1 allows between decision and commit).
+
+## Checked and sound
+
+- **ETF session times.** Assumed open 13:30 UTC is never after the real open and assumed close
+  21:00 UTC never before the real close, for every weekday of 2026-2028 in both daylight-saving
+  cases; a bar's UTC date equals its New York date
+  (`tests/test_audit_timing.py::test_assumed_etf_session_contains_the_real_one_all_year`).
+- **Visibility and fills.** For 670 random and boundary decision times around both clock changes,
+  a decision sees exactly the bars closed at or before it and fills at exactly the first open
+  after it (`...::test_random_decision_times_never_see_or_fill_at_the_wrong_bar`). Weekends and
+  holidays are just missing bars; orders wait.
+- **Unfinished bars.** A bar is never stored before its close plus 15 minutes, for any clock
+  time (`...::test_a_bar_still_in_progress_is_never_final`). Kraken's and Coinbase's days are UTC
+  days; Yahoo's and Stooq's dates are exchange dates, equal to UTC dates for US sessions.
+- **The gym's arithmetic.** Random trading at constant prices never creates money, cash never
+  goes negative, positions never go short, fees and slippage are both charged; buy-and-hold earns
+  exactly first-fill-open to last close (`tests/test_audit_gym.py`).
+- **The real record so far.** `paper-trail` at `0d3bc31`: 700 consecutive crypto days, four ETFs
+  on one identical calendar of 481 sessions, no bad or duplicate rows, no crypto open more than
+  0.2% from the previous close. GitHub's activity log shows one event on the branch: its creation
+  by `github-actions[bot]` at 2026-11-11 22:00:52 UTC, 3 seconds after the decisions' timestamp.
+
 ## Status
 
-- **Done:** L1-L8 (ledger and workflow) and D1-D6 (data) demonstrated with tests.
-- **Doing:** gym, timing rules, statistics.
-- **Next:** small fixes in `ledger.py`, `gym.py`, `sources.py`, the workflow; summary on top.
+- **Done:** all areas audited; L1-L8, D1-D6, S1-S6, G1-G4, T1 written up with tests.
+- **Doing:** small fixes, one commit each.
+- **Next:** owner summary on top and final ranking; re-probe Yahoo for the final 2026-11-11 bars (D1).
