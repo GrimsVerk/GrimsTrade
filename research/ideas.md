@@ -34,16 +34,19 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | trend-to-safe | Trend / regime allocation | dead (tested) | [card](cards/trend-to-safe.md) | Equals tsmom12 on the six assets (1.02 vs 1.05), behind in 2022. Helped on other ETFs with mid-term bonds as the safe asset (0.68 vs 0.60, p = 0.06): a hint for a universe with IEF. [result](results/trend-to-safe.md) |
 | crypto-slot-size | Allocation | described (no pass bar) | [card](cards/crypto-slot-size.md) | Sharpe is flat from 5% to 1/6 per coin (1.34-1.39); size sets growth and worst loss (5%: +18%/yr, -31%; 1/6: +35%/yr, -47%). The owner's biggest risk setting. [result](results/crypto-slot-size.md) |
 
-## Cards for research run 2: machine learning (written before any model was fitted)
+## Cards for research run 2: machine learning (all six failed; none used the held-out year)
+
+The first three were written before any model was fitted; each later card says what had been
+seen. Sharpe on the six assets, 1994-2025: `tsmom12` 1.05, equal weight 0.88.
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
-| ml-linear | Machine learning | testing | [card](cards/ml-linear.md) | Logistic / ridge regression on 15 features, purged walk-forward |
-| ml-gbm | Machine learning | testing | [card](cards/ml-gbm.md) | Gradient boosting on the same features; 9 settings, all logged |
-| ml-filter | Machine learning | testing | [card](cards/ml-filter.md) | `tsmom12` with a model grading its trades (meta-labelling) |
-| ml-sizing | Machine learning | testing | [card](cards/ml-sizing.md) | Same models, position follows the forecast. Written after the first three failed and a control showed their sizing rule was blunt |
-| ml-payoff | Machine learning | testing | [card](cards/ml-payoff.md) | Same features, trained on payoff (months weighted by size) instead of direction. Written after the first four failed |
-| ml-pooled | Machine learning | testing | [card](cards/ml-pooled.md) | Same models trained on 33 markets instead of six. Written after the first five failed |
+| ml-linear | Machine learning | dead (tested) | [card](cards/ml-linear.md) | Logistic / ridge regression on 15 features. Found nothing and became equal weight (0.84-0.89); AUC 0.494. [result](results/ml-linear.md) |
+| ml-gbm | Machine learning | dead (tested) | [card](cards/ml-gbm.md) | Gradient boosting, 9 settings: 0.72-0.86, 3.5x the turnover of the trend rule, AUC 0.50-0.51. Did not beat the linear model. [result](results/ml-gbm.md) |
+| ml-filter | Machine learning | dead (tested) | [card](cards/ml-filter.md) | A model grading `tsmom12`'s trades (meta-labelling): 0.73-0.94, worse than the rule alone in all three forms. [result](results/ml-filter.md) |
+| ml-sizing | Machine learning | dead (tested) | [card](cards/ml-sizing.md) | Position follows the forecast (two sharper rules): 0.68-0.82. Following a forecast with no skill more closely is worse. [result](results/ml-sizing.md) |
+| ml-payoff | Machine learning | dead (tested) | [card](cards/ml-payoff.md) | Trained on payoff (months weighted by size) instead of direction: 0.67-0.77; size-weighted hit rate 52-54% against 60% for "always up". [result](results/ml-payoff.md) |
+| ml-pooled | Machine learning | dead (tested) | [card](cards/ml-pooled.md) | Same models trained on 33 markets (5x the rows): AUC 0.50, 0.68-0.92. "Too little data" is not the reason. [result](results/ml-pooled.md) |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 

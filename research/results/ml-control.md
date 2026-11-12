@@ -101,8 +101,10 @@ that mostly move together, decided monthly, long only, are very few bets. A corr
 one that can only hold or not hold; added to what holding everything already earns (0.88) that
 gives about 1.0 to 1.1, which is what the table shows. Return forecasting pays where there
 are hundreds of assets to rank. On this book it needs a correlation between 0.2 and 0.3
-(point 4), which nobody has on monthly returns: published monthly forecasts of single assets
-are worth a few hundredths.
+(point 4), which nobody has on monthly returns: the best published out-of-sample forecasts of
+a stock index a month ahead explain about 0.5% to 2% of its variance (Campbell & Thompson
+2008; Gu, Kelly & Xiu 2020), a correlation of 0.07 to 0.13.
 
-What it means for the cards: their Sharpe bars against `tsmom12` could not have been passed by
-any plausible direction forecast (only by one of 0.2 to 0.3). They are judged on forecast skill, and there is none.
+What it means for the cards: their Sharpe bars against `tsmom12` could only have been passed
+by a forecast two to four times better than any published one. They are judged on forecast
+skill, and there is none.
