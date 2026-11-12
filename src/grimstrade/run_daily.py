@@ -22,6 +22,34 @@ from grimstrade.strategies import LIVE, NOTES
 BOOTSTRAP_DAYS = 700
 
 
+WRITTEN_EACH_RUN = ("state/portfolio.json", "state/witness.txt", "reports/scoreboard.md",
+                    "reports/backtest.md", "reports/weekly.md")  # fmt: skip
+
+
+def check_record(root: Path, now: datetime) -> None:
+    """Raise LedgerTampered unless the record under `root` can be believed: its history as a
+    whole (`ledger.check_history`), every file only ever grew, none is a symbolic link, and the
+    bars are rows the runner could have written. The bars are the record too: every score is
+    recomputed from them."""
+    ledger.check_history(root, now)
+    bars = [data.bars_path(root, sym).relative_to(root) for sym in data.UNIVERSE]
+    for rel in (*ledger.APPEND_ONLY, *bars, data.REVISIONS, data.SOURCES_LOG):
+        ledger.refuse_links(root, rel)
+        ledger.check_append_only(root / rel)
+    for name in WRITTEN_EACH_RUN:  # a link here would swallow what the run writes
+        ledger.refuse_links(root, Path(name))
+    # Appending is all it takes to add a row by hand, and the append-only check has nothing to
+    # say about an append. What no run would write: rows `data.load` refuses (a second row for a
+    # stored day, an ETF bar on a weekend) and a bar that has not closed yet.
+    for sym, cls in data.UNIVERSE.items():
+        try:
+            stored = data.load(root, sym)
+        except ValueError as e:
+            raise ledger.LedgerTampered(str(e)) from e
+        if stored and data.close_time(cls, stored[-1].date) > now:
+            raise ledger.LedgerTampered(f"{sym}: the bar for {stored[-1].date} has not closed yet")
+
+
 def fingerprint(decide: gym.Strategy) -> str:
     """A short hash of the code behind a strategy: its own file plus the shared signal helpers.
     Written into each decision, so a strategy that changes under the same name cannot pass as
@@ -43,12 +71,7 @@ def run(
 
     `repo` is the code checkout, whose `research/` files (and research-* branches) count towards
     the number of strategies tried."""
-    for rel in ledger.APPEND_ONLY:
-        ledger.check_append_only(root / rel)
-    for sym in data.UNIVERSE:  # the bars are the record too: every score is recomputed from them
-        ledger.check_append_only(data.bars_path(root, sym))
-    for rel in (data.REVISIONS, data.SOURCES_LOG):
-        ledger.check_append_only(root / rel)
+    check_record(root, now)
 
     problems = []
     for sym in data.UNIVERSE:
@@ -185,6 +208,13 @@ def _revisions(root: Path, now: datetime, get: sources.Get) -> list[str]:
             sources.check_sane(again)
         except Exception:  # noqa: BLE001, S112 - best effort, see the docstring
             continue
+        # A stored day the source does not list at all, inside the days it does list: a bar
+        # nobody could have fetched (a holiday, or a row added by hand).
+        listed = {b.date for b in again}
+        for b in stored:
+            if listed and min(listed) < b.date < max(listed) and b.date not in listed:
+                out.append(f"{sym} {b.date}: a bar is stored, but {source.__name__} lists no "
+                           "such day")  # fmt: skip
         for day, diff in data.log_revisions(root, sym, source.__name__, again, ledger.iso(now)):
             print(f"{sym} {day}: the source now differs from the stored bar by {diff:.4%}")
             if diff >= 1e-4:

@@ -107,7 +107,7 @@ def load(root: Path, symbol: str) -> list[Bar]:
     if not path.exists():
         return []
     with path.open(newline="") as f:
-        return [
+        bars = [
             Bar(
                 date=date.fromisoformat(r["date"]),
                 open=float(r["open"]),
@@ -118,6 +118,14 @@ def load(root: Path, symbol: str) -> list[Bar]:
             )
             for r in csv.DictReader(f)
         ]
+    # Rows no run writes, and that a pure append can add by hand: a second row for a stored day
+    # (it would silently replace that day's prices), an ETF bar on a weekend.
+    for before, b in zip(bars, bars[1:], strict=False):
+        if b.date <= before.date:
+            raise ValueError(f"{symbol}: the stored bar for {b.date} is not after {before.date}")
+    if UNIVERSE.get(symbol) == ETF and any(b.date.weekday() >= 5 for b in bars):
+        raise ValueError(f"{symbol}: a stored bar on a weekend, when the market is closed")
+    return bars
 
 
 def load_all(root: Path, symbols: Iterable[str] = UNIVERSE) -> dict[str, list[Bar]]:
@@ -127,7 +135,8 @@ def load_all(root: Path, symbols: Iterable[str] = UNIVERSE) -> dict[str, list[Ba
 def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
     """Append bars newer than the last stored one. Never touches stored rows. Returns rows added.
     Raises ValueError, after storing the bars before it, at a bar that opens more than MAX_GAP
-    away from the previous close."""
+    away from the previous close, at a crypto bar that skips a day, and at an ETF bar on a
+    weekend."""
     path = bars_path(root, symbol)
     existing = load(root, symbol)
     last = existing[-1].date if existing else None
@@ -154,6 +163,10 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
                 f"{symbol}: the source skips from {prev.date} to {b.date}; a day left out now "
                 "could never be added later. Not stored."
             )
+        # The stock market is closed at weekends: such a bar is bad data (and `load` refuses a
+        # file that holds one).
+        elif UNIVERSE.get(symbol) == ETF and b.date.weekday() >= 5:
+            jump = f"{symbol} {b.date}: a bar on a weekend, when the market is closed. Not stored."
         if jump:
             rows = rows[:i]
             break

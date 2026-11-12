@@ -218,8 +218,13 @@ def _recorded_research(root: Path) -> dict[Key, float | None]:
     out: dict[Key, float | None] = {}
     for r in _read(root / RESEARCH_FLOOR):
         key: Key = (r["idea"], r["variant"])
+        sharpe = r.get("sharpe")
+        # json reads NaN and Infinity; one such line would switch off the spread of the tries'
+        # Sharpes in the deflated Sharpe (max(x, nan) is x).
+        if not isinstance(sharpe, int | float) or not math.isfinite(sharpe):
+            sharpe = None
         if out.get(key) is None:
-            out[key] = r.get("sharpe")
+            out[key] = sharpe
     return out
 
 
@@ -264,11 +269,57 @@ def total_tries(root: Path, repo: Path, also: Iterable[str] = ()) -> int:
     registered, e.g. live strategies before their first run) and the research lane's, visible or
     recorded. Read-only."""
     names = {r["name"] for r in _read(root / TRIES)} | set(also)
+    # A name that only exists in the decisions (written by hand) gets a row: it is a try too.
+    names |= {r["strategy"] for r in _read(root / DECISIONS)}
     return len(names) + research_tries(repo, root)
 
 
+# --no-replace-objects: a replace ref in the checking clone must not show git another history.
+_GIT = ("git", "--no-replace-objects")
+
+
 def _git(cwd: Path, *args: str) -> bytes:
-    return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True).stdout
+    return subprocess.run([*_GIT, *args], cwd=cwd, check=True, capture_output=True).stdout
+
+
+# Clocks of two honest machines can differ a little (seconds).
+SKEW = 300
+
+
+def check_history(root: Path, now: datetime) -> None:
+    """Raise LedgerTampered unless the record's history can be believed as a whole: it is one
+    line of commits, no commit is dated before the one under it and none after `now`. (That all
+    of it is there, not a shallow clone, is checked wherever git is asked: `_locate`.)
+
+    The file checks below cannot see these. The daily job never merges, and a merge can carry a
+    back-dated commit in beside the record: its file is a pure append to both parents, yet every
+    line in it would count from the forged date. Commit dates are written by whoever commits;
+    a date that runs backwards or lies in the future is a lie that shows from inside.
+
+    Only for a folder that is the top of its own checkout (the paper-trail worktree)."""
+    where = _locate(root / DECISIONS)
+    if where is None or where[0] != root.resolve():
+        return
+    top = where[0]
+    log = _git(top, "rev-list", "--parents", "--timestamp", "HEAD").decode().splitlines()
+    rows = [r.split() for r in log if r]  # timestamp, commit, parents...
+    made = {commit: int(stamp) for stamp, commit, *_ in rows}
+    for stamp, commit, *parents in rows:
+        if len(parents) > 1:
+            raise LedgerTampered(f"history: {commit[:10]} is a merge; the record never merges")
+        if int(stamp) > now.timestamp() + SKEW:
+            raise LedgerTampered(f"history: {commit[:10]} is dated in the future")
+        if any(int(stamp) < made[p] - SKEW for p in parents if p in made):
+            raise LedgerTampered(f"history: {commit[:10]} is dated before the commit under it")
+
+
+def refuse_links(root: Path, rel: Path) -> None:
+    """Raise LedgerTampered if a record file, or a folder on the way to it, is a symbolic link.
+    Every check would follow the link and vouch for the history of whatever it points at: one
+    ordinary commit could swap a whole file for another that "only ever grew"."""
+    for part in (rel, *rel.parents):
+        if part != Path() and (root / part).is_symlink():
+            raise LedgerTampered(f"{part.as_posix()}: is a symbolic link")
 
 
 def check_append_only(path: Path) -> int:
@@ -311,14 +362,23 @@ def check_append_only(path: Path) -> int:
 def _locate(path: Path) -> tuple[Path, str, str] | None:
     """(repo top, `path` relative to it, HEAD commit); None outside git or on a branch with no
     commits yet (the first run's fresh paper-trail)."""
+    # Inside the checkout nothing on the way to the file may be a symbolic link (see
+    # `refuse_links`); the checkout is the nearest folder above the file with a `.git` in it.
+    lexical = Path(os.path.abspath(path))
+    inside = next((p for p in lexical.parents if (p / ".git").exists()), None)
+    if inside is not None:
+        refuse_links(inside, lexical.relative_to(inside))
     cwd = path.resolve().parent
     while not cwd.exists():
         cwd = cwd.parent
     try:
         top = Path(_git(cwd, "rev-parse", "--show-toplevel").decode().strip()).resolve()
         head = _git(top, "rev-parse", "--verify", "-q", "HEAD").decode().strip()
+        shallow = _git(top, "rev-parse", "--is-shallow-repository").strip() == b"true"
     except (subprocess.CalledProcessError, FileNotFoundError):
         return None
+    if shallow:  # git would vouch only for the commits it has, and date old lines to the oldest
+        raise LedgerTampered("a shallow clone: the record's whole history is needed to check it")
     return top, path.resolve().relative_to(top).as_posix(), head
 
 
@@ -327,7 +387,7 @@ def _blobs(top: Path, commits: list[str], rel: str) -> dict[str, tuple[str, int]
     git call."""
     query = "".join(f"{c}:{rel}\n" for c in commits).encode()
     out = subprocess.run(
-        ["git", "cat-file", "--batch-check"], cwd=top, check=True, capture_output=True, input=query
+        [*_GIT, "cat-file", "--batch-check"], cwd=top, check=True, capture_output=True, input=query
     ).stdout.decode()
     found = {}
     for commit, line in zip(commits, out.splitlines(), strict=True):
@@ -355,10 +415,12 @@ def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
     data = path.read_bytes() if path.exists() else b""
     lines, ends, pos = [], [], 0
     for chunk in data.split(b"\n"):
-        pos = min(pos + len(chunk) + 1, len(data))  # the line ends after its newline, if any
         if chunk.strip():
             lines.append(chunk)
-            ends.append(pos)
+            # Its last byte, not its newline: a line whose newline went missing is completed by
+            # the next run's, and must not be re-dated to that run.
+            ends.append(pos + len(chunk))
+        pos += len(chunk) + 1
     times: list[datetime | None] = [None] * len(ends)
     where = _locate(path)
     if where is None:
@@ -381,8 +443,8 @@ def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
             spans.append((made[commit], lo, size[commit]))
     for seconds, lo, hi in sorted(spans):  # earliest commit first: it wins
         for i in range(bisect.bisect_right(ends, lo), bisect.bisect_right(ends, hi)):
-            if times[i] is None:
-                times[i] = datetime.fromtimestamp(seconds, tz=UTC)
+            if times[i] is None:  # (a date past year 9999 must not crash every reader)
+                times[i] = datetime.fromtimestamp(min(seconds, 253402300799), tz=UTC)
     return list(zip(lines, times, strict=True))
 
 
@@ -401,6 +463,7 @@ def in_force(root: Path) -> tuple[list[tuple[datetime, dict[str, Any]]], int]:
     (today's run, before its commit) keep their timestamp. A decision is left out if a later
     line of the same strategy counts from the same moment or earlier: it was never provably in
     force. `late` = lines recorded more than LATE after their own timestamp."""
+    refuse_links(root, DECISIONS)
     kept: dict[str, list[tuple[datetime, dict[str, Any]]]] = {}
     late = 0
     # Rows are parsed from the very bytes whose position gave `at`: no second way of splitting

@@ -92,8 +92,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
 
     def row(name: str) -> list[str]:
         r, s = results[name], scores[name]
-        return [PLAIN.get(name, name), f"{s.equity:,.0f}", f"{change(r, week_ago, today):+.1%}",
-                f"{s.total_return:+.1%}"]  # fmt: skip
+        return [PLAIN.get(name, report.plain_name(name)), f"{s.equity:,.0f}",
+                f"{change(r, week_ago, today):+.1%}", f"{s.total_return:+.1%}"]  # fmt: skip
 
     ahead_of_all = []
     lines = [

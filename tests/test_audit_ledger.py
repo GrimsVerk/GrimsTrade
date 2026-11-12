@@ -319,6 +319,10 @@ def test_a_strategy_changed_under_its_name_is_flagged(repo: Path) -> None:
     ledger.write_decision(repo, when, "s", {"BTC": 0.5}, seen, "t", "bbbbbbbbbbbb")
     assert report.code_changes(repo) == {"s": 1}
     assert "**Code changed under the same name:** s (1x)" in report.render(repo, {"BTC": bars})
+    # Second review: a line written by hand has no fingerprint; once a name has them, that
+    # counts as a change too (it used to be skipped, so a hand-made decision went unflagged).
+    decide(repo, at(DAY1 + timedelta(days=4)), "s", {"BTC": 1.0})
+    assert report.code_changes(repo) == {"s": 2}
 
 
 def test_a_lost_final_newline_does_not_glue_lines_together(tmp_path: Path) -> None:
@@ -350,3 +354,133 @@ def test_a_time_without_a_zone_is_refused() -> None:
     with pytest.raises(ValueError, match="time zone"):
         ledger.iso(datetime(2026, 11, 12, 22, 30))
     assert ledger.iso(datetime(2026, 11, 12, 22, 30, tzinfo=UTC)) == "2026-11-12T22:30:00Z"
+
+
+# --- second independent review (2026-11-12): what the checks above still let through ---
+
+
+def test_a_backdated_commit_merged_in_beside_the_record_is_refused(repo: Path) -> None:
+    """Second review, high: one commit whose parent is the day-1 commit, dated day 1, holding the
+    whole current ledger plus a hindsight line; then a merge with the real tip. The merged file
+    is a pure append to both parents, so the append-only check passes, and every line in it
+    counted from the forged date (the reviewer measured +98.7% for a record that made 0.0%).
+    The daily job never merges, so a merge in the record is refused."""
+    from grimstrade import run_daily
+
+    path = _honest_two_days(repo)
+    day1 = git(repo, "rev-list", "--max-parents=0", "HEAD")
+    current = path.read_bytes()
+    git(repo, "checkout", "-q", "-b", "forged", day1)
+    path.write_bytes(current)
+    decide(repo, at(DAY1, 22, 32), "s", {})
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 33))
+    git(repo, "checkout", "-q", "paper-trail")
+    day4 = at(DAY1 + timedelta(days=3))
+    git(repo, "merge", "-q", "--no-ff", "-X", "theirs", "-m", "merge", "forged", when=day4)
+    assert path.read_bytes().startswith(current) and len(path.read_bytes()) > len(current)
+    ledger.check_append_only(path)  # nothing to say: the file only grew
+    with pytest.raises(ledger.LedgerTampered, match="is a merge"):
+        run_daily.check_record(repo, day4 + timedelta(days=1))
+
+
+def test_a_commit_dated_before_the_one_under_it_stops_the_run(repo: Path) -> None:
+    """Second review: commit dates are written by whoever commits. One that runs backwards is a
+    lie that shows from inside the record, so the run refuses (and does not only work around it,
+    as `in_force` does for a report)."""
+    from grimstrade import run_daily
+
+    _honest_two_days(repo)
+    now = at(DAY1 + timedelta(days=5))
+    run_daily.check_record(repo, now)  # an honest history passes
+    decide(repo, at(DAY1, 22, 32), "cheat", {"BTC": 1.0})
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 33))
+    with pytest.raises(ledger.LedgerTampered, match="dated before the commit under it"):
+        run_daily.check_record(repo, now)
+
+
+def test_a_commit_dated_in_the_future_stops_the_run(repo: Path) -> None:
+    """Second review: a commit dated 2099, touching anything at all, made every later decision
+    count from 2099, i.e. never: each run's decision displaced the one before it, and only a
+    growing "late decisions" number showed. (Past year 9999 every reader crashed.)"""
+    from grimstrade import run_daily
+
+    _honest_two_days(repo)
+    (repo / "note.txt").write_text("x")
+    commit(repo, "a note", when=datetime(2099, 1, 1, tzinfo=UTC))
+    with pytest.raises(ledger.LedgerTampered, match="dated in the future"):
+        run_daily.check_record(repo, at(DAY1 + timedelta(days=5)))
+
+
+def test_a_record_file_swapped_for_a_symlink_is_refused(repo: Path) -> None:
+    """Second review, high: the checks resolved links, so they vouched for the history of the
+    link's target. One ordinary commit could swap the ledger or a bar file for another file that
+    "only ever grew" (the reviewer turned -50% into +199%)."""
+    path = _honest_two_days(repo)
+    other = path.with_name("other.jsonl")
+    other.write_text(path.read_text().replace('"BTC":1.0', '"BTC":0.5'))
+    commit(repo, "a harmless new file", when=at(DAY1 + timedelta(days=2), 1, 0))
+    path.unlink()
+    path.symlink_to("other.jsonl")
+    commit(repo, "Daily run day 3", when=at(DAY1 + timedelta(days=2), 22, 31))
+    with pytest.raises(ledger.LedgerTampered, match="symbolic link"):
+        ledger.check_append_only(path)
+    with pytest.raises(ledger.LedgerTampered, match="symbolic link"):
+        ledger.in_force(repo)
+    # A linked folder is the same trick.
+    (repo / "ledger").rename(repo / "real")
+    (repo / "ledger").symlink_to("real")
+    with pytest.raises(ledger.LedgerTampered, match="symbolic link"):
+        ledger.check_append_only(repo / ledger.DECISIONS)
+
+
+def test_a_shallow_clone_cannot_vouch_for_the_record(repo: Path, tmp_path: Path) -> None:
+    """Second review: in a shallow clone git only has the newest commits. The check then vouched
+    for history it could not see, and every old line was dated to the oldest commit present."""
+    _honest_two_days(repo)
+    decide(repo, at(DAY1 + timedelta(days=2)), "s", {})
+    commit(repo, "Daily run day 3", when=at(DAY1 + timedelta(days=2), 22, 31))
+    git(tmp_path, "clone", "-q", "--depth", "1", f"file://{repo}", "shallow")
+    with pytest.raises(ledger.LedgerTampered, match="shallow"):
+        ledger.check_append_only(tmp_path / "shallow" / ledger.DECISIONS)
+
+
+def test_a_lost_newline_does_not_redate_the_last_decision(repo: Path) -> None:
+    """Second review: lines were dated by where their newline sits. After a lost final newline
+    the next run's newline completed the old line, which was then re-dated to that run: counted
+    as late, and dropped in favour of the newer decision."""
+    path = repo / ledger.DECISIONS
+    decide(repo, at(DAY1), "s", {"BTC": 1.0})
+    path.write_bytes(path.read_bytes().rstrip(b"\n"))
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 31))
+    decide(repo, at(DAY1 + timedelta(days=1)), "s", {})
+    commit(repo, "Daily run day 2", when=at(DAY1 + timedelta(days=1), 22, 31))
+    counted, late = ledger.in_force(repo)
+    assert [t for t, _ in counted] == [at(DAY1, 22, 31), at(DAY1 + timedelta(days=1), 22, 31)]
+    assert late == 0
+
+
+def test_a_strategy_name_cannot_write_its_own_scoreboard_row(repo: Path) -> None:
+    """Second review, high: names went into the tables as they are. A decision whose `strategy`
+    holds "|" and a line break is a valid append and printed a typed-in row of numbers on every
+    run. And a name that exists only in the decisions got a row without counting as a try."""
+    name = "zz | 2026-05-01 | 190 | 31,400 | +214.0% | 4 of 4 |\n| fake"
+    decide(repo, at(DAY1), name, {"BTC": 1.0})
+    decide(repo, at(DAY1), "s", {})
+    board = report.render(repo, {"BTC": btc([(100.0, 100.0)] * 3)}, repo)
+    assert "+214.0%" not in board
+    assert not any(line.startswith("| fake") for line in board.splitlines())
+    assert ledger.total_tries(repo, repo) == 2
+
+
+def test_a_nan_in_the_research_record_does_not_switch_off_its_spread(repo: Path) -> None:
+    """Second review: one appended line with `"sharpe": NaN` made the spread of the tries'
+    Sharpes NaN, and max(x, nan) is x: the deflated Sharpe lost a term (17.5% became 41.8%)."""
+    path = repo / ledger.RESEARCH_FLOOR
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        '{"idea":"a","variant":"v1","sharpe":1.5,"seen":"2026-11-12T00:00:00Z"}\n'
+        '{"idea":"a","variant":"v2","sharpe":NaN,"seen":"2026-11-12T00:00:00Z"}\n'
+        '{"idea":"a","variant":"v3","sharpe":Infinity,"seen":"2026-11-12T00:00:00Z"}\n'
+    )
+    assert ledger.research_sharpes(repo, repo) == [1.5]
+    assert ledger.research_tries(repo, repo) == 3  # still three tries

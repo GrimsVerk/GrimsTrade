@@ -102,7 +102,8 @@ def test_the_scoreboard_says_how_fresh_each_assets_data_is(tmp_path: Path) -> No
     assert "buy_hold_spy" in text
     assert "Prices through: BTC 2026-11-20, SPY 2026-11-06 (**STALE: 14 days behind" in text
     # An ordinary weekend (ETFs two days behind crypto) is not stale.
-    data.append(tmp_path, "QQQ", flat(18, 600.0)[:17])  # through Wednesday 2026-11-18
+    weekdays = [b for b in flat(17, 600.0) if b.date.weekday() < 5]
+    data.append(tmp_path, "QQQ", weekdays)  # through Wednesday 2026-11-18
     assert report.freshness(data.load_all(tmp_path)).endswith(", QQQ 2026-11-18.")
     assert report.freshness({}) == "No prices stored yet."
     # The owner's page carries the warning too, but only when something is stale.

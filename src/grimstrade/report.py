@@ -9,10 +9,12 @@ from __future__ import annotations
 
 import argparse
 import math
+import re
 import statistics
+import sys
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
-from datetime import date, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -157,7 +159,8 @@ def table(scores: list[Score], beaten: Mapping[str, tuple[int, int]] | None = No
         if beaten is not None:
             beats = " {} of {} |".format(*beaten[s.name]) if s.name in beaten else " - |"
         lines.append(
-            f"| {s.name} | {s.start or '-'} | {s.days} | {s.equity:,.0f} | {s.total_return:+.1%} "
+            f"| {plain_name(s.name)} | {s.start or '-'} | {s.days} | {s.equity:,.0f} "
+            f"| {s.total_return:+.1%} "
             f"|{beats} {sharpe_cell(s)} | {dsr} | {s.max_drawdown:.1%} | {s.turnover:.2f} |"
         )
     return "\n".join(lines)
@@ -298,17 +301,24 @@ def unwitnessed(root: Path) -> str:
 def code_changes(root: Path) -> dict[str, int]:
     """Per strategy, how often the code behind it changed between two of its decisions (the
     `code_hash` each decision carries). The table shows one row and one unbroken record per
-    name; after a change it is in truth another strategy, and another try."""
+    name; after a change it is in truth another strategy, and another try. Once a name has
+    fingerprints, a line without one (written by hand) is a change as well."""
     last: dict[str, str] = {}
     out: dict[str, int] = {}
     for row in ledger.decisions(root):
-        name, seen = row["strategy"], row.get("code_hash")
-        if not seen:
-            continue  # written before decisions carried a fingerprint, or by hand
+        name, seen = row["strategy"], row.get("code_hash") or ""
+        if name not in last and not seen:
+            continue  # written before decisions carried a fingerprint
         if last.get(name, seen) != seen:
             out[name] = out.get(name, 0) + 1
         last[name] = seen
     return out
+
+
+def plain_name(name: str) -> str:
+    """A strategy name as it may appear in a table: names come from the ledger, and one holding
+    "|" and a line break would otherwise add a row of invented numbers to the scoreboard."""
+    return re.sub(r"[^A-Za-z0-9_.-]", "_", name)[:40]
 
 
 def count_tries(root: Path, repo: Path) -> Trials:
@@ -347,7 +357,7 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         out += [
             "",
             "**Code changed under the same name:** "
-            + ", ".join(f"{name} ({n}x)" for name, n in sorted(changed.items()))
+            + ", ".join(f"{plain_name(name)} ({n}x)" for name, n in sorted(changed.items()))
             + ". Such a row joins the records of different versions of the strategy; judge it "
             "from the last change on, and count each version as one more strategy tried.",
         ]
@@ -357,7 +367,9 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
             "",
             "Days of new prices with no decision (a failed, skipped or lost run, a source that "
             "was down, a strategy that raised or was retired; the old position was held): "
-            + ", ".join(f"{name} {n}" for name, n in sorted(idle.items(), key=lambda x: -x[1]))
+            + ", ".join(
+                f"{plain_name(k)} {n}" for k, n in sorted(idle.items(), key=lambda x: -x[1])
+            )
             + ".",
         ]
     events = accepted_rewrites(root)
@@ -460,6 +472,13 @@ def main() -> None:
     p.add_argument("--repo", type=Path, default=Path("."), help="code checkout (research/ files)")
     p.add_argument("--backtest", action="store_true")
     args = p.parse_args()
+    from grimstrade import run_daily  # (it imports this module)
+
+    try:  # the same checks as the daily run: a report of a rewritten record is worth nothing
+        run_daily.check_record(args.root, datetime.now(UTC))
+    except ledger.LedgerTampered as e:
+        print(f"REFUSING TO REPORT: {e}", file=sys.stderr)
+        sys.exit(2)
     history = data.load_all(args.root)
     print(render(args.root, history, args.repo))
     if args.backtest:

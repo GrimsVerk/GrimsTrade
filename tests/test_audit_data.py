@@ -305,3 +305,52 @@ def test_a_runs_problems_are_kept_in_the_record(tmp_path: Path) -> None:
     assert "; and 1 more. All of them: `ledger/problems.jsonl`." in board
     page = weekly.render(tmp_path, data.load_all(tmp_path), tmp_path)
     assert "**Note:** 1 run this week reported problems" in page
+
+
+def test_a_bar_added_by_hand_is_refused(tmp_path: Path) -> None:
+    """Second review, high: appending a row is all it takes to add a bar by hand, and the
+    append-only check has nothing to say about an append. A Saturday row in the ETF files ("the
+    market opened at 50 and closed at 100") was traded on: +100% for a strategy that was flat.
+    A second row for a stored day silently replaced that day's prices."""
+    from grimstrade import ledger
+
+    data.append(tmp_path, "SPY", flat("2026-11-05", 2, 100.0))  # Thursday and Friday
+    path = data.bars_path(tmp_path, "SPY")
+    honest = path.read_text()
+    monday_evening = datetime(2026, 11, 9, 22, 30, tzinfo=UTC)
+    run_daily.check_record(tmp_path, monday_evening)  # the honest file passes
+    by_hand = {
+        "weekend": "2026-11-07,50.0,100.0,50.0,100.0,1.0\n",  # a Saturday
+        "not after": "2026-11-06,50.0,100.0,50.0,100.0,1.0\n",  # a second Friday
+        "has not closed yet": "2026-11-10,100.0,100.0,100.0,100.0,1.0\n",  # tomorrow
+    }
+    for complaint, row in by_hand.items():
+        path.write_text(honest + row)
+        with pytest.raises(ledger.LedgerTampered, match=complaint):
+            run_daily.check_record(tmp_path, monday_evening)
+    # Every reader refuses the first two, not only the daily run.
+    path.write_text(honest + by_hand["weekend"])
+    with pytest.raises(ValueError, match="weekend"):
+        data.load(tmp_path, "SPY")
+    # And a source that sends a weekend bar does not get it stored.
+    path.write_text(honest)
+    with pytest.raises(ValueError, match="weekend"):
+        data.append(tmp_path, "SPY", [Bar(date(2026, 11, 7), 100.0, 100.0, 100.0, 100.0, 1.0)])
+    assert path.read_text() == honest
+
+
+def test_a_stored_day_the_source_does_not_list_is_reported(tmp_path: Path) -> None:
+    """Second review: a bar added by hand for a weekday (a market holiday, say) passes every
+    check on the file. The source knows better: a stored day it does not list, between days it
+    does list, is reported by each run that still looks back that far."""
+    mon, tue, wed, thu = (date(2026, 11, d) for d in (2, 3, 4, 5))
+    day = (100.0, 100.0, 100.0, 100.0, 1e6)
+    first = yahoo_body([(mon, *day), (tue, *day)])
+    run_daily.run(tmp_path, datetime(2026, 11, 3, 22, 30, tzinfo=UTC), only("yahoo", first))
+    with data.bars_path(tmp_path, "SPY").open("a") as f:
+        f.write(f"{wed},50.0,100.0,50.0,100.0,1.0\n")  # "Wednesday": the market was closed
+    later = yahoo_body([(mon, *day), (tue, *day), (thu, *day)])
+    problems = run_daily.run(
+        tmp_path, datetime(2026, 11, 5, 22, 30, tzinfo=UTC), only("yahoo", later)
+    )
+    assert "SPY 2026-11-04: a bar is stored, but yahoo lists no such day" in problems
