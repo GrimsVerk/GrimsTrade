@@ -9,11 +9,11 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
-| kelly-shrunk | Kelly / information theory | testing | [card](cards/kelly-shrunk.md) | Half Kelly under an equal-Sharpe prior; twin inverse-vol |
+| kelly-shrunk | Kelly / information theory | dead (tested) | [card](cards/kelly-shrunk.md) | Equals inverse-vol (+0.01 Sharpe): the no-leverage cap removes the Kelly scale. On high-volatility coins the scale halves drawdown at equal growth: see `vol-target-crypto`. [result](results/kelly-shrunk.md) |
 | hmm-regime | Regime models | testing | [card](cards/hmm-regime.md) | Two-state HMM risk switch; twins vol-calm, sma200 |
-| fracdiff-momentum | Fractional differentiation | testing | [card](cards/fracdiff-momentum.md) | Power-law trend kernel; twins tsmom12, sma200 |
-| drawdown-control | Optimal stopping / control | testing | [card](cards/drawdown-control.md) | Sell in proportion to drawdown; twin sma200 |
-| universal-portfolio | Information theory | testing | [card](cards/universal-portfolio.md) | Cover 1991; twin equal weight |
+| fracdiff-momentum | Fractional differentiation | dead (tested) | [card](cards/fracdiff-momentum.md) | Worse than 12-month momentum everywhere (-0.25 Sharpe, 3x turnover): it is a fast trend rule. [result](results/fracdiff-momentum.md) |
+| drawdown-control | Optimal stopping / control | dead (tested) | [card](cards/drawdown-control.md) | Same as the 200-day switch (+0.07, p = 0.14; mixed out of universe). A smoother trend rule, not a better one. [result](results/drawdown-control.md) |
+| universal-portfolio | Information theory | dead (tested) | [card](cards/universal-portfolio.md) | Indistinguishable from the constant mix it starts from; 30 years is too short for its guarantee. [result](results/universal-portfolio.md) |
 | absorption-ratio | Random matrix theory / PCA | testing | [card](cards/absorption-ratio.md) | Kritzman et al. 2011, post-publication test; twin vol-shift |
 | hawkes-clustering | Hawkes processes | testing | [card](cards/hawkes-clustering.md) | Crash-day intensity; twin vol-calm |
 | month-end-liquidity | Calendar / microstructure | testing | [card](cards/month-end-liquidity.md) | Etula et al. 2020, post-sample test |
@@ -51,7 +51,7 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
-| vol-target-crypto | Volatility targeting | new | - | BTC/ETH weight = min(1, 40% / 20-day vol), trade only on 10-point moves (part 2). Overlaps the M1 lane |
+| vol-target-crypto | Volatility targeting | new | - | BTC/ETH weight = min(1, 40% / 20-day vol), trade only on 10-point moves (part 2). Supported by the kelly-shrunk coin result (same growth, half the drawdown). Overlaps the M1 lane's volatility targeting |
 | ensemble-tsmom | Trend | new | - | Weight = share of 1/3/6/12-month returns that are positive (part 1) |
 | hmm-switch-to-bonds | Regime models | new | - | Risk-off into TLT/GLD instead of cash, as in Shu, Yu, Mulvey 2024 (part 4) |
 | turbulence | Statistics | new | - | Mahalanobis distance of the six returns; test only against a volatility trigger (part 4) |

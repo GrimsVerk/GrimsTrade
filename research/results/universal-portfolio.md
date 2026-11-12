@@ -53,3 +53,11 @@ Annualised log growth: up +14.2%, equal-weight +16.7%, uniform-cash +12.1%
 - FAIL: 5. Beats equal weight on Sharpe (0.85 vs 0.88)
 
 **FAILS train.**
+## Verdict (2026-11-12)
+
+Dead. Cover's portfolio is indistinguishable from the constant mix it starts from (1/7 in each
+asset and in cash): Sharpe 0.85 against 0.91 for that mix and 0.88 for equal weight, and the same
+on the other ETFs, coins and indexes. Thirty years of weekly data are far too few for the
+"learns the best mix" guarantee to matter; what little it learned was to tilt toward Bitcoin
+after the fact, which raised volatility without raising Sharpe. Its lower drawdown than equal
+weight comes only from holding cash for assets that did not exist yet.

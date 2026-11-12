@@ -57,3 +57,22 @@ Annualised log growth: k0.2 +11.0%, k0.1 +11.0%, k0.4 +11.2%, inverse-vol +11.7%
 - FAIL: 5. Beats equal weight on Sharpe (0.86 vs 0.88)
 
 **FAILS train.**
+## Verdict (2026-11-12)
+
+Dead as carded. The primary variant is inverse-vol to within noise on the six assets (+0.01), the
+other ETFs (0.00) and the indexes (+0.01). The reason is the one the card feared: with a
+no-leverage cap the Kelly fractions add to more than 1 almost always and are scaled back to 1, and
+the correlation correction that is left is worth nothing measurable.
+
+Two things to keep, neither of which is a pass:
+
+- The quarter-Kelly sensitivity `k0.1` shows +0.25 Sharpe over the twin (p = 0.00). It all comes
+  from one episode: 2000-2002, when the universe was SPY and QQQ at 25-40% volatility and the
+  smaller fraction left a third of the book in cash (-36% instead of -60%). From 2010 on the three
+  variants are identical. Choosing it now would be picking a parameter after seeing the result on
+  the strength of one event; it is not selected.
+- On the six other coins the absolute Kelly scale did what the theory says: the same growth
+  (+28.6% a year versus +29.1%) at 37% volatility instead of 95%, and a 47% maximum drawdown
+  instead of 92%. The Sharpe gain (+0.13, p = 0.21) is not significant on eight years. This is the
+  practical lesson: for crypto, size by volatility on an absolute scale. It goes into `ideas.md`
+  as `vol-target-crypto` for a fresh card; it was not carded in advance and is not a result.

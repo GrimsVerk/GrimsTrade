@@ -89,3 +89,12 @@ Annualised log growth: d0.4 +9.3%, d0.3 +10.5%, d0.5 +9.4%, tsmom12-k +12.7%, sm
 - FAIL: 5. Beats equal weight on Sharpe (0.70 vs 0.88)
 
 **FAILS train.**
+## Verdict (2026-11-12)
+
+Dead. The power-law kernel is worse than both plain trend rules on the six assets (-0.25 Sharpe
+against 12-month momentum, the wrong side of the bootstrap at p = 0.99), in every era but one, in
+all three out-of-universe sets, for all three values of d, with three times the turnover. Putting
+most of the weight on the last few weeks makes it a fast trend rule, and fast trend rules are
+what the literature says fail after costs (survey parts 1 and 5). Fractional differencing may
+still be a useful feature transform for a model (its original purpose); as a trading signal on
+its own it loses to a 12-month return.

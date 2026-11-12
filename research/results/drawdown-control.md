@@ -79,3 +79,10 @@ Annualised log growth: d1.0 +13.6%, d1.5 +14.9%, sma200 +14.7%, equal-weight +16
 - PASS: 5. Beats equal weight on Sharpe (1.08 vs 0.88)
 
 **FAILS train.**
+## Verdict (2026-11-12)
+
+Dead as a replacement for the 200-day switch: it is the same thing. Sharpe 1.08 against 1.01
+(p = 0.14), ahead in 3 of 5 eras, slightly better on the coins, slightly worse on the other ETFs
+and the indexes. Selling gradually is not measurably better than selling at a crossing. If the
+M1 lane wants a smoother version of its trend rule (lower turnover: 3.5 versus 4.3 a year, lower
+drawdown: 37% versus 44%), this is one, but nothing here says it earns more.
