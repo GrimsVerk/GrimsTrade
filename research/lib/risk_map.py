@@ -2,6 +2,7 @@
 
   uv run --with numpy python research/lib/risk_map.py run   # backtests: logs 20 tries
   uv run --with numpy python research/lib/risk_map.py       # tables and chart from saved runs
+  uv run --with numpy python research/lib/risk_map.py check # no look-ahead in any variant
 
 The second form reads the equity curves the first one saved in research/data/runs/risk-map/
 (git-ignored), so the report can be rebuilt without logging tries again.
@@ -300,7 +301,7 @@ def chart(rows: list[Row], label: str) -> str:
              " are the same dot</text>")  # fmt: skip
     # legend, in the empty top-left corner, in the order the lines end from top to bottom
     lx, ly = left + 18, top + 24
-    s.append(f'<rect x="{lx - 12}" y="{top - 1}" width="372" height="{21 * len(RULES) + 55}"'
+    s.append(f'<rect x="{left}" y="{top - 1}" width="378" height="{21 * len(RULES) + 55}"'
              f' fill="{SURFACE}"/>')  # fmt: skip
     for k, r in enumerate(RULES):
         y = ly + 21 * k
@@ -479,7 +480,23 @@ better against it than they have since.
     (harness.RESEARCH / "risk-map.md").write_text(text)
 
 
+CHECK_DAYS = [date(1996, 5, 17), date(2003, 6, 13), date(2012, 3, 7), date(2020, 3, 20),
+              date(2025, 1, 3), date(2025, 10, 31)]  # fmt: skip
+
+
+def check() -> None:
+    """No look-ahead: each variant gives the same weights when the gym hands it only the bars
+    closed before the decision."""
+    six = c.ctx("six")
+    for name, r, z in names():
+        harness.check_against_gym(c.weekly(menu(r, SIZES[z])), six.hist, CHECK_DAYS)
+        print(f"{name}: same weights on {len(CHECK_DAYS)} days with truncated history", flush=True)
+
+
 if __name__ == "__main__":
+    if sys.argv[1:] == ["check"]:
+        check()
+        sys.exit()
     if sys.argv[1:] == ["run"]:
         run_all()
     weights = shares()

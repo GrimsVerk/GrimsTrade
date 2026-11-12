@@ -2,8 +2,27 @@
 
 ## Plain-language summary
 
-Two research runs, night of 2026-11-12. **Neither the clever maths (run 1) nor machine learning
-(run 2) beat the simple 12-month trend rule. Nothing new has earned a paper slot.**
+Three research runs, night of 2026-11-12. **Neither the clever maths (run 1) nor machine
+learning (run 2) beat the simple 12-month trend rule. Nothing new has earned a paper slot. What
+is left is a choice of risk, and run 3 lays it out: [`risk-map.md`](risk-map.md).**
+
+Run 3, the risk map:
+
+- **Done:** the rules from runs 1 and 2 at 20 settings (hold everything, the trend rule, the
+  trend rule with three volatility caps; crypto at 0%, 5%, 10% or a sixth per coin), each
+  logged as a try. No new ideas, nothing tuned, held-out year untouched.
+- **Result:** one chart of growth per year against worst drop, a table, and three presets.
+  Since 2003, with 10,000 at the high: Careful fell to 8,820 at worst and grew 9% a year;
+  Middle fell to 7,730 and grew 15%; Bold fell to 5,300 and grew 25%.
+- **What it means:** every step up in growth came with a deeper drop. The size of the crypto
+  slots moves an account most, the trend rule next, the volatility cap after that. None of
+  them is skill.
+- **Read with run 1:** an independent review (`reviews/review-1.md` on branch `review-1`)
+  found that the trend rule's lead over holding everything, quoted below as Sharpe 1.05
+  against 0.88 and a worst loss of 37% against 69%, comes from 2000-2002, when the book held
+  only SPY and QQQ. Since 2003 the two tie on Sharpe (1.20 against 1.19); the trend rule gives
+  a worst loss of 37% against 47% and costs about 4 points of growth a year. Run 3 reproduces
+  those figures and shows 2003-2025 next to 1994-2025 throughout.
 
 Run 2, machine learning:
 
@@ -101,7 +120,53 @@ Dead in run 1, with the one-line reason (details in `ideas.md` and `results/`):
   change-point momentum, daily crypto reversal, pre-FOMC drift, return forecasts from
   time-series foundation models.
 
-## Research run 2 (resume here)
+## Research run 3: the risk map (finished)
+
+Brief: `chief-of-staff/briefs/grimstrade-research-3.md`. Branch `research-3` (from
+`research-2`), draft PR #9. Hard stop 2026-11-12 08:40 UTC. Started 07:13 UTC.
+
+**Done**
+
+- `cards/risk-map.md`, written before any run: a description, no pass bar.
+- `lib/risk_map.py`: `run` backtests the 20 variants and logs them (idea `risk-map` in
+  `tries.md`); with no argument it rebuilds every table and the chart from the saved equity
+  curves, logging nothing; `check` proves no look-ahead (same weights from truncated history
+  on six days, all 20 variants).
+- `risk-map.md` and `risk-map.svg` for the owner; `results/risk-map.md` with every variant
+  over 1994-2025, 2003-2025 and 2013-2025, the dates of each worst drop, Sharpe, and the
+  average share held in crypto and in cash.
+- Checks against earlier work: `hold-c17`, `tsmom12-c17` and `tv40-c17` give the Sharpe and
+  worst loss logged in runs 1-2 (0.88, 1.05, 1.03); the 2003-2025 slice gives the review's
+  figures (1.20 against 1.19, 36.5% against 47.0%, 20.7% against 24.9% a year); the 2013
+  slice of `hold-c00/c05/c10` gives the worst losses in `results/crypto-slot-size.md`.
+
+**Assumptions**
+
+- Total-return data: the harness already used dividend-adjusted ETF prices from Yahoo's
+  keyless chart API (`data/adj/`), so nothing new was fetched.
+- "Since 2003" is a slice of the 1994 run from 2003-01-01, not a fresh account. It matches
+  the review's separate run to the decimals quoted.
+- "A sixth per coin" is the equal slot the earlier runs used (1/n of the eligible assets), so
+  it was a fifth in Bitcoin from 2013 to 2017.
+- Volatility caps of 60%, 40% and 20% a year. 40% is the `trend-vol` card's setting; the
+  other two were picked before any run to bracket it, not tuned.
+- Presets: Careful `tv20-c05`, Middle `tsmom12-c10`, Bold `hold-c17`, picked to span the
+  chart, not for Sharpe. The paper lane's `ts_momentum` (equal slots, 40% volatility cap) is
+  nearest to `tv40-c17`, which lands beside Middle. Its volatility estimate and daily
+  decisions differ from the menu's, so that is a neighbour, not a replay.
+
+**Doing**
+
+- Nothing half-finished.
+
+**Next (nothing here is started)**
+
+- The owner picks a preset (Desk question). The M1 lane then needs a crypto slot size, which
+  its `ts_momentum` does not have today (every asset gets an equal slot).
+- The run-1 summary and ranking below still carry the 1994-2025 headline; the review's
+  correction is noted at the top, not yet worked through `ideas.md` and the ranking.
+
+## Research run 2 (finished)
 
 Brief: `chief-of-staff/briefs/grimstrade-research-2.md`. Branch `research-2` (from `research-1`),
 draft PR #7. Question: does machine learning on simple features beat `tsmom12` after costs?
@@ -216,6 +281,7 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
 
 ## Layout
 
+- `risk-map.md`, `risk-map.svg`: the owner's page on how much risk and how much crypto.
 - `ideas.md`: one line per idea with status. Dead ideas stay.
 - `survey-2026-11.md`: what the literature says held up or failed, with links.
 - `cards/<idea>.md`: hypothesis card: claim, why, test, pass bar. Written before results.

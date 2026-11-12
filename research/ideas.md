@@ -34,6 +34,12 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | trend-to-safe | Trend / regime allocation | dead (tested) | [card](cards/trend-to-safe.md) | Equals tsmom12 on the six assets (1.02 vs 1.05), behind in 2022. Helped on other ETFs with mid-term bonds as the safe asset (0.68 vs 0.60, p = 0.06): a hint for a universe with IEF. [result](results/trend-to-safe.md) |
 | crypto-slot-size | Allocation | described (no pass bar) | [card](cards/crypto-slot-size.md) | Sharpe is flat from 5% to 1/6 per coin (1.34-1.39); size sets growth and worst loss (5%: +18%/yr, -31%; 1/6: +35%/yr, -47%). The owner's biggest risk setting. [result](results/crypto-slot-size.md) |
 
+## Card for research run 3: the risk map (a description, not an idea; held-out year unused)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| risk-map | Allocation | described (no pass bar) | [card](cards/risk-map.md) | 20 settings of the run 1-2 rules: hold, trend, trend with a 60/40/20% volatility cap; crypto at 0%, 5%, 10% or a sixth per coin. Since 2003 growth runs from 8% to 25% a year and the worst drop from 12% to 47%, in one rising band. Presets for the owner in [risk-map.md](risk-map.md). [result](results/risk-map.md) |
+
 ## Cards for research run 2: machine learning (all seven failed; none used the held-out year)
 
 The first three were written before any model was fitted; each later card says what had been
