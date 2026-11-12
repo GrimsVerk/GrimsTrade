@@ -10,7 +10,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 from pathlib import Path
 
-from grimstrade import gym, report
+from grimstrade import gym, ledger, report
 from grimstrade.data import History
 from grimstrade.gym import Result
 from grimstrade.strategies import BENCHMARKS
@@ -92,16 +92,17 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
 
     def row(name: str) -> list[str]:
         r, s = results[name], scores[name]
-        return [PLAIN.get(name, name), f"{s.equity:,.0f}", f"{change(r, week_ago, today):+.1%}",
-                f"{s.total_return:+.1%}"]  # fmt: skip
+        return [PLAIN.get(name, report.plain_name(name)), f"{s.equity:,.0f}",
+                f"{change(r, week_ago, today):+.1%}", f"{s.total_return:+.1%}"]  # fmt: skip
 
     ahead_of_all = []
     lines = [
         f"# Weekly summary: the week to {today:%A %d %B %Y}",
         "",
         "Fake money on real prices. Every strategy started with 10,000 USD; all figures are "
-        "after trading fees and slippage (dividends not yet credited). A strategy only matters "
-        "if it beats the yardsticks below.",
+        "after trading fees and slippage. Dividends are not credited yet, which makes the fund "
+        "yardsticks 1 to 2% a year too easy to beat. A strategy only matters if it beats the "
+        "yardsticks below.",
         "",
         "## Yardsticks",
         "",
@@ -114,16 +115,19 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "| Strategy | Now (USD) | This week | Since start | Beats yardsticks* | How sure** |",
         "|---|---:|---:|---:|---|---|",
     ]
+    # Against each yardstick restarted with fresh cash at the moment the strategy started: same
+    # first prices, same costs. (The yardstick's own curve would hand one of the two the move
+    # between the strategy's first decision and its first fills.)
+    beaten = report.yardsticks_beaten(root, history, list(scores.values()))
     for name in sorted(others, key=lambda n: scores[n].total_return, reverse=True):
         s = scores[name]
-        # The strategy's first mark (its decision day) is still all cash: compare from its end.
-        start = s.start or today
-        beaten = [b for b in benches if s.total_return > change(results[b], start, today)]
-        ahead = bool(benches) and len(beaten) == len(benches)
+        won, of = beaten.get(name, (0, 0))
+        ahead = of > 0 and won == of
         if ahead:
             ahead_of_all.append(name)
-        beats = f"{len(beaten)} of {len(benches)}"
-        lines.append("| " + " | ".join([*row(name), beats, sureness(s.dsr, ahead)]) + " |")
+        lines.append(
+            "| " + " | ".join([*row(name), f"{won} of {of}", sureness(s.dsr, ahead)]) + " |"
+        )
     days = max(s.days for s in scores.values())
     strong = [n for n in ahead_of_all if (scores[n].dsr or 0) >= 0.95]
     proven = [n for n in strong if scores[n].days >= PROOF_DAYS]
@@ -132,13 +136,35 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         f"yardstick so far; {verdict(days, len(proven), len(strong) - len(proven))}",
         "",
     ]
+    week = [r for r in ledger.problem_runs(root) if r["time"][:10] > week_ago.isoformat()]
+    if week:
+        lines[4:4] = [
+            f"**Note:** {len(week)} run{'s' * (len(week) != 1)} this week reported problems "
+            "(a price source or a strategy failing); see the end of `scoreboard.md`.",
+            "",
+        ]
+    rewrites = report.accepted_rewrites(root)
+    if rewrites or report.unwitnessed(root):  # the page the owner reads must say it too
+        what = (
+            "the record branch was rewritten, back-dated or written to by someone other than "
+            f"the daily job ({len(rewrites)} accepted event{'s' * (len(rewrites) != 1)})"
+            if rewrites
+            else "the last run could not check the record branch against GitHub's log"
+        )
+        lines[4:4] = [f"**Warning:** {what}; see the end of `scoreboard.md`.", ""]
+    fresh = report.freshness(history)
+    if "STALE" in fresh:  # a stopped price source makes whoever holds that asset look calm
+        lines[4:4] = [f"**Warning, old prices.** {fresh}", ""]
     lines += [
         "",
-        "\\* Compared over the same days the strategy has been running.  ",
+        "\\* Compared with each yardstick started afresh at the moment the strategy started "
+        "(same first prices, same costs).  ",
         "\\*\\* How confident we can be that its return for the risk taken is real and not "
         f"luck, allowing for all {trials.count} strategies we have tried (deflated Sharpe). It "
         "does not by itself mean it beats the yardsticks. Real money is only discussed after 6 "
-        "months, beating every yardstick, and strong evidence (95%+).",
+        "months, beating every yardstick, and strong evidence (95%+).  ",
+        f"Strong evidence takes years, not months: {report.years_of_patience(trials)}. Until "
+        'then "no sign of skill yet" is what an honest table says about a good strategy too.',
         "",
         "Details: `scoreboard.md`. Backtests (hindsight, not evidence): `backtest.md`.",
     ]

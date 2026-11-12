@@ -2,6 +2,54 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
+  refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
+  before the one under it or in the future; no record file or folder that is a symbolic link;
+  bar files with dates in order, no ETF bar on a weekend, no bar that has not closed. Only the
+  daily job (`github-actions[bot]`) pushes to `paper-trail`, and only from the tip of `main`;
+  any other push stops the next run until a person has looked and set `TRAIL_REVIEWED_UNTIL`.
+  Accepted events are kept for good in `ledger/acknowledged-rewrites.txt`. Why: each of these
+  was a way to show a result that never happened with every older check green. The price: one
+  bad push stops the record until a person acts. A stopped record beats a doubtful one.
+- 2026-11-12 (honesty audit 1, G3): The crypto fee is 60 bps (was 25). Why: fills at the open are
+  market orders and pay the taker fee. Kraken Pro's fee page on 2026-11-12 (as served outside
+  the US) lists taker 0.80% under 2,500 USD of 30-day volume, 0.60% from 2,500, 0.38% from
+  10,000, 0.35% from 25,000, 0.30% from 50,000; 25 bps is below all of them. The busiest live
+  crypto strategy turns its book over about 10 times a year (about 9,000 USD a month): the
+  0.60% tier. One flat number is still a simplification: slower accounts really pay 0.80%,
+  faster ones 0.38% or less; volume tiers are in the BACKLOG. Every score is recomputed with
+  today's cost table, so changing it changes all past results too: change it only with a new
+  entry here. If the owner would trade elsewhere, set that venue's taker fee.
+- 2026-11-12 (honesty audit 1): Scoring conventions. (a) Every day in a record has a return, the
+  first measured from the start cash, so a fill on the first day counts in Sharpe and drawdown.
+  (b) Sharpe and turnover are annualised by the real time span (365 per year when there is a
+  point every day). (c) No Sharpe is printed under 30 days; after that it carries its standard
+  error. (d) `weekly.md` compares a strategy with each yardstick restarted with fresh cash at the
+  strategy's own start (`report.restarted`), not with the yardstick's own curve. Why: each of the
+  four made a number say more, or something else, than the record supports.
+- 2026-11-12 (honesty audit 1): Stored bars are never corrected, but each run asks the
+  first-choice source again for the last 5 stored days and appends every price difference to
+  `data/revisions.jsonl`; the scoreboard counts them. Why: bars are stored about an hour after
+  the close, before the source is final (the first stored day already differed).
+- 2026-11-12 (honesty audit 1): The daily job runs only from `main`, never starts a new record
+  unless started by hand with "start a new record", and first asks GitHub's activity log whether
+  `paper-trail` was force-pushed, deleted or fed a back-dated commit
+  (`scripts/check-trail-activity.sh`; the owner acknowledges an event with the repository
+  variable `TRAIL_REVIEWED_UNTIL`). Why: nothing inside the branch can prove the branch itself
+  was not replaced.
+- 2026-11-12 (honesty audit 1): A decision counts from the time its commit was made, when that
+  is later than its own timestamp (`ledger.in_force`, used by every score). Why: "append-only" did
+  not stop a line being added afterwards with an old timestamp and filled at an open already
+  known; the commit is the only evidence of when a line was written. Lines not yet committed
+  (the run scoring its own fresh decisions) keep their timestamp. A decision recorded more than 30
+  minutes after its timestamp is reported as late on the scoreboard. A decision is left out if a
+  later line of the same strategy counts from the same moment or earlier. Commit dates can be
+  forged by whoever can push, so GitHub's push log stays the outside witness (audit report, L1).
+- 2026-11-12 (honesty audit 1): Ingest refuses a bar that opens more than 40% from the previous
+  close (`data.MAX_GAP`) and any bar that fails `sources.check_sane`; an empty Yahoo day followed
+  by priced days is an error. Why: stored rows can never be corrected, so a split, a glitch or a
+  hole must be stopped and reported before it becomes permanent. Largest real gap in two stored
+  years: 6%.
 - 2026-11-12: Counting tries for the deflated Sharpe (N). N = strategies in `ledger/tries.jsonl`
   (benchmarks included; live strategies count before their first run) + the research lane's
   tries. Research tries = distinct (Idea, Variant) rows of any markdown table in

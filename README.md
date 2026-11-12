@@ -7,7 +7,8 @@ Every evening after the US stock market closes, a robot on GitHub:
 1. downloads the day's prices for Bitcoin, Ethereum and four big stock/bond/gold funds
    (SPY, QQQ, GLD, TLT),
 2. asks each strategy what it wants to hold,
-3. writes those choices into a logbook that can never be changed afterwards,
+3. writes those choices into a logbook; if any old line is changed later, the robot notices
+   and refuses to carry on,
 4. "buys and sells" at the **next** day's opening price, paying realistic fees,
 5. updates the scoreboard.
 

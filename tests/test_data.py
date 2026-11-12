@@ -67,16 +67,16 @@ def test_etf_bar_only_settles_after_close() -> None:
 
 
 def test_append_is_idempotent_and_never_rewrites(tmp_path: Path) -> None:
-    assert data.append(tmp_path, "BTC", [bar("2026-11-01", 1), bar("2026-11-02", 2)]) == 2
+    assert data.append(tmp_path, "BTC", [bar("2026-11-01", 10), bar("2026-11-02", 11)]) == 2
     before = data.bars_path(tmp_path, "BTC").read_text()
     # Same bars again, plus a revised old bar and a new one: only the new one is added.
     added = data.append(
-        tmp_path, "BTC", [bar("2026-11-01", 9), bar("2026-11-02", 2), bar("2026-11-03", 3)]
+        tmp_path, "BTC", [bar("2026-11-01", 99), bar("2026-11-02", 11), bar("2026-11-03", 12)]
     )
     assert added == 1
     after = data.bars_path(tmp_path, "BTC").read_text()
     assert after.startswith(before)
-    assert [b.close for b in data.load(tmp_path, "BTC")] == [1, 2, 3]
+    assert [b.close for b in data.load(tmp_path, "BTC")] == [10, 11, 12]
 
 
 def test_visibility_hides_bars_not_yet_closed() -> None:

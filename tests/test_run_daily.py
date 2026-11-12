@@ -32,6 +32,7 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     assert run_daily.run(tmp_path, first, fake_market, tmp_path) == []
     rows = ledger.decisions(tmp_path)
     assert {r["strategy"] for r in rows} == set(LIVE)
+    assert all(r["code_hash"] == run_daily.fingerprint(LIVE[r["strategy"]]) for r in rows)
     # Decided at 22:30 on 11-02: crypto seen through 11-01, ETFs through 11-02.
     assert rows[0]["data_through"]["BTC"] == "2026-11-01"
     assert rows[0]["data_through"]["SPY"] == "2026-11-02"
@@ -54,7 +55,7 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     state = json.loads((tmp_path / "state" / "portfolio.json").read_text())
     btc = state["buy_hold_btc"]
     assert btc["fills"] == 1 and set(btc["positions"]) == {"BTC"}
-    assert btc["equity"] > 10_000  # fake prices only go up
+    assert 9_950 < btc["equity"] < 10_050  # one day's small rise, less the cost of buying
     board = (tmp_path / "reports" / "scoreboard.md").read_text()
     assert board.startswith("# Scoreboard") and "Deflated Sharpe" in board
     # Backtests live in their own, clearly labelled report, never in the scoreboard.

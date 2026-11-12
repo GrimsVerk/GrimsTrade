@@ -30,7 +30,9 @@ class Costs:
     slip: float  # half-spread + slippage, share of price
 
 
-COSTS: dict[str, Costs] = {CRYPTO: Costs(fee=0.0025, slip=0.0005), ETF: Costs(fee=0.0, slip=0.0002)}
+# Crypto fee: a fill at the open is a market order, so the taker fee applies: 0.60% on Kraken Pro
+# for an account trading 2,500 to 10,000 USD a month (DECISIONS, 2026-11-12, audit G3).
+COSTS: dict[str, Costs] = {CRYPTO: Costs(fee=0.0060, slip=0.0005), ETF: Costs(fee=0.0, slip=0.0002)}
 
 
 @dataclass(frozen=True)
@@ -54,6 +56,7 @@ class Result:
     positions: dict[str, float]
     fills: list[Fill] = field(default_factory=list)
     equity: list[tuple[date, float]] = field(default_factory=list)  # end of each UTC day
+    start_cash: float = START_CASH  # what the first day's return is measured from
 
 
 def validate(weights: Mapping[str, float]) -> None:
@@ -90,7 +93,7 @@ def simulate(
         events.append((d.time, _DECIDE, "", 0.0, i))
     events.sort(key=lambda e: (e[0], e[1]))
 
-    res = Result(cash=start_cash, positions={s: 0.0 for s in history})
+    res = Result(cash=start_cash, positions={s: 0.0 for s in history}, start_cash=start_cash)
     price: dict[str, float] = {}
     pending: dict[str, float] = {}  # symbol -> target weight not yet executed
     started = False

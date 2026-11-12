@@ -35,6 +35,11 @@ keeps score per strategy against the benchmarks.
   the open of that asset's first bar with open > `T`. Crypto trades every day; ETFs only on bars
   that exist (weekends/holidays just have no bar).
 - Ingest stores only bars that have closed (plus 15 min), and never changes stored rows.
+  When a source later shows other prices for a stored day, the difference is appended to
+  `data/revisions.jsonl` and counted on the scoreboard; the stored row stays.
+- A committed decision counts from its commit time (`ledger.in_force`), not from its own
+  timestamp, if that is later: only the commit shows when a line was written. In a normal run
+  the two are seconds apart. A line appended later with an old timestamp gains nothing.
 
 ## Where the record lives
 
@@ -44,7 +49,7 @@ daily job checks it out into `trail/`, runs, and pushes it. Code changes go to `
 
 ## Costs (defaults in `gym.py`)
 
-Crypto: 25 bps fee + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A trade smaller than 1% of
+Crypto: 60 bps fee (taker) + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A trade smaller than 1% of
 equity is skipped (rebalance band), except full exits.
 
 ## Benchmarks (what "making money" must beat)

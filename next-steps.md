@@ -1,5 +1,27 @@
 # Next steps
 
+## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
+
+Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
+ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/test_audit_*.py`.
+
+- [ ] Owner (needs admin): ruleset on `paper-trail` blocking force pushes and deletion (L3).
+- [ ] Owner: decide what "graduation" means; six months cannot prove skill (S2).
+- [ ] After merging: read the first daily run's log; the "Ask GitHub" step must say "GitHub's
+      activity log agrees with the paper-trail history", not "rewrite check skipped" (the job's
+      own token was never tried against the activity log).
+- [ ] After merging: tell the research lane that the crypto fee is 60 bps now (was 25; G3,
+      DECISIONS). Their logged Sharpes used the old fee; new backtests will be a little worse.
+- [ ] After merging: bring `research-1`, `research-2` and `m1-wrapup` up to `main` or delete
+      them, and never re-run an old Daily run: old workflow files have no guards (L13).
+- [ ] Next audit pass: attack `ledger.py`, `run_daily.check_record` and the two scripts in
+      `scripts/` again; three passes each found something.
+- [ ] Build next from the audit: GitHub's arrival time for accepted commits, passed to the run
+      directly, not through a file in the record (L14).
+- [ ] Open findings to build next: credit dividends (G4); a second ETF source, Stooq is dead
+      (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
+      tier (BACKLOG).
+
 ## M0 status: built, not yet proven live
 
 Done: template scaffold, data ingest (BTC, ETH, SPY, QQQ, GLD, TLT, append-only CSV), gym
@@ -21,7 +43,7 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 
 - CSV + stdlib only (no parquet/pandas). Raw prices; dividends not credited yet.
 - Bot commits to orphan branch `paper-trail` because `main` requires PRs.
-- Costs: crypto 25 bps fee + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
+- Costs: crypto 60 bps fee (was 25 until the audit, G3) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
 - Decisions at ~22:30 UTC see crypto bars through yesterday (today's still open) and ETFs through
   today. Fills show up a day later, once the fill bar has closed and been stored.
 - A run with no new data since a strategy's last decision writes no new decision.

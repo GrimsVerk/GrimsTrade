@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import urllib.request
 from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
@@ -89,14 +90,24 @@ def yahoo(ticker: str, since: date, get: Get) -> list[Bar]:
     res = chart["result"][0]
     q = res["indicators"]["quote"][0]
     bars = []
+    empty: set[date] = set()  # days Yahoo lists without prices
     for i, ts in enumerate(res.get("timestamp") or []):
         vals = [q["open"][i], q["high"][i], q["low"][i], q["close"][i]]
-        if any(v is None for v in vals):
-            continue
         d = _day(ts)
-        if d >= since:
-            o, h, lo, c = (float(v) for v in vals)
-            bars.append(Bar(d, o, h, lo, c, float(q["volume"][i] or 0)))
+        if d < since:
+            continue
+        if any(v is None for v in vals):
+            empty.add(d)
+            continue
+        o, h, lo, c = (float(v) for v in vals)
+        bars.append(Bar(d, o, h, lo, c, float(q["volume"][i] or 0)))
+    # An empty newest day is normal (not published yet; it is asked for again tomorrow). An empty
+    # day with priced days after it would become a permanent hole, since only newer bars are
+    # ever appended: refuse the whole answer instead.
+    have = {b.date for b in bars}
+    holes = sorted(d for d in empty - have if have and d < max(have))
+    if holes:
+        raise ValueError(f"yahoo: no prices for {holes[0]} but later days have them")
     return bars
 
 
@@ -136,12 +147,46 @@ SOURCES: dict[str, list[tuple[Source, str]]] = {
 }
 
 
-def fetch(symbol: str, since: date, now: datetime, get: Get = http_get) -> list[Bar]:
-    """Settled bars from `since` on, from the first source that answers. Raises if all fail."""
+def check_sane(bars: list[Bar]) -> None:
+    """Raise ValueError on a bar no market can print. Stored rows are never rewritten, so a
+    nonsense bar (zero price, columns mixed up) must be stopped before it gets in."""
+    for b in bars:
+        prices = (b.open, b.high, b.low, b.close)
+        ok = (
+            all(math.isfinite(x) and x > 0 for x in prices)
+            and math.isfinite(b.volume)
+            and b.volume >= 0
+            # 0.1% slack: some sources round each column separately.
+            and b.low <= min(b.open, b.close) * 1.001
+            and b.high >= max(b.open, b.close) * 0.999
+        )
+        if not ok:
+            raise ValueError(f"nonsense bar {b.date}: o={b.open} h={b.high} l={b.low} c={b.close}")
+
+
+def fetch_from(
+    symbol: str, since: date, now: datetime, get: Get = http_get
+) -> tuple[str, list[Bar]]:
+    """Settled, sane bars from `since` on, and the name of the source that gave them: the first
+    one that has any. A source that answers with nothing new is not trusted on that alone: the
+    next one is asked too (an empty or cut-short answer looks exactly like "no news"). Raises if
+    every source fails."""
     errors = []
+    nothing_new_from = None
     for source, ticker in SOURCES[symbol]:
         try:
-            return settled(source(ticker, since, get), UNIVERSE[symbol], now)
+            bars = settled(source(ticker, since, get), UNIVERSE[symbol], now)
+            check_sane(bars)
         except Exception as e:  # noqa: BLE001 - any failure means: try the next source
             errors.append(f"{source.__name__}: {e}")
+            continue
+        if bars:
+            return source.__name__, bars
+        nothing_new_from = nothing_new_from or source.__name__
+    if nothing_new_from is not None:
+        return nothing_new_from, []
     raise RuntimeError(f"{symbol}: all sources failed: {'; '.join(errors)}")
+
+
+def fetch(symbol: str, since: date, now: datetime, get: Get = http_get) -> list[Bar]:
+    return fetch_from(symbol, since, now, get)[1]
