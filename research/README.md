@@ -8,8 +8,9 @@ rules do not earn more than holding everything: they lose less.**
 - **Done:** about 150 papers read (`survey-2026-11.md`); 14 ideas written down with their pass
   mark fixed before testing; each tested on up to 32 years of prices and on markets it was not
   built on. 216 backtests, all logged.
-- **None of the 13 with a pass mark passed** (the 14th only describes a choice). Kelly sizing, hidden Markov regimes, Hawkes processes and the rest
-  each equal a simpler rule or lose to it. Two were real effects that faded once published.
+- **None of the 13 with a pass mark passed** (the 14th only describes a choice). Kelly sizing,
+  hidden Markov regimes, Hawkes processes and the rest each equal a simpler rule or lose to it.
+  Two were real effects that faded once published.
 - **What holds up:** a slow trend rule (hold an asset only while it is up over 12 months) earned
   about what holding everything earned since 1994 (17.8% a year against 18.2%) with a worst loss
   of 37% instead of 69%. The M1 lane already runs it. It is the rule to beat.
