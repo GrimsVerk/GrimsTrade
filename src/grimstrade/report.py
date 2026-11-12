@@ -43,24 +43,26 @@ class Score:
 
 def score(name: str, res: Result) -> Score:
     eq = [e for _, e in res.equity]
-    if len(eq) < 2:
-        last = eq[-1] if eq else gym.START_CASH
-        return Score(name, res.equity[0][0] if eq else None, len(eq), last, 0.0, 0.0, 0.0, 0.0)
-    rets = [b / a - 1 for a, b in zip(eq, eq[1:], strict=False)]
+    if not eq:
+        return Score(name, None, 0, res.start_cash, 0.0, 0.0, 0.0, 0.0)
+    # Every day has a return, the first one measured from the start cash: a fill on the first
+    # day (a run before the US open) must count in the Sharpe and the drawdown, not only in the
+    # total return.
+    rets = [b / a - 1 for a, b in zip([res.start_cash, *eq], eq, strict=False)]
     sd = statistics.pstdev(rets)
     # Returns per year from the real time span, not from an assumed spacing: 365 when there is a
     # point every calendar day (the live record: crypto has a bar every day), fewer when days are
     # missing (an ETF-only history has ~252), so the Sharpe does not depend on the spacing.
-    span_days = max((res.equity[-1][0] - res.equity[0][0]).days, 1)
+    span_days = (res.equity[-1][0] - res.equity[0][0]).days + 1
     per_year = len(rets) * DAYS_PER_YEAR / span_days
     sharpe = statistics.fmean(rets) / sd * math.sqrt(per_year) if sd > 0 else 0.0
-    peak, mdd = eq[0], 0.0
+    peak, mdd = res.start_cash, 0.0
     for e in eq:
         peak = max(peak, e)
         mdd = max(mdd, 1 - e / peak)
     traded = sum(abs(f.qty) * f.price for f in res.fills)
-    turnover = traded / statistics.fmean(eq) * DAYS_PER_YEAR / (span_days + 1)
-    return Score(name, res.equity[0][0], len(eq), eq[-1], eq[-1] / gym.START_CASH - 1, sharpe,
+    turnover = traded / statistics.fmean(eq) * DAYS_PER_YEAR / span_days
+    return Score(name, res.equity[0][0], len(eq), eq[-1], eq[-1] / res.start_cash - 1, sharpe,
                  mdd, turnover, stats.moments(rets))  # fmt: skip
 
 
@@ -130,7 +132,8 @@ def table(scores: list[Score]) -> str:
         "|---|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for s in sorted(scores, key=lambda s: s.total_return, reverse=True):
-        dsr = "-" if s.dsr is None else f"{s.dsr:.0%}"
+        # Never print a certainty: 99.6% must not round to "100%".
+        dsr = "-" if s.dsr is None else ">99%" if s.dsr > 0.99 else f"{s.dsr:.0%}"
         lines.append(
             f"| {s.name} | {s.start or '-'} | {s.days} | {s.equity:,.0f} | {s.total_return:+.1%} "
             f"| {sharpe_cell(s)} | {dsr} | {s.max_drawdown:.1%} | {s.turnover:.2f} |"

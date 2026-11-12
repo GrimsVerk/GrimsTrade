@@ -54,6 +54,7 @@ class Result:
     positions: dict[str, float]
     fills: list[Fill] = field(default_factory=list)
     equity: list[tuple[date, float]] = field(default_factory=list)  # end of each UTC day
+    start_cash: float = START_CASH  # what the first day's return is measured from
 
 
 def validate(weights: Mapping[str, float]) -> None:
@@ -90,7 +91,7 @@ def simulate(
         events.append((d.time, _DECIDE, "", 0.0, i))
     events.sort(key=lambda e: (e[0], e[1]))
 
-    res = Result(cash=start_cash, positions={s: 0.0 for s in history})
+    res = Result(cash=start_cash, positions={s: 0.0 for s in history}, start_cash=start_cash)
     price: dict[str, float] = {}
     pending: dict[str, float] = {}  # symbol -> target weight not yet executed
     started = False

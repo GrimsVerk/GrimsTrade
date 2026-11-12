@@ -201,3 +201,34 @@ def test_the_deflated_sharpe_bar_is_out_of_reach_for_years() -> None:
         passed += (deflated.dsr or 0) >= 0.95
     assert statistics.fmean(s.sharpe for s in scores) == pytest.approx(1.0, abs=0.15)
     assert passed <= 3
+
+
+def test_a_fill_on_the_first_day_counts_in_sharpe_and_drawdown() -> None:
+    """Audit S7 (fixed; found by the independent reviewer): the first equity point was used as
+    the baseline. Normally that is the untouched start cash, but a decision made before the US
+    open (a manual run, as on 2026-11-12 01:51 UTC, or a cron run that slips past midnight) fills
+    ETFs the same day, and that day's result then vanished from Sharpe and max drawdown."""
+    monday = DAY1
+    spy = [Bar(monday, 100.0, 100.0, 90.0, 90.0, 1.0)] + [
+        Bar(monday + timedelta(days=i), 90.0, 90.0, 90.0, 90.0, 1.0) for i in (1, 2, 3)
+    ]
+    btc = [Bar(monday + timedelta(days=i), 1.0, 1.0, 1.0, 1.0, 1.0) for i in range(4)]
+    decision = Decision(datetime.combine(monday, time(10, 0), tzinfo=UTC), {"SPY": 1.0})
+    res = gym.simulate([decision], {"SPY": spy, "BTC": btc}, costs=NO_COSTS)
+    assert res.equity[0] == (monday, 9_000.0)  # bought at 100 at the open, closed at 90
+    s = report.score("early", res)
+    assert s.total_return == pytest.approx(-0.10)
+    assert s.max_drawdown == pytest.approx(0.10)  # was 0.0%
+    assert s.sharpe < 0  # was 0.00
+    # A record of a single day used to show "Equity 9,000, Return +0.0%".
+    one_day = gym.simulate([decision], {"SPY": spy[:1], "BTC": btc[:1]}, costs=NO_COSTS)
+    assert report.score("early", one_day).total_return == pytest.approx(-0.10)
+    # And a run with another start cash is scored against that cash, not against 10,000.
+    rich = gym.simulate([decision], {"SPY": spy[1:], "BTC": btc}, start_cash=100_000.0)
+    assert report.score("rich", rich).total_return == pytest.approx(0.0, abs=1e-3)
+
+
+def test_a_deflated_sharpe_is_never_printed_as_certain() -> None:
+    s = report.score("x", result_from_returns([0.01] * 40))
+    row = report.table([s.__class__(**{**s.__dict__, "dsr": 0.9996})]).splitlines()[2]
+    assert "| >99% |" in row and "100%" not in row
