@@ -211,3 +211,15 @@ Never edit or delete a row.
 | 2026-11-12 02:01 | robustness | sma200-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 0.99 | +9763.3% | 44.6% | 4.32 |
 | 2026-11-12 02:01 | robustness | ensemble-tsmom-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.08 | +10192.6% | 36.0% | 5.29 |
 | 2026-11-12 02:01 | robustness | trend-vol-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.02 | +4792.1% | 25.7% | 2.91 |
+| 2026-11-12 02:03 | crypto-alone | equal-weight@BTC | baseline | train | 2013-01-01 | 2025-11-09 | 1.29 | +800978.6% | 84.9% | 0.00 |
+| 2026-11-12 02:03 | crypto-alone | sma200@BTC | baseline | train | 2013-01-01 | 2025-11-09 | 1.38 | +876037.1% | 71.0% | 2.23 |
+| 2026-11-12 02:03 | crypto-alone | tsmom12@BTC | baseline | train | 2013-01-01 | 2025-11-09 | 1.30 | +541657.3% | 80.5% | 0.41 |
+| 2026-11-12 02:03 | crypto-alone | e4@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.43 | +766603.9% | 70.3% | 4.92 |
+| 2026-11-12 02:03 | crypto-alone | t40@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.24 | +39226.2% | 68.5% | 4.62 |
+| 2026-11-12 02:03 | crypto-alone | tv40@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.26 | +21340.8% | 54.3% | 3.98 |
+| 2026-11-12 02:03 | crypto-alone | equal-weight@ETH | baseline | train | 2017-05-19 | 2025-11-09 | 0.86 | +2071.1% | 94.0% | 0.01 |
+| 2026-11-12 02:03 | crypto-alone | sma200@ETH | baseline | train | 2017-05-19 | 2025-11-09 | 0.74 | +894.8% | 93.4% | 2.62 |
+| 2026-11-12 02:03 | crypto-alone | tsmom12@ETH | baseline | train | 2017-05-19 | 2025-11-09 | 0.83 | +1691.2% | 91.8% | 1.45 |
+| 2026-11-12 02:03 | crypto-alone | e4@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.93 | +2753.6% | 83.3% | 5.41 |
+| 2026-11-12 02:03 | crypto-alone | t40@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.82 | +906.6% | 72.0% | 5.78 |
+| 2026-11-12 02:03 | crypto-alone | tv40@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.71 | +420.5% | 69.4% | 5.01 |

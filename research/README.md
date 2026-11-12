@@ -8,7 +8,7 @@ rules, and the simple rules do not earn more than holding everything; they lose 
 - **What was done.** About 150 papers and articles read in six families (`survey-2026-11.md`).
   Twelve ideas written down as hypothesis cards, each with its rule and its pass mark fixed
   *before* its test. Each tested on up to 32 years of prices (63 for old stock indexes), then on
-  markets it was not designed on (other funds, other coins, Japan, UK, Germany). 199 backtests,
+  markets it was not designed on (other funds, other coins, Japan, UK, Germany). 211 backtests,
   every one logged in `tries.md`.
 - **Result: none of the twelve passed its mark.** Kelly sizing, hidden Markov regimes,
   fractional differencing, Hawkes crash clustering, the absorption ratio, Cover's universal
@@ -24,6 +24,8 @@ rules, and the simple rules do not earn more than holding everything; they lose 
   the ride: worst loss 69%, 37% and 26%; growth 18%, 18% and 13% a year. If the owner's limit is
   the worst loss, the third (`trend-vol`) is worth a paper slot. It did not pass as an "edge" and
   is not labelled one.
+- **Crypto.** On Bitcoin and Ether alone, trend rules did not beat simply holding, and a "protected"
+  position still lost 70% at worst. How big the crypto slot is matters more than any timing rule.
 - **How much could be luck.** Of the 17 rule versions that could have been picked, the best beat
   "hold everything" by 0.22 Sharpe. If none of them had any edge, the best would still be
   expected to show about 0.19 (`results/deflation.md`). So no new rule here has shown an edge.
@@ -78,6 +80,8 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
   with a dated verdict; `ideas.md` has every status.
 - `results/robustness.md`: front-runners on raw prices and at double costs.
 - `results/deflation.md`: the best edge seen against what luck alone would give (0.22 vs 0.19).
+- `results/crypto-alone.md`: the plain and run-2 rules on BTC alone and ETH alone (trend does
+  not beat holding there; it shrinks the winters; the size of the slot matters more).
 - The summary and ranking above.
 
 **Doing**
