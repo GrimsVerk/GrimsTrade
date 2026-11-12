@@ -19,7 +19,11 @@ The logbook, though, could be made to lie in four ways. All four are demonstrate
 4. Replace the whole record branch.
 
 The first three are closed in this branch. The fourth is now detected (the daily job asks
-GitHub's own log before it runs), but only a setting of yours can prevent it.
+GitHub's own log before it runs), but only a setting of yours can prevent it. Two independent
+reviewers then attacked the result. They found a way around my fix for the first one (closed
+since) and several quieter ways for the data to stop or go wrong unnoticed (also closed). Take
+that as a measure of how easy this is to get wrong: the checks that guard the logbook are new
+and deserve another attack before they are trusted.
 
 What to know about the numbers:
 
@@ -31,10 +35,11 @@ What to know about the numbers:
 - **The yardsticks are set a little low.** Dividends are not counted: about 4% a year for the
   bond fund, 2.3% for 60/40, nothing for Bitcoin.
 - **Prices are stored an hour after the US close, before Yahoo's numbers are final.** After one
-  day the stored rows already differ slightly from what Yahoo shows now. Tiny so far, but nothing
-  reports it. Not fixed.
+  day the stored rows already differed slightly from what Yahoo showed. Tiny so far. Stored
+  prices are never changed, but every such difference is now logged and counted on the
+  scoreboard.
 - **The backup source for the four funds is dead.** If Yahoo stops answering, fund prices
-  freeze. The scoreboard now says so in bold.
+  freeze. The scoreboard and the weekly page now say so in bold, and the run reports it.
 
 What I need from you:
 
@@ -476,7 +481,7 @@ One commit per fix, except the three workflow changes, which share the same line
 
 - **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
   statistics) against M0 and again after the M1 merge, then attacked once more by two independent
-  reviewers. 32 findings: 21 fixed or guarded, 4 half done (D1, L3, L7, S4), 7 open (S2, G4, G3,
+  reviewers. 32 findings: 19 fixed or guarded, 4 half done (D1, L3, L7, S4), 9 open (S2, G4, G3,
   S3, D6 need a decision or outside facts; G2, S6, L6, G5 are low). All with tests except G3
   and G5. Checks green.
 - **Not proven live:** the workflow changes. The first run after merging is the test: its log
