@@ -104,8 +104,76 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   `tests/test_audit_workflow.py::test_the_job_only_runs_code_from_main`.
 - **Proposed fix (small, workflow):** `if: github.ref == 'refs/heads/main'` on the job.
 
+### D1. A bar taken soon after the close is frozen, and later corrections are never seen (high)
+
+- **What:** an ETF bar is stored once it is 15 minutes past 21:00 UTC and is never looked at
+  again: the next run asks the source only for newer days. If the source's numbers for that day
+  were not final yet, the record keeps the early ones for ever and nobody is told they differ.
+  Every fill and every mark on that day uses them.
+- **Evidence (real):** the first run stored the 2026-11-11 ETF bars at 22:00:49 UTC, one hour
+  after the close. In all four ETF files that row is the only one of 481 whose volume is not a
+  multiple of 100 (SPY 37,707,134), the mark of a row Yahoo had not finalised. At 01:38 UTC,
+  4.5 hours after the close, Yahoo's chart API returned that same SPY row with `close: null` and
+  the same volume: still being rewritten. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
+- **Proposed fix (medium, `run_daily.py` + `data.py`):** each run, re-fetch the last ~5 stored
+  days and compare (with a small tolerance); never change stored rows, but write every difference
+  to an append-only `data/revisions.jsonl` and to the run's problem list. Cheap extra safety: move
+  the cron later (e.g. 23:30 UTC) so the row has had 2.5 hours instead of 1.5 to settle.
+
+### D2. A stock split would be booked as a crash (high impact, unlikely for today's four ETFs)
+
+- **What:** Yahoo's prices are split-adjusted backwards. After a split, new rows arrive in
+  post-split prices; stored rows and the units a strategy holds are pre-split. The gym would show
+  -50% overnight for a 2-for-1 split, for ever.
+- **Evidence:** `tests/test_audit_data.py::test_a_split_is_not_stored_as_a_crash`. Real stored
+  history is clean so far: the largest overnight gap in 481 days is 6.0% (GLD).
+- **Proposed fix (small, `data.py`):** refuse to store a bar whose open is more than 40% away
+  from the previous close; the run then reports it every day until a person decides. Larger:
+  fetch split events (`events=div,splits`) and adjust held units.
+
+### D3. No sanity check before a bar becomes permanent (medium)
+
+- **What:** zero, negative or inconsistent prices (low above open, and so on) go straight into
+  the store. A zero open makes the gym divide by zero, so the daily run crashes every day and the
+  bad row cannot be removed without breaking the append-only rule.
+- **Evidence:** `tests/test_audit_data.py::test_a_nonsense_bar_is_not_stored`.
+- **Proposed fix (small, `sources.py`):** validate each bar in `fetch`; a bad bar counts as a
+  failed source, so the next source is tried and the problem is reported.
+
+### D4. A hole in the middle of a source's answer becomes a permanent gap (medium)
+
+- **What:** `yahoo()` skips rows whose prices are null. That is right for the newest row (not
+  published yet, retried tomorrow). But if a null row is followed by good rows, the good ones are
+  stored and the skipped day can never be added, because only bars newer than the last stored one
+  are appended. The gym then treats it as a market holiday.
+- **Evidence:** `tests/test_audit_data.py::test_a_hole_in_the_sources_answer_is_not_skipped_silently`.
+  Real stored history has no holes (crypto: 700 consecutive days; the four ETFs share one calendar).
+- **Proposed fix (small, `sources.py`):** a null row followed by data is an error (try the next
+  source, report it). Later: a calendar check across symbols in the verify step.
+
+### D5. The record does not say where a bar came from (low)
+
+- **What:** when Kraken fails the bar comes from Coinbase (another exchange, slightly other
+  prices: on 2026-11-10 BTC open 75,253.1 vs 75,257.8, low 72,584.6 vs 72,643.5, about 8 basis
+  points apart at worst). When Yahoo fails it comes from Stooq, whose history is, as far as I
+  know, dividend-adjusted where Yahoo's is raw (not verified, see D6). Nothing in `paper-trail`
+  records which source was used, so a mixed series cannot be recognised later.
+- **Evidence:** `tests/test_audit_data.py::test_the_record_says_which_source_each_bar_came_from`.
+- **Proposed fix (small-medium):** an append-only `data/sources.jsonl`: one line per run and
+  symbol (source, first and last date, rows).
+
+### D6. The ETF fallback source does not work (medium, for "runs without anyone")
+
+- **What:** on 2026-11-12 `https://stooq.com/q/d/l/?s=spy.us&i=d` answered HTTP 200 with a
+  JavaScript "verify your browser" page instead of CSV. The code treats that as a failed source
+  (good, and pinned by a test), so the ETFs have one working source. If Yahoo blocks GitHub's
+  runners, ETF prices stop; strategies holding ETFs then look calm and flat (see S4).
+- **Evidence:** live probe; `tests/test_audit_data.py::test_stooq_browser_check_page_is_an_error_not_data`.
+- **Proposed fix:** a second real ETF source (Alpaca's free data is in the BACKLOG; needs a key
+  as an Actions secret, the owner's call).
+
 ## Status
 
-- **Done:** L1-L8 (ledger and workflow) demonstrated with tests.
-- **Doing:** data, then gym, timing, statistics.
+- **Done:** L1-L8 (ledger and workflow) and D1-D6 (data) demonstrated with tests.
+- **Doing:** gym, timing rules, statistics.
 - **Next:** small fixes in `ledger.py`, `gym.py`, `sources.py`, the workflow; summary on top.
