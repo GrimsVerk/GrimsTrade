@@ -2,3 +2,8 @@
 {"first_tried":"2026-11-11T22:00:49Z","name":"buy_hold_spy","note":"benchmark (M0)"}
 {"first_tried":"2026-11-11T22:00:49Z","name":"sixty_forty","note":"benchmark (M0)"}
 {"first_tried":"2026-11-11T22:00:49Z","name":"equal_weight","note":"benchmark (M0)"}
+{"first_tried":"2026-11-12T01:51:27Z","name":"ts_momentum","note":"M1 classic: time-series momentum, Moskowitz/Ooi/Pedersen 2012, paper params"}
+{"first_tried":"2026-11-12T01:51:27Z","name":"xs_momentum","note":"M1 classic: cross-sectional momentum 6/6, Jegadeesh/Titman 1993, top third"}
+{"first_tried":"2026-11-12T01:51:27Z","name":"vol_target_spy","note":"M1 classic: SPY vol targeting 10%, 1-month vol, Harvey et al. 2018"}
+{"first_tried":"2026-11-12T01:51:27Z","name":"risk_parity","note":"M1 classic: inverse-vol risk parity, 3y vol, Asness/Frazzini/Pedersen 2012"}
+{"first_tried":"2026-11-12T01:51:27Z","name":"crypto_mean_reversion","note":"M1 classic: BTC/ETH RSI(2)<10 above 200d SMA, exit >5d SMA, Connors"}

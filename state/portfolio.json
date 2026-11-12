@@ -3,28 +3,63 @@
     "cash": 10000.0,
     "equity": 10000.0,
     "fills": 0,
-    "marked_on": "2026-11-11",
+    "marked_on": "2026-11-12",
     "positions": {}
   },
   "buy_hold_spy": {
     "cash": 10000.0,
     "equity": 10000.0,
     "fills": 0,
-    "marked_on": "2026-11-11",
+    "marked_on": "2026-11-12",
+    "positions": {}
+  },
+  "crypto_mean_reversion": {
+    "cash": 10000.0,
+    "equity": 10000.0,
+    "fills": 0,
+    "marked_on": "2026-11-12",
     "positions": {}
   },
   "equal_weight": {
     "cash": 10000.0,
     "equity": 10000.0,
     "fills": 0,
-    "marked_on": "2026-11-11",
+    "marked_on": "2026-11-12",
+    "positions": {}
+  },
+  "risk_parity": {
+    "cash": 10000.0,
+    "equity": 10000.0,
+    "fills": 0,
+    "marked_on": "2026-11-12",
     "positions": {}
   },
   "sixty_forty": {
     "cash": 10000.0,
     "equity": 10000.0,
     "fills": 0,
-    "marked_on": "2026-11-11",
+    "marked_on": "2026-11-12",
+    "positions": {}
+  },
+  "ts_momentum": {
+    "cash": 10000.0,
+    "equity": 10000.0,
+    "fills": 0,
+    "marked_on": "2026-11-12",
+    "positions": {}
+  },
+  "vol_target_spy": {
+    "cash": 10000.0,
+    "equity": 10000.0,
+    "fills": 0,
+    "marked_on": "2026-11-12",
+    "positions": {}
+  },
+  "xs_momentum": {
+    "cash": 10000.0,
+    "equity": 10000.0,
+    "fills": 0,
+    "marked_on": "2026-11-12",
     "positions": {}
   }
 }
