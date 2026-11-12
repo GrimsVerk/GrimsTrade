@@ -16,7 +16,6 @@ ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/te
       them, and never re-run an old Daily run: old workflow files have no guards (L13).
 - [ ] Next audit pass: attack `ledger.py`, `run_daily.check_record` and the two scripts in
       `scripts/` a third time; two passes each found a way through.
-- [ ] Build next from the audit: GitHub's arrival time for accepted commits (L14).
 - [ ] Open findings to build next: credit dividends (G4); a second ETF source, Stooq is dead
       (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
       tier (BACKLOG).

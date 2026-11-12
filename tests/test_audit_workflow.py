@@ -317,6 +317,25 @@ def test_a_push_by_anyone_but_the_daily_job_stops_the_job(tmp_path: Path, trail:
     assert lost.returncode == 2 and b"is not in the record" in lost.stdout
 
 
+def test_an_accepted_backdated_commit_is_dated_by_githubs_clock(
+    tmp_path: Path, trail: Path
+) -> None:
+    """Audit L14 (second review): once a person had accepted a back-dated push, its lines went
+    on counting from the date the commit claims. The script writes down when GitHub received
+    it, and the ledger dates the commit's lines by that."""
+    from grimstrade import ledger
+
+    t0 = T0 - timedelta(days=30)  # well in the past: the script reads the real clock
+    a = commit(trail, "day 1", t0)
+    b = commit(trail, "day 2, written on day 4", t0 + timedelta(days=1))
+    arrived = t0 + timedelta(days=3)
+    events = [(t0 + timedelta(seconds=1), "branch_creation", ZERO, a), (arrived, "push", a, b)]
+    assert ledger.recorded_at(trail / "ledger.jsonl") == [t0, t0 + timedelta(days=1)]
+    done = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=iso(t0 + timedelta(days=4)))
+    assert done.returncode == 0 and b"accepted" in done.stdout
+    assert ledger.recorded_at(trail / "ledger.jsonl") == [t0, arrived]
+
+
 def test_when_github_cannot_be_asked_the_job_goes_on_with_a_warning(
     tmp_path: Path, trail: Path
 ) -> None:

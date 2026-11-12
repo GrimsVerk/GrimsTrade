@@ -23,8 +23,8 @@ time, weekends, holidays and late runs included. The record so far (three runs) 
 **What to keep in mind.**
 
 - The guards are new. Independent reviewers attacked them twice and got through both times
-  (the second time: nine holes, five serious; all closed but three lesser ones). Until a third
-  attack finds nothing, call the record "checked", not "proven".
+  (the second time: nine holes, five serious; those are closed, three lesser ones only in
+  part). Until a third attack finds nothing, call the record "checked", not "proven".
 - Six months will not tell skill from luck. Of nine strategies with no skill at all, the best
   looks like a star after six months more often than not. The pages correct for that (the
   "deflated Sharpe"), strictly: a world-class strategy has an even chance of reading "95% sure"
@@ -56,7 +56,7 @@ open first, then what is fixed, each by severity.
 | D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged (first day: under 0.01%); cause open |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L13 | Old code can still write the record (a re-run of an old run, a stale branch) | medium | half fixed; clean-up after merging |
-| L14 | An accepted back-dated push keeps the date it claims | medium | open: proposed |
+| L14 | An accepted back-dated push kept the date it claims | medium | fixed for pushes; open for an accepted force-push |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
@@ -249,18 +249,22 @@ second independent review (2026-11-12, 06:35 to 07:00 UTC).
   branches up to `main` or delete them, and never re-run an old Daily run. Real prevention needs
   the owner's ruleset on `paper-trail` (L3) and a push credential that only `main` can use.
 
-### L14. An accepted back-dated push keeps the date it claims (medium; second review)
+### L14. An accepted back-dated push kept the date it claims (medium, half fixed; second review)
 
 - **What:** when a person accepts a back-dated push with `TRAIL_REVIEWED_UNTIL`, the acceptance
-  is printed for good, but the decisions in that push still count from the date the commit
+  is printed for good, but the decisions in that push still counted from the date the commit
   claims, not from when GitHub received it. The claim can no longer be earlier than the commit
-  under it (L11), so the gain is bounded by the gap between two runs: a day normally, more after
-  an outage. For an accepted force-push the commits it brought are not date-checked at all.
+  under it (L11), so the gain was bounded by the gap between two runs: a day normally, more
+  after an outage.
 - **Evidence (the reviewer's run):** received by GitHub on 2026-10-16, filled as if made on
   2026-10-13, "late decisions: 0".
-- **Proposed:** the guard writes the arrival time GitHub logged for every commit it reports, and
-  `ledger.in_force` counts such a commit from then. Until that exists an accepted rewrite has to
-  be judged by hand; the scoreboard line names the commit and both times.
+- **Fix (done, `ledger.py`):** the outside check already writes both times of such a commit
+  into `ledger/acknowledged-rewrites.txt`; the ledger now reads them and counts the commit, and
+  everything after it, from GitHub's arrival time
+  (`tests/test_audit_ledger.py::test_an_accepted_backdated_commit_counts_from_when_github_received_it`,
+  `tests/test_audit_workflow.py::test_an_accepted_backdated_commit_is_dated_by_githubs_clock`).
+- **Still open:** for an accepted force-push the commits it brought are not date-checked at
+  all. After one, judge the record by hand; the scoreboard line says when it happened.
 
 ### Low
 
@@ -669,9 +673,9 @@ Final for this audit (2026-11-12, 07:10 UTC). PR #5 is ready for review, not mer
 
 - **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
   statistics) against M0 and again after the M1 merge, then attacked by independent reviewers
-  twice. 41 findings: 29 fixed or guarded, 3 half done (L3, D1, L13), 9 open (S2, G4, D6 and L14
-  need a decision or more building; G2, S6, L6, G5 and L15 are low). All with tests except G5,
-  L14 and L15. Checks green (195 tests, 1 expected failure: G2).
+  twice. 41 findings: 29 fixed or guarded, 4 half done (L3, D1, L13, L14), 8 open (S2, G4 and D6
+  need a decision or more building; G2, S6, L6, G5 and L15 are low). All with tests except G5
+  and L15. Checks green (197 tests, 1 expected failure: G2).
 - **Needs the owner:** the ruleset on `paper-trail` (L3) and what "graduation" means (S2).
 - **Not proven live:** the workflow changes. The whole daily job ran clean with this code on a
   scratch copy of the real record, but not inside Actions. The first run after merging is the
@@ -687,7 +691,8 @@ Final for this audit (2026-11-12, 07:10 UTC). PR #5 is ready for review, not mer
   file, a bar added by hand, a push by anyone but the daily job) stops the daily job until a
   person has looked (L15, L3).
 - **Next, in order of value:** a third adversarial pass over `ledger.py`, `run_daily.check_record`
-  and the two scripts (two passes each found a way through); arrival times from GitHub for
-  accepted commits (L14); dividends (G4); a second ETF source (D6); crypto fees by volume tier.
+  and the two scripts (two passes each found a way through); dividends (G4); a second ETF
+  source (D6); crypto fees by volume tier; date-checking the commits of an accepted force-push
+  (L14).
 - **To resume:** read this section, run the checks in `AGENTS.md`, look at the remaining `xfail`
   test (`uv run pytest -rx tests/`).

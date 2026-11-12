@@ -484,3 +484,29 @@ def test_a_nan_in_the_research_record_does_not_switch_off_its_spread(repo: Path)
     )
     assert ledger.research_sharpes(repo, repo) == [1.5]
     assert ledger.research_tries(repo, repo) == 3  # still three tries
+
+
+def test_an_accepted_backdated_commit_counts_from_when_github_received_it(repo: Path) -> None:
+    """Audit L14 (second review): when a person accepts a back-dated push, the acceptance is
+    printed for good, but its decisions still counted from the date the commit claims. The
+    outside check writes down when GitHub really received such a commit; it counts from then."""
+    history: History = {"BTC": btc([(100, 100), (100, 150), (150, 200), (200, 200), (200, 200)])}
+    decide(repo, at(DAY1), "honest", {})
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 31))
+    # Pushed on day 4, but line and commit say day 2 (after the commit under it, so the dates
+    # inside the record are in order and only GitHub's log can tell).
+    day2 = DAY1 + timedelta(days=1)
+    decide(repo, at(day2, 0, 30), "cheat", {"BTC": 1.0})
+    commit(repo, "Daily run day 2", when=at(day2, 0, 31))
+    (fill,) = report.live_results(repo, history)["cheat"].fills
+    assert fill.time == datetime(2026, 11, 3, tzinfo=UTC)  # believed: bought at 150, sold at 200
+    # The next run's outside check sees the late arrival; a person accepts it.
+    forged = git(repo, "rev-parse", "HEAD")[:10]
+    note = repo / ledger.ACCEPTED_REWRITES
+    note.write_text(
+        f"commit {forged} says it was made at 2026-11-02T00:31:00Z but reached GitHub at "
+        "2026-11-04T22:31:00Z (by GrimsBot)\n"
+    )
+    (fill,) = report.live_results(repo, history)["cheat"].fills
+    assert fill.time == datetime(2026, 11, 5, tzinfo=UTC)  # the first open after it arrived
+    assert ledger.in_force(repo)[1] == 1  # and it is called late
