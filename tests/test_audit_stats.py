@@ -116,6 +116,33 @@ def test_the_scoreboard_says_how_fresh_each_assets_data_is(tmp_path: Path) -> No
     assert "Warning" not in weekly.render(tmp_path, fresh_only, tmp_path)
 
 
+def test_the_scoreboard_counts_days_a_strategy_never_decided_on(tmp_path: Path) -> None:
+    """Audit S4 (second half, fixed): a run that fails, is skipped by GitHub's scheduler or loses
+    its push leaves no decision that day, and a strategy that raises keeps its old position.
+    The scoreboard showed none of it: a strategy that decided on 3 days of 6 looked like one
+    that decided on all of them."""
+    flat = [Bar(DAY1 + timedelta(days=i), 100.0, 100.0, 100.0, 100.0, 1.0) for i in range(7)]
+
+    def decide(name: str, bars_seen: int, when: datetime) -> None:
+        ledger.write_decision(tmp_path, when, name, {"BTC": 1.0}, {"BTC": flat[:bars_seen]}, "t")
+
+    evening = datetime.combine(DAY1, time(22, 30), tzinfo=UTC)
+    for day in range(1, 7):  # every evening, seeing the bar that closed the midnight before
+        decide("steady", day, evening + timedelta(days=day))
+    for day in (1, 2, 5):  # the runs of days 3 and 4 never happened, and it stopped after day 5
+        decide("gappy", day, evening + timedelta(days=day))
+    # A run that is hours late (03:12 instead of 22:30) but sees each day's bar skips nothing.
+    for day in range(1, 7):
+        decide("late", day, evening + timedelta(days=day, hours=4, minutes=42))
+    data.append(tmp_path, "BTC", flat[:6])
+    history = data.load_all(tmp_path)
+    assert report.undecided_days(tmp_path, history) == {"gappy": 3}
+    text = report.render(tmp_path, history)
+    assert "Days of new prices with no decision" in text and "gappy 3." in text
+    # Without an asset that has a bar every day there is nothing to count on.
+    assert report.undecided_days(tmp_path, {"SPY": history["BTC"]}) == {}
+
+
 def test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point() -> None:
     """Audit S5 (fixed): Sharpe was annualised with sqrt(365) whatever the spacing of the equity
     points; with a point on weekdays only (an ETF-only history) it came out 20% too high."""

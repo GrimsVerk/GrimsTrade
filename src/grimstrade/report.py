@@ -228,6 +228,32 @@ def freshness(history: History) -> str:
     return "Prices through: " + ", ".join(parts) + "."
 
 
+def undecided_days(root: Path, history: History) -> dict[str, int]:
+    """Per strategy, the days of new prices on which it made no decision: the run failed, GitHub
+    skipped it, its push was lost, the strategy raised, or it was retired. It kept its old
+    position through them, and no other number shows that.
+
+    Counted on an asset with a bar every day (crypto). Each decision says which bars it saw
+    (`data_through`); a jump of more than one day between two decisions, or any stored day after
+    the last one, was never decided on. A run that is merely late skips nothing."""
+    daily = [s for s, cls in data.UNIVERSE.items() if cls == data.CRYPTO and history.get(s)]
+    if not daily:
+        return {}
+    sym = daily[0]
+    saw: dict[str, list[date]] = {}
+    for row in ledger.decisions(root):
+        through = row["data_through"].get(sym)
+        if through:
+            saw.setdefault(row["strategy"], []).append(date.fromisoformat(through))
+    out = {}
+    for name, days in saw.items():
+        between = sum(max((b - a).days - 1, 0) for a, b in zip(days, days[1:], strict=False))
+        missed = between + max((history[sym][-1].date - days[-1]).days, 0)
+        if missed:
+            out[name] = missed
+    return out
+
+
 def count_tries(root: Path, repo: Path) -> Trials:
     """All strategies tried: registered ones, live ones not yet registered, the research lane's
     (visible or recorded), with the research variants' Sharpes. Read-only."""
@@ -259,6 +285,15 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         footnote(trials),
     ]
+    idle = undecided_days(root, history)
+    if idle:
+        out += [
+            "",
+            "Days of new prices with no decision (a failed, skipped or lost run, or a strategy "
+            "that raised or was retired; it held its old position): "
+            + ", ".join(f"{name} {n}" for name, n in sorted(idle.items(), key=lambda x: -x[1]))
+            + ".",
+        ]
     accepted = root / "state" / "acknowledged-rewrites.txt"  # scripts/check-trail-activity.sh
     if accepted.exists() and accepted.read_text().strip():
         events = accepted.read_text().strip().splitlines()

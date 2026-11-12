@@ -54,7 +54,6 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | G3 | Crypto fee looks like the maker fee, fills are taker | medium | open: unverified |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L7 | A decision did not say which code made it | medium | half fixed |
-| S4 | Frozen data looks like a calm strategy | medium | half fixed |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
@@ -72,6 +71,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | S7 | A fill on a strategy's first day was left out of Sharpe and drawdown | medium | fixed |
 | S8 | The weekly page let a late starter "beat" a yardstick it merely copied | medium | fixed |
 | S3 | Returns over different periods were ranked in one table | medium | fixed |
+| S4 | Frozen data, or days without a decision, looked like a calm strategy | medium | fixed |
 | D7 | An empty answer from a source counted as "no news" | medium | fixed |
 | D8 | A day a source left out became a silent, permanent hole | medium | fixed (crypto), reported (ETFs) |
 | D9 | A run's problems left no trace in the record | medium | fixed |
@@ -219,21 +219,6 @@ ordinary tests that pin the numbers quoted here.
   (`tests/test_audit_ledger.py::test_a_decision_records_the_code_version`).
 - **Still open:** nothing reads it yet. The scoreboard should flag (or start a new row for) a
   strategy whose own file changed between two of its decisions, and count that as a new try.
-
-### S4. Frozen data looks like a calm strategy (medium, half fixed)
-
-- **What:** if a source stops (see D6), the gym keeps valuing that asset at its last price. The
-  strategy's line goes flat: no losses, no swings, a better drawdown and a distorted Sharpe. The
-  scoreboard never said how old each asset's newest bar is, nor on how many days a strategy made
-  no decision (GitHub's cron is best-effort: the first scheduled run started 4 hours 42 minutes
-  late; a rejected push loses the day; and a strategy that raises an error is skipped for the
-  day and keeps its old position).
-- **Fix (done, `report.py`):** the scoreboard has a "Prices through" line with the newest bar of
-  each asset and a bold **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
-  behind the newest one (`tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`).
-  `weekly.md`, the page the owner reads, shows the same line as a warning when anything is stale.
-- **Still open:** a count of days on which a strategy made no decision (failed runs are now on
-  record, see D9; days GitHub's scheduler skipped are not).
 
 ### Low
 
@@ -399,6 +384,26 @@ One commit per fix, except the three workflow changes, which share the same line
   0.54% and up to 4.9 points. **Fix (`weekly.py`, `report.restarted`):** the yardstick is
   restarted with fresh cash at the moment the strategy started: same first prices, same costs.
   `tests/test_audit_stats.py::test_an_exact_copy_of_a_yardstick_never_beats_it`.
+
+### S4. Frozen data, or days without a decision, looked like a calm strategy (medium)
+
+- **What:** if a source stops (see D6), the gym keeps valuing that asset at its last price. The
+  strategy's line goes flat: no losses, no swings, a better drawdown and a distorted Sharpe. The
+  scoreboard never said how old each asset's newest bar is, nor on how many days a strategy made
+  no decision (GitHub's cron is best-effort: the first scheduled run started 4 hours 42 minutes
+  late; a rejected push loses the day; and a strategy that raises an error is skipped for the
+  day and keeps its old position).
+- **Fix, part 1 (`report.py`):** the scoreboard has a "Prices through" line with the newest bar
+  of each asset and a bold **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
+  behind the newest one (`tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`).
+  `weekly.md`, the page the owner reads, shows the same line as a warning when anything is stale.
+- **Fix, part 2 (`report.py`):** the scoreboard counts, per strategy, the days of new prices on
+  which it made no decision, whatever the cause. Each decision records which bars it saw, so a
+  jump of more than one day between two decisions, or stored days after the last one, were never
+  decided on. A run that is only late skips nothing and is not counted. A retired strategy shows
+  up here with a growing number, instead of looking alive. On the real record the count is zero
+  (`...::test_the_scoreboard_counts_days_a_strategy_never_decided_on`).
+- **What is left:** the count is on the scoreboard only, not on the weekly page.
 
 ### G1, S5, T1 (medium to low)
 
