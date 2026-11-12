@@ -24,6 +24,9 @@ rules, and the simple rules do not earn more than holding everything; they lose 
   the ride: worst loss 69%, 37% and 26%; growth 18%, 18% and 13% a year. If the owner's limit is
   the worst loss, the third (`trend-vol`) is worth a paper slot. It did not pass as an "edge" and
   is not labelled one.
+- **How much could be luck.** Of the 17 rule versions that could have been picked, the best beat
+  "hold everything" by 0.22 Sharpe. If none of them had any edge, the best would still be
+  expected to show about 0.19 (`results/deflation.md`). So no new rule here has shown an edge.
 - **What to expect.** Published edges usually keep a quarter to a half of their backtest size. A
   realistic goal for the paper system is the benchmarks' return with much smaller losses.
 - **The untouched year.** The last 12 months of prices were never used, for any idea. They are
@@ -74,6 +77,7 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
   nine; each says what had been seen). All twelve tested and judged: `results/<idea>.md` each end
   with a dated verdict; `ideas.md` has every status.
 - `results/robustness.md`: front-runners on raw prices and at double costs.
+- `results/deflation.md`: the best edge seen against what luck alone would give (0.22 vs 0.19).
 - The summary and ranking above.
 
 **Doing**
@@ -102,6 +106,10 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
 
 ## Requests to the M1 lane (code in `src/`)
 
+- **Count the idea lab's tries in the deflated Sharpe.** `research/tries.md` has one row per
+  backtest; the rows with kind `variant` (17 on the six assets so far, plus the timing rules run
+  per asset) are the ones that could have been selected. `lib/deflation.py` shows one way to
+  read them.
 - **Credit dividends in the gym** (already in `docs/BACKLOG.md`; this makes it urgent). Raw TLT is
   0.99x over 2002-2025; with coupons it is 2.28x. SPY: 17x raw, 31x with dividends since 1993. The
   live scoreboard will understate every bond holder and flatter every rule that avoids bonds.
