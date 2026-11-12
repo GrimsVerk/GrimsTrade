@@ -156,8 +156,8 @@ forecasts are a coin toss (AUC 0.48 to 0.51); a planted signal is found, so the 
   the features is the weak trend effect" is, since 2003, hardly a signal.
 - The Sharpe bars could not have been passed. By the runs' own control
   (`results/ml-control.md`), a planted signal with a true correlation of about 0.12 with next
-  month's return, stronger than any published forecast, ends at 0.80 to 0.90 Sharpe: no better
-  than equal weight. So the Sharpe tables cannot tell "no signal" from "a real, ordinary
+  month's return, as strong as the best published forecasts, ends at 0.80 to 0.90 Sharpe: no
+  better than equal weight. So the Sharpe tables cannot tell "no signal" from "a real, ordinary
   signal". The result file says this; the README summary only half says it.
 - That leaves the AUC. With about 1,500 independent asset-months its standard error is about
   0.015, so 0.49 to 0.51 is consistent with no skill and also with the trend flag's 0.52.
@@ -169,3 +169,45 @@ forecasts are a coin toss (AUC 0.48 to 0.51); a planted signal is found, so the 
   that could only have seen a very large one. Run 2 is not evidence that ML cannot help with
   other information or a wider book. The README's own "Next" says the same; the plain-language
   summary should too.
+
+### 4. The held-out year was not used for any test, but it was looked at
+
+**What the runs say.** "The last 12 months of prices were never looked at, for any idea."
+
+**What I found.**
+
+- No held-out backtest was run. `tries.md` has no `heldout` row, and every backtest path loads
+  prices through `load_history("train")`, which drops bars after 2025-11-10.
+- But two figures in the repo were computed on the whole cache, held-out year included.
+  `protocol.md` (Data) and the README (requests to the M1 lane) give TLT as "0.99x raw, 2.28x
+  with coupons over 2002-2025" and SPY as "17x raw, 31x with dividends since 1993". On my fetch:
+
+  | | Raw | With dividends |
+  |---|---:|---:|
+  | TLT, first bar to the train cut (2025-11-10) | 1.10x | 2.43x |
+  | TLT, first bar to the end of the cache (2026-11-11) | 0.99x | 2.29x |
+  | SPY, first bar to the train cut | 15.5x | 28.0x |
+  | SPY, first bar to the end of the cache | 17.3x | 31.6x |
+
+  The quoted figures are the full-cache ones. Anyone who reads them next to the train-period
+  tables can work out that over the held-out year SPY rose about 11% and TLT fell about 10%.
+  They are also mislabelled: they run to November 2026, not 2025.
+- `protocol.md` already discloses one whole-cache print (the largest one-day moves, two of them
+  in the held-out year). This is a second, undisclosed one, from the same early session.
+- `idea_month_end_liquidity.py` reads every bar date in the cache, held-out year included, to
+  count trading days to month end. Dates only, no prices; it does not matter for the result.
+- To confirm the above I computed the same four ratios on the full cache. That is the only
+  held-out number I looked at.
+
+**What it changes.**
+
+- No train result is affected.
+- "Never looked at" is too strong. Whoever spends the held-out year should know that the
+  direction of two of the six assets in it is written in the repo. The held-out pass mark
+  ("not behind its twin") was weak before this; treat the forward paper ledger as the only
+  clean test.
+- The two figures should be recomputed to the train cut when the research files are next
+  edited (TLT 1.10x and 2.43x, SPY 15.5x and 28.0x). The argument they support, that raw
+  prices hide what bonds paid, stands either way.
+- A limit no harness can fix: an agent's own memory of how markets moved in 2025-26 is not
+  fenced off by a date cut.
