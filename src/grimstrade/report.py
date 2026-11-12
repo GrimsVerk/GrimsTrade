@@ -256,8 +256,8 @@ def freshness(history: History) -> str:
 
 def undecided_days(root: Path, history: History) -> dict[str, int]:
     """Per strategy, the days of new prices on which it made no decision: the run failed, GitHub
-    skipped it, its push was lost, the strategy raised, or it was retired. It kept its old
-    position through them, and no other number shows that.
+    skipped it, its push was lost, the source was down, the strategy raised, or it was retired.
+    It kept its old position through them, and no other number shows that.
 
     Counted on an asset with a bar every day (crypto). Each decision says which bars it saw
     (`data_through`); a jump of more than one day between two decisions, or any stored day after
@@ -340,8 +340,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     if idle:
         out += [
             "",
-            "Days of new prices with no decision (a failed, skipped or lost run, or a strategy "
-            "that raised or was retired; it held its old position): "
+            "Days of new prices with no decision (a failed, skipped or lost run, a source that "
+            "was down, a strategy that raised or was retired; the old position was held): "
             + ", ".join(f"{name} {n}" for name, n in sorted(idle.items(), key=lambda x: -x[1]))
             + ".",
         ]
