@@ -235,8 +235,8 @@ be committed raw (size and terms). Owner's call if you want to change the curren
 ### 4.3 Deribit public API (funding, DVOL implied volatility)
 - **What:** `get_funding_rate_history` (BTC-PERPETUAL, hourly), `get_volatility_index_data` (DVOL,
   the crypto VIX, hourly/daily), plus options chains and historical volatility.
-- **Probes 2026-11-12:** funding for 2021-01-01 -> 200 with hourly rows; for 2019-01-01 -> 200 but
-  empty (history start somewhere 2019-2020). DVOL for 2021-04-01 -> 200 with hourly OHLC (~86).
+- **Probes 2026-11-12:** funding for 2021-01-01 -> 200 with hourly rows; for 2019-07-01 and
+  2020-01-01 -> 200 with rows; for 2019-01-01 -> 200 but empty (history starts in H1 2019). DVOL for 2021-04-01 -> 200 with hourly OHLC (~86).
 - **Key / Cost:** none / free. **US runner:** unknown; Deribit excludes US customers, public API
   geo-blocking not verified.
 - **Verdict: ADD DVOL with wave 2.** The only free implied-vol series for crypto found. Funding is
@@ -427,6 +427,6 @@ Shared rules for all three:
   categories; catalogue, ranking, ingest plan written.
 - **Doing:** nothing.
 - **Next (if another session continues):** verify paid prices in section 7 on the vendors' pages;
-  find the Kraken bulk OHLCVT download link and its size; find the start date of Deribit funding
-  history (between 2019 and 2021); look for a free source of older ETF intraday data; check whether
+  find the Kraken bulk OHLCVT download link and its size; pin the exact start of Deribit funding
+  history (between 2019-01 and 2019-07); look for a free source of older ETF intraday data; check whether
   Tardis still offers free monthly samples (new path?).
