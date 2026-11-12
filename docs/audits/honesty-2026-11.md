@@ -335,9 +335,12 @@ One commit per fix, except the three workflow changes, which share the same line
   times a year in the backtest: about 9,000 USD a month, the 0.60% tier. Undercharged by 35
   basis points a trade, that is about 3.7% a year, against a backtest return of about 5% a year.
   Buy-and-hold BTC: 0.55% once.
-- **Fix (`gym.py`, one line, own commit; DECISIONS):** the crypto fee is 0.60%. The record has
-  no scored fills yet, so no number shown so far changes; crypto backtests get a little worse,
-  and the research lane's logged Sharpes were computed with the old fee.
+- **Fix (`gym.py`, one line, own commit; DECISIONS):** the crypto fee is 0.60%. The record had
+  no scored fills when this was written. The first ones (Bitcoin and Ethereum bought at the
+  2026-11-12 open) are scored by that evening's run: if this is merged after it, the rows that
+  hold crypto drop once by 0.35% of what they bought. That is the correction, not a loss.
+  Crypto backtests get a little worse, and the research lane's logged Sharpes were computed with
+  the old fee.
   `tests/test_audit_gym.py::test_a_crypto_fill_pays_the_taker_fee`.
 - **What is left:** it is one flat number. A slow account really pays 0.80% (0.2% too little
   charged on each of its few trades), a fast one 0.38% or less (too much charged). Fees by volume
