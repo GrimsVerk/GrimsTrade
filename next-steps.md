@@ -12,8 +12,11 @@ ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/te
       own token was never tried against the activity log).
 - [ ] After merging: tell the research lane that the crypto fee is 60 bps now (was 25; G3,
       DECISIONS). Their logged Sharpes used the old fee; new backtests will be a little worse.
-- [ ] Next audit pass: attack `ledger.in_force`, `check_append_only` and
-      `scripts/check-trail-activity.sh` a third time; two passes each found a way through.
+- [ ] After merging: bring `research-1`, `research-2` and `m1-wrapup` up to `main` or delete
+      them, and never re-run an old Daily run: old workflow files have no guards (L13).
+- [ ] Next audit pass: attack `ledger.py`, `run_daily.check_record` and the two scripts in
+      `scripts/` a third time; two passes each found a way through.
+- [ ] Build next from the audit: GitHub's arrival time for accepted commits (L14).
 - [ ] Open findings to build next: credit dividends (G4); a second ETF source, Stooq is dead
       (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
       tier (BACKLOG).

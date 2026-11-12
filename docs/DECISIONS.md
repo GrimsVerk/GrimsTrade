@@ -2,6 +2,15 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
+  refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
+  before the one under it or in the future; no record file or folder that is a symbolic link;
+  bar files with dates in order, no ETF bar on a weekend, no bar that has not closed. Only the
+  daily job (`github-actions[bot]`) pushes to `paper-trail`, and only from the tip of `main`;
+  any other push stops the next run until a person has looked and set `TRAIL_REVIEWED_UNTIL`.
+  Accepted events are kept for good in `ledger/acknowledged-rewrites.txt`. Why: each of these
+  was a way to show a result that never happened with every older check green. The price: one
+  bad push stops the record until a person acts. A stopped record beats a doubtful one.
 - 2026-11-12 (honesty audit 1, G3): The crypto fee is 60 bps (was 25). Why: fills at the open are
   market orders and pay the taker fee. Kraken Pro's fee page on 2026-11-12 (as served outside
   the US) lists taker 0.80% under 2,500 USD of 30-day volume, 0.60% from 2,500, 0.38% from

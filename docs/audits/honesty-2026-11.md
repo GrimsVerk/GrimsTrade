@@ -20,8 +20,10 @@ time, weekends, holidays and late runs included. The record so far (three runs) 
 - Crypto trades were charged 0.25%. An account like this one really pays about 0.6%; the
   simulation now charges that.
 - Prices that stopped, had holes or were corrected later went unreported. Now they show.
-- These guards are new. Reviewers attacked them twice and got through both times (all closed).
-  Expect a third attack to find more; until then call the record "checked", not "proven".
+- These guards are new. Independent reviewers attacked them twice and got through both times.
+  The second pass found nine more holes, five of them serious; all are closed except three
+  smaller ones (L13 to L15). Expect a third attack to find more: until then call the record
+  "checked", not "proven".
 
 **What the numbers can and cannot say.**
 
@@ -57,13 +59,21 @@ open first, then what is fixed, each by severity.
 | G4 | Dividends not credited, cash earns nothing: yardsticks 1 to 2.3% a year too low | medium | open: known, now sized |
 | D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged (first day: under 0.01%); cause open |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
+| L13 | Old code can still write the record (a re-run of an old run, a stale branch) | medium | half fixed; clean-up after merging |
+| L14 | An accepted back-dated push keeps the date it claims | medium | open: proposed |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
 | G5 | Small gym and table quirks (turnover, one-sided band, tiny weights) | low | open |
+| L15 | One unreadable line stops every later run for good | low | open: loud, not misleading |
 | L1 | A decision written after the outcome was accepted | high | fixed |
 | L2 | History could be rewritten with an ordinary push | high | fixed |
 | L4 | Stored bars could be edited unnoticed | high | fixed |
+| L10 | A record file swapped for a symbolic link escaped every check | high | fixed |
+| L11 | A back-dated commit was credited (on top of the record, or merged in beside it) | high | fixed |
+| D10 | A bar added by hand was traded on | high | fixed (a faked bar for a real trading day is only reported) |
+| S9 | A strategy name could write its own scoreboard row | high | fixed |
+| L12 | The outside check could be silenced or fooled | high | fixed |
 | S1 | A Sharpe ratio was printed from day two | high | fixed |
 | D2 | A stock split would be booked as a crash | high, unlikely | guarded |
 | G3 | Crypto trades were charged 0.25%; the real fee is 0.38% to 0.80% | medium | fixed (flat 0.60%) |
@@ -80,6 +90,7 @@ open first, then what is fixed, each by severity.
 | D7 | An empty answer from a source counted as "no news" | medium | fixed |
 | D8 | A day a source left out became a silent, permanent hole | medium | fixed (crypto), reported (ETFs) |
 | D9 | A run's problems left no trace in the record | medium | fixed |
+| S10 | One NaN in the research record weakened the deflated Sharpe | medium | fixed |
 | S5 | Sharpe assumed a point every calendar day | low | fixed |
 | L9 | A lost final newline glued record lines together for good | low | fixed |
 | T1 | A decision could be filled before it could have been pushed | low | fixed |
@@ -87,7 +98,8 @@ open first, then what is fixed, each by severity.
 
 Tests: `tests/test_audit_*.py`. A finding that is still open and has a crisp expected behaviour
 is an `xfail(strict=True)` test (1 left: G2); findings about size or judgement are
-ordinary tests that pin the numbers quoted here.
+ordinary tests that pin the numbers quoted here. L10 to L15, D10, S9 and S10 come from the
+second independent review (2026-11-12, 06:35 to 07:00 UTC).
 
 ## Open findings
 
@@ -151,17 +163,20 @@ ordinary tests that pin the numbers quoted here.
   passes; both real pushes arrived 1 second after their commits. If GitHub cannot be asked, the
   job goes on with a warning. After looking at a reported event a person sets the repository
   variable `TRAIL_REVIEWED_UNTIL` to move on. Agents can set that variable too (GrimsBot has
-  write access), so it is deliberately not a silent switch: an accepted event is written into the
-  trail and printed on the scoreboard on every run, a date in the future is refused, and each
-  new event stops the job again. Tests: `tests/test_audit_workflow.py` (fake `gh`).
+  write access), so it is deliberately not a silent switch: an accepted event is appended to
+  `ledger/acknowledged-rewrites.txt` in the trail (append-only like the ledger) and printed on
+  the scoreboard and the weekly page for good, a date in the future is refused, and each new
+  event stops the job again. A run that could not ask GitHub says so on both pages. Tests:
+  `tests/test_audit_workflow.py` (fake `gh`). Its weak spots found in the second review: L12.
 - **Not proven live:** the script ran with GrimsBot's token, not yet with the job's own token
   inside Actions. If that token may not read the activity log, the step prints a warning and
   checks nothing; look at the first run's log after merging.
-- **What no check here can close:** anyone with write access can add a workflow on a branch of
-  their own that pushes to `paper-trail` as `github-actions[bot]`, the same name the daily job
-  has. Such a push must still pass every other check (no rewrite, no back-dating beyond 10
-  minutes), so it can add decisions going forward but not with hindsight. Who has write access
-  is the real boundary.
+- **What no check here can close** (reasoned, not tried): anyone with write access can add a
+  workflow on a branch of their own that pushes to `paper-trail` as `github-actions[bot]`, the
+  name the daily job has. Such a push must still pass every other check (no rewrite, no merge,
+  no link, no bar by hand, no back-dating beyond 10 minutes), so as far as these checks go it
+  can add decisions going forward but not with hindsight. Who has write access is the real
+  boundary.
 - **Owner action (needs admin):** add a ruleset for `paper-trail` that blocks force pushes and
   deletion, with no bypass. The guard detects; only the ruleset prevents.
 
@@ -221,6 +236,36 @@ ordinary tests that pin the numbers quoted here.
 - **Proposed fix:** a second real ETF source. Alpaca's free data is in the BACKLOG; it needs a
   key stored as an Actions secret, which is the owner's call.
 
+### L13. Old code can still write the record (medium, half fixed; second review)
+
+- **What:** the guards live in the workflow file and the scripts of the commit a run executes.
+  Re-running an old run executes its old commit with its old workflow file (GitHub allows that
+  for 30 days; three old Daily runs exist). A manual start from another branch uses that
+  branch's workflow file, and `main` before this merge, `research-1`, `research-2` and
+  `m1-wrapup` still carry the old one: no guard, no outside check, and the old "start an empty
+  record" fallback.
+- **Fix (done, `scripts/checkout-trail.sh`):** the job refuses unless the commit it runs is the
+  tip of `main`. That covers a re-run of every run made after this is merged
+  (`tests/test_audit_workflow.py::test_only_the_tip_of_main_writes_the_record`). The cost: a run
+  that starts in the seconds in which `main` moves fails and has to be started again.
+- **Still open:** the three existing runs can be re-run until mid-December, and the stale
+  branches can be started by hand, by anyone with write access. After merging: bring the stale
+  branches up to `main` or delete them, and never re-run an old Daily run. Real prevention needs
+  the owner's ruleset on `paper-trail` (L3) and a push credential that only `main` can use.
+
+### L14. An accepted back-dated push keeps the date it claims (medium; second review)
+
+- **What:** when a person accepts a back-dated push with `TRAIL_REVIEWED_UNTIL`, the acceptance
+  is printed for good, but the decisions in that push still count from the date the commit
+  claims, not from when GitHub received it. The claim can no longer be earlier than the commit
+  under it (L11), so the gain is bounded by the gap between two runs: a day normally, more after
+  an outage. For an accepted force-push the commits it brought are not date-checked at all.
+- **Evidence (the reviewer's run):** received by GitHub on 2026-10-16, filled as if made on
+  2026-10-13, "late decisions: 0".
+- **Proposed:** the guard writes the arrival time GitHub logged for every commit it reports, and
+  `ledger.in_force` counts such a commit from then. Until that exists an accepted rewrite has to
+  be judged by hand; the scoreboard line names the commit and both times.
+
 ### Low
 
 - **G2. An order that cannot be paid for at its open is dropped.** Each asset's order executes at
@@ -246,6 +291,17 @@ ordinary tests that pin the numbers quoted here.
   folder, or on a `trail/` that is not a worktree, `check_append_only` returns 0 and the runner
   ignores that (`tests/test_audit_ledger.py::test_outside_a_git_checkout_the_check_silently_checks_nothing`).
   A trap for local runs only. Proposed: refuse a non-empty ledger with no committed version.
+  The second review adds: there the L1 dating is off as well (decisions count from their own
+  timestamps), so a back-dated line is credited in a local report.
+- **L15. One unreadable line stops every later run for good** (second review). A write cut
+  short by a killed run is committed by the job's last step and can never be removed; from then
+  on every run stops with a parse error before deciding anything. Loud, not misleading. The
+  same holds for everything the checks refuse (a merge, a linked file, a bar added by hand):
+  the record stops until a person replaces the branch and accepts that (L3). That is the
+  intended trade, a stopped record over a doubtful one, but it means one bad push can halt the
+  record. Proposed for unreadable lines only: skip them and count them on the scoreboard. Also
+  small: after an accepted deletion the first run of the new record stops the job once more
+  ("created 2 times") until the variable is moved again.
 
 ## Fixed in this branch
 
@@ -278,7 +334,9 @@ One commit per fix, except the three workflow changes, which share the same line
   decisions of days 2 and 3. Only the outside check (L3) would have caught it, and that check is
   skipped where GitHub's log cannot be asked. Now a commit counts from the latest time on its
   path: it can never be older than the commit under it, so back-dating gains nothing before the
-  previous run (`...::test_a_backdated_commit_gains_nothing_before_the_commit_under_it`).
+  previous run (`...::test_a_backdated_commit_gains_nothing_before_the_commit_under_it`). The
+  daily run goes further and refuses such a record outright; the reviewer then found a third
+  way, beside the record instead of on top of it (L11).
 - **What is left:** between two runs (a day at most) the commit date is still the forger's to
   choose. The L3 guard closes most of that from outside: a commit that reaches GitHub more than
   10 minutes after its claimed time stops the job. A forger is left with a 10-minute window,
@@ -311,6 +369,70 @@ One commit per fix, except the three workflow changes, which share the same line
 - **Fix (`report.py`):** no Sharpe under 30 days (the threshold the deflated Sharpe already
   had); after that it is printed with its standard error, e.g. `0.80 ±1.4`, and the footnote
   says what the ± means. Test: `tests/test_audit_stats.py::test_a_record_of_a_few_days_shows_no_sharpe_number`.
+
+### L10, L11, D10, S9, L12, S10. Holes found by the second review (high to medium)
+
+Two more independent reviewers attacked the new checks. Everything here was reproduced by
+running it before it was fixed.
+
+- **L10. A record file swapped for a symbolic link (high).** The checks followed links, so they
+  vouched for the history of whatever the link pointed at. One ordinary commit could replace the
+  ledger or a bar file by another file that "only ever grew": the reviewer turned -50% into
+  +199% with every check green. **Fix (`ledger.py`, `run_daily.py`):** a record file, or a
+  folder on the way to it, that is a link is refused wherever git is asked; so is a link at any
+  place a run writes to.
+  `tests/test_audit_ledger.py::test_a_record_file_swapped_for_a_symlink_is_refused`.
+- **L11. A back-dated commit was credited (high).** Two ways round the L1 fix. On top of the
+  record: line and commit both dated day 1 (see L1). Beside it: a commit dated day 1 whose
+  parent is the day-1 commit, holding the whole ledger plus one hindsight line, merged with the
+  real tip. The file is a pure append to both parents, and every line in it counted from the
+  forged date: +98.7% for a record that made 0.0%, nothing marked late. The outside check (L3)
+  should catch both, but only where GitHub's log can be read. **Fix (`ledger.check_history`):**
+  the run refuses a record whose history holds a merge (the daily job never merges), a commit
+  dated before the one under it, or one dated in the future (a single commit dated 2099 made
+  every later decision count from 2099, that is never). A shallow clone and `git replace` refs,
+  which let git vouch for history it does not have, are refused too.
+  `...::test_a_backdated_commit_merged_in_beside_the_record_is_refused` and three beside it.
+- **D10. A bar added by hand was traded on (high).** Appending a row is all it takes, and an
+  append passes the append-only check. A Saturday row in the four ETF files ("opened at 50,
+  closed at 100") filled a waiting order at 50: +100% for a strategy that was flat. A second row
+  for a stored day silently replaced that day's prices (-50% became +198%). **Fix (`data.py`,
+  `run_daily.py`):** every reader refuses a bar file with a date out of order or an ETF bar on a
+  weekend; the run also refuses a bar that has not closed yet; and a stored day the source does
+  not list is reported by each run that still looks back that far (5 days). **What is left:** a
+  bar faked for a real trading day, pushed before the daily job stores the real one, is kept and
+  scored. It shows as a price difference on the scoreboard (D1), and the push, unless made in
+  the daily job's name, stops the next run (L12).
+  `tests/test_audit_data.py::test_a_bar_added_by_hand_is_refused`,
+  `...::test_a_stored_day_the_source_does_not_list_is_reported`.
+- **S9. A strategy name could write its own scoreboard row (high).** Names went into the tables
+  as they were. A decision whose name held "|" and a line break printed a typed-in row (+214%,
+  "97%") on both pages on every run. And a name that existed only in the decisions got a row
+  without being counted as a try. **Fix (`report.py`, `ledger.py`):** names are shown with
+  letters, digits and `_.-` only; every name with a decision counts as a try.
+  `tests/test_audit_ledger.py::test_a_strategy_name_cannot_write_its_own_scoreboard_row`.
+- **L12. The outside check could be silenced or fooled (high).** (a) With the note of accepted
+  rewrites pushed as a link to `/dev/null`, a force-push plus the variable left no trace on the
+  scoreboard. (b) The note was rebuilt from GitHub's answer on every run, so it would vanish if
+  GitHub stopped listing the event (how long that log is kept is not documented). (c) A
+  force-push in an answer that was cut short was thrown away with the rest. (d) A run that could
+  check nothing looked like any other. (e) Commits arriving by a merged pull request were not
+  looked at, nor was who pushed. (f) A tag named `paper-trail` was checked out instead of the
+  branch. (g) The page the owner reads said nothing of any of it. **Fix (both scripts,
+  `report.py`, `weekly.py`):** accepted events go to `ledger/acknowledged-rewrites.txt`,
+  append-only, never through a link; what arrived of a cut-short answer is checked; each run
+  writes down what it could check and both pages say so in bold when it could not; every kind of
+  push is checked and only the daily job's are accepted; branch names are given in full. Tests:
+  `tests/test_audit_workflow.py`.
+- **S10. One NaN in the research record weakened the deflated Sharpe (medium).** A line with
+  `"sharpe": NaN` made the spread of the tries' Sharpes NaN, and the formula then dropped that
+  term: 17.5% read as 41.8%. **Fix (`ledger.py`):** only finite numbers are read.
+  `...::test_a_nan_in_the_research_record_does_not_switch_off_its_spread`.
+- **Smaller, fixed:** a lost final newline re-dated the last decision to the next run (L9; a
+  line is now dated by its last byte); a decision written by hand, without a fingerprint, was
+  not flagged as a code change (L7); the report command never ran the checks (it does now, and
+  refuses like the daily run); a review date not in plain UTC was compared as text; an event
+  without an actor shifted the columns of GitHub's answer.
 
 ### D2. A stock split would be booked as a crash (high impact, unlikely for today's four ETFs)
 
@@ -525,26 +647,48 @@ One commit per fix, except the three workflow changes, which share the same line
   0.000000 USD); the deflated Sharpe under a zero-skill null (reads 95% or more in at most 0.8%
   of worlds); the rule that skips a decision when no data is new; re-runs the same evening and
   across midnight; `append` with unordered, duplicate and older bars; each source's parsing.
+- **Second independent review** (two more reviewers: the ledger checks; the workflow and its
+  scripts). Attacked and found sound: a record file deleted and re-added, replaced by a folder,
+  or moved away with a forged one put in its place (all caught); a rewrite on the third parent
+  of a merge; a file-mode change; a pushed `.gitattributes` (fails closed); lines stamped 1999
+  or 2099; two commits in the same second; author dates (ignored: the committer date counts, in
+  the ledger and in the outside check alike); byte-order marks and UTF-16 (refused loudly);
+  padding, long lines and NUL bytes (cannot move a line into an older commit); one back-dated
+  commit among several in one push, also behind a merge; the review variable cleared, set too
+  early, or holding shell code (never executed); a note deleted by the forger's push (it comes
+  back); a forged `scoreboard.md` (every run renders it afresh). GitHub's log, read live: one
+  plain time format, newest first; a deleted branch keeps its log.
+- **The whole daily job, run with this branch's code** against a scratch copy of the real record
+  and the live sources (07:06 UTC): clean, no new bars, no decisions (rightly), and the three
+  price differences of D1 on the scoreboard.
 - **The M1 strategies** use no clock, no randomness and no files: they see only the bars the
   runner hands them. I did not review their trading logic (the M1 lane had its own review).
 
 ## Status
 
+Final for this audit (2026-11-12, 07:10 UTC). PR #5 is ready for review, not merged.
+
 - **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
-  statistics) against M0 and again after the M1 merge, then attacked once more by two independent
-  reviewers. 32 findings: 20 fixed or guarded, 4 half done (D1, L3, L7, S4), 8 open (S2, G4, G3,
-  D6 need a decision or outside facts; G2, S6, L6, G5 are low). All with tests except G3
-  and G5. Checks green.
-- **Doing (session 3, from 06:35 UTC, hard stop 08:40 UTC):** the second adversarial pass over
-  `ledger.in_force`, `check_append_only` and the two trail scripts (two independent reviewers);
-  re-checking the record after its third run (`paper-trail` at `e7c43e0`); then final summary
-  and ranking, and PR #5 marked ready for review.
-- **Not proven live:** the workflow changes. The first run after merging is the test: its log
-  must show "GitHub's activity log agrees with the paper-trail history".
+  statistics) against M0 and again after the M1 merge, then attacked by independent reviewers
+  twice. 41 findings: 29 fixed or guarded, 3 half done (L3, D1, L13), 9 open (S2, G4, D6 and L14
+  need a decision or more building; G2, S6, L6, G5 and L15 are low). All with tests except G5,
+  L14 and L15. Checks green (195 tests, 1 expected failure: G2).
+- **Needs the owner:** the ruleset on `paper-trail` (L3) and what "graduation" means (S2).
+- **Not proven live:** the workflow changes. The whole daily job ran clean with this code on a
+  scratch copy of the real record, but not inside Actions. The first run after merging is the
+  test: its log must show "GitHub's activity log agrees with the paper-trail history", and the
+  scoreboard must not say "could not ask GitHub".
+- **After merging:** bring `research-1`, `research-2` and `m1-wrapup` up to `main` or delete
+  them, and never re-run an old Daily run (L13). Tell the research lane that the crypto fee is
+  60 basis points now (G3). If the merge comes after the evening run of 2026-11-12, the rows
+  holding crypto drop once by 0.35% of what they bought (G3).
 - **Changed for whoever starts a brand-new record:** the first run must be started by hand with
   "start a new record" ticked. The existing record is not affected.
-- **Next, in order of value:** a second adversarial pass over `ledger.in_force` and
-  `scripts/check-trail-activity.sh` (new code that guards the record); the second halves of L7
-  and S4; G2.
+- **A stopped record is by design:** whatever the checks refuse (a rewrite, a merge, a linked
+  file, a bar added by hand, a push by anyone but the daily job) stops the daily job until a
+  person has looked (L15, L3).
+- **Next, in order of value:** a third adversarial pass over `ledger.py`, `run_daily.check_record`
+  and the two scripts (two passes each found a way through); arrival times from GitHub for
+  accepted commits (L14); dividends (G4); a second ETF source (D6); crypto fees by volume tier.
 - **To resume:** read this section, run the checks in `AGENTS.md`, look at the remaining `xfail`
   test (`uv run pytest -rx tests/`).
