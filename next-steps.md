@@ -1,5 +1,10 @@
 # Next steps
 
+## In flight: honesty audit 1 (branch `audit-1`)
+
+Adversarial audit of the record's honesty. Report, findings and resume point (Status section):
+`docs/audits/honesty-2026-11.md`. Tests: `tests/test_audit_*.py`.
+
 ## M0 status: built, not yet proven live
 
 Done: template scaffold, data ingest (BTC, ETH, SPY, QQQ, GLD, TLT, append-only CSV), gym
