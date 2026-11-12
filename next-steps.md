@@ -59,4 +59,4 @@ maths in `stats.py` and (b) each strategy's faithfulness to its paper; then fix 
 Fable final review of PR #3.
 
 Next (in order):
-- Fable final review of PR #3; fix; mark ready; try `gh pr merge --rebase --delete-branch`.
+- Fable final review of PR #3 (running); fix; mark ready; try `gh pr merge --rebase --delete-branch`.
