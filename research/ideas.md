@@ -41,6 +41,7 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | ml-linear | Machine learning | testing | [card](cards/ml-linear.md) | Logistic / ridge regression on 15 features, purged walk-forward |
 | ml-gbm | Machine learning | testing | [card](cards/ml-gbm.md) | Gradient boosting on the same features; 9 settings, all logged |
 | ml-filter | Machine learning | testing | [card](cards/ml-filter.md) | `tsmom12` with a model grading its trades (meta-labelling) |
+| ml-sizing | Machine learning | testing | [card](cards/ml-sizing.md) | Same models, position follows the forecast. Written after the first three failed and a control showed their sizing rule was blunt |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 

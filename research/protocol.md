@@ -166,3 +166,21 @@ other ETFs, the 6 other coins, and the four indexes as one pooled portfolio.
 
 **Tries.** Every backtested model configuration is a row in `tries.md`, sweeps included.
 Forecast-skill numbers (AUC and the like) are read from those same runs. Seeds are fixed.
+
+## Two more ways from forecast to position (added 2026-11-12 02:25 UTC, run 2)
+
+Written after `ml-linear`, `ml-gbm`, `ml-filter` and the first positive control
+(`results/ml-control.md`) had been seen. The control showed that the rule above (full slot at
+average confidence) hardly moves the position, so it cannot turn even a planted signal into
+Sharpe. These two rules apply to later tests only; the three cards above stay judged as run.
+
+- `-prop` (proportional): weight = slot x clip(q / 2, 0, 1). Average confidence holds half a
+  slot, twice the average a full one, an expected loss nothing. A model with no skill holds
+  half of everything: equal weight at half size, the same Sharpe as equal weight.
+- `-low` (step aside on the weakest forecasts): the full slot, unless the forecast is below
+  the 25th percentile of the model's own out-of-fold forecasts on its training rows (purged
+  CV folds as above, with the setting in force). A model with no skill is out a quarter of
+  the time at random; `tsmom12` is out 24% of the time.
+
+A converter is only worth believing if the control shows it works: planted correlation 0.10
+must come out ahead of `tsmom12` on the six assets. The control is rerun with each rule.
