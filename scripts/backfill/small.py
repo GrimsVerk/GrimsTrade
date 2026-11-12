@@ -11,25 +11,14 @@ from __future__ import annotations
 import json
 import sys
 import time
-import urllib.request
-from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
 
 from grimstrade.cache import cache_root, fetch_file, start_job
 from grimstrade.sources import http_get
 
-
-def plain_get(url: str) -> bytes:
-    """FRED/ALFRED stall an unknown User-Agent (probed 2026-11-12); send a generic one."""
-    req = urllib.request.Request(url, headers={"User-Agent": "curl/8.10.1"})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        body: bytes = resp.read()
-        return body
-
-
-def get_for(url: str) -> Callable[[str], bytes]:
-    return plain_get if "stlouisfed.org" in url else http_get
-
+# FRED/ALFRED's CSV endpoints stall our (honest) User-Agent since 2026-11-12. We don't disguise
+# the client; they are skipped until the owner decides (FRED's official API needs a free key).
+SKIP_HOSTS = ("stlouisfed.org",)
 
 TODAY = datetime.now(UTC).date()
 NOW = int(time.time())
@@ -245,10 +234,10 @@ def main() -> int:
         page += 1
         time.sleep(1)
     for i, (rel, url) in enumerate(jobs):
-        if (root / rel).exists():
+        if (root / rel).exists() or any(h in url for h in SKIP_HOSTS):
             continue
         try:
-            fetch_file(root, rel, url, get_for(url))
+            fetch_file(root, rel, url, http_get)
         except Exception as e:  # noqa: BLE001
             print(f"FAIL {rel}: {e!r}", flush=True)
             errors += 1

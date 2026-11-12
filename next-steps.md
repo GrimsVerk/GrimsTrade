@@ -18,8 +18,10 @@ Brief: chief-of-staff/briefs/grimstrade-ingest-1.md. Cache and job state: `docs/
 - Next:
   - [ ] Rerun `scripts/snapshot_rolling.py` daily until the daily collection below exists (each
         day is a new dated folder; nothing older than the windows can be recovered).
-  - [ ] Coin Metrics community API returned 403 to our client: try a browser-like User-Agent or
-        smaller `page_size`.
+  - [ ] Owner: FRED/ALFRED CSV endpoints stall our honest User-Agent (curl's default gets 200),
+        so `small.py` skips them (`SKIP_HOSTS`). We don't disguise the client. Options: a free
+        FRED API key (owner's account; its JSON API also gives real-time vintages exactly), or
+        ask FRED. Until then no FRED/ALFRED macro data; the Treasury curve covers rates.
   - [ ] Kraken OI snapshot holds only the last 2,000 hours (one call); page back with `since`.
   - [ ] Wire `intraday.collect(trail/data/intraday, now, http_get)` into `run_daily` after the
         ledger commit step, inside its own try/except. First check that `run_daily.check_record`
