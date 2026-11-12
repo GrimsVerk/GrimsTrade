@@ -135,6 +135,23 @@ def test_xs_momentum_keeps_cash_for_cohorts_older_than_the_data() -> None:
     assert "2026-10: BTC" in reason and "2026-09: cash" in reason
 
 
+def test_xs_momentum_forms_a_cohort_only_when_crypto_has_closed_the_month() -> None:
+    # 2026-09-30 is a Wednesday. At that evening's decision the ETF bar for 09-30 is in, but the
+    # crypto bar for 09-30 closes at midnight: the month is not complete for crypto until it is.
+    def cut(h: History, crypto_last: date, etf_last: date) -> History:
+        return {
+            s: [b for b in bars if b.date <= (crypto_last if UNIVERSE[s] == "crypto" else etf_last)]
+            for s, bars in h.items()
+        }
+
+    trends = {"BTC": 0.002, "ETH": -0.002, "SPY": 0.0005, "QQQ": 0.001, "GLD": -0.0003, "TLT": 0.0}
+    full = universe(400, trends)
+    _, before = xs_momentum.decide(cut(full, date(2026, 9, 29), date(2026, 9, 30)))
+    assert "2026-09:" not in before and "2026-08:" in before
+    _, after = xs_momentum.decide(cut(full, date(2026, 9, 30), date(2026, 10, 1)))
+    assert after.split(": ", 1)[1].startswith("2026-09:")
+
+
 # --- volatility targeting ---
 
 

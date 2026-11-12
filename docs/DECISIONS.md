@@ -29,14 +29,28 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
     of mass, 1/N per asset; negative signal = cash (no shorts); per-asset size capped at 1/N.
   - `xs_momentum` (J&T 1993): J=6/K=6, month-end formation, no skip week; winners = top third
     (a decile of 6 assets is empty); losers not shorted.
-  - `vol_target_spy`: SPY only (the market portfolio of Moreira & Muir), 10% target (Harvey et
-    al. 2018), 21-trading-day realized vol, capped at 100%.
+  - `vol_target_spy`: SPY only, Harvey et al. (2018) style: inverse vol toward a 10% target,
+    re-decided daily, 21-trading-day equal-weight realized vol, capped at 100%. Not Moreira &
+    Muir (2017), who scale by inverse variance of the past month, rebalance monthly and lever up
+    in calm markets.
   - `risk_parity` (AFP 2012): inverse vol over the whole universe, 3-year window of daily
     returns, an asset joins after 1 year of history; unlevered (the paper levers).
-  - `crypto_mean_reversion`: Connors RSI(2) < 10, close above 200-day SMA, exit when close above
-    5-day SMA; BTC and ETH, half each.
+  - `crypto_mean_reversion`: Connors RSI(2) < 10 (the common looser variant; the book's tested
+    system uses < 5), close above 200-day SMA, exit when close above 5-day SMA, windows counted
+    in daily crypto bars (calendar days); BTC and ETH, half each.
   - Vol is annualised per asset class: 365 bars/yr crypto, 252 ETFs (MOP use 261; the
     difference is under 2%). The Sharpe convention (365 days) is unchanged.
+- 2026-11-12: Every strategy re-decides every day; the papers' monthly rebalancing (MOP 2012,
+  AFP 2012) is not copied. The gym's 1% band is the only damping (more turnover, more whipsaw near
+  a zero signal). `xs_momentum` still forms cohorts at month ends. Why: one daily decision time
+  for all strategies keeps the runner simple; changing it would be a new try.
+- 2026-11-12: Execution timing. Decisions run once a day at 22:30 UTC and fill at the next open.
+  Crypto daily bars close at 00:00 UTC, so a crypto signal from bar d is filled at the open of
+  d+2: about one day later than Connors' close-of-signal execution. `crypto_mean_reversion` is
+  therefore "RSI(2) with one-day-delayed execution"; this costs it some edge and is the honest
+  version of what we can run. A second, crypto-only run just after 00:00 UTC is in BACKLOG.
+  `xs_momentum` counts a month as complete only once every crypto asset has its bar for that
+  month end (a Fable review caught cohorts being re-picked the next day).
 - 2026-11-12: Funding-rate carry is not built in M1. A keyless source exists (Kraken Futures
   `historicalfundingrates`), but carry needs a short perpetual leg and the gym is long-only spot.
   In BACKLOG.

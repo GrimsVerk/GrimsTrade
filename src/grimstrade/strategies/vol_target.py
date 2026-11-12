@@ -1,9 +1,10 @@
-"""Volatility targeting on SPY (Moreira & Muir 2017, "Volatility-managed portfolios", JF;
-Harvey et al. 2018, "The impact of volatility targeting", JPM).
+"""Volatility targeting on SPY, in the style of Harvey et al. 2018 ("The impact of volatility
+targeting", JPM); the idea's academic case is Moreira & Muir 2017 ("Volatility-managed
+portfolios", JF), who scale by inverse variance, monthly, with leverage.
 
 Hold SPY scaled by target / recent volatility: less stock when markets are wild, more when calm.
-Volatility is the realized volatility of the last month of daily returns (21 trading days, as in
-Moreira & Muir); the target is 10% a year (Harvey et al.'s standard). Unlevered: at most 100% SPY,
+Volatility is the realized volatility of the last month of daily returns (21 trading days, i.e. one
+month); the target is 10% a year (Harvey et al.'s standard). Unlevered: at most 100% SPY,
 the rest in cash. Compare it with buy_hold_spy.
 """
 
