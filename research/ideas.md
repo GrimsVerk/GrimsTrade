@@ -43,6 +43,7 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | ml-filter | Machine learning | testing | [card](cards/ml-filter.md) | `tsmom12` with a model grading its trades (meta-labelling) |
 | ml-sizing | Machine learning | testing | [card](cards/ml-sizing.md) | Same models, position follows the forecast. Written after the first three failed and a control showed their sizing rule was blunt |
 | ml-payoff | Machine learning | testing | [card](cards/ml-payoff.md) | Same features, trained on payoff (months weighted by size) instead of direction. Written after the first four failed |
+| ml-pooled | Machine learning | testing | [card](cards/ml-pooled.md) | Same models trained on 33 markets instead of six. Written after the first five failed |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 

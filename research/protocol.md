@@ -197,3 +197,19 @@ exactly when the expected log return is positive, so "hold the full slot when th
 P(up) > 0.5" is the hold-or-not rule that would have grown the training rows' money fastest.
 Purged CV scores use the same weights. The `raw` regression target is the 28-day log return
 itself, unscaled and unclipped; hold the full slot when the forecast is positive.
+
+## Pooled training (added 2026-11-12 06:40 UTC, run 2)
+
+Written after `ml-linear`, `ml-gbm`, `ml-filter`, `ml-sizing`, `ml-payoff` and the control had
+been seen. For `ml-pooled` and later tests only.
+
+A pooled model is fitted on the rows of five sets together: the six live assets, the 8 other
+ETFs, the 9 sector ETFs (until now signal inputs only), the 6 other coins and the four indexes
+(33 markets). Each set's cross-asset features (`breadth`, `univ_mom_1m`, `univ_vol_shock`,
+`rank_12m`) are computed inside that set. Every row counts once, with no weights by set. The
+S&P 500 warm-up rows are left out, because the index set already holds the S&P 500 from 1962;
+after 1993 the index and SPY are both in (two rows for nearly the same asset: accepted). The
+walk-forward, purge and embargo are unchanged: at a fit, a row of any set is usable only if
+its label window ended at least 7 days before the fit date. The training rows do not depend on
+which universe is traded. Trading starts on the same day as for the unpooled models (the
+first-model rule applied to the traded universe's own rows), so the tables compare.

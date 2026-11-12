@@ -29,7 +29,16 @@ from common import (
     trailing_logret,
     vol_series,
 )
-from harness import Panel, decide_time, load_history
+from harness import (
+    OOU_COINS,
+    OOU_ETFS,
+    OOU_INDEXES,
+    SECTORS,
+    SYMS,
+    Panel,
+    decide_time,
+    load_history,
+)
 from sklearn.ensemble import HistGradientBoostingClassifier, HistGradientBoostingRegressor
 from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics import log_loss, roc_auc_score
@@ -198,6 +207,39 @@ def training_rows(panel: Panel, fit_day: date) -> Rows:
     return _concat(parts)
 
 
+# --- pooled training rows (protocol.md, "Pooled training") ---
+
+POOL_SETS = {"six": SYMS, "etf": OOU_ETFS, "sector": SECTORS, "coin": OOU_COINS, "idx": OOU_INDEXES}
+
+
+def pool_history() -> dict[str, dict[str, list[Any]]]:
+    out = {}
+    for name, syms in POOL_SETS.items():
+        hist = load_history("train", True, syms)
+        if name == "idx":  # as `common.ctx("idx")`: the S&P 500 index from 1961
+            hist["GSPC"] = [b for b in hist["GSPC"] if b.date.year >= 1961]
+        out[name] = hist
+    return out
+
+
+@cache
+def pool_panels() -> dict[str, Panel]:
+    return {name: Panel(hist) for name, hist in pool_history().items()}
+
+
+def pooled_rows(fit_day: date, panels: Mapping[str, Panel] | None = None) -> Rows:
+    """Rows of all five sets usable at a fit on `fit_day`, each set with its own cross-asset
+    features. No warm-up rows: the index set already holds the S&P 500 from 1962. The same rows
+    whichever universe is traded."""
+    last = fit_day - timedelta(HORIZON + EMBARGO)
+    panels = pool_panels() if panels is None else panels
+    return _concat([labelled(p, d) for p in panels.values() for d in fridays(p, last)])
+
+
+def rows_for(spec: Spec, panel: Panel, fit_day: date) -> Rows:
+    return pooled_rows(fit_day) if spec.pool else training_rows(panel, fit_day)
+
+
 # --- models ---
 
 
@@ -212,6 +254,7 @@ class Spec:
     grid: tuple[tuple[tuple[str, float], ...], ...]
     meta: bool = False
     weight: str = ""  # "pay": rows weighted by |28-day log return| (protocol: payoff weights)
+    pool: bool = False  # train on the rows of all five sets (protocol: pooled training)
 
 
 def _grid(*settings: Mapping[str, float]) -> tuple[tuple[tuple[str, float], ...], ...]:
@@ -249,6 +292,8 @@ TREE_PAY = Spec(
     "tree-pay", "tree", "up", _grid({"max_depth": 2, "min_samples_leaf": 200}), weight="pay"
 )
 GBM_RAW = gbm_spec("gbm-raw", target="raw")
+GBM_POOL = Spec("gbm-pool", "gbm", "up", _grid(GBM_BASE), pool=True)
+LOGIT_POOL = Spec("logit-pool", "logit", "up", LOGIT.grid, pool=True)
 META_GBM = gbm_spec("meta-gbm", meta=True)
 META_LOGIT = Spec("meta-logit", "logit", "up", LOGIT.grid, meta=True)
 
@@ -417,7 +462,7 @@ def model_for(view: View, spec: Spec) -> Fitted | None:
     if key not in memo:
         fit_day = first_friday(year)
         assert fit_day <= view.today
-        rows = training_rows(view.panel, fit_day)
+        rows = rows_for(spec, view.panel, fit_day)
         memo[key] = fit(spec, rows) if len(rows) >= MIN_ROWS else None
     return memo[key]  # type: ignore[return-value]
 
@@ -428,7 +473,7 @@ def low_for(view: View, model: Fitted) -> float:
     key = ("ml-low", model.spec.name, year)
     memo = view.panel.cache
     if key not in memo:
-        memo[key] = oof_quantile(model, training_rows(view.panel, first_friday(year)))
+        memo[key] = oof_quantile(model, rows_for(model.spec, view.panel, first_friday(year)))
     return memo[key]  # type: ignore[return-value]
 
 
