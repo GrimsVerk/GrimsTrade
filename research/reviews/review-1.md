@@ -87,8 +87,10 @@ behind in two of the three eras since.
 
 Taking out a rule's best stretch always hurts it. The point here is that it is the only such
 stretch, and that it happened on a book the owner will never hold. The 2008 crisis is inside the
-2003-2025 row: the trend rule lost 4% there against 20%, and gave that back in false alarms in
-the years around it.
+2003-2025 row: the trend rule lost 4% there against 20%, and gave that back by being late back
+in. Since 2003 it finished ahead of equal weight in 6 calendar years of 23 (among them the three
+worst for equal weight: 2008, 2018 and 2022) and behind in 17, by 20 points or more in 2003,
+2009, 2019, 2020 and 2023, each the year after a fall.
 
 The rule itself is not fragile in the usual ways: any decision weekday gives 1.04 to 1.05, and
 lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more give 0.82 to
@@ -356,7 +358,9 @@ the FTSE through 2025.
   reopen finding 1.
 - ETF costs of 2 bps a side are too low for the 1990s. The rules trade their equity one to five
   times a year, so even ten times that cost moves Sharpe by about 0.02.
-- `tsmom12` is ranked on a one-sided p of 0.08. Two-sided it is about 0.16.
+- `tsmom12` is ranked on a one-sided p of 0.08. Two-sided it is about 0.16. The bootstrap uses
+  blocks of 20 days on average; with blocks of 5 days I get 0.06 and with 125 days or more
+  0.10. The 2003-2025 comparison stays at about 0.5 whatever the block.
 
 ## What I attacked and found sound
 
@@ -364,7 +368,10 @@ the FTSE through 2025.
   neither the gym nor the harness, from the rules as documented: signal from Friday's close
   (for crypto the last full UTC day), fill at the next open, 2 or 30 bps a side, 1% band. The
   account balance matches the harness on every day, to the cent (largest relative difference
-  0). No off-by-one in rebalancing or fills.
+  0). No off-by-one in rebalancing or fills. The replay is one asset at a time; how the gym
+  shares cash between several assets I read but did not replay.
+- **Cards before tests.** For all 21 cards the commit that adds the card is earlier than the
+  idea's first row in `tries.md`.
 - **Look-ahead.** Every strategy reads prices through `View`, which hands out only the bars
   closed before the decision. The series that are precomputed once over the whole history
   (EWMA volatility, the RSI state, the HMM filter, Hawkes events, the absorption ratio) are
@@ -380,6 +387,9 @@ the FTSE through 2025.
 - **Costs.** As documented, confirmed by the replay. Doubling them is already in
   `results/robustness.md`.
 - **Stability of the trend rule.** Any weekday, and 9 to 12 months, give the same picture.
+- **The crypto slot table.** `results/crypto-slot-size.md` reproduces exactly (5% a coin: 18.0%
+  a year, worst loss 30.5%; equal slots: 35.3% and 47.0%). It starts in 2013, so it does not
+  carry the dot-com problem. It remains the owner's largest risk setting.
 - **The log.** `tries.md` has 268 rows: 58 variants (52 on the six assets, 6 on single assets),
   107 baselines, 103 robustness runs, none held-out. The 52 in the luck check are the right 52.
 
@@ -387,6 +397,7 @@ the FTSE through 2025.
 
 - The literature survey, and whether each card is a fair version of its paper.
 - A re-run of every result. I re-ran the baselines, the five cautious rules of finding 2, three
-  ML models, `hmm-regime` and `hawkes-clustering`. The other results I read but did not re-run.
-- Whether the bootstrap p-values are well calibrated. I used them as the runs did.
+  ML models, `hmm-regime`, `hawkes-clustering` and `crypto-slot-size`. The other results I read
+  but did not re-run.
+- Whether the bootstrap p-values are well calibrated, beyond the block lengths in finding 8.
 - The M1 code in `src/` beyond the gym's replay and the bar timing.
