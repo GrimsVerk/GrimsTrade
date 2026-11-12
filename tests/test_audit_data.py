@@ -96,22 +96,52 @@ def test_a_split_is_not_stored_as_a_crash(tmp_path: Path) -> None:
         data.append(tmp_path, "SPY", after_split)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit D3: nothing checks a bar before it is stored for ever; a zero price then "
-    "crashes every later run and cannot be removed without rewriting history",
-)
-def test_a_nonsense_bar_is_not_stored(tmp_path: Path) -> None:
+def test_a_nonsense_bar_is_not_stored() -> None:
+    """Audit D3 (fixed): nothing checked a bar before it was stored for ever. A zero open made
+    the gym divide by zero on every later run, and the row could not be removed."""
     now = datetime(2026, 11, 12, 22, 30, tzinfo=UTC)
-    body = kraken_body([(D10, 100.0, 101.0, 99.0, 100.0), (D11, 0.0, 101.0, 0.0, 100.0)])
-    bars = sources.fetch("BTC", D10, now, only("kraken", body))
-    # Today the zero-open bar comes straight through...
-    if any(b.open <= 0 for b in bars):
-        # ...and a strategy buying at that open divides by zero: the daily run dies, every day.
-        decision = Decision(datetime(2026, 11, 10, 22, 30, tzinfo=UTC), {"BTC": 1.0})
-        with pytest.raises(ZeroDivisionError):
-            gym.simulate([decision], {"BTC": bars})
-    assert all(b.low > 0 and b.low <= min(b.open, b.close) <= b.high for b in bars)
+    zero_open = kraken_body([(D10, 100.0, 101.0, 99.0, 100.0), (D11, 0.0, 101.0, 0.0, 100.0)])
+    with pytest.raises(RuntimeError, match="kraken: nonsense bar 2026-11-11"):
+        sources.fetch("BTC", D10, now, only("kraken", zero_open))
+    # The damage it would have done:
+    bad = [Bar(D10, 100.0, 101.0, 99.0, 100.0, 1.0), Bar(D11, 0.0, 101.0, 0.0, 100.0, 1.0)]
+    decision = Decision(datetime(2026, 11, 10, 22, 30, tzinfo=UTC), {"BTC": 1.0})
+    with pytest.raises(ZeroDivisionError):
+        gym.simulate([decision], {"BTC": bad})
+
+    # Columns mixed up (low above the open) is caught the same way, and the next source is used.
+    def get(url: str) -> bytes:
+        if "kraken" in url:
+            return kraken_body([(D10, 100.0, 99.0, 101.0, 100.0)])
+        ts = int(datetime(2026, 11, 10, tzinfo=UTC).timestamp())
+        return json.dumps([[ts, 99.0, 101.0, 100.0, 100.5, 10.0]]).encode()
+
+    assert sources.fetch("BTC", D10, now, get) == [Bar(D10, 100.0, 101.0, 99.0, 100.5, 10.0)]
+
+
+@pytest.mark.parametrize(
+    "bar",
+    [
+        Bar(D10, -1.0, 1.0, -1.0, 1.0, 1.0),
+        Bar(D10, 1.0, 1.0, 1.0, float("nan"), 1.0),
+        Bar(D10, 1.0, float("inf"), 1.0, 1.0, 1.0),
+        Bar(D10, 100.0, 100.0, 90.0, 110.0, 1.0),  # close above the high
+        Bar(D10, 1.0, 1.0, 1.0, 1.0, -5.0),
+    ],
+)
+def test_check_sane_refuses(bar: Bar) -> None:
+    with pytest.raises(ValueError, match="nonsense bar"):
+        sources.check_sane([bar])
+
+
+def test_every_real_stored_bar_shape_is_sane() -> None:
+    # Float noise as Yahoo delivers it, and a flat bar, must pass.
+    sources.check_sane(
+        [
+            Bar(D10, 605.780029296875, 608.4299926757812, 605.5, 607.4600219726562, 28677700.0),
+            Bar(D11, 1.0, 1.0, 1.0, 1.0, 0.0),
+        ]
+    )
 
 
 def test_a_hole_in_the_sources_answer_is_not_skipped_silently() -> None:

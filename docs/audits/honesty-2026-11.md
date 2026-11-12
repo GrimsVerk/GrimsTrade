@@ -132,14 +132,15 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   from the previous close; the run then reports it every day until a person decides. Larger:
   fetch split events (`events=div,splits`) and adjust held units.
 
-### D3. No sanity check before a bar becomes permanent (medium)
+### D3. No sanity check before a bar becomes permanent (medium) - FIXED in this branch
 
 - **What:** zero, negative or inconsistent prices (low above open, and so on) go straight into
   the store. A zero open makes the gym divide by zero, so the daily run crashes every day and the
   bad row cannot be removed without breaking the append-only rule.
 - **Evidence:** `tests/test_audit_data.py::test_a_nonsense_bar_is_not_stored`.
-- **Proposed fix (small, `sources.py`):** validate each bar in `fetch`; a bad bar counts as a
-  failed source, so the next source is tried and the problem is reported.
+- **Fix (done, `sources.py`):** `fetch` runs `check_sane` on every bar (finite, positive, low
+  and high consistent with open and close, 0.1% slack); a bad bar counts as a failed source, so
+  the next source is tried and the problem is reported. All 3,324 real stored bars pass.
 
 ### D4. A hole in the middle of a source's answer becomes a permanent gap (medium) - FIXED in this branch
 

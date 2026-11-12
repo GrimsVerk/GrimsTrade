@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import urllib.request
 from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
@@ -146,12 +147,32 @@ SOURCES: dict[str, list[tuple[Source, str]]] = {
 }
 
 
+def check_sane(bars: list[Bar]) -> None:
+    """Raise ValueError on a bar no market can print. Stored rows are never rewritten, so a
+    nonsense bar (zero price, columns mixed up) must be stopped before it gets in."""
+    for b in bars:
+        prices = (b.open, b.high, b.low, b.close)
+        ok = (
+            all(math.isfinite(x) and x > 0 for x in prices)
+            and math.isfinite(b.volume)
+            and b.volume >= 0
+            # 0.1% slack: some sources round each column separately.
+            and b.low <= min(b.open, b.close) * 1.001
+            and b.high >= max(b.open, b.close) * 0.999
+        )
+        if not ok:
+            raise ValueError(f"nonsense bar {b.date}: o={b.open} h={b.high} l={b.low} c={b.close}")
+
+
 def fetch(symbol: str, since: date, now: datetime, get: Get = http_get) -> list[Bar]:
-    """Settled bars from `since` on, from the first source that answers. Raises if all fail."""
+    """Settled, sane bars from `since` on, from the first source that gives them. Raises if all
+    fail."""
     errors = []
     for source, ticker in SOURCES[symbol]:
         try:
-            return settled(source(ticker, since, get), UNIVERSE[symbol], now)
+            bars = settled(source(ticker, since, get), UNIVERSE[symbol], now)
+            check_sane(bars)
+            return bars
         except Exception as e:  # noqa: BLE001 - any failure means: try the next source
             errors.append(f"{source.__name__}: {e}")
     raise RuntimeError(f"{symbol}: all sources failed: {'; '.join(errors)}")
