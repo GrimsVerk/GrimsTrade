@@ -2,3 +2,4 @@
 #   uv run python research/lib/fetch.py
 data/
 __pycache__/
+*.dry.md

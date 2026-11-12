@@ -65,6 +65,11 @@ An idea built on our six assets is also run, unchanged, on assets it was not des
   Yahoo's index "open" before about 2010 is often the previous close, so a next-open fill there
   is a fill at the signal's own close (slightly kind; the same for strategy and twin).
 
+How the sets are run: rules that act on one asset at a time run on a set as an equal-slot
+portfolio (ETFs, coins) and on each index alone (the S&P 500 index cut at 1993-01-28). Rules that
+build a portfolio (kelly-shrunk, universal-portfolio) run the four indexes as one portfolio with
+the S&P 500 index kept to 2025; after 1993 that leg overlaps SPY and is flagged.
+
 ## Pass bar (default; a card may be stricter, never looser)
 
 An idea **passes train** only if all of these hold:

@@ -50,6 +50,8 @@ HELD_END = date(2026, 11, 9)
 
 # Eras for per-regime reporting (fixed before any test; see research/protocol.md).
 ERAS: list[tuple[str, date, date]] = [
+    ("1962-79", date(1962, 1, 1), date(1979, 12, 31)),  # index tests only
+    ("1980-93", date(1980, 1, 1), date(1993, 12, 31)),  # index tests only
     ("1994-99", date(1994, 1, 1), date(1999, 12, 31)),
     ("2000-09", date(2000, 1, 1), date(2009, 12, 31)),
     ("2010-16", date(2010, 1, 1), date(2016, 12, 31)),
@@ -151,6 +153,8 @@ class Panel:
                 if n:
                     g[i, j] = self.c[s][n - 1]
         self.grid = g
+
+        self.cache: dict[object, object] = {}  # per-panel scratch for precomputed causal series
 
     def view(self, t: datetime) -> View:
         n = {s: bisect.bisect_right(self.close_times[s], t) for s in self.syms}

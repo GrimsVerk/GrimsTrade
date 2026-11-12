@@ -4,14 +4,34 @@ reporting. The rules here are fixed in research/protocol.md."""
 from __future__ import annotations
 
 import math
+import os
 from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 from datetime import date, timedelta
 
+import harness
 import numpy as np
 import stats
-from harness import ERAS, STRESS, ResearchStrategy, Run, View, Weights
+from harness import (
+    ERAS,
+    HELD_END,
+    HELD_START,
+    OOU_COINS,
+    OOU_ETFS,
+    OOU_INDEXES,
+    STRESS,
+    SYMS,
+    TRAIN_END,
+    TRAIN_START,
+    Panel,
+    ResearchStrategy,
+    Run,
+    View,
+    Weights,
+    load_history,
+)
 
-from grimstrade.data import CRYPTO, UNIVERSE
+from grimstrade.data import CRYPTO, UNIVERSE, Bar
 
 
 def bpy(s: str) -> int:
@@ -22,7 +42,7 @@ def bpy(s: str) -> int:
 def eligible(view: View, s: str) -> bool:
     """An asset may be held once it has a year of bars. Baselines follow the same rule, so a
     strategy that needs a year of history is compared like for like."""
-    return view.n[s] >= bpy(s)
+    return view.n.get(s, 0) >= bpy(s)
 
 
 def live(view: View) -> list[str]:
@@ -103,17 +123,17 @@ def inverse_vol(view: View) -> Weights:
 
 def weekly(strategy: ResearchStrategy, weekday: int = 4) -> ResearchStrategy:
     """Re-decide only on one weekday (default Friday): other days repeat that day's decision.
-    Stateless in effect (the memo only avoids recomputing the same Friday seven times)."""
-    memo: dict[tuple[int, date], Weights] = {}
+    Stateless in effect (the per-panel memo only avoids recomputing a Friday seven times)."""
+    token = object()
 
     def f(view: View) -> Weights:
         today = view.today
         day = today - timedelta(days=(today.weekday() - weekday) % 7)
-        key = (id(view.panel), day)
+        key = (token, day)
+        memo = view.panel.cache
         if key not in memo:
-            memo.clear()
             memo[key] = strategy(view if day == today else view.at(day))
-        return memo[key]
+        return memo[key]  # type: ignore[return-value]
 
     return f
 
@@ -130,6 +150,111 @@ def monthly(strategy: ResearchStrategy) -> ResearchStrategy:
         return strategy(view.at(g[i])) if i > 0 else {}
 
     return f
+
+
+def vol_series(view: View, s: str, halflife: float) -> np.ndarray:
+    """Annualised EWMA volatility after each visible bar (entry i uses returns up to bar i+1 only).
+    Precomputed once per panel; causal by construction, and checked by `check_against_gym`."""
+    key = ("vol", s, halflife)
+    cache = view.panel.cache
+    if key not in cache:
+        lr = view.panel.lr[s]
+        lam = 0.5 ** (1 / halflife)
+        out = np.empty(len(lr))
+        num = den = 0.0
+        for i, x in enumerate(lr):
+            num = lam * num + x * x
+            den = lam * den + 1.0
+            out[i] = math.sqrt(num / den * bpy(s))
+        cache[key] = out
+    full: np.ndarray = cache[key]  # type: ignore[assignment]
+    return full[: max(view.n[s] - 1, 0)]
+
+
+FIT_MIN_BARS = 1000  # fitted rules and the vol-calm twin hold the slot until this much history
+
+
+def vol_calm_signal(view: View, s: str) -> bool:
+    """Plain twin of the regime models: volatility below its own expanding median."""
+    if view.n[s] < FIT_MIN_BARS:
+        return True
+    v = vol_series(view, s, 30)
+    return bool(v[-1] < np.median(v[20:]))
+
+
+def sixty_forty(view: View) -> Weights:
+    held = live(view)
+    return {s: w for s, w in (("SPY", 0.6), ("TLT", 0.4)) if s in held}
+
+
+def hold(sym: str) -> ResearchStrategy:
+    return lambda view: {sym: 1.0} if eligible(view, sym) else {}
+
+
+# --- universes and the run helper ---
+
+DRY = bool(os.environ.get("DRY"))  # plumbing check: last 120 days only, nothing logged
+
+
+@dataclass
+class Ctx:
+    name: str
+    period: str
+    hist: dict[str, list[Bar]]
+    panel: Panel
+    start: date
+    end: date
+
+
+def _cut(bars: list[Bar], last: date) -> list[Bar]:
+    return [b for b in bars if b.date <= last]
+
+
+def ctx(name: str = "six", period: str = "train", adjusted: bool = True) -> Ctx:
+    """A test universe: `six`, `etf`, `coin`, `idx` (four indexes as one portfolio) or a single
+    symbol such as `GSPC` (cut at 1993-01-28, before SPY exists), `N225`, `SPY`."""
+    sets = {"six": SYMS, "etf": OOU_ETFS, "coin": OOU_COINS, "idx": OOU_INDEXES}
+    syms = sets.get(name, [name])
+    hist = load_history(period, adjusted, syms)
+    if name == "GSPC":
+        hist = {"GSPC": [b for b in _cut(hist["GSPC"], date(1993, 1, 28)) if b.date.year >= 1961]}
+    elif name == "idx":
+        hist["GSPC"] = [b for b in hist["GSPC"] if b.date.year >= 1961]
+    if period == "train":
+        first = min(b[0].date for b in hist.values())
+        start = max(TRAIN_START, first + timedelta(days=366)) if name != "six" else TRAIN_START
+        if name in ("GSPC", "idx"):
+            start = date(1962, 1, 2)
+        end = min(TRAIN_END, max(b[-1].date for b in hist.values()) - timedelta(days=1))
+    else:
+        start, end = HELD_START, HELD_END
+    if DRY:
+        start = end - timedelta(days=120)
+    return Ctx(name, period, hist, Panel(hist), start, end)
+
+
+def go(
+    idea: str,
+    variant: str,
+    strategy: ResearchStrategy,
+    c: Ctx,
+    kind: str = "variant",
+    log: bool = True,
+    start: date | None = None,
+) -> Run:
+    """Run a strategy on a universe and log the try (variant name is tagged with the universe)."""
+    tag = variant if c.name == "six" else f"{variant}@{c.name}"
+    return harness.run(
+        idea, tag, strategy, kind=kind, period=c.period, panel=c.panel, history=c.hist,
+        start=max(start, c.start) if start else c.start, end=c.end, log=log and not DRY,
+    )  # fmt: skip
+
+
+def write_result(idea: str, text: str) -> None:
+    path = harness.RESEARCH / "results" / (f"{idea}.md" if not DRY else f"{idea}.dry.md")
+    path.parent.mkdir(exist_ok=True)
+    path.write_text(text.rstrip() + "\n")
+    print(text)
 
 
 # --- reporting ---
