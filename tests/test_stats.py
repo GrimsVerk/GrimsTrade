@@ -161,13 +161,23 @@ def test_research_tries_reads_main_too(tmp_path: Path) -> None:
     assert ledger.research_tries(tmp_path) == 5
 
 
-def test_research_count_never_shrinks(tmp_path: Path) -> None:
-    _research(tmp_path)
-    assert ledger.total_tries(tmp_path, tmp_path) == 5
-    (tmp_path / "research" / "tries.md").unlink()
-    (tmp_path / "research" / "ideas.md").unlink()
-    assert ledger.research_tries(tmp_path) == 0
-    assert ledger.total_tries(tmp_path, tmp_path) == 5
+def test_recorded_research_tries_survive_a_deleted_branch(tmp_path: Path) -> None:
+    repo, root = tmp_path / "repo", tmp_path / "trail"
+    repo.mkdir()
+    _research(repo)
+    assert ledger.total_tries(root, repo) == 5
+    assert not (root / ledger.RESEARCH_FLOOR).exists()  # counting is read-only
+    now = datetime(2026, 11, 12, 22, 30, tzinfo=UTC)
+    assert ledger.record_research(root, repo, now) == 6  # kelly is in both files: counted once
+    assert ledger.record_research(root, repo, now) == 0
+    # The branch is deleted; another logs different tries. Both sets count.
+    other = TRIES_REAL.replace("kelly", "carry")
+    _research(repo, tries=other, ideas="")
+    assert ledger.research_tries(repo) == 3
+    assert ledger.research_tries(repo, root) == 5 + 3
+    assert sorted(ledger.research_sharpes(repo, root)) == [0.5, 0.5, 0.9, 0.9]
+    ledger.record_research(root, repo, now)
+    assert ledger.check_append_only(root / ledger.RESEARCH_FLOOR) == 0
 
 
 def test_research_sharpes_are_train_variants_only(tmp_path: Path) -> None:

@@ -3,13 +3,15 @@
 - `ledger/decisions.jsonl`: one line per decision (UTC time, strategy, weights, prices seen,
   last bar date seen per asset, reason).
 - `ledger/tries.jsonl`: one line per strategy ever tried, live or dead (for the deflated Sharpe).
-- `ledger/research_tries.jsonl`: each new high of the research lane's try count (it never shrinks).
+- `ledger/research_tries.jsonl`: every research-lane try ever seen (idea, variant, Sharpe), so none
+  can disappear from the count.
 
 Git history is the tamper evidence: `check_append_only` fails if any committed line was changed.
 """
 
 from __future__ import annotations
 
+import contextlib
 import json
 import subprocess
 from collections.abc import Iterable, Mapping
@@ -143,58 +145,86 @@ def _variant_rows(repo: Path) -> list[dict[str, str]]:
     return [r for t in _research_texts(repo, RESEARCH_TRIES) for r in _table_rows(t)]
 
 
-def research_tries(repo: Path) -> int:
-    """How many strategy variants the research lane has tried (rule in docs/DECISIONS.md).
+Key = tuple[str, str | None]  # (idea, variant); variant None = an idea tried without a logged row
+
+
+def _visible_research(repo: Path) -> dict[Key, float | None]:
+    """The research tries visible now, each with its train Sharpe if logged.
 
     Distinct (idea, variant) rows of `research/tries.md` (any kind: baselines and robustness runs
-    count too), plus the ideas in `research/ideas.md` past status `new` that have no such row. Both
+    count too), plus the ideas in `research/ideas.md` past status `new` (as (idea, None)). Both
     files are read from the working tree, `main` and every `research-*` branch, and unioned.
     """
-    variants = {
-        (r.get("idea", "").lower(), r.get("variant", "").lower()) for r in _variant_rows(repo)
-    }
-    logged = {idea for idea, _ in variants}
-    tried: set[str] = set()
+    out: dict[Key, float | None] = {}
+    for r in _variant_rows(repo):
+        key: Key = (r.get("idea", "").strip().lower(), r.get("variant", "").strip().lower())
+        sharpe = None
+        kind, period = r.get("kind", "variant").lower(), r.get("period", "train").lower()
+        if kind == "variant" and period == "train":
+            with contextlib.suppress(ValueError):
+                sharpe = float(r.get("sharpe", ""))
+        if out.get(key) is None:
+            out[key] = sharpe
     for text in _research_texts(repo, RESEARCH_IDEAS):
         for r in _table_rows(text):
             status = r.get("status", "").strip().lower()
             idea = r.get("idea", "").strip().lower()
             if idea and status and not status.startswith("new"):
-                tried.add(idea)
-    return len(variants) + len(tried - logged)
+                out.setdefault((idea, None), None)
+    return out
 
 
-def research_sharpes(repo: Path) -> list[float]:
-    """Annualised Sharpe of each research variant (`kind` variant, `train` period, as logged)."""
-    out: dict[tuple[str, str], float] = {}
-    for r in _variant_rows(repo):
-        if r.get("kind", "variant").lower() != "variant":
+def _recorded_research(root: Path) -> dict[Key, float | None]:
+    out: dict[Key, float | None] = {}
+    for r in _read(root / RESEARCH_FLOOR):
+        key: Key = (r["idea"], r["variant"])
+        if out.get(key) is None:
+            out[key] = r.get("sharpe")
+    return out
+
+
+def _research(repo: Path, root: Path | None) -> dict[Key, float | None]:
+    seen = _recorded_research(root) if root is not None else {}
+    for key, sharpe in _visible_research(repo).items():
+        if seen.get(key) is None:
+            seen[key] = sharpe
+    return seen
+
+
+def record_research(root: Path, repo: Path, now: datetime) -> int:
+    """Append every research try (and newly logged Sharpe) not yet in
+    `ledger/research_tries.jsonl`, so a deleted or unfetched branch can never hide a try. Returns
+    how many lines were appended. The daily runner calls this; reports only read."""
+    recorded = _recorded_research(root)
+    added = 0
+    for key, sharpe in sorted(_visible_research(repo).items(), key=str):
+        if key in recorded and (sharpe is None or recorded[key] is not None):
             continue
-        if r.get("period", "train").lower() != "train":
-            continue
-        try:
-            sharpe = float(r.get("sharpe", ""))
-        except ValueError:
-            continue
-        out[(r.get("idea", "").lower(), r.get("variant", "").lower())] = sharpe
-    return list(out.values())
+        entry = {"idea": key[0], "variant": key[1], "sharpe": sharpe, "seen": iso(now)}
+        _append(root / RESEARCH_FLOOR, entry)
+        added += 1
+    return added
 
 
-def research_floor(root: Path, count: int) -> int:
-    """Never let the research count shrink (a deleted or unfetched branch would hide tries):
-    record `count` in `ledger/research_tries.jsonl` if it is a new high, return the high."""
-    high = max((int(r["count"]) for r in _read(root / RESEARCH_FLOOR)), default=0)
-    if count > high:
-        _append(root / RESEARCH_FLOOR, {"count": count})
-    return max(count, high)
+def research_tries(repo: Path, root: Path | None = None) -> int:
+    """How many strategy variants the research lane has tried (rule in docs/DECISIONS.md): every
+    (idea, variant) visible now or recorded under `root`, plus tried ideas with no variant row."""
+    keys = _research(repo, root)
+    logged = {idea for idea, variant in keys if variant is not None}
+    return sum(1 for idea, variant in keys if variant is not None or idea not in logged)
+
+
+def research_sharpes(repo: Path, root: Path | None = None) -> list[float]:
+    """Annualised train Sharpe of each research variant (Kind `variant`), visible or recorded."""
+    return [s for s in _research(repo, root).values() if s is not None]
 
 
 def total_tries(root: Path, repo: Path, also: Iterable[str] = ()) -> int:
     """Every strategy tried anywhere: the ledger's tries (plus any names in `also` not yet
-    registered, e.g. live strategies before their first run) and the research lane's (never less
-    than its recorded high)."""
+    registered, e.g. live strategies before their first run) and the research lane's, visible or
+    recorded. Read-only."""
     names = {r["name"] for r in _read(root / TRIES)} | set(also)
-    return len(names) + research_floor(root, research_tries(repo))
+    return len(names) + research_tries(repo, root)
 
 
 def _git(cwd: Path, *args: str) -> bytes:

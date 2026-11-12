@@ -140,10 +140,10 @@ def footnote(trials: Trials) -> str:
 
 def count_tries(root: Path, repo: Path) -> Trials:
     """All strategies tried: registered ones, live ones not yet registered, the research lane's
-    (never fewer than its recorded high), with the research variants' Sharpes."""
+    (visible or recorded), with the research variants' Sharpes. Read-only."""
     from grimstrade.strategies import LIVE
 
-    return Trials(ledger.total_tries(root, repo, LIVE), tuple(ledger.research_sharpes(repo)))
+    return Trials(ledger.total_tries(root, repo, LIVE), tuple(ledger.research_sharpes(repo, root)))
 
 
 def live_scores(root: Path, history: History, trials: Trials) -> list[Score]:
