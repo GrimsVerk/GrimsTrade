@@ -37,3 +37,16 @@ Annualised log growth: safe +16.5%, tsmom12 +16.4%, equal-weight +16.7%
 - PASS: 5. Beats equal weight on Sharpe (1.02 vs 0.88)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Fails. On the six assets it is 12-month trend again (1.02 against 1.05), ahead in 2 of 5 eras, and
+behind in 2022-25 (0.80 against 0.88; -22% in the 2022 rate shock against -13%), which the card
+made a condition. The safe asset's own trend test did not keep it out of trouble in 2022: gold
+and long bonds were "in trend" at the wrong moments.
+
+On the other ETFs, where the safe assets are mid-term Treasuries and corporate bonds, it did help
+(0.68 against 0.60, p = 0.06, ahead in all four eras). Calmer safe assets make a better parking
+place than 20-year bonds and gold. That is a hint about which safe asset, not a pass: one set,
+found after the fact. If the universe ever gets a mid-term bond fund (IEF), this is worth a
+fresh card.

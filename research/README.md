@@ -5,10 +5,10 @@
 Research run 1, night of 2026-11-12. **The clever maths lost to the simple rules, and the simple
 rules do not earn more than holding everything: they lose less.**
 
-- **Done:** about 150 papers read (`survey-2026-11.md`); 12 ideas written down with their pass
+- **Done:** about 150 papers read (`survey-2026-11.md`); 14 ideas written down with their pass
   mark fixed before testing; each tested on up to 32 years of prices and on markets it was not
-  built on. 211 backtests, all logged.
-- **None of the 12 passed.** Kelly sizing, hidden Markov regimes, Hawkes processes and the rest
+  built on. 216 backtests, all logged.
+- **None of the 13 with a pass mark passed** (the 14th only describes a choice). Kelly sizing, hidden Markov regimes, Hawkes processes and the rest
   each equal a simpler rule or lose to it. Two were real effects that faded once published.
 - **What holds up:** a slow trend rule (hold an asset only while it is up over 12 months) earned
   about what holding everything earned since 1994 (17.8% a year against 18.2%) with a worst loss
@@ -17,9 +17,10 @@ rules do not earn more than holding everything: they lose less.**
   the worst loss to 26% and growth to 13% a year. Worth a paper slot only if the owner wants the
   smaller losses; it is a risk setting, not an edge.
 - **Luck check:** the best new rule beat "hold everything" by 0.22 Sharpe; luck alone across the
-  versions tried would give about 0.19. No new rule has shown an edge.
+  21 versions tried would give about 0.20. No new rule has shown an edge.
 - **Crypto:** trend rules did not beat simply holding Bitcoin or Ether, and still lost 70% at
-  worst. The size of the crypto slot matters more than the timing rule.
+  worst. The size of the crypto slot is the biggest risk setting there is: 5% per coin meant a
+  worst loss of 31% since 2013, a sixth per coin 47% (`results/crypto-slot-size.md`).
 - **Still clean:** the last 12 months of prices were never looked at, for any idea.
 - **For the M1 lane:** the gym ignores dividends, which makes bonds look worthless (requests at
   the bottom). That it pays nothing on cash turned out to matter little (about 0.6% a year).
@@ -36,7 +37,11 @@ tests support.
    13.3% a year against 17.8%. A paper slot only if the owner wants the low-drawdown profile.
 3. `ensemble-tsmom` (trend at four horizons). +0.05 over `tsmom12`, right sign in every other
    market set, not significant. No separate slot; a possible revision of M1's rule later.
-4. `sma200`, `drawdown-control`, `vol-target`: the same protection in other clothes. No slot.
+4. `sma200`, `drawdown-control`, `vol-target`, `trend-to-safe`: the same protection in other
+   clothes. No slot.
+
+Separate from the ranking, a decision for the owner: the size of the crypto slots
+(`results/crypto-slot-size.md`). It moves the worst loss more than any rule above.
 
 Dead, with the one-line reason (details in `ideas.md` and `results/`):
 
@@ -63,13 +68,13 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
 - Harness, long price history, `protocol.md` (fixed before any test), baselines and twins.
 - `survey-2026-11.md` (verdict per family, 165 source entries with links) from the six parts in
   `notes/survey-parts/`.
-- Nine cards (committed before any test, 6ad40cc), then three more (e8197ba, after the first
-  nine; each says what had been seen). All twelve tested and judged: `results/<idea>.md` each end
+- Nine cards (committed before any test, 6ad40cc), then three more (e8197ba) and two more
+  (8b46f31), each saying what had been seen by then. All fourteen tested and judged: `results/<idea>.md` each end
   with a dated verdict; `ideas.md` has every status.
 - `results/robustness.md`: front-runners on raw prices and at double costs.
 - `results/cash-interest.md`: what-if with T-bill interest on cash (adds 0.5-0.8% a year to the
   cautious rules, changes no ranking).
-- `results/deflation.md`: the best edge seen against what luck alone would give (0.22 vs 0.19).
+- `results/deflation.md`: the best edge seen against what luck alone would give (0.22 vs 0.20).
 - `results/crypto-alone.md`: the plain and run-2 rules on BTC alone and ETH alone (trend does
   not beat holding there; it shrinks the winters; the size of the slot matters more).
 - The summary and ranking above.
@@ -80,8 +85,7 @@ stop 2026-11-12 08:40 UTC. Started 2026-11-11 23:05 UTC, cut off by the usage li
 
 **Next (a later run; nothing here is started)**
 
-- Cards still in `ideas.md` under "New": `vol-shift`, `hmm-switch-to-bonds`, `turbulence`,
-  `fixed-btc-sleeve`. Write the card first, test with `lib/testkit.py`, `DRY=1` before the real
+- Cards still in `ideas.md` under "New": `vol-shift`, `turbulence`. Write the card first, test with `lib/testkit.py`, `DRY=1` before the real
   run (a real run logs tries).
 - The held-out year (2025-11-11 to 2026-11-09) has not been looked at for any idea. The harness
   allows one look per idea; spend it only on an idea that passes its train bar.

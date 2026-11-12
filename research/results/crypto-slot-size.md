@@ -19,3 +19,24 @@ Total return inside each stress window:
 | equal-weight | - | - | -22% | -37% | -17% | -42% | -42% |
 
 Annualised log growth: c05 +16.5%, c10 +22.2%, c00 +10.5%, equal-weight +30.2%
+
+## Reading (2026-11-12)
+
+Descriptive, as the card said. Since 2013 the Sharpe ratio barely depends on the size of the
+crypto slots once there is any crypto at all: 1.36 at 5% per coin, 1.39 at 10%, 1.34 at 1/6.
+None of these differences is close to significant. Holding no crypto is lower (1.05), also not
+significantly (the gap is about one standard error).
+
+What the size sets is the scale of everything:
+
+| Per coin | Growth a year | Worst loss | Crypto winter 2018 | Crypto winter 2022 |
+|---|---:|---:|---:|---:|
+| 0% | +11.1% | 25% | -1% | -19% |
+| 5% | +18.0% | 31% | -14% | -27% |
+| 10% | +24.9% | 37% | -27% | -34% |
+| 1/6 (equal weight) | +35.3% | 47% | -42% | -42% |
+
+This is one decade in which Bitcoin rose about a thousandfold; the growth column will not repeat.
+The worst-loss column is the more durable information. The size of the crypto slot is the single
+biggest risk setting in the live universe, bigger than any rule tested in this run, and it is a
+decision for the owner, not something a backtest can optimise.

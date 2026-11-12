@@ -31,8 +31,8 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
-| trend-to-safe | Trend / regime allocation | testing | [card](cards/trend-to-safe.md) | Out-of-trend slots go to TLT/GLD if those are in trend; twin tsmom12 |
-| crypto-slot-size | Allocation | testing | [card](cards/crypto-slot-size.md) | 5% / 10% / 0% per coin against 1/6; descriptive, no out-of-universe set |
+| trend-to-safe | Trend / regime allocation | dead (tested) | [card](cards/trend-to-safe.md) | Equals tsmom12 on the six assets (1.02 vs 1.05), behind in 2022. Helped on other ETFs with mid-term bonds as the safe asset (0.68 vs 0.60, p = 0.06): a hint for a universe with IEF. [result](results/trend-to-safe.md) |
+| crypto-slot-size | Allocation | described (no pass bar) | [card](cards/crypto-slot-size.md) | Sharpe is flat from 5% to 1/6 per coin (1.34-1.39); size sets growth and worst loss (5%: +18%/yr, -31%; 1/6: +35%/yr, -47%). The owner's biggest risk setting. [result](results/crypto-slot-size.md) |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 
