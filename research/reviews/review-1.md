@@ -1,12 +1,42 @@
 # Review 1 of research runs 1 and 2
 
 Reviewer: an agent that wrote none of the code. Branch `review-1`, made from `research-2` at
-`0343bcb`. Written 2026-11-12, 06:50 to 08:30 UTC. Status: **in progress**; the verdict below is
-provisional until this line says final.
+`0343bcb`. Written 2026-11-12 from 06:50 UTC. Status: **verdict final**.
 
-## Verdict (provisional)
+## Verdict
 
-Being written. First finding is below; the verdict is filled in as the checks finish.
+**Can the owner trust the two runs' conclusions? The decisions, yes. One headline, no.**
+
+- **Trust: nothing new has earned a paper slot.** I fetched every price again and got the same
+  main numbers to two decimals. I replayed the trend rule by hand, outside the simulator, on
+  four assets and got the same account balance to the cent on every day. I found no look-ahead,
+  no fill or cost error, no test on the held-out year, and no idea killed by a bug.
+- **Trust: machine learning found nothing.** The models' forecasts are a coin toss, as
+  reported. But the test could only have seen a very large effect. It shows "nothing found on
+  these price features", not "ML cannot work".
+- **Do not trust as written: "the trend rule beats holding everything, Sharpe 1.05 against
+  0.88, worst loss 37% instead of 69%".** All of that lead comes from the dot-com bust of
+  2000-2002, when the "six-asset" book held two assets, SPY and QQQ. Without those 31 months it
+  is 1.21 against 1.22. Since 2003 it is 1.20 against 1.19, worst loss 37% against 47%, growth
+  21% a year against 25%. The trend rule has been insurance: a smaller worst loss for about 4
+  points of growth a year. It has not been an edge. "Nothing beat the trend rule" is true, and
+  the trend rule has not beaten holding everything either.
+- **"Dead" is too strong for the near misses.** The pass bar almost never passes a rule with no
+  edge (4%), which is its job. It also fails most rules that have one: a true +0.15 Sharpe
+  passes 4 times in 10, and the trend rule itself fails it. `ensemble-tsmom` and
+  `drawdown-control` are ahead of `tsmom12` since 2003, unproven.
+- **The held-out year is a little less clean than claimed.** No test used it. Two figures
+  quoted in the repo were computed through it, and give away that SPY rose about 11% and TLT
+  fell about 10% in that year.
+
+What follows from this:
+
+1. Keep `tsmom12` live as the bar. Expect it to tie equal weight on Sharpe with shallower
+   losses and slower growth. A tie on the live scoreboard is what the backtest predicts.
+2. The README headline and ranking need the correction in finding 1.
+3. Later ideas should also be judged from 2003 and against equal weight.
+4. Which cautious rule runs live is a choice of risk, not of skill. The forward ledger can
+   inform it; more backtests on this data cannot.
 
 ## How the review was done
 
@@ -239,8 +269,8 @@ wrong.
 
 The verdict still holds on later data. `hmm-regime` (hard) against the 200-day average: -0.12
 over 1994-2025, +0.04 without the bust, -0.05 from 2004 (p = 0.64), -0.18 from 2017-06. Against
-equal weight it is within 0.02 in every window before 2017 and behind after. `hawkes-clustering`
-is within 0.05 of equal weight in every window.
+equal weight it is within 0.02 in the first three of those windows and 0.17 behind in the last.
+`hawkes-clustering` is within 0.05 of equal weight in all four.
 
 **What it changes.** No verdict. It answers the brief's question: I found no idea killed by a
 bug, and one given the wrong reason. For later fitted rules: a rule that needs four years of
@@ -292,8 +322,8 @@ bar 4 asks for the right sign in two of the three.
   a fill is at the close the signal was computed from. For the Nikkei until the late 1980s and
   the DAX into the 1990s the open equals that day's own close, so the fill is one day late
   instead.
-  Slow rules hardly notice. Fast ones do: `dip-rsi2`'s index results on the S&P and FTSE are in
-  effect close-fill results.
+  Slow rules hardly notice. Fast ones do: `dip-rsi2`'s index results on the S&P and FTSE are
+  largely close-fill results.
 - The DAX series (`^GDAXI`) includes dividends; the protocol calls all four "price indexes, no
   dividends".
 - Bar 4 counts signs, and several of the differences are +0.00 to +0.03 (`trend-vol` on the
@@ -319,5 +349,38 @@ the FTSE through 2025.
   costs the cautious rules 0.5% to 0.8% a year: also against the trend rule, and too small to
   reopen finding 1.
 - ETF costs of 2 bps a side are too low for the 1990s. The rules trade their equity one to five
-  times a year, so even ten times that cost moves nothing.
+  times a year, so even ten times that cost moves Sharpe by about 0.02.
 - `tsmom12` is ranked on a one-sided p of 0.08. Two-sided it is about 0.16.
+
+## What I attacked and found sound
+
+- **Fills and timing.** I replayed `tsmom12` on SPY, QQQ, TLT and BTC with my own loop, using
+  neither the gym nor the harness, from the rules as documented: signal from Friday's close
+  (for crypto the last full UTC day), fill at the next open, 2 or 30 bps a side, 1% band. The
+  account balance matches the harness on every day, to the cent (largest relative difference
+  0). No off-by-one in rebalancing or fills.
+- **Look-ahead.** Every strategy reads prices through `View`, which hands out only the bars
+  closed before the decision. The series that are precomputed once over the whole history
+  (EWMA volatility, the RSI state, the HMM filter, Hawkes events, the absorption ratio) are
+  built one bar at a time from earlier bars only. The ML labels, purge and embargo are as the
+  protocol states. I found no leak.
+- **Data.** 34 symbols fetched again. No gaps beyond holidays, the week after 2001-09-11 and
+  Bitstamp's halt of 2015-01-05 to 09. No bar with a high below or a low above its open or
+  close. The largest one-day moves are real events (1987-10-19, 2008-10-13, 2020-03-12, BTC
+  2013-04-11). The Bitstamp to Coinbase seam in BTC is clean. One doubtful print, XRP on
+  2017-04-02 (+180%, then -48%), falls before XRP can be held.
+- **Dividends.** Adjusted bars scale open, high, low and close by Yahoo's adjustment factor,
+  which is right; the totals are plausible (SPY 28x, TLT 2.4x to the train cut).
+- **Costs.** As documented, confirmed by the replay. Doubling them is already in
+  `results/robustness.md`.
+- **Stability of the trend rule.** Any weekday, and 9 to 12 months, give the same picture.
+- **The log.** `tries.md` has 268 rows: 58 variants (52 on the six assets, 6 on single assets),
+  107 baselines, 103 robustness runs, none held-out. The 52 in the luck check are the right 52.
+
+## What I did not check
+
+- The literature survey, and whether each card is a fair version of its paper.
+- A re-run of every result. I re-ran the baselines, the five cautious rules of finding 2, three
+  ML models, `hmm-regime` and `hawkes-clustering`. The other results I read but did not re-run.
+- Whether the bootstrap p-values are well calibrated. I used them as the runs did.
+- The M1 code in `src/` beyond the gym's replay and the bar timing.
