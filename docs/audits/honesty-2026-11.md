@@ -136,14 +136,20 @@ ordinary tests that pin the numbers quoted here.
   (stored 26,421,050), and `close: null` for all four ETFs, i.e. the row was still being
   rewritten. The price difference is tiny this time (0.07 basis points on an open, the price
   fills use); the point is that the record already differed from its source after one day.
+- **Evidence, once Yahoo was final** (06:39 UTC, nine and a half hours after the close; all
+  volumes now multiples of 100): opens and closes equal the stored ones for all four ETFs (QQQ's
+  open reads 687.28 again). The day's low differs for three: SPY 754.91 stored, 754.90 now; QQQ
+  683.60, now 683.56; TLT 80.472, now 80.470; at most 0.6 basis points. All four volumes differ.
+  Both crypto bars are identical. So on the first day the early bar was wrong only in numbers no
+  fill or mark uses. One day is not a guarantee.
 - **Fix (done, `data.py`, `run_daily.py`, 10 lines in `report.py`):** each run asks every
   symbol's first-choice source again for the last 5 stored days and compares prices (not volume,
   which changes daily). Stored rows are never changed; each difference is appended once to
   `data/revisions.jsonl`, the scoreboard shows how many bars differ and by how much at most, and
   a difference of 1 basis point or more is reported as a problem of that run. The second request
   is best effort: if it fails, nothing is logged that day. Tried live against a scratch copy of
-  the real bars: runs clean (Yahoo's 2026-11-11 rows still had no close, so there was nothing to
-  compare yet). Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
+  the real bars: it found and logged exactly the three differences above, none large enough to
+  count as a problem. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
 - **What is left:** the record still keeps the early numbers; the log makes that visible, it
   does not make them right. Whether to store ETF bars a day later (once final) is a design
   decision with a cost: every strategy would decide on day-old ETF prices. Moving the cron later
