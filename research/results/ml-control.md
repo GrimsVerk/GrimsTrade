@@ -75,3 +75,34 @@ Not a strategy and not a try: a 16th feature `peek` is planted that knows the fu
 | gbm+peek0.10 | 6214 | 59.3% | 0.523 | 56.8% | 84.9% | 0.522 | 56.6% |
 | gbm+peek0.20 | 6214 | 59.3% | 0.562 | 58.4% | 79.9% | 0.522 | 56.6% |
 | gbm+peek0.30 | 6214 | 59.3% | 0.612 | 61.1% | 75.5% | 0.522 | 56.6% |
+
+## Reading (2026-11-12; point 4 added after the 0.30 control)
+
+1. **The machinery works.** A planted signal comes through: AUC 0.50 at correlation 0.05,
+   0.52 at 0.10, 0.57 at 0.20, 0.62 at 0.30, for both model kinds, and Sharpe rises with it
+   under every position rule. The null results of the cards are not a plumbing fault.
+2. **The real features hold less than a 0.05 signal.** The real models score AUC 0.49 to 0.51,
+   which is where planted correlations of 0 to 0.05 land. With 6,214 overlapping forecasts
+   (about 1,500 independent asset-months) nothing below roughly 0.10 can be told from zero.
+3. **Even a forecaster far better than any real one only ties the trend rule.** At planted
+   correlation 0.20 the portfolios reach 0.96 to 1.08 Sharpe against 1.05 for `tsmom12`,
+   whichever of the three position rules is used; at 0.10 they are at 0.80 to 0.90, no better
+   than holding everything. The first reading of this control blamed the position rule; the
+   two sharper rules show it was not the rule.
+4. **At a planted correlation of 0.30 the machinery does beat the trend rule:** 1.22 to 1.42
+   Sharpe against 1.05 (+0.17 to +0.37; p from 0.00 to 0.09 over the six combinations of model
+   and position rule). So the Sharpe bar of the cards could be passed, by a forecast of about
+   that strength. The threshold on this book lies between 0.20 and 0.30.
+
+Why point 3 is not a surprise in hindsight: a forecast's worth grows with the number of
+independent bets it is used on (Grinold's rule: skill x square root of breadth). Six assets
+that mostly move together, decided monthly, long only, are very few bets. A correlation of
+0.20 on 13 months a year adds about 0.7 of Sharpe to a free long-short book and much less to
+one that can only hold or not hold; added to what holding everything already earns (0.88) that
+gives about 1.0 to 1.1, which is what the table shows. Return forecasting pays where there
+are hundreds of assets to rank. On this book it needs a correlation between 0.2 and 0.3
+(point 4), which nobody has on monthly returns: published monthly forecasts of single assets
+are worth a few hundredths.
+
+What it means for the cards: their Sharpe bars against `tsmom12` could not have been passed by
+any plausible direction forecast (only by one of 0.2 to 0.3). They are judged on forecast skill, and there is none.
