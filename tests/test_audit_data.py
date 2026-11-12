@@ -114,22 +114,25 @@ def test_a_nonsense_bar_is_not_stored(tmp_path: Path) -> None:
     assert all(b.low > 0 and b.low <= min(b.open, b.close) <= b.high for b in bars)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit D4: a day the source leaves empty in the middle of its answer is skipped, the "
-    "later days are stored, and the hole can never be filled (only newer bars are appended)",
-)
 def test_a_hole_in_the_sources_answer_is_not_skipped_silently() -> None:
-    body = yahoo_body(
-        [
-            (D10, 100.0, 101.0, 99.0, 100.0, 1e6),
-            (D11, None, None, None, None, None),  # Yahoo has no numbers for the 11th (yet)
-            (D12, 102.0, 103.0, 101.0, 102.0, 1e6),
-        ]
-    )
-    # Today: returns the 10th and 12th. Once stored, the 11th can never be added.
-    with pytest.raises(ValueError):
-        sources.yahoo("SPY", D10, only("yahoo", body))
+    """Audit D4 (fixed): a day Yahoo lists without prices, followed by priced days, used to be
+    skipped; the later days were stored and the hole could never be filled."""
+    hole = [
+        (D10, 100.0, 101.0, 99.0, 100.0, 1e6),
+        (D11, None, None, None, None, None),
+        (D12, 102.0, 103.0, 101.0, 102.0, 1e6),
+    ]
+    with pytest.raises(ValueError, match="no prices for 2026-11-11"):
+        sources.yahoo("SPY", D10, only("yahoo", yahoo_body(hole)))
+    # Still fine: the newest day not published yet (it is asked for again tomorrow)...
+    bars = sources.yahoo("SPY", D10, only("yahoo", yahoo_body(hole[:2])))
+    assert [b.date for b in bars] == [D10]
+    # ...an empty row for a day we already hold (before `since`)...
+    assert [b.date for b in sources.yahoo("SPY", D12, only("yahoo", yahoo_body(hole)))] == [D12]
+    # ...and an empty row plus a priced row for the same day.
+    twice = [hole[0], hole[1], (D11, 101.0, 102.0, 100.0, 101.0, 1e6), hole[2]]
+    bars = sources.yahoo("SPY", D10, only("yahoo", yahoo_body(twice)))
+    assert [b.date for b in bars] == [D10, D11, D12]
 
 
 @pytest.mark.xfail(

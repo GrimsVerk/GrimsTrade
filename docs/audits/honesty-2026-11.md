@@ -141,7 +141,7 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Proposed fix (small, `sources.py`):** validate each bar in `fetch`; a bad bar counts as a
   failed source, so the next source is tried and the problem is reported.
 
-### D4. A hole in the middle of a source's answer becomes a permanent gap (medium)
+### D4. A hole in the middle of a source's answer becomes a permanent gap (medium) - FIXED in this branch
 
 - **What:** `yahoo()` skips rows whose prices are null. That is right for the newest row (not
   published yet, retried tomorrow). But if a null row is followed by good rows, the good ones are
@@ -149,8 +149,11 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   are appended. The gym then treats it as a market holiday.
 - **Evidence:** `tests/test_audit_data.py::test_a_hole_in_the_sources_answer_is_not_skipped_silently`.
   Real stored history has no holes (crypto: 700 consecutive days; the four ETFs share one calendar).
-- **Proposed fix (small, `sources.py`):** a null row followed by data is an error (try the next
-  source, report it). Later: a calendar check across symbols in the verify step.
+- **Fix (done, `sources.py`):** an empty Yahoo day with priced days after it makes `yahoo()`
+  raise, so the next source is tried and the run reports it; an empty newest day is still just
+  retried tomorrow. Assumption: Yahoo lists no row at all for market holidays (true for all 481
+  stored sessions); if it ever lists an empty one, ETF ingest stops loudly until someone adds an
+  exception. Still open: a day the source omits completely (a calendar check across symbols).
 
 ### D5. The record does not say where a bar came from (low)
 

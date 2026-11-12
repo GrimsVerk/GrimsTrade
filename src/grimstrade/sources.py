@@ -89,14 +89,24 @@ def yahoo(ticker: str, since: date, get: Get) -> list[Bar]:
     res = chart["result"][0]
     q = res["indicators"]["quote"][0]
     bars = []
+    empty: set[date] = set()  # days Yahoo lists without prices
     for i, ts in enumerate(res.get("timestamp") or []):
         vals = [q["open"][i], q["high"][i], q["low"][i], q["close"][i]]
-        if any(v is None for v in vals):
-            continue
         d = _day(ts)
-        if d >= since:
-            o, h, lo, c = (float(v) for v in vals)
-            bars.append(Bar(d, o, h, lo, c, float(q["volume"][i] or 0)))
+        if d < since:
+            continue
+        if any(v is None for v in vals):
+            empty.add(d)
+            continue
+        o, h, lo, c = (float(v) for v in vals)
+        bars.append(Bar(d, o, h, lo, c, float(q["volume"][i] or 0)))
+    # An empty newest day is normal (not published yet; it is asked for again tomorrow). An empty
+    # day with priced days after it would become a permanent hole, since only newer bars are
+    # ever appended: refuse the whole answer instead.
+    have = {b.date for b in bars}
+    holes = sorted(d for d in empty - have if have and d < max(have))
+    if holes:
+        raise ValueError(f"yahoo: no prices for {holes[0]} but later days have them")
     return bars
 
 
