@@ -105,6 +105,15 @@ def test_the_scoreboard_says_how_fresh_each_assets_data_is(tmp_path: Path) -> No
     data.append(tmp_path, "QQQ", flat(18, 600.0)[:17])  # through Wednesday 2026-11-18
     assert report.freshness(data.load_all(tmp_path)).endswith(", QQQ 2026-11-18.")
     assert report.freshness({}) == "No prices stored yet."
+    # The owner's page carries the warning too, but only when something is stale.
+    from grimstrade import weekly
+
+    page = weekly.render(tmp_path, data.load_all(tmp_path), tmp_path)
+    assert (
+        "**Warning, old prices.** Prices through: BTC 2026-11-20, SPY 2026-11-06 (**STALE" in page
+    )
+    fresh_only = {s: b for s, b in data.load_all(tmp_path).items() if s != "SPY"}
+    assert "Warning" not in weekly.render(tmp_path, fresh_only, tmp_path)
 
 
 def test_sharpe_does_not_depend_on_how_many_calendar_days_have_a_point() -> None:

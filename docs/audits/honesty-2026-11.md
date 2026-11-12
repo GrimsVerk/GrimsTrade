@@ -239,8 +239,8 @@ ordinary tests that pin the numbers quoted here.
 - **Fix (done, `report.py`):** the scoreboard has a "Prices through" line with the newest bar of
   each asset and a bold **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
   behind the newest one (`tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`).
-- **Still open:** the same line in `weekly.md`, the page the owner reads, and a count of days on
-  which a strategy made no decision.
+  `weekly.md`, the page the owner reads, shows the same line as a warning when anything is stale.
+- **Still open:** a count of days on which a strategy made no decision.
 
 ### Low
 

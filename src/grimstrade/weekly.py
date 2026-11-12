@@ -140,6 +140,9 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         f"yardstick so far; {verdict(days, len(proven), len(strong) - len(proven))}",
         "",
     ]
+    fresh = report.freshness(history)
+    if "STALE" in fresh:  # a stopped price source makes whoever holds that asset look calm
+        lines[4:4] = [f"**Warning, old prices.** {fresh}", ""]
     lines += [
         "",
         "\\* Compared with each yardstick started afresh at the moment the strategy started "
