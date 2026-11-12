@@ -52,6 +52,11 @@ Asset by asset, each over its own history, the trend rule against holding that a
 (p = 0.27), QQQ +0.11 (p = 0.21), GLD -0.08, TLT -0.06, BTC +0.01, ETH -0.02. It helped on
 stocks, through two long bear markets, and nowhere else.
 
+Taking out a rule's best stretch always hurts it. The point here is that it is the only such
+stretch, and that it happened on a book the owner will never hold. The 2008 crisis is inside the
+2003-2025 row: the trend rule lost 4% there against 20%, and gave that back in false alarms in
+the years around it.
+
 The rule itself is not fragile in the usual ways: any decision weekday gives 1.04 to 1.05, and
 lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more give 0.82 to
 0.89, no better than equal weight.
@@ -69,3 +74,54 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
 - Later tests should report the window from 2003 (or from 2005, four assets) next to 1994-2025,
   and judge against equal weight as well as `tsmom12`. Every "difference to equal weight" in
   `results/deflation.md` carries the same dot-com episode.
+
+### 2. "Dead" mostly means "not proven": the pass bar rarely passes a real edge
+
+**What the runs say.** Twenty ideas had a pass bar, none passed, all are listed as dead.
+
+**What I found.** The bar is strict in the right direction and blunt in the other.
+
+- A rule with no edge at all passes bars 1, 2 and 4 together about 4% of the time. So the lab is
+  well protected against fooling itself, which is what the owner asked for.
+- A rule with a real edge mostly fails too. Chance of passing those three bars, by simulation:
+
+  | True Sharpe edge over the twin | Passes |
+  |---:|---:|
+  | 0 | 4% |
+  | +0.10 | 24% |
+  | +0.15 | 40% |
+  | +0.20 | 57% |
+  | +0.30 | 84% |
+
+  Assumptions: the Sharpe difference to the twin is measured with a standard error of 0.115 over
+  the 32 years (the typical value in the result tables), the five eras are independent, and the
+  three out-of-universe sets have standard errors of 0.16, 0.18 and 0.10. An edge of +0.10 to
+  +0.15 over the trend rule would be a very good find, and this bar would throw it out six to
+  seven times in ten.
+- `tsmom12` itself, tested as a card against equal weight, fails: it is ahead in 2 of 5 eras
+  (`results/baselines.md`) where bar 2 asks for 4. The rule ranked first is "dead" by the lab's
+  own bar.
+- Two of the dead look better than the label once the two-asset years are set aside. Re-run,
+  from 2003-09 (three assets or more):
+
+  | Rule | Sharpe | Against `tsmom12` (p) | Against equal weight (p) | Worst loss | Growth a year |
+  |---|---:|---:|---:|---:|---:|
+  | equal weight | 1.18 | | | 47.0% | 24.4% |
+  | `tsmom12` | 1.21 | | +0.03 (0.40) | 36.5% | 21.1% |
+  | `sma200` | 1.21 | +0.00 (0.50) | +0.03 (0.40) | 31.0% | 20.1% |
+  | `trend-vol` (tv40) | 1.24 | +0.03 (0.37) | +0.06 (0.34) | 22.0% | 14.2% |
+  | `ensemble-tsmom` | 1.29 | +0.09 (0.13) | +0.12 (0.16) | 24.5% | 20.1% |
+  | `drawdown-control` (d1.0) | 1.31 | +0.10 (0.10) | +0.13 (0.10) | 27.6% | 18.8% |
+
+  None of this is proof: I looked at five rules in a window I chose after seeing finding 1. It
+  does show the order among the trend-family rules is open, and that `tsmom12` is not the best
+  of them on any measure in this window.
+
+**What it changes.**
+
+- "No new paper slot" is still the right call: a slot should need proof and nothing gave it.
+- Read "dead" in `ideas.md` as "did not prove itself in a test that proves little either way".
+  The list should not be used later as evidence that these ideas do not work.
+- Which trend-family rule runs live (`tsmom12`, `ensemble-tsmom`, `drawdown-control`,
+  `trend-vol`) is a choice of risk profile that the backtests cannot settle. The forward ledger
+  can say more than another night of backtests.
