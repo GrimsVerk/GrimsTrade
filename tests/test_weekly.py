@@ -43,14 +43,16 @@ def test_strong_evidence_needs_beating_the_yardsticks() -> None:
 
 
 @pytest.mark.parametrize(
-    ("days", "strong", "words"),
-    [(1, 0, "1 day old"), (29, 2, "too early"), (60, 0, "no strategy has shown"),
-     (60, 1, "looks strong, but under 6 months"), (200, 2, "2 beat every yardstick")],
+    ("days", "proven", "early", "words"),
+    [(1, 0, 0, "1 day old"), (29, 0, 2, "too early"), (60, 0, 0, "no strategy has shown"),
+     (60, 0, 1, "looks strong, but under 6 months"), (200, 2, 0, "2 beat every yardstick"),
+     # The yardsticks' record is 200 days old, but a strategy added recently is not proven.
+     (200, 0, 1, "looks strong, but under 6 months")],
 )  # fmt: skip
 def test_verdict_waits_six_months_before_calling_anything_proven(
-    days: int, strong: int, words: str
+    days: int, proven: int, early: int, words: str
 ) -> None:
-    assert words in weekly.verdict(days, strong)
+    assert words in weekly.verdict(days, proven, early)
 
 
 def write(root: Path, strategy: str, day: date, weights: dict[str, float]) -> None:

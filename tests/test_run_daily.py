@@ -101,3 +101,5 @@ def test_a_broken_strategy_is_reported_but_the_others_still_decide(
     assert problems == ["ts_momentum: weights must be finite numbers"]
     assert ledger.decisions(tmp_path, "ts_momentum") == []  # nothing unreadable in the ledger
     assert len(ledger.decisions(tmp_path, "crypto_mean_reversion")) == 1
+    backtest = (tmp_path / "reports" / "backtest.md").read_text()
+    assert "Left out, the replay raised an error: ts_momentum." in backtest

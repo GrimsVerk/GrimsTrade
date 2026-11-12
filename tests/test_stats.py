@@ -185,6 +185,13 @@ def test_research_sharpes_are_train_variants_only(tmp_path: Path) -> None:
     assert sorted(ledger.research_sharpes(tmp_path)) == [0.5, 0.9]
 
 
+def test_non_finite_research_sharpes_are_ignored(tmp_path: Path) -> None:
+    tries = TRIES_REAL.replace("| 0.9 |", "| inf |").replace("| 0.5 |", "| nan |")
+    _research(tmp_path, tries=tries)
+    assert ledger.research_sharpes(tmp_path) == []
+    assert ledger.research_tries(tmp_path) == 5
+
+
 def test_research_sharpes_widen_the_luck_benchmark() -> None:
     good = report.score("good", equity_result([0.004, -0.002] * 100))
     alone = report.deflate([good], report.Trials(50))[0].dsr

@@ -64,16 +64,18 @@ def sureness(dsr: float | None, ahead: bool = True) -> str:
     return f"no sign of skill yet ({dsr:.0%})"
 
 
-def verdict(days: int, strong: int) -> str:
-    """The "In short" judgement: `strong` strategies beat every yardstick and luck (95%+)."""
+def verdict(days: int, proven: int, early: int) -> str:
+    """The "In short" judgement. `proven` strategies beat every yardstick and luck (95%+) over at
+    least PROOF_DAYS of their own record; `early` ones over less. `days`: the oldest record."""
     if days < report.MIN_DAYS_FOR_DSR:
         return f"the record is only {days} day{'s' * (days != 1)} old, far too early to judge."
-    if strong and days < PROOF_DAYS:
-        return (f"{strong} look{'s' * (strong == 1)} strong, but under 6 months of record that "
-                "can still be the luck of the period; keep watching.")  # fmt: skip
-    if strong:
-        return f"{strong} beat every yardstick with strong evidence over 6+ months."
-    return "no strategy has shown real skill yet; keep watching."
+    out = []
+    if proven:
+        out.append(f"{proven} beat every yardstick with strong evidence over 6+ months.")
+    if early:
+        out.append(f"{early} look{'s' * (early == 1)} strong, but under 6 months of record that "
+                   "can still be the luck of the period; keep watching.")  # fmt: skip
+    return " ".join(out) or "no strategy has shown real skill yet; keep watching."
 
 
 def render(root: Path, history: History, repo: Path = Path(".")) -> str:
@@ -124,9 +126,10 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         lines.append("| " + " | ".join([*row(name), beats, sureness(s.dsr, ahead)]) + " |")
     days = max(s.days for s in scores.values())
     strong = [n for n in ahead_of_all if (scores[n].dsr or 0) >= 0.95]
+    proven = [n for n in strong if scores[n].days >= PROOF_DAYS]
     lines[2:2] = [
         f"**In short:** {len(ahead_of_all)} of {len(others)} strategies are ahead of every "
-        f"yardstick so far; {verdict(days, len(strong))}",
+        f"yardstick so far; {verdict(days, len(proven), len(strong) - len(proven))}",
         "",
     ]
     lines += [
