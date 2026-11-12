@@ -143,7 +143,9 @@ class Panel:
             self.lr[s] = np.diff(np.log(self.c[s])) if len(bars) > 1 else np.array([])
         # Business-day grid: one row per SPY bar date, the last close of every asset visible at
         # that day's decision time (NaN before an asset starts). For joint statistics.
-        grid_sym = "SPY" if "SPY" in self.syms else self.syms[0]
+        with_bars = [s for s in self.syms if len(history[s])]
+        grid_sym = "SPY" if "SPY" in with_bars else with_bars[0]
+        self.grid_sym = grid_sym
         self.grid_dates = [date.fromordinal(int(x)) for x in self.ord[grid_sym]]
         self.grid_times = [decide_time(d) for d in self.grid_dates]
         g = np.full((len(self.grid_dates), len(self.syms)), np.nan)
@@ -241,7 +243,7 @@ def as_gym(strategy: ResearchStrategy) -> gym.Strategy:
     """The same strategy as a plain gym strategy (slow: rebuilds the panel on every call)."""
 
     def decide(history: data.History) -> tuple[Weights, str]:
-        panel = Panel({s: b for s, b in history.items() if b})
+        panel = Panel(dict(history))
         far = datetime.max.replace(tzinfo=UTC)
         return clean(strategy(panel.view(far))), "research"
 
