@@ -40,7 +40,10 @@ current state run the commands under "Check progress".
 
 | `alpaca` | `scripts/backfill/alpaca.py` | ETF 1m bars, **SIP feed** (the free plan allowed it), raw prices, from 2016-01, 20 ETFs: `alpaca/1m-sip/<SYM>/<YYYY-MM>.json`. Started by the Chief of Staff ~15:35 UTC (PID 1017108) after creating the key file | ~5-10 GB (estimate) | ~1-2 h (~170 req/min) |
 
-Known failures so far: Coin Metrics community API answered 403 to our client (see Next). Check the
+Known gaps: FRED and ALFRED are **skipped** (`SKIP_HOSTS` in `small.py`): their CSV endpoints
+stall our User-Agent, and we don't disguise the client (owner's call, `next-steps.md`). Coin
+Metrics community refuses `CapRealUSD` and `FeeTotUSD` (dropped; `FeeTotNtv` instead). The
+`small` job was restarted ~15:50 UTC after these fixes. Check the
 logs for `FAIL` lines; a rerun retries only what is missing.
 
 ## Not downloaded
