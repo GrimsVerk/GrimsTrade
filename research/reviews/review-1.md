@@ -22,9 +22,10 @@ Reviewer: an agent that wrote none of the code. Branch `review-1`, made from `re
   points of growth a year. It has not been an edge. "Nothing beat the trend rule" is true, and
   the trend rule has not beaten holding everything either.
 - **"Dead" is too strong for the near misses.** The pass bar almost never passes a rule with no
-  edge (4%), which is its job. It also fails most rules that have one: a true +0.15 Sharpe
-  passes 4 times in 10, and the trend rule itself fails it. `ensemble-tsmom` and
-  `drawdown-control` are ahead of `tsmom12` since 2003, unproven.
+  edge (4%), which is its job. It also misses modest real ones: a true +0.10 Sharpe passes 5
+  times in 10 for a rule close to its twin and 1 time in 4 for an ML model, and the trend rule
+  itself fails it. `ensemble-tsmom` and `drawdown-control` are ahead of `tsmom12` since 2003,
+  unproven.
 - **The held-out year is a little less clean than claimed.** No test used it. Two figures
   quoted in the repo were computed through it, and give away that SPY rose about 11% and TLT
   fell about 10% in that year.
@@ -107,7 +108,7 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
   and judge against equal weight as well as `tsmom12`. Every "difference to equal weight" in
   `results/deflation.md` carries the same dot-com episode.
 
-### 2. "Dead" mostly means "not proven": the pass bar rarely passes a real edge
+### 2. "Dead" means "not proven" for the near misses: the pass bar cannot see a modest edge
 
 **What the runs say.** Twenty ideas had a pass bar, none passed, all are listed as dead.
 
@@ -115,21 +116,26 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
 
 - A rule with no edge at all passes bars 1, 2 and 4 together about 4% of the time. So the lab is
   well protected against fooling itself, which is what the owner asked for.
-- A rule with a real edge mostly fails too. Chance of passing those three bars, by simulation:
+- A rule with a modest real edge often fails too. Chance of passing those three bars, by
+  simulation:
 
-  | True Sharpe edge over the twin | Passes |
-  |---:|---:|
-  | 0 | 4% |
-  | +0.10 | 24% |
-  | +0.15 | 40% |
-  | +0.20 | 57% |
-  | +0.30 | 84% |
+  | True Sharpe edge over the twin | A rule close to its twin | A rule far from its twin |
+  |---:|---:|---:|
+  | 0 | 4% | 4% |
+  | +0.05 | 20% | 11% |
+  | +0.10 | 50% | 24% |
+  | +0.15 | 76% | 40% |
+  | +0.20 | 92% | 57% |
+  | +0.30 | 99% | 84% |
 
-  Assumptions: the Sharpe difference to the twin is measured with a standard error of 0.115 over
-  the 32 years (the typical value in the result tables), the five eras are independent, and the
-  three out-of-universe sets have standard errors of 0.16, 0.18 and 0.10. An edge of +0.10 to
-  +0.15 over the trend rule would be a very good find, and this bar would throw it out six to
-  seven times in ten.
+  "Close": the Sharpe difference to the twin is measured with a standard error of about 0.065,
+  the middle of the run-1 result tables (0.02 to 0.11). "Far": about 0.115, as for the ML
+  models against `tsmom12` (0.09 to 0.14) and for `tsmom12` against equal weight (0.12). Other
+  assumptions: the five eras are independent, and the out-of-universe sets are noisier than
+  the six assets in the proportions seen in `results/baselines.md`. So the bar sees an edge of
+  +0.15 or more in a rule close to its twin. It mostly misses anything smaller, and it mostly
+  misses an ML edge of any realistic size. An edge of +0.05 to +0.10 over the trend rule would
+  still be a good find.
 - `tsmom12` itself, tested as a card against equal weight, fails: it is ahead in 2 of 5 eras
   (`results/baselines.md`) where bar 2 asks for 4. The rule ranked first is "dead" by the lab's
   own bar.
