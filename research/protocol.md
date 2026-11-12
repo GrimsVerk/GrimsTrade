@@ -141,8 +141,8 @@ scaled or selected on data from after the decision.
 
 **Choosing a setting inside the walk-forward.** Where a card says a setting is "chosen by purged
 CV", the choice is redone at every fit, on the training rows only: 5 folds in time order; for
-each validation fold the training rows whose label window comes within 28 days of it are dropped
-(purge), as are the rows in the 28 days after it (embargo); score = log loss (classifiers) or
+each validation fold the training rows whose 28-day label window overlaps the fold's are dropped
+(purge), as are the rows of the 28 days after those (embargo); score = log loss (classifiers) or
 squared error (regressors); the best mean score wins. The backtest then is one try, and the
 settings chosen each year are listed in the result.
 
@@ -152,7 +152,8 @@ neutral), where neutral is 0.5 for P(up) and 0 for `ra`. The slot is held in pro
 weight = slot x clip(q, 0, 1). So: nothing when the model expects a loss, the full slot when it
 is at least as confident as the long-run average, in between otherwise. A model with no skill
 forecasts the average and so holds everything: it becomes equal weight. `-hard` variants hold
-the full slot whenever q > 0.
+the full slot whenever q > 0. The denominator is floored at 0.05, so a universe whose average
+has been at or below neutral (falling coins) still has a rule: full slot from P(up) = 0.55.
 
 **First model and warm-up.** The first model is fitted at the first yearly fit date that has at
 least 1,000 rows; trading starts there, and the twins are re-scored from the same day (same
