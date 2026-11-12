@@ -35,16 +35,16 @@ def with_peek(rows: ml.Rows, rho: float) -> ml.Rows:
     return ml.Rows(rows.day, np.column_stack([rows.x, peek]), rows.fwd, rows.sym)
 
 
-def strategy(spec: ml.Spec, rho: float, tag: str) -> c.ResearchStrategy:
+def strategy(spec: ml.Spec, rho: float, tag: str, sizing: str = "base") -> c.ResearchStrategy:
     def f(view: c.View) -> c.Weights:
         memo = view.panel.cache
         year = ml.fit_year(view.today)
-        key = ("ctl-model", tag, year)
+        key = ("ctl-model", spec.name, rho, year)
         if key not in memo:
-            rows = ml.training_rows(view.panel, ml.first_friday(year))
-            memo[key] = ml.fit(spec, with_peek(rows, rho))
-        model = memo[key]
-        assert isinstance(model, ml.Fitted)
+            train = with_peek(ml.training_rows(view.panel, ml.first_friday(year)), rho)
+            model = ml.fit(spec, train)
+            memo[key] = (model, ml.oof_quantile(model, train))
+        model, low = memo[key]  # type: ignore[misc]
         held = c.live(view)
         rows = with_peek(ml.labelled(view.panel, view.today), rho)  # LOOKS AHEAD: control only
         if not len(rows):
@@ -54,8 +54,9 @@ def strategy(spec: ml.Spec, rho: float, tag: str) -> c.ResearchStrategy:
         out = {}
         for s, p, qi in zip(rows.sym, fc, q, strict=True):
             log[(view.today, s)] = float(p)  # type: ignore[index]
-            if s in held and qi > 0:
-                out[s] = float(min(qi, 1.0)) / len(held)
+            w = ml.position(sizing, float(p), float(qi), low)
+            if s in held and w > 0:
+                out[s] = w / len(held)
         return out
 
     return f
@@ -66,30 +67,35 @@ def main() -> None:
     twin = c.go("baselines", "tsmom12", c.weekly(c.slots(c.tsmom_signal)), six, "baseline",
                 log=False)  # fmt: skip
     ew = c.go("baselines", "equal-weight", c.weekly(c.equal_weight), six, "baseline", log=False)
-    runs, tags = [], {}
-    for spec in (ml.LOGIT, ml.GBM):
-        for rho in RHOS:
-            tag = f"{spec.name}+peek{rho:.2f}"
-            runs.append(c.go("control", tag, c.weekly(strategy(spec, rho, tag)), six, "baseline",
-                             log=False))  # fmt: skip
-            tags[tag] = 0.5
     out = [
         "# Positive control: can the ML machinery find an edge that is really there?",
         "",
         "Not a strategy and not a try: a 16th feature `peek` is planted that knows the future "
         "(correlation rho with the row's own 28-day risk-adjusted return, the rest noise). "
         "Everything else is the `ml-linear` and `ml-gbm` primary pipeline, unchanged: same "
-        "rows, purged walk-forward, purged CV, sizing, gym and costs. `peek0.00` is pure noise.",
-        "",
-        "## Six assets, 1994-2025",
-        "",
-        c.table([*runs, twin, ew], versus=twin, eras=False),
-        "",
-        "## Forecast skill",
-        "",
-        *mltest.skill_table(six, tags),
+        "rows, purged walk-forward, purged CV, gym and costs. `peek0.00` is pure noise. One "
+        "table per position rule (`protocol.md`).",
         "",
     ]
+    tags = {}
+    titles = {
+        "base": "first rule: full slot at average confidence",
+        "prop": "`-prop`: position in proportion to confidence",
+        "low": "`-low`: out on the weakest quarter of forecasts",
+    }
+    for sizing, title in titles.items():
+        runs = []
+        for spec in (ml.LOGIT, ml.GBM):
+            for rho in RHOS:
+                tag = f"{spec.name}+peek{rho:.2f}"
+                tags[tag] = 0.5
+                name = tag if sizing == "base" else f"{tag}-{sizing}"
+                rule = c.weekly(strategy(spec, rho, tag, sizing))
+                runs.append(c.go("control", name, rule, six, "baseline", log=False))
+        out += [f"## Six assets, 1994-2025, {title}", ""]
+        out += [c.table([*runs, twin, ew], versus=twin, eras=False), ""]
+    out += ["## Forecast skill (the same for every position rule)", ""]
+    out += [*mltest.skill_table(six, tags), ""]
     c.write_result("ml-control", "\n".join(out))
 
 

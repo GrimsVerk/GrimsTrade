@@ -71,16 +71,20 @@ Question: does machine learning on simple features beat `tsmom12` after costs? H
 - `lib/ml.py` (features, purged walk-forward fits, sizing), `lib/mltest.py` (the card test),
   `lib/lookahead_check_ml.py` (passes: cached models give the same weights as models refitted
   on history truncated by the gym).
-- `ml-linear` tested: dead, it became equal weight (`results/ml-linear.md`).
+- `ml-linear`, `ml-gbm` (9 settings), `ml-filter` tested: all dead, forecast AUC 0.49-0.51
+  (`results/ml-*.md`, each with a dated verdict).
+- `results/ml-control.md` (`lib/control_ml.py`): a planted signal is detected, so the null is
+  not plumbing; and even a planted correlation of 0.20 only ties `tsmom12` on six assets.
+- `ml-sizing` (card written after the first three; two sharper position rules): dead.
 
 **Doing**
 
-- `ml-gbm` (`lib/idea_ml_gbm.py`), then `ml-filter` (`lib/idea_ml_filter.py`).
+- Deciding the last follow-up cards (a payoff-aligned target; more training data).
 
 **Next**
 
-- Raw prices and double costs for the best model; dividends note; refresh `results/deflation.md`.
-- Summary and ranking at the top of this file; `ideas.md`.
+- Dividends note; refresh `results/deflation.md` with the ML tries.
+- Summary and ranking at the top of this file; `ideas.md` statuses.
 - The held-out year stays untouched unless a card passes its whole train bar.
 
 Run any card with `uv run --with numpy --with scikit-learn python research/lib/idea_ml_<x>.py`

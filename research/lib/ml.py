@@ -41,6 +41,7 @@ EMBARGO = 7  # extra gap between the last usable label and the fit date
 MIN_ROWS = 1000  # no model before this many labelled rows
 CV_FOLDS = 5
 Q_FLOOR = 0.05  # floor of (training average - neutral) in the confidence ratio
+LOW_QUANTILE = 0.25  # `low` rule: out below this quantile of out-of-fold forecasts
 WARMUP_END = date(1993, 1, 28)  # S&P 500 index rows up to the day before SPY exists
 
 HORIZONS = (7, 30, 91, 182, 365)
@@ -331,6 +332,38 @@ def fit(spec: Spec, rows: Rows) -> Fitted:
     return Fitted(spec, _estimator(spec, setting).fit(rows.x, y), float(y.mean()), setting, len(y))
 
 
+def oof_quantile(model: Fitted, rows: Rows, q: float = LOW_QUANTILE) -> float:
+    """A quantile of the model's out-of-fold forecasts on its training rows (purged folds,
+    the setting in force). The threshold of the `low` position rule."""
+    spec = model.spec
+    if spec.meta:
+        keep = rows.x[:, UP12] == 1
+        rows = Rows(rows.day[keep], rows.x[keep], rows.fwd[keep], [])
+    y = target(spec, rows)
+    parts = []
+    for train, val in purged_folds(rows.day):
+        est = _estimator(spec, model.setting).fit(rows.x[train], y[train])
+        parts.append(_forecast(spec, est, rows.x[val]))
+    return float(np.quantile(np.concatenate(parts), q))
+
+
+SIZINGS = ("base", "hard", "prop", "low")
+
+
+def position(sizing: str, forecast: float, q: float, low: float) -> float:
+    """Share of the slot to hold (protocol.md: the first rule and its `-hard`, `-prop`, `-low`
+    forms). `q` is the confidence ratio, `low` the out-of-fold 25th-percentile forecast."""
+    if sizing == "base":
+        return min(max(q, 0.0), 1.0)
+    if sizing == "hard":
+        return 1.0 if q > 0 else 0.0
+    if sizing == "prop":
+        return min(max(q / 2, 0.0), 1.0)
+    if sizing == "low":
+        return 1.0 if forecast >= low else 0.0
+    raise ValueError(sizing)
+
+
 def model_for(view: View, spec: Spec) -> Fitted | None:
     """The model in force at this view: fitted on the first Friday of the year (of the bars
     visible then). None while fewer than MIN_ROWS labelled rows exist."""
@@ -342,6 +375,16 @@ def model_for(view: View, spec: Spec) -> Fitted | None:
         assert fit_day <= view.today
         rows = training_rows(view.panel, fit_day)
         memo[key] = fit(spec, rows) if len(rows) >= MIN_ROWS else None
+    return memo[key]  # type: ignore[return-value]
+
+
+def low_for(view: View, model: Fitted) -> float:
+    """The `low` threshold of the model in force (same fit day, same rows as the model)."""
+    year = fit_year(view.today)
+    key = ("ml-low", model.spec.name, year)
+    memo = view.panel.cache
+    if key not in memo:
+        memo[key] = oof_quantile(model, training_rows(view.panel, first_friday(year)))
     return memo[key]  # type: ignore[return-value]
 
 
@@ -358,11 +401,18 @@ def first_fit_day(panel: Panel, not_before: date) -> date:
 
 
 def strategy(
-    spec: Spec, *, hard: bool = False, trend_only: bool = False, tag: str | None = None
+    spec: Spec,
+    *,
+    sizing: str = "base",
+    hard: bool = False,
+    trend_only: bool = False,
+    tag: str | None = None,
 ) -> ResearchStrategy:
-    """Equal slots; each slot scaled by the model's confidence (protocol: clip(q, 0, 1)), or
-    held in full whenever q > 0 (`hard`). `trend_only`: only where tsmom12 holds. Forecasts are
-    remembered per panel under `tag` for the skill tables."""
+    """Equal slots; each slot scaled by `position(sizing, ...)`. `hard=True` is the old name for
+    sizing="hard". `trend_only`: only where tsmom12 holds. Forecasts are remembered per panel
+    under `tag` for the skill tables."""
+    sizing = "hard" if hard else sizing
+    assert sizing in SIZINGS
     tag = tag or spec.name
     trend_only = trend_only or spec.meta
 
@@ -375,11 +425,12 @@ def strategy(
             return {}
         x = np.array([rows[s] for s in syms])
         fc, q = model.forecast(x), model.confidence(x)
+        low = low_for(view, model) if sizing == "low" else math.nan
         log = view.panel.cache.setdefault(("ml-fc", tag), {})
         out = {}
         for s, p, qi in zip(syms, fc, q, strict=True):
             log[(view.today, s)] = float(p)  # type: ignore[index]
-            w = (1.0 if qi > 0 else 0.0) if hard else float(min(max(qi, 0.0), 1.0))
+            w = position(sizing, float(p), float(qi), low)
             if w > 0:
                 out[s] = w / len(held)
         return out
