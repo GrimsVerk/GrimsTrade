@@ -41,7 +41,8 @@ Done:
   `stats.py` deflated Sharpe (matches the paper's example), column in scoreboard; try-count rule
   in DECISIONS (`ledger.research_tries`). Runner writes `reports/backtest.md` (two windows).
 
-  `weekly.py` writes `reports/weekly.md` every run (plain language, tested).
+  `weekly.py` writes `reports/weekly.md` every run (plain language, tested). README points the
+  owner at weekly.md and backtest.md.
 
 Stopped 2026-11-11 ~23:20 UTC: usage limit reached. Resumed 2026-11-12 01:32 UTC: checks green (98 tests).
 
@@ -51,5 +52,4 @@ Fable final review of PR #3.
 
 Next (in order):
 - Fix Fable findings (DSR maths, strategy faithfulness), re-run checks, push.
-- README (owner) mention of weekly.md/backtest.md; workflow passes `--repo .` (default already).
 - Fable final review of PR #3; fix; mark ready; try `gh pr merge --rebase --delete-branch`.
