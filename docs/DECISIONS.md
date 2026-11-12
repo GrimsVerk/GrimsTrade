@@ -114,3 +114,7 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   one convention for all strategies.
 - 2026-11-11: No real-money broker, ever, without the owner's explicit decision. No keys in git.
 - 2026-11-11: License is MIT. Why: owner's ruling.
+- 2026-11-12: All three risk presets from the risk map run in paper side by side (owner: fake money,
+  so no need to pick one yet). Careful and Middle are `preset_careful` / `preset_middle`, copied
+  rule for rule from `research/lib/risk_map.py`; Bold is the `equal_weight` benchmark. The pick
+  only matters for graduation.
