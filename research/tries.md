@@ -268,3 +268,9 @@ Never edit or delete a row.
 | 2026-11-12 06:34 | ml-payoff | gbm-pay@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.21 | +40.8% | 38.9% | 11.65 |
 | 2026-11-12 06:34 | ml-payoff | gbm-pay@coin | robustness | train | 2023-01-06 | 2025-11-09 | 0.77 | +102.8% | 41.6% | 10.07 |
 | 2026-11-12 06:34 | ml-payoff | gbm-pay@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.61 | +2222.5% | 43.8% | 7.05 |
+| 2026-11-12 06:38 | ml-pooled | gbm-pool | variant | train | 1994-02-01 | 2025-11-09 | 0.70 | +1994.0% | 50.0% | 6.85 |
+| 2026-11-12 06:38 | ml-pooled | logit-pool | variant | train | 1994-02-01 | 2025-11-09 | 0.92 | +6540.6% | 37.3% | 3.08 |
+| 2026-11-12 06:38 | ml-pooled | gbm-pool-low | variant | train | 1994-02-01 | 2025-11-09 | 0.68 | +2197.0% | 45.4% | 7.34 |
+| 2026-11-12 06:39 | ml-pooled | gbm-pool@etf | robustness | train | 2007-01-05 | 2025-11-09 | 0.48 | +118.5% | 18.3% | 6.79 |
+| 2026-11-12 06:39 | ml-pooled | gbm-pool@coin | robustness | train | 2023-01-06 | 2025-11-09 | 0.50 | +35.9% | 32.1% | 11.17 |
+| 2026-11-12 06:39 | ml-pooled | gbm-pool@idx | robustness | train | 1974-01-04 | 2025-11-09 | 0.62 | +1787.1% | 47.6% | 7.75 |
