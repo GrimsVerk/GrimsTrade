@@ -50,7 +50,9 @@ that. Re-run, same harness, same costs, total-return prices:
 
 Asset by asset, each over its own history, the trend rule against holding that asset: SPY +0.09
 (p = 0.27), QQQ +0.11 (p = 0.21), GLD -0.08, TLT -0.06, BTC +0.01, ETH -0.02. It helped on
-stocks, through two long bear markets, and nowhere else.
+stocks, through two long bear markets, and nowhere else. The eight other ETFs in
+`results/baselines.md` tell the same story: ahead in 2000-09 (0.81 against 0.41), level or
+behind in two of the three eras since.
 
 Taking out a rule's best stretch always hurts it. The point here is that it is the only such
 stretch, and that it happened on a book the owner will never hold. The 2008 crisis is inside the
@@ -211,3 +213,76 @@ forecasts are a coin toss (AUC 0.48 to 0.51); a planted signal is found, so the 
   prices hide what bonds paid, stands either way.
 - A limit no harness can fix: an agent's own memory of how markets moved in 2025-26 is not
   fenced off by a date cut.
+
+### 5. The luck check: right arithmetic, and the conclusion survives its weak points
+
+**What the runs say.** The best of 52 selectable variants beat equal weight by 0.22 Sharpe; luck
+alone would give about 0.24; so no rule has shown an edge.
+
+**What I found.**
+
+- The formula (Bailey and López de Prado's expected maximum) is coded correctly. With 52 tries
+  and a standard error of 0.11 I get 0.25.
+- It treats the 52 tries as independent. They are not: 31 are ML models on the same features,
+  and the top six rows of `results/deflation.md` are one bet, "be out of stocks in a long bear
+  market", made six ways. With ten independent tries the luck figure would be 0.17, below the
+  0.22 seen. So as written the check leans towards "luck" more than the data force it to.
+- That does not rescue the top six, because of finding 1: their +0.14 to +0.22 over equal
+  weight is the dot-com bust on the two-asset book. From 2003-09 the best three are +0.18,
+  +0.13 and +0.12, each with p between 0.10 and 0.16 before any allowance for having been
+  picked out of 52.
+- Some choices have no row: the twins themselves (`tsmom12` +0.17, `sma200` +0.13) and the
+  12-month lookback (9 months gives +0.25 and 15 months +0.01 in my re-run). Small next to 52.
+
+**What it changes.** Nothing in the conclusion: no rule has shown an edge beyond luck. For the
+M1 lane's deflated Sharpe, counting the 52 rows as independent errs on the safe side.
+
+### 6. The out-of-universe sets are thin, and the coin set is tilted
+
+**What the runs say.** Each idea is re-run on 8 other ETFs, 6 other coins and 4 stock indexes;
+bar 4 asks for the right sign in two of the three.
+
+**What I found.**
+
+- **Coins.** The six are "among the largest in January 2018 and listed by Coinbase or Bitstamp
+  with long history". In practice that means coins still trading on a major venue in November
+  2026: all six have bars to 2026-11-11 in my fetch. Large coins of January 2018 that these
+  venues never listed, or dropped, are missing (NEM, IOTA, NEO and Monero among them). A rule
+  that sells what keeps falling earns its keep on exactly those. So the set flatters holding
+  and understates trend rules (`tsmom12` 0.54 against 0.72 for holding the six). It is also
+  short and noisy: it starts in 2017-08 with one coin, and its Sharpe ratios carry a standard
+  error of 0.34.
+- **Indexes.** The "next open" is often not a price anyone could trade. Share of days on which
+  the open equals the previous close: S&P 500 index 65% to 92% in each decade from the 1960s to
+  the 2000s; FTSE 95% to 100% from 2000 to 2025 (the protocol says "before about 2010"). There
+  a fill is at the close the signal was computed from. For the Nikkei before 1990 and the DAX
+  before about 1994 the open equals that day's own close, so the fill is one day late instead.
+  Slow rules hardly notice. Fast ones do: `dip-rsi2`'s index results on the S&P and FTSE are in
+  effect close-fill results.
+- The DAX series (`^GDAXI`) includes dividends; the protocol calls all four "price indexes, no
+  dividends".
+- Bar 4 counts signs, and several of the differences are +0.00 to +0.03 (`trend-vol` on the
+  indexes +0.00, `kelly-shrunk` on the ETFs -0.00, `vol-target` on the indexes +0.01). The sign
+  of a number that small is a coin toss. This is part of why the bar is blunt (finding 2).
+
+**What it changes.** No verdict: no idea failed on bar 4 alone. For later cards, count the coin
+set as a weak vote that leans against anything that sells losers, and state the fill caveat for
+the FTSE through 2025.
+
+### 7. Smaller things
+
+- `results/baselines.md` shows the Nikkei, FTSE and DAX alone from 1994-02-01. The code
+  (`common.ctx`) and every idea test use each index's whole history (from 1966, 1985 and 1988),
+  re-logged in `tries.md` at 02:00. The file is stale and would not reproduce. The change was
+  made before the first idea test, so no result was chosen by it.
+- The six assets were picked in 2026, knowing they had gone up (BTC about 21,000-fold, ETH about
+  270-fold over their histories). That flatters every growth figure in the tables (18% to 31% a
+  year), and it flatters holding more than it flatters a rule that sells losers. It cuts against
+  finding 1's reading: the tie since 2003 means the edge is unproven, not that the rule is
+  useless.
+- Cash earns nothing in the gym. By the runs' own what-if (`results/cash-interest.md`) that
+  costs the cautious rules 0.5% to 0.8% a year: also against the trend rule, and too small to
+  reopen finding 1.
+- ETF costs of 2 bps a side are too low for the 1990s. The rules trade their equity one to five
+  times a year, so even ten times that cost moves nothing.
+- `tsmom12` is ranked on a one-sided p of 0.08. Two-sided it is about 0.16.
