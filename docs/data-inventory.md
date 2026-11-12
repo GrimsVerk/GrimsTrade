@@ -38,13 +38,13 @@ current state run the commands under "Check progress".
 | `rest_1m-bitfinex` | `rest_1m.py bitfinex` | tBTCUSD from 2013-04, tETHUSD from 2016-03, 1m (10,000 min per file, 2.5 s apart: 30 req/min limit) | ~1 GB | ~1-2 h |
 | `small` | `scripts/backfill/small.py` | Yahoo daily full history (14 indexes from 1927, 20 ETFs, BTC/ETH, gold, oil, dollar) `yahoo-1d/`; FRED 21 series `fred/<date>/`; ALFRED vintages (1st and 15th of each month since 2000) for PAYEMS, M2SL, CPIAUCSL, UNRATE, INDPRO, WALCL `fred/alfred/<ID>/<vintage>.csv`; Ken French (6 files) `french/`; Shiller `shiller/`; Treasury curve 1990+ `treasury/`; Philly Fed RTDSM (4 files) `philly-rtdsm/`; Cboe VIX family `cboe/`; Blockchain.com (5 charts) `blockchain-com/`; Fear & Greed `fear-greed/`; Deribit BTC/ETH perpetual funding (30-day chunks from 2019-04) and DVOL (hourly from 2021-03) `deribit/`; GDELT 1.0 daily events, last 30 days `gdelt/events/` | ~0.5 GB | ~1.2 h (4,343 requests at ~1/s) |
 
+| `alpaca` | `scripts/backfill/alpaca.py` | ETF 1m bars, **SIP feed** (the free plan allowed it), raw prices, from 2016-01, 20 ETFs: `alpaca/1m-sip/<SYM>/<YYYY-MM>.json`. Started by the Chief of Staff ~15:35 UTC (PID 1017108) after creating the key file | ~5-10 GB (estimate) | ~1-2 h (~170 req/min) |
+
 Known failures so far: Coin Metrics community API answered 403 to our client (see Next). Check the
 logs for `FAIL` lines; a rerun retries only what is missing.
 
 ## Not downloaded
 
-- Alpaca ETF 1m bars (`scripts/backfill/alpaca.py`, ready): the key file named in `local.toml`
-  (`~/.config/grimstrade/alpaca.env`) did not exist on 2026-11-12.
 - Kraken bulk OHLCVT (1.5): download is a Google Drive link; needs a person or a browser.
 - Raw tick/trade dumps (Binance trades, Kraken trades, Bybit, BitMEX, Dukascopy): too big for now.
 - Hyperliquid funding (4.4, LATER): short history; easy to add to `small.py`.
