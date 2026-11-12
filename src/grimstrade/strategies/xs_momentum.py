@@ -8,12 +8,16 @@ at once, each with 1/6 of the money.
 Adapted to us: winners are the top third of the universe (2 of 6 assets; a decile is impossible
 with 6), long-only (the paper also shorts the losers; we hold cash instead), no skip week (the
 paper's base case). A cohort whose month end predates our data stays in cash.
+
+A month end counts as completed only once every crypto asset has a bar on or after it: crypto
+bars close at 00:00 UTC, a day after the ETF bar of the same date, so a cohort formed on the ETF
+bar alone would rank crypto on a stale close and change its picks the next day.
 """
 
 import math
 from datetime import date, timedelta
 
-from grimstrade.data import History
+from grimstrade.data import CRYPTO, UNIVERSE, History
 from grimstrade.signals import close_on_or_before
 
 FORMATION_MONTHS = 6  # J
@@ -46,7 +50,9 @@ def decide(history: History) -> tuple[dict[str, float], str]:
     lasts = [b[-1].date for b in history.values() if b]
     if not lasts:
         return {}, "xs momentum: no data yet, stay in cash"
-    latest = max(lasts)
+    crypto = [b[-1].date for s, b in history.items() if b and UNIVERSE.get(s) == CRYPTO]
+    # Every asset has closed the day `latest` (crypto trades daily, so its slowest bar decides).
+    latest = min(crypto) if crypto else max(lasts)
     # The last K completed month ends, newest first.
     last_end = month_end(latest.year, latest.month)
     if last_end > latest:

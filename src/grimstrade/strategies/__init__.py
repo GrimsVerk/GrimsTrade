@@ -39,7 +39,7 @@ NOTES: dict[str, str] = {
     **{name: "benchmark (M0)" for name in BENCHMARKS},
     "ts_momentum": "M1 classic: time-series momentum, Moskowitz/Ooi/Pedersen 2012, paper params",
     "xs_momentum": "M1 classic: cross-sectional momentum 6/6, Jegadeesh/Titman 1993, top third",
-    "vol_target_spy": "M1 classic: SPY vol targeting 10%, 1-month vol, Moreira/Muir 2017",
+    "vol_target_spy": "M1 classic: SPY vol targeting 10%, 1-month vol, Harvey et al. 2018",
     "risk_parity": "M1 classic: inverse-vol risk parity, 3y vol, Asness/Frazzini/Pedersen 2012",
     "crypto_mean_reversion": "M1 classic: BTC/ETH RSI(2)<10 above 200d SMA, exit >5d SMA, Connors",
 }

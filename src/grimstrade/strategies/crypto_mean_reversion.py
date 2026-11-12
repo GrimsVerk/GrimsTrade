@@ -2,9 +2,11 @@
 Trading Strategies That Work"), the textbook version of the short-term reversal effect
 (Lehmann 1990), applied to BTC and ETH.
 
-Per coin, with its textbook parameters: buy after a sharp short dip (2-day RSI under 10) but only
-in an uptrend (close above its 200-day average); sell once the close is back above its 5-day
-average. Each coin in a trade gets half the money; otherwise cash.
+Per coin, with the common published parameters: buy after a sharp short dip (2-day RSI under
+10; the book's tested system uses 5) but only in an uptrend (close above its 200-day average);
+sell once the close is back above its 5-day average. Each coin in a trade gets half the money;
+otherwise cash. Signals fill about a day later than Connors' (docs/DECISIONS.md, execution
+timing).
 
 The rule depends on whether we are already in a trade, so it is replayed over the coin's whole
 visible history on every decision (no hidden state; the same answer live and in a backtest).
