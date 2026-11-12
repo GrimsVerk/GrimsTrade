@@ -70,9 +70,8 @@ def clone(tmp_path: Path) -> Path:
 
 
 def checkout(work: Path, **env: str) -> subprocess.CompletedProcess[bytes]:
-    return subprocess.run(
-        ["bash", str(CHECKOUT)], cwd=work, capture_output=True, env={**os.environ, **env}
-    )
+    ours = {k: v for k, v in os.environ.items() if k != "GITHUB_SHA"}  # set in CI: not this repo's
+    return subprocess.run(["bash", str(CHECKOUT)], cwd=work, capture_output=True, env=ours | env)
 
 
 def test_checkout_puts_the_existing_record_in_trail(clone: Path) -> None:
@@ -89,6 +88,43 @@ def test_a_missing_branch_stops_the_job_unless_a_new_record_is_asked_for(clone: 
     # The very first run: the owner starts it by hand and asks for a new record.
     assert checkout(clone, START_NEW_RECORD="true").returncode == 0
     assert list((clone / "trail").iterdir()) == [clone / "trail" / ".git"]
+
+
+def test_a_tag_or_another_branch_is_not_taken_for_the_record(clone: Path) -> None:
+    """Second review: `git fetch origin paper-trail:paper-trail` resolves a tag of that name
+    first, so the job would run on the tag's history while the outside check looked at the
+    branch. And `ls-remote --heads origin paper-trail` also matches `backup/paper-trail`."""
+    origin = clone.parent / "origin"
+    tip = git(origin, "rev-parse", "paper-trail")
+    git(origin, "checkout", "-q", "paper-trail")
+    forged = commit(origin, "forged line", T0)
+    git(origin, "tag", "paper-trail", forged)
+    git(origin, "reset", "-q", "--hard", tip)
+    git(origin, "checkout", "-q", "main")
+    done = checkout(clone)
+    assert done.returncode == 0, done.stderr
+    assert git(clone / "trail", "rev-parse", "HEAD") == tip
+    # Another branch whose name ends the same way does not count as the record existing.
+    git(origin, "tag", "-d", "paper-trail")
+    git(origin, "branch", "-m", "paper-trail", "backup/paper-trail")
+    git(clone, "worktree", "remove", "--force", "trail")
+    git(clone, "branch", "-D", "paper-trail")
+    missing = checkout(clone)
+    assert missing.returncode == 1 and b"origin has no paper-trail branch" in missing.stderr
+
+
+def test_only_the_tip_of_main_writes_the_record(clone: Path) -> None:
+    """Second review: re-running an old run executes that run's commit and workflow file (for 30
+    days), so merged guards do not protect against it. The checkout refuses unless the commit
+    the job runs is main's newest."""
+    origin = clone.parent / "origin"
+    old = git(origin, "rev-parse", "main")
+    assert checkout(clone, GITHUB_SHA=old).returncode == 0
+    git(clone, "worktree", "remove", "--force", "trail")
+    commit(origin, "newer code", T0)
+    stale = checkout(clone, GITHUB_SHA=old)
+    assert stale.returncode == 1 and b"Only the newest code on main" in stale.stderr
+    assert not (clone / "trail").exists()
 
 
 def test_an_unreachable_remote_never_starts_a_new_record(clone: Path) -> None:

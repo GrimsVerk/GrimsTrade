@@ -8,15 +8,33 @@
 #
 # A fetch that merely fails (network) or a deleted branch must never silently start a new,
 # empty record: the old one would vanish from the scoreboard. So ask the remote first.
+#
+# In the job (GITHUB_SHA set) it also refuses to go on unless that commit is the tip of main:
+# re-running an old run executes the old commit with its old workflow file and old guards.
 set -euo pipefail
 
 BRANCH=paper-trail
+if [ -n "${GITHUB_SHA:-}" ]; then
+  tip="$(git ls-remote origin refs/heads/main | cut -f1)"
+  if [ "$tip" != "$GITHUB_SHA" ]; then
+    echo "::error::this run is for commit ${GITHUB_SHA:0:10}, but main is at ${tip:0:10}." \
+      "Only the newest code on main writes the record: start the job again, do not re-run." >&2
+    exit 1
+  fi
+fi
+
+# Full ref names: a tag or another branch whose name ends in paper-trail must not be taken.
 status=0
-git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1 || status=$?
+git ls-remote --exit-code origin "refs/heads/$BRANCH" >/dev/null 2>&1 || status=$?
 
 if [ "$status" -eq 0 ]; then
-  git fetch origin "$BRANCH:$BRANCH"
+  git fetch origin "refs/heads/$BRANCH:refs/heads/$BRANCH"
   git worktree add trail "$BRANCH"
+  if [ "$(git -C trail symbolic-ref -q HEAD)" != "refs/heads/$BRANCH" ] ||
+    [ "$(git -C trail rev-parse HEAD)" != "$(git rev-parse "refs/heads/$BRANCH")" ]; then
+    echo "::error::trail/ is not on the $BRANCH branch (a tag of the same name?)." >&2
+    exit 1
+  fi
 elif [ "$status" -eq 2 ] && [ "${START_NEW_RECORD:-false}" = "true" ]; then
   echo "origin has no $BRANCH branch: starting a new, empty record (START_NEW_RECORD=true)."
   git worktree add --orphan -b "$BRANCH" trail
