@@ -68,19 +68,23 @@ Question: does machine learning on simple features beat `tsmom12` after costs? H
 
 - ML test rules added to `protocol.md` ("Machine-learning tests") and three cards
   (`ml-linear`, `ml-gbm`, `ml-filter`), all before any model was fitted.
+- `lib/ml.py` (features, purged walk-forward fits, sizing), `lib/mltest.py` (the card test),
+  `lib/lookahead_check_ml.py` (passes: cached models give the same weights as models refitted
+  on history truncated by the gym).
+- `ml-linear` tested: dead, it became equal weight (`results/ml-linear.md`).
 
 **Doing**
 
-- `lib/ml.py`: features, purged walk-forward fitting, the strategies. Then `DRY=1` plumbing
-  check and the look-ahead check against the gym.
+- `ml-gbm` (`lib/idea_ml_gbm.py`), then `ml-filter` (`lib/idea_ml_filter.py`).
 
 **Next**
 
-- Run `ml-linear`, then `ml-gbm`, then `ml-filter` (scripts `lib/idea_ml_*.py`); write each
-  verdict in `results/`.
 - Raw prices and double costs for the best model; dividends note; refresh `results/deflation.md`.
 - Summary and ranking at the top of this file; `ideas.md`.
 - The held-out year stays untouched unless a card passes its whole train bar.
+
+Run any card with `uv run --with numpy --with scikit-learn python research/lib/idea_ml_<x>.py`
+(`DRY=1` first for a plumbing check: a real run appends tries).
 
 ## Research run 1 (finished)
 
