@@ -5,7 +5,7 @@ One line per idea. Status: `new` (written down), `testing` (has a card, being te
 stay: they count as tries. "Dead (literature)" means the survey killed it and we did not spend a
 backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 
-## Cards (tested in this run, strongest first)
+## Cards tested in run 1 (all nine failed their pre-set bar; none used the held-out year)
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
@@ -16,8 +16,8 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | universal-portfolio | Information theory | dead (tested) | [card](cards/universal-portfolio.md) | Indistinguishable from the constant mix it starts from; 30 years is too short for its guarantee. [result](results/universal-portfolio.md) |
 | absorption-ratio | Random matrix theory / PCA | dead (tested) | [card](cards/absorption-ratio.md) | Worked inside the paper's sample (0.97 vs 0.56 to 2010), behind its plain twin ever since (1.13 vs 1.44); missed 2022. [result](results/absorption-ratio.md) |
 | hawkes-clustering | Hawkes processes | dead (tested) | [card](cards/hawkes-clustering.md) | Self-excitation at daily bars is weak; the rule is equal weight minus a few days (0.87 vs 0.88), 7x the turnover. [result](results/hawkes-clustering.md) |
-| month-end-liquidity | Calendar / microstructure | testing | [card](cards/month-end-liquidity.md) | Etula et al. 2020, post-sample test |
-| dip-rsi2 | Short-term reversal | testing | [card](cards/dip-rsi2.md) | Connors 2008, post-publication test, next-open fills |
+| month-end-liquidity | Calendar / microstructure | dead (tested) | [card](cards/month-end-liquidity.md) | Real in old data (S&P 1962-93 t = 4.0, FTSE 4.2, Nikkei 3.1), faded since 2014, never in TLT; in-or-out loses to a constant one-third holding on Sharpe. [result](results/month-end-liquidity.md) |
+| dip-rsi2 | Short-term reversal | dead (tested) | [card](cards/dip-rsi2.md) | Bounce is real on SPY (21.6 vs 3.9 bps a day, t = 2.5), halved since publication, weak on 7 other markets, and only 5% exposure: +2.3% a year. [result](results/dip-rsi2.md) |
 
 ## Plain twins and benchmarks (baselines, see `results/baselines.md`)
 

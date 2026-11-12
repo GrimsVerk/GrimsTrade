@@ -137,3 +137,22 @@ Mean open-to-open return per day held +10.0 bps (3096 days), per day not held +1
 - FAIL: 6. (card) Not behind the twin after the paper's sample, 2014-2025, SPY and TLT (SPY -0.35, QQQ -0.44, TLT +0.06)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Dead as a strategy; the effect itself was real and has faded.
+
+- The window days did earn more. SPY: 7.7 bps a day inside against 3.2 outside (t = 1.6). In
+  markets and decades the rule was not designed on it is unmistakable: S&P 500 index 1962-1993,
+  8.2 against 0.0 bps (t = 4.0); FTSE t = 4.2; Nikkei t = 3.1; DAX t = 3.0. On those four indexes
+  the rule beat its twin by +0.23 Sharpe on average.
+- It has decayed since the paper's sample ended. From 2014 the window days earn 0.0 bps on the
+  Nikkei, 1.6 on the DAX, 0.6 on EFA, 2.9 on IWM; on SPY and QQQ the rule is behind its twin by
+  0.35 and 0.44 Sharpe. TLT never showed it (2.0 against 1.8 bps).
+- Even where it worked it does not suit our gym. The rule is fully invested a third of the time;
+  a constant one-third holding takes the same average risk far more smoothly, and cash earns 0
+  the rest of the month. On SPY the rule's Sharpe is 0.56 against 0.63 for the constant holding.
+  Earning double per day is not enough to pay for bunching the risk.
+
+Practical leftover, not a strategy: when the paper system has to buy stocks anyway, a few days
+before month end has been a better time than a few days after.

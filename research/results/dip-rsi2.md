@@ -111,3 +111,18 @@ SPY: +21.4 bps per day held at close fills (376 days); QQQ: +18.7 bps per day he
 - FAIL: 6. (card) Not behind the twin after publication, 2009-2025 (SPY -0.49, QQQ -0.70)
 
 **FAILS train.**
+
+## Verdict (2026-11-12)
+
+Dead for our purposes. The bounce is real on SPY: 21.6 bps per day held against 3.9 on other
+days (t = 2.5), and the next-open fill costs nothing (21.4 bps at close fills). But:
+
+- it halved after publication (32 bps a day before 2009, 14.5 since), and behind its twin on Sharpe
+  since 2009 on both SPY and QQQ;
+- it is weak everywhere it was not designed: t between 0.5 and 1.6 on QQQ, IWM, EFA, EEM, the
+  old S&P 500 index, the Nikkei, FTSE and DAX, and behind the twin on Sharpe in all seven;
+- it is in the market 5% of the time. Unlevered that is +2.3% a year on SPY. A constant 5%
+  holding has a better Sharpe (0.65 against 0.50) because the rule buys exactly when volatility
+  is highest.
+
+A dip rule only pays with leverage or as a way to time purchases already planned. Not for M3.
