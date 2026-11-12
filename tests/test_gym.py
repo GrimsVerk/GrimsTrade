@@ -27,8 +27,8 @@ def test_fills_at_next_open_with_fee_and_slippage() -> None:
     (fill,) = res.fills
     assert fill.time == datetime(2026, 11, 2, tzinfo=UTC)
     assert fill.price == pytest.approx(120 * 1.0005)
-    assert fill.qty == pytest.approx(10_000 / (120 * 1.0005 * 1.0025))
-    assert fill.fee == pytest.approx(fill.qty * fill.price * 0.0025)
+    assert fill.qty == pytest.approx(10_000 / (120 * 1.0005 * 1.0060))
+    assert fill.fee == pytest.approx(fill.qty * fill.price * 0.0060)
     assert res.cash == pytest.approx(0, abs=1e-6)
     # Marked at the last close.
     last_day, last_eq = res.equity[-1]
@@ -70,8 +70,8 @@ def test_round_trip_costs_are_charged_both_ways() -> None:
     hist: History = {"BTC": bars("2026-11-01", [(100, 100)] * 3)}
     decisions = [Decision(at("2026-11-01"), {"BTC": 1.0}), Decision(at("2026-11-02"), {})]
     res = gym.simulate(decisions, hist)
-    qty = 10_000 / (100 * 1.0005 * 1.0025)
-    expected = qty * 100 * 0.9995 * (1 - 0.0025)
+    qty = 10_000 / (100 * 1.0005 * 1.0060)
+    expected = qty * 100 * 0.9995 * (1 - 0.0060)
     assert res.cash == pytest.approx(expected)
     assert res.cash < 10_000
 

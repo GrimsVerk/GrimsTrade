@@ -54,7 +54,7 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     state = json.loads((tmp_path / "state" / "portfolio.json").read_text())
     btc = state["buy_hold_btc"]
     assert btc["fills"] == 1 and set(btc["positions"]) == {"BTC"}
-    assert btc["equity"] > 10_000  # fake prices only go up
+    assert 9_950 < btc["equity"] < 10_050  # one day's small rise, less the cost of buying
     board = (tmp_path / "reports" / "scoreboard.md").read_text()
     assert board.startswith("# Scoreboard") and "Deflated Sharpe" in board
     # Backtests live in their own, clearly labelled report, never in the scoreboard.

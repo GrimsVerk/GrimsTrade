@@ -30,7 +30,9 @@ class Costs:
     slip: float  # half-spread + slippage, share of price
 
 
-COSTS: dict[str, Costs] = {CRYPTO: Costs(fee=0.0025, slip=0.0005), ETF: Costs(fee=0.0, slip=0.0002)}
+# Crypto fee: a fill at the open is a market order, so the taker fee applies: 0.60% on Kraken Pro
+# for an account trading 2,500 to 10,000 USD a month (DECISIONS, 2026-11-12, audit G3).
+COSTS: dict[str, Costs] = {CRYPTO: Costs(fee=0.0060, slip=0.0005), ETF: Costs(fee=0.0, slip=0.0002)}
 
 
 @dataclass(frozen=True)

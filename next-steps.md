@@ -33,7 +33,7 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 
 - CSV + stdlib only (no parquet/pandas). Raw prices; dividends not credited yet.
 - Bot commits to orphan branch `paper-trail` because `main` requires PRs.
-- Costs: crypto 25 bps fee + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
+- Costs: crypto 60 bps fee (was 25 until the audit, G3) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
 - Decisions at ~22:30 UTC see crypto bars through yesterday (today's still open) and ETFs through
   today. Fills show up a day later, once the fill bar has closed and been stored.
 - A run with no new data since a strategy's last decision writes no new decision.

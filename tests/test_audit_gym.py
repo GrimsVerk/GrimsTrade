@@ -51,6 +51,19 @@ def test_a_switch_from_etf_to_crypto_ends_up_in_crypto() -> None:
     assert res.positions["BTC"] == pytest.approx(100.0)
 
 
+def test_a_crypto_fill_pays_the_taker_fee() -> None:
+    """Audit G3 (fixed): the gym charged crypto fills 25 basis points. A fill at the open is a
+    market order and pays the taker fee: on Kraken Pro 0.80% / 0.60% / 0.38% for a 30-day volume
+    from 0 / 2,500 / 10,000 USD (its fee page, read 2026-11-12). The default is now 0.60%, the
+    tier of the busiest live crypto strategy; nothing below the cheapest tier in reach of a
+    10,000 USD account may come back unnoticed."""
+    assert gym.COSTS["crypto"].fee >= 0.0038
+    hist: History = {"BTC": flat(4, 100.0)}
+    res = gym.simulate([Decision(at(0), {"BTC": 1.0}), Decision(at(1), {})], hist)
+    paid = 1 - res.cash / gym.START_CASH
+    assert paid == pytest.approx(2 * (0.0060 + 0.0005), abs=1e-4)  # in and out: 1.3%
+
+
 def test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year() -> None:
     """Audit G4 (known gap, sized): prices are raw, so on each ex-dividend day the price drops by
     the payout and the holder gets nothing for it. A fund that only pays out its 0.36% a month

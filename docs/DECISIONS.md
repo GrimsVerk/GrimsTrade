@@ -2,6 +2,15 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-12 (honesty audit 1, G3): The crypto fee is 60 bps (was 25). Why: fills at the open are
+  market orders and pay the taker fee. Kraken Pro's fee page on 2026-11-12 (as served outside
+  the US) lists taker 0.80% under 2,500 USD of 30-day volume, 0.60% from 2,500, 0.38% from
+  10,000, 0.35% from 25,000, 0.30% from 50,000; 25 bps is below all of them. The busiest live
+  crypto strategy turns its book over about 10 times a year (about 9,000 USD a month): the
+  0.60% tier. One flat number is still a simplification: slower accounts really pay 0.80%,
+  faster ones 0.38% or less; volume tiers are in the BACKLOG. Every score is recomputed with
+  today's cost table, so changing it changes all past results too: change it only with a new
+  entry here. If the owner would trade elsewhere, set that venue's taker fee.
 - 2026-11-12 (honesty audit 1): Scoring conventions. (a) Every day in a record has a return, the
   first measured from the start cash, so a fill on the first day counts in Sharpe and drawdown.
   (b) Sharpe and turnover are annualised by the real time span (365 per year when there is a

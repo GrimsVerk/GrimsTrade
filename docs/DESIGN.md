@@ -49,7 +49,7 @@ daily job checks it out into `trail/`, runs, and pushes it. Code changes go to `
 
 ## Costs (defaults in `gym.py`)
 
-Crypto: 25 bps fee + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A trade smaller than 1% of
+Crypto: 60 bps fee (taker) + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A trade smaller than 1% of
 equity is skipped (rebalance band), except full exits.
 
 ## Benchmarks (what "making money" must beat)

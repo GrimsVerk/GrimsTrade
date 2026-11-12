@@ -51,7 +51,6 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged; cause open |
 | L3 | The record branch can be replaced (force-push, delete) | high | detected; owner action open |
 | G4 | Dividends not credited, cash earns nothing: yardsticks understated | medium | open: known, now sized |
-| G3 | Crypto fee looks like the maker fee, fills are taker | medium | open: unverified |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L7 | A decision did not say which code made it | medium | half fixed |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
@@ -63,6 +62,7 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | L4 | Stored bars could be edited unnoticed | high | fixed |
 | S1 | A Sharpe ratio was printed from day two | high | fixed |
 | D2 | A stock split would be booked as a crash | high, unlikely | guarded |
+| G3 | Crypto trades were charged 0.25%; the real fee is 0.38% to 0.80% | medium | fixed (flat 0.60%) |
 | D3 | No sanity check before a bar became permanent | medium | fixed |
 | D4 | A hole in a source's answer became a permanent gap | medium | fixed |
 | L5 | A failed fetch started a brand-new record | medium | fixed |
@@ -186,19 +186,6 @@ ordinary tests that pin the numbers quoted here.
 - **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (in the
   BACKLOG). `weekly.md` already says "dividends not yet credited"; add the size.
 
-### G3. The crypto fee looks like the maker fee (medium, not verified)
-
-- **What:** the gym charges 25 basis points plus 5 of slippage for crypto. A fill at the open is
-  a market (taker) order. Kraken Pro's lowest tier was 0.25% maker / 0.40% taker when I last knew
-  it; I could not confirm today's schedule (the fee page is script-rendered, the public API
-  returns empty fee lists, and Kraken's simple "instant buy" costs 1% or more). If 0.40% holds,
-  each crypto trade is undercharged by 15 basis points: nothing for buy-and-hold, but about 15% a
-  year for a strategy that turns its book over 100 times a year, which is what
-  `crypto_mean_reversion` is built to do.
-- **Evidence:** `gym.COSTS`; no test, because the fact is unverified.
-- **Proposed fix:** check the taker fee for a 10,000 USD account at the venue the prices come
-  from and set it; when unsure, use the higher number. Changing it is a DECISIONS entry.
-
 ### D6. The ETF fallback source does not work (medium, for "runs without anyone")
 
 - **What:** on 2026-11-12 `https://stooq.com/q/d/l/?s=spy.us&i=d` answered HTTP 200 with a
@@ -314,6 +301,29 @@ One commit per fix, except the three workflow changes, which share the same line
   `tests/test_audit_data.py::test_a_split_is_not_stored_as_a_crash`.
 - **What is left:** a split is stopped, not handled. Handling it means fetching split events
   and adjusting held units.
+
+### G3. Crypto trades were charged less than any real fee (medium)
+
+- **What:** the gym charged 25 basis points per crypto trade, plus 5 of slippage. A fill at the
+  open is a market order and pays the taker fee. Kraken Pro's fee page on 2026-11-12 (read twice,
+  as served outside the US) lists taker 0.80% for an account that traded under 2,500 USD in the
+  last 30 days, 0.60% from 2,500, 0.38% from 10,000, 0.35% from 25,000 and 0.30% from 50,000.
+  25 was below every one of them.
+- **Size:** the busiest live crypto strategy, `crypto_mean_reversion`, turned its book over 10.6
+  times a year in the backtest: about 9,000 USD a month, the 0.60% tier. Undercharged by 35
+  basis points a trade, that is about 3.7% a year, against a backtest return of about 5% a year.
+  Buy-and-hold BTC: 0.55% once.
+- **Fix (`gym.py`, one line, own commit; DECISIONS):** the crypto fee is 0.60%. The record has
+  no scored fills yet, so no number shown so far changes; crypto backtests get a little worse,
+  and the research lane's logged Sharpes were computed with the old fee.
+  `tests/test_audit_gym.py::test_a_crypto_fill_pays_the_taker_fee`.
+- **What is left:** it is one flat number. A slow account really pays 0.80% (0.2% too little
+  charged on each of its few trades), a fast one 0.38% or less (too much charged). Fees by volume
+  tier are in the BACKLOG. I could not read the US schedule (a search result says 0.40% taker at
+  the lowest tier there). If the owner would trade elsewhere, that venue's fee belongs here.
+  And the cost table is not part of the record: every score is recomputed with today's costs, so
+  a later change alters all past results without a trace; DECISIONS now asks for an entry each
+  time.
 
 ### D3, D4. Nonsense bars and holes were stored for ever (medium)
 
