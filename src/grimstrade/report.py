@@ -271,9 +271,11 @@ def undecided_days(root: Path, history: History) -> dict[str, int]:
     sym = daily[0]
     saw: dict[str, list[date]] = {}
     for row in ledger.decisions(root):
-        through = row["data_through"].get(sym)
-        if through:
-            saw.setdefault(row["strategy"], []).append(date.fromisoformat(through))
+        try:  # a line written by hand may lack the field or hold nonsense: not counted here
+            through = date.fromisoformat(row["data_through"][sym])
+        except (KeyError, TypeError, ValueError):
+            continue
+        saw.setdefault(row["strategy"], []).append(through)
     out = {}
     for name, days in saw.items():
         between = sum(max((b - a).days - 1, 0) for a, b in zip(days, days[1:], strict=False))
