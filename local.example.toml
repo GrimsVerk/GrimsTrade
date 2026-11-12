@@ -7,3 +7,7 @@ root = "~/data/grimstrade"
 [alpaca]
 # Market-data keys (free account), outside the repo, chmod 600. Never commit or print them.
 env_file = "~/.config/grimstrade/alpaca.env"
+
+[fred]
+# FRED API key (free account), outside the repo, chmod 600: FRED_API_KEY=...
+env_file = "~/.config/grimstrade/fred.env"
