@@ -163,6 +163,11 @@ lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more g
   finding 1. It does show the order among the cautious rules is open. In this window `tsmom12`
   has, with `sma200`, the lowest Sharpe of the six cautious rules, the largest worst loss, and
   the highest growth.
+- No dead idea comes back to life in that window. I re-ran all 17 run-1 variants on the six
+  assets from 2003-09. Against its own twin, none is ahead with p of 0.05 or less except
+  `hmm-regime` (soft, 0.04) and `hawkes-clustering` (0.05), both against `vol-calm`, a twin
+  that loses to holding (finding 5). Against equal weight two are: `drawdown-control` d1.5
+  (0.03) and `vol-target` t25 (0.05). In 34 comparisons luck gives about two such results.
 
 **What it changes.**
 
@@ -309,7 +314,10 @@ alone would give about 0.24; so no rule has shown an edge.
 - That does not rescue the top six, because of finding 1: their +0.14 to +0.22 over equal
   weight is the dot-com bust on the two-asset book. Of the four I re-ran from 2003-09, the
   best three are +0.18, +0.13 and +0.12, each with p between 0.10 and 0.16 before any
-  allowance for having been picked out of 52.
+  allowance for having been picked out of 52. `kelly-shrunk` k0.1, joint top of the table, is
+  the clearest case: from 2003-09 its three settings give the same result to two decimals,
+  because the no-leverage cap binds once there are several assets. Its lead comes from the
+  years with one or two.
 - Some choices have no row: the twins themselves (`tsmom12` +0.17, `sma200` +0.13) and the
   12-month lookback (9 months gives +0.25 and 15 months +0.01 in my re-run). Small next to 52.
 
@@ -379,6 +387,9 @@ the FTSE through 2025.
   assets together I recomputed equal weight and `tsmom12` from the price files with no costs
   and no gym: 0.90 and 1.06 against the harness's 0.88 and 1.05, worst losses 69% and 37% in
   both.
+- **The numbers reproduce.** On my own fetch, all 17 run-1 variants on the six assets give the
+  Sharpe logged in `tries.md` to two decimals. So do the five twins, the three ML models I
+  re-ran and the crypto slot table.
 - **Cards before tests.** For all 21 cards the commit that adds the card is earlier than the
   idea's first row in `tries.md`.
 - **Look-ahead.** Every strategy reads prices through `View`, which hands out only the bars
@@ -405,8 +416,9 @@ the FTSE through 2025.
 ## What I did not check
 
 - The literature survey, and whether each card is a fair version of its paper.
-- A re-run of every result. I re-ran the baselines, the five cautious rules of finding 2, three
-  ML models, `hmm-regime`, `hawkes-clustering` and `crypto-slot-size`. The other results I read
-  but did not re-run.
+- A re-run of every result. I re-ran the twins, the 17 run-1 variants on the six assets, the
+  crypto slot table and three of the 31 ML variants. Not re-run: the other 28 ML variants,
+  `absorption-ratio`, the two single-asset timing rules (`month-end-liquidity`, `dip-rsi2`),
+  and every out-of-universe table. Those I read.
 - Whether the bootstrap p-values are well calibrated, beyond the block lengths in finding 8.
 - The M1 code in `src/` beyond the gym's replay and the bar timing.
