@@ -30,7 +30,11 @@ DECISIONS = Path("ledger/decisions.jsonl")
 TRIES = Path("ledger/tries.jsonl")
 RESEARCH_FLOOR = Path("ledger/research_tries.jsonl")
 PROBLEMS = Path("ledger/problems.jsonl")
-APPEND_ONLY = (DECISIONS, TRIES, RESEARCH_FLOOR, PROBLEMS)
+# Rewrites of the record branch that a person accepted (scripts/check-trail-activity.sh), and
+# what the last run could check of the branch's history (not append-only: one line, rewritten).
+ACCEPTED_REWRITES = Path("ledger/acknowledged-rewrites.txt")
+WITNESS = Path("state/witness.txt")
+APPEND_ONLY = (DECISIONS, TRIES, RESEARCH_FLOOR, PROBLEMS, ACCEPTED_REWRITES)
 
 
 class LedgerTampered(Exception):

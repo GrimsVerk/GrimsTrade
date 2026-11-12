@@ -143,6 +143,15 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
             "(a price source or a strategy failing); see the end of `scoreboard.md`.",
             "",
         ]
+    rewrites = report.accepted_rewrites(root)
+    if rewrites or report.unwitnessed(root):  # the page the owner reads must say it too
+        what = (
+            f"the record branch was rewritten or back-dated ({len(rewrites)} accepted event"
+            f"{'s' * (len(rewrites) != 1)})"
+            if rewrites
+            else "the last run could not check whether the record branch was rewritten"
+        )
+        lines[4:4] = [f"**Warning:** {what}; see the end of `scoreboard.md`.", ""]
     fresh = report.freshness(history)
     if "STALE" in fresh:  # a stopped price source makes whoever holds that asset look calm
         lines[4:4] = [f"**Warning, old prices.** {fresh}", ""]

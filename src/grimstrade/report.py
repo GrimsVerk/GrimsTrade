@@ -280,6 +280,21 @@ def undecided_days(root: Path, history: History) -> dict[str, int]:
     return out
 
 
+def accepted_rewrites(root: Path) -> list[str]:
+    """Rewrites or back-dated pushes of the record branch that a person accepted
+    (scripts/check-trail-activity.sh keeps them, append-only)."""
+    path = root / ledger.ACCEPTED_REWRITES
+    return [x for x in path.read_text().splitlines() if x.strip()] if path.exists() else []
+
+
+def unwitnessed(root: Path) -> str:
+    """Why the last run could not (fully) compare the record with GitHub's activity log; empty
+    if it could, or if no run has tried (a local folder)."""
+    path = root / ledger.WITNESS
+    text = path.read_text().strip() if path.exists() else ""
+    return text if text.startswith("NOT") else ""
+
+
 def code_changes(root: Path) -> dict[str, int]:
     """Per strategy, how often the code behind it changed between two of its decisions (the
     `code_hash` each decision carries). The table shows one row and one unbroken record per
@@ -345,14 +360,20 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
             + ", ".join(f"{name} {n}" for name, n in sorted(idle.items(), key=lambda x: -x[1]))
             + ".",
         ]
-    accepted = root / "state" / "acknowledged-rewrites.txt"  # scripts/check-trail-activity.sh
-    if accepted.exists() and accepted.read_text().strip():
-        events = accepted.read_text().strip().splitlines()
+    events = accepted_rewrites(root)
+    if events:
         out += [
             "",
             f"**The record branch itself was rewritten or back-dated ({len(events)} event"
             f"{'s' * (len(events) != 1)}), and a person accepted it:** {'; '.join(events)}. "
             "What the record said before that cannot be checked from here.",
+        ]
+    unchecked = unwitnessed(root)
+    if unchecked:
+        out += [
+            "",
+            f"**The last run could not ask GitHub whether the record branch was rewritten:** "
+            f"{unchecked}. Until a run can, a replaced record would go unnoticed.",
         ]
     troubled = ledger.problem_runs(root)
     if troubled:

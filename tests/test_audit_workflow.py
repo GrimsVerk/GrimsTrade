@@ -107,11 +107,15 @@ def iso(t: datetime) -> str:
 
 
 def activity(
-    tmp_path: Path, trail: Path, events: list[tuple[Any, ...]] | None, **env: str
+    tmp_path: Path,
+    trail: Path,
+    events: list[tuple[Any, ...]] | None,
+    cut_short: bool = False,
+    **env: str,
 ) -> subprocess.CompletedProcess[bytes]:
     """Run the script with a fake `gh` that prints `events` (time, type, before, after and, if
     it is not the daily job, who) the way the real call's --jq does, newest first; `None` makes
-    gh fail."""
+    gh fail, `cut_short` makes it fail after printing (a later page that did not arrive)."""
     fake = tmp_path / "bin"
     fake.mkdir(exist_ok=True)
     if events is None:
@@ -122,7 +126,7 @@ def activity(
             for t, kind, before, after, *who in events
         ]
         (tmp_path / "events.tsv").write_text("".join(r + "\n" for r in reversed(rows)))
-        body = f'#!/bin/sh\ncat "{tmp_path / "events.tsv"}"\n'
+        body = f'#!/bin/sh\ncat "{tmp_path / "events.tsv"}"\n' + "exit 1\n" * cut_short
     (fake / "gh").write_text(body)
     (fake / "gh").chmod(0o755)
     full = {**os.environ, "PATH": f"{fake}:{os.environ['PATH']}", "GITHUB_REPOSITORY": "o/r", **env}
@@ -162,7 +166,7 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     events = [created, (T0 + timedelta(hours=3), "force_push", a, a)]
     accepted = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=reviewed)
     assert accepted.returncode == 0 and b"::warning::" in accepted.stdout
-    note = trail / "state" / "acknowledged-rewrites.txt"
+    note = trail / "ledger" / "acknowledged-rewrites.txt"
     assert note.read_text() == "force_push by github-actions[bot] at 2026-11-12T01:00:51Z\n"
     from grimstrade import report
 
@@ -175,8 +179,61 @@ def test_a_force_push_or_a_recreated_branch_stops_the_job(tmp_path: Path, trail:
     # ...and it cannot be set to the future to wave everything through.
     future = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL="2099-01-01T00:00:00Z")
     assert future.returncode == 2 and b"is in the future" in future.stdout
-    # With nothing accepted the note disappears.
-    assert activity(tmp_path, trail, [created]).returncode == 0 and not note.exists()
+    # Found by the second reviewer: the note used to be rebuilt from GitHub's answer on every
+    # run, so it vanished if that answer ever stopped listing the event. It is kept for good.
+    assert activity(tmp_path, trail, [created]).returncode == 0
+    assert "force_push by github-actions[bot]" in note.read_text()
+    assert "rewritten or back-dated (1 event)" in report.render(trail, {}, tmp_path)
+    # The owner's page says it too (it used to say nothing).
+    from grimstrade import data, ledger, weekly
+    from grimstrade.data import Bar
+
+    bars = [Bar(T0.date() + timedelta(days=i), 1.0, 1.0, 1.0, 1.0, 1.0) for i in range(3)]
+    data.append(trail, "BTC", bars)
+    ledger.write_decision(trail, T0, "buy_hold_btc", {"BTC": 1.0}, {"BTC": bars[:1]}, "t")
+    page = weekly.render(trail, data.load_all(trail), tmp_path)
+    assert "**Warning:** the record branch was rewritten or back-dated (1 accepted event)" in page
+
+
+def test_a_planted_symlink_cannot_swallow_the_accepted_rewrite(tmp_path: Path, trail: Path) -> None:
+    """Second review, high: with `ledger/acknowledged-rewrites.txt` (then under state/) pushed as
+    a link to /dev/null, the script wrote the accepted event into the void and reported success;
+    the scoreboard said nothing. A force-push plus the variable plus this link was a silent
+    off-switch."""
+    a = commit(trail, "day 1", T0)
+    (trail / "ledger").mkdir()
+    (trail / "ledger" / "acknowledged-rewrites.txt").symlink_to("/dev/null")
+    events = [
+        (T0 + timedelta(seconds=1), "branch_creation", ZERO, a),
+        (T0 + timedelta(hours=3), "force_push", a, a),
+    ]
+    done = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL=iso(T0 + timedelta(hours=4)))
+    assert done.returncode == 2 and b"is a symlink" in done.stdout
+
+
+def test_a_review_date_must_be_plain_utc(tmp_path: Path, trail: Path) -> None:
+    """Second review: the variable is compared as text. A local-time value such as
+    01:30:00+01:00 (00:30 UTC) accepted a force-push made at 01:00 UTC, after that instant."""
+    a = commit(trail, "day 1", T0)
+    events = [
+        (T0 + timedelta(seconds=1), "branch_creation", ZERO, a),
+        (T0 + timedelta(hours=3), "force_push", a, a),
+    ]
+    local = activity(tmp_path, trail, events, TRAIL_REVIEWED_UNTIL="2026-11-12T01:30:00+01:00")
+    assert local.returncode == 2 and b"must look like" in local.stdout
+
+
+def test_an_event_without_an_actor_is_still_read_right(tmp_path: Path, trail: Path) -> None:
+    """Second review: an empty actor field made every later column shift by one, so the commit
+    ids were read from the wrong place."""
+    a = commit(trail, "day 1", T0)
+    b = commit(trail, "day 2", T0 + timedelta(days=1))
+    events = [
+        (T0 + timedelta(seconds=1), "branch_creation", ZERO, a),
+        (T0 + timedelta(days=1, seconds=1), "push", a, b, ""),
+    ]
+    done = activity(tmp_path, trail, events)
+    assert done.returncode == 2 and b"push by (no actor) at 2026-11-12T22:00:52Z" in done.stdout
 
 
 def test_a_backdated_commit_stops_the_job(tmp_path: Path, trail: Path) -> None:
@@ -209,7 +266,7 @@ def test_a_push_by_anyone_but_the_daily_job_stops_the_job(tmp_path: Path, trail:
     # A person can accept it; it then stays on the scoreboard like any other accepted event.
     seen = activity(tmp_path, trail, by_hand, TRAIL_REVIEWED_UNTIL=iso(t0 + timedelta(days=2)))
     assert seen.returncode == 0
-    assert "push by GrimsBot" in (trail / "state" / "acknowledged-rewrites.txt").read_text()
+    assert "push by GrimsBot" in (trail / "ledger" / "acknowledged-rewrites.txt").read_text()
     # Commits that arrive by a merged pull request are checked like pushed ones: this one is
     # by the daily job but back-dated by three days.
     c = commit(trail, "day 3", t0 + timedelta(days=2))
@@ -232,3 +289,31 @@ def test_when_github_cannot_be_asked_the_job_goes_on_with_a_warning(
     # An empty answer is not agreement either.
     empty = activity(tmp_path, trail, [])
     assert empty.returncode == 0 and b"nothing was checked" in empty.stdout
+    # Second review: such a run used to leave no trace; the scoreboard looked like any other.
+    from grimstrade import report
+
+    board = report.render(trail, {}, tmp_path)
+    assert "**The last run could not ask GitHub whether the record branch was rewritten:**" in board
+    assert "GitHub's activity log came back empty" in board
+    # ...and it clears once a run can check again.
+    a = git(trail, "rev-parse", "HEAD")
+    assert activity(tmp_path, trail, [(T0, "branch_creation", ZERO, a)]).returncode == 0
+    assert "could not ask GitHub" not in report.render(trail, {}, tmp_path)
+
+
+def test_a_force_push_in_an_answer_that_was_cut_short_still_stops_the_job(
+    tmp_path: Path, trail: Path
+) -> None:
+    """Second review: when `gh` failed after printing its first page, everything was thrown
+    away and the job ran on, even with a force-push in the rows that had arrived."""
+    a = commit(trail, "day 1", T0)
+    events = [
+        (T0 + timedelta(seconds=1), "branch_creation", ZERO, a),
+        (T0 + timedelta(hours=3), "force_push", a, a),
+    ]
+    done = activity(tmp_path, trail, events, cut_short=True)
+    assert done.returncode == 2 and b"force_push" in done.stdout
+    # With nothing wrong in what arrived the job goes on, and says the check was partial.
+    partial = activity(tmp_path, trail, events[:1], cut_short=True)
+    assert partial.returncode == 0 and b"only part of the" in partial.stdout
+    assert "NOT fully checked" in (trail / "state" / "witness.txt").read_text()
