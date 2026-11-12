@@ -24,26 +24,15 @@ def flat(n: int, px: float, weekdays_only: bool = False) -> list[Bar]:
     return [Bar(d, px, px, px, px, 1.0) for d in days if not weekdays_only or d.weekday() < 5]
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit G1: NaN weights pass validation (NaN is neither < 0 nor > 1); the gym then "
-    "quietly keeps the old position and the ledger records NaN",
-)
-def test_nan_weights_are_rejected() -> None:
+@pytest.mark.parametrize("bad", [math.nan, math.inf, -math.inf])
+def test_non_finite_weights_are_rejected(bad: float) -> None:
+    """Audit G1 (fixed): NaN is neither < 0 nor > 1, so it passed validation; the gym then
+    quietly kept the old position and the ledger recorded NaN."""
     with pytest.raises(ValueError):
-        gym.validate({"BTC": math.nan})
-
-
-def test_nan_weights_today_mean_keep_whatever_you_hold() -> None:
-    """What G1 does in practice: the strategy wanted out (or in), a division by zero produced
-    NaN, and the portfolio just stays as it was, with no error anywhere."""
+        gym.validate({"BTC": bad})
     hist: History = {"BTC": flat(5, 100.0)}
-    decisions = [Decision(at(0), {"BTC": 1.0}), Decision(at(1), {"BTC": math.nan})]
-    try:
-        res = gym.simulate(decisions, hist, costs=NO_COSTS)
-    except ValueError:
-        return  # fixed: NaN is refused
-    assert res.positions["BTC"] == pytest.approx(100.0) and len(res.fills) == 1
+    with pytest.raises(ValueError):
+        gym.simulate([Decision(at(0), {"BTC": 1.0}), Decision(at(1), {"BTC": bad})], hist)
 
 
 @pytest.mark.xfail(

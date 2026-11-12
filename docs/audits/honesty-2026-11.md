@@ -239,14 +239,15 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Evidence:** `tests/test_audit_stats.py::test_todays_equity_is_provisional_and_changes_tomorrow`.
 - **Proposed fix:** label the last row "provisional", or score only fully marked days.
 
-### G1. NaN weights are accepted (medium, likely to bite M1's volatility maths)
+### G1. NaN weights are accepted (medium, likely to bite M1's volatility maths) - FIXED in this branch
 
 - **What:** `validate` checks `w < 0` and `sum > 1`; NaN passes both. The gym then neither buys
   nor sells that asset (every comparison with NaN is false), so the portfolio silently keeps what
   it had, and the ledger line contains `NaN`. A division by a zero volatility is all it takes.
-- **Evidence:** `tests/test_audit_gym.py::test_nan_weights_are_rejected`,
-  `...::test_nan_weights_today_mean_keep_whatever_you_hold`.
-- **Proposed fix (small, `gym.py`):** reject non-finite weights.
+- **Evidence:** `tests/test_audit_gym.py::test_non_finite_weights_are_rejected`.
+- **Fix (done, `gym.py`):** `validate` rejects NaN and infinite weights. Note for M1: one
+  strategy raising in the runner still stops the strategies after it for that day (`run_daily.py`
+  has no per-strategy error handling); worth a try/except there that records the failure.
 
 ### G2. An order that cannot be paid for at its open is dropped (low, biased against the strategy)
 
