@@ -10,14 +10,18 @@ merged during the audit (merged into this branch). Record audited, read-only: `p
 I tried to make the scoreboard lie.
 
 **What held.** No strategy can see a price before the market has printed it: summer or winter
-time, weekends and holidays included. The record so far (three runs) is clean.
+time, weekends, holidays and late runs included. The record so far (three runs) is clean.
 
-**What did not.** The logbook could be made to lie in four ways: add a "decision" afterwards
-with an old date, rewrite old lines behind a merge, edit a stored price, or replace the whole
-record branch. The first three are closed in this branch. The fourth is now detected, but only
-a setting of yours can prevent it. Two independent reviewers then found a way around one of my
-own fixes (closed since). These checks are new and deserve another attack before they are
-trusted.
+**What did not, and is fixed in this branch.**
+
+- The logbook could be made to lie: a "decision" added afterwards with an old date, old lines
+  rewritten behind a merge, a stored price edited. All closed. Replacing the whole record
+  branch is now detected, but only a setting of yours can prevent it.
+- Crypto trades were charged 0.25%. An account like this one really pays about 0.6%; the
+  simulation now charges that.
+- Prices that stopped, had holes or were corrected later went unreported. Now they show.
+- These guards are new. Reviewers attacked them twice and got through both times (all closed).
+  Expect a third attack to find more; until then call the record "checked", not "proven".
 
 **What the numbers can and cannot say.**
 
@@ -25,11 +29,11 @@ trusted.
   months: the best one looks like a star more often than not. The "deflated Sharpe" column
   corrects for that, and it is strict: a world-class strategy has an even chance of reading
   "95% sure" after about five years, a good one after about twenty. Six months can rule out
-  disasters. It cannot prove skill.
+  disasters. It cannot prove skill. Both pages now say so themselves.
 - The yardsticks are set a little low: dividends are not counted (about 4% a year for the bond
   fund, 2.3% for 60/40, nothing for Bitcoin).
-- Prices are stored an hour after the US close, before Yahoo's numbers are final. Stored
-  prices are never changed; every later difference is now logged and counted on the scoreboard.
+- Prices are stored an hour after the US close, before Yahoo's numbers are final, and never
+  changed. Later differences are now logged; on the first day they were under 0.01%.
 - The backup source for the four funds is dead. If Yahoo stops answering, their prices freeze;
   the scoreboard and the weekly page now say so in bold.
 
@@ -41,16 +45,17 @@ trusted.
 
 ## All findings at a glance
 
-Severity: **high** = the scoreboard can show a result that never happened, or will be read wrongly,
-and nothing warns; **medium** = numbers are biased or a safeguard is weaker than the docs say;
-**low** = small or unlikely. Ranked by how much each could mislead, open ones first.
+Severity (as found): **high** = the scoreboard can show a result that never happened, or will be
+read wrongly, and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
+the docs say; **low** = small or unlikely. Ranked by how much each can still mislead: what is
+open first, then what is fixed, each by severity.
 
 | # | Finding | Severity | State |
 |---|---|---|---|
 | S2 | Six months cannot separate skill from luck; the corrected number says "no" for years | high | open: owner decision; the pages now say so |
-| D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged; cause open |
-| L3 | The record branch can be replaced (force-push, delete) | high | detected; owner action open |
-| G4 | Dividends not credited, cash earns nothing: yardsticks understated | medium | open: known, now sized |
+| L3 | The record branch can be replaced (force-push, delete) | high | detected, not yet seen working live; owner action open |
+| G4 | Dividends not credited, cash earns nothing: yardsticks 1 to 2.3% a year too low | medium | open: known, now sized |
+| D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged (first day: under 0.01%); cause open |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
@@ -126,39 +131,6 @@ ordinary tests that pin the numbers quoted here.
   entered the forward test: a strategy promoted from 200 backtests is one new forward try, and
   the forward record is exactly what protects against the other 199.
 
-### D1. Bars are stored before the source is final (high; differences are now logged, the cause remains)
-
-- **What:** an ETF bar is stored once it is 15 minutes past 21:00 UTC and was never looked at
-  again: the next run asked the source only for newer days. If the source's numbers for that day
-  were not final yet, the record keeps the early ones for ever, and nobody was told they differ.
-  Every fill and every mark on that day uses them.
-- **Evidence (real):** the first run stored the 2026-11-11 ETF bars at 22:00:49 UTC, one hour
-  after the close. In all four ETF files that row is the only one of 481 whose volume is not a
-  multiple of 100 (SPY 37,707,134), the mark of a row Yahoo had not finalised. Five hours after
-  the close (02:00 UTC) Yahoo's chart API showed other numbers for the same day: QQQ open
-  687.275 (stored: 687.280), QQQ volume 42,821,615 (stored 42,505,260), TLT volume 26,433,481
-  (stored 26,421,050), and `close: null` for all four ETFs, i.e. the row was still being
-  rewritten. The price difference is tiny this time (0.07 basis points on an open, the price
-  fills use); the point is that the record already differed from its source after one day.
-- **Evidence, once Yahoo was final** (06:39 UTC, nine and a half hours after the close; all
-  volumes now multiples of 100): opens and closes equal the stored ones for all four ETFs (QQQ's
-  open reads 687.28 again). The day's low differs for three: SPY 754.91 stored, 754.90 now; QQQ
-  683.60, now 683.56; TLT 80.472, now 80.470; at most 0.6 basis points. All four volumes differ.
-  Both crypto bars are identical. So on the first day the early bar was wrong only in numbers no
-  fill or mark uses. One day is not a guarantee.
-- **Fix (done, `data.py`, `run_daily.py`, 10 lines in `report.py`):** each run asks every
-  symbol's first-choice source again for the last 5 stored days and compares prices (not volume,
-  which changes daily). Stored rows are never changed; each difference is appended once to
-  `data/revisions.jsonl`, the scoreboard shows how many bars differ and by how much at most, and
-  a difference of 1 basis point or more is reported as a problem of that run. The second request
-  is best effort: if it fails, nothing is logged that day. Tried live against a scratch copy of
-  the real bars: it found and logged exactly the three differences above, none large enough to
-  count as a problem. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
-- **What is left:** the record still keeps the early numbers; the log makes that visible, it
-  does not make them right. Whether to store ETF bars a day later (once final) is a design
-  decision with a cost: every strategy would decide on day-old ETF prices. Moving the cron later
-  is not obviously safer: Yahoo's row was complete at 22:00 and had lost its close again by 01:38.
-
 ### L3. The record branch can be replaced, and the repo itself cannot tell (high; detected, owner action open)
 
 - **What:** if `paper-trail` is force-pushed, or deleted and recreated, the new history is
@@ -204,6 +176,39 @@ ordinary tests that pin the numbers quoted here.
 - **Evidence:** `tests/test_audit_gym.py::test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year`.
 - **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (in the
   BACKLOG). `weekly.md` already says "dividends not yet credited"; add the size.
+
+### D1. Bars are stored before the source is final (high when found; differences are now logged, the cause remains)
+
+- **What:** an ETF bar is stored once it is 15 minutes past 21:00 UTC and was never looked at
+  again: the next run asked the source only for newer days. If the source's numbers for that day
+  were not final yet, the record keeps the early ones for ever, and nobody was told they differ.
+  Every fill and every mark on that day uses them.
+- **Evidence (real):** the first run stored the 2026-11-11 ETF bars at 22:00:49 UTC, one hour
+  after the close. In all four ETF files that row is the only one of 481 whose volume is not a
+  multiple of 100 (SPY 37,707,134), the mark of a row Yahoo had not finalised. Five hours after
+  the close (02:00 UTC) Yahoo's chart API showed other numbers for the same day: QQQ open
+  687.275 (stored: 687.280), QQQ volume 42,821,615 (stored 42,505,260), TLT volume 26,433,481
+  (stored 26,421,050), and `close: null` for all four ETFs, i.e. the row was still being
+  rewritten. The price difference is tiny this time (0.07 basis points on an open, the price
+  fills use); the point is that the record already differed from its source after one day.
+- **Evidence, once Yahoo was final** (06:39 UTC, nine and a half hours after the close; all
+  volumes now multiples of 100): opens and closes equal the stored ones for all four ETFs (QQQ's
+  open reads 687.28 again). The day's low differs for three: SPY 754.91 stored, 754.90 now; QQQ
+  683.60, now 683.56; TLT 80.472, now 80.470; at most 0.6 basis points. All four volumes differ.
+  Both crypto bars are identical. So on the first day the early bar was wrong only in numbers no
+  fill or mark uses. One day is not a guarantee.
+- **Fix (done, `data.py`, `run_daily.py`, 10 lines in `report.py`):** each run asks every
+  symbol's first-choice source again for the last 5 stored days and compares prices (not volume,
+  which changes daily). Stored rows are never changed; each difference is appended once to
+  `data/revisions.jsonl`, the scoreboard shows how many bars differ and by how much at most, and
+  a difference of 1 basis point or more is reported as a problem of that run. The second request
+  is best effort: if it fails, nothing is logged that day. Tried live against a scratch copy of
+  the real bars: it found and logged exactly the three differences above, none large enough to
+  count as a problem. Test: `tests/test_audit_data.py::test_a_revised_bar_is_reported`.
+- **What is left:** the record still keeps the early numbers; the log makes that visible, it
+  does not make them right. Whether to store ETF bars a day later (once final) is a design
+  decision with a cost: every strategy would decide on day-old ETF prices. Moving the cron later
+  is not obviously safer: Yahoo's row was complete at 22:00 and had lost its close again by 01:38.
 
 ### D6. The ETF fallback source does not work (medium, for "runs without anyone")
 
