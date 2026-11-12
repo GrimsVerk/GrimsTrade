@@ -2,39 +2,27 @@
 
 ## Plain-language summary
 
-Research run 1, night of 2026-11-12. In one sentence: **the clever maths lost to the simple
-rules, and the simple rules do not earn more than holding everything; they lose less.**
+Research run 1, night of 2026-11-12. **The clever maths lost to the simple rules, and the simple
+rules do not earn more than holding everything: they lose less.**
 
-- **What was done.** About 150 papers and articles read in six families (`survey-2026-11.md`).
-  Twelve ideas written down as hypothesis cards, each with its rule and its pass mark fixed
-  *before* its test. Each tested on up to 32 years of prices (63 for old stock indexes), then on
-  markets it was not designed on (other funds, other coins, Japan, UK, Germany). 211 backtests,
-  every one logged in `tries.md`.
-- **Result: none of the twelve passed its mark.** Kelly sizing, hidden Markov regimes,
-  fractional differencing, Hawkes crash clustering, the absorption ratio, Cover's universal
-  portfolio, drawdown control, the month-end effect, dip buying: each equals a simpler rule or
-  loses to it. Two were real effects that faded after they were published. That is the honest
-  answer, not a failure of the run: it tells us where not to spend the next months.
-- **What does hold up.** A slow trend rule (hold an asset only while its 12-month return is
-  positive) earned about what holding everything earned since 1994 (17.8% a year against 18.2%)
-  and its worst loss was 37% instead of 69%. The evidence is thin (about 1 chance in 10 that it
-  is luck) and weaker on other markets. The M1 lane already runs this rule; it is the one to beat.
-- **The real choice is how much risk, not which trick.** Holding everything, trend, and trend
-  with a volatility cap give roughly the same return per unit of risk. They differ in the size of
-  the ride: worst loss 69%, 37% and 26%; growth 18%, 18% and 13% a year. If the owner's limit is
-  the worst loss, the third (`trend-vol`) is worth a paper slot. It did not pass as an "edge" and
-  is not labelled one.
-- **Crypto.** On Bitcoin and Ether alone, trend rules did not beat simply holding, and a "protected"
-  position still lost 70% at worst. How big the crypto slot is matters more than any timing rule.
-- **How much could be luck.** Of the 17 rule versions that could have been picked, the best beat
-  "hold everything" by 0.22 Sharpe. If none of them had any edge, the best would still be
-  expected to show about 0.19 (`results/deflation.md`). So no new rule here has shown an edge.
-- **What to expect.** Published edges usually keep a quarter to a half of their backtest size. A
-  realistic goal for the paper system is the benchmarks' return with much smaller losses.
-- **The untouched year.** The last 12 months of prices were never used, for any idea. They are
-  still a clean test for whatever comes next.
-- **Two things the gym gets wrong** (requests to the M1 lane, below): it ignores dividends, which
-  makes bonds look worthless, and cash earns nothing, which punishes every rule that steps aside.
+- **Done:** about 150 papers read (`survey-2026-11.md`); 12 ideas written down with their pass
+  mark fixed before testing; each tested on up to 32 years of prices and on markets it was not
+  built on. 211 backtests, all logged.
+- **None of the 12 passed.** Kelly sizing, hidden Markov regimes, Hawkes processes and the rest
+  each equal a simpler rule or lose to it. Two were real effects that faded once published.
+- **What holds up:** a slow trend rule (hold an asset only while it is up over 12 months) earned
+  about what holding everything earned since 1994 (17.8% a year against 18.2%) with a worst loss
+  of 37% instead of 69%. The M1 lane already runs it. It is the rule to beat.
+- **The real choice is how much risk.** Adding a volatility cap to that rule (`trend-vol`) takes
+  the worst loss to 26% and growth to 13% a year. Worth a paper slot only if the owner wants the
+  smaller losses; it is a risk setting, not an edge.
+- **Luck check:** the best new rule beat "hold everything" by 0.22 Sharpe; luck alone across the
+  versions tried would give about 0.19. No new rule has shown an edge.
+- **Crypto:** trend rules did not beat simply holding Bitcoin or Ether, and still lost 70% at
+  worst. The size of the crypto slot matters more than the timing rule.
+- **Still clean:** the last 12 months of prices were never looked at, for any idea.
+- **For the M1 lane:** the gym ignores dividends and pays nothing on cash; both distort the
+  scoreboard (requests at the bottom).
 
 ## Ranking after run 1
 
