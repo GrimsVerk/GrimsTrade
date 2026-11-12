@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_absorption_ratio.py"""
+"""uv run --with numpy python research/lib/idea_absorption_ratio.py"""
 
 from __future__ import annotations
 

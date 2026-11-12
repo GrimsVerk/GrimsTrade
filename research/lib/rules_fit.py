@@ -1,7 +1,7 @@
 """The two fitted rules (hmm-regime, hawkes-clustering), walk-forward as fixed on their cards.
 
 Both refit on the first Friday of each calendar year, on bars visible that day, and need 1,000
-bars. Needs numba:  uv run --with numpy --with numba python research/lib/test_<idea>.py
+bars. Needs numba:  uv run --with numpy --with numba python research/lib/idea_<idea>.py
 """
 
 from __future__ import annotations

@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_kelly_shrunk.py"""
+"""uv run --with numpy python research/lib/idea_kelly_shrunk.py"""
 
 import common as c
 import rules

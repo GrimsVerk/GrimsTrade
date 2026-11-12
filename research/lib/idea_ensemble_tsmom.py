@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_ensemble_tsmom.py"""
+"""uv run --with numpy python research/lib/idea_ensemble_tsmom.py"""
 
 import common as c
 import rules

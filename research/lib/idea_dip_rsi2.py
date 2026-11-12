@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_dip_rsi2.py"""
+"""uv run --with numpy python research/lib/idea_dip_rsi2.py"""
 
 from __future__ import annotations
 

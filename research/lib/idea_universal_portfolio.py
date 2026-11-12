@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_universal_portfolio.py"""
+"""uv run --with numpy python research/lib/idea_universal_portfolio.py"""
 
 import common as c
 import rules

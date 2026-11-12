@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_month_end_liquidity.py"""
+"""uv run --with numpy python research/lib/idea_month_end_liquidity.py"""
 
 from __future__ import annotations
 

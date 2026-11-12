@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_drawdown_control.py"""
+"""uv run --with numpy python research/lib/idea_drawdown_control.py"""
 
 import common as c
 import rules

@@ -1,4 +1,4 @@
-"""uv run --with numpy --with numba python research/lib/test_hawkes_clustering.py"""
+"""uv run --with numpy --with numba python research/lib/idea_hawkes_clustering.py"""
 
 import common as c
 import rules_fit

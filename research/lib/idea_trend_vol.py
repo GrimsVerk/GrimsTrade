@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_trend_vol.py"""
+"""uv run --with numpy python research/lib/idea_trend_vol.py"""
 
 import common as c
 import rules

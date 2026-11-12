@@ -1,4 +1,4 @@
-"""uv run --with numpy --with numba python research/lib/test_hmm_regime.py"""
+"""uv run --with numpy --with numba python research/lib/idea_hmm_regime.py"""
 
 import common as c
 import rules_fit

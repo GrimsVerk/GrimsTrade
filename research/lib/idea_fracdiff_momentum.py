@@ -1,4 +1,4 @@
-"""uv run --with numpy python research/lib/test_fracdiff_momentum.py"""
+"""uv run --with numpy python research/lib/idea_fracdiff_momentum.py"""
 
 import common as c
 import rules
