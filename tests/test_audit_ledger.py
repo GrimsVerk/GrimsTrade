@@ -266,3 +266,34 @@ def test_a_decision_records_the_code_version(repo: Path, monkeypatch: pytest.Mon
     first, second = ledger.decisions(repo)
     assert first["code"] == "8e26333a0000000000000000000000000000beef"
     assert "code" not in second
+
+
+def test_a_lost_final_newline_does_not_glue_lines_together(tmp_path: Path) -> None:
+    """Audit L9 (fixed; found by the independent reviewer): a ledger or bar file whose last line
+    had lost its newline got the next line glued on ("}{"). Every later run then failed to parse
+    it, and restoring the newline counted as rewriting history."""
+    from grimstrade import data
+
+    decide(tmp_path, at(DAY1), "s", {"BTC": 1.0})
+    path = tmp_path / ledger.DECISIONS
+    path.write_bytes(path.read_bytes().rstrip(b"\n"))
+    before = path.read_bytes()
+    decide(tmp_path, at(DAY1 + timedelta(days=1)), "s", {})
+    assert path.read_bytes().startswith(before)  # still only an append
+    assert [r["weights"] for r in ledger.decisions(tmp_path)] == [{"BTC": 1.0}, {}]
+
+    data.append(tmp_path, "BTC", btc([(100, 100)]))
+    bars = data.bars_path(tmp_path, "BTC")
+    bars.write_bytes(bars.read_bytes().rstrip(b"\n"))
+    data.append(tmp_path, "BTC", btc([(100, 100), (101, 101)]))
+    assert [b.close for b in data.load(tmp_path, "BTC")] == [100.0, 101.0]
+    # An empty bar file still gets its header.
+    data.bars_path(tmp_path, "ETH").write_bytes(b"")
+    data.append(tmp_path, "ETH", btc([(5, 5)]))
+    assert [b.close for b in data.load(tmp_path, "ETH")] == [5.0]
+
+
+def test_a_time_without_a_zone_is_refused() -> None:
+    with pytest.raises(ValueError, match="time zone"):
+        ledger.iso(datetime(2026, 11, 12, 22, 30))
+    assert ledger.iso(datetime(2026, 11, 12, 22, 30, tzinfo=UTC)) == "2026-11-12T22:30:00Z"

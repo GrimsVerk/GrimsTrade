@@ -24,7 +24,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from grimstrade.data import History
+from grimstrade.data import History, ends_mid_line
 
 DECISIONS = Path("ledger/decisions.jsonl")
 TRIES = Path("ledger/tries.jsonl")
@@ -39,8 +39,11 @@ class LedgerTampered(Exception):
 
 def _append(path: Path, entry: Mapping[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    # A file that lost its final newline (a write cut short, a hand edit) would glue the new line
+    # onto the last one, and that can't be repaired later without "rewriting" the record.
+    start = "\n" if ends_mid_line(path) else ""
     with path.open("a") as f:
-        f.write(json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
+        f.write(start + json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
 
 
 def _read(path: Path) -> list[dict[str, Any]]:
@@ -50,6 +53,8 @@ def _read(path: Path) -> list[dict[str, Any]]:
 
 
 def iso(t: datetime) -> str:
+    if t.tzinfo is None:  # astimezone() would silently read it as this machine's local time
+        raise ValueError("a time written to the record must carry its time zone")
     return t.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 

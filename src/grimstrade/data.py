@@ -89,6 +89,15 @@ def settled(bars: Iterable[Bar], asset_class: str, now: datetime) -> list[Bar]:
 # --- CSV store: data/bars/<SYMBOL>.csv, one row per day, append-only ---
 
 
+def ends_mid_line(path: Path) -> bool:
+    """True if `path` has content that does not end with a newline."""
+    if not path.exists() or path.stat().st_size == 0:
+        return False
+    with path.open("rb") as f:
+        f.seek(-1, 2)
+        return f.read(1) != b"\n"
+
+
 def bars_path(root: Path, symbol: str) -> Path:
     return root / "data" / "bars" / f"{symbol}.csv"
 
@@ -154,8 +163,10 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
             raise ValueError(jump)
         return 0
     path.parent.mkdir(parents=True, exist_ok=True)
-    write_header = not path.exists()
+    write_header = not path.exists() or path.stat().st_size == 0
     with path.open("a", newline="") as f:
+        if ends_mid_line(path):  # never glue a new row onto a last row that lost its newline
+            f.write("\n")
         w = csv.writer(f, lineterminator="\n")
         if write_header:
             w.writerow(FIELDS)
@@ -192,8 +203,9 @@ def log_source(root: Path, symbol: str, source: str, bars: Sequence[Bar], seen: 
     }
     path = root / SOURCES_LOG
     path.parent.mkdir(parents=True, exist_ok=True)
+    start = "\n" if ends_mid_line(path) else ""
     with path.open("a") as f:
-        f.write(json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
+        f.write(start + json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
 
 
 # --- revisions: what the source says now about bars we already hold ---
@@ -242,8 +254,9 @@ def log_revisions(
             "largest_diff": diff,
         }
         path.parent.mkdir(parents=True, exist_ok=True)
+        start = "\n" if ends_mid_line(path) else ""
         with path.open("a") as f:
-            f.write(json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
+            f.write(start + json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
         new.append((b.date, diff))
     return new
 
