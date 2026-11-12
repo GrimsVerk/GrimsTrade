@@ -110,7 +110,7 @@ Answer: no. Hard stop 2026-11-12 08:40 UTC. Started 02:08 UTC, cut off by the us
 
 **Done**
 
-- ML test rules in `protocol.md` ("Machine-learning tests" and the three sections after it),
+- ML test rules in `protocol.md` ("Machine-learning tests" and the four sections after it),
   each written before the test that uses it.
 - `lib/ml.py` (features, purged walk-forward fits, sizing, payoff weights, pooled rows),
   `lib/mltest.py` (the card test), `lib/lookahead_check_ml.py` (passes for every model kind:
@@ -170,10 +170,11 @@ and weights. No leak, no misalignment. What it did find, none of it able to chan
 Linear models found nothing and became equal weight (0.89 Sharpe against 1.05); boosting found
 nothing and traded on the noise (0.72-0.86 over nine settings); a model filtering the trend
 rule made it worse (0.73-0.94); sharper position rules, payoff-weighted training, five times
-the training data and a one-week horizon did not help (0.67-0.92). The models' forecast skill is nil (AUC
-0.48-0.51, below the single 12-month flag at 0.52 and below the trend features left alone). A planted signal is detected, and it has to reach a
-correlation of 0.2 to 0.3 before it beats `tsmom12`: six assets decided monthly are too few
-bets for return forecasting to pay.
+the training data and a one-week horizon did not help (0.67-0.92). The models' forecast skill
+is nil (AUC 0.48-0.51, below the single 12-month flag at 0.52 and below the trend features
+left alone). A planted signal is detected, and it has to reach a correlation of 0.2 to 0.3
+before it beats `tsmom12`: six assets decided monthly are too few bets for return forecasting
+to pay.
 
 Run any card with `uv run --with numpy --with scikit-learn python research/lib/idea_ml_<x>.py`
 (`DRY=1` first for a plumbing check: a real run appends tries).

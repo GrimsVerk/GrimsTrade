@@ -2,7 +2,7 @@
 
 Field: machine learning; breadth (Grinold 1989: the worth of a forecast grows with the square
 root of the number of independent bets).
-Written 2026-11-12 06:48 UTC, run 2. **After** seeing all six earlier ML cards fail, the
+Written 2026-11-12 06:45 UTC, run 2. **After** seeing all six earlier ML cards fail, the
 control (a forecast must reach a correlation of 0.2 to 0.3 to beat `tsmom12` at 13 bets a
 year per asset) and `results/ml-feature-skill.md`, where the 7-day return ranked the next 28
 days at AUC 0.524 with the smallest standard error of any feature (0.007).

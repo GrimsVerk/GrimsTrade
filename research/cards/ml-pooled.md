@@ -2,7 +2,7 @@
 
 Field: machine learning, pooled ("global") models across assets (Gu, Kelly, Xiu 2020 train one
 model on every stock; Lim, Zohren, Roberts 2019 one network on 88 futures).
-Written 2026-11-12 06:40 UTC, run 2. **After** seeing `ml-linear`, `ml-gbm`, `ml-filter`,
+Written 2026-11-12 06:37 UTC, run 2. **After** seeing `ml-linear`, `ml-gbm`, `ml-filter`,
 `ml-sizing`, `ml-payoff` (all failed, forecast AUC 0.48 to 0.51) and the control. The control
 showed that with 6,214 forecasts on six assets a real signal weaker than a correlation of
 about 0.10 cannot be told from zero, and the models had 1,600 to 7,600 rows to learn from.

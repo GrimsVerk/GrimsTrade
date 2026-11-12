@@ -198,7 +198,7 @@ P(up) > 0.5" is the hold-or-not rule that would have grown the training rows' mo
 Purged CV scores use the same weights. The `raw` regression target is the 28-day log return
 itself, unscaled and unclipped; hold the full slot when the forecast is positive.
 
-## Pooled training (added 2026-11-12 06:40 UTC, run 2)
+## Pooled training (added 2026-11-12 06:37 UTC, run 2)
 
 Written after `ml-linear`, `ml-gbm`, `ml-filter`, `ml-sizing`, `ml-payoff` and the control had
 been seen. For `ml-pooled` and later tests only.
@@ -214,7 +214,7 @@ its label window ended at least 7 days before the fit date. The training rows do
 which universe is traded. Trading starts on the same day as for the unpooled models (the
 first-model rule applied to the traded universe's own rows), so the tables compare.
 
-## Weekly labels (added 2026-11-12 06:48 UTC, run 2)
+## Weekly labels (added 2026-11-12 06:45 UTC, run 2)
 
 Written after the six earlier ML cards, the control and `results/ml-feature-skill.md` had been
 seen. For `ml-weekly` only.
