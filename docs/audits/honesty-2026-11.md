@@ -22,9 +22,10 @@ time, weekends, holidays and late runs included. The record so far (three runs) 
 
 **What to keep in mind.**
 
-- The guards are new. Independent reviewers attacked them twice and got through both times
-  (the second time: nine holes, five serious; those are closed, three lesser ones only in
-  part). Until a third attack finds nothing, call the record "checked", not "proven".
+- The guards are new. Independent reviewers attacked them three times and found something
+  each time (second pass: nine holes, five serious; third: a mistake in a fix that would have
+  stopped honest runs). The serious ones are closed, three lesser ones are not or only in
+  part. Until an attack finds nothing, call the record "checked", not "proven".
 - Six months will not tell skill from luck. Of nine strategies with no skill at all, the best
   looks like a star after six months more often than not. The pages correct for that (the
   "deflated Sharpe"), strictly: a world-class strategy has an even chance of reading "95% sure"
@@ -56,7 +57,7 @@ open first, then what is fixed, each by severity.
 | D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged (first day: under 0.01%); cause open |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L13 | Old code can still write the record (a re-run of an old run, a stale branch) | medium | half fixed; clean-up after merging |
-| L14 | An accepted back-dated push kept the date it claims | medium | fixed for pushes; open for an accepted force-push |
+| L14 | An accepted back-dated push keeps the date it claims | medium | open: proposed |
 | G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
@@ -95,7 +96,8 @@ open first, then what is fixed, each by severity.
 Tests: `tests/test_audit_*.py`. A finding that is still open and has a crisp expected behaviour
 is an `xfail(strict=True)` test (1 left: G2); findings about size or judgement are
 ordinary tests that pin the numbers quoted here. L10 to L15, D10, S9 and S10 come from the
-second independent review (2026-11-12, 06:35 to 07:00 UTC).
+second independent review (2026-11-12, 06:35 to 07:00 UTC); a third, narrow review (07:12 to
+07:21 UTC) went over the code written in answer to it.
 
 ## Open findings
 
@@ -249,22 +251,23 @@ second independent review (2026-11-12, 06:35 to 07:00 UTC).
   branches up to `main` or delete them, and never re-run an old Daily run. Real prevention needs
   the owner's ruleset on `paper-trail` (L3) and a push credential that only `main` can use.
 
-### L14. An accepted back-dated push kept the date it claims (medium, half fixed; second review)
+### L14. An accepted back-dated push keeps the date it claims (medium; second review)
 
 - **What:** when a person accepts a back-dated push with `TRAIL_REVIEWED_UNTIL`, the acceptance
-  is printed for good, but the decisions in that push still counted from the date the commit
+  is printed for good, but the decisions in that push still count from the date the commit
   claims, not from when GitHub received it. The claim can no longer be earlier than the commit
-  under it (L11), so the gain was bounded by the gap between two runs: a day normally, more
-  after an outage.
+  under it (L11), so the gain is bounded by the gap between two runs: a day normally, more after
+  an outage. For an accepted force-push the commits it brought are not date-checked at all.
 - **Evidence (the reviewer's run):** received by GitHub on 2026-10-16, filled as if made on
   2026-10-13, "late decisions: 0".
-- **Fix (done, `ledger.py`):** the outside check already writes both times of such a commit
-  into `ledger/acknowledged-rewrites.txt`; the ledger now reads them and counts the commit, and
-  everything after it, from GitHub's arrival time
-  (`tests/test_audit_ledger.py::test_an_accepted_backdated_commit_counts_from_when_github_received_it`,
-  `tests/test_audit_workflow.py::test_an_accepted_backdated_commit_is_dated_by_githubs_clock`).
-- **Still open:** for an accepted force-push the commits it brought are not date-checked at
-  all. After one, judge the record by hand; the scoreboard line says when it happened.
+- **A fix that was tried and withdrawn:** let the ledger read the arrival time from the line the
+  outside check writes into `ledger/acknowledged-rewrites.txt`. The third review showed why not:
+  anyone who can push can append such a line, and one naming the first commit with a late time
+  made every earlier decision count from then, which wipes a strategy's past (a loss included)
+  with every check green. The file is for showing, not for computing.
+- **Proposed:** the outside check passes GitHub's arrival times to the run directly (from the
+  log it has just read, not from a file in the record). Until then an accepted rewrite has to be
+  judged by hand; the scoreboard line names the commit and both times.
 
 ### Low
 
@@ -423,7 +426,13 @@ running it before it was fixed.
   append-only, never through a link; what arrived of a cut-short answer is checked; each run
   writes down what it could check and both pages say so in bold when it could not; every kind of
   push is checked and only the daily job's are accepted; branch names are given in full. Tests:
-  `tests/test_audit_workflow.py`.
+  `tests/test_audit_workflow.py`. **A mistake in this fix, found by the third review and
+  closed:** on an HTTP error (no permission, rate limit, outage) `gh` prints GitHub's error text
+  where the events go; checking "what arrived" read that text as events by nobody and stopped
+  the run. It would have stopped every run if the job's token may not read the log, the very
+  case that was meant to go on with a warning. Now only lines shaped like events are events;
+  tried against a real 404 from GitHub
+  (`...::test_an_http_error_from_github_does_not_stop_an_honest_run`).
 - **S10. One NaN in the research record weakened the deflated Sharpe (medium).** A line with
   `"sharpe": NaN` made the spread of the tries' Sharpes NaN, and the formula then dropped that
   term: 17.5% read as 41.8%. **Fix (`ledger.py`):** only finite numbers are read.
@@ -575,7 +584,8 @@ running it before it was fixed.
 - **Fix, part 2 (`report.py`):** the scoreboard counts, per strategy, the days of new prices on
   which it made no decision, whatever the cause. Each decision records which bars it saw, so a
   jump of more than one day between two decisions, or stored days after the last one, were never
-  decided on. A run that is only late skips nothing and is not counted. A retired strategy shows
+  decided on. A run that is only late skips nothing and is not counted (the first version
+  counted a run that slipped past midnight; the third review caught it). A retired strategy shows
   up here with a growing number, instead of looking alive. On the real record the count is zero
   (`...::test_the_scoreboard_counts_days_a_strategy_never_decided_on`).
 - **What is left:** the count is on the scoreboard only, not on the weekly page.
@@ -658,6 +668,13 @@ running it before it was fixed.
   early, or holding shell code (never executed); a note deleted by the forger's push (it comes
   back); a forged `scoreboard.md` (every run renders it afresh). GitHub's log, read live: one
   plain time format, newest first; a deleted branch keeps its log.
+- **Third review** (one reviewer, only the code written after the second review, asked first
+  whether an honest run can be stopped by it). Held, by running: the real record through the
+  check-out, the outside check and a run with every source down; a second run straight after
+  the first; a first-ever run on an empty branch; a day with no new data; the run after a run
+  with problems; a runner clock two minutes off (fifteen is refused); the bar for 95% agreeing
+  with the column exactly. Its three findings: the HTTP error (L12), the withdrawn fix (L14),
+  the late run (S4).
 - **The whole daily job, run with this branch's code** against a scratch copy of the real record
   and the live sources (07:06 UTC): clean, no new bars, no decisions (rightly), and the three
   price differences of D1 on the scoreboard. Then the workflow's own steps, in order and twice
@@ -669,13 +686,13 @@ running it before it was fixed.
 
 ## Status
 
-Final for this audit (2026-11-12, 07:10 UTC). PR #5 is ready for review, not merged.
+Final for this audit (2026-11-12, 07:25 UTC). PR #5 is ready for review, not merged.
 
 - **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
   statistics) against M0 and again after the M1 merge, then attacked by independent reviewers
-  twice. 41 findings: 29 fixed or guarded, 4 half done (L3, D1, L13, L14), 8 open (S2, G4 and D6
-  need a decision or more building; G2, S6, L6, G5 and L15 are low). All with tests except G5
-  and L15. Checks green (197 tests, 1 expected failure: G2).
+  three times. 41 findings: 29 fixed or guarded, 3 half done (L3, D1, L13), 9 open (S2, G4, D6
+  and L14 need a decision or more building; G2, S6, L6, G5 and L15 are low). All with tests
+  except G5, L14 and L15. Checks green (196 tests, 1 expected failure: G2).
 - **Needs the owner:** the ruleset on `paper-trail` (L3) and what "graduation" means (S2).
 - **Not proven live:** the workflow changes. The whole daily job ran clean with this code on a
   scratch copy of the real record, but not inside Actions. The first run after merging is the
@@ -690,9 +707,10 @@ Final for this audit (2026-11-12, 07:10 UTC). PR #5 is ready for review, not mer
 - **A stopped record is by design:** whatever the checks refuse (a rewrite, a merge, a linked
   file, a bar added by hand, a push by anyone but the daily job) stops the daily job until a
   person has looked (L15, L3).
-- **Next, in order of value:** a third adversarial pass over `ledger.py`, `run_daily.check_record`
-  and the two scripts (two passes each found a way through); dividends (G4); a second ETF
-  source (D6); crypto fees by volume tier; date-checking the commits of an accepted force-push
-  (L14).
+- **Next, in order of value:** another adversarial pass over `ledger.py`,
+  `run_daily.check_record` and the two scripts (three passes each found something; the code
+  written in the last hour of this audit has had the least review); arrival times from GitHub
+  for accepted commits (L14); dividends (G4); a second ETF source (D6); crypto fees by volume
+  tier.
 - **To resume:** read this section, run the checks in `AGENTS.md`, look at the remaining `xfail`
   test (`uv run pytest -rx tests/`).
