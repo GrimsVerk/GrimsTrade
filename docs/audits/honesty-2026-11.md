@@ -77,7 +77,11 @@ and nothing warns; **medium** = numbers are biased or a safeguard is weaker than
 | G1 | NaN weights were accepted | medium | fixed (also on main) |
 | S7 | A fill on a strategy's first day was left out of Sharpe and drawdown | medium | fixed |
 | S8 | The weekly page let a late starter "beat" a yardstick it merely copied | medium | fixed |
+| D7 | An empty answer from a source counted as "no news" | medium | fixed |
+| D8 | A day a source left out became a silent, permanent hole | medium | fixed (crypto), reported (ETFs) |
+| D9 | A run's problems left no trace in the record | medium | fixed |
 | S5 | Sharpe assumed a point every calendar day | low | fixed |
+| L9 | A lost final newline glued record lines together for good | low | fixed |
 | T1 | A decision could be filled before it could have been pushed | low | fixed |
 | D5 | The record did not say where a bar came from | low | fixed |
 
@@ -164,8 +168,11 @@ ordinary tests that pin the numbers quoted here.
   force-pushed, deleted or created twice, or if any commit reached GitHub more than 10 minutes
   after the time it claims (a back-dated commit, see L1). Tried against the real repository: it
   passes; both real pushes arrived 1 second after their commits. If GitHub cannot be asked, the
-  job goes on with a warning. After looking at a reported event the owner sets the repository
-  variable `TRAIL_REVIEWED_UNTIL` to move on. Tests: `tests/test_audit_workflow.py` (fake `gh`).
+  job goes on with a warning. After looking at a reported event a person sets the repository
+  variable `TRAIL_REVIEWED_UNTIL` to move on. Agents can set that variable too (GrimsBot has
+  write access), so it is deliberately not a silent switch: an accepted event is written into the
+  trail and printed on the scoreboard on every run, a date in the future is refused, and each
+  new event stops the job again. Tests: `tests/test_audit_workflow.py` (fake `gh`).
 - **Not proven live:** the script ran with GrimsBot's token, not yet with the job's own token
   inside Actions. If that token may not read the activity log, the step prints a warning and
   checks nothing; look at the first run's log after merging.
@@ -240,7 +247,8 @@ ordinary tests that pin the numbers quoted here.
   each asset and a bold **STALE** mark on any asset more than 2 days (crypto) or 5 days (ETFs)
   behind the newest one (`tests/test_audit_stats.py::test_the_scoreboard_says_how_fresh_each_assets_data_is`).
   `weekly.md`, the page the owner reads, shows the same line as a warning when anything is stale.
-- **Still open:** a count of days on which a strategy made no decision.
+- **Still open:** a count of days on which a strategy made no decision (failed runs are now on
+  record, see D9; days GitHub's scheduler skipped are not).
 
 ### Low
 
@@ -286,6 +294,13 @@ One commit per fix, except the three workflow changes, which share the same line
   real record nothing changes: the two runs were committed 2 and 22 seconds after their
   timestamps. Tests: `tests/test_audit_ledger.py::test_a_backdated_decision_is_not_credited` and
   three more beside it.
+- **A hole in the first version of this fix,** found by the independent reviewer and closed:
+  line positions were counted in text characters, commit sizes in bytes. Padding the ledger with
+  blank Windows-style lines (two bytes, one character) moved a later line's position back into
+  an older commit, so a back-dated decision counted as on time again. Positions are now counted
+  in bytes and each row is parsed from the same bytes that date it
+  (`...::test_padding_with_blank_lines_does_not_move_a_backdated_decision`). The lesson stands
+  beyond this bug: this check is new, security-like code and deserves another adversarial pass.
 - **What is left:** commit dates are written by whoever commits. The L3 guard closes most of
   that from outside: a commit that reaches GitHub more than 10 minutes after its claimed time
   stops the job. A forger is left with a 10-minute window, and with the L3 owner action undone
@@ -344,6 +359,28 @@ One commit per fix, except the three workflow changes, which share the same line
 - **What is left:** a day the source omits completely is still invisible. A calendar check
   across the four ETFs (they share one) and "crypto has every day" would catch it.
 
+### D7, D8, D9. Data that stops or has holes, and nobody is told (medium; found by the independent reviewer)
+
+- **D7. An empty answer counted as "no news".** A source replying with an empty list (Kraken
+  with no rows, Yahoo with no timestamps) was a success: the second source was never asked, no
+  problem was reported, nothing changed, nothing was committed. Frozen data behind green runs.
+  **Fix (`sources.py`, `run_daily.py`):** when a source has nothing new the next one is asked
+  too, and a symbol whose newest bar is older than it can honestly be (36 hours for crypto, 4.5
+  days for ETFs) is a problem of the run.
+  `tests/test_audit_data.py::test_an_empty_answer_is_not_taken_as_no_news`.
+- **D8. A day the source left out.** D4 covered a day Yahoo lists without prices; a day simply
+  absent from the answer was still stored around, and can never be added. **Fix (`data.py`,
+  `run_daily.py`):** crypto trades every day, so an answer that skips a day is refused (the bars
+  before the gap are kept). ETFs have holidays, so there a session one ETF lacks while the others
+  have it is reported as a problem. The real history has neither.
+  `tests/test_audit_data.py::test_a_day_the_source_leaves_out_is_not_skipped`.
+- **D9. Problems left no trace in the record.** A failed source or a strategy that raised was
+  only in that run's log and exit code; later, "held its position", "crashed" and "had no data"
+  looked the same. **Fix (`ledger.py`):** each run's problems are appended to
+  `ledger/problems.jsonl`; the scoreboard shows how many runs had problems and the latest ones,
+  the weekly page says how many this week.
+  `tests/test_audit_data.py::test_a_runs_problems_are_kept_in_the_record`.
+
 ### L5, L8. The daily job could start a new record by accident, or run unmerged code (medium)
 
 - **What:** the workflow did `git fetch origin paper-trail || git worktree add --orphan`: a
@@ -391,6 +428,12 @@ One commit per fix, except the three workflow changes, which share the same line
   source supplied which days of which symbol. The two runs before this fix used Kraken and
   Yahoo (the stored values match those sources' formats and my live probes).
   `tests/test_audit_data.py::test_the_record_says_which_source_each_bar_came_from`.
+- **L9. A lost final newline glued lines together for good** (independent reviewer). A ledger or
+  bar file whose last line had lost its newline got the next line glued on; every later run
+  failed to parse it, and restoring the newline counted as rewriting history. Appends now start
+  on a fresh line; an empty bar file still gets its header; a time without a zone is refused
+  instead of being read as local time. Not repairable even now: a last line cut off in the
+  middle. `tests/test_audit_ledger.py::test_a_lost_final_newline_does_not_glue_lines_together`.
 - **T1. A decision could be filled before it could have been pushed.** A run starting at
   23:59:30 UTC was filled at the 00:00:00 crypto open, though its commit lands after that price
   exists. Covered by the L1 fix: it now fills at the next open after its commit.
@@ -418,18 +461,29 @@ One commit per fix, except the three workflow changes, which share the same line
   close. All nine files pass the new append-only check. GitHub's activity log shows two events
   on `paper-trail`, both by `github-actions[bot]`: its creation at 2026-11-11 22:00:52 UTC and a
   push at 2026-11-12 01:51:50 UTC, each one second after its commit.
+- **Independent review.** Two reviewers (subagents with no sight of my conclusions beyond a list
+  of titles) attacked the gym and scoring, and the ledger, runner and sources. Their new
+  findings are S7, S8, G5, D7, D8, D9, L9 and the hole in L1. What they checked and found sound:
+  fill timing and equal-timestamp ordering over 400 fuzzed runs; daily equity re-derived
+  independently from fills and bars for all nine strategies over 699 real days (largest error
+  0.000000 USD); the deflated Sharpe under a zero-skill null (reads 95% or more in at most 0.8%
+  of worlds); the rule that skips a decision when no data is new; re-runs the same evening and
+  across midnight; `append` with unordered, duplicate and older bars; each source's parsing.
 - **The M1 strategies** use no clock, no randomness and no files: they see only the bars the
   runner hands them. I did not review their trading logic (the M1 lane had its own review).
 
 ## Status
 
 - **Done:** all five areas of the brief audited (look-ahead, data, gym, ledger and workflow,
-  statistics) against M0 and again after the M1 merge. 28 findings: 14 fixed or guarded, 4 more
-  half done (D1, L3, L7, S4), 10 open; all with tests except G3 and G5. Checks green.
-- **Doing:** the first of two independent reviewers (subagents, read-only, asked to find what
-  this report missed) is in: S7, S8 and G5 are theirs. Waiting for the second (ledger, runner,
-  sources).
-- **Next, in order of value:** S3 (rank the scoreboard by excess over restarted yardsticks,
-  as `weekly.py` now does); the second halves of L7 and S4; G2.
-- **To resume:** read this section, run the checks in `AGENTS.md`, look at the three remaining
-  `xfail` tests (`uv run pytest -rx tests/`).
+  statistics) against M0 and again after the M1 merge, then attacked once more by two independent
+  reviewers. 32 findings: 21 fixed or guarded, 4 half done (D1, L3, L7, S4), 7 open (S2, G4, G3,
+  S3, D6 need a decision or outside facts; G2, S6, L6, G5 are low). All with tests except G3
+  and G5. Checks green.
+- **Not proven live:** the workflow changes. The first run after merging is the test: its log
+  must show "GitHub's activity log agrees with the paper-trail history".
+- **Next, in order of value:** S3 (rank the scoreboard by excess over restarted yardsticks, as
+  `weekly.py` now does); a second adversarial pass over `ledger.in_force` and
+  `scripts/check-trail-activity.sh` (new code that guards the record); the second halves of L7
+  and S4; G2.
+- **To resume:** read this section, run the checks in `AGENTS.md`, look at the remaining `xfail`
+  test (`uv run pytest -rx tests/`).
