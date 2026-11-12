@@ -15,35 +15,31 @@ time, weekends, holidays and late runs included. The record so far (three runs) 
 **What did not, and is fixed in this branch.**
 
 - The logbook could be made to lie: a "decision" added afterwards with an old date, old lines
-  rewritten behind a merge, a stored price edited. All closed. Replacing the whole record
-  branch is now detected, but only a setting of yours can prevent it.
-- Crypto trades were charged 0.25%. An account like this one really pays about 0.6%; the
-  simulation now charges that.
-- Prices that stopped, had holes or were corrected later went unreported. Now they show.
-- These guards are new. Independent reviewers attacked them twice and got through both times.
-  The second pass found nine more holes, five of them serious; all are closed except three
-  smaller ones (L13 to L15). Expect a third attack to find more: until then call the record
-  "checked", not "proven".
+  rewritten, a price edited or invented. All closed. The daily job now stops, and says why,
+  when anything but its own run has touched the record.
+- Crypto trades were charged 0.25% where an account like this one pays about 0.6%, and prices
+  that stopped, had holes or changed later went unreported. Both corrected.
 
-**What the numbers can and cannot say.**
+**What to keep in mind.**
 
-- Six months will not tell skill from luck. Nine strategies with no skill at all, run for six
-  months: the best one looks like a star more often than not. The "deflated Sharpe" column
-  corrects for that, and it is strict: a world-class strategy has an even chance of reading
-  "95% sure" after about five years, a good one after about twenty. Six months can rule out
-  disasters. It cannot prove skill. Both pages now say so themselves.
-- The yardsticks are set a little low: dividends are not counted (about 4% a year for the bond
-  fund, 2.3% for 60/40, nothing for Bitcoin).
-- Prices are stored an hour after the US close, before Yahoo's numbers are final, and never
-  changed. Later differences are now logged; on the first day they were under 0.01%.
-- The backup source for the four funds is dead. If Yahoo stops answering, their prices freeze;
-  the scoreboard and the weekly page now say so in bold.
+- The guards are new. Independent reviewers attacked them twice and got through both times
+  (the second time: nine holes, five serious; all closed but three lesser ones). Until a third
+  attack finds nothing, call the record "checked", not "proven".
+- Six months will not tell skill from luck. Of nine strategies with no skill at all, the best
+  looks like a star after six months more often than not. The pages correct for that (the
+  "deflated Sharpe"), strictly: a world-class strategy has an even chance of reading "95% sure"
+  after about five years. Six months can rule out disasters, not prove skill.
+- The yardsticks are a little too easy to beat: dividends are not counted (about 4% a year for
+  the bond fund, 2.3% for 60/40, nothing for Bitcoin).
+- The backup source for the four funds is dead. If Yahoo stops answering, their prices freeze,
+  and both pages say so in bold.
 
 **What I need from you.**
 
 1. A rule for the `paper-trail` branch: block force pushes and deletion (GitHub, Settings,
-   Rules; two minutes; agents cannot do it).
-2. A decision on what "graduation" means, given the first point above (finding S2).
+   Rules; two minutes; agents cannot do it). Until then the whole record can be replaced; that
+   is detected, not prevented.
+2. A decision on what "graduation" means, given that six months cannot prove skill (S2).
 
 ## All findings at a glance
 
