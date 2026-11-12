@@ -314,20 +314,25 @@ def _blobs(top: Path, commits: list[str], rel: str) -> dict[str, tuple[str, int]
 LATE = timedelta(minutes=30)
 
 
-def recorded_at(path: Path) -> list[datetime | None]:
-    """For each non-blank line of `path` on disk: the committer time of the earliest commit that
+def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
+    """Each non-blank line of `path` on disk with the committer time of the earliest commit that
     holds it; None if it is not committed yet (or outside git). Relies on the file being
-    append-only (`check_append_only`): a commit's new lines are the bytes past its parents'."""
-    ends, pos = [], 0
-    text = path.read_text() if path.exists() else ""
-    for line in text.splitlines(keepends=True):  # the same splitting as `_read`
-        pos += len(line.encode())
-        if line.strip():
+    append-only (`check_append_only`): a commit's new lines are the bytes past its parents'.
+
+    Everything is counted in bytes and split at "\n" only, exactly as git stores the file. (Text
+    mode reads "\r\n" as one character: padding with such lines then moved a line's position
+    back into an older commit.)"""
+    data = path.read_bytes() if path.exists() else b""
+    lines, ends, pos = [], [], 0
+    for chunk in data.split(b"\n"):
+        pos = min(pos + len(chunk) + 1, len(data))  # the line ends after its newline, if any
+        if chunk.strip():
+            lines.append(chunk)
             ends.append(pos)
-    out: list[datetime | None] = [None] * len(ends)
+    times: list[datetime | None] = [None] * len(ends)
     where = _locate(path)
     if where is None:
-        return out
+        return list(zip(lines, times, strict=True))
     top, rel, _ = where
     log = _git(top, "rev-list", "--parents", "--timestamp", "HEAD").decode().splitlines()
     rows = [r.split() for r in log if r]  # timestamp, commit, parents...
@@ -340,9 +345,14 @@ def recorded_at(path: Path) -> list[datetime | None]:
             spans.append((int(stamp), lo, size[commit]))
     for seconds, lo, hi in sorted(spans):  # earliest commit first: it wins
         for i in range(bisect.bisect_right(ends, lo), bisect.bisect_right(ends, hi)):
-            if out[i] is None:
-                out[i] = datetime.fromtimestamp(seconds, tz=UTC)
-    return out
+            if times[i] is None:
+                times[i] = datetime.fromtimestamp(seconds, tz=UTC)
+    return list(zip(lines, times, strict=True))
+
+
+def recorded_at(path: Path) -> list[datetime | None]:
+    """When each non-blank line of `path` was first committed (None: not yet)."""
+    return [at for _, at in _lines_recorded(path)]
 
 
 def in_force(root: Path) -> tuple[list[tuple[datetime, dict[str, Any]]], int]:
@@ -355,11 +365,12 @@ def in_force(root: Path) -> tuple[list[tuple[datetime, dict[str, Any]]], int]:
     (today's run, before its commit) keep their timestamp. A decision is left out if a later
     line of the same strategy counts from the same moment or earlier: it was never provably in
     force. `late` = lines recorded more than LATE after their own timestamp."""
-    rows = decisions(root)
-    recorded = recorded_at(root / DECISIONS)
     kept: dict[str, list[tuple[datetime, dict[str, Any]]]] = {}
     late = 0
-    for row, at in zip(rows, recorded, strict=True):
+    # Rows are parsed from the very bytes whose position gave `at`: no second way of splitting
+    # the file into lines that could disagree with it.
+    for raw, at in _lines_recorded(root / DECISIONS):
+        row: dict[str, Any] = json.loads(raw)
         stamped = parse_time(row["time"])
         counts_from = max(stamped, at) if at is not None else stamped
         late += counts_from - stamped > LATE

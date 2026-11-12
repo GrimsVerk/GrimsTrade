@@ -85,6 +85,33 @@ def test_a_backdated_decision_is_not_credited(repo: Path) -> None:
     assert "**Late decisions: 1.**" in report.render(repo, history)
 
 
+def test_padding_with_blank_lines_does_not_move_a_backdated_decision(repo: Path) -> None:
+    """Found by the independent reviewer in the first version of the L1 fix: line positions were
+    counted in text characters, commits in bytes. Blank "\\r\\n" lines are two bytes but one
+    character, so padding the ledger with them moved a later line's position back into an older
+    commit, and a back-dated decision counted as on time again."""
+    history: History = {"BTC": btc([(100, 100), (100, 150), (150, 200), (200, 200), (200, 200)])}
+    path = repo / ledger.DECISIONS
+    decide(repo, at(DAY1), "honest", {})
+    commit(repo, "Daily run day 1", when=at(DAY1, 22, 31))
+    with path.open("ab") as f:
+        f.write(b"\r\n" * 30_000)  # looks like nothing: blank lines
+    commit(repo, "tidy", when=at(DAY1, 22, 40))
+    decide(repo, at(DAY1 + timedelta(days=1)), "honest", {})
+    commit(repo, "Daily run day 2", when=at(DAY1 + timedelta(days=1), 22, 31))
+    # Day 4: the back-dated line, stamped just after the padding commit.
+    decide(repo, at(DAY1, 22, 41), "cheat", {"BTC": 1.0})
+    commit(repo, "Daily run day 4", when=at(DAY1 + timedelta(days=3), 22, 31))
+
+    ledger.check_append_only(path)  # appends only, so this passes
+    counted, late = ledger.in_force(repo)
+    cheat = [(t, row) for t, row in counted if row["strategy"] == "cheat"]
+    assert [t for t, _ in cheat] == [at(DAY1 + timedelta(days=3), 22, 31)] and late == 1
+    assert len([row for _, row in counted if row["strategy"] == "honest"]) == 2
+    (fill,) = report.live_results(repo, history)["cheat"].fills
+    assert fill.time == datetime(2026, 11, 5, tzinfo=UTC)  # after the commit, not day 2
+
+
 def test_a_decision_counts_from_its_commit(repo: Path) -> None:
     """Audit T1 (fixed with L1): a late run stamped 23:59:30 whose commit lands after midnight
     is not filled at the 00:00 open that already existed when it was recorded."""
