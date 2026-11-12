@@ -9,6 +9,7 @@ Git history is the tamper evidence: `check_append_only` fails if any committed l
 
 from __future__ import annotations
 
+import functools
 import json
 import subprocess
 from collections.abc import Mapping
@@ -88,8 +89,10 @@ def _git(cwd: Path, *args: str) -> bytes:
 
 
 def check_append_only(path: Path) -> int:
-    """Raise LedgerTampered if any committed version of `path` is not a prefix of the next one,
-    or of the file on disk. Returns how many committed versions were checked (0 outside git)."""
+    """Raise LedgerTampered unless `path` only ever grew: in every commit reachable from HEAD its
+    content must start with its content in each parent (merges included, so a rewrite can't hide
+    on a side branch), and the file on disk must start with HEAD's. Returns how many commits
+    changed the file (0 outside git)."""
     cwd = path.resolve().parent
     while not cwd.exists():
         cwd = cwd.parent
@@ -99,19 +102,45 @@ def check_append_only(path: Path) -> int:
         return 0
     rel = path.resolve().relative_to(top).as_posix()
     try:
-        _git(top, "rev-parse", "--verify", "-q", "HEAD")
+        head = _git(top, "rev-parse", "--verify", "-q", "HEAD").decode().strip()
     except subprocess.CalledProcessError:
         return 0  # a branch with no commits yet (the first run's fresh paper-trail)
-    commits = _git(top, "log", "--format=%H", "--reverse", "--", rel).decode().split()
-    versions = []
-    for c in commits:
-        try:
-            versions.append((c[:10], _git(top, "show", f"{c}:{rel}")))
-        except subprocess.CalledProcessError:
-            versions.append((c[:10], b""))  # deleted in this commit
-    if path.exists():
-        versions.append(("working tree", path.read_bytes()))
-    for (_, old), (where, new) in zip(versions, versions[1:], strict=False):
-        if not new.startswith(old):
-            raise LedgerTampered(f"{rel}: earlier lines were changed or removed at {where}")
-    return len(commits)
+    # Every commit with its parents. Not `git log -- file`: that skips one side of a merge.
+    graph = [
+        line.split() for line in _git(top, "rev-list", "--parents", "HEAD").decode().split("\n")
+    ]
+    graph = [g for g in graph if g]
+    blob = _blobs(top, [g[0] for g in graph], rel)
+
+    @functools.lru_cache(maxsize=4)  # a child's version is the next commit's parent version
+    def read(blob_id: str) -> bytes:
+        return _git(top, "cat-file", "blob", blob_id) if blob_id else b""  # "" = file absent
+
+    changed = 0
+    for commit, *parents in graph:
+        if all(blob[commit] != blob[p] for p in parents) and blob[commit]:
+            changed += 1
+        for parent in parents:
+            if blob[parent] != blob[commit] and not read(blob[commit]).startswith(
+                read(blob[parent])
+            ):
+                raise LedgerTampered(
+                    f"{rel}: earlier lines were changed or removed at {commit[:10]}"
+                )
+    on_disk = path.read_bytes() if path.exists() else b""
+    if not on_disk.startswith(read(blob[head])):
+        raise LedgerTampered(f"{rel}: earlier lines were changed or removed at working tree")
+    return changed
+
+
+def _blobs(top: Path, commits: list[str], rel: str) -> dict[str, str]:
+    """Blob id of `rel` in each commit ("" where the file is absent), in one git call."""
+    query = "".join(f"{c}:{rel}\n" for c in commits).encode()
+    out = subprocess.run(
+        ["git", "cat-file", "--batch-check"], cwd=top, check=True, capture_output=True, input=query
+    ).stdout.decode()
+    ids = {}
+    for commit, line in zip(commits, out.splitlines(), strict=True):
+        fields = line.split()
+        ids[commit] = fields[0] if len(fields) == 3 and fields[1] == "blob" else ""
+    return ids

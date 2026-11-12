@@ -30,7 +30,7 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   creation by `github-actions[bot]` at 22:00:52Z, 3 s after the first decisions); (3) owner:
   a ruleset on `paper-trail` (see L2).
 
-### L2. History can be rewritten with an ordinary push (high)
+### L2. History can be rewritten with an ordinary push (high) - FIXED in this branch
 
 - **What:** `check_append_only` reads `git log -- <file>`. Git simplifies that log at merges: when
   a merge keeps one parent's version of the file, the other parent's history is skipped. So a
@@ -39,8 +39,9 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
   fast-forward push: no force-push needed, and a "block force pushes" rule would not stop it.
 - **Evidence:** `tests/test_audit_ledger.py::test_a_rewrite_hidden_behind_a_merge_is_caught`
   (a losing all-in decision becomes "stayed in cash"; the check passes).
-- **Proposed fix (small, in `ledger.py`):** walk every commit and compare the file with each of
-  its parents' versions, instead of trusting the simplified log.
+- **Fix (done, `ledger.py`):** `check_append_only` now walks every commit and compares the file
+  with its version in each parent, instead of trusting the simplified log. A ledger deleted from
+  the working tree is also refused now.
 
 ### L3. A force-push or delete-and-recreate of `paper-trail` leaves no trace in the repo (high)
 

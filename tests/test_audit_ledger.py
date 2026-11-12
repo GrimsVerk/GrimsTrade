@@ -95,11 +95,6 @@ def _honest_two_days(repo: Path) -> Path:
     return repo / ledger.DECISIONS
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit L2: history can be rewritten with an ordinary (fast-forward) push: a merge "
-    "that takes the forged side makes `git log -- file` skip the honest side",
-)
 def test_a_rewrite_hidden_behind_a_merge_is_caught(repo: Path) -> None:
     path = _honest_two_days(repo)
     honest_head = git(repo, "rev-parse", "HEAD")
@@ -114,6 +109,25 @@ def test_a_rewrite_hidden_behind_a_merge_is_caught(repo: Path) -> None:
     git(repo, "merge-base", "--is-ancestor", honest_head, "HEAD")
     assert all(r["weights"] == {} for r in ledger.decisions(repo))  # the record now lies
 
+    # Audit L2 (fixed): `git log -- file` skipped the honest side of that merge; the check now
+    # compares every commit with each of its parents.
+    with pytest.raises(ledger.LedgerTampered):
+        ledger.check_append_only(path)
+
+
+def test_honest_merges_and_a_deleted_working_file(repo: Path) -> None:
+    path = _honest_two_days(repo)
+    # A merge that brings in an unrelated side branch without touching the ledger is fine.
+    git(repo, "checkout", "-q", "-b", "side")
+    (repo / "note.txt").write_text("x")
+    commit(repo, "side note", when=at(DAY1 + timedelta(days=1), 23, 0))
+    git(repo, "checkout", "-q", "paper-trail")
+    decide(repo, at(DAY1 + timedelta(days=2)), "s", {"BTC": 1.0})
+    commit(repo, "Daily run day 3", when=at(DAY1 + timedelta(days=2), 22, 31))
+    git(repo, "merge", "-q", "--no-ff", "-m", "merge side", "side")
+    assert ledger.check_append_only(path) == 3
+    # Deleting the ledger from the working tree is a rewrite too.
+    path.unlink()
     with pytest.raises(ledger.LedgerTampered):
         ledger.check_append_only(path)
 
