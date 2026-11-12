@@ -90,7 +90,12 @@ stretch, and that it happened on a book the owner will never hold. The 2008 cris
 2003-2025 row: the trend rule lost 4% there against 20%, and gave that back by being late back
 in. Since 2003 it finished ahead of equal weight in 6 calendar years of 23 (among them the three
 worst for equal weight: 2008, 2018 and 2022) and behind in 17, by 20 points or more in 2003,
-2009, 2019, 2020 and 2023, each the year after a fall.
+2009, 2019, 2020 and 2023, four of them the year after a fall.
+
+A second calculation that shares no code with the runs (weights from the last Friday, plain
+close-to-close returns from the price files, no costs, no gym) gives the same picture: 1.06
+against 0.90 over 1994-2025, 1.21 against 1.23 without the bust, 1.21 against 1.21 for
+2003-2025.
 
 The rule itself is not fragile in the usual ways: any decision weekday gives 1.04 to 1.05, and
 lookbacks of 9 to 12 months give 1.03 to 1.13. Lookbacks of 15 months and more give 0.82 to
@@ -368,8 +373,10 @@ the FTSE through 2025.
   neither the gym nor the harness, from the rules as documented: signal from Friday's close
   (for crypto the last full UTC day), fill at the next open, 2 or 30 bps a side, 1% band. The
   account balance matches the harness on every day, to the cent (largest relative difference
-  0). No off-by-one in rebalancing or fills. The replay is one asset at a time; how the gym
-  shares cash between several assets I read but did not replay.
+  0). No off-by-one in rebalancing or fills. The replay is one asset at a time. For the six
+  assets together I recomputed equal weight and `tsmom12` from the price files with no costs
+  and no gym: 0.90 and 1.06 against the harness's 0.88 and 1.05, worst losses 69% and 37% in
+  both.
 - **Cards before tests.** For all 21 cards the commit that adds the card is earlier than the
   idea's first row in `tries.md`.
 - **Look-ahead.** Every strategy reads prices through `View`, which hands out only the bars
