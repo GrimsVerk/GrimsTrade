@@ -6,10 +6,14 @@ closed before the decision). `decisions()` is a fast equivalent of `grimstrade.g
 so `check_against_gym()` can prove both paths give identical decisions. Fills, costs and equity
 always come from `grimstrade.gym.simulate`, untouched.
 
-Periods (fixed before any test was run):
-- train:    decisions 2017-01-01 .. 2025-11-09, bars after 2025-11-10 are not even loaded.
+Periods (fixed before any test was run, see research/protocol.md):
+- train:    decisions 1994-02-01 .. 2025-11-09 (or from an asset set's own start), bars after
+  2025-11-10 are not even loaded.
 - held-out: decisions 2025-11-11 .. 2026-11-09 (the most recent 12 months). Checked at most once
   per idea; `run()` refuses a second held-out variant for the same idea.
+
+Prices: dividend-adjusted (total return) by default; `adjusted=False` gives the raw prices the
+live paper system trades. Symbols outside the six live assets are registered in UNIVERSE_EXTRA.
 
 Run scripts with numpy available:  uv run --with numpy python research/lib/<script>.py
 """
@@ -31,33 +35,65 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from grimstrade import data, gym, report  # noqa: E402
-from grimstrade.data import UNIVERSE, Bar, close_time  # noqa: E402
+from grimstrade.data import CRYPTO, ETF, UNIVERSE, Bar, close_time  # noqa: E402
 from grimstrade.gym import DECIDE_AT, Decision  # noqa: E402
 
 RESEARCH = ROOT / "research"
 DATA = RESEARCH / "data"
 TRIES = RESEARCH / "tries.md"
 
-TRAIN_START = date(2017, 1, 1)
+TRAIN_START = date(1994, 2, 1)  # SPY's first day plus a year of warm-up
 TRAIN_END = date(2025, 11, 9)  # last train decision
 TRAIN_LAST_BAR = date(2025, 11, 10)  # train runs never load a later bar
 HELD_START = date(2025, 11, 11)
 HELD_END = date(2026, 11, 9)
-# Halves of the train period, for stability checks.
-HALF_SPLIT = date(2021, 6, 1)
 
-SYMS = list(UNIVERSE)
+# Eras for per-regime reporting (fixed before any test; see research/protocol.md).
+ERAS: list[tuple[str, date, date]] = [
+    ("1994-99", date(1994, 1, 1), date(1999, 12, 31)),
+    ("2000-09", date(2000, 1, 1), date(2009, 12, 31)),
+    ("2010-16", date(2010, 1, 1), date(2016, 12, 31)),
+    ("2017-21", date(2017, 1, 1), date(2021, 12, 31)),
+    ("2022-25", date(2022, 1, 1), date(2025, 12, 31)),
+]
+# Stress windows (peak to trough of the named sell-off).
+STRESS: list[tuple[str, date, date]] = [
+    ("dot-com bust", date(2000, 3, 24), date(2002, 10, 9)),
+    ("2008 crisis", date(2007, 10, 9), date(2009, 3, 9)),
+    ("covid crash", date(2020, 2, 19), date(2020, 3, 23)),
+    ("2022 rate shock", date(2022, 1, 3), date(2022, 10, 12)),
+    ("crypto winter 2014", date(2013, 12, 4), date(2015, 1, 14)),
+    ("crypto winter 2018", date(2017, 12, 17), date(2018, 12, 15)),
+    ("crypto winter 2022", date(2021, 11, 10), date(2022, 11, 21)),
+]
+
+SYMS = list(UNIVERSE)  # the six live assets
+
+# Out-of-universe test sets, chosen before any test (research/protocol.md). Research-only: these
+# are registered in the in-process copy of UNIVERSE so the gym can replay them; `src/` is untouched.
+OOU_ETFS = ["IWM", "EFA", "EEM", "IEF", "LQD", "VNQ", "DBC", "SLV"]
+OOU_COINS = ["LTC", "XRP", "BCH", "ETC", "XLM", "DASH"]  # large caps of January 2018, not of today
+OOU_INDEXES = ["GSPC", "N225", "FTSE", "GDAXI"]  # price indexes, local currency, no dividends
+SECTORS = ["XLK", "XLF", "XLE", "XLV", "XLY", "XLP", "XLI", "XLB", "XLU"]  # signal inputs only
+UNIVERSE_EXTRA = {
+    **{s: ETF for s in OOU_ETFS + OOU_INDEXES + SECTORS},
+    **{s: CRYPTO for s in OOU_COINS},
+}
+UNIVERSE.update(UNIVERSE_EXTRA)
+
 Weights = dict[str, float]
 ResearchStrategy = Callable[["View"], Weights]
 
 
-def load_history(period: str = "train", adjusted: bool = False) -> dict[str, list[Bar]]:
-    """Raw bars from the research cache. `train` cuts everything after TRAIN_LAST_BAR."""
+def load_history(
+    period: str = "train", adjusted: bool = True, syms: Sequence[str] = SYMS
+) -> dict[str, list[Bar]]:
+    """Bars from the research cache. `train` cuts everything after TRAIN_LAST_BAR."""
     if period not in ("train", "heldout"):
         raise ValueError(period)
-    hist = data.load_all(RESEARCH)  # reads research/data/bars/<SYM>.csv
+    hist = data.load_all(RESEARCH, syms)  # reads research/data/bars/<SYM>.csv
     if adjusted:
-        for s in SYMS:
+        for s in syms:
             if (DATA / "adj" / f"{s}.csv").exists():
                 hist[s] = _load_csv(DATA / "adj" / f"{s}.csv")
     if not all(hist.values()):
@@ -84,7 +120,7 @@ class Panel:
     """Bars as numpy arrays, with the gym's visibility rule precomputed."""
 
     def __init__(self, history: Mapping[str, Sequence[Bar]]):
-        self.syms = [s for s in SYMS if s in history]
+        self.syms = list(history)
         self.close_times: dict[str, list[datetime]] = {}
         self.ord: dict[str, np.ndarray] = {}
         self.o: dict[str, np.ndarray] = {}
@@ -227,18 +263,36 @@ class Run:
     variant: str
     period: str
     score: report.Score
-    days: list[date]
-    equity: np.ndarray
+    days: list[date]  # every calendar day from the first decision to the last bar
+    equity: np.ndarray  # end-of-day equity on those days (carried over days with no bar)
     exposure: float  # mean sum of target weights
+    decisions: list[Decision]
 
     @property
     def rets(self) -> np.ndarray:
         return self.equity[1:] / self.equity[:-1] - 1
 
     def rets_between(self, a: date, b: date) -> np.ndarray:
-        idx = [i for i, d in enumerate(self.days) if a <= d <= b]
-        e = self.equity[idx[0] : idx[-1] + 1]
+        i = max((a - self.days[0]).days, 0)
+        j = min((b - self.days[0]).days, len(self.days) - 1)
+        if j - i < 1:
+            return np.array([])
+        e = self.equity[i : j + 1]
         return e[1:] / e[:-1] - 1
+
+
+def _calendar(equity: Sequence[tuple[date, float]]) -> tuple[list[date], np.ndarray]:
+    """Equity on every calendar day (the gym only reports days that had a bar). Keeps Sharpe on
+    the repo's 365-day convention when a test holds no crypto."""
+    first, last = equity[0][0], equity[-1][0]
+    days = [first + timedelta(days=k) for k in range((last - first).days + 1)]
+    out = np.empty(len(days))
+    known = dict(equity)
+    cur = equity[0][1]
+    for k, d in enumerate(days):
+        cur = known.get(d, cur)
+        out[k] = cur
+    return days, out
 
 
 def _period_dates(period: str) -> tuple[date, date]:
@@ -254,11 +308,14 @@ def _heldout_used(idea: str) -> bool:
 
 
 def _log(run: Run, kind: str, start: date, end: date) -> None:
-    s = run.score
+    r = run.rets
+    sd = r.std()
+    sharpe = float(r.mean() / sd * np.sqrt(365)) if sd > 0 else 0.0
+    mdd = float((1 - run.equity / np.maximum.accumulate(run.equity)).max())
     row = (
         f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | {run.idea} | {run.variant} | {kind} | "
-        f"{run.period} | {start} | {end} | {s.sharpe:.2f} | {s.total_return:+.1%} | "
-        f"{s.max_drawdown:.1%} | {s.turnover:.2f} |\n"
+        f"{run.period} | {start} | {end} | {sharpe:.2f} | "
+        f"{run.equity[-1] / gym.START_CASH - 1:+.1%} | {mdd:.1%} | {run.score.turnover:.2f} |\n"
     )
     with TRIES.open("a") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
@@ -295,11 +352,10 @@ def run(
     decs = decisions(strategy, pan, a, b)
     res = gym.simulate(decs, hist, costs=costs)
     sc = report.score(f"{idea}/{variant}", res)
+    days, equity = _calendar(res.equity)
     out = Run(
-        idea, variant, period, sc,
-        [d for d, _ in res.equity],
-        np.array([e for _, e in res.equity]),
-        float(np.mean([sum(d.weights.values()) for d in decs])),
+        idea, variant, period, sc, days, equity,
+        float(np.mean([sum(d.weights.values()) for d in decs])), decs,
     )  # fmt: skip
     if log:
         _log(out, kind, a, b)

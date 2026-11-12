@@ -64,12 +64,12 @@ def deflated_sharpe(r: np.ndarray, n_trials: int, sharpe_var_annual: float) -> f
 
 def _stationary_indices(n: int, mean_block: float, rng: np.random.Generator) -> np.ndarray:
     """Politis-Romano stationary bootstrap indices (geometric block lengths, wrap-around)."""
-    idx = np.empty(n, dtype=np.int64)
-    idx[0] = rng.integers(n)
     restart = rng.random(n) < 1 / mean_block
-    jumps = rng.integers(n, size=n)
-    for i in range(1, n):
-        idx[i] = jumps[i] if restart[i] else (idx[i - 1] + 1) % n
+    restart[0] = True
+    pos = np.arange(n)
+    last = np.maximum.accumulate(np.where(restart, pos, 0))  # position of the latest restart
+    starts = rng.integers(n, size=n)
+    idx: np.ndarray = (starts[last] + pos - last) % n
     return idx
 
 
@@ -88,9 +88,5 @@ def sharpe_diff_boot(
         i = _stationary_indices(len(a), mean_block, rng)
         diffs[k] = sharpe(a[i]) - sharpe(b[i])
     p = float((diffs <= 0).mean())
-    return (
-        sharpe(a) - sharpe(b),
-        p,
-        float(np.quantile(diffs, 0.05)),
-        float(np.quantile(diffs, 0.95)),
-    )
+    lo, hi = float(np.quantile(diffs, 0.05)), float(np.quantile(diffs, 0.95))
+    return sharpe(a) - sharpe(b), p, lo, hi

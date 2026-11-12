@@ -3,11 +3,17 @@
     uv run python research/lib/fetch.py
 
 Writes `research/data/bars/<SYM>.csv` in the same format as the live store (raw prices), and
-`research/data/adj/<SYM>.csv` for the ETFs with dividend-adjusted OHLC (robustness checks only;
-the live paper system trades raw prices and does not credit dividends).
+`research/data/adj/<SYM>.csv` for ETFs with dividend-adjusted OHLC (total return).
 
-Crypto: Coinbase Exchange candles, paged 300 days at a time (the live runner's second source;
-Kraken's public API only returns the last 720 days). ETFs: Yahoo chart API.
+Sources:
+- ETFs and indexes: Yahoo chart API, from each one's first day (SPY 1993, QQQ 1999, TLT 2002,
+  GLD 2004).
+- BTC: Bitstamp daily candles 2012-01-01 .. 2015-07-19, then Coinbase Exchange (the live runner's
+  second source) from its first day, 2015-07-20. One seam, two venues; prices differ by a few bps.
+- ETH and the other coins: Coinbase Exchange from each product's first day; XRP from Bitstamp
+  (Coinbase delisted it 2021-2023).
+
+`UNIVERSE_EXTRA` (in harness.py) names every symbol outside the six live assets.
 """
 
 from __future__ import annotations
@@ -29,9 +35,29 @@ from grimstrade.data import CRYPTO, ETF, FIELDS, Bar, settled  # noqa: E402
 DATA = ROOT / "research" / "data"
 USER_AGENT = "Mozilla/5.0 (daily-bar research script)"
 
-CRYPTO_START = {"BTC": date(2015, 7, 20), "ETH": date(2016, 5, 18)}
-ETFS = ["SPY", "QQQ", "GLD", "TLT"]
-ETF_START = date(2002, 7, 30)  # TLT's first day; GLD starts 2004-11-18
+BTC_BITSTAMP_START = date(2012, 1, 1)
+BTC_COINBASE_START = date(2015, 7, 20)
+# symbol -> (coinbase product, first day to ask for)
+COINBASE = {
+    "ETH": ("ETH-USD", date(2016, 5, 18)),
+    "LTC": ("LTC-USD", date(2016, 8, 17)),
+    "BCH": ("BCH-USD", date(2017, 12, 20)),
+    "ETC": ("ETC-USD", date(2018, 8, 7)),
+    "XLM": ("XLM-USD", date(2019, 3, 13)),
+    "DASH": ("DASH-USD", date(2019, 9, 16)),
+}
+BITSTAMP = {"XRP": ("xrpusd", date(2017, 1, 1))}
+# symbol -> yahoo ticker. ETFs get raw + adjusted files; indexes (no dividends) raw only.
+YAHOO_ETFS = {
+    s: s
+    for s in [
+        "SPY", "QQQ", "GLD", "TLT",  # the live universe
+        "IWM", "EFA", "EEM", "IEF", "LQD", "VNQ", "DBC", "SLV",  # out-of-universe ETFs
+        "XLK", "XLF", "XLE", "XLV", "XLY", "XLP", "XLI", "XLB", "XLU",  # the 9 original sectors
+    ]
+}  # fmt: skip
+YAHOO_INDEXES = {"GSPC": "%5EGSPC", "N225": "%5EN225", "FTSE": "%5EFTSE", "GDAXI": "%5EGDAXI"}
+YAHOO_FROM = -631152000  # 1950-01-01
 
 
 def get(url: str) -> bytes:
@@ -68,30 +94,56 @@ def coinbase_all(product: str, start: date, now: datetime) -> list[Bar]:
     return settled([bars[k] for k in sorted(bars)], CRYPTO, now)
 
 
-def yahoo_all(ticker: str, start: date, now: datetime) -> tuple[list[Bar], list[Bar]]:
+def bitstamp_all(pair: str, start: date, end: date, now: datetime) -> list[Bar]:
+    bars: dict[date, Bar] = {}
+    d = start
+    while d <= end:
+        ts = int(datetime(d.year, d.month, d.day, tzinfo=UTC).timestamp())
+        url = f"https://www.bitstamp.net/api/v2/ohlc/{pair}/?step=86400&limit=1000&start={ts}"
+        rows: list[dict[str, str]] = json.loads(get(url))["data"]["ohlc"]
+        if not rows:
+            d += timedelta(days=1000)
+            continue
+        for r in rows:
+            day = datetime.fromtimestamp(int(r["timestamp"]), tz=UTC).date()
+            if start <= day <= end and float(r["volume"]) > 0:
+                bars[day] = Bar(day, float(r["open"]), float(r["high"]), float(r["low"]),
+                                float(r["close"]), float(r["volume"]))  # fmt: skip
+        last = datetime.fromtimestamp(int(rows[-1]["timestamp"]), tz=UTC).date()
+        d = max(last, d) + timedelta(days=1)
+        time.sleep(0.25)
+    return settled([bars[k] for k in sorted(bars)], CRYPTO, now)
+
+
+def yahoo_all(ticker: str, now: datetime) -> tuple[list[Bar], list[Bar]]:
     """(raw bars, dividend-adjusted bars)."""
-    p1 = int(datetime(start.year, start.month, start.day, tzinfo=UTC).timestamp())
     p2 = int(now.timestamp()) + 86400
     url = (
         f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
-        f"?period1={p1}&period2={p2}&interval=1d&events=history"
+        f"?period1={YAHOO_FROM}&period2={p2}&interval=1d&events=history"
     )
     payload: dict[str, Any] = json.loads(get(url))
     res = payload["chart"]["result"][0]
     q = res["indicators"]["quote"][0]
     adj = res["indicators"]["adjclose"][0]["adjclose"]
+    offset = int(res["meta"].get("gmtoffset", 0))  # so each bar gets its exchange-local date
     raw, adjusted = [], []
     for i, ts in enumerate(res["timestamp"]):
         vals = [q["open"][i], q["high"][i], q["low"][i], q["close"][i], adj[i]]
-        if any(v is None for v in vals):
+        if any(v is None or v <= 0 for v in vals):
             continue
-        d = datetime.fromtimestamp(ts, tz=UTC).date()
+        d = datetime.fromtimestamp(ts + offset, tz=UTC).date()
         o, h, lo, c, a = (float(v) for v in vals)
         vol = float(q["volume"][i] or 0)
         raw.append(Bar(d, o, h, lo, c, vol))
         k = a / c
         adjusted.append(Bar(d, o * k, h * k, lo * k, a, vol))
-    return settled(raw, ETF, now), settled(adjusted, ETF, now)
+    return settled(_dedupe(raw), ETF, now), settled(_dedupe(adjusted), ETF, now)
+
+
+def _dedupe(bars: list[Bar]) -> list[Bar]:
+    by_day = {b.date: b for b in bars}
+    return [by_day[d] for d in sorted(by_day)]
 
 
 def write(path: Path, bars: list[Bar]) -> None:
@@ -108,17 +160,35 @@ def gaps(bars: list[Bar], max_gap: int) -> list[tuple[date, date]]:
     return [(a.date, b.date) for a, b in pairs if (b.date - a.date).days > max_gap]
 
 
+def report(sym: str, bars: list[Bar], max_gap: int) -> None:
+    print(sym, len(bars), bars[0].date, bars[-1].date, "gaps:", gaps(bars, max_gap), flush=True)
+
+
 def main() -> None:
     now = datetime.now(UTC)
-    for sym, start in CRYPTO_START.items():
-        bars = coinbase_all(f"{sym}-USD", start, now)
+    early = bitstamp_all("btcusd", BTC_BITSTAMP_START, BTC_COINBASE_START - timedelta(1), now)
+    btc = early + coinbase_all("BTC-USD", BTC_COINBASE_START, now)
+    write(DATA / "bars" / "BTC.csv", btc)
+    report("BTC", btc, 1)
+    for sym, (product, start) in COINBASE.items():
+        bars = coinbase_all(product, start, now)
         write(DATA / "bars" / f"{sym}.csv", bars)
-        print(sym, len(bars), bars[0].date, bars[-1].date, "gaps:", gaps(bars, 1))
-    for sym in ETFS:
-        raw, adjusted = yahoo_all(sym, ETF_START, now)
+        report(sym, bars, 1)
+    for sym, (pair, start) in BITSTAMP.items():
+        bars = bitstamp_all(pair, start, now.date(), now)
+        write(DATA / "bars" / f"{sym}.csv", bars)
+        report(sym, bars, 1)
+    for sym, ticker in YAHOO_ETFS.items():
+        raw, adjusted = yahoo_all(ticker, now)
         write(DATA / "bars" / f"{sym}.csv", raw)
         write(DATA / "adj" / f"{sym}.csv", adjusted)
-        print(sym, len(raw), raw[0].date, raw[-1].date, "gaps:", gaps(raw, 5))
+        report(sym, raw, 5)
+        time.sleep(0.5)
+    for sym, ticker in YAHOO_INDEXES.items():
+        raw, _ = yahoo_all(ticker, now)
+        write(DATA / "bars" / f"{sym}.csv", raw)
+        report(sym, raw, 7)
+        time.sleep(0.5)
     (DATA / "fetched.txt").write_text(now.strftime("%Y-%m-%dT%H:%M:%SZ") + "\n")
 
 
