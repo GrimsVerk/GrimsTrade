@@ -61,7 +61,7 @@ def validate(weights: Mapping[str, float]) -> None:
     if unknown:
         raise ValueError(f"unknown symbols: {sorted(unknown)}")
     if not all(math.isfinite(w) for w in weights.values()):
-        raise ValueError("weights must be finite numbers (NaN would pass the checks below)")
+        raise ValueError("weights must be finite numbers")
     if any(w < 0 for w in weights.values()):
         raise ValueError("long-only: weights must be >= 0")
     if sum(weights.values()) > 1 + 1e-9:

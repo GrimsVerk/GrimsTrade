@@ -32,8 +32,40 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 - A run with no new data since a strategy's last decision writes no new decision.
 - Gymnasium env wrapper deferred (BACKLOG).
 
-## M1 (next)
+## M1 (branch `m1`, brief: chief-of-staff/briefs/grimstrade-m1.md)
 
-Classic strategies live in paper (time-series momentum, cross-sectional momentum, vol targeting,
-risk parity, crypto mean reversion), each registered in `ledger/tries.jsonl`; deflated Sharpe in
-the scoreboard; weekly one-screen summary for the owner.
+Goal: classic strategies live in paper, deflated Sharpe in the scoreboard, weekly one-screen
+summary (`reports/weekly.md`), backtests reported apart from the forward record.
+
+Done:
+- Draft PR #3. `signals.py` (trailing return, realized/EWMA vol). `ts_momentum` live + tested.
+  Strategies' try notes live in `strategies.NOTES`. `xs_momentum` (J&T 6/6, top third) live.
+  `vol_target_spy` (10%, 1-month vol) and `risk_parity` (inverse vol, 3y window) live.
+  `crypto_mean_reversion` (Connors RSI(2)) live. Parameters recorded in DECISIONS.
+  Funding-rate carry -> BACKLOG (gym is long-only spot; carry needs a short perp leg).
+  `stats.py` deflated Sharpe (matches the paper's example), column in scoreboard; try-count rule
+  in DECISIONS (`ledger.research_tries`). Runner writes `reports/backtest.md` (two windows).
+
+  `weekly.py` writes `reports/weekly.md` every run (plain language, tested). README points the
+  owner at weekly.md and backtest.md.
+
+Stopped 2026-11-11 ~23:20 UTC: usage limit reached. Resumed 2026-11-12 01:32 UTC: checks green (98 tests).
+
+Fable reviews done 2026-11-12. DSR maths: correct (paper example reproduced). Fixed try-count
+undercounting (disjoint ideas/variants, statuses like "rejected", blank lines in tables, bullets,
+main not read; plus a never-shrinking high in `ledger/research_tries.jsonl`) and V[SR] now includes
+research variants' Sharpes. Strategy faithfulness: no look-ahead. Fixed xs_momentum cohorts
+re-picked the day after a weekday month end; DECISIONS now records daily re-deciding, the
+one-day-late crypto fills (BACKLOG: 00:05 UTC run), vol_target as Harvey et al. style, RSI<10
+as the looser variant. M1 strategies had not run yet on paper-trail, so these are not new tries.
+
+Was doing (2026-11-12, new Fable rule in the brief): Fable subagent reviews of (a) the deflated-Sharpe
+maths in `stats.py` and (b) each strategy's faithfulness to its paper; then fix findings; then a
+Fable final review of PR #3.
+
+Next (in order):
+- Fable final review done: merge after fixes. Fixed: research tries recorded by identity (not a
+  count) and reports read-only; weekly yardstick window off by one day; weekly wording no longer
+  overclaims (strong needs beating every yardstick, nothing proven before 6 months); one broken
+  strategy no longer stops the others or the reports; NaN weights rejected; runner tests isolated.
+- Mark ready; try `gh pr merge --rebase --delete-branch`.

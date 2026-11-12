@@ -11,14 +11,20 @@ Every evening after the US stock market closes, a robot on GitHub:
 4. "buys and sells" at the **next** day's opening price, paying realistic fees,
 5. updates the scoreboard.
 
-Each strategy starts with a pretend 10,000 USD. Right now only the simple yardsticks run
-(hold Bitcoin, hold SPY, 60% stocks / 40% bonds, equal parts of everything). Smarter strategies only
-count as good if they beat these yardsticks over months.
+Each strategy starts with a pretend 10,000 USD. The simple yardsticks (hold Bitcoin, hold SPY,
+60% stocks / 40% bonds, equal parts of everything) run next to five classic strategies from
+published research (trend following, momentum, volatility targeting, risk parity, and short-term
+"buy the dip" in crypto). A strategy only counts as good if it beats the yardsticks over months,
+after fees, and after allowing for how many ideas we tried (more tries means more luck to discount).
 
 ## Where to look
 
+- **Start here:** `reports/weekly.md` on the [paper-trail branch](../../tree/paper-trail): one
+  screen, plain language, rewritten every run.
 - Scoreboard: `reports/scoreboard.md` on the
   [paper-trail branch](../../tree/paper-trail) (appears after the first daily run).
+- What each strategy *would* have done in past years: `reports/backtest.md`. This is a
+  backtest (hindsight, easy to flatter), so it is kept apart from the real forward record.
 - The logbook of every decision: `ledger/decisions.jsonl` on the same branch.
 - What's being worked on: `next-steps.md`.
 

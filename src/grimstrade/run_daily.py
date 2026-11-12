@@ -13,16 +13,21 @@ import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from grimstrade import data, gym, ledger, report, sources
-from grimstrade.strategies import LIVE
+from grimstrade import data, gym, ledger, report, sources, weekly
+from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
 BOOTSTRAP_DAYS = 700
 
 
-def run(root: Path, now: datetime, get: sources.Get = sources.http_get) -> list[str]:
-    """One daily run. Returns the list of data problems (empty if all went well)."""
-    for rel in (ledger.DECISIONS, ledger.TRIES):
+def run(
+    root: Path, now: datetime, get: sources.Get = sources.http_get, repo: Path = Path(".")
+) -> list[str]:
+    """One daily run. Returns the list of data problems (empty if all went well).
+
+    `repo` is the code checkout, whose `research/` files (and research-* branches) count towards
+    the number of strategies tried."""
+    for rel in ledger.APPEND_ONLY:
         ledger.check_append_only(root / rel)
 
     problems = []
@@ -44,16 +49,22 @@ def run(root: Path, now: datetime, get: sources.Get = sources.http_get) -> list[
     seen = data.visible_history(history, now)
     through = {s: b[-1].date.isoformat() for s, b in seen.items() if b}
     for name, decide in LIVE.items():
-        ledger.register_try(root, name, "benchmark (M0)", now)
+        ledger.register_try(root, name, NOTES[name], now)
         previous = ledger.decisions(root, name)
         if previous and previous[-1]["data_through"] == through:
             print(f"{name}: no new data since the last decision, skipped")
             continue
-        weights, reason = decide(seen)
-        gym.validate(weights)
+        try:
+            weights, reason = decide(seen)
+            gym.validate(weights)
+        except Exception as e:  # noqa: BLE001 - one broken strategy must not stop the others
+            problems.append(f"{name}: {e}")
+            print(f"{name}: FAILED {e}", file=sys.stderr)
+            continue
         ledger.write_decision(root, now, name, weights, seen, reason)
         print(f"{name}: {weights} ({reason})")
 
+    ledger.record_research(root, repo, now)
     results = report.live_results(root, history)
     state = {
         name: {
@@ -68,18 +79,21 @@ def run(root: Path, now: datetime, get: sources.Get = sources.http_get) -> list[
     state_path = root / "state" / "portfolio.json"
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
-    board = root / "reports" / "scoreboard.md"
-    board.parent.mkdir(parents=True, exist_ok=True)
-    board.write_text(report.render(root, history))
+    reports = root / "reports"
+    reports.mkdir(parents=True, exist_ok=True)
+    (reports / "scoreboard.md").write_text(report.render(root, history, repo))
+    (reports / "backtest.md").write_text(report.render_backtest(root, history, repo))
+    (reports / "weekly.md").write_text(weekly.render(root, history, repo))
     return problems
 
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--root", type=Path, default=Path("trail"))
+    p.add_argument("--repo", type=Path, default=Path("."), help="code checkout (research/ files)")
     args = p.parse_args()
     try:
-        problems = run(args.root, datetime.now(UTC))
+        problems = run(args.root, datetime.now(UTC), repo=args.repo)
     except ledger.LedgerTampered as e:
         print(f"REFUSING TO RUN: {e}", file=sys.stderr)
         sys.exit(2)
