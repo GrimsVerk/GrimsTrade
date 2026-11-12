@@ -1,7 +1,7 @@
 """The forward-test ledger: append-only JSONL, committed before outcomes exist.
 
 - `ledger/decisions.jsonl`: one line per decision (UTC time, strategy, weights, prices seen,
-  last bar date seen per asset, reason).
+  last bar date seen per asset, reason, commit of the code that decided).
 - `ledger/tries.jsonl`: one line per strategy ever tried, live or dead (for the deflated Sharpe).
 - `ledger/research_tries.jsonl`: every research-lane try ever seen (idea, variant, Sharpe), so none
   can disappear from the count.
@@ -16,6 +16,7 @@ import contextlib
 import functools
 import json
 import math
+import os
 import subprocess
 from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime, timedelta
@@ -70,6 +71,11 @@ def write_decision(
         "data_through": {s: b[-1].date.isoformat() for s, b in seen.items() if b},
         "reason": reason,
     }
+    # Which code decided: the commit the daily job runs (GitHub sets GITHUB_SHA). A strategy can
+    # change under the same name; this is what lets a reader see where its record really starts.
+    code = os.environ.get("GITHUB_SHA")
+    if code:
+        entry["code"] = code
     _append(root / DECISIONS, entry)
     return entry
 

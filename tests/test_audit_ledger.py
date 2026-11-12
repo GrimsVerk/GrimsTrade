@@ -229,13 +229,13 @@ def test_outside_a_git_checkout_the_check_silently_checks_nothing(tmp_path: Path
     assert ledger.check_append_only(path) == 0
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit L7: a decision line does not say which code made it, so a strategy can be "
-    "changed under the same name and keep one unbroken track record (and one try)",
-)
 def test_a_decision_records_the_code_version(repo: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Audit L7 (first half fixed): a decision line did not say which code made it, so a strategy
+    could change under the same name and keep one unbroken track record (and one try)."""
     monkeypatch.setenv("GITHUB_SHA", "8e26333a0000000000000000000000000000beef")
     decide(repo, at(DAY1), "s", {"BTC": 1.0})
-    (row,) = ledger.decisions(repo)
-    assert row["code"] == "8e26333a0000000000000000000000000000beef"
+    monkeypatch.delenv("GITHUB_SHA")
+    decide(repo, at(DAY1 + timedelta(days=1)), "s", {"BTC": 1.0})  # a local run: unknown code
+    first, second = ledger.decisions(repo)
+    assert first["code"] == "8e26333a0000000000000000000000000000beef"
+    assert "code" not in second

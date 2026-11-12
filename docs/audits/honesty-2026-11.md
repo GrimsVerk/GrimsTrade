@@ -94,15 +94,17 @@ unlikely, worth knowing. Each finding names its test in `tests/test_audit_*.py`.
 - **Proposed fix:** the runner prints how many committed versions it verified and refuses a
   non-empty ledger with none.
 
-### L7. A decision does not say which code made it (medium)
+### L7. A decision does not say which code made it (medium) - HALF FIXED in this branch
 
 - **What:** strategy names key the ledger, but a strategy's code or parameters can change under
   the same name. The scoreboard then shows one unbroken track record, and `tries.jsonl` counts one
   try, for what were really two strategies. The daily job runs whatever is on `main` that day.
 - **Evidence:** `tests/test_audit_ledger.py::test_a_decision_records_the_code_version`; the
   first real ledger lines have no code reference.
-- **Proposed fix (small, `ledger.py`):** write the commit SHA of the code (`GITHUB_SHA`) into
-  each decision line. Later: the scoreboard starts a new row when a strategy's code changes.
+- **Fix (done, `ledger.py`):** each new decision line carries `code`, the commit the daily job
+  ran (`GITHUB_SHA`); a local run has no such field. **Still open:** nothing reads it yet. The
+  scoreboard should flag (or start a new row for) a strategy whose own file changed between two
+  of its decisions, and such a change should count as a new try.
 
 ### L8. The daily job can be started from any branch (medium)
 
