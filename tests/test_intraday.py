@@ -63,3 +63,38 @@ def test_collect_isolates_failures(tmp_path: Path) -> None:
     assert report["etf-1h/SPY"].startswith("error")
     assert report["crypto-1h/BTC-USD"].startswith("error")
     assert (tmp_path / "funding" / "PF_ETHUSD.csv").exists()
+
+
+def test_a_changed_stored_row_is_logged_once_and_kept_as_stored(tmp_path: Path) -> None:
+    path, log = tmp_path / "SPY.csv", tmp_path / "revisions.jsonl"
+    later = datetime(2026, 11, 12, 16, 0, tzinfo=UTC)
+    rows = yahoo_1h("SPY", lambda url: yahoo_body(3))
+    assert append_new(path, BAR_FIELDS, rows, "open_time", later, log, "etf-1h/SPY") == 2
+    stored = path.read_text()
+    assert not log.exists()  # same values again: nothing to log
+
+    changed = [dict(r, close="99.0") if r["open_time"].endswith("12:00:00Z") else r for r in rows]
+    for _ in range(2):  # the same difference seen twice is logged once
+        assert append_new(path, BAR_FIELDS, changed, "open_time", later, log, "etf-1h/SPY") == 0
+    assert path.read_text() == stored
+    [line] = log.read_text().splitlines()
+    entry = json.loads(line)
+    assert entry["series"] == "etf-1h/SPY" and entry["key"] == "2026-11-12T12:00:00Z"
+    assert entry["stored"] == {"close": "1.0"} and entry["source_now"] == {"close": "99.0"}
+    assert entry["seen_at"] == "2026-11-12T16:00:00Z"
+
+
+def test_collect_rechecks_the_last_coinbase_day(tmp_path: Path) -> None:
+    urls: list[str] = []
+
+    def get(url: str) -> bytes:
+        urls.append(url)
+        if "coinbase" in url:
+            return json.dumps([[T0, 1.0, 2.0, 1.5, 1.5, 1.0]]).encode()
+        raise OSError("offline")
+
+    collect(tmp_path, NOW, get)
+    urls.clear()
+    collect(tmp_path, NOW, get)
+    first = next(u for u in urls if "BTC-USD" in u)
+    assert "start=2026-11-11T13:00:00Z" in first  # last stored 12:00, +1 h, -24 h
