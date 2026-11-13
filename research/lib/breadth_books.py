@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import breadth_xs as xs  # noqa: E402
 import macro  # noqa: E402
 import stats  # noqa: E402
+from breadth_xs import lag, logret, roll_corr, roll_mean, roll_median, roll_std  # noqa: E402
 from harness import TRAIN_END, TRAIN_LAST_BAR, TRIES  # noqa: E402
 
 EPOCH = date(1970, 1, 1)
@@ -35,69 +36,6 @@ def derived() -> Path:
     d = macro.cache_root() / "derived" / "breadth-1"
     d.mkdir(parents=True, exist_ok=True)
     return d
-
-
-# ---------------------------------------------------------------- rolling helpers (NaN-aware)
-
-
-def roll_mean(a: np.ndarray, w: int, min_frac: float = 0.8) -> np.ndarray:
-    """Mean of the last `w` rows including the current one; NaN if fewer than min_frac*w known."""
-    ok = np.isfinite(a)
-    x = np.where(ok, a, 0.0)
-    cs = np.cumsum(np.vstack([np.zeros((1, a.shape[1])), x]), axis=0)
-    cn = np.cumsum(np.vstack([np.zeros((1, a.shape[1])), ok]), axis=0)
-    s = cs[w:] - cs[:-w]
-    n = cn[w:] - cn[:-w]
-    out = np.full(a.shape, np.nan)
-    with np.errstate(invalid="ignore", divide="ignore"):
-        out[w - 1 :] = np.where(n >= min_frac * w, s / n, np.nan)
-    return out
-
-
-def roll_std(a: np.ndarray, w: int) -> np.ndarray:
-    m = roll_mean(a, w)
-    m2 = roll_mean(a * a, w)
-    return np.sqrt(np.maximum(m2 - m * m, 0.0))
-
-
-def roll_corr(a: np.ndarray, b: np.ndarray, w: int) -> np.ndarray:
-    """Rolling correlation of each column of `a` with the vector `b` (same rows)."""
-    bb = np.broadcast_to(b[:, None], a.shape)
-    both = np.isfinite(a) & np.isfinite(bb)
-    a2, b2 = np.where(both, a, np.nan), np.where(both, bb, np.nan)
-    ma, mb = roll_mean(a2, w), roll_mean(b2, w)
-    cov = roll_mean(a2 * b2, w) - ma * mb
-    va, vb = roll_mean(a2 * a2, w) - ma * ma, roll_mean(b2 * b2, w) - mb * mb
-    with np.errstate(invalid="ignore", divide="ignore"):
-        return cov / np.sqrt(np.maximum(va, 1e-30) * np.maximum(vb, 1e-30))
-
-
-def roll_median(a: np.ndarray, w: int, chunk: int = 64) -> np.ndarray:
-    out = np.full(a.shape, np.nan, dtype=np.float32)
-    for j in range(0, a.shape[1], chunk):
-        v = np.lib.stride_tricks.sliding_window_view(a[:, j : j + chunk].astype(np.float32), w, 0)
-        n = np.isfinite(v).sum(-1)
-        with np.errstate(all="ignore"):
-            import warnings
-
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                med = np.nanmedian(v, axis=-1)
-        out[w - 1 :, j : j + chunk] = np.where(n >= 0.8 * w, med, np.nan)
-    return out.astype(float)
-
-
-def lag(a: np.ndarray, k: int) -> np.ndarray:
-    out = np.full(a.shape, np.nan)
-    if k < a.shape[0]:
-        out[k:] = a[:-k] if k else a
-    return out
-
-
-def logret(px: np.ndarray, a: int, b: int) -> np.ndarray:
-    """log(px[t - b] / px[t - a]) for every row t."""
-    with np.errstate(invalid="ignore", divide="ignore"):
-        return np.log(lag(px, b) / lag(px, a))
 
 
 # ---------------------------------------------------------------- Book A: Coin Metrics
@@ -121,8 +59,11 @@ def cm_panel() -> dict[str, np.ndarray]:
             i = (d - CM_START).days
             if not 0 <= i < n_days:
                 continue
-            for k, key in (("px", "PriceUSD"), ("vol", "volume_reported_spot_usd_1d"),
-                           ("addr", "AdrActCnt")):  # fmt: skip
+            for k, key in (
+                ("px", "PriceUSD"),
+                ("vol", "volume_reported_spot_usd_1d"),
+                ("addr", "AdrActCnt"),
+            ):
                 if r.get(key) is not None:
                     m[k][i] = float(r[key])
             mc = r.get("CapMrktEstUSD") or r.get("CapMrktCurUSD")
@@ -312,7 +253,7 @@ def trad_book() -> Book:
         for b in bars:
             raw[(b.date - day0).days, j] = b.close
     hist_d = history_days(raw)
-    last_real = np.where(np.isfinite(raw), np.arange(n_days)[:, None], -10**9)
+    last_real = np.where(np.isfinite(raw), np.arange(n_days)[:, None], -(10**9))
     np.maximum.accumulate(last_real, axis=0, out=last_real)
     stale = (np.arange(n_days)[:, None] - last_real) > 5
     px = xs.ffill(raw)
@@ -337,8 +278,10 @@ def trad_book() -> Book:
             return np.clip(logret(px, a, b) / (vol * np.sqrt((a - b) / 365)), -5, 5)
 
     with np.errstate(invalid="ignore", divide="ignore"):
-        hi = np.fmax.reduce(np.lib.stride_tricks.sliding_window_view(
-            np.nan_to_num(px, nan=-np.inf), 365, 0), axis=-1)  # fmt: skip
+        hi = np.fmax.reduce(
+            np.lib.stride_tricks.sliding_window_view(np.nan_to_num(px, nan=-np.inf), 365, 0),
+            axis=-1,
+        )
         high = np.full_like(px, np.nan)
         high[364:] = np.log(px[364:] / hi)
         sig = {
@@ -352,8 +295,22 @@ def trad_book() -> Book:
         up = logret(px, 365, 0) > 0
     elig = (hist_d >= 365) & ~stale & np.isfinite(px)
     cost = np.array([0.003 if UNIVERSE[s] == CRYPTO else 0.0002 for s in syms])
-    return Book("trad", day0, syms, px, elig, up, sig, cost, 3, 1, 0, (0, 1, 2, 3),
-                tuple(ERAS_TRAD), "S&P 500 index and SPY both in after 1993")  # fmt: skip
+    return Book(
+        "trad",
+        day0,
+        syms,
+        px,
+        elig,
+        up,
+        sig,
+        cost,
+        3,
+        1,
+        0,
+        (0, 1, 2, 3),
+        tuple(ERAS_TRAD),
+        "S&P 500 index and SPY both in after 1993",
+    )
 
 
 # ---------------------------------------------------------------- measures and report
@@ -412,23 +369,40 @@ def run(book: Book, log: bool) -> list[dict[str, object]]:
             if g_ts > 0 and g_ts != d_ts:
                 be = c0 * g_ts / (g_ts - d_ts) if d_ts < g_ts else float("inf")
             passed = (
-                ic.t >= 3 and np.sign(ic.first) == np.sign(ic.second) == 1
-                and d_ts > 0 and p_ts < 0.10 and ahead * 2 > n_eras and d_ew > 0
+                ic.t >= 3
+                and np.sign(ic.first) == np.sign(ic.second) == 1
+                and d_ts > 0
+                and p_ts < 0.10
+                and ahead * 2 > n_eras
+                and d_ew > 0
                 and mdd(tl.top_ts) <= mdd(tl.ts) + 0.05
-            )  # fmt: skip
+            )
             weak = ic.t >= 3 and g_ts > 0 and not passed
             first_date = book.day0 + timedelta(days=tl.first)
             row: dict[str, object] = {
-                "book": book.name, "freq": freq, "signal": name, "ic": ic, "first": first_date,
-                "sh_ew": stats.sharpe(tl.ew), "sh_top": stats.sharpe(tl.top),
-                "sh_ts": stats.sharpe(tl.ts), "sh_top_ts": stats.sharpe(tl.top_ts),
-                "d_ts": d_ts, "p_ts": p_ts, "d_ew": d_ew, "p_ew": p_ew, "g_ts": g_ts,
+                "book": book.name,
+                "freq": freq,
+                "signal": name,
+                "ic": ic,
+                "first": first_date,
+                "sh_ew": stats.sharpe(tl.ew),
+                "sh_top": stats.sharpe(tl.top),
+                "sh_ts": stats.sharpe(tl.ts),
+                "sh_top_ts": stats.sharpe(tl.top_ts),
+                "d_ts": d_ts,
+                "p_ts": p_ts,
+                "d_ew": d_ew,
+                "p_ew": p_ew,
+                "g_ts": g_ts,
                 "g_ew": stats.sharpe(gross.top) - stats.sharpe(gross.ew),
-                "ahead": f"{ahead}/{n_eras}", "mdd_ts": mdd(tl.ts), "mdd_top_ts": mdd(tl.top_ts),
-                "turn": tl.turnover["top_ts"], "be": be,
+                "ahead": f"{ahead}/{n_eras}",
+                "mdd_ts": mdd(tl.ts),
+                "mdd_top_ts": mdd(tl.top_ts),
+                "turn": tl.turnover["top_ts"],
+                "be": be,
                 "verdict": "PASS" if passed else ("weak-but-real" if weak else "no"),
                 "cagr_top_ts": stats.cagr(tl.top_ts),
-            }  # fmt: skip
+            }
             rows.append(row)
             print(fmt_row(row), flush=True)
             if log:
@@ -436,12 +410,23 @@ def run(book: Book, log: bool) -> list[dict[str, object]]:
                     key = f"{freq}-{b_name}-{tl.first}"
                     if key not in base_logged:
                         base_logged.add(key)
-                        log_row(f"breadth-1-{book.name}", f"{freq} {b_name.upper()} baseline",
-                                "baseline", first_date, r, tl.turnover[b_name])  # fmt: skip
-                log_row(f"breadth-1-{book.name}",
-                        f"{freq} {name} TOP-TS (IC {ic.mean:+.3f} t {ic.t:+.1f}, "
-                        f"vs TS {d_ts:+.2f} p {p_ts:.2f}) {row['verdict']}",
-                        "variant", first_date, tl.top_ts, tl.turnover["top_ts"])  # fmt: skip
+                        log_row(
+                            f"breadth-1-{book.name}",
+                            f"{freq} {b_name.upper()} baseline",
+                            "baseline",
+                            first_date,
+                            r,
+                            tl.turnover[b_name],
+                        )
+                log_row(
+                    f"breadth-1-{book.name}",
+                    f"{freq} {name} TOP-TS (IC {ic.mean:+.3f} t {ic.t:+.1f}, "
+                    f"vs TS {d_ts:+.2f} p {p_ts:.2f}) {row['verdict']}",
+                    "variant",
+                    first_date,
+                    tl.top_ts,
+                    tl.turnover["top_ts"],
+                )
     return rows
 
 
@@ -470,7 +455,8 @@ def fmt_row(r: dict[str, object]) -> str:
 HEADER = (
     "| Freq | Signal | IC | t | IC>0 | IC halves | Assets | EW | TOP | TS | TOP-TS | "
     "TOP-TS - TS (p) | gross | TOP-EW gross | Eras ahead | Max DD TS / TOP-TS | Turn/yr | "
-    "Verdict |\n|---|---|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|---:|---|"
+    "Verdict |\n|---|---|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|"
+    "---|---|---:|---|"
 )
 
 BOOKS: dict[str, Callable[[], Book]] = {"cm": cm_book, "binance": binance_book, "trad": trad_book}
@@ -482,16 +468,30 @@ def main() -> None:
     book = BOOKS[which]()
     n = (book.elig & np.isfinite(book.px)).sum(1)
     s0 = start_day(book)
-    print(f"book {which}: {len(book.names)} assets ever, start {book.day0 + timedelta(s0)}, "
-          f"eligible per day median {np.median(n[s0:]):.0f} max {n.max()}", flush=True)  # fmt: skip
+    print(
+        f"book {which}: {len(book.names)} assets ever, start {book.day0 + timedelta(s0)}, "
+        f"eligible per day median {np.median(n[s0:]):.0f} max {n.max()}",
+        flush=True,
+    )
     if "--panel" in sys.argv:  # coverage only: no measure is computed
         return
     print(HEADER)
     rows = run(book, log)
     out = derived() / f"results-{which}.json"
-    out.write_text(json.dumps([{k: (v.__dict__ if isinstance(v, xs.IC) else str(v)
-                                    if isinstance(v, date) else v) for k, v in r.items()}
-                               for r in rows], default=float))  # fmt: skip
+    out.write_text(
+        json.dumps(
+            [
+                {
+                    k: (
+                        v.__dict__ if isinstance(v, xs.IC) else str(v) if isinstance(v, date) else v
+                    )
+                    for k, v in r.items()
+                }
+                for r in rows
+            ],
+            default=float,
+        )
+    )
 
 
 if __name__ == "__main__":

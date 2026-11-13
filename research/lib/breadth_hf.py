@@ -117,8 +117,9 @@ def spearman_nan(a: np.ndarray, b: np.ndarray) -> tuple[float, int]:
     return xs.spearman(a[m], b[m]), int(m.sum())
 
 
-def walk_forward(f: dict[str, np.ndarray], y24: np.ndarray, vol: np.ndarray,
-                 t: np.ndarray) -> np.ndarray:  # fmt: skip
+def walk_forward(
+    f: dict[str, np.ndarray], y24: np.ndarray, vol: np.ndarray, t: np.ndarray
+) -> np.ndarray:
     """Forecast of the next-24h log return; OLS refitted each 1 January on earlier hours."""
     x = np.column_stack([f[k] for k in FEATURES])
     x = np.where(np.isfinite(x), x, 0.0)  # hour_mean is 0 (no seasonal view) in year one
@@ -197,14 +198,19 @@ def main() -> None:
         for k in FEATURES:
             ic1, n1 = spearman_nan(f[k], y1)
             ic24, nd = spearman_nan(f[k][midnight], y24[midnight])
-            print(f"| {name} | `{k}` | {ic1:+.4f} | {ic24:+.3f} | {nd} | {1.96 / np.sqrt(nd):.3f}"
-                  f" | {1.96 / np.sqrt(n1):.4f} |", flush=True)  # fmt: skip
+            print(
+                f"| {name} | `{k}` | {ic1:+.4f} | {ic24:+.3f} | {nd} | {1.96 / np.sqrt(nd):.3f}"
+                f" | {1.96 / np.sqrt(n1):.4f} |",
+                flush=True,
+            )
             if log:
                 first = datetime.fromtimestamp(int(h.t[0]), UTC).date()
                 with TRIES.open("a") as fh:
-                    fh.write(f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | breadth-1-hf | {name} {k} "
-                             f"(IC 1h {ic1:+.4f}, 24h {ic24:+.3f}) | screen | train | {first} | "
-                             f"{TRAIN_END} | - | - | - | - |\n")  # fmt: skip
+                    fh.write(
+                        f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | breadth-1-hf | {name} {k} "
+                        f"(IC 1h {ic1:+.4f}, 24h {ic24:+.3f}) | screen | train | {first} | "
+                        f"{TRAIN_END} | - | - | - | - |\n"
+                    )
         fc = walk_forward(f, y24, vol, h.t)
         start = int(np.argmax(np.isfinite(fc)))
         sl = slice(start, None)
@@ -212,8 +218,10 @@ def main() -> None:
         res[name] = (h, f, y1, fc, ts, start)
         del sl
     print("\n## Rules (daily Sharpe, from the first walk-forward fit)\n")
-    print("| Series | From | Cost | Buy-hold | tsmom12 | hf-band | hf-band-ts | band - ts (p) | "
-          "band-ts - ts (p) | Eras ahead (band-ts) | Trades/yr band | Max DD ts / band-ts |")
+    print(
+        "| Series | From | Cost | Buy-hold | tsmom12 | hf-band | hf-band-ts | band - ts (p) | "
+        "band-ts - ts (p) | Eras ahead (band-ts) | Trades/yr band | Max DD ts / band-ts |"
+    )
     print("|---|---|---:|---:|---:|---:|---:|---:|---:|---|---:|---|")
     for cost in (0.003, 0.001):
         for name, (h, _f, y1, fc, ts, s) in res.items():
@@ -229,21 +237,36 @@ def main() -> None:
             yrs = len(bh) / 365
             trades = np.abs(np.diff(pos)).sum() / yrs
             first = datetime.fromtimestamp(int(t[0]), UTC).date()
-            print(f"| {name} | {first} | {cost * 1e4:.0f} bps | {stats.sharpe(bh):.2f} | "
-                  f"{stats.sharpe(tsr):.2f} | {stats.sharpe(band):.2f} | "
-                  f"{stats.sharpe(band_ts):.2f} | {d1:+.2f} ({p1:.2f}) | {d2:+.2f} ({p2:.2f}) | "
-                  f"{ah}/{ne} | {trades:.0f} | {stats.max_drawdown(tsr):.0%} / "
-                  f"{stats.max_drawdown(band_ts):.0%} |", flush=True)  # fmt: skip
+            print(
+                f"| {name} | {first} | {cost * 1e4:.0f} bps | {stats.sharpe(bh):.2f} | "
+                f"{stats.sharpe(tsr):.2f} | {stats.sharpe(band):.2f} | "
+                f"{stats.sharpe(band_ts):.2f} | {d1:+.2f} ({p1:.2f}) | {d2:+.2f} ({p2:.2f}) | "
+                f"{ah}/{ne} | {trades:.0f} | {stats.max_drawdown(tsr):.0%} / "
+                f"{stats.max_drawdown(band_ts):.0%} |",
+                flush=True,
+            )
             if log:
                 kind = "variant" if cost == 0.003 else "robustness"
                 c = f"{cost * 1e4:.0f}bps"
                 if cost == 0.003:
                     log_row("breadth-1-hf", f"{name} buy-hold", "baseline", first, bh, 0.0)
                     log_row("breadth-1-hf", f"{name} tsmom12 daily", "baseline", first, tsr, 0.0)
-                log_row("breadth-1-hf", f"{name} hf-band {c} (vs ts {d1:+.2f} p {p1:.2f})", kind,
-                        first, band, trades)  # fmt: skip
-                log_row("breadth-1-hf", f"{name} hf-band-ts {c} (vs ts {d2:+.2f} p {p2:.2f})",
-                        kind, first, band_ts, trades)  # fmt: skip
+                log_row(
+                    "breadth-1-hf",
+                    f"{name} hf-band {c} (vs ts {d1:+.2f} p {p1:.2f})",
+                    kind,
+                    first,
+                    band,
+                    trades,
+                )
+                log_row(
+                    "breadth-1-hf",
+                    f"{name} hf-band-ts {c} (vs ts {d2:+.2f} p {p2:.2f})",
+                    kind,
+                    first,
+                    band_ts,
+                    trades,
+                )
     xs_hourly_screen(log)
 
 
@@ -260,11 +283,15 @@ def xs_hourly_screen(log: bool) -> None:
         lc[i[k], j] = np.log(b["c"][k])
     nxt = np.full_like(lc, np.nan)
     nxt[:-1] = lc[1:] - lc[:-1]
-    sigs = {"rev_1h": np.r_[np.full((1, lc.shape[1]), np.nan), -(lc[1:] - lc[:-1])],
-            "mom_24h": np.r_[np.full((24, lc.shape[1]), np.nan), lc[24:] - lc[:-24]]}  # fmt: skip
+    sigs = {
+        "rev_1h": np.r_[np.full((1, lc.shape[1]), np.nan), -(lc[1:] - lc[:-1])],
+        "mom_24h": np.r_[np.full((24, lc.shape[1]), np.nan), lc[24:] - lc[:-24]],
+    }
     print("\n## Hourly cross-section, 30 Binance pairs, 2020-2025 (IC only)\n")
-    print("| Signal | mean IC | t | hours | cross-sectional sd of next hour | top-third renewed "
-          "per hour | break-even IC at 30 bps |")
+    print(
+        "| Signal | mean IC | t | hours | cross-sectional sd of next hour | top-third renewed "
+        "per hour | break-even IC at 30 bps |"
+    )
     print("|---|---:|---:|---:|---:|---:|---:|")
     rows = np.arange(0, n - 1, 1)
     for name, s in sigs.items():
@@ -285,13 +312,18 @@ def xs_hourly_screen(log: bool) -> None:
         # top third beats the average by ~1.09 cross-sectional sd x IC; costs 2 x 30 bps x renew
         be = 2 * 0.003 * rn / (1.09 * sd)
         tstat = x.mean() / x.std(ddof=1) * np.sqrt(len(x))
-        print(f"| `{name}` | {x.mean():+.4f} | {tstat:+.1f} | {len(x)} | {sd:.4f} | {rn:.0%} | "
-              f"{be:.2f} |", flush=True)  # fmt: skip
+        print(
+            f"| `{name}` | {x.mean():+.4f} | {tstat:+.1f} | {len(x)} | {sd:.4f} | {rn:.0%} | "
+            f"{be:.2f} |",
+            flush=True,
+        )
         if log:
             with TRIES.open("a") as fh:
-                fh.write(f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | breadth-1-binance | hourly "
-                         f"{name} (IC {x.mean():+.4f} t {tstat:+.1f}, break-even {be:.2f}) | "
-                         f"screen | train | 2020-01-01 | {TRAIN_END} | - | - | - | - |\n")  # fmt: skip
+                fh.write(
+                    f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | breadth-1-binance | hourly "
+                    f"{name} (IC {x.mean():+.4f} t {tstat:+.1f}, break-even {be:.2f}) | "
+                    f"screen | train | 2020-01-01 | {TRAIN_END} | - | - | - | - |\n"
+                )
 
 
 if __name__ == "__main__":

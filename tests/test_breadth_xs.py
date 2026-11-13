@@ -5,11 +5,12 @@ charges costs the way the card says.
 - A signal that knows the coming holding return has IC 1; that return lagged by one holding
   period (what a real signal could know) does not.
 - Costs: entering a full position costs exactly the cost per side once.
-- Rolling helpers of breadth_books use only the current and earlier rows.
+- Rolling helpers (breadth_xs, used by breadth_books) use only the current and earlier rows.
 """
 
 from __future__ import annotations
 
+import importlib
 import sys
 from pathlib import Path
 from typing import Any
@@ -18,9 +19,8 @@ import numpy as np
 
 LIB = Path(__file__).resolve().parents[1] / "research" / "lib"
 sys.path.insert(0, str(LIB))
-import breadth_xs as xs  # noqa: E402
-
-bb: Any = __import__("breadth_books")
+xs: Any = importlib.import_module("breadth_xs")  # no harness import: it changes global state
+bb = xs
 
 
 def _prices(days: int, n: int, seed: int = 0) -> np.ndarray:
@@ -64,6 +64,7 @@ def test_rolling_helpers_do_not_look_ahead() -> None:
     a = _prices(200, 3)
     b = a.copy()
     b[120:] = 1e6  # scramble the future
-    for f in (lambda x: bb.roll_mean(x, 30), lambda x: bb.roll_std(x, 30),
-              lambda x: bb.roll_median(x, 30), lambda x: bb.logret(x, 28, 0)):  # fmt: skip
-        assert np.allclose(f(a)[:120], f(b)[:120], equal_nan=True)
+    for name, args in (("roll_mean", (30,)), ("roll_std", (30,)), ("roll_median", (30,)),
+                       ("logret", (28, 0))):  # fmt: skip
+        f = getattr(bb, name)
+        assert np.allclose(f(a, *args)[:120], f(b, *args)[:120], equal_nan=True)

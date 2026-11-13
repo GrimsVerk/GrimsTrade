@@ -26,7 +26,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import macro  # noqa: E402
 from harness import TRAIN_LAST_BAR  # noqa: E402
 
-CUT = int(datetime.combine(TRAIN_LAST_BAR + timedelta(days=1), datetime.min.time(), UTC).timestamp())
+CUT = int(
+    datetime.combine(TRAIN_LAST_BAR + timedelta(days=1), datetime.min.time(), UTC).timestamp()
+)
 
 
 def out_dir() -> Path:
@@ -35,8 +37,15 @@ def out_dir() -> Path:
     return d
 
 
-def to_hourly(ts: np.ndarray, o: np.ndarray, h: np.ndarray, lo: np.ndarray, c: np.ndarray,
-              v: np.ndarray, q: np.ndarray) -> dict[str, np.ndarray]:  # fmt: skip
+def to_hourly(
+    ts: np.ndarray,
+    o: np.ndarray,
+    h: np.ndarray,
+    lo: np.ndarray,
+    c: np.ndarray,
+    v: np.ndarray,
+    q: np.ndarray,
+) -> dict[str, np.ndarray]:
     """Minute rows (any order, duplicates allowed) -> hourly OHLCV, hours with data only."""
     keep = ts < CUT
     ts, o, h, lo, c, v, q = (x[keep] for x in (ts, o, h, lo, c, v, q))

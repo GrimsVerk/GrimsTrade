@@ -765,3 +765,57 @@ Never edit or delete a row.
 | 2026-11-13 07:55 | breadth-1-cm | daily vol_growth TOP-TS (IC -0.024 t -7.0, vs TS -0.05 p 0.70) no | variant | train | 2019-04-02 | 2025-11-09 | 0.71 | +397.2% | 72.8% | 39.05 |
 | 2026-11-13 07:55 | breadth-1-cm | daily low_vol TOP-TS (IC +0.057 t +11.5, vs TS -0.03 p 0.59) weak-but-real | variant | train | 2019-04-02 | 2025-11-09 | 0.73 | +364.5% | 60.8% | 16.93 |
 | 2026-11-13 07:55 | breadth-1-cm | daily addr_growth TOP-TS (IC -0.000 t -0.1, vs TS +0.09 p 0.24) no | variant | train | 2019-04-02 | 2025-11-09 | 0.91 | +1031.8% | 61.3% | 19.03 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp r_1h (IC 1h -0.0869, 24h -0.024) | screen | train | 2011-08-18 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp r_4h (IC 1h -0.0688, 24h -0.031) | screen | train | 2011-08-18 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp r_24h (IC 1h -0.0153, 24h -0.027) | screen | train | 2011-08-18 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp r_168h (IC 1h +0.0145, 24h +0.035) | screen | train | 2011-08-18 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp vol_shock (IC 1h +0.0147, 24h +0.030) | screen | train | 2011-08-18 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp volu_shock (IC 1h +0.0219, 24h +0.050) | screen | train | 2011-08-18 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp hour_mean (IC 1h +0.0002, 24h -0.014) | screen | train | 2011-08-18 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance r_1h (IC 1h -0.0716, 24h -0.023) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance r_4h (IC 1h -0.0606, 24h -0.040) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance r_24h (IC 1h -0.0242, 24h -0.055) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance r_168h (IC 1h +0.0088, 24h +0.003) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance vol_shock (IC 1h +0.0099, 24h +0.041) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance volu_shock (IC 1h +0.0145, 24h +0.030) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance hour_mean (IC 1h +0.0095, 24h +0.001) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp r_1h (IC 1h -0.0628, 24h -0.039) | screen | train | 2017-08-16 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp r_4h (IC 1h -0.0492, 24h -0.047) | screen | train | 2017-08-16 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp r_24h (IC 1h -0.0261, 24h -0.079) | screen | train | 2017-08-16 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp r_168h (IC 1h +0.0088, 24h +0.006) | screen | train | 2017-08-16 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp vol_shock (IC 1h +0.0154, 24h +0.052) | screen | train | 2017-08-16 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp volu_shock (IC 1h +0.0130, 24h +0.032) | screen | train | 2017-08-16 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp hour_mean (IC 1h +0.0067, 24h +0.053) | screen | train | 2017-08-16 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance r_1h (IC 1h -0.0593, 24h -0.045) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance r_4h (IC 1h -0.0506, 24h -0.049) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance r_24h (IC 1h -0.0252, 24h -0.075) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance r_168h (IC 1h +0.0089, 24h +0.006) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance vol_shock (IC 1h +0.0159, 24h +0.053) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance volu_shock (IC 1h +0.0170, 24h +0.038) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance hour_mean (IC 1h +0.0089, 24h +0.053) | screen | train | 2017-08-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp buy-hold | baseline | train | 2014-01-01 | 2025-11-09 | 0.95 | +14025.6% | 83.3% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp tsmom12 daily | baseline | train | 2014-01-01 | 2025-11-09 | 0.99 | +14354.8% | 80.9% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp hf-band 30bps (vs ts -0.14 p 0.80) | variant | train | 2014-01-01 | 2025-11-09 | 0.85 | +5650.5% | 87.0% | 19.55 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp hf-band-ts 30bps (vs ts -0.07 p 0.79) | variant | train | 2014-01-01 | 2025-11-09 | 0.92 | +7110.7% | 87.0% | 19.55 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance buy-hold | baseline | train | 2020-01-01 | 2025-11-09 | 1.05 | +1354.8% | 76.5% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance tsmom12 daily | baseline | train | 2020-01-01 | 2025-11-09 | 1.16 | +1679.2% | 55.1% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance hf-band 30bps (vs ts -0.26 p 0.83) | variant | train | 2020-01-01 | 2025-11-09 | 0.91 | +661.7% | 74.9% | 15.18 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance hf-band-ts 30bps (vs ts -0.04 p 0.63) | variant | train | 2020-01-01 | 2025-11-09 | 1.12 | +1062.3% | 45.2% | 15.18 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp buy-hold | baseline | train | 2020-01-01 | 2025-11-09 | 1.10 | +2681.8% | 79.3% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp tsmom12 daily | baseline | train | 2020-01-01 | 2025-11-09 | 0.92 | +896.7% | 72.4% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp hf-band 30bps (vs ts -0.53 p 0.97) | variant | train | 2020-01-01 | 2025-11-09 | 0.38 | +4.0% | 82.4% | 54.41 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp hf-band-ts 30bps (vs ts -0.41 p 0.99) | variant | train | 2020-01-01 | 2025-11-09 | 0.50 | +95.1% | 68.3% | 54.41 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance buy-hold | baseline | train | 2020-01-01 | 2025-11-09 | 1.10 | +2672.3% | 79.3% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance tsmom12 daily | baseline | train | 2020-01-01 | 2025-11-09 | 0.93 | +954.8% | 70.8% | 0.00 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance hf-band 30bps (vs ts -0.34 p 0.85) | variant | train | 2020-01-01 | 2025-11-09 | 0.59 | +174.1% | 82.4% | 41.45 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance hf-band-ts 30bps (vs ts -0.31 p 0.93) | variant | train | 2020-01-01 | 2025-11-09 | 0.62 | +204.7% | 62.0% | 41.45 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp hf-band 10bps (vs ts -0.08 p 0.69) | robustness | train | 2014-01-01 | 2025-11-09 | 0.92 | +9072.7% | 85.8% | 19.55 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-bitstamp hf-band-ts 10bps (vs ts -0.02 p 0.61) | robustness | train | 2014-01-01 | 2025-11-09 | 0.98 | +10687.3% | 85.5% | 19.55 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance hf-band 10bps (vs ts -0.21 p 0.79) | robustness | train | 2020-01-01 | 2025-11-09 | 0.96 | +810.4% | 73.5% | 15.18 |
+| 2026-11-13 07:57 | breadth-1-hf | btc-binance hf-band-ts 10bps (vs ts +0.00 p 0.53) | robustness | train | 2020-01-01 | 2025-11-09 | 1.18 | +1267.2% | 44.1% | 15.18 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp hf-band 10bps (vs ts -0.40 p 0.93) | robustness | train | 2020-01-01 | 2025-11-09 | 0.53 | +97.1% | 76.8% | 54.41 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-bitstamp hf-band-ts 10bps (vs ts -0.30 p 0.96) | robustness | train | 2020-01-01 | 2025-11-09 | 0.63 | +212.5% | 65.8% | 54.41 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance hf-band 10bps (vs ts -0.23 p 0.77) | robustness | train | 2020-01-01 | 2025-11-09 | 0.71 | +346.0% | 78.4% | 41.45 |
+| 2026-11-13 07:57 | breadth-1-hf | eth-binance hf-band-ts 10bps (vs ts -0.22 p 0.85) | robustness | train | 2020-01-01 | 2025-11-09 | 0.73 | +339.7% | 59.2% | 41.45 |
+| 2026-11-13 07:57 | breadth-1-binance | hourly rev_1h (IC +0.0612 t +29.7, break-even 0.58) | screen | train | 2020-01-01 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:57 | breadth-1-binance | hourly mom_24h (IC -0.0366 t -17.1, break-even 0.20) | screen | train | 2020-01-01 | 2025-11-09 | - | - | - | - |
