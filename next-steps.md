@@ -1,5 +1,14 @@
 # Next steps
 
+## Invest 1 (research run, branch `invest-1`, started 2026-11-13 ~08:20 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-invest-1.md`. Question: which slow signals (CAPE, excess
+CAPE yield, term spread, real rates, inflation, trend, cross-asset momentum) improve a monthly
+stock/bond/cash allocation over 60/40 and the trend rule, 1927-1989 train, 1990-2025 out of
+sample? Card and results: `research/invest-1.md`.
+
+- Doing: card written; next the monthly data layer, as-of test, runs.
+
 ## Short 1 (done 2026-11-13, branch `short-1`, draft PR #23 -> `breadth-1`)
 
 A short side on Binance USDT perps (30 pairs and BTC/ETH, 2020-2025, 10 bps + every funding
