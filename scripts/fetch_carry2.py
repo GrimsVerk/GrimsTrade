@@ -103,14 +103,15 @@ def save(rel: str, url: str, body: bytes) -> None:
         f.write(json.dumps(line, sort_keys=True) + "\n")
 
 
-def vol_ok(day_ms: np.ndarray, qv: np.ndarray) -> bool:
-    """Did the 30-day median daily quote volume ever reach MIN_VOL (train days only)?"""
+def vol_ok(day_ms: np.ndarray, qv: np.ndarray, from_ms: float = 0) -> bool:
+    """Did the 30-day median daily quote volume reach MIN_VOL on a train day >= from_ms?"""
     k = day_ms < END_MS
-    q = qv[k][np.argsort(day_ms[k])]
+    order = np.argsort(day_ms[k])
+    q, t = qv[k][order], day_ms[k][order]
     if len(q) < 30:
         return False
-    win = np.lib.stride_tricks.sliding_window_view(q, 30)
-    return bool((np.median(win, axis=1) >= MIN_VOL).any())
+    med = np.median(np.lib.stride_tricks.sliding_window_view(q, 30), axis=1)
+    return bool((med[t[29:] >= from_ms] >= MIN_VOL).any())
 
 
 def pool(fn: object, items: list[str], workers: int) -> None:
@@ -317,13 +318,16 @@ def hl_one(coin: str) -> None:
     if not rows:
         return
     a = np.array([(float(r["t"]), float(r["v"]) * float(r["c"])) for r in rows])
-    if not vol_ok(a[:, 0], a[:, 1]):
+    # Hyperliquid's rate limit allows ~30 funding pages a minute, so only what the card can use:
+    # a coin trades only after 365 days of bars, and its 7-day signal needs 7 days before that.
+    first = float(a[:, 0].min())
+    if not vol_ok(a[:, 0], a[:, 1], first + 365 * 86400_000):
         return
     rel = f"{base}/funding.json"
     if (ROOT / rel).exists():
         return
     out: list[dict[str, object]] = []
-    t = START_MS
+    t = int(first) + 350 * 86400_000
     while t < END_MS:
         got = hl_post(
             {"type": "fundingHistory", "coin": coin, "startTime": t, "endTime": END_MS - 1}
