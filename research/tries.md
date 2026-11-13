@@ -824,3 +824,33 @@ Never edit or delete a row.
 | 2026-11-13 07:59 | breadth-1-cm | weekly turnover placebo, 100 random fixed scores (95th pct of TOP-TS - TS +0.10) | control | train | 2019-04-05 | 2025-11-09 | - | - | - | - |
 | 2026-11-13 07:59 | breadth-1-cm | weekly turnover TS held-out | baseline | heldout | 2025-11-16 | 2026-11-09 | 0.31 | +2.1% | 5.0% | 2.21 |
 | 2026-11-13 07:59 | breadth-1-cm | weekly turnover TOP-TS held-out | variant | heldout | 2025-11-16 | 2026-11-09 | 0.61 | +5.1% | 6.1% | 2.21 |
+| 2026-11-13 08:07 | short-1-P30 | tsmom12 spot, spot 30 bps | baseline | train | 2020-02-15 | 2025-11-09 | 1.03 | +1201.3% | 62.2% | 3.30 |
+| 2026-11-13 08:07 | short-1-P30 | tsmom12 perp, perp 10 bps + funding | baseline | train | 2020-02-15 | 2025-11-09 | 0.88 | +665.0% | 62.2% | 3.30 |
+| 2026-11-13 08:07 | short-1-P30 | tsmom12 perp, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | 0.86 | +619.7% | 62.3% | 3.30 |
+| 2026-11-13 08:07 | short-1-P30 | EW perp, perp 10 bps + funding | baseline | train | 2020-02-15 | 2025-11-09 | 0.80 | +498.0% | 81.9% | 1.48 |
+| 2026-11-13 08:07 | short-1-P30 | EW perp, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | 0.79 | +469.3% | 82.1% | 1.48 |
+| 2026-11-13 08:07 | short-1-P30 | tsmom12-ls, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | 0.73 | +343.3% | 62.2% | 6.81 |
+| 2026-11-13 08:07 | short-1-P30 | tsmom12-ls, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | 0.69 | +290.0% | 62.5% | 6.81 |
+| 2026-11-13 08:07 | short-1-P30 | ls-low_vol, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | -0.43 | -72.3% | 81.2% | 9.70 |
+| 2026-11-13 08:07 | short-1-P30 | ls-low_vol, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | -0.52 | -76.8% | 82.9% | 9.70 |
+| 2026-11-13 08:07 | short-1-P30 | ls-size, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | -0.62 | -84.6% | 90.0% | 5.15 |
+| 2026-11-13 08:07 | short-1-P30 | ls-size, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | -0.68 | -86.4% | 90.8% | 5.15 |
+| 2026-11-13 08:07 | short-1-P30 | ls-turnover, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | -0.54 | -73.2% | 87.0% | 9.99 |
+| 2026-11-13 08:07 | short-1-P30 | ls-turnover, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | -0.63 | -77.6% | 88.3% | 9.99 |
+| 2026-11-13 08:07 | short-1-P30 | ls-funding, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | 0.78 | +195.2% | 47.5% | 38.60 |
+| 2026-11-13 08:07 | short-1-P30 | ls-funding, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | 0.49 | +82.2% | 52.0% | 38.60 |
+| 2026-11-13 08:07 | short-1-P30 | ls-premium, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | 0.83 | +229.5% | 49.2% | 39.64 |
+| 2026-11-13 08:07 | short-1-P30 | ls-premium, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | 0.54 | +100.9% | 53.6% | 39.64 |
+| 2026-11-13 08:07 | short-1-P30 | ls-trend, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | 0.24 | +16.5% | 51.3% | 11.00 |
+| 2026-11-13 08:07 | short-1-P30 | ls-trend, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | 0.13 | -3.2% | 55.3% | 11.00 |
+| 2026-11-13 08:07 | short-1-P30 | ls-combo, perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | -0.34 | -64.6% | 79.0% | 16.97 |
+| 2026-11-13 08:07 | short-1-P30 | ls-combo, perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | -0.47 | -72.6% | 81.7% | 16.97 |
+| 2026-11-13 08:07 | short-1-P30 | ls-rev_1 (daily), perp 10 bps + funding | variant | train | 2020-02-15 | 2025-11-09 | -1.97 | -98.2% | 98.2% | 483.24 |
+| 2026-11-13 08:07 | short-1-P30 | ls-rev_1 (daily), perp 30 bps + funding | robustness | train | 2020-02-15 | 2025-11-09 | -5.04 | -100.0% | 100.0% | 483.24 |
+| 2026-11-13 08:07 | short-1-BTC-ETH | tsmom12 spot, spot 30 bps | baseline | train | 2020-01-04 | 2025-11-09 | 1.19 | +1958.5% | 57.9% | 1.62 |
+| 2026-11-13 08:07 | short-1-BTC-ETH | tsmom12 perp, perp 10 bps + funding | baseline | train | 2020-01-04 | 2025-11-09 | 0.98 | +906.2% | 59.2% | 1.62 |
+| 2026-11-13 08:07 | short-1-BTC-ETH | tsmom12 perp, perp 30 bps + funding | robustness | train | 2020-01-04 | 2025-11-09 | 0.97 | +875.3% | 59.2% | 1.62 |
+| 2026-11-13 08:07 | short-1-BTC-ETH | EW perp, perp 10 bps + funding | baseline | train | 2020-01-04 | 2025-11-09 | 0.92 | +901.0% | 77.3% | 0.00 |
+| 2026-11-13 08:07 | short-1-BTC-ETH | EW perp, perp 30 bps + funding | robustness | train | 2020-01-04 | 2025-11-09 | 0.92 | +884.4% | 77.4% | 0.00 |
+| 2026-11-13 08:07 | short-1-BTC-ETH | tsmom12-ls, perp 10 bps + funding | variant | train | 2020-01-04 | 2025-11-09 | 0.76 | +404.3% | 62.9% | 3.24 |
+| 2026-11-13 08:07 | short-1-BTC-ETH | tsmom12-ls, perp 30 bps + funding | robustness | train | 2020-01-04 | 2025-11-09 | 0.74 | +368.6% | 63.4% | 3.24 |
