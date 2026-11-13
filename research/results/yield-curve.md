@@ -97,3 +97,7 @@ Annualised log growth: curve-and +14.6%, curve-alone +14.7%, tsmom12 +16.4%, equ
 
 - `curve`, 1962-1993: 2 spells, 23% of days: 1978-08..1983-07, 1988-12..1991-04
 - `curve`, 1994-2025: 5 spells, 31% of days: 1998-05..1999-07, 2000-02..2001-12, 2005-12..2008-06, 2019-08..2020-08, 2022-04..2025-09
+
+## Verdict (2026-11-13)
+
+Dead, the closest miss of the six. A year out after any inversion: +0.08 over `tsmom12` (p = 0.24), ahead in 4 of 5 eras, worst loss 30% against 37%; but since 2003 it is 1.17 against 1.20, and the sign is wrong on other ETFs, coins and indexes (S&P 500 1962-1993 included). The 1994-2025 gain comes from two calls: out of stocks through the dot-com bust (-2% against -28%) and through the covid crash a few months after the 2019 inversion (+2% against -22%, luck of timing: the curve did not foresee a virus). On the S&P 500 1962-1993 it was behind (-0.17). Five inversion spells since 1994, two before: one or two good calls, not a pattern.

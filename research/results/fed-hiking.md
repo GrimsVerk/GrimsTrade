@@ -97,3 +97,7 @@ Annualised log growth: hike-and +13.3%, hike-alone +13.9%, tsmom12 +16.4%, equal
 
 - `hike`, 1962-1993: 23 spells, 45% of days: 1962-01..1962-05, 1962-06..1962-09, 1962-11..1962-12, 1963-08..1964-02, 1964-12..1965-06, 1965-12..1966-12, 1967-12..1968-10, 1969-01..1969-11, 1971-07..1971-11, 1972-06..1974-01, 1974-04..1974-10, 1975-09..1975-11, 1976-06..1976-10, 1977-05..1980-05, 1980-11..1981-07, 1981-08..1981-10, 1982-05..1982-07, 1983-07..1984-01, 1984-03..1984-10, 1985-12..1986-01, 1987-03..1987-06, 1987-08..1987-11, 1988-05..1989-07
 - `hike`, 1994-2025: 7 spells, 30% of days: 1994-03..1995-08, 1997-04..1997-05, 1997-06..1997-09, 1999-07..2000-11, 2004-07..2006-12, 2017-01..2019-04, 2022-04..2024-01
+
+## Verdict (2026-11-13)
+
+Dead. Out of risk assets while the Fed hikes: Sharpe 1.03 against `tsmom12` 1.05 (1994-2025), 1.09 against 1.20 since 2003. Worst loss 29% against 37%, growth 14% against 18% a year: the gate holds cash about 30% of the time, a risk dial, not an edge. Seven hiking spells since 1994. Out of universe it is mixed: wrong sign on the 8 other ETFs (-0.11) and the Nikkei (-0.16), but it helped on the S&P 500 1962-1993 (+0.27, p = 0.06, 23 hiking spells), the one test with cycles our assets never saw. That era was ruled by inflation and the Fed fighting it; since 1994 hikes have mostly come in good markets. A hint that the gate matters in inflation regimes (2022 fits), not a rule for today's book.

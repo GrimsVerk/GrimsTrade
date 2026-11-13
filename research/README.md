@@ -67,6 +67,13 @@ Both runs:
   alone would give about 0.24. No new rule has shown an edge.
 - **Still clean:** the last 12 months of prices were never looked at, for any idea.
 
+Macro run (macro-1, 2026-11-13; [`macro-1.md`](macro-1.md)): **no macro phase beat the trend
+rule in a way we can trust.** Fed hikes, real rates, the yield curve, money supply, the Fed's
+balance sheet and credit spreads, each as a gate on `tsmom12`: all six cards fail, all behind
+the trend rule since 2003. The Bitcoin halving cycle looks good (+0.15 Sharpe) but rests on three
+winters and a window taken from folklore that saw them. Macro features are kept as regime inputs
+for the RL agent, built look-ahead safe in `lib/macro.py`.
+
 ## Ranking after run 2
 
 For forward paper trading (M3), best first. Run 2 changed nothing here: no ML model comes

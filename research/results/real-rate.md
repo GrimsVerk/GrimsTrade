@@ -97,3 +97,7 @@ Annualised log growth: real-and +12.4%, real-alone +9.6%, tsmom12 +16.4%, equal-
 
 - `real`, 1962-1993: 12 spells, 20% of days: 1973-01..1973-10, 1975-12..1977-03, 1978-03..1979-02, 1980-03..1980-05, 1980-11..1981-11, 1982-02..1982-05, 1982-11..1983-01, 1983-07..1984-02, 1984-05..1984-07, 1986-06..1986-07, 1987-01..1987-02, 1988-07..1989-06
 - `real`, 1994-2025: 14 spells, 31% of days: 1994-03..1995-11, 1997-10..1998-06, 2004-03..2004-05, 2005-05..2005-10, 2005-11..2006-06, 2006-09..2007-10, 2009-02..2009-12, 2011-01..2011-03, 2012-06..2013-03, 2013-04..2013-06, 2015-02..2016-01, 2018-02..2018-04, 2018-12..2019-10, 2022-11..2024-07
+
+## Verdict (2026-11-13)
+
+Dead. Out while the real policy rate rose more than a point in a year: 0.87 against 1.05, behind in 4 of 5 eras, behind equal weight. Inflation-adjusted tightening comes too late (real rates rise fastest when inflation is already falling, after the damage).

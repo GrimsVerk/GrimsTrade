@@ -97,3 +97,7 @@ Annualised log growth: spread-and +14.0%, spread-alone +12.6%, tsmom12 +16.4%, e
 
 - `spread`, 1962-1993: 6 spells, 3% of days: 1988-01..1988-03, 1989-07..1989-08, 1989-11..1990-01, 1990-10..1991-03, 1991-12..1992-01, 1992-09..1992-11
 - `spread`, 1994-2025: 13 spells, 26% of days: 1995-12..1996-02, 1998-09..1999-06, 2000-04..2001-05, 2001-09..2001-12, 2002-07..2003-01, 2007-11..2009-07, 2010-06..2010-12, 2011-08..2012-08, 2015-05..2016-04, 2018-12..2019-03, 2020-03..2020-11, 2022-05..2022-09, 2022-10..2022-11
+
+## Verdict (2026-11-13)
+
+Dead. Out while the Baa spread is half a point above its yearly low: 0.99 against 1.05, 1.06 against 1.20 since 2003, behind in 4 of 5 eras. Thirteen spells, the most of any gate, and no better: spreads widen together with falling prices, so the warning is no earlier than the trend rule's.

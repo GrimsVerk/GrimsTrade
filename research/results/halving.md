@@ -57,3 +57,7 @@ Annualised log growth: halving-and +18.1%, halving-alone +20.6%, tsmom12 +16.4%,
 
 - `halving`, 1962-1993: 0 spells, 0% of days: 
 - `halving`, 1994-2025: 3 spells, 9% of days: 2014-05..2015-05, 2018-01..2019-01, 2021-11..2022-11
+
+## Verdict (2026-11-13)
+
+Fails the card's bar (bar 2: ahead in 3 of 5 eras; the two eras before coins existed cannot differ, which the card should have foreseen) and is not looked at on the held-out year. On the numbers it is the only gate that helps: +0.15 Sharpe over `tsmom12` (p < 0.01), +0.23 since 2003, worst loss 29% against 37%, and the coin set agrees (+0.33). Do not believe it. It rests on three crypto winters, the window comes from folklore written by people who had watched those same three winters, and `halving-shift.md` shows it needs that exact window: six months earlier gives +0.08 (p = 0.21), six months later nothing. The only cycle the folklore did not see starts its window on 2025-10-19, inside the held-out year; it can be judged honestly only by watching it, not by this backtest.

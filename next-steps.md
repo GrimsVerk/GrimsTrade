@@ -39,4 +39,11 @@ Brief: `chief-of-staff/briefs/grimstrade-macro-1.md`. Question: does knowing the
 (Fed policy, real rates, yield curve, money supply, credit spreads, the Bitcoin halving cycle)
 add anything over `tsmom12`? Write-up: `research/macro-1.md`.
 
-- Doing: look-ahead-safe macro layer `research/lib/macro.py` + tests, then cards, then tests.
+- Done: look-ahead-safe macro layer (`research/lib/macro.py`, ALFRED vintages; tests in
+  `tests/test_macro_asof.py`), protocol section "Macro tests", six cards tested on train, all
+  fail their bar (halving: passes on numbers but fails bar 2 and is not believed: three winters,
+  folklore window). Feature skill table, write-up `research/macro-1.md`. Held-out year unused.
+  Draft PR #16 (`macro-1` -> `research-3`), not merged.
+- Doing: nothing.
+- Next: macro features as regime inputs for the RL agent (list in `research/macro-1.md`). The
+  owner may want to read the halving section before anyone trades a "four-year cycle".

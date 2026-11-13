@@ -102,3 +102,7 @@ Annualised log growth: m2-and +14.3%, m2-alone +14.2%, walcl-and +12.8%, tsmom12
 - `m2`, 1994-2025: 6 spells, 15% of days: 1994-02..1994-05, 1994-06..1995-09, 2005-10..2005-12, 2008-09..2008-10, 2010-02..2010-07, 2022-05..2024-10
 - `walcl`, 1962-1993: 0 spells, 0% of days: 
 - `walcl`, 1994-2025: 6 spells, 23% of days: 2009-11..2010-01, 2012-06..2012-11, 2015-11..2016-03, 2016-05..2017-09, 2017-11..2019-12, 2022-11..2025-11
+
+## Verdict (2026-11-13)
+
+Dead. Real M2 below zero: 0.95 against 1.05, behind in every era. The Fed balance sheet shrinking (QT): 0.95, and out of the market through most of 2017-2019 and 2023-2025, which were good years. Six spells each, and real M2 was negative in 2022 only after prices had already fallen.

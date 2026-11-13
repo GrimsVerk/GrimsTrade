@@ -359,3 +359,5 @@ Never edit or delete a row.
 | 2026-11-13 01:44 | credit-spread | spread-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.46 | +595.0% | 49.4% | 1.73 |
 | 2026-11-13 01:44 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
 | 2026-11-13 01:44 | liquidity | m2-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.24 | +133.3% | 57.6% | 1.87 |
+| 2026-11-13 01:45 | halving | halving-and-m12-24 | robustness | train | 1994-02-01 | 2025-11-09 | 1.12 | +13849.3% | 28.9% | 2.46 |
+| 2026-11-13 01:45 | halving | halving-and-m24-36 | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +18007.7% | 39.0% | 2.71 |
