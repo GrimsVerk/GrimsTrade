@@ -1,65 +1,106 @@
 {
   "buy_hold_btc": {
-    "cash": 10000.0,
-    "equity": 10000.0,
-    "fills": 0,
-    "marked_on": "2026-11-12",
-    "positions": {}
+    "cash": 0.0,
+    "equity": 9591.64,
+    "fills": 1,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "BTC": 0.13439188077404252
+    }
   },
   "buy_hold_spy": {
-    "cash": 10000.0,
-    "equity": 10000.0,
-    "fills": 0,
-    "marked_on": "2026-11-12",
-    "positions": {}
+    "cash": 0.0,
+    "equity": 10039.64,
+    "fills": 1,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "SPY": 13.260299555572086
+    }
   },
   "crypto_mean_reversion": {
     "cash": 10000.0,
     "equity": 10000.0,
     "fills": 0,
-    "marked_on": "2026-11-12",
+    "marked_on": "2026-11-13",
     "positions": {}
   },
   "equal_weight": {
+    "cash": 0.0,
+    "equity": 9882.07,
+    "fills": 6,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "BTC": 0.022544305195786016,
+      "ETH": 0.8115394416284025,
+      "GLD": 4.650598043914684,
+      "QQQ": 2.4445170963439424,
+      "SPY": 2.205700326227451,
+      "TLT": 20.489159146498892
+    }
+  },
+  "preset_careful": {
     "cash": 10000.0,
     "equity": 10000.0,
     "fills": 0,
-    "marked_on": "2026-11-12",
+    "marked_on": "2026-11-13",
+    "positions": {}
+  },
+  "preset_middle": {
+    "cash": 10000.0,
+    "equity": 10000.0,
+    "fills": 0,
+    "marked_on": "2026-11-13",
     "positions": {}
   },
   "risk_parity": {
-    "cash": 10000.0,
-    "equity": 10000.0,
-    "fills": 0,
-    "marked_on": "2026-11-12",
-    "positions": {}
+    "cash": 1404.07,
+    "equity": 9972.47,
+    "fills": 4,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "GLD": 4.158642618198013,
+      "QQQ": 2.3858809517307837,
+      "SPY": 2.875049196193596,
+      "TLT": 41.06733674053879
+    }
   },
   "sixty_forty": {
-    "cash": 10000.0,
-    "equity": 10000.0,
-    "fills": 0,
-    "marked_on": "2026-11-12",
-    "positions": {}
+    "cash": 0.0,
+    "equity": 9971.96,
+    "fills": 2,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "SPY": 7.955118909378806,
+      "TLT": 49.53560371517028
+    }
   },
   "ts_momentum": {
-    "cash": 10000.0,
-    "equity": 10000.0,
-    "fills": 0,
-    "marked_on": "2026-11-12",
-    "positions": {}
+    "cash": 6666.0,
+    "equity": 10025.51,
+    "fills": 2,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "QQQ": 2.449827505767277,
+      "SPY": 2.2104919359138666
+    }
   },
   "vol_target_spy": {
-    "cash": 10000.0,
-    "equity": 10000.0,
-    "fills": 0,
-    "marked_on": "2026-11-12",
-    "positions": {}
+    "cash": 5474.73,
+    "equity": 10017.94,
+    "fills": 1,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "SPY": 6.000639849686983
+    }
   },
   "xs_momentum": {
-    "cash": 10000.0,
-    "equity": 10000.0,
-    "fills": 0,
-    "marked_on": "2026-11-12",
-    "positions": {}
+    "cash": 1665.0,
+    "equity": 10069.91,
+    "fills": 2,
+    "marked_on": "2026-11-13",
+    "positions": {
+      "QQQ": 7.349482517301832,
+      "SPY": 4.420983871827733
+    }
   }
 }

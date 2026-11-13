@@ -7,3 +7,5 @@
 {"first_tried":"2026-11-12T01:51:27Z","name":"vol_target_spy","note":"M1 classic: SPY vol targeting 10%, 1-month vol, Harvey et al. 2018"}
 {"first_tried":"2026-11-12T01:51:27Z","name":"risk_parity","note":"M1 classic: inverse-vol risk parity, 3y vol, Asness/Frazzini/Pedersen 2012"}
 {"first_tried":"2026-11-12T01:51:27Z","name":"crypto_mean_reversion","note":"M1 classic: BTC/ETH RSI(2)<10 above 200d SMA, exit >5d SMA, Connors"}
+{"first_tried":"2026-11-13T02:45:03Z","name":"preset_careful","note":"risk preset Careful (risk map, run 3): trend + 20% vol cap, 5% per coin"}
+{"first_tried":"2026-11-13T02:45:03Z","name":"preset_middle","note":"risk preset Middle (risk map, run 3): trend rule, 10% per coin"}
