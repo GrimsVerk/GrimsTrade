@@ -104,3 +104,17 @@ Written before any test (`protocol.md` "Macro tests"). Sharpe on the six assets,
 | liquidity | Macro / money supply | dead (tested) | [card](cards/liquidity.md) | Real M2 below zero: 0.95 / 1.11. Fed balance sheet shrinking: 0.95 / 1.09. [result](results/liquidity.md) |
 | credit-spread | Macro / credit | dead (tested) | [card](cards/credit-spread.md) | Baa spread half a point above its yearly low: 0.99 / 1.06. No earlier than the price trend. [result](results/credit-spread.md) |
 | halving | Crypto cycle | failed bar; not believed | [card](cards/halving.md) | Coins out 18-30 months after a halving: 1.20 / 1.42, but three winters, a window taken from folklore that saw them, and gone when moved six months. [result](results/halving.md), [shifted](results/halving-shift.md) |
+
+## Run rl-1: reinforcement learning (all five failed their bar; none used the held-out year)
+
+Plan and bar in [rl-1.md](rl-1.md), fixed before training. Sharpe on the six assets, out of
+sample 2000-01-07 to 2025-11-09 / since 2003: `tsmom12` 0.99 / 1.19. Ensemble of ten seeds.
+Tables: [results/rl-1.md](results/rl-1.md).
+
+| Idea | Family | Status | Plan | Result |
+|---|---|---|---|---|
+| ppo-lin | RL, linear policy | dead | [rl-1.md](rl-1.md) | 0.63 / 0.75, worst loss 77%; holds a third in coins, overtrades. |
+| ppo-mlp | RL, small network | dead | [rl-1.md](rl-1.md) | 0.66 / 0.80, worst loss 80%; 1.15 in sample, 0.63 out. |
+| ppo-mlp-dd | RL, drawdown penalty | dead | [rl-1.md](rl-1.md) | 0.57 / 0.76, worst loss 60%; sits in cash, no smarter. |
+| ppo-mlp-px | RL, prices only | dead | [rl-1.md](rl-1.md) | 0.71 / 0.81, worst loss 82%; macro inputs did not help. |
+| es-lin | Evolution strategy (sanity check) | dead | [rl-1.md](rl-1.md) | 0.57 / 0.72, worst loss 87%; a different optimiser, the same place. |

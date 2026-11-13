@@ -262,3 +262,27 @@ index 1962-1993 (before SPY existed: the only test with cycles our six assets ne
 start when their data starts), and on the Nikkei, FTSE and DAX as "does the US cycle reach
 abroad". The coin set gets the gate like any risk asset. A halving gate applies to coins only,
 so only the coin set applies to it.
+
+## Reinforcement-learning tests (added 2026-11-13 02:10 UTC, run rl-1, before any RL code or training)
+
+Everything above still applies, the macro as-of rule included. The full design is the plan in
+`rl-1.md`; these are the rules a result is judged by.
+
+- **Fidelity.** Training may use a faster simulator only if a test proves it gives the same
+  daily equity as `grimstrade.gym.simulate` for the same weights. Every reported number comes
+  from replaying the agent's decisions through `gym.simulate` itself.
+- **Walk-forward.** Retrain every two years on an expanding window; a model that trades from
+  1 January Y is trained only on Fridays whose one-week reward ended at least 7 days before it.
+  Out-of-sample window 2000-01-07 to 2025-11-09. Inputs are scaled with training-window
+  statistics only.
+- **Seeds.** Ten fixed seeds per variant and fold. The selectable strategy of a variant is the
+  average of its ten seeds' weights (one `variant` row); each seed is logged as `robustness`.
+  The spread across seeds is always reported.
+- **Budget.** The training budget (environment steps) is the same for every variant, seed and
+  fold, set from a timing test before the first logged run, never from results.
+- **Pass bar.** As written in `rl-1.md` ("Pass bar"), against `tsmom12`, `sma200`, `inverse-vol`
+  and equal weight re-scored from 2000-01-07; 7 of 10 seeds ahead; not behind `tsmom12` since
+  2003; out-of-universe sign in 2 of 3 sets. Held-out year: once, one finalist, only on a pass.
+- **No tuning on the out-of-sample window.** Hyperparameters are fixed in the plan. If a
+  variant fails to train at all (a bug, a divergence), the fix is noted with its date and every
+  variant is rerun with it; a fix is never chosen by out-of-sample Sharpe.

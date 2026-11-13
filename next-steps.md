@@ -47,3 +47,20 @@ add anything over `tsmom12`? Write-up: `research/macro-1.md`.
 - Doing: nothing.
 - Next: macro features as regime inputs for the RL agent (list in `research/macro-1.md`). The
   owner may want to read the halving section before anyone trades a "four-year cycle".
+
+## RL 1 (research run, branch `rl-1`, started 2026-11-13 ~01:50 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-rl-1.md`. Question: can an RL agent (PPO, policy shared
+across assets, prices + macro inputs) beat `tsmom12` out of sample? Plan and results:
+`research/rl-1.md`; rules: `research/protocol.md` "Reinforcement-learning tests".
+
+- Done: plan and protocol section before code; gym-exact batched simulator and environment
+  with tests; 5 agents x 10 seeds x 13 walk-forward folds trained on the RTX 5080; evaluated
+  through the real gym, 70 rows in `research/tries.md`; tables `research/results/rl-1.md`;
+  write-up `research/rl-1.md`. Answer: no. All five fail (Sharpe 0.57-0.71 against
+  `tsmom12` 0.99 out of sample 2000-2025, 0 of 50 seeds ahead). Held-out year unused.
+  Draft PR #17 (`rl-1` -> `macro-1`), not merged.
+- Doing: nothing. No process running.
+- Next (not started): residual-policy rung (tsmom12 plus a bounded tilt, reward relative to
+  tsmom12, coin cap); card and bar first. Details in `research/rl-1.md`, "What the next rung
+  would need".

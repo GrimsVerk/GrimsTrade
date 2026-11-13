@@ -74,6 +74,14 @@ the trend rule since 2003. The Bitcoin halving cycle looks good (+0.15 Sharpe) b
 winters and a window taken from folklore that saw them. Macro features are kept as regime inputs
 for the RL agent, built look-ahead safe in `lib/macro.py`.
 
+RL run (rl-1, 2026-11-13; [`rl-1.md`](rl-1.md)): **no RL agent beat the trend rule; all lost
+badly.** PPO with a linear or small-network policy shared across assets, prices plus macro
+inputs, and an evolution-strategy check: ten seeds each, walk-forward 2000-2025 through the real
+gym. Sharpe 0.57-0.71 against `tsmom12`'s 0.99, worst losses 60-87%, 0 of 50 seeds ahead. The
+agents learned to hold coins (a third of the book) and overfit their training years. Next rung,
+if any: a residual policy that tilts `tsmom12` with a coin cap, or more independent bets (wider
+book, hourly crypto), or new information (on-chain, funding).
+
 ## Ranking after run 2
 
 For forward paper trading (M3), best first. Run 2 changed nothing here: no ML model comes

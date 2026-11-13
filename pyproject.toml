@@ -11,9 +11,11 @@ dependencies = []
 # Keep ruff in step with the rev in .pre-commit-config.yaml.
 dev = [
     "mypy~=2.3",
+    "numpy>=2.5.4",
     "pre-commit~=4.0",
     "pytest>=8.3",
     "ruff~=0.15.22",
+    "scikit-learn>=1.9.1",
 ]
 
 [build-system]
