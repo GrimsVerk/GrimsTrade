@@ -3,6 +3,12 @@
 `uv run python -m grimstrade.run_daily --root trail` (trail/ = the paper-trail branch checkout).
 Plain Python, no LLM. Exits 1 if any data source failed (after still doing what it could), and
 2 without writing anything if the ledger's history was rewritten.
+
+`--intraday DIR` runs only the finer-data collection (`grimstrade.intraday`) into DIR and always
+exits 0. The daily job calls it in a later step, after the record is committed and pushed, so it
+can never break or delay the trades, the ledger or the record checks. DIR is not part of the
+record (the sources' terms forbid re-publishing; docs/DECISIONS.md), and nothing that trades or
+scores reads it.
 """
 
 from __future__ import annotations
@@ -12,10 +18,11 @@ import hashlib
 import inspect
 import json
 import sys
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from grimstrade import data, gym, ledger, report, signals, sources, weekly
+from grimstrade import data, gym, intraday, ledger, report, signals, sources, weekly
 from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
@@ -223,11 +230,37 @@ def _revisions(root: Path, now: datetime, get: sources.Get) -> list[str]:
     return out
 
 
-def main() -> None:
+def collect_intraday(
+    base: Path,
+    root: Path,
+    now: datetime,
+    get: sources.Get = sources.http_get,
+    collect: Callable[[Path, datetime, sources.Get], dict[str, str]] = intraday.collect,
+) -> dict[str, str]:
+    """Collect the finer data into `base`; best effort, never raises. Refuses a `base` inside the
+    record `root`: the record checks know nothing of these files, and the terms forbid
+    publishing them."""
+    if base.resolve().is_relative_to(root.resolve()):
+        out = {"intraday": f"error: {base} is inside the record {root}; not collecting"}
+    else:
+        try:
+            out = collect(base, now, get)
+        except Exception as e:  # noqa: BLE001 - nothing here may stop the daily job
+            out = {"intraday": f"error: {e!r}"}
+    for name, result in sorted(out.items()):
+        print(f"intraday {name}: {result}")
+    return out
+
+
+def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--root", type=Path, default=Path("trail"))
     p.add_argument("--repo", type=Path, default=Path("."), help="code checkout (research/ files)")
-    args = p.parse_args()
+    p.add_argument("--intraday", type=Path, help="only collect the finer data into this folder")
+    args = p.parse_args(argv)
+    if args.intraday is not None:
+        collect_intraday(args.intraday, args.root, datetime.now(UTC))
+        return
     try:
         problems = run(args.root, datetime.now(UTC), repo=args.repo)
     except ledger.LedgerTampered as e:
