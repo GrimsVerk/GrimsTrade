@@ -1,35 +1,44 @@
 # Next steps
 
-## Ingest 1 (branch `ingest-1`, draft PR #14, not merged)
+## Ingest (branches `ingest-1` PR #14, `ingest-2` PR #15 on top of it; neither merged)
 
-Brief: chief-of-staff/briefs/grimstrade-ingest-1.md. Cache and job state: `docs/data-inventory.md`.
+Briefs: chief-of-staff/briefs/grimstrade-ingest-1.md, grimstrade-ingest-2.md. Cache and job
+state: `docs/data-inventory.md`. Merge order: #13, #14, #15.
 
-- Done: rolling windows saved 2026-11-12 (Yahoo 1h SPY/QQQ/GLD/TLT ~730 days, Kraken Futures
-  funding + open interest PF_XBTUSD/PF_ETHUSD) with `scripts/snapshot_rolling.py`. Write-once
-  cache with manifest (`grimstrade.cache`), root in git-ignored `local.toml`
-  (`local.example.toml` committed). Backfill scripts in `scripts/backfill/`.
-- Done: daily collection module `grimstrade.intraday` (Coinbase crypto 1h, Yahoo ETF 1h, Kraken
-  funding; `available_at` on every row; append-only; each series fails on its own), offline
-  tests in `tests/test_intraday.py`, checked once against the live APIs (second run adds 0 rows).
-  **Not wired into `run_daily`** yet.
-- Doing (detached background jobs, PIDs in `<cache>/pids/`): `binance`, `rest_1m-coinbase`,
-  `rest_1m-bitstamp`, `rest_1m-bitfinex`, `small`, `alpaca` (SIP feed, started by the CoS). Check with the commands in
-  `docs/data-inventory.md`; when all logs say `DONE`, fill in real sizes/rows there.
+- Done (ingest 1): rolling windows saved by hand with `scripts/snapshot_rolling.py` (2026-11-12
+  and 2026-11-13); write-once cache with manifest (`grimstrade.cache`); backfill scripts in
+  `scripts/backfill/`; collection module `grimstrade.intraday`.
+- Done (ingest 1): FRED/ALFRED solved: official API with the owner's free key,
+  `scripts/backfill/fred.py`, run 2026-11-12, 0 errors (the key never goes into Actions or logs).
+- Done (ingest 2): the daily job collects the finer data after the record is pushed
+  (`run_daily --intraday intraday`; four `continue-on-error` steps in `daily.yml`): Coinbase 1h
+  BTC/ETH, Yahoo 1h SPY/QQQ/GLD/TLT, Kraken Futures funding and open interest
+  PF_XBTUSD/PF_ETHUSD. **Not published**: Kraken's and Yahoo's terms forbid it, Coinbase's terms
+  page answered 403 (unclear = no). Stored in an Actions cache; reasons and limits in
+  `docs/DECISIONS.md` (2026-11-13). Revisions of re-fetched rows go to `revisions.jsonl` in the
+  store. Kraken open interest now pages with `since`: every hour from 2023-03-07 (collector and
+  snapshot script). Checked live 2026-11-13: first run ~6.6 MB, second run +0 everywhere.
+- Doing: Coin Metrics full community backfill (`scripts/backfill/coinmetrics.py`, started by the
+  CoS 2026-11-13 02:14 UTC); the other detached backfills (`binance`, `rest_1m-*`, `small`,
+  `alpaca`). Check with the commands in `docs/data-inventory.md`; when all logs say `DONE`, fill
+  in real sizes/rows there.
 - Next:
-  - [ ] Rerun `scripts/snapshot_rolling.py` daily until the daily collection below exists (each
-        day is a new dated folder; nothing older than the windows can be recovered).
-  - [ ] Owner: FRED/ALFRED CSV endpoints stall our honest User-Agent (curl's default gets 200),
-        so `small.py` skips them (`SKIP_HOSTS`). We don't disguise the client. Options: a free
-        FRED API key (owner's account; its JSON API also gives real-time vintages exactly), or
-        ask FRED. Until then no FRED/ALFRED macro data; the Treasury curve covers rates.
-  - [ ] Kraken OI snapshot holds only the last 2,000 hours (one call); page back with `since`.
-  - [ ] Wire `intraday.collect(trail/data/intraday, now, http_get)` into `run_daily` after the
-        ledger commit step, inside its own try/except. First check that `run_daily.check_record`
-        accepts the new files (it checks bar files under `data/`; maybe exempt
-        `data/intraday/`) and that nothing in the record checks reads them. Add
-        `revisions.jsonl` lines when a re-fetched past row differs (not done yet).
+  - [ ] Keep rerunning `scripts/snapshot_rolling.py` daily until #15 is on `main` and a daily run
+        has saved the store (nothing older than the windows can be recovered). The next dated
+        snapshot is the first with full open-interest history.
+  - [ ] After #15 merges, read the daily run's log: "Check the intraday store" should say "No
+        intraday store yet: starting one" the first day and "Restored the intraday store from
+        intraday-..." after that; "Collect intraday data" lists `+N` per series.
+  - [ ] Owner: the store can't be downloaded to a PC (Actions caches have no download). If you
+        want it locally, add an encryption key as an Actions secret and we add a manual job that
+        uploads it encrypted; until then the PC's snapshots are the local copy.
+  - [ ] Owner: someone with a browser should read Coinbase's Market Data Terms of Use
+        (coinbase.com/legal/market_data, 403 to our fetch). The daily bars on `paper-trail` come
+        from the same sources under the same terms (your call, `docs/data-sources.md`).
+  - [ ] Owner (optional): an Alpaca key as an Actions secret would give a second ETF source (Stooq
+        is dead) and daily ETF minute bars; we did not add it (adding secrets is yours).
   - [ ] Stooq is behind a bot check (seen 2026-11-12): the ETF fallback in `sources.py` is dead.
-        Not fixed (see the audit item above; Alpaca may become the second ETF source).
+        Not fixed.
 
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 

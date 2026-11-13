@@ -18,6 +18,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: read # scripts/intraday-store.sh lists the Actions caches
 
 jobs:
   run:
@@ -60,3 +61,38 @@ jobs:
             sleep "$wait"
           done
           exit 1
+      # Finer data (hourly bars, funding) for the RL work, after the record is pushed, every step
+      # best effort: nothing here can break or delay the trades, the ledger or the record checks.
+      # Kept in an Actions cache, not on paper-trail: the sources' terms forbid re-publishing
+      # (docs/DECISIONS.md). Runs even when the record step refused or failed: the windows keep
+      # rolling either way. The repository variable INTRADAY_COLLECT=off turns it off.
+      - name: Restore the intraday store
+        id: intraday-restore
+        if: "!cancelled() && vars.INTRADAY_COLLECT != 'off'"
+        continue-on-error: true
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: intraday
+          key: intraday-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: intraday-
+      - name: Check the intraday store
+        id: intraday-store
+        if: "!cancelled() && steps.intraday-restore.outcome == 'success'"
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MATCHED_KEY: ${{ steps.intraday-restore.outputs.cache-matched-key }}
+        run: scripts/intraday-store.sh
+      - name: Collect intraday data
+        id: intraday
+        if: "!cancelled() && steps.intraday-store.outputs.ok == 'yes'"
+        continue-on-error: true
+        timeout-minutes: 5
+        run: uv run python -m grimstrade.run_daily --root trail --intraday intraday
+      - name: Save the intraday store
+        if: "!cancelled() && steps.intraday.outcome == 'success'"
+        continue-on-error: true
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: intraday
+          key: intraday-${{ github.run_id }}-${{ github.run_attempt }}
