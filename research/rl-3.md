@@ -130,7 +130,7 @@ there). The held-out year is not needed and not looked at.
 - Times in this file are UTC. The first push wrote 06:55 for the card, which was local time
   (UTC+1); corrected to 05:40.
 
-### Note after the ceiling, before any agent result (2026-11-13 ~06:05 UTC)
+### Note after the ceiling, before any agent result (2026-11-13 ~05:50 UTC)
 
 The known-signal rules (no training) were run first; they need no models. They show the rough
 formula above was far too generous: on this book, with this action and the gym's costs, the
