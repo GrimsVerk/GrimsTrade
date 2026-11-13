@@ -47,3 +47,13 @@ add anything over `tsmom12`? Write-up: `research/macro-1.md`.
 - Doing: nothing.
 - Next: macro features as regime inputs for the RL agent (list in `research/macro-1.md`). The
   owner may want to read the halving section before anyone trades a "four-year cycle".
+
+## RL 1 (research run, branch `rl-1`, started 2026-11-13 ~01:50 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-rl-1.md`. Question: can an RL agent (PPO, policy shared
+across assets, prices + macro inputs) beat `tsmom12` out of sample? Plan and results:
+`research/rl-1.md`; rules: `research/protocol.md` "Reinforcement-learning tests".
+
+- Done: plan, protocol section.
+- Doing: environment (`research/lib/rl_env.py`) with gym-equivalence and look-ahead tests.
+- Next: agents (`research/lib/rl_train.py`), walk-forward runs, write-up.
