@@ -9,7 +9,7 @@ information, or because this learner and budget cannot find it? Plant a known, w
 predictive signal into one input of RL 2's residual environment, change nothing else, and see at
 what strength the pipeline finds it.
 
-## Card (written 2026-11-13 ~06:55 UTC, before any rl-3 code or training)
+## Card (written 2026-11-13 ~05:40 UTC, before any rl-3 code or training)
 
 ### What is planted
 
@@ -113,7 +113,7 @@ selectable, not counted as strategy tries. Each configuration: one ensemble row 
 rows; each strength: five ceiling rows. Out-of-universe runs are not done (no planted signal
 there). The held-out year is not needed and not looked at.
 
-### Settings and disclosures (2026-11-13 ~07:10 UTC, before the first logged run)
+### Settings and disclosures (2026-11-13 ~05:47 UTC, before the first logged run)
 
 - Code: `lib/rl3_plant.py` (the planted input; `tests/test_rl3.py` proves the held week and the
   exact yearly IC), `lib/rl3_train.py` (RL 2's `train_fold` on the planted tables). One change
@@ -127,3 +127,26 @@ there). The held-out year is not needed and not looked at.
   holds only SPY, which a full slot cannot tilt up). No out-of-sample number was computed and
   nothing was changed after it. Training: 3 processes at a time on the CPU (the brief's cap).
 - Price and RL 2 table caches (git-ignored) were copied from the rl-2 worktree, read only.
+- Times in this file are UTC. The first push wrote 06:55 for the card, which was local time
+  (UTC+1); corrected to 05:40.
+
+### Note after the ceiling, before any agent result (2026-11-13 ~06:05 UTC)
+
+The known-signal rules (no training) were run first; they need no models. They show the rough
+formula above was far too generous: on this book, with this action and the gym's costs, the
+best rule gains **-0.01 Sharpe at rho 0.02** (i.e. none: every rule is behind `tsmom12`),
+**+0.03 at 0.05** (p = 0.15), **+0.16 at 0.10** (p = 0.00 to 0.04) and **+0.45 at 0.20**. Planted
+noise (0.00) costs 0.04 to 0.15 (random tilts add turnover and risk). Reasons, measured not
+guessed: half the tilts are blocked most of the time (an asset already at a full slot can only
+go up by pushing the sum over 1, which scales everything down; an asset out of the trend can
+only go up; coins can only be cut), and the gain in Sharpe of adding a modest active return to
+a 1.0 Sharpe book is much smaller than the active return's own information ratio.
+
+Consequence, said now so it is not read into the agent results later: the "found" bar can
+only be passed from rho = 0.10 up, because even a rule that is told the signal cannot pass it at
+0.05. So "not found at 0.02 or 0.05" is not a learner failure, and the outcome "smallest found
+<= 0.05" in the card cannot happen. Nothing in the card changes; the reading adds two measures
+that do not depend on Sharpe being reachable: the **captured share** at 0.10 and 0.20, and
+**corr(tilt, peek)** at every strength (does the agent move its weights with the planted input
+at all?). The pre-registered diagnostics are triggered by the card's own rule (neither learner
+can find 0.05) and will be run as written.

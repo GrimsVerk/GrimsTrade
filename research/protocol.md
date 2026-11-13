@@ -304,7 +304,7 @@ Everything above still applies, the RL section included. The full design is the 
   average active share of at least 2% (an agent that only matches `tsmom12` with a near-zero
   tilt fails).
 
-## Planted-signal controls (added 2026-11-13 06:55 UTC, run rl-3, before any rl-3 code or training)
+## Planted-signal controls (added 2026-11-13 05:40 UTC, run rl-3, before any rl-3 code or training)
 
 A control experiment plants a known signal into an input to measure what a pipeline can find.
 It is never a strategy. Its rows in `tries.md` carry kind `control` and an idea name ending in
