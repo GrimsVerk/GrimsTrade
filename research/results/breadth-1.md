@@ -125,3 +125,22 @@ book trad: 33 assets ever, start 1999-12-22, eligible per day median 25 max 33
 |---|---:|---:|---:|---:|---:|---:|
 | `rev_1h` | +0.0612 | +29.7 | 17100 | 0.0064 | 68% | 0.58 |
 | `mom_24h` | -0.0366 | -17.1 | 17090 | 0.0064 | 23% | 0.20 |
+
+## Checks on the survivor (CM `turnover`, weekly; run after its result was seen: `robustness`)
+
+| Check | TS | TOP-TS | TOP-TS - TS (p) | TOP - EW | Max DD TS / TOP-TS |
+|---|---:|---:|---:|---:|---|
+| as run (30 bps, top 100) | 0.72 | 1.06 | +0.34 (0.00) | +0.27 | 64% / 54% |
+| 100 bps a side | 0.64 | 0.93 | +0.28 (0.00) | +0.20 | 65% / 60% |
+| top 50 coins | 0.70 | 1.04 | +0.34 (0.00) | +0.28 | 62% / 55% |
+
+Placebo (100 fixed random scores per coin, same test): TOP-TS - TS median -0.02, 90th pct +0.07, 95th +0.10, 99th +0.15, max +0.18. Zero-return days: top third 0.2%, universe 0.1%. Rank correlation of `turnover` with `low_vol` +0.44, with `size` -0.23.
+
+## Held-out year, once (2025-11-11 .. 2026-11-09, 52 Fridays)
+
+| Book | Sharpe | Return | Max DD |
+|---|---:|---:|---:|
+| EW | -0.60 | -38.1% | 49% |
+| TOP | -0.39 | -25.3% | 39% |
+| TS | 0.31 | +2.1% | 5% |
+| TOP-TS | 0.61 | +5.1% | 6% |

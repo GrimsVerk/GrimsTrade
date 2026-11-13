@@ -56,8 +56,14 @@ def train(log: bool) -> None:
         print(line(k, t), flush=True)
         if log and k != "as run (30 bps, top 100)":
             first = book.day0 + timedelta(days=t.first)
-            bb.log_row("breadth-1-cm", f"weekly turnover TOP-TS, {k}", "robustness", first,
-                       t.top_ts, t.turnover["top_ts"])  # fmt: skip
+            bb.log_row(
+                "breadth-1-cm",
+                f"weekly turnover TOP-TS, {k}",
+                "robustness",
+                first,
+                t.top_ts,
+                t.turnover["top_ts"],
+            )
     # placebo: fixed random score per coin
     rng = np.random.default_rng(0)
     diffs = []
@@ -66,8 +72,10 @@ def train(log: bool) -> None:
         t = xs.tilt(book.px, book.elig, score, book.up, dec, skip, book.cost)
         diffs.append(stats.sharpe(t.top_ts) - stats.sharpe(t.ts))
     q = np.quantile(diffs, [0.5, 0.9, 0.95, 0.99])
-    print(f"\nPlacebo (100 fixed random scores): TOP-TS - TS median {q[0]:+.2f}, 90th pct "
-          f"{q[1]:+.2f}, 95th {q[2]:+.2f}, 99th {q[3]:+.2f}, max {max(diffs):+.2f}")  # fmt: skip
+    print(
+        f"\nPlacebo (100 fixed random scores): TOP-TS - TS median {q[0]:+.2f}, 90th pct "
+        f"{q[1]:+.2f}, 95th {q[2]:+.2f}, 99th {q[3]:+.2f}, max {max(diffs):+.2f}"
+    )
     # stale prices and overlap
     lr = np.vstack([np.full((1, book.px.shape[1]), np.nan), np.diff(np.log(book.px), axis=0)])
     zero_top, zero_all, ov_lv, ov_sz = [], [], [], []
@@ -84,14 +92,18 @@ def train(log: bool) -> None:
             k = m & np.isfinite(o)
             out.append(xs.spearman(sig[d, k], o[k]))
     print(f"Zero-return days: top third {np.mean(zero_top):.1%}, universe {np.mean(zero_all):.1%}")
-    print(f"Rank correlation of turnover with low_vol {np.mean(ov_lv):+.2f}, with size "
-          f"{np.mean(ov_sz):+.2f}")  # fmt: skip
+    print(
+        f"Rank correlation of turnover with low_vol {np.mean(ov_lv):+.2f}, with size "
+        f"{np.mean(ov_sz):+.2f}"
+    )
     if log:
         with TRIES.open("a") as f:
-            f.write(f"| {bb.datetime.now(bb.UTC):%Y-%m-%d %H:%M} | breadth-1-cm | weekly turnover "
-                    f"placebo, 100 random fixed scores (95th pct of TOP-TS - TS {q[2]:+.2f}) | "
-                    f"control | train | {book.day0 + timedelta(days=int(dec[0]))} | "
-                    f"{bb.TRAIN_END} | - | - | - | - |\n")  # fmt: skip
+            f.write(
+                f"| {bb.datetime.now(bb.UTC):%Y-%m-%d %H:%M} | breadth-1-cm | weekly turnover "
+                f"placebo, 100 random fixed scores (95th pct of TOP-TS - TS {q[2]:+.2f}) | "
+                f"control | train | {book.day0 + timedelta(days=int(dec[0]))} | "
+                f"{bb.TRAIN_END} | - | - | - | - |\n"
+            )
 
 
 def heldout(log: bool) -> None:
@@ -105,16 +117,20 @@ def heldout(log: bool) -> None:
     print(f"Held-out {HELD_START}..{HELD_END}, {len(dec)} Fridays")
     print("| Book | Sharpe | Return | Max DD |\n|---|---:|---:|---:|")
     for k, r in (("EW", t.ew), ("TOP", t.top), ("TS", t.ts), ("TOP-TS", t.top_ts)):
-        print(f"| {k} | {stats.sharpe(r):.2f} | {np.prod(1 + r) - 1:+.1%} | "
-              f"{stats.max_drawdown(r):.0%} |")  # fmt: skip
+        print(
+            f"| {k} | {stats.sharpe(r):.2f} | {np.prod(1 + r) - 1:+.1%} | "
+            f"{stats.max_drawdown(r):.0%} |"
+        )
     if log:
         first_d = book.day0 + timedelta(days=t.first)
         with TRIES.open("a") as f:
             for k, r, kind in (("TS", t.ts, "baseline"), ("TOP-TS", t.top_ts, "variant")):
-                f.write(f"| {bb.datetime.now(bb.UTC):%Y-%m-%d %H:%M} | breadth-1-cm | weekly "
-                        f"turnover {k} held-out | {kind} | heldout | {first_d} | {HELD_END} | "
-                        f"{stats.sharpe(r):.2f} | {np.prod(1 + r) - 1:+.1%} | "
-                        f"{stats.max_drawdown(r):.1%} | {t.turnover['top_ts']:.2f} |\n")  # fmt: skip
+                f.write(
+                    f"| {bb.datetime.now(bb.UTC):%Y-%m-%d %H:%M} | breadth-1-cm | weekly "
+                    f"turnover {k} held-out | {kind} | heldout | {first_d} | {HELD_END} | "
+                    f"{stats.sharpe(r):.2f} | {np.prod(1 + r) - 1:+.1%} | "
+                    f"{stats.max_drawdown(r):.1%} | {t.turnover['top_ts']:.2f} |\n"
+                )
 
 
 if __name__ == "__main__":
