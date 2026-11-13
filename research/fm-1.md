@@ -8,6 +8,91 @@ Question: every hand-made input so far has weekly IC <= 0.05 (`rl-3.md`, `info-1
 `breadth-1.md`). Pretrained time-series models (DESIGN.md ladder rung 4) are the other GPU route.
 Do their zero-shot forecasts of our own price series carry information the trend inputs lack?
 
+## In plain words (results, 2026-11-13)
+
+**No. The foundation models' forecasts do not beat the trend inputs. The two Chronos-Bolt
+models look excellent at first (weekly IC 0.10-0.15, three times anything found before, and
++0.10 / +0.18 Sharpe over `tsmom12` in the rl-3 gate), but they are recalling stock-market history
+they saw in pretraining, not forecasting it. On the years they have not seen (2020-2025), their
+IC is zero and the gate edge disappears. Chronos-2, which does not recall the series, has no skill
+in any period. So this route gives the RL agent nothing as is, and the "too good" result is a
+warning for any pretrained model tested on old market data.** Research only; the held-out year
+was not looked at. Tables: `results/fm-1.md`.
+
+- **What was run.** Three official Amazon models, zero-shot, bf16 on the 5080: Chronos-Bolt
+  small (48M) and base (205M), and Chronos-2 (120M). Each forecast every Friday's next week for the
+  six assets (2000-2025), every next day, and every next hour and next day of hourly BTC/ETH
+  (2023-2025). Everything the card fixed, plus memorisation checks added after the first result.
+- **The first result looked too good.** Bolt-base: weekly IC +0.148 (chance level 0.043),
+  walk-forward gain over the trend inputs +0.110 (the info-1 bar was +0.05), and the gate passed
+  train bars 1-3 (Sharpe 1.17 vs 0.99, p 0.0005, ahead in 3 of 4 eras, smaller drawdown). SPY's
+  weekly IC was +0.29. Nothing hand-made ever came near.
+- **Why it is memory, not skill (three checks that agree):**
+  1. *Time pattern.* On every equity series (the six assets, 8 other ETFs, 4 world indexes, 9 US
+     sectors) Bolt's IC is +0.15 to +0.32 up to 2019 and about **0.00 in 2020-2025**. On the
+     S&P 500 index **1964-1993** it is also about 0 (+0.005 / +0.013). Real skill would not switch
+     on in 1994 and off in 2020. A pretraining corpus holding daily stock prices from roughly the
+     1990s to 2019 would do exactly this.
+  2. *Inverted prices.* The same six series fed as 1 / price (the same patterns, mirrored): a
+     model that reads patterns should score about the same. Bolt's IC drops from +0.17 / +0.23 to
+     **+0.00 / +0.02** (SPY +0.29 to +0.06). It recognises the exact series, not its shape.
+  3. *Model that doesn't remember.* Chronos-2 shows neither the 1994-2019 bump nor any IC
+     anywhere (-0.06 to +0.07 in every book and period; weekly gate -0.000).
+  The gate edge also goes with the memory: from 2020 on, Bolt-small is +0.04 (p 0.31) and Bolt-base
+  **-0.10** against `tsmom12`.
+- **After release (the only window certainly outside the weights).** Bolt, Dec 2024 - Nov 2025:
+  weekly IC +0.10 / +0.16 on 280 cells, but the inverted series score the same (+0.14 / +0.15), so
+  it is a symmetric pattern of one crash-and-rebound year (April 2025). Its standard error is
+  about 0.10-0.14 with these few, highly correlated weeks. The five unremembered years before it
+  (2020-24) say zero. Daily after release: -0.03 / -0.01 (1,628 cells). Hourly after release:
+  Bolt's 1-hour IC is -0.04 to +0.03 with opposite signs on BTC and ETH; Chronos-2's 3 weeks show
+  +0.13, but its earlier hours were negative. Breadth-1 found that an hourly signal needs an IC
+  near 0.6 to pay 30 bps; these are 0.03.
+- **Fine-tune: not run.** The card's trigger (a post-release IC more than two standard errors
+  from zero, the same sign as before release, and adding to the trend inputs) is met by the
+  letter in 2 of 18 post-release tests (12 hourly, 3 weekly, 3 daily): Bolt-small ETH 1 h
+  (+0.028) and Bolt-base BTC 1 h (-0.038). They point in opposite directions, close to the one
+  or two that chance gives across 18 tests, and they are 20 times
+  below the cost break-even. A fine-tune on the train years would also train on exactly the years
+  the models already remember. Judgement call, written here so it can be challenged.
+- **GPU time and memory.** The whole zero-shot run took under a minute of GPU time: 9-22 s per model
+  for ~6,000 weekly, ~35,000 daily and ~50,000 hourly forecasts, plus a few seconds per check.
+  Peak GPU memory 0.25-0.76 GB of 16 GB; process RAM about 2.5 GB. The 5080 is nowhere near a limit
+  for inference; a bf16 fine-tune of Bolt-small would also fit easily.
+- **How sure.** Sure that the weekly train-period result is memorisation: three independent
+  checks agree, on 27 series. Sure that there is no skill in 2020-24 (5 years, 27 series, IC about
+  0 for all three models). Not sure about skill after release: 11 months is too short. The clean
+  test would be the held-out year (after every release); the protocol allows that look only for an
+  idea that passes on train, and this pass is void.
+
+### Is this route worth more work for the RL agent?
+
+Not as a source of forecasts on price history alone. Zero-shot, the one model without memory
+has no skill, and the remembering models have none outside their memory. A fine-tune would teach
+them the same price history our own models already failed to find anything in. Worth keeping:
+
+1. **The memorisation test is the lesson.** Any pretrained model (time-series or LLM) tested on
+   market data before its cutoff can look brilliant for this reason alone. Cheap checks: 1 / price
+   input, IC by year around the probable corpus end, an old pre-1994 series. Use them on any future
+   model before believing a train-period number.
+2. If the owner still wants rung 4, the honest design is a **forward-only test**: log a model's
+   forecasts on the paper trail from now on (no backtest), and judge after a year. That costs
+   seconds of GPU a week. Recommended only as a low-priority side log, not an RL input.
+3. TimesFM 2.5 and Moirai were not run (card). They are trained on similar public corpora, so the
+   same checks would be needed first. Not worth it unless the forward log shows something.
+
+### Disclosures
+
+- The memorisation checks (inverted prices, the out-of-universe books, IC by period, the gate
+  from 2020) were written and run **after** the first weekly result was seen. They are checks of
+  that result, not new variants; their forecast runs are not strategies and have no tries rows.
+  The 21 rows in `tries.md` are the card's runs: 3 gate `variant`s and 18 `screen`s.
+- By the letter, Bolt-base's gate passes train bars 1-3 (bar 4, out-of-universe, was not run as
+  a gate; bar 5, equal weight, not checked). It is declared void because of the leakage shown
+  above, and the held-out year is left unspent.
+- Data: the six-asset tables were copied from the breadth-1 worktree's git-ignored cache (read
+  only); hourly bars from the shared data root.
+
 ## Card (written 2026-11-13, before any forecast was computed)
 
 ### Models (zero-shot first)
@@ -89,3 +174,9 @@ idea that passes on train.
 
 Every model x target run gets a `tries.md` row: the weekly gate runs as `variant`, the IC-only
 runs as `screen`. GPU time and peak memory are recorded per run.
+
+## Status
+
+2026-11-13: done. Zero-shot run on three models, memorisation checks, write-up. No fine-tune
+(reason above). Not run: TimesFM, Moirai, the wider breadth-1 books (card). Held-out year
+unspent. Usage at stop: weekly 16%, session 18%. Draft PR #25 (`fm-1` -> `invest-1`).

@@ -1,5 +1,17 @@
 # Next steps
 
+## FM 1 (done 2026-11-13, branch `fm-1`, draft PR #25 -> `invest-1`)
+
+Zero-shot Chronos (Bolt small, Bolt base, Chronos-2; bf16 on the 5080, under a minute of GPU,
+<1 GB GPU memory) on next-week / next-day returns of the six assets and next-hour / next-day
+BTC/ETH (`research/lib/fm1_forecast.py`, `fm1_eval.py`). Nothing usable. Bolt's weekly IC 0.10-0.15
+and its +0.18 Sharpe gate pass are memorised history: IC ~0 on 2020-25, on the 1964-93 S&P index
+and on 1 / price inputs; Chronos-2 (no memory) has IC ~0 everywhere. Gate pass declared void;
+held-out year unspent; no fine-tune (not triggered; reasons in the write-up). Write-up
+`research/fm-1.md`, tables `research/results/fm-1.md`. Not run: TimesFM 2.5, Moirai, wide books.
+Owner option: a forward-only forecast log on the paper trail (low priority). Lesson for any
+pretrained model: run the memorisation checks before believing a train-period number.
+
 ## Invest 1 (done 2026-11-13, branch `invest-1`, draft PR #24 -> `short-1`)
 
 First run for the investing agent: monthly stock/bond/cash allocation, train 1927-1989, out of

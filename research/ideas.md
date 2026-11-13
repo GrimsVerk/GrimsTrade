@@ -135,3 +135,11 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | term-tilt, infl-regime, xmom | Term spread, inflation switch, dual momentum | dead | [invest-1.md](invest-1.md) | No gain over 60/40 in either period; xmom 0.59 vs 0.67 OOS. |
 | 6040-sma10 | 60/40 with 10-month average filter | dead | [invest-1.md](invest-1.md) | Matches its twin `tsmom12-m` (0.75 vs 0.77 OOS): the twin is simpler. |
 | ecy-trend | ECY tilt inside the trend rule | parked | [invest-1.md](invest-1.md) | Best Sharpe in both periods (0.62 / 0.82) but beats trend only in train (p 0.002; OOS p 0.13; ETF -0.03). |
+
+## FM 1 (time-series foundation models, 2026-11-13)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| fm-chronos-zero-shot | Pretrained time-series models | dead (tested) | [card](fm-1.md) | Chronos-Bolt weekly IC 0.10-0.15 and +0.18 Sharpe in the rl-3 gate, but it is memory: IC ~0 on 2020-25, on the 1964-93 S&P and on inverted prices; Chronos-2 (no memory) IC ~0 everywhere. [results](results/fm-1.md) |
+| fm-fine-tune | Pretrained time-series models | parked | [card](fm-1.md) | Not triggered (no clean zero-shot signal); a fine-tune on train years trains on the years the models remember. |
+| fm-forward-log | Pretrained time-series models | new | - | Log Chronos forecasts forward on the paper trail (seconds of GPU a week), judge after a year: the only test free of pretraining leakage. Low priority. |
