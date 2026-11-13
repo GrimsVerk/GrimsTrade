@@ -8,6 +8,65 @@ no weekly information beyond the 12-month trend (best single weekly IC ~0.05, al
 walk-forward; `rl-3.md`). Does any **new kind** of information reach the level where it is worth
 anything on this book (weekly IC ~0.10, `rl-3.md` ceiling)?
 
+## In plain words (results, 2026-11-13)
+
+**No new source reaches the useful level. Of 23 candidates from six kinds of information,
+none has a weekly IC near 0.10 that holds up: not walk-forward, and not as a gain over the
+trend inputs. The best walk-forward gain over the trend inputs is +0.025, half the card's +0.05
+bar. Only one candidate is even above its chance level in sample, and it is weak. So positioning,
+options, crypto derivatives, more on-chain measures and cross-asset spreads give the RL agent no
+more than prices and macro did.** Descriptive only: no backtest, held-out year not loaded. Table:
+`results/info-1.md`.
+
+- **What was measured.** 23 inputs, each look-ahead safe (CFTC report: used 4 days after its
+  Tuesday date, shutdown weeks dropped; markets the day after; crypto two days after; tested in
+  `tests/test_info1_asof.py`): COT positioning (5), Cboe options and volatility (7, incl.
+  put/call), crypto derivatives (4), on-chain beyond rl-2 (3), crypto Fear & Greed, and
+  cross-asset 13-week moves (3). Same target and period as `rl-3-inputs.md` (the coming week's
+  risk-adjusted return, six assets, 2000-2025 where the data exists).
+- **Best numbers, honestly read.**
+  - COT speculator net change over 4 weeks (`cot_spec_chg4`): in-sample IC -0.035, just above
+    its chance level (0.033). Walk-forward +0.03, gain over trend +0.012. The only candidate
+    above chance, and far from 0.10.
+  - Put/call ratios: walk-forward +0.03 to +0.04, gain +0.02 to +0.025, both below chance in sample.
+    The strongest gains in the table, still under half the bar.
+  - Coin-only inputs: crypto Fear & Greed (IC +0.08, walk-forward +0.08), BTC/ETH hash-rate growth
+    (walk-forward +0.11, but in-sample IC -0.003). With BTC+ETH there are only 300-670 weeks, so
+    chance alone reaches 0.22-0.29. These numbers are noise-sized; hash-rate's walk-forward IC
+    without any in-sample IC means its sign flipped between eras.
+  - Per asset, a few in-sample numbers look large (CME bitcoin COT z-score -0.17 for BTC, dollar
+    13-week -0.10 for BTC, put/call +0.08 for SPY). That table holds 138 asset-candidate pairs on
+    few independent weeks, so a handful of 0.10-0.17s is what chance produces. None carries over
+    into the walk-forward pooled numbers.
+  - Overlap with the trend inputs is low for COT, options and cross-asset (|corr| 0.10-0.31). So
+    they are new information, just with almost no weekly forecasting power. Coin inputs overlap
+    a lot (0.5-0.76): Fear & Greed, Puell, funding and basis largely restate the coin's recent trend.
+- **How sure.** Sure for the long series (COT, SKEW, VRP, dollar, oil: 1,300+ weeks, chance level
+  ~0.03). A real IC of 0.10 would stand three chance levels clear, and none comes near. Not sure
+  for the coin derivatives and on-chain inputs (5-8 years, two coins): a true 0.10 could hide
+  there, but this data cannot show it. More coins (the Binance set has 30 perps) would be the
+  only way to tell. That needs the wider coin book, which is a risk-map question for the owner.
+- **Skipped:** AAII sentiment (aaii.com answered 403 to a plain client; not worked around).
+  Binance open interest and long/short ratios (`metrics`, from 2021-12, still downloading; too
+  short for a weekly IC anyway). Kraken funding (12 months, all inside the held-out year).
+- **Not run:** the planted-signal gate. The card runs it only if a candidate is useful.
+
+### What to feed the RL agent next
+
+Nothing from this screen on its own merit. If an input must be picked for a gated RL test, the
+least weak with long history are the put/call 10-day mean (from 2006; data stops 2019-10, so
+it cannot be live) and the COT 4-week change. Neither is worth an agent run by rl-3's ceiling
+(+0.03 Sharpe at IC 0.05). Taken with run 2, macro-1, rl-1/2/3 and ideas-1, the weekly forecast
+inputs within reach of free data are exhausted for this six-asset book. The levers left are
+structural, not informational, and they are the owner's:
+1. **More independent bets.** The value of a weak signal grows with the square root of the
+   number of assets. The 30 Binance perps and the 33-market pooled set are where weak coin and
+   cross-asset signals could pay.
+2. **A wider action** (short side or futures). Funding and basis are only usable fully with it.
+3. **Slower horizons.** All tests here and in rl-3 are weekly. COT and valuation-type inputs (Puell,
+   VRP) are documented at monthly-to-quarterly horizons. A 4-week or 13-week target is a new card,
+   not a re-read of this table.
+
 ## Card (written 2026-11-13 ~07:55 UTC, before any candidate data was read into a feature)
 
 ### Target, rows, period (same as `results/rl-3-inputs.md`)
@@ -120,3 +179,32 @@ level; the report lists that too.
 Every candidate gets a line in `tries.md` (kind `screen`: a descriptive IC row, not a backtest,
 not selectable). The IC table goes to `results/info-1.md`. Downloads: `scripts/fetch_info1.py`
 into the cache (write-once, manifest), never committed.
+
+### Disclosures (2026-11-13)
+
+- Card amendments before any feature was computed: none. 23 candidates were measured, not 25.
+  AAII could not be fetched, and `mcap_sply_act` was named as skipped on the card itself.
+- Before the logged run, a coverage print (cell counts, first dates, medians; no IC, no target)
+  checked that every source loaded. The IC table was computed once, with `--log` (23 `screen`
+  rows in `tries.md`). After it, `info1_features.py` changed only in formatting and in moving the
+  `rl_env` import behind `TYPE_CHECKING` (it changed global state in the test run). No logic
+  changed.
+- The price and RL table caches (git-ignored) were copied read-only from the rl3 worktree.
+- `dvol_rv` has no walk-forward number: its 241 weeks never give 104 training weeks before a
+  test block.
+
+## Status (2026-11-13 ~08:05 UTC)
+
+**Done:** card; `scripts/fetch_info1.py` (CFTC legacy + TFF 1986-2025, Cboe put/call; AAII
+refused, 403); `lib/info1_features.py` (23 inputs, as-of tests); `lib/info1_ic.py`; table
+`results/info-1.md`; 23 `screen` rows in `tries.md`; this write-up. Held-out year untouched.
+Usage at the end: weekly 14%, session 8% (the stop was 20% / 92%).
+
+**Doing:** nothing half-finished. No process left running.
+
+**Next (not started, owner's choice):** see "What to feed the RL agent next". The cheapest open
+informational test is a 4-week (or 13-week) target re-run of this screen, as its own card.
+
+Reproduce: `uv run python -I scripts/fetch_info1.py`, then
+`uv run python research/lib/info1_ic.py` (dry; `--log` writes tries rows: run once). Needs
+RL 2's `tables2.pkl` (from `rl2_data.py`) and the shared cache (`research/macro.local.json`).
