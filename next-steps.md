@@ -81,3 +81,11 @@ beat `tsmom12` out of sample? Plan and results: `research/rl-2.md`; rules: `rese
 - Doing: nothing. No process running.
 - Next (not started): planted-signal control of the residual pipeline (can it find a known
   weak signal?); then funding rates / basis for coins, which need shorting or futures in the gym.
+
+## Ideas 1 (research run, branch `ideas-1`, draft PR #20, 2026-11-13)
+
+Done: eight YouTube rules carded (`research/cards/yt-1.md`) and tested on train; all dead, card 3
+(`ath`, days since the old high) the nearest miss and coin-only. Write-up `research/ideas-1.md`.
+Next (not started): feed days-since-breakout, band width percentile, distance from the 52-week
+high, UMCSENT percentile, oil 6-month and 10-year 3-month changes to the RL agent as inputs;
+harvest 2 can reuse `research/lib/idea_yt.py`.

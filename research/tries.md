@@ -487,3 +487,103 @@ Never edit or delete a row.
 | 2026-11-13 05:39 | rl-2 | res-mlp-chain@etf | robustness | train | 2001-06-01 | 2025-11-09 | 0.59 | +236.3% | 22.4% | 3.48 |
 | 2026-11-13 05:39 | rl-2 | res-mlp-chain@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.52 | +160.7% | 92.4% | 4.60 |
 | 2026-11-13 05:39 | rl-2 | res-mlp-chain@idx | robustness | train | 2000-01-07 | 2025-11-09 | 0.48 | +193.0% | 28.7% | 2.84 |
+| 2026-11-13 05:48 | bbwp | bbwp-and | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +11791.1% | 35.4% | 3.03 |
+| 2026-11-13 05:48 | gap | gap-and | variant | train | 1994-02-01 | 2025-11-09 | 0.95 | +9117.6% | 36.5% | 2.57 |
+| 2026-11-13 05:48 | bbwp | bbwp-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.82 | +11865.0% | 68.8% | 2.47 |
+| 2026-11-13 05:48 | gap | gap-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.78 | +6409.0% | 68.8% | 2.44 |
+| 2026-11-13 05:49 | gap | gap-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.46 | +88.0% | 16.5% | 2.57 |
+| 2026-11-13 05:49 | bbwp | bbwp-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.61 | +223.8% | 16.7% | 2.98 |
+| 2026-11-13 05:49 | gap | gap-and@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.31 | +121.5% | 34.8% | 2.05 |
+| 2026-11-13 05:49 | bbwp | bbwp-and@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.52 | +170.1% | 92.4% | 4.83 |
+| 2026-11-13 05:49 | bbwp | bbwp-and@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.32 | +137.4% | 34.8% | 2.06 |
+| 2026-11-13 05:49 | baselines | tsmom12@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.55 | +4760.5% | 44.2% | 2.23 |
+| 2026-11-13 05:49 | gap | gap-and@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.47 | +1340.3% | 40.0% | 1.63 |
+| 2026-11-13 05:49 | baselines | tsmom12@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.55 | +4760.5% | 44.2% | 2.23 |
+| 2026-11-13 05:49 | bbwp | bbwp-and@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.49 | +2546.3% | 44.2% | 2.49 |
+| 2026-11-13 05:49 | baselines | tsmom12@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.37 | +349.4% | 39.1% | 2.70 |
+| 2026-11-13 05:49 | gap | gap-and@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.29 | +154.5% | 39.1% | 1.75 |
+| 2026-11-13 05:49 | baselines | tsmom12@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.37 | +349.4% | 39.1% | 2.70 |
+| 2026-11-13 05:49 | bbwp | bbwp-and@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.27 | +175.3% | 39.1% | 2.88 |
+| 2026-11-13 05:49 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
+| 2026-11-13 05:49 | gap | gap-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.20 | +90.3% | 53.5% | 1.39 |
+| 2026-11-13 05:49 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
+| 2026-11-13 05:49 | bbwp | bbwp-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.37 | +384.6% | 55.6% | 1.91 |
+| 2026-11-13 05:49 | oil | oil-and | variant | train | 1994-02-01 | 2025-11-09 | 1.10 | +16247.2% | 36.5% | 2.68 |
+| 2026-11-13 05:49 | oil | oil-alone | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +18971.7% | 56.3% | 2.37 |
+| 2026-11-13 05:49 | srsi | srsi-and | variant | train | 1994-02-01 | 2025-11-09 | 0.82 | +2710.9% | 28.9% | 2.33 |
+| 2026-11-13 05:49 | srsi | srsi-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.69 | +3167.2% | 68.8% | 2.18 |
+| 2026-11-13 05:49 | oil | oil-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.63 | +197.4% | 16.6% | 2.72 |
+| 2026-11-13 05:49 | srsi | srsi-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.44 | +83.9% | 11.6% | 2.18 |
+| 2026-11-13 05:49 | oil | oil-and@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.31 | +126.8% | 34.8% | 2.01 |
+| 2026-11-13 05:49 | srsi | srsi-and@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.56 | +254.0% | 90.7% | 3.69 |
+| 2026-11-13 05:49 | baselines | tsmom12@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.55 | +4760.5% | 44.2% | 2.23 |
+| 2026-11-13 05:49 | srsi | srsi-and@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.24 | +64.4% | 34.8% | 1.44 |
+| 2026-11-13 05:49 | oil | oil-and@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.53 | +3121.1% | 40.2% | 1.86 |
+| 2026-11-13 05:49 | baselines | tsmom12@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.55 | +4760.5% | 44.2% | 2.23 |
+| 2026-11-13 05:49 | srsi | srsi-and@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.28 | +277.5% | 35.5% | 1.53 |
+| 2026-11-13 05:49 | baselines | tsmom12@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.37 | +349.4% | 39.1% | 2.70 |
+| 2026-11-13 05:49 | oil | oil-and@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.31 | +191.2% | 40.7% | 2.47 |
+| 2026-11-13 05:49 | baselines | tsmom12@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.37 | +349.4% | 39.1% | 2.70 |
+| 2026-11-13 05:49 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
+| 2026-11-13 05:49 | srsi | srsi-and@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.35 | +200.3% | 32.2% | 2.03 |
+| 2026-11-13 05:49 | oil | oil-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.39 | +367.7% | 57.7% | 1.56 |
+| 2026-11-13 05:49 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
+| 2026-11-13 05:49 | srsi | srsi-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.33 | +214.6% | 23.6% | 1.31 |
+| 2026-11-13 05:49 | y10 | y10chg-and | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +14768.8% | 36.5% | 3.18 |
+| 2026-11-13 05:49 | y10 | y10lvl40-and | variant | train | 1994-02-01 | 2025-11-09 | 0.98 | +5338.2% | 36.5% | 2.93 |
+| 2026-11-13 05:49 | y10 | y10lvl47-and | variant | train | 1994-02-01 | 2025-11-09 | 1.04 | +8460.8% | 36.5% | 2.93 |
+| 2026-11-13 05:49 | y10 | y10lvl55-and | variant | train | 1994-02-01 | 2025-11-09 | 1.03 | +9474.5% | 36.5% | 2.74 |
+| 2026-11-13 05:49 | ath | ath-and | variant | train | 1994-02-01 | 2025-11-09 | 1.13 | +12883.1% | 28.9% | 2.78 |
+| 2026-11-13 05:49 | ath | ath-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.96 | +18340.6% | 68.8% | 2.30 |
+| 2026-11-13 05:49 | ath | ath-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.62 | +190.4% | 16.5% | 2.83 |
+| 2026-11-13 05:49 | y10 | y10chg-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +214.7% | 16.5% | 3.31 |
+| 2026-11-13 05:49 | ath | ath-and@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.62 | +437.8% | 90.1% | 4.44 |
+| 2026-11-13 05:49 | y10 | y10chg-and@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.63 | +441.5% | 29.4% | 2.55 |
+| 2026-11-13 05:49 | ath | ath-and@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.48 | +274.7% | 34.8% | 1.76 |
+| 2026-11-13 05:49 | baselines | tsmom12@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.55 | +4760.5% | 44.2% | 2.23 |
+| 2026-11-13 05:49 | y10 | y10chg-and@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.57 | +4558.5% | 45.1% | 3.18 |
+| 2026-11-13 05:49 | baselines | tsmom12@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.55 | +4760.5% | 44.2% | 2.23 |
+| 2026-11-13 05:49 | ath | ath-and@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.45 | +1791.4% | 44.2% | 2.24 |
+| 2026-11-13 05:49 | baselines | tsmom12@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.37 | +349.4% | 39.1% | 2.70 |
+| 2026-11-13 05:49 | y10 | y10chg-and@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.42 | +423.0% | 35.1% | 3.71 |
+| 2026-11-13 05:49 | baselines | tsmom12@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.37 | +349.4% | 39.1% | 2.70 |
+| 2026-11-13 05:49 | ath | ath-and@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.41 | +403.4% | 39.1% | 2.18 |
+| 2026-11-13 05:49 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
+| 2026-11-13 05:49 | y10 | y10chg-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.37 | +413.2% | 61.0% | 2.56 |
+| 2026-11-13 05:49 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
+| 2026-11-13 05:49 | ath | ath-and@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.53 | +895.2% | 44.6% | 1.37 |
+| 2026-11-13 05:49 | baselines | tsmom12@trend3 | baseline | train | 1994-02-01 | 2025-11-09 | 1.11 | +47314.1% | 34.7% | 2.67 |
+| 2026-11-13 05:49 | trend3 | trend3-sma200@trend3 | variant | train | 1994-02-01 | 2025-11-09 | 1.10 | +31013.6% | 34.7% | 4.09 |
+| 2026-11-13 05:49 | fng | fng-buyfear | variant | train | 1994-02-01 | 2025-11-09 | 0.94 | +14005.8% | 47.8% | 3.01 |
+| 2026-11-13 05:49 | fng | fng-sellgreed | variant | train | 1994-02-01 | 2025-11-09 | 0.67 | +1443.8% | 34.1% | 2.93 |
+| 2026-11-13 05:49 | fng | fng-buyfear@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.44 | +9.1% | 94.0% | 4.94 |
+| 2026-11-13 05:49 | trend3 | trend3-10m@trend3 | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +30256.0% | 30.0% | 3.89 |
+| 2026-11-13 05:49 | baselines | tsmom12@etf | baseline | train | 2001-05-27 | 2025-11-09 | 0.60 | +227.0% | 16.5% | 2.93 |
+| 2026-11-13 05:49 | trend3 | trend3-sma200@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.53 | +181.0% | 16.8% | 3.92 |
+| 2026-11-13 05:49 | baselines | tsmom12@coin | baseline | train | 2017-08-18 | 2025-11-09 | 0.54 | +179.5% | 92.4% | 4.62 |
+| 2026-11-13 05:49 | trend3 | trend3-sma200@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.50 | +142.3% | 89.8% | 6.11 |
+| 2026-11-13 05:49 | baselines | tsmom12@GSPC | baseline | train | 1962-01-02 | 1993-01-27 | 0.45 | +277.9% | 34.8% | 1.69 |
+| 2026-11-13 05:49 | trend3 | trend3-sma200@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.74 | +663.8% | 20.5% | 2.68 |
+| 2026-11-13 05:49 | baselines | tsmom12@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.55 | +4760.5% | 44.2% | 2.23 |
+| 2026-11-13 05:49 | trend3 | trend3-sma200@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.41 | +1295.4% | 47.5% | 3.53 |
+| 2026-11-13 05:49 | baselines | tsmom12@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.37 | +349.4% | 39.1% | 2.70 |
+| 2026-11-13 05:49 | trend3 | trend3-sma200@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.24 | +126.8% | 43.0% | 4.55 |
+| 2026-11-13 05:49 | baselines | tsmom12@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.40 | +495.8% | 58.9% | 1.78 |
+| 2026-11-13 05:49 | trend3 | trend3-sma200@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.55 | +1134.7% | 40.9% | 2.62 |
+| 2026-11-13 05:50 | fng | fng-buyfear | variant | train | 1994-02-01 | 2025-11-09 | 0.94 | +14005.8% | 47.8% | 3.01 |
+| 2026-11-13 05:50 | fng | fng-sellgreed | variant | train | 1994-02-01 | 2025-11-09 | 0.97 | +9959.2% | 38.7% | 3.90 |
+| 2026-11-13 05:50 | fng | fng-buyfear@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.44 | +9.1% | 94.0% | 4.94 |
+| 2026-11-13 05:50 | ath | ath-and-d70 | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +8333.7% | 28.9% | 2.74 |
+| 2026-11-13 05:50 | ath | ath-and-d130 | robustness | train | 1994-02-01 | 2025-11-09 | 1.10 | +12569.9% | 28.9% | 2.72 |
+| 2026-11-13 05:51 | ath | ath-and-short | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +11580.4% | 31.3% | 2.95 |
+| 2026-11-13 05:51 | ath | ath-and-coins | robustness | train | 1994-02-01 | 2025-11-09 | 1.13 | +14864.2% | 28.9% | 2.59 |
+| 2026-11-13 05:51 | ath | ath-and-stocks | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +16209.3% | 35.8% | 2.97 |
+| 2026-11-13 05:51 | bbwp | source youtu.be/FAIAELKdn7g (#1); dead: -0.04 vs tsmom12, 0/5 eras | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | srsi | source youtu.be/FAIAELKdn7g (#2); dead: -0.23 vs tsmom12, out ~half the time | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | ath | source youtu.be/FAIAELKdn7g (#3); dead, nearest miss: +0.08 p=0.18, gain all from coins (4 BTC episodes) | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | gap | source youtu.be/YXFvwJQBzJc, youtu.be/f353QO5Dgus (#7); dead: -0.09 vs tsmom12 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | oil | source youtu.be/f353QO5Dgus (#8); dead: +0.05 p=0.20, 3/5 eras, mixed out of universe | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | y10 | source youtu.be/f353QO5Dgus (#9); dead: change -0.04, levels -0.07..-0.01 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | trend3 | source youtu.be/YXFvwJQBzJc (#10); dead: equals its twin (-0.01), it is sma200 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | fng | source youtu.be/Fnx513JS5Vg (#12, stand-in); dead: buy fear -0.10, sell greed -0.08 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | fng | fng-sellgreed rows at 2026-11-13 05:49-05:50 had a bug (no data before 2018 dropped coins); superseded by the rerun | note | train | - | - | - | - | - | - |
