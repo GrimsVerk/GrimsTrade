@@ -177,6 +177,31 @@ Held-out year (2025-11-11 to 2026-11-09): at most once, one finalist, only if a 
   `tests/test_rl2.py`). Training and the agent's view of its own account use rl-1's simulator,
   which repeats Friday's weights all week; the two differ only in holiday weeks.
 
+### On-chain variant (card added 2026-11-13 ~06:00 UTC, after the three results above, before any on-chain code)
+
+Brief item 4. One more variant, `res-mlp-chain`: `res-mlp` exactly (same books, budget, early
+stopping, seeds, folds, bar), plus three on-chain inputs per coin (0 for every other asset,
+like the halving clock). The three results above were seen first; this card is not tuned on
+them beyond "`res-mlp` is the variant to extend" (the most active of the three).
+
+- **Data:** Coin Metrics community daily asset metrics, cache
+  `coinmetrics/full/2026-11-13/assets/<coin>/page-000.json` (complete for every coin we use;
+  BTC from 2009/2010, ETH from 2015-07, the six other coins from their starts).
+- **As-of rule (the macro layer's):** a value dated `d` is used from the day after; a Friday
+  decision sees only rows dated before that Friday.
+- **Inputs, fixed now:** `mvrv` = log of market cap / realised cap (`CapMVRVCur`, the latest
+  value); `adr_growth` = log(30-day mean / 365-day mean of active addresses, `AdrActCnt`);
+  `fee_growth` = the same for total fees in the coin's own units (`FeeTotNtv`). A value needs
+  365 days of history; before that, or if the latest row is more than 7 days old, the input is 0.
+- **Left out on purpose:** exchange flows and supply on exchanges. Coin Metrics revises which
+  addresses belong to exchanges, and the cache holds today's version, not what was known then:
+  using them would be look-ahead. The three inputs above are computed from the chain itself
+  (realised cap needs each coin's last-moved price: mechanical, though methodology changes
+  are a residual risk, noted).
+- **Tries:** one `variant` row, ten seeds and three out-of-universe runs as `robustness`. The
+  pass bar is the same seven bars. It is also compared with `res-mlp` (does on-chain add
+  anything over the same agent without it?).
+
 ### Disclosure
 
 - 2026-11-13 ~05:25 UTC: after all 390 fold models were trained, `rl2_eval.py` was run once in
