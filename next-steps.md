@@ -1,5 +1,13 @@
 # Next steps
 
+## Carry 2 (research run, branch `carry-2`, started 2026-11-13 ~08:20 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-carry-2.md`. Question: does short-1's `ls-premium` /
+`ls-funding` carry book, copied unchanged, earn on venues and coins it never saw (Binance perps
+outside the 30 incl. delisted, Bybit, Hyperliquid)? Card and write-up: `research/carry-2.md`.
+
+- Doing: card written; next the download script `scripts/fetch_carry2.py`, then `research/lib/carry2.py`.
+
 ## Short 1 (done 2026-11-13, branch `short-1`, draft PR #23 -> `breadth-1`)
 
 A short side on Binance USDT perps (30 pairs and BTC/ETH, 2020-2025, 10 bps + every funding
