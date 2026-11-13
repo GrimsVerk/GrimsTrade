@@ -431,7 +431,42 @@ def check() -> None:
             print("ok", v)
 
 
+def ath_robust() -> None:
+    """After the verdict (robustness rows): card 3's window moved, and its gain split by asset
+    class. Six assets only."""
+    six = c.ctx("six")
+    twin = c.go("baselines", "tsmom12", c.weekly(c.slots(c.tsmom_signal)), six, "baseline",
+                log=False)  # fmt: skip
+    rows = []
+    for tag, lo, hi, applies in (
+        ("ath-and-d70", 70, 434, non_safe),
+        ("ath-and-d130", 130, 494, non_safe),
+        ("ath-and-short", 100, 282, non_safe),
+        ("ath-and-coins", 100, 464, is_coin),
+        ("ath-and-stocks", 100, 464, is_stock),
+    ):
+        g = price_gate(trig_ath, lo, hi, f"ath{lo}-{hi}")
+        r = c.go("ath", tag, gate_rule(g, applies, True), six, "robustness")
+        a, b = c.align(r, twin)
+        d, p, _, _ = stats.sharpe_diff_boot(a, b)
+        x, y = r.rets_between(SINCE, r.days[-1]), twin.rets_between(SINCE, twin.days[-1])
+        d03 = stats.sharpe(x) - stats.sharpe(y)
+        rows.append(f"| {tag} | {lo}-{hi} | {stats.sharpe(a):.2f} | {d:+.2f} ({p:.2f}) | "
+                    f"{d03:+.2f} | {c.describe(r)['mdd']:.1%} |")  # fmt: skip
+    text = "\n".join([
+        "# ath: robustness (after the verdict)", "",
+        "Card 3 failed bar 1 only. Rows logged as `robustness`. Twin `tsmom12` 1.05 (1994-2025).",
+        "", "| Variant | Hostile days | Sharpe | d vs tsmom12 (p) | d since 2003 | Max DD |",
+        "|---|---|---:|---:|---:|---:|", *rows, "",
+    ])  # fmt: skip
+    (harness.RESEARCH / "results" / "ath-robust.md").write_text(text)
+    print(text)
+
+
 if __name__ == "__main__":
+    if sys.argv[1:] == ["ath-robust"]:
+        ath_robust()
+        sys.argv = sys.argv[:1]
     if sys.argv[1:] == ["check"]:
         check()
         sys.argv = sys.argv[:1]

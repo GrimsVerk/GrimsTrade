@@ -118,3 +118,17 @@ Tables: [results/rl-1.md](results/rl-1.md).
 | ppo-mlp-dd | RL, drawdown penalty | dead | [rl-1.md](rl-1.md) | 0.57 / 0.76, worst loss 60%; sits in cash, no smarter. |
 | ppo-mlp-px | RL, prices only | dead | [rl-1.md](rl-1.md) | 0.71 / 0.81, worst loss 82%; macro inputs did not help. |
 | es-lin | Evolution strategy (sanity check) | dead | [rl-1.md](rl-1.md) | 0.57 / 0.72, worst loss 87%; a different optimiser, the same place. |
+
+## Cards from YouTube, run ideas-1 (`cards/yt-1.md`, written before any test; summary in `ideas-1.md`)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| bbwp | Volatility (video FAIAELKdn7g) | dead (tested) | [card](cards/yt-1.md) | Band-width tops: -0.04 vs tsmom12, 0/5 eras; fired once on BTC. [result](results/bbwp.md) |
+| srsi | Momentum extremes (FAIAELKdn7g) | dead (tested) | [card](cards/yt-1.md) | Monthly stochastic RSI exits: -0.23; out half the time. [result](results/srsi.md) |
+| ath | Cycle clock (FAIAELKdn7g) | dead (tested), nearest miss | [card](cards/yt-1.md) | +0.08 (p = 0.18), passes bars 2-6; gain all from coins (4 cycles) and the exact window. [result](results/ath.md), [robustness](results/ath-robust.md) |
+| gap | Sentiment (YXFvwJQBzJc, f353QO5Dgus) | dead (tested) | [card](cards/yt-1.md) | Stocks near highs + low UMCSENT: -0.09, 0/5 eras. [result](results/gap.md) |
+| oil | Macro (f353QO5Dgus) | dead (tested) | [card](cards/yt-1.md) | Oil-shock gate: +0.05 (p = 0.20), ties since 2003, mixed out of universe. [result](results/oil.md) |
+| y10 | Macro (f353QO5Dgus) | dead (tested) | [card](cards/yt-1.md) | Yield change and three levels: -0.07..-0.01. [result](results/y10.md) |
+| trend3 | Trend (YXFvwJQBzJc) | dead (tested): it is `sma200` | [card](cards/yt-1.md) | SPY/GLD/BTC above 200-day: -0.01 vs tsmom12 on the same three. [result](results/trend3.md) |
+| fng | Sentiment (Fnx513JS5Vg, stand-in) | dead (tested) | [card](cards/yt-1.md) | Buy extreme fear -0.10, sell extreme greed -0.08 (coins, from 2018). [result](results/fng.md) |
+

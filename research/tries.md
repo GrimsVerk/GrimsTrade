@@ -573,3 +573,17 @@ Never edit or delete a row.
 | 2026-11-13 05:50 | fng | fng-buyfear | variant | train | 1994-02-01 | 2025-11-09 | 0.94 | +14005.8% | 47.8% | 3.01 |
 | 2026-11-13 05:50 | fng | fng-sellgreed | variant | train | 1994-02-01 | 2025-11-09 | 0.97 | +9959.2% | 38.7% | 3.90 |
 | 2026-11-13 05:50 | fng | fng-buyfear@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.44 | +9.1% | 94.0% | 4.94 |
+| 2026-11-13 05:50 | ath | ath-and-d70 | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +8333.7% | 28.9% | 2.74 |
+| 2026-11-13 05:50 | ath | ath-and-d130 | robustness | train | 1994-02-01 | 2025-11-09 | 1.10 | +12569.9% | 28.9% | 2.72 |
+| 2026-11-13 05:51 | ath | ath-and-short | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +11580.4% | 31.3% | 2.95 |
+| 2026-11-13 05:51 | ath | ath-and-coins | robustness | train | 1994-02-01 | 2025-11-09 | 1.13 | +14864.2% | 28.9% | 2.59 |
+| 2026-11-13 05:51 | ath | ath-and-stocks | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +16209.3% | 35.8% | 2.97 |
+| 2026-11-13 05:51 | bbwp | source youtu.be/FAIAELKdn7g (#1); dead: -0.04 vs tsmom12, 0/5 eras | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | srsi | source youtu.be/FAIAELKdn7g (#2); dead: -0.23 vs tsmom12, out ~half the time | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | ath | source youtu.be/FAIAELKdn7g (#3); dead, nearest miss: +0.08 p=0.18, gain all from coins (4 BTC episodes) | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | gap | source youtu.be/YXFvwJQBzJc, youtu.be/f353QO5Dgus (#7); dead: -0.09 vs tsmom12 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | oil | source youtu.be/f353QO5Dgus (#8); dead: +0.05 p=0.20, 3/5 eras, mixed out of universe | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | y10 | source youtu.be/f353QO5Dgus (#9); dead: change -0.04, levels -0.07..-0.01 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | trend3 | source youtu.be/YXFvwJQBzJc (#10); dead: equals its twin (-0.01), it is sma200 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | fng | source youtu.be/Fnx513JS5Vg (#12, stand-in); dead: buy fear -0.10, sell greed -0.08 | note | train | - | - | - | - | - | - |
+| 2026-11-13 05:51 | fng | fng-sellgreed rows at 2026-11-13 05:49-05:50 had a bug (no data before 2018 dropped coins); superseded by the rerun | note | train | - | - | - | - | - | - |

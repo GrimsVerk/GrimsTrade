@@ -1,6 +1,6 @@
 # yt-1: eight rules from trading YouTube (harvest 1), one card each
 
-Written 2026-11-13 ~06:10 UTC, run ideas-1, **before any test of these rules and before any of
+Written 2026-11-13 ~05:45 UTC (commit 8ac6754; the time first written here, 06:10, was a slip, corrected after the tests), run ideas-1, **before any test of these rules and before any of
 their indicators was computed or plotted**. Brief: `chief-of-staff/briefs/grimstrade-ideas-1.md`.
 Source list (our own words, video ids): `yt-harvest-1/docs/ideas/grimstrade-ideas.md`, items
 #1, #2, #3, #7, #8, #9, #10, #12. Seen before: every result of runs 1-3, macro-1, rl-1 and rl-2
