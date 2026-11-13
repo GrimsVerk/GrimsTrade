@@ -1,5 +1,11 @@
 # Next steps
 
+## Short 1 (in progress, branch `short-1` -> `breadth-1`, started 2026-11-13 ~08:15 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-short-1.md`. Question: does a short side on Binance
+USDT perpetuals (market-neutral long-short, or `tsmom12` that goes short in downtrends) add a
+gain worth its risk after funding and fees? Card and write-up: `research/short-1.md`.
+
 ## Breadth 1 (done 2026-11-13, branch `breadth-1`, draft PR #22 -> `info-1`)
 
 Wide books and hourly frequency, after 30 bps costs. One pass: in the wide Coin Metrics coin book
