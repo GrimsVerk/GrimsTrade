@@ -161,4 +161,5 @@ coin share move with trend, volatility and macro inputs). Every variant gets row
 
 ## Status
 
-Plan written. Nothing built or trained yet.
+Environment, tests, trainers and evaluation built and pushed. Training running (see
+`next-steps.md`, "RL 1"). No result yet.

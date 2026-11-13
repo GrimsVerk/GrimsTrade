@@ -54,6 +54,13 @@ Brief: `chief-of-staff/briefs/grimstrade-rl-1.md`. Question: can an RL agent (PP
 across assets, prices + macro inputs) beat `tsmom12` out of sample? Plan and results:
 `research/rl-1.md`; rules: `research/protocol.md` "Reinforcement-learning tests".
 
-- Done: plan, protocol section.
-- Doing: environment (`research/lib/rl_env.py`) with gym-equivalence and look-ahead tests.
-- Next: agents (`research/lib/rl_train.py`), walk-forward runs, write-up.
+- Done: plan, protocol section; gym-exact batched simulator and weekly environment with tests
+  (`research/lib/rl_sim.py`, `rl_env.py`, `tests/test_rl_env.py`); input tables
+  (`rl_data.py`); trainers (`rl_train.py`), launcher (`rl_launch.py`, 4 jobs at a time),
+  evaluation (`rl_eval.py`, dry-checked), report tables (`rl_report.py`).
+- Doing: training 5 variants x 10 seeds x 13 folds, detached. PID in
+  `research/data/rl/launch.pid`, progress `research/data/rl/launch.log`, models in
+  `research/data/rl/models/` (git-ignored). Training skips finished folds, so a restart of
+  `uv run --with torch python research/lib/rl_launch.py` resumes.
+- Next: `uv run --with torch python research/lib/rl_eval.py` (logs tries), then
+  `uv run python research/lib/rl_report.py`, write the plain-words results in `research/rl-1.md`.
