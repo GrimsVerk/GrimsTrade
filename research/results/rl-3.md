@@ -59,6 +59,18 @@ rule (score = k x peek, no learning), picked in hindsight. Captured = (agent - t
 | 0.20 | 4.0 | 1.43 | +0.446 (0.00) | +0.512 | 24.7% | 18.6 | 15.8% | yes |
 | 0.20 | sign | 1.43 | +0.437 (0.00) | +0.528 | 29.0% | 19.3 | 18.1% |  |
 
+## Post-hoc: a supervised forecaster instead of PPO (`lib/rl3_supervised.py`)
+
+Walk-forward least squares on all 28 inputs, score = forecast / its training sd (k = 1).
+Written after the agent results; not part of the card.
+
+| rho | Sharpe | dSharpe vs tsmom12 (p) | Since 2003 d | Forecast IC (out of sample) | corr(forecast, peek) | Active share |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0.00 | 0.87 | -0.123 (0.96) | -0.010 | -0.014 | +0.00 | 10.5% |
+| 0.05 | 0.87 | -0.116 (0.94) | -0.000 | -0.008 | +0.13 | 10.6% |
+| 0.10 | 0.91 | -0.079 (0.85) | +0.040 | +0.008 | +0.24 | 10.8% |
+| 0.20 | 1.08 | +0.095 (0.10) | +0.236 | +0.060 | +0.39 | 10.8% |
+
 ## Gap per fold: `diag-long-0.05` (weekly Sharpe; ensemble / tsmom12)
 
 | Fold | Updates chosen (10 seeds) | Training part | Validation | Out of sample | Active share out of sample |

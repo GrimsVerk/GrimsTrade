@@ -274,6 +274,17 @@ def report() -> None:
                          f"| {f(r['since2003_diff'], '+.3f')} | {f(r['mdd'], '.1%')} "
                          f"| {f(r['turnover'], '.1f')} | {f(r['active'], '.1%')} "
                          f"| {'yes' if k == cj['best'] else ''} |")  # fmt: skip
+    sup = OUT / "sup3.json"
+    if sup.exists():
+        L += ["", "## Post-hoc: a supervised forecaster instead of PPO (`lib/rl3_supervised.py`)", "",
+              "Walk-forward least squares on all 28 inputs, score = forecast / its training sd (k = 1).",
+              "Written after the agent results; not part of the card.", "",
+              "| rho | Sharpe | dSharpe vs tsmom12 (p) | Since 2003 d | Forecast IC (out of sample) "
+              "| corr(forecast, peek) | Active share |", "|---:|---:|---:|---:|---:|---:|---:|"]  # fmt: skip
+        for rho, r in json.loads(sup.read_text()).items():
+            L.append(f"| {rho} | {f(r['sharpe'])} | {f(r['diff'], '+.3f')} ({f(r['p'])}) "
+                     f"| {f(r['since2003_diff'], '+.3f')} | {f(r['forecast_ic'], '+.3f')} "
+                     f"| {f(r['corr_forecast_peek'], '+.2f')} | {f(r['active'], '.1%')} |")  # fmt: skip
     for k, e in ev.items():
         L += ["", f"## Gap per fold: `{k}` (weekly Sharpe; ensemble / tsmom12)", "",
               "| Fold | Updates chosen (10 seeds) | Training part | Validation | Out of sample "
