@@ -84,8 +84,9 @@ FRED = [
     "DTWEXBGS",
     "DCOILWTICO",
     "RRPONTSYD",
+    "UMCSENT",  # U. Michigan consumer sentiment (YT-Harvest idea 7)
 ]
-ALFRED = ["PAYEMS", "M2SL", "CPIAUCSL", "UNRATE", "INDPRO", "WALCL"]  # revised series
+ALFRED = ["PAYEMS", "M2SL", "CPIAUCSL", "UNRATE", "INDPRO", "WALCL", "UMCSENT"]  # revised series
 FRENCH = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
 FRENCH_FILES = [
     "F-F_Research_Data_Factors_CSV.zip",
