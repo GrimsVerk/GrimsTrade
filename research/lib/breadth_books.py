@@ -41,12 +41,13 @@ def derived() -> Path:
 # ---------------------------------------------------------------- Book A: Coin Metrics
 
 
-def cm_panel() -> dict[str, np.ndarray]:
-    path = derived() / "cm-panel.npz"
+def cm_panel(last: date = TRAIN_LAST_BAR) -> dict[str, np.ndarray]:
+    """`last` later than the train cut only for the one held-out check of a survivor."""
+    path = derived() / ("cm-panel.npz" if last == TRAIN_LAST_BAR else f"cm-panel-{last}.npz")
     if path.exists():
         return dict(np.load(path, allow_pickle=False))
     root = macro.cache_root() / "coinmetrics" / "full" / CM_SNAPSHOT / "assets"
-    n_days = (TRAIN_LAST_BAR - CM_START).days + 1
+    n_days = (last - CM_START).days + 1
     cols: dict[str, list[np.ndarray]] = {k: [] for k in ("px", "mc", "vol", "addr")}
     names: list[str] = []
     for folder in sorted(root.iterdir()):
@@ -111,8 +112,8 @@ class Book:
     note: str = ""
 
 
-def cm_book() -> Book:
-    p = cm_panel()
+def cm_book(top_n: int = 100, last: date = TRAIN_LAST_BAR) -> Book:
+    p = cm_panel(last)
     px, mc, vol, addr = p["px"], p["mc"], p["vol"], p["addr"]
     names = [str(x) for x in p["names"]]
     lr = np.vstack([np.full((1, px.shape[1]), np.nan), np.log(px[1:] / px[:-1])])
@@ -129,7 +130,7 @@ def cm_book() -> Book:
     for t in range(px.shape[0]):
         n = ok[t].sum()
         if n:
-            elig[t, np.argsort(-rank_mc[t])[: min(100, n)]] = True
+            elig[t, np.argsort(-rank_mc[t])[: min(top_n, n)]] = True
     with np.errstate(invalid="ignore", divide="ignore"):
         sig = {
             "mom_7": logret(px, 7, 0),

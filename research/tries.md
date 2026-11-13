@@ -819,3 +819,8 @@ Never edit or delete a row.
 | 2026-11-13 07:57 | breadth-1-hf | eth-binance hf-band-ts 10bps (vs ts -0.22 p 0.85) | robustness | train | 2020-01-01 | 2025-11-09 | 0.73 | +339.7% | 59.2% | 41.45 |
 | 2026-11-13 07:57 | breadth-1-binance | hourly rev_1h (IC +0.0612 t +29.7, break-even 0.58) | screen | train | 2020-01-01 | 2025-11-09 | - | - | - | - |
 | 2026-11-13 07:57 | breadth-1-binance | hourly mom_24h (IC -0.0366 t -17.1, break-even 0.20) | screen | train | 2020-01-01 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:59 | breadth-1-cm | weekly turnover TOP-TS, 100 bps a side | robustness | train | 2019-04-07 | 2025-11-09 | 0.93 | +828.3% | 59.8% | 7.60 |
+| 2026-11-13 07:59 | breadth-1-cm | weekly turnover TOP-TS, top 50 coins | robustness | train | 2019-04-07 | 2025-11-09 | 1.04 | +1317.1% | 55.4% | 7.66 |
+| 2026-11-13 07:59 | breadth-1-cm | weekly turnover placebo, 100 random fixed scores (95th pct of TOP-TS - TS +0.10) | control | train | 2019-04-05 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:59 | breadth-1-cm | weekly turnover TS held-out | baseline | heldout | 2025-11-16 | 2026-11-09 | 0.31 | +2.1% | 5.0% | 2.21 |
+| 2026-11-13 07:59 | breadth-1-cm | weekly turnover TOP-TS held-out | variant | heldout | 2025-11-16 | 2026-11-09 | 0.61 | +5.1% | 6.1% | 2.21 |
