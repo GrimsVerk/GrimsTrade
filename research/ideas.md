@@ -118,3 +118,15 @@ Tables: [results/rl-1.md](results/rl-1.md).
 | ppo-mlp-dd | RL, drawdown penalty | dead | [rl-1.md](rl-1.md) | 0.57 / 0.76, worst loss 60%; sits in cash, no smarter. |
 | ppo-mlp-px | RL, prices only | dead | [rl-1.md](rl-1.md) | 0.71 / 0.81, worst loss 82%; macro inputs did not help. |
 | es-lin | Evolution strategy (sanity check) | dead | [rl-1.md](rl-1.md) | 0.57 / 0.72, worst loss 87%; a different optimiser, the same place. |
+
+### Short side on perpetuals (short-1, 2026-11-13)
+
+Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmom12` long-only spot, 30 bps.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| tsmom12-ls | Trend, short in downtrends | dead | [short-1.md](short-1.md) | 0.73 vs 1.03 (30 coins), 0.76 vs 1.19 (BTC/ETH); shorts sit through rallies. |
+| ls-low_vol, ls-size, ls-turnover, ls-combo | Dollar-neutral relative | dead | [short-1.md](short-1.md) | Sharpe -0.3 to -0.6: short legs of wild coins lose 43-48% a year. |
+| ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
+| ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
+| ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
