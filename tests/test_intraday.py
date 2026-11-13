@@ -98,3 +98,28 @@ def test_collect_rechecks_the_last_coinbase_day(tmp_path: Path) -> None:
     collect(tmp_path, NOW, get)
     first = next(u for u in urls if "BTC-USD" in u)
     assert "start=2026-11-11T13:00:00Z" in first  # last stored 12:00, +1 h, -24 h
+
+
+def test_open_interest_pages_forward_past_empty_windows() -> None:
+    from urllib.parse import parse_qs, urlparse
+
+    from grimstrade.intraday import OI_START, kraken_open_interest
+
+    first = int(OI_START.timestamp()) + 3000 * H  # the series starts 3,000 hours in
+    last = first + 2500 * H
+    calls: list[int] = []
+
+    def get(url: str) -> bytes:
+        since = int(parse_qs(urlparse(url).query)["since"][0])
+        calls.append(since)
+        end = since + 2000 * H  # one page: 2,000 hours from `since`
+        ts = [t for t in range(first, last + 1, H) if since <= t < end]
+        data = [[str(t), str(t + 1), str(t - 1), str(t)] for t in ts]
+        return json.dumps({"result": {"timestamp": ts, "data": data, "more": end <= last}}).encode()
+
+    rows = kraken_open_interest("PF_XBTUSD", OI_START, NOW, get)
+    assert len(rows) == 2501 and len(calls) == 3
+    assert calls[1] == calls[0] + 2000 * H  # an empty page moves on by a full page
+    assert rows[0]["time"] == "2022-05-06T00:00:00Z"
+    assert rows[0]["oi_close"] == repr(float(first))
+    assert rows[0]["available_at"] == "2022-05-06T01:15:00Z"

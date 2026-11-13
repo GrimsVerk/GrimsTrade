@@ -35,6 +35,9 @@ def fake_intraday(url: str) -> bytes:
         q = {k: [1.0] * len(ts) for k in ("open", "high", "low", "close", "volume")}
         chart = {"result": [{"timestamp": ts, "indicators": {"quote": [q]}}]}
         return json.dumps({"chart": chart}).encode()
+    if "open-interest" in url:
+        data = [["1.0", "2.0", "0.5", "1.5"] for _ in ts]
+        return json.dumps({"result": {"timestamp": ts, "data": data, "more": False}}).encode()
     if "kraken" in url:
         rates = [{"timestamp": intraday.iso(t), "fundingRate": 1.0, "relativeFundingRate": 1e-5}
                  for t in hours]  # fmt: skip
