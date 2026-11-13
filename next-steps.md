@@ -64,3 +64,20 @@ across assets, prices + macro inputs) beat `tsmom12` out of sample? Plan and res
 - Next (not started): residual-policy rung (tsmom12 plus a bounded tilt, reward relative to
   tsmom12, coin cap); card and bar first. Details in `research/rl-1.md`, "What the next rung
   would need".
+
+## RL 2 (research run, branch `rl-2`, started 2026-11-13 ~05:05 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-rl-2.md`. Question: does an RL agent constrained to tilt
+`tsmom12` (residual policy, active reward, early stopping, one variant pooled over 33 markets)
+beat `tsmom12` out of sample? Plan and results: `research/rl-2.md`; rules: `research/protocol.md`
+"Residual RL tests".
+
+- Done: residual environment + tests (zero tilt == `tsmom12` exactly), trainer with purged
+  validation and early stopping, on-chain inputs for coins (`research/lib/onchain.py`, as-of
+  test), 4 variants x 10 seeds x 13 folds, evaluated through the gym, 56 rows in
+  `research/tries.md`, tables `research/results/rl-2.md`, write-up. Answer: no. All four fail
+  (Sharpe 0.96-0.98 against 0.99; active share 1.8-2.7%; at most 1 of 10 seeds ahead).
+  Held-out year unused. Draft PR #18 (`rl-2` -> `rl-1`), not merged.
+- Doing: nothing. No process running.
+- Next (not started): planted-signal control of the residual pipeline (can it find a known
+  weak signal?); then funding rates / basis for coins, which need shorting or futures in the gym.

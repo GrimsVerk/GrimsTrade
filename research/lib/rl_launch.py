@@ -1,6 +1,7 @@
 """Run every (variant, seed) of rl-1 training, a few at a time, with a GPU log.
 
     setsid -f uv run --with torch python research/lib/rl_launch.py
+    RL_TRAIN=rl2_train.py RL_VARIANTS=res-lin,res-mlp,res-pool RL_TAG=rl2- setsid -f ...  (rl-2)
 
 Writes research/data/rl/launch.pid (this process), launch.log (one line per finished job) and
 gpu.csv (nvidia-smi every 30 s while jobs run). Stop it by the PID in launch.pid only.
@@ -16,29 +17,31 @@ from pathlib import Path
 
 LIB = Path(__file__).resolve().parent
 OUT = LIB.parents[0] / "data" / "rl"
-PARALLEL = int(os.environ.get("RL_PARALLEL", "16"))
-VARIANTS = ["ppo-lin", "ppo-mlp", "ppo-mlp-dd", "ppo-mlp-px", "es-lin"]
+PARALLEL = int(os.environ.get("RL_PARALLEL", "4"))  # 4 at most: the PC's memory is shared
+SCRIPT = os.environ.get("RL_TRAIN", "rl_train.py")
+VARIANTS = os.environ.get("RL_VARIANTS", "ppo-lin,ppo-mlp,ppo-mlp-dd,ppo-mlp-px,es-lin").split(",")
+TAG = os.environ.get("RL_TAG", "")
 SEEDS = range(10)
 
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "launch.pid").write_text(f"{os.getpid()}\n")
-    log = (OUT / "launch.log").open("a")
+    (OUT / f"{TAG}launch.pid").write_text(f"{os.getpid()}\n")
+    log = (OUT / f"{TAG}launch.log").open("a")
     env = {**os.environ, "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1"}
     gpu = subprocess.Popen(
         ["nvidia-smi", "--query-gpu=timestamp,utilization.gpu,memory.used,power.draw",
          "--format=csv", "-l", "30"],
-        stdout=(OUT / "gpu.csv").open("a"), stderr=subprocess.DEVNULL,
+        stdout=(OUT / f"{TAG}gpu.csv").open("a"), stderr=subprocess.DEVNULL,
     )  # fmt: skip
     jobs = [(v, s) for s in SEEDS for v in VARIANTS]
     running: list[tuple[subprocess.Popen[bytes], str, float]] = []
     while jobs or running:
         while jobs and len(running) < PARALLEL:
             v, s = jobs.pop(0)
-            out = (OUT / f"train-{v}-s{s}.out").open("ab")
+            out = (OUT / f"{TAG}train-{v}-s{s}.out").open("ab")
             p = subprocess.Popen(
-                [sys.executable, str(LIB / "rl_train.py"), v, str(s)],
+                [sys.executable, str(LIB / SCRIPT), v, str(s)],
                 stdout=out, stderr=subprocess.STDOUT, env=env,
             )  # fmt: skip
             running.append((p, f"{v} s{s}", time.time()))

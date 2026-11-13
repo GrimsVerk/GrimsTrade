@@ -286,3 +286,20 @@ Everything above still applies, the macro as-of rule included. The full design i
 - **No tuning on the out-of-sample window.** Hyperparameters are fixed in the plan. If a
   variant fails to train at all (a bug, a divergence), the fix is noted with its date and every
   variant is rerun with it; a fix is never chosen by out-of-sample Sharpe.
+
+## Residual RL tests (added 2026-11-13 05:10 UTC, run rl-2, before any rl-2 code or training)
+
+Everything above still applies, the RL section included. The full design is the plan in
+`rl-2.md`; these are the rules a result is judged by.
+
+- **Residual action.** The agent's weights are `tsmom12`'s weights plus a tilt of at most half
+  a slot per asset, clipped at 0, coins never above their `tsmom12` weight, scaled to sum to at
+  most 1. With zero tilt it must equal `tsmom12` exactly through `gym.simulate` (a test).
+- **Reward** is the weekly log growth against a `tsmom12` account run beside it in the same
+  simulator, minus 0.001 per unit change in the active position. Fixed in advance.
+- **Early stopping.** The last two years of each training window are a purged validation slice
+  (7-day embargo); at most 60 updates; the best of 13 checkpoints (update 0 = `tsmom12`) on the
+  validation slice is kept. The training/validation/out-of-sample gap is reported per fold.
+- **Pass bar** as written in `rl-2.md`: rl-1's bar, plus ahead of `tsmom12` since 2003 and an
+  average active share of at least 2% (an agent that only matches `tsmom12` with a near-zero
+  tilt fails).
