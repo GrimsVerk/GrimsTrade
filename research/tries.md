@@ -854,3 +854,19 @@ Never edit or delete a row.
 | 2026-11-13 08:07 | short-1-BTC-ETH | EW perp, perp 30 bps + funding | robustness | train | 2020-01-04 | 2025-11-09 | 0.92 | +884.4% | 77.4% | 0.00 |
 | 2026-11-13 08:07 | short-1-BTC-ETH | tsmom12-ls, perp 10 bps + funding | variant | train | 2020-01-04 | 2025-11-09 | 0.76 | +404.3% | 62.9% | 3.24 |
 | 2026-11-13 08:07 | short-1-BTC-ETH | tsmom12-ls, perp 30 bps + funding | robustness | train | 2020-01-04 | 2025-11-09 | 0.74 | +368.6% | 63.4% | 3.24 |
+| 2026-11-13 08:08 | short-1-P30 | ls-low_vol long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | 0.83 | +278.1% | 45.1% | 4.47 |
+| 2026-11-13 08:08 | short-1-P30 | ls-low_vol short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.86 | -97.2% | 98.2% | 5.23 |
+| 2026-11-13 08:08 | short-1-P30 | ls-size long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | 0.62 | +152.0% | 53.8% | 2.14 |
+| 2026-11-13 08:08 | short-1-P30 | ls-size short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.86 | -97.5% | 98.6% | 3.01 |
+| 2026-11-13 08:08 | short-1-P30 | ls-turnover long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | 0.71 | +206.8% | 53.4% | 4.92 |
+| 2026-11-13 08:08 | short-1-P30 | ls-turnover short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.85 | -96.2% | 97.9% | 5.07 |
+| 2026-11-13 08:08 | short-1-P30 | ls-funding long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | 0.91 | +505.8% | 55.0% | 17.41 |
+| 2026-11-13 08:08 | short-1-P30 | ls-funding short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.41 | -78.5% | 87.5% | 21.18 |
+| 2026-11-13 08:08 | short-1-P30 | ls-premium long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | 1.02 | +720.8% | 55.3% | 18.37 |
+| 2026-11-13 08:08 | short-1-P30 | ls-premium short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.47 | -82.1% | 88.7% | 21.27 |
+| 2026-11-13 08:08 | short-1-P30 | ls-trend long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | 0.88 | +414.2% | 55.1% | 5.26 |
+| 2026-11-13 08:08 | short-1-P30 | ls-trend short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.68 | -91.4% | 95.3% | 5.74 |
+| 2026-11-13 08:08 | short-1-P30 | ls-combo long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | 0.76 | +230.9% | 48.0% | 8.01 |
+| 2026-11-13 08:08 | short-1-P30 | ls-combo short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.74 | -95.8% | 97.4% | 8.95 |
+| 2026-11-13 08:08 | short-1-P30 | ls-rev_1 (daily) long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.01 | -49.5% | 77.7% | 243.76 |
+| 2026-11-13 08:08 | short-1-P30 | ls-rev_1 (daily) short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -1.47 | -98.6% | 99.0% | 239.48 |

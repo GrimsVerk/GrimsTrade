@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import sys
 from dataclasses import dataclass, field
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -316,7 +316,63 @@ def table(out: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def legs(log: bool) -> str:
+    """Diagnostic after the run: each P30 long-short book split into its long and short legs
+    (+0.5 and -0.5 of equity on their own, 10 bps, funding), and the price and funding parts."""
+    book = bb.binance_book()
+    fund, alive = funding_panel(book)
+    tradable = book.elig & alive
+    shapes, b0 = build(book, tradable, list(range(len(book.names))), 10)
+    years = (book.px.shape[0] - b0) / 365
+    first = book.day0 + timedelta(days=b0 + 1)
+    out = [
+        "### Legs of the P30 long-short books (diagnostic, after the run)",
+        "",
+        "Each leg alone: +0.5 (long) or -0.5 (short) of equity, the rest in cash, 10 bps,"
+        " funding. CAGR and Sharpe per leg, the leg's funding per year, and the share of"
+        " 2020-21 in the leg's total log return.",
+        "",
+        "| Book | Long leg Sharpe | Long CAGR | Long funding/yr | Short leg Sharpe | Short CAGR"
+        " | Short funding/yr | Short leg log return 2020-21 / all |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for sh in shapes:
+        if not sh.name.startswith("ls-"):
+            continue
+        cells = [sh.name]
+        for sign in (1, -1):
+            tg = np.where(sign * sh.targets > 0, sh.targets, 0.0)
+            run = se.simulate(book.px, fund, tg, sh.base, PERP_COST, b0)
+            cells += [
+                f"{stats.sharpe(run.r):.2f}",
+                f"{stats.cagr(run.r):+.1%}",
+                f"{run.funding.sum() / years:+.1%}",
+            ]
+            if sign == -1:
+                lr = np.log1p(run.r)
+                n21 = (date(2022, 1, 1) - first).days
+                cells.append(f"{lr[:n21].sum():+.2f} / {lr.sum():+.2f}")
+            if log:
+                leg = "long" if sign == 1 else "short"
+                turn = float(np.abs(np.diff(tg, axis=0)).sum() / years)
+                bb.log_row(
+                    "short-1-P30",
+                    f"{sh.name} {leg} leg alone (diagnostic)",
+                    "robustness",
+                    first,
+                    run.r,
+                    turn,
+                )
+        out.append("| " + " | ".join(cells) + " |")
+    return "\n".join(out) + "\n"
+
+
 def main() -> None:
+    if "--legs" in sys.argv:
+        text = legs("--log" in sys.argv)
+        OUT.write_text(OUT.read_text() + "\n" + text)
+        print(text)
+        return
     log = "--log" in sys.argv
     book = bb.binance_book()
     fund, alive = funding_panel(book)

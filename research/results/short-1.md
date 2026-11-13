@@ -45,3 +45,18 @@ From 2020-01-04 (first return day) to 2025-11-10. Coins: 2, tradable per day med
 | EW perp @30 | 0.92 | +47.8% | 77% | -50% | +1.67 | +0.37 | -14.4% | 0 | +0.88 |  |  |  |  |  |  |
 | tsmom12-ls | 0.76 | +31.8% | 63% | -50% | +1.22 | +0.42 | -11.3% | 3 | +0.86 | -0.43 (0.96); perp -0.22 |  |  |  |  | fails 1,2 |
 | tsmom12-ls @30 | 0.74 | +30.2% | 63% | -50% | +1.20 | +0.40 | -11.3% | 3 | +0.86 | -0.45 (0.97); perp -0.24 |  |  |  |  |  |
+
+### Legs of the P30 long-short books (diagnostic, after the run)
+
+Each leg alone: +0.5 (long) or -0.5 (short) of equity, the rest in cash, 10 bps, funding. CAGR and Sharpe per leg, the leg's funding per year, and the share of 2020-21 in the leg's total log return.
+
+| Book | Long leg Sharpe | Long CAGR | Long funding/yr | Short leg Sharpe | Short CAGR | Short funding/yr | Short leg log return 2020-21 / all |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ls-low_vol | 0.83 | +26.1% | -5.4% | -0.86 | -46.3% | +6.9% | -2.94 / -3.57 |
+| ls-size | 0.62 | +17.5% | -5.9% | -0.86 | -47.6% | +6.8% | -3.13 / -3.71 |
+| ls-turnover | 0.71 | +21.6% | -6.1% | -0.85 | -43.3% | +5.7% | -2.41 / -3.26 |
+| ls-funding | 0.91 | +36.8% | -1.8% | -0.41 | -23.5% | +9.7% | -1.28 / -1.53 |
+| ls-premium | 1.02 | +44.3% | -2.3% | -0.47 | -25.9% | +9.5% | -1.47 / -1.72 |
+| ls-trend | 0.88 | +33.0% | -5.7% | -0.68 | -34.8% | +6.7% | -1.73 / -2.45 |
+| ls-combo | 0.76 | +23.2% | -4.7% | -0.74 | -42.4% | +7.8% | -2.65 / -3.17 |
+| ls-rev_1 (daily) | -0.01 | -11.2% | -5.5% | -1.47 | -52.3% | +5.8% | -2.70 / -4.25 |
