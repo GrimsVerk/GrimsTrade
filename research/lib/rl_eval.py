@@ -50,7 +50,9 @@ def load_models(variant: str) -> dict[int, list[tuple[Net, Scaler]]]:
     for y in FOLDS:
         out[y] = []
         for s in SEEDS:
-            ck = torch.load(MODELS / variant / f"s{s}" / f"{y}.pt", weights_only=False)
+            ck = torch.load(
+                MODELS / variant / f"s{s}" / f"{y}.pt", weights_only=False, map_location=CPU
+            )
             net = Net(len(rl_env.ASSET_FEATS) + 1, len(rl_env.MACRO_FEATS) + 1, ck["hidden"])
             net.load_state_dict(ck["state"])
             net.eval()

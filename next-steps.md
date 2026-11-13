@@ -54,13 +54,13 @@ Brief: `chief-of-staff/briefs/grimstrade-rl-1.md`. Question: can an RL agent (PP
 across assets, prices + macro inputs) beat `tsmom12` out of sample? Plan and results:
 `research/rl-1.md`; rules: `research/protocol.md` "Reinforcement-learning tests".
 
-- Done: plan, protocol section; gym-exact batched simulator and weekly environment with tests
-  (`research/lib/rl_sim.py`, `rl_env.py`, `tests/test_rl_env.py`); input tables
-  (`rl_data.py`); trainers (`rl_train.py`), launcher (`rl_launch.py`, 4 jobs at a time),
-  evaluation (`rl_eval.py`, dry-checked), report tables (`rl_report.py`).
-- Doing: training 5 variants x 10 seeds x 13 folds, detached. PID in
-  `research/data/rl/launch.pid`, progress `research/data/rl/launch.log`, models in
-  `research/data/rl/models/` (git-ignored). Training skips finished folds, so a restart of
-  `uv run --with torch python research/lib/rl_launch.py` resumes.
-- Next: `uv run --with torch python research/lib/rl_eval.py` (logs tries), then
-  `uv run python research/lib/rl_report.py`, write the plain-words results in `research/rl-1.md`.
+- Done: plan and protocol section before code; gym-exact batched simulator and environment
+  with tests; 5 agents x 10 seeds x 13 walk-forward folds trained on the RTX 5080; evaluated
+  through the real gym, 70 rows in `research/tries.md`; tables `research/results/rl-1.md`;
+  write-up `research/rl-1.md`. Answer: no. All five fail (Sharpe 0.57-0.71 against
+  `tsmom12` 0.99 out of sample 2000-2025, 0 of 50 seeds ahead). Held-out year unused.
+  Draft PR #17 (`rl-1` -> `macro-1`), not merged.
+- Doing: nothing. No process running.
+- Next (not started): residual-policy rung (tsmom12 plus a bounded tilt, reward relative to
+  tsmom12, coin cap); card and bar first. Details in `research/rl-1.md`, "What the next rung
+  would need".

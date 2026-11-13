@@ -4,6 +4,89 @@ Research run rl-1, 2026-11-13. Brief: `chief-of-staff/briefs/grimstrade-rl-1.md`
 (from `macro-1`). Question: can an RL agent that sets portfolio weights on our six assets beat
 the 12-month trend rule (`tsmom12`) out of sample, and if not, what would it need?
 
+## In plain words (results, 2026-11-13)
+
+**No. No RL agent came close to beating the 12-month trend rule out of sample.** Five agents,
+ten seeds each, walk-forward over 2000-2025 (13 retrainings, every model trained only on data
+before it traded), every decision replayed through the real gym. All five fail the bar fixed
+before training, by a wide margin, and all fifty seeds lose to `tsmom12`. The held-out year was
+not looked at.
+
+- **How far behind:** Sharpe 0.57 to 0.71 against `tsmom12`'s 0.99 over 2000-2025 (0.72 to 0.81
+  against 1.19 since 2003). They are also behind equal weight (0.81) and the other plain twins.
+  Worst losses were 60% to 87% against 37%. The bootstrap puts them behind with p = 0.96 to
+  1.00. These are not near misses.
+- **Spread across seeds:** modest and all on the wrong side. Per seed, `ppo-mlp` ran from 0.55
+  to 0.75, `ppo-lin` 0.52-0.69, the prices-only MLP 0.64-0.78, the drawdown-penalised MLP
+  0.37-0.70 (the widest), ES 0.51-0.64. The best of the 50 seeds (0.78) is still 0.21 behind
+  `tsmom12`. The result does not hang on a lucky or unlucky seed.
+- **What the agents learned:** to hold coins. Each training window from 2013 on contains
+  Bitcoin's (and later Ether's) huge run, and the cheapest way to raise the training reward was
+  to put a third of the book in coins (32-41% on average, against 10% for `tsmom12`, whose
+  equal slots give coins a sixth each only while they trend up). They half-follow the trend
+  flag: an asset in a 12-month downtrend still gets 0.6 to 0.8 of a slot, where `tsmom12` holds
+  none. So they kept most of the crypto crashes, which is where the 77-87% worst losses come
+  from. They also trade 7 to 10 times their equity a year (`tsmom12`: 2.8), much of it in coins
+  at 30 bps a side.
+- **What overfits:** the training window. Fold by fold, the MLP agents score 1.15 (and the
+  drawdown-penalised one 1.44) on the years they were trained on, and 0.63 and 0.51 on the two
+  years each then traded; `tsmom12` scores 0.87 and 0.92 on the same windows. The linear
+  policy, with 42 parameters, overfits less (0.84 in sample, 0.73 out) and is still worse:
+  the problem is not only network size, it is that the reward on a few thousand weekly bars
+  mostly says "the asset that went up most in the past kept going up", and that held for coins
+  only until it did not. The largest gaps to `tsmom12` are in the 2002-03, 2012-13 and 2022-23
+  folds (for `ppo-mlp`: -0.14 against 0.99, 0.74 against 2.90, 0.01 against 0.59).
+- **The sanity check agrees:** the evolution strategy, which optimises the same linear policy's
+  training growth directly with no PPO machinery, does no better (0.57). PPO's optimiser is not
+  what limits the result; the information in the inputs is.
+- **Macro inputs:** no help. The prices-only MLP (0.71) did a little better than the same MLP
+  with macro inputs (0.66), within the seed spread. A drawdown penalty in the reward made the
+  agent sit in cash (54% on average) without making it smarter (0.57).
+- **Out of universe:** the six-asset models, run unchanged on other ETFs and on the four stock
+  indexes, also lose to `tsmom12` (-0.08 to -0.35); on the six other coins they are a little
+  ahead (+0.02 to +0.11), the only place where "hold coins, follow trend loosely" did not
+  hurt.
+- **A telling detail:** in the dry plumbing check (disclosed below), models trained for 2
+  updates instead of 500 scored 0.86, closer to equal weight. Training made the agent worse out
+  of sample. That is the signature of fitting noise.
+
+### What the next rung would need
+
+The agent sees what run 2's models saw (price features, plus macro), and run 2 already showed
+those carry almost no forecast skill on six assets decided weekly. RL adds a way to fit the
+training years harder, and that is what it did. Before more RL on this book, in order of what
+should matter most:
+
+1. **Constrain it to adjust the trend rule, not replace it.** A residual policy (`tsmom12`'s
+   weights plus a bounded tilt), a reward measured against `tsmom12` (active log return), and a
+   cap on coin weight (the owner's crypto slot choice from `risk-map.md`). Then the agent can
+   only add value where it has some, and cannot "discover" crypto's past bull run.
+2. **Many more independent bets.** A wider book (the 33 markets of run 2's pooled set, or 30+
+   ETFs) so a shared policy learns from cross-sectional differences, not from six assets' one
+   history. Or higher frequency in crypto: the local hourly and 1-minute history (Bitstamp
+   2011+, Coinbase, Bitfinex, Binance in `~/data/grimstrade`) gives far more decisions, but costs
+   of 30 bps a side kill fast trading, so it needs a cost-aware action (trade only past a band)
+   and maker-fee assumptions the gym does not yet have.
+3. **Information the trend rule does not have.** Coin Metrics on-chain data (active addresses,
+   exchange flows, realised cap) and perpetual funding rates are the obvious candidates for
+   coins; funding needs perpetual futures and shorting, which the gym does not model.
+4. **Training discipline.** Early stopping on a purged validation slice inside each training
+   window, a turnover penalty, and a much smaller budget: the 2-update models did better than
+   the 500-update ones.
+
+Until one of those changes the inputs or the constraints, more seeds, bigger networks or other
+RL algorithms on this setup are not worth a night: the evolution strategy, a completely
+different optimiser, landed in the same place.
+
+### GPU
+
+The 5080 ran PyTorch 2.15 (CUDA 13.2 build, compute capability 12.0) for three hours at about
+97% reported utilisation but only about 80 W and 9.4 GB for four processes: the networks are tiny
+and the GPU waits on kernel launches, not arithmetic. Each process did about 21,000
+environment-weeks a second with four sharing the GPU. A CPU-only run would likely have been
+as fast; nothing here needed the GPU. It will matter for bigger inputs (minute bars, wide
+books, sequence models), not for this rung.
+
 ## Plan (written 2026-11-13, before any environment code or training)
 
 ### The bar it has to clear, and why it is hard
@@ -159,7 +242,22 @@ coin share move with trend, volatility and macro inputs). Every variant gets row
 - The first launch ran 16 training jobs at once and filled the PC's memory; it was stopped by
   PID before any fold finished and restarted with 4 at a time. No result was involved.
 
-## Status
+## Status (2026-11-13 ~05:30 UTC)
 
-Environment, tests, trainers and evaluation built and pushed. Training running (see
-`next-steps.md`, "RL 1"). No result yet.
+**Done:** plan and protocol section before any code; gym-exact batched simulator and weekly
+environment with tests (equal to `gym.simulate` to 1e-10 on synthetic bars and 3e-15 on the
+real six assets); five agents x ten seeds x thirteen walk-forward folds trained (650 models,
+git-ignored in `data/rl/models/`); evaluation through the real gym, 70 rows in `tries.md` (5
+`variant` ensembles, 50 seeds and 15 out-of-universe runs as `robustness`); tables in
+`results/rl-1.md`; this write-up. All five fail. Held-out year untouched.
+
+**Doing:** nothing half-finished. No process left running.
+
+**Next (not started):** the residual-policy rung (item 1 above) is the cheapest honest next
+step: same environment, `tsmom12` plus a bounded tilt, reward relative to `tsmom12`, coin cap.
+Write its card and bar first.
+
+Reproduce: `uv run python research/lib/rl_data.py` (tables + real-data check), then
+`setsid -f uv run --with torch python research/lib/rl_launch.py` (about 3 hours, 4 jobs at a
+time), then `uv run --with torch python research/lib/rl_eval.py` (logs tries: run once) and
+`uv run python research/lib/rl_report.py`.
