@@ -109,10 +109,26 @@ A variant passes only if its seed ensemble, over 2000-01-07 to 2025-11-09 on the
 
 Held-out year (2025-11-11 to 2026-11-09): at most once, one finalist, only if a variant passes.
 
-### Settings fixed from the timing test
+### Settings fixed from the timing test (2026-11-13 ~06:00 UTC, before the first logged run)
 
-(Filled in before the first logged run.)
+- One fold of 60 updates takes about 8 s (`res-mlp`) to 12 s (`res-pool`) on one CPU core, so
+  training runs on the CPU (`RL_DEVICE=cpu`), 4 jobs at a time (`rl_launch.py`, now
+  parametrised by `RL_TRAIN`, `RL_VARIANTS`, `RL_TAG`; default 4 parallel). The GPU is not used:
+  rl-1 already showed these networks do not need it.
+- The timing test trained throwaway `res-mlp` and `res-pool` seed-0 models for folds 2024 and
+  2000 (outside the model folder, deleted). It printed their validation scores (2024: update 0
+  best for both; 2000 `res-pool`: update 60 best), which are inside the training windows. No
+  out-of-sample number was computed. No setting was changed after it.
+- A book enters a fold's training only with at least 26 training Fridays and a validation slice
+  after its first eligible Friday; otherwise it is left out of that fold and its episodes are
+  not reassigned (early `res-pool` folds have fewer books).
+- Evaluation decisions: on each day the agent's weights are `residual` applied to that day's
+  `tsmom12` decision (the logged baseline's own schedule, which on a holiday Friday keeps the
+  previous Friday's weights) with the tilt scores of the Friday in force. This is what makes zero
+  tilt equal `tsmom12` to the last digit (`rl2_data.py` check: error 0 over 9,440 days;
+  `tests/test_rl2.py`). Training and the agent's view of its own account use rl-1's simulator,
+  which repeats Friday's weights all week; the two differ only in holiday weeks.
 
 ## Status
 
-Plan written. No code, no training yet.
+Plan and code done, tests pass. Training next.
