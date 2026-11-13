@@ -132,6 +132,124 @@ Baselines and every variant re-run on SPY / IEF (2003-01 .. 2025-10, Yahoo adjus
 month ends; cash = French RF), with GLD as a third risk asset in `xmom` from 2005-12. Same
 signals. Kind `robustness`.
 
-## Results
+## Results (2026-11-13; tables in `results/invest-1.md`, 33 rows in `tries.md`)
 
-(Filled after the runs.)
+### In plain words
+
+- **No slow signal passed.** None of the 8 variants beats 60/40 in both periods by the card's
+  bar, and none adds to the trend rule out of sample. The answer to "which slow signals improve a
+  long-horizon allocation over 60/40 and the trend rule" is: none that we can prove.
+- **Valuation really does forecast the next decade, but that does not make money for an
+  allocator.** Cheap stocks (high earnings yield, high excess CAPE yield) were followed by better
+  10-year real returns since 1881 (R² 0.27-0.33). The overlapping-window t-values look huge
+  (4-6), but there are only 14 non-overlapping decades, and on those the t-value is about 2.
+  Turned into a tilt of 60/40, the CAPE signal earned nothing after 1990 (Sharpe 0.67 vs 0.67):
+  US stocks looked expensive for most of 30 years and kept going up. The excess CAPE yield
+  (which compares stocks with real bond yields) did better: +0.08 Sharpe before 1990 (p 0.002),
+  +0.06 after (p 0.15), -0.01 on the ETFs 2003-2025. Right sign, too small to trust.
+- **The trend rule is still the thing that holds up, and what it buys is safety, not return.**
+  Monthly `tsmom12` beat 60/40 by +0.12 Sharpe before 1990 and +0.10 after (not significant on
+  its own, p 0.17 and 0.22), but its worst fall was 19% against 63% (1927-89) and 8% against 29%
+  (1990-2025). It gives up about 1 point of return a year for that.
+- **Closest call:** the excess-CAPE-yield tilt inside the trend rule (`ecy-trend`) had the best
+  Sharpe in both periods (0.62 and 0.82 against trend's 0.53 and 0.77). It beat the trend rule
+  clearly before 1990 (p 0.002) but not after (p 0.13), and on the ETFs 2003-2025 it trailed it
+  (0.94 vs 0.97). Parked, not dead: it is the one idea worth re-checking as data accrues.
+- **Dead:** term spread, real-yield tilt, inflation switch (bonds to cash when inflation > 4%),
+  dual momentum across stocks/bonds/cash, and the 10-month moving average (equal to its trend twin).
+- **How sure:** the whole answer rests on about 10 independent decades of strategy returns (6.3
+  train, 3.6 out of sample) and 14 non-overlapping decades of valuation history. That is enough
+  to see that valuation forecasts the decade, and not enough to prove a tilt of +0.05-0.10
+  Sharpe out of sample: at the same gain, `ecy-tilt` would need about 55 years of out-of-sample
+  data instead of 36 to reach p < 0.10.
+
+### Main numbers (excess Sharpe, monthly, 10 bps per side)
+
+| Rule | Train 1927-89 | p vs 60/40 | OOS 1990-2025 | p vs 60/40 | ETF 2003-25 | Max DD train / OOS |
+|---|---:|---:|---:|---:|---:|---:|
+| `6040` | 0.41 | | 0.67 | | 0.76 | 63% / 29% |
+| `bh-stocks` | 0.40 | 0.73 | 0.59 | 0.89 | 0.68 | 84% / 50% |
+| `tsmom12-m` | 0.53 | 0.17 | 0.77 | 0.22 | 0.97 | 19% / 8% |
+| `cape-tilt` | 0.43 | 0.27 | 0.67 | 0.52 | 0.71 | 61% / 22% |
+| `ecy-tilt` | 0.49 | 0.002 | 0.73 | 0.15 | 0.75 | 57% / 31% |
+| `term-tilt` | 0.38 | 0.92 | 0.57 | 0.97 | 0.60 | 63% / 35% |
+| `real-tilt` | 0.46 | 0.19 | 0.64 | 0.69 | 0.68 | 49% / 38% |
+| `infl-regime` | 0.41 | 0.44 | 0.69 | 0.34 | 0.80 | 63% / 33% |
+| `6040-sma10` | 0.52 | 0.18 | 0.75 | 0.32 | 0.81 | 25% / 9% |
+| `xmom` | 0.51 | 0.23 | 0.59 | 0.72 | 0.55 | 44% / 21% |
+| `ecy-trend` | 0.62 | 0.04 | 0.82 | 0.16 | 0.94 | 19% / 10% |
+
+Pass bars: `ecy-tilt` passes bar 1 (train), bar 3 (7 of 10 decades) and bar 4, fails bar 2
+(OOS p 0.15). `ecy-trend` passes bars 1 and 4, fails 2 (p 0.16) and 3 (5 of 10 decades: behind
+60/40 in the 1950s, 1960s and 2010s, when trend whipsawed). `cape-tilt` and `real-tilt` reach 6
+decades but fail both p-values. Nothing passed, so no 30 bps robustness run was needed.
+
+Eras (OOS, protocol): the CAPE and ECY tilts lost to 60/40 in 2022-25 (CAPE tilt -0.11, ECY
+0.07, against 0.20: underweight stocks in a strong market, overweight bonds in the 2022 rate
+shock), and every trend or momentum rule won 2000-09 (0.39-0.65 against 0.05).
+
+### Long-horizon forecasts (next 10-year log real stock return, 1881-2013)
+
+| Signal | Slope | R² | t (Newey-West) | t (Hansen-Hodrick) | Non-overlapping decades | t on those |
+|---|---:|---:|---:|---:|---:|---:|
+| earnings yield 1/CAPE | 8.3 | 0.27 | 5.9 | 6.2 | 14 | 2.0 |
+| excess CAPE yield | 6.2 | 0.33 | 4.3 | 4.1 | 14 | 2.3 |
+| term spread (from 1926) | 9.4 | 0.05 | 2.4 | 2.6 | 9 | 0.1 |
+| real 10-year yield | -2.1 | 0.05 | -2.2 | -2.0 | 14 | -3.0 |
+| inflation | 2.2 | 0.07 | 2.9 | 2.8 | 14 | 2.2 |
+
+The overlapping-window corrections (Newey-West, Hansen-Hodrick) give t-values two to three times
+the non-overlapping ones: with 14 real data points they are not to be believed at face value.
+Only the two valuation signals keep the same sign at 1, 5 and 10 years and in both methods; the
+term spread's non-overlapping slope even flips sign at 5 years. Real yields and inflation at 10
+years carry the 1970s-80s story (high inflation, then a great decade) and not much else.
+
+Where we are now: CAPE was 41 in October 2025 (45 at the 1999 peak; average ~17). History says
+the next decade's real stock return is likely low; this run says an allocator could not have
+turned that kind of warning into a better Sharpe after 1990.
+
+### Deviations from the card (all noted before writing this section)
+
+- Forecasts use the next h-year **real** stock return, not real excess (no T-bill rate before
+  1926); Shiller's real total-return price is a monthly average, so a signal and its forward
+  window overlap by half a month (negligible at 1-10 years).
+- ETF check starts 2003-09 (the first month SPY and IEF both have 12 months of returns), not
+  2003-01.
+- Trend rules are their base (all held) for the first six months of train (1927-01..06), until
+  12 months of French returns exist. The term-spread tilt is plain 60/40 until 1936-07 (120
+  months of its own history).
+- Shiller's earnings stop in 2023; the last value is carried forward (card), so valuation
+  signals in 2024-25 move with price only.
+- Stress windows were not computed (monthly data); the protocol eras are reported instead.
+- The report was re-run once with `--no-log` to fix a display bug (real CAGR showed NaN because
+  CPI for 2025-10 is not out); no strategy number changed and no row was logged twice.
+
+## Sketch: the investing agent next to the trading agent (described, not built)
+
+- **Own book.** A second fake-money account (say 10,000 USD) in the same gym, with its own
+  strategy ids (`invest/<name>`) and its own ledger lines in the same append-only `ledger/`
+  files, tagged by book. The trading agent's numbers and the investing agent's never mix, and
+  the scoreboard shows the two books side by side.
+- **Monthly decisions.** The daily runner already runs every day; an investing strategy decides
+  only on the last trading day of a month (or quarter) and repeats its weights otherwise, like
+  the weekly research strategies. Fills at the next open, same costs, same 1% band. A decision
+  day with no new month-end close writes nothing.
+- **Inputs.** Prices of SPY, IEF/TLT, GLD and cash (T-bill interest, which the investing book
+  needs more than the trading book does: it may sit in cash for years). Valuation and CPI with
+  the lags of this card, from a small monthly file the runner can read without keys (Shiller's
+  sheet stopped in 2023, so a maintained source is needed first: FRED keyless CSV is blocked for
+  our client; a monthly file committed by a person or an agent is the simple route).
+- **Judged on years.** Its scoreboard shows rolling 1-, 3- and 10-year returns and drawdowns
+  next to 60/40 and `tsmom12-m`, and says plainly that a year of paper results proves nothing at
+  this horizon. The tries count and deflated Sharpe apply as for the trading agent.
+- **What it would hold first.** On this run's evidence: `6040` and `tsmom12-m` monthly
+  (SPY/IEF/cash) as the baselines, nothing else live. `ecy-trend` stays parked; the valuation
+  numbers are shown as context ("expected 10-year return is low"), not traded.
+
+## Status
+
+Done 2026-11-13: card, data layer, as-of test, 8 variants + 3 baselines on train and OOS,
+forecasts, ETF check, write-up. Held-out year (2025-11..2026-11) untouched. Draft PR #24
+(`invest-1` -> `short-1`), not merged. Possible next steps (owner's choice): a maintained monthly
+valuation source; a gold and international-stocks extension (needs keyless long gold history);
+re-check `ecy-trend` on the held-out year only if a later card gives a reason.

@@ -130,3 +130,8 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
 | ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
 | ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
+| cape-tilt, real-tilt | Valuation / real-yield tilt of 60/40 (monthly) | dead | [invest-1.md](invest-1.md) | OOS 1990-2025 Sharpe -0.00 / -0.03 vs 60/40: stocks looked dear for 30 years and kept rising. |
+| ecy-tilt | Excess-CAPE-yield tilt of 60/40 | parked | [invest-1.md](invest-1.md) | +0.08 train (p 0.002), +0.06 OOS (p 0.15), -0.01 on ETFs 2003-25: right sign, too small to prove. |
+| term-tilt, infl-regime, xmom | Term spread, inflation switch, dual momentum | dead | [invest-1.md](invest-1.md) | No gain over 60/40 in either period; xmom 0.59 vs 0.67 OOS. |
+| 6040-sma10 | 60/40 with 10-month average filter | dead | [invest-1.md](invest-1.md) | Matches its twin `tsmom12-m` (0.75 vs 0.77 OOS): the twin is simpler. |
+| ecy-trend | ECY tilt inside the trend rule | parked | [invest-1.md](invest-1.md) | Best Sharpe in both periods (0.62 / 0.82) but beats trend only in train (p 0.002; OOS p 0.13; ETF -0.03). |
