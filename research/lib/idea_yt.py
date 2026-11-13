@@ -267,7 +267,9 @@ def fng_rule(kind: str) -> c.ResearchStrategy:
         for s in held:
             on = c.tsmom_signal(view, s)
             if is_coin(s):
-                on = (on or fear(view.today)) if kind == "fear" else on and fng.at(view.today) < 75
+                # NaN (before 2018-02): no data, so the slot stays `tsmom12`'s
+                greed = fng.at(view.today) >= 75
+                on = (on or fear(view.today)) if kind == "fear" else on and not greed
             if on:
                 out[s] = 1 / len(held)
         return out
