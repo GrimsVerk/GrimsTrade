@@ -1,5 +1,10 @@
 # Next steps
 
+## Breadth 1 (in progress 2026-11-13, branch `breadth-1`)
+
+Do weak signals pay on a wide book (Coin Metrics coins, 30 Binance pairs, 33-market pool) or at
+hourly frequency in BTC/ETH? Card and status in `research/breadth-1.md`.
+
 ## Info 1 (done 2026-11-13, branch `info-1`, draft PR #21 -> `rl-3`)
 
 23 new inputs (COT, Cboe options/vol and put/call, crypto funding/basis/DVOL, on-chain, Fear &
