@@ -1,5 +1,17 @@
 # Next steps
 
+## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
+
+Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
+(delisted included), Bybit, Hyperliquid (~550 coins, 2021-2025, 10 bps + every funding event).
+Weak replication by the card: `ls-funding` passes all four bars (pooled Sharpe 0.69, p 0.04;
+blend 0.37 vs twin 0.20, p 0.04; positive on every venue and era); `ls-premium`, the lead, does
+not (pooled 0.44, p 0.15). Smaller than on short-1's 30 coins, a funding harvest with beta hedged
+out, gone at 30 bps (turnover ~42x a year). Held-out year unspent (card: only if `ls-premium`
+replicates). Write-up `research/carry-2.md`. Owner options: a cost card (real fills on small
+perps, slower rebalance) or a held-out-only card for pooled `ls-funding`; neither matters while
+the paper system stays long-only BTC/ETH on spot.
+
 ## Short 1 (done 2026-11-13, branch `short-1`, draft PR #23 -> `breadth-1`)
 
 A short side on Binance USDT perps (30 pairs and BTC/ETH, 2020-2025, 10 bps + every funding

@@ -870,3 +870,69 @@ Never edit or delete a row.
 | 2026-11-13 08:08 | short-1-P30 | ls-combo short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.74 | -95.8% | 97.4% | 8.95 |
 | 2026-11-13 08:08 | short-1-P30 | ls-rev_1 (daily) long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.01 | -49.5% | 77.7% | 243.76 |
 | 2026-11-13 08:08 | short-1-P30 | ls-rev_1 (daily) short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -1.47 | -98.6% | 99.0% | 239.48 |
+| 2026-11-13 09:45 | carry-2-B-out | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2021-02-20 | 2025-11-09 | 0.07 | -48.3% | 76.1% | 4.16 |
+| 2026-11-13 09:45 | carry-2-B-out | tsmom12 perp, perp 10 bps + funding | baseline | train | 2021-02-20 | 2025-11-09 | -0.02 | -59.3% | 78.3% | 4.16 |
+| 2026-11-13 09:45 | carry-2-B-out | tsmom12 perp, perp 30 bps + funding | robustness | train | 2021-02-20 | 2025-11-09 | -0.03 | -61.3% | 79.3% | 4.16 |
+| 2026-11-13 09:45 | carry-2-B-out | EW perp, perp 10 bps + funding | baseline | train | 2021-02-20 | 2025-11-09 | 0.04 | -84.6% | 92.8% | 3.58 |
+| 2026-11-13 09:45 | carry-2-B-out | EW perp, perp 30 bps + funding | robustness | train | 2021-02-20 | 2025-11-09 | 0.02 | -85.5% | 93.2% | 3.58 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-premium, perp 10 bps + funding | variant | train | 2021-02-20 | 2025-11-09 | 0.17 | +7.0% | 28.7% | 41.80 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-premium, perp 30 bps + funding | robustness | train | 2021-02-20 | 2025-11-09 | -0.36 | -30.0% | 47.3% | 41.80 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-premium long leg alone (diagnostic) | robustness | train | 2021-02-20 | 2025-11-09 | -0.01 | -40.0% | 62.0% | 19.97 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-premium short leg alone (diagnostic) | robustness | train | 2021-02-20 | 2025-11-09 | 0.12 | -19.5% | 57.7% | 21.83 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-funding, perp 10 bps + funding | variant | train | 2021-02-20 | 2025-11-09 | 0.57 | +43.0% | 24.2% | 42.08 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-funding, perp 30 bps + funding | robustness | train | 2021-02-20 | 2025-11-09 | -0.02 | -6.6% | 34.7% | 42.08 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-funding long leg alone (diagnostic) | robustness | train | 2021-02-20 | 2025-11-09 | 0.08 | -27.0% | 59.5% | 19.49 |
+| 2026-11-13 09:45 | carry-2-B-out | ls-funding short leg alone (diagnostic) | robustness | train | 2021-02-20 | 2025-11-09 | 0.16 | -12.5% | 57.3% | 22.59 |
+| 2026-11-13 09:45 | carry-2-Bybit | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2022-05-14 | 2025-11-09 | 0.20 | +1.3% | 51.3% | 5.64 |
+| 2026-11-13 09:45 | carry-2-Bybit | tsmom12 perp, perp 10 bps + funding | baseline | train | 2022-05-14 | 2025-11-09 | 0.16 | -4.7% | 52.8% | 5.64 |
+| 2026-11-13 09:45 | carry-2-Bybit | tsmom12 perp, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | 0.12 | -8.8% | 53.2% | 5.64 |
+| 2026-11-13 09:45 | carry-2-Bybit | EW perp, perp 10 bps + funding | baseline | train | 2022-05-14 | 2025-11-09 | 0.13 | -51.6% | 72.8% | 7.62 |
+| 2026-11-13 09:45 | carry-2-Bybit | EW perp, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | 0.10 | -54.6% | 73.6% | 7.62 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-premium, perp 10 bps + funding | variant | train | 2022-05-14 | 2025-11-09 | 0.73 | +41.4% | 19.5% | 42.66 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-premium, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | 0.13 | +3.1% | 23.8% | 42.66 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-premium long leg alone (diagnostic) | robustness | train | 2022-05-14 | 2025-11-09 | 0.18 | -1.2% | 41.0% | 21.30 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-premium short leg alone (diagnostic) | robustness | train | 2022-05-14 | 2025-11-09 | 0.14 | -7.8% | 53.1% | 21.36 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-funding, perp 10 bps + funding | variant | train | 2022-05-14 | 2025-11-09 | 0.31 | +12.9% | 19.5% | 46.16 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-funding, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | -0.35 | -19.6% | 29.5% | 46.16 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-funding long leg alone (diagnostic) | robustness | train | 2022-05-14 | 2025-11-09 | 0.11 | -10.3% | 44.5% | 22.06 |
+| 2026-11-13 09:45 | carry-2-Bybit | ls-funding short leg alone (diagnostic) | robustness | train | 2022-05-14 | 2025-11-09 | 0.04 | -19.2% | 53.5% | 24.10 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2023-06-10 | 2025-11-09 | 0.52 | +37.6% | 51.3% | 11.32 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | tsmom12 perp, perp 10 bps + funding | baseline | train | 2023-06-10 | 2025-11-09 | 0.30 | +3.4% | 53.6% | 11.32 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | tsmom12 perp, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.26 | -2.4% | 54.3% | 11.32 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | EW perp, perp 10 bps + funding | baseline | train | 2023-06-10 | 2025-11-09 | -0.07 | -56.3% | 67.3% | 13.04 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | EW perp, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | -0.11 | -59.2% | 69.0% | 13.04 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-premium, perp 10 bps + funding | variant | train | 2023-06-10 | 2025-11-09 | 0.28 | +10.0% | 31.8% | 44.02 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-premium, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | -0.09 | -12.2% | 36.6% | 44.02 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-premium long leg alone (diagnostic) | robustness | train | 2023-06-10 | 2025-11-09 | 0.43 | +25.0% | 41.3% | 22.20 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-premium short leg alone (diagnostic) | robustness | train | 2023-06-10 | 2025-11-09 | -0.18 | -33.1% | 55.2% | 21.82 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-funding, perp 10 bps + funding | variant | train | 2023-06-10 | 2025-11-09 | 0.47 | +23.6% | 27.1% | 44.28 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-funding, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.10 | -1.5% | 27.3% | 44.28 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-funding long leg alone (diagnostic) | robustness | train | 2023-06-10 | 2025-11-09 | 0.59 | +43.6% | 33.4% | 21.93 |
+| 2026-11-13 09:45 | carry-2-Hyperliquid | ls-funding short leg alone (diagnostic) | robustness | train | 2023-06-10 | 2025-11-09 | -0.21 | -35.6% | 54.9% | 22.35 |
+| 2026-11-13 09:45 | carry-2-pooled | EW perp, equal capital per venue | baseline | train | 2021-02-20 | 2025-11-09 | -0.02 | -86.6% | 93.7% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | EW perp @30, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | -0.04 | -87.6% | 94.2% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | ls-funding, equal capital per venue | variant | train | 2021-02-20 | 2025-11-09 | 0.69 | +55.8% | 19.1% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | ls-funding @30, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.09 | +0.8% | 28.6% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | ls-premium, equal capital per venue | variant | train | 2021-02-20 | 2025-11-09 | 0.44 | +30.9% | 26.5% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | ls-premium @30, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | -0.12 | -14.3% | 33.2% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | tsmom12 perp, equal capital per venue | baseline | train | 2021-02-20 | 2025-11-09 | 0.09 | -49.0% | 75.1% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | tsmom12 perp @30, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.06 | -52.2% | 76.1% | nan |
+| 2026-11-13 09:45 | carry-2-pooled | tsmom12 twin, equal capital per venue | baseline | train | 2021-02-20 | 2025-11-09 | 0.20 | -29.6% | 71.6% | nan |
+| 2026-11-13 09:45 | carry-2-B-all | tsmom12 twin (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.42 | +41.7% | 67.9% | 4.05 |
+| 2026-11-13 09:45 | carry-2-B-all | tsmom12 perp (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.30 | +1.8% | 71.3% | 4.05 |
+| 2026-11-13 09:45 | carry-2-B-all | tsmom12 perp @30 (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.28 | -3.3% | 72.2% | 4.05 |
+| 2026-11-13 09:45 | carry-2-B-all | EW perp (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.26 | -54.8% | 89.5% | 3.23 |
+| 2026-11-13 09:45 | carry-2-B-all | EW perp @30 (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.25 | -57.2% | 90.0% | 3.23 |
+| 2026-11-13 09:45 | carry-2-B-all | ls-premium (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.81 | +83.0% | 22.4% | 39.78 |
+| 2026-11-13 09:45 | carry-2-B-all | ls-premium @30 (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.32 | +21.1% | 35.9% | 39.78 |
+| 2026-11-13 09:45 | carry-2-B-all | ls-funding (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 1.17 | +143.0% | 19.8% | 41.19 |
+| 2026-11-13 09:45 | carry-2-B-all | ls-funding @30 (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 0.64 | +58.6% | 26.4% | 41.19 |
+| 2026-11-13 09:45 | carry-2-B-P30 | tsmom12 twin (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +210.6% | 62.7% | 2.90 |
+| 2026-11-13 09:45 | carry-2-B-P30 | tsmom12 perp (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.57 | +112.7% | 62.6% | 2.90 |
+| 2026-11-13 09:45 | carry-2-B-P30 | tsmom12 perp @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.55 | +103.4% | 62.7% | 2.90 |
+| 2026-11-13 09:45 | carry-2-B-P30 | EW perp (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.47 | +31.0% | 84.0% | 0.80 |
+| 2026-11-13 09:45 | carry-2-B-P30 | EW perp @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.46 | +26.6% | 84.2% | 0.80 |
+| 2026-11-13 09:45 | carry-2-B-P30 | ls-premium (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.38 | +284.1% | 15.5% | 38.44 |
+| 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
+| 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
+| 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
