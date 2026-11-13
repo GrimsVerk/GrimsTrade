@@ -9,9 +9,73 @@ with the lowest 7-day premium (or funding), short the third with the highest. It
 chosen on the same data it was tested on. Does the same book, unchanged, earn on venues and coins
 it never saw (other exchanges, Binance coins outside the 30, delisted contracts)?
 
-## In plain words (results)
+## In plain words (results, 2026-11-13)
 
-Not written yet: the card below was fixed before any new number was computed.
+**Partly. The carry shows up on every venue and coin set it never saw, but it is smaller than
+on short-1's 30 coins, it is only clear in the funding version, and it does not survive
+30 bps a side.** By the card's own words that is a *weak replication*: `ls-funding` passes all
+four bars, `ls-premium` (the primary, short-1's lead) passes two of four. The held-out year
+stays unspent (the card allows it only if `ls-premium` replicates). Tables:
+`results/carry-2.md`; 66 rows in `tries.md`.
+
+| Set (10 bps + funding) | Years | Coins held | `ls-premium` Sharpe (p>0) | `ls-funding` Sharpe (p>0) | Twin `tsmom12` |
+|---|---:|---:|---:|---:|---:|
+| short-1 P30 (spot closes, in-sample) | 5.7 | 30 | 0.83 | 0.78 | 1.03 |
+| **Pooled new data** (equal capital per venue) | 4.7 | ~550 | 0.44 (0.15) | **0.69 (0.04)** | 0.20 |
+| Binance outside the 30, delisted included | 4.7 | 273 | 0.17 (0.35) | 0.57 (0.07) | 0.07 |
+| Bybit (live contracts only) | 3.5 | 215 | 0.73 (0.08) | 0.31 (0.26) | 0.20 |
+| Hyperliquid (from 2024-06 in effect) | 2.4 | 58 | 0.28 (0.32) | 0.47 (0.21) | 0.52 |
+| Pooled at 30 bps | 4.7 | | -0.12 | 0.09 | |
+
+- **The sign holds everywhere.** Both books are positive on all three new sets at 10 bps, in
+  both eras of the pooled set, and nearly uncorrelated with the long-only trend (-0.1 to -0.3).
+  The pooled funding book made 9.8% a year with a 19% max drawdown and a -10% worst week; half
+  of equity in it lifted the pooled twin from 0.20 to 0.37 (p 0.04) and cut its drawdown from 72%
+  to 41%.
+- **But it is weaker than the lead.** On Binance's other 273 coins the premium book is close to
+  nothing (0.17); the funding book is 0.57. The premium book's best venue is Bybit (0.73), the
+  funding book's is Binance. Short-1's 30 large coins are where carry works best: rerun on their
+  perp closes (robustness) they give 1.38 / 1.10, and all 588 Binance coins together 0.81 / 1.17.
+  So the effect is real but concentrated in larger, more liquid coins, and short-1's sample was
+  a flattering one.
+- **Costs decide it.** The book turns over ~42 times a year. At 30 bps a side (a retail account)
+  every new set is at or below zero. It needs execution at about 10 bps a side or less (maker
+  orders or a fee tier), or a slower rule, which would be a new card.
+- **Where the money comes from.** On Binance's other coins both legs lose on price (the long
+  third of cheap-funding coins fell ~10% a year, the short third rose a little less than the
+  market), and the book's gain is the funding it collects, ~9% of equity a year (the short leg
+  receives ~7%). It is a funding harvest with the market beta hedged out, not a price signal.
+- **Survivorship.** 16 of the 273 Binance coins it held were delisted later in train, and 4 of
+  58 on Hyperliquid; they are in the numbers. Bybit served no delisted contracts, so that set is
+  survivors only (which, as short-1 noted, hurts a short book more than it helps).
+- **How sure.** Fairly sure the funding carry exists beyond short-1's coins at low cost: positive
+  on every set, pooled p 0.04, hundreds of coins, three venues, delisted coins included. Not sure
+  of its size: two signals were scored on three sets (the pass is the better of two nearly equal
+  books), the venues are not independent (the same coins, the same 2021-2025 market, one bull run
+  and one winter), Bybit has 3.5 years and Hyperliquid 2.4. Sure that it does not pay at 30 bps.
+
+### What this means
+
+1. **Nothing to change in the paper system.** The long-only BTC/ETH trend on spot (Sharpe 1.19
+   in short-1) is still far ahead of anything here; the twin on these wide coin sets is poor
+   (0.07-0.52), so the blend gains are gains over a bad long-only book.
+2. **A carry sleeve is plausible only with cheap execution.** If the owner ever wants one, the
+   next card should be about costs, not signals: what a 10 bps fill really costs on the 100-odd
+   smallest of these perps (spread, depth), and whether a slower rebalance (every two or four
+   weeks, fixed before any number) keeps the funding while cutting turnover. The funding version,
+   not the premium version, is the one with out-of-venue evidence.
+3. **The held-out year** (2025-11 .. 2026-11) is still clean for both books. A new card may spend
+   it once on pooled `ls-funding` at 10 bps; this card's rule did not allow it.
+
+### What the gym would need if it held (described, not built)
+
+Short-1's list (signed weights with a gross limit, funding as a cash flow every event, margin and
+liquidation), plus: a wide perp universe per venue (100+ coins) with point-in-time listing and
+delisting; the perp's own closes rather than spot (on the 30 coins the perp closes add ~0.5
+Sharpe to the premium book, because the book earns the premium's convergence); funding and
+premium feeds per venue (Binance archive, Bybit v5, Hyperliquid info are all keyless);
+a cost model by coin size (the 10 vs 30 bps gap is the whole result); and a scoreboard that
+shows funding received next to price P&L. Fake money only: nothing would place an order.
 
 ## Card (written 2026-11-13 ~08:30 UTC, before any new number)
 
@@ -121,6 +185,39 @@ Every run gets a row in `research/tries.md` when it runs (`variant` for `ls-prem
 Code: `scripts/fetch_carry2.py` (download), `research/lib/carry2.py` (books and run). Tables:
 `research/results/carry-2.md`.
 
-## Status
+### Disclosures (2026-11-13)
 
-Card written. Next: download script, data, run.
+- The card was committed and pushed (commit "carry-2: card") before the download script existed;
+  its "~08:30 UTC" stamp is approximate (the commit time is the record).
+- One logged run (`carry2.py --log --legs`), no rerun, nothing tuned, bars unchanged.
+- Added beyond the card's list, as robustness only: `B-P30 (perp closes)`, short-1's 30 coins on
+  their perp closes, to show what the price substitution does.
+- Hyperliquid funding was fetched only from each coin's day 350 (its rate limit allows ~30 pages
+  a minute); the card cannot use earlier funding (365-day rule), so no number changes. Its
+  volume is coin volume x daily close.
+- Bybit: delisted Binance names were tried; Bybit answered for none, so Bybit is live contracts
+  only. Four new 2025 listings hit the rate limit once and were refetched.
+- Binance's archive has perp klines from 2020-01, so B-out trades from 2021-02. Binance's
+  monthly 2025-11 files hold held-out days; the panels drop every bar after 2025-11-10 on load,
+  and no held-out number was computed.
+- Pooled funding and turnover are not pooled (shown per venue).
+- The daily close is the last trade of the UTC day; for small coins it carries some bid-ask
+  bounce, which a weekly book mostly averages out. Not measured.
+
+## Status (2026-11-13 ~10:00 UTC)
+
+**Done:** card; `scripts/fetch_carry2.py` (Binance archive 588 perps after the volume
+pre-filter, Bybit 392, Hyperliquid 58; manifest lines in the cache); `research/lib/carry2.py`
+and `carry2_panel.py` (test `tests/test_carry2.py`); the logged run; `results/carry-2.md`; this
+write-up. Draft PR `carry-2` -> `short-1`.
+
+**Doing:** nothing. No process left running.
+
+**Next (owner's choice, not started):** a cost card (real fill costs on small perps, a slower
+rebalance fixed in advance), and/or a held-out-only card for pooled `ls-funding`. Neither
+matters for the paper system while it stays long-only BTC/ETH on spot.
+
+Reproduce: `uv run python -I scripts/fetch_carry2.py binance|bybit|hyperliquid` (resumable),
+then `uv run python -I research/lib/carry2.py` (add `--log --legs` to write `tries.md` rows:
+done once already). Cache root from `research/macro.local.json`; panels under
+`<cache_root>/derived/carry-2/`.

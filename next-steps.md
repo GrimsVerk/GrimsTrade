@@ -1,12 +1,16 @@
 # Next steps
 
-## Carry 2 (research run, branch `carry-2`, started 2026-11-13 ~08:20 UTC)
+## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR -> `short-1`)
 
-Brief: `chief-of-staff/briefs/grimstrade-carry-2.md`. Question: does short-1's `ls-premium` /
-`ls-funding` carry book, copied unchanged, earn on venues and coins it never saw (Binance perps
-outside the 30 incl. delisted, Bybit, Hyperliquid)? Card and write-up: `research/carry-2.md`.
-
-- Doing: card written; next the download script `scripts/fetch_carry2.py`, then `research/lib/carry2.py`.
+Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
+(delisted included), Bybit, Hyperliquid (~550 coins, 2021-2025, 10 bps + every funding event).
+Weak replication by the card: `ls-funding` passes all four bars (pooled Sharpe 0.69, p 0.04;
+blend 0.37 vs twin 0.20, p 0.04; positive on every venue and era); `ls-premium`, the lead, does
+not (pooled 0.44, p 0.15). Smaller than on short-1's 30 coins, a funding harvest with beta hedged
+out, gone at 30 bps (turnover ~42x a year). Held-out year unspent (card: only if `ls-premium`
+replicates). Write-up `research/carry-2.md`. Owner options: a cost card (real fills on small
+perps, slower rebalance) or a held-out-only card for pooled `ls-funding`; neither matters while
+the paper system stays long-only BTC/ETH on spot.
 
 ## Short 1 (done 2026-11-13, branch `short-1`, draft PR #23 -> `breadth-1`)
 
