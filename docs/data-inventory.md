@@ -41,8 +41,9 @@ current state run the commands under "Check progress".
 | `alpaca` | `scripts/backfill/alpaca.py` | ETF 1m bars, **SIP feed** (the free plan allowed it), raw prices, from 2016-01, 20 ETFs: `alpaca/1m-sip/<SYM>/<YYYY-MM>.json`. Started by the Chief of Staff ~15:35 UTC (PID 1017108) after creating the key file | ~5-10 GB (estimate) | ~1-2 h (~170 req/min) |
 | `coinmetrics` | `scripts/backfill/coinmetrics.py <date>` | Every free (community) daily asset metric for every asset in the catalog: 3,547 assets, 14,667 series (~11M points; BTC/ETH 31 metrics each, most small coins only market-cap estimates and volume): `coinmetrics/full/<date>/assets/<asset>/page-NNN.json` + both catalogs. Free tier has no exchange/pair/market data (403). License CC BY-NC 4.0: local only. Started by the Chief of Staff 2026-11-13 02:14 UTC (the BTC/ETH 8-metric pull in `small` is `coinmetrics/2026-11-12/`) | ~1-2 GB (estimate) | ~1.2 h (~1 req/s) |
 
-Known gaps: FRED and ALFRED are **skipped** (`SKIP_HOSTS` in `small.py`): their CSV endpoints
-stall our User-Agent, and we don't disguise the client (owner's call, `next-steps.md`). Coin
+Known gaps: `small.py` still skips the FRED/ALFRED CSV endpoints (`SKIP_HOSTS`: they stall our
+User-Agent, and we don't disguise the client); FRED and ALFRED come from the official API instead,
+`scripts/backfill/fred.py` with the owner's free key, done 2026-11-12, 0 errors. Coin
 Metrics community refuses `CapRealUSD` and `FeeTotUSD` (dropped; `FeeTotNtv` instead). The
 `small` job was restarted ~15:50 UTC after these fixes. Check the
 logs for `FAIL` lines; a rerun retries only what is missing.
@@ -52,7 +53,7 @@ logs for `FAIL` lines; a rerun retries only what is missing.
 - Kraken bulk OHLCVT (1.5): download is a Google Drive link; needs a person or a browser.
 - Raw tick/trade dumps (Binance trades, Kraken trades, Bybit, BitMEX, Dukascopy): too big for now.
 - Hyperliquid funding (4.4, LATER): short history; easy to add to `small.py`.
-- Anything needing a key (Polygon, Tiingo, Twelve Data, FRED JSON API).
+- Anything needing a key (Polygon, Tiingo, Twelve Data). The FRED JSON API is used (`fred.py`).
 
 ## Check progress
 
