@@ -1,10 +1,14 @@
 # Next steps
 
-## Short 1 (in progress, branch `short-1` -> `breadth-1`, started 2026-11-13 ~08:15 UTC)
+## Short 1 (done 2026-11-13, branch `short-1`, draft PR #23 -> `breadth-1`)
 
-Brief: `chief-of-staff/briefs/grimstrade-short-1.md`. Question: does a short side on Binance
-USDT perpetuals (market-neutral long-short, or `tsmom12` that goes short in downtrends) add a
-gain worth its risk after funding and fees? Card and write-up: `research/short-1.md`.
+A short side on Binance USDT perps (30 pairs and BTC/ETH, 2020-2025, 10 bps + every funding
+event): nothing passed. `tsmom12` that goes short in downtrends trails long-only (0.73 vs 1.03
+spot on 30 coins; 0.76 vs 1.19 on BTC/ETH). Longs on perps paid ~12% a year in funding.
+Dollar-neutral low-vol/size/turnover books lose (short legs of wild coins in the 2020-21 rally).
+Near miss: a premium/funding carry book (short the most expensive perps), blend with `tsmom12`
+1.25 vs 1.03 at 10 bps, but not at 30 bps. Held-out year unspent. Write-up `research/short-1.md`.
+Owner options: a held-out-only carry card, or keep long-only BTC/ETH (recommended).
 
 ## Breadth 1 (done 2026-11-13, branch `breadth-1`, draft PR #22 -> `info-1`)
 

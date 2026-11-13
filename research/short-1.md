@@ -9,9 +9,88 @@ high funding underperforms, yesterday reverses). A long-only book can use only h
 Binance USDT perpetuals, after fees, slippage and the funding every position pays or receives,
 does a short side add a gain worth its risk over `tsmom12` long-only on the same coins?
 
-## In plain words (results)
+## In plain words (results, 2026-11-13)
 
-(Filled in after the runs; see Status.)
+**No. On these coins and these years, a short side does not add a gain worth its risk, and
+nothing passed the card.** Tables: `results/short-1.md`. 10 variants were run, none passed;
+the held-out year was not looked at (it is still unspent).
+
+- **`tsmom12` that goes short in downtrends instead of cash loses.** Sharpe 0.73 against 0.88
+  for long-only on the same perps and 1.03 for long-only on spot (30 coins, 2020-2025); on
+  BTC/ETH alone 0.76 against 0.98 and 1.19. Shorting a coin whose 12-month return is negative
+  lost money: downtrends end in sharp rallies, and the rule sits short through them. It also
+  rests on very little: BTC had only **2** downtrend spells in these six years (90 counting
+  every coin, but those overlap heavily).
+- **Perpetuals are an expensive place to be long.** Longs paid funding in almost every month of
+  the bull years: about **11-13% of equity a year** for `tsmom12` and equal weight on perps
+  (BTC/ETH 12.9%). Same rule, same coins: spot at 30 bps beats perps at 10 bps by 0.15-0.2
+  Sharpe. Any plan that moves the long book onto perps to make shorting possible pays this.
+- **The "relative" signals do not survive being turned into long-short books.** `low_vol`,
+  `size` (large over small), `turnover` and the combination of the four all have a positive
+  long-only rank IC (t 3-5), yet as market-neutral books they lost 17-28% a year (Sharpe -0.3 to
+  -0.6). The legs show why: the long legs earn (Sharpe 0.6-0.8 alone), but the short legs, which
+  hold the most volatile, smallest, most-traded coins, lost 43-48% a year, three quarters or more of that in
+  2020-21 when those coins rose most. A dollar-neutral book that is long calm coins and short
+  wild ones is net short the market's beta, and in a crypto bull market that swamps a rank
+  edge. Rank IC counts how often the order is right; a short book pays for the size of the
+  rare 10x coin it is short. The daily one-day reversal is hopeless at any cost (483x turnover).
+- **The one near miss is a carry trade: short the coins whose perpetual is most expensive.**
+  `ls-premium` (long the third with the lowest 7-day premium, short the highest; `ls-funding` is
+  nearly the same book) made Sharpe 0.83 at 10 bps, positive in both eras, almost uncorrelated
+  with `tsmom12` (0.08). Half of equity in it and half in spot `tsmom12` lifted Sharpe from 1.03 to
+  1.25 (p 0.096) and cut the drawdown from 62% to 34%. It fails the card because it does not hold
+  at 30 bps (blend +0.10, p 0.28): it trades 40x a year, so costs eat a third of it. Its short
+  leg still lost money (-26% a year) despite collecting about 19% a year in funding on the short
+  notional: the gain is the long leg plus the funding, not prices falling. Its worst week was
+  -30% and its drawdown 49% at gross 1, so this is not a calm book either.
+- **How sure.** Sure that a short-capable trend rule and dollar-neutral low-vol/size books lose
+  here: the gaps are large and both eras agree. Not sure about the premium/funding carry: it
+  rests on 5.7 years, one exchange, 30 coins that all survived (which makes shorting look worse,
+  not better), spot prices standing in for perp prices, and directions chosen after breadth-1
+  had seen the long-only ICs on the same data. It is a lead, not a result.
+
+### What this means for the owner's choices
+
+1. **Don't add a short side to the paper system now.** The simplest version (short in
+   downtrends) is worse than cash, and the market-neutral books that use the "relative"
+   information mostly lose. The paper system's long-only BTC/ETH trend on spot remains the best
+   rule measured (Sharpe 1.19 on BTC/ETH 2020-2025).
+2. **If a short side is ever wanted, the only shape with evidence is a funding/premium carry
+   book**, sized small next to the trend book, and only with cheap execution (<= 10 bps a side)
+   or slower trading. Its clean test is still available: the held-out year 2025-11 .. 2026-11
+   has never been looked at for it. A new card could fix the rule (as above, plus perhaps a
+   slower rebalance written before the look) and spend that year once.
+3. **Do not move the long book to perpetuals** to make room for shorts: funding costs the long
+   side ~12% a year in bull markets.
+
+### What the gym would need (described, not built)
+
+- **Signed weights.** `gym.validate` rejects weights < 0 and sums > 1. A short side needs
+  weights in [-1, 1] with sum of |w| <= 1 (gross limit; the card's shapes never borrow), and a
+  separate instrument per perp (`BTC-PERP`) so spot and perp positions never net silently.
+- **Funding as a cash flow.** Every 8 hours (some coins 4): `cash -= weight x equity x rate` for
+  each open perp position, from a funding-rate history appended like the bars (the ledger needs
+  a funding row per event or per day, append-only). Shorts receive positive funding.
+- **Perp prices.** Mark price or perp klines, not spot (this run used spot; the gap is the
+  premium). Fills at the next open of the perp bar, fee 5 bps taker + slippage.
+- **Margin and liquidation.** Cross-margin equity check every bar: if equity falls below the
+  maintenance margin (about 0.5-1% of notional on Binance for small positions) the position is
+  closed at the bar's worst price plus a liquidation fee. At gross <= 1 this never triggers
+  unless a short coin rises > ~90% within a bar; the gym should still model it.
+- **Data source in paper.** The paper venues (Kraken, Coinbase spot) do not offer these
+  perpetuals for every coin; the runner would need a public, keyless funding and mark-price feed.
+  Fake money only: nothing would place an order anywhere.
+- **Benchmarks and ledger.** A short book's scoreboard should show funding paid/received and
+  gross exposure next to the return, and compare against the long-only twin.
+
+### What it means for the RL agent
+
+A short side widens the agent's action from "weights in [0, 1], sum <= 1" to "weights in
+[-1, 1], gross <= 1": twice the range, plus funding as a state input and a cost in the reward.
+On this evidence the extra range would mostly give the agent new ways to lose: the only short
+exposure that paid was the carry book's, and its edge (premium/funding as a cross-sectional
+input) needs about 20 coins, not the six-asset book. rl-3's gate (plant a known signal first)
+would have to pass on the wider action before any training run. Not recommended now.
 
 ## Card (written 2026-11-13 ~08:20 UTC, before any number below was computed)
 
@@ -131,6 +210,35 @@ Every variant, baseline and 30 bps rerun gets one row in `research/tries.md` at 
 runs (kind `variant`, `baseline`, `robustness`). Tables: `research/results/short-1.md`. Code:
 `research/lib/short1.py` (reuses breadth-1's cached aggregates; streams nothing new).
 
-## Status
+### Disclosures (2026-11-13)
 
-**Doing:** card written; code next.
+- One logged run (`short1.py --log`), then one logged diagnostic after seeing it (`--legs --log`:
+  each long-short book split into its legs, kind `robustness`, nothing selectable). No rerun,
+  nothing tuned. The pass bars were not changed after the result.
+- While writing the engine's test, before any logged run, a bug was found and fixed: the first
+  entry's cost was booked on a day the series did not return. breadth-1's `breadth_xs.simulate`
+  has the same one-time omission (one entry cost per book, at most 30 bps once over six years);
+  its tables were not rerun.
+- The Binance funding history in the cache starts 2020-01 (BTCUSDT's perp listed 2019-09), so
+  early listings are cut to that date. MKR's perp stops paying funding in 2025-09: it leaves the
+  tradable set two days later.
+- `ls-premium`'s blend p is 0.0955 (shown as 0.10 in the table).
+  It fails bar 5 either way.
+- The held-out year was not loaded: no variant passed train.
+
+## Status (2026-11-13 ~08:45 UTC)
+
+**Done:** card; `lib/short_engine.py` (signed weights, funding, tests in
+`tests/test_short_engine.py`); `lib/short1.py` (books, shapes, verdicts, legs diagnostic);
+`results/short-1.md`; rows in `tries.md`; this write-up. Draft PR #23 (`short-1` ->
+`breadth-1`).
+
+**Doing:** nothing half-finished. No process left running.
+
+**Next (owner's choice, not started):** a held-out-only card for the premium/funding carry
+book (fix the rule and costs first, spend 2025-11 .. 2026-11 once), or nothing: the paper
+system's long-only BTC/ETH trend on spot is still the best rule measured.
+
+Reproduce: `uv run python -I research/lib/short1.py` (add `--log` to write `tries.md` rows: done
+once already), then `--legs`. Needs the shared cache (`research/macro.local.json`) with
+breadth-1's aggregates under `<cache_root>/derived/breadth-1/`.
