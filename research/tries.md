@@ -697,3 +697,71 @@ Never edit or delete a row.
 | 2026-11-13 07:43 | info-1-screen | usd_13w (IC -0.019, chance 0.033, WF +0.003, gain -0.005) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
 | 2026-11-13 07:43 | info-1-screen | oil_13w (IC -0.008, chance 0.036, WF +0.021, gain +0.009) | screen | train | 2000-11-24 | 2025-11-09 | - | - | - | - |
 | 2026-11-13 07:43 | info-1-screen | hy_ief_13w (IC -0.015, chance 0.050, WF +0.015, gain -0.002) | screen | train | 2007-07-13 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:55 | breadth-1-binance | weekly EW baseline | baseline | train | 2020-02-01 | 2025-11-09 | 0.91 | +916.1% | 81.5% | 1.82 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly TS baseline | baseline | train | 2020-02-01 | 2025-11-09 | 1.05 | +1314.5% | 62.2% | 3.41 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly mom_7 TOP-TS (IC -0.028 t -1.6, vs TS -0.30 p 0.96) no | variant | train | 2020-02-01 | 2025-11-09 | 0.75 | +372.7% | 74.4% | 43.07 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly mom_28 TOP-TS (IC +0.006 t +0.3, vs TS +0.06 p 0.36) no | variant | train | 2020-02-01 | 2025-11-09 | 1.11 | +2767.6% | 66.2% | 22.42 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly mom_91 TOP-TS (IC +0.003 t +0.2, vs TS -0.02 p 0.57) no | variant | train | 2020-02-01 | 2025-11-09 | 1.03 | +1975.3% | 69.5% | 13.26 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly mom_365 TOP-TS (IC +0.023 t +1.3, vs TS +0.02 p 0.45) no | variant | train | 2020-02-01 | 2025-11-09 | 1.07 | +1991.1% | 66.9% | 8.60 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly size TOP-TS (IC -0.075 t -4.5, vs TS +0.08 p 0.35) no | variant | train | 2020-02-01 | 2025-11-09 | 1.13 | +2831.3% | 64.0% | 5.25 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly turnover TOP-TS (IC +0.076 t +4.2, vs TS -0.03 p 0.57) no | variant | train | 2020-02-01 | 2025-11-09 | 1.01 | +1022.3% | 57.2% | 7.51 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly vol_growth TOP-TS (IC +0.001 t +0.1, vs TS -0.25 p 0.94) no | variant | train | 2020-02-01 | 2025-11-09 | 0.80 | +493.2% | 75.5% | 25.15 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly low_vol TOP-TS (IC +0.100 t +5.1, vs TS -0.02 p 0.52) weak-but-real | variant | train | 2020-02-01 | 2025-11-09 | 1.03 | +1033.2% | 61.1% | 7.60 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly EW baseline | baseline | train | 2020-02-15 | 2025-11-09 | 0.84 | +638.1% | 81.1% | 1.78 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly TS baseline | baseline | train | 2020-02-15 | 2025-11-09 | 0.99 | +1024.2% | 62.2% | 3.35 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly funding TOP-TS (IC +0.043 t +2.8, vs TS -0.15 p 0.81) no | variant | train | 2020-02-15 | 2025-11-09 | 0.84 | +766.5% | 69.3% | 24.29 |
+| 2026-11-13 07:55 | breadth-1-binance | weekly premium TOP-TS (IC +0.030 t +2.0, vs TS -0.03 p 0.60) no | variant | train | 2020-02-15 | 2025-11-09 | 0.94 | +1256.5% | 72.0% | 24.88 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly EW baseline | baseline | train | 1999-12-28 | 2025-11-09 | 0.69 | +1617.5% | 44.0% | 0.07 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly TS baseline | baseline | train | 1999-12-28 | 2025-11-09 | 0.77 | +757.1% | 27.6% | 2.45 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly mom_7 TOP-TS (IC -0.003 t -0.3, vs TS -0.19 p 0.94) no | variant | train | 1999-12-28 | 2025-11-09 | 0.58 | +627.7% | 35.1% | 49.78 |
+| 2026-11-13 07:55 | breadth-1-binance | daily EW baseline | baseline | train | 2020-01-31 | 2025-11-09 | 0.89 | +826.0% | 81.3% | 2.30 |
+| 2026-11-13 07:55 | breadth-1-binance | daily TS baseline | baseline | train | 2020-01-31 | 2025-11-09 | 1.00 | +1058.1% | 61.6% | 7.91 |
+| 2026-11-13 07:55 | breadth-1-binance | daily mom_7 TOP-TS (IC -0.028 t -4.1, vs TS -0.15 p 0.84) no | variant | train | 2020-01-31 | 2025-11-09 | 0.85 | +632.0% | 71.0% | 106.18 |
+| 2026-11-13 07:55 | breadth-1-binance | daily mom_28 TOP-TS (IC -0.014 t -2.1, vs TS -0.01 p 0.55) no | variant | train | 2020-01-31 | 2025-11-09 | 0.98 | +1194.3% | 70.8% | 58.98 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly mom_28 TOP-TS (IC -0.008 t -0.9, vs TS -0.05 p 0.66) no | variant | train | 1999-12-28 | 2025-11-09 | 0.72 | +1227.2% | 35.2% | 25.81 |
+| 2026-11-13 07:55 | breadth-1-binance | daily mom_91 TOP-TS (IC -0.004 t -0.6, vs TS -0.13 p 0.82) no | variant | train | 2020-01-31 | 2025-11-09 | 0.87 | +836.9% | 69.6% | 36.92 |
+| 2026-11-13 07:55 | breadth-1-binance | daily mom_365 TOP-TS (IC +0.009 t +1.3, vs TS -0.04 p 0.59) no | variant | train | 2020-01-31 | 2025-11-09 | 0.95 | +1115.6% | 68.8% | 22.74 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly mom_91 TOP-TS (IC +0.002 t +0.2, vs TS -0.25 p 0.97) no | variant | train | 1999-12-28 | 2025-11-09 | 0.52 | +557.4% | 52.4% | 16.62 |
+| 2026-11-13 07:55 | breadth-1-binance | daily rev_1 TOP-TS (IC +0.019 t +2.8, vs TS -1.41 p 1.00) no | variant | train | 2020-01-31 | 2025-11-09 | -0.41 | -96.0% | 98.3% | 286.58 |
+| 2026-11-13 07:55 | breadth-1-binance | daily size TOP-TS (IC -0.050 t -7.6, vs TS -0.02 p 0.57) no | variant | train | 2020-01-31 | 2025-11-09 | 0.98 | +1360.7% | 62.1% | 10.77 |
+| 2026-11-13 07:55 | breadth-1-binance | daily turnover TOP-TS (IC +0.057 t +8.5, vs TS +0.03 p 0.46) weak-but-real | variant | train | 2020-01-31 | 2025-11-09 | 1.03 | +1112.7% | 57.8% | 15.23 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly mom_365 TOP-TS (IC +0.025 t +2.6, vs TS -0.03 p 0.59) no | variant | train | 1999-12-28 | 2025-11-09 | 0.74 | +1472.1% | 42.8% | 10.36 |
+| 2026-11-13 07:55 | breadth-1-binance | daily vol_growth TOP-TS (IC -0.016 t -2.7, vs TS -0.21 p 0.89) no | variant | train | 2020-01-31 | 2025-11-09 | 0.79 | +474.3% | 73.7% | 44.56 |
+| 2026-11-13 07:55 | breadth-1-binance | daily low_vol TOP-TS (IC +0.069 t +8.9, vs TS -0.01 p 0.54) weak-but-real | variant | train | 2020-01-31 | 2025-11-09 | 0.99 | +827.6% | 59.3% | 14.53 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly low_vol TOP-TS (IC -0.021 t -1.9, vs TS -0.08 p 0.69) no | variant | train | 1999-12-28 | 2025-11-09 | 0.68 | +203.3% | 17.2% | 5.14 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly EW baseline | baseline | train | 2019-04-07 | 2025-11-09 | 0.64 | +223.1% | 85.3% | 2.88 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly TS baseline | baseline | train | 2019-04-07 | 2025-11-09 | 0.72 | +383.9% | 64.4% | 3.91 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly mom_7 TOP-TS (IC -0.023 t -2.3, vs TS -0.02 p 0.58) no | variant | train | 2019-04-07 | 2025-11-09 | 0.69 | +360.5% | 75.7% | 36.79 |
+| 2026-11-13 07:55 | breadth-1-binance | daily EW baseline | baseline | train | 2020-02-14 | 2025-11-09 | 0.84 | +622.6% | 81.2% | 2.26 |
+| 2026-11-13 07:55 | breadth-1-binance | daily TS baseline | baseline | train | 2020-02-14 | 2025-11-09 | 0.95 | +870.9% | 61.6% | 7.92 |
+| 2026-11-13 07:55 | breadth-1-binance | daily funding TOP-TS (IC +0.027 t +4.8, vs TS -0.04 p 0.60) weak-but-real | variant | train | 2020-02-14 | 2025-11-09 | 0.91 | +1131.6% | 69.5% | 49.23 |
+| 2026-11-13 07:55 | breadth-1-binance | daily premium TOP-TS (IC +0.025 t +4.5, vs TS -0.04 p 0.63) weak-but-real | variant | train | 2020-02-14 | 2025-11-09 | 0.89 | +994.9% | 75.4% | 48.99 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly mom_28 TOP-TS (IC -0.013 t -1.2, vs TS +0.26 p 0.01) no | variant | train | 2019-04-07 | 2025-11-09 | 0.98 | +1412.5% | 66.6% | 19.14 |
+| 2026-11-13 07:55 | breadth-1-trad | weekly high_52w TOP-TS (IC +0.010 t +0.9, vs TS +0.04 p 0.38) no | variant | train | 1999-12-28 | 2025-11-09 | 0.81 | +791.2% | 30.4% | 21.14 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly mom_91 TOP-TS (IC -0.014 t -1.2, vs TS -0.00 p 0.52) no | variant | train | 2019-04-07 | 2025-11-09 | 0.72 | +422.4% | 67.3% | 12.30 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly mom_365 TOP-TS (IC +0.006 t +0.5, vs TS -0.08 p 0.69) no | variant | train | 2019-04-07 | 2025-11-09 | 0.64 | +252.5% | 81.1% | 8.71 |
+| 2026-11-13 07:55 | breadth-1-trad | daily EW baseline | baseline | train | 1999-12-24 | 2025-11-09 | 0.70 | +1634.4% | 43.5% | 0.10 |
+| 2026-11-13 07:55 | breadth-1-trad | daily TS baseline | baseline | train | 1999-12-24 | 2025-11-09 | 0.82 | +885.8% | 27.3% | 4.90 |
+| 2026-11-13 07:55 | breadth-1-trad | daily mom_7 TOP-TS (IC -0.007 t -1.6, vs TS -0.26 p 0.99) no | variant | train | 1999-12-24 | 2025-11-09 | 0.56 | +580.0% | 42.0% | 101.01 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly size TOP-TS (IC -0.049 t -4.3, vs TS -0.02 p 0.59) no | variant | train | 2019-04-07 | 2025-11-09 | 0.69 | +342.8% | 69.2% | 7.19 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly turnover TOP-TS (IC +0.060 t +5.1, vs TS +0.34 p 0.00) PASS | variant | train | 2019-04-07 | 2025-11-09 | 1.06 | +1329.9% | 54.3% | 7.60 |
+| 2026-11-13 07:55 | breadth-1-trad | daily mom_28 TOP-TS (IC +0.002 t +0.3, vs TS -0.02 p 0.55) no | variant | train | 1999-12-24 | 2025-11-09 | 0.80 | +1743.3% | 33.3% | 54.63 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly vol_growth TOP-TS (IC -0.021 t -2.3, vs TS +0.07 p 0.29) no | variant | train | 2019-04-07 | 2025-11-09 | 0.79 | +576.9% | 67.0% | 22.62 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly low_vol TOP-TS (IC +0.082 t +6.1, vs TS +0.04 p 0.38) weak-but-real | variant | train | 2019-04-07 | 2025-11-09 | 0.75 | +401.8% | 60.1% | 7.44 |
+| 2026-11-13 07:55 | breadth-1-cm | weekly addr_growth TOP-TS (IC +0.011 t +1.0, vs TS +0.13 p 0.17) no | variant | train | 2019-04-07 | 2025-11-09 | 0.90 | +992.5% | 65.8% | 9.52 |
+| 2026-11-13 07:55 | breadth-1-trad | daily mom_91 TOP-TS (IC +0.009 t +2.0, vs TS -0.23 p 0.97) no | variant | train | 1999-12-24 | 2025-11-09 | 0.59 | +726.6% | 43.4% | 36.20 |
+| 2026-11-13 07:55 | breadth-1-cm | daily EW baseline | baseline | train | 2019-04-02 | 2025-11-09 | 0.66 | +262.7% | 85.7% | 4.04 |
+| 2026-11-13 07:55 | breadth-1-cm | daily TS baseline | baseline | train | 2019-04-02 | 2025-11-09 | 0.76 | +458.7% | 64.7% | 8.94 |
+| 2026-11-13 07:55 | breadth-1-cm | daily mom_7 TOP-TS (IC -0.017 t -4.2, vs TS -0.25 p 0.99) no | variant | train | 2019-04-02 | 2025-11-09 | 0.51 | +129.2% | 85.3% | 91.42 |
+| 2026-11-13 07:55 | breadth-1-trad | daily mom_365 TOP-TS (IC +0.017 t +3.9, vs TS -0.07 p 0.69) no | variant | train | 1999-12-24 | 2025-11-09 | 0.75 | +1620.0% | 45.4% | 22.74 |
+| 2026-11-13 07:55 | breadth-1-cm | daily mom_28 TOP-TS (IC -0.016 t -3.8, vs TS +0.08 p 0.26) no | variant | train | 2019-04-02 | 2025-11-09 | 0.83 | +719.3% | 68.2% | 49.53 |
+| 2026-11-13 07:55 | breadth-1-cm | daily mom_91 TOP-TS (IC -0.014 t -3.6, vs TS +0.01 p 0.44) no | variant | train | 2019-04-02 | 2025-11-09 | 0.77 | +569.5% | 68.4% | 30.85 |
+| 2026-11-13 07:55 | breadth-1-trad | daily low_vol TOP-TS (IC -0.019 t -3.6, vs TS -0.19 p 0.87) no | variant | train | 1999-12-24 | 2025-11-09 | 0.63 | +174.9% | 18.8% | 9.33 |
+| 2026-11-13 07:55 | breadth-1-cm | daily mom_365 TOP-TS (IC -0.002 t -0.6, vs TS -0.14 p 0.78) no | variant | train | 2019-04-02 | 2025-11-09 | 0.62 | +234.1% | 81.7% | 22.57 |
+| 2026-11-13 07:55 | breadth-1-trad | daily high_52w TOP-TS (IC +0.005 t +1.0, vs TS -0.04 p 0.61) no | variant | train | 1999-12-24 | 2025-11-09 | 0.78 | +682.1% | 30.7% | 48.33 |
+| 2026-11-13 07:55 | breadth-1-cm | daily rev_1 TOP-TS (IC +0.009 t +2.4, vs TS -1.33 p 1.00) no | variant | train | 2019-04-02 | 2025-11-09 | -0.57 | -96.4% | 98.8% | 246.10 |
+| 2026-11-13 07:55 | breadth-1-cm | daily size TOP-TS (IC -0.031 t -8.4, vs TS +0.03 p 0.42) no | variant | train | 2019-04-02 | 2025-11-09 | 0.79 | +527.0% | 66.7% | 13.90 |
+| 2026-11-13 07:55 | breadth-1-cm | daily turnover TOP-TS (IC +0.039 t +9.1, vs TS +0.31 p 0.00) PASS | variant | train | 2019-04-02 | 2025-11-09 | 1.07 | +1367.5% | 56.2% | 15.60 |
+| 2026-11-13 07:55 | breadth-1-cm | daily vol_growth TOP-TS (IC -0.024 t -7.0, vs TS -0.05 p 0.70) no | variant | train | 2019-04-02 | 2025-11-09 | 0.71 | +397.2% | 72.8% | 39.05 |
+| 2026-11-13 07:55 | breadth-1-cm | daily low_vol TOP-TS (IC +0.057 t +11.5, vs TS -0.03 p 0.59) weak-but-real | variant | train | 2019-04-02 | 2025-11-09 | 0.73 | +364.5% | 60.8% | 16.93 |
+| 2026-11-13 07:55 | breadth-1-cm | daily addr_growth TOP-TS (IC -0.000 t -0.1, vs TS +0.09 p 0.24) no | variant | train | 2019-04-02 | 2025-11-09 | 0.91 | +1031.8% | 61.3% | 19.03 |
