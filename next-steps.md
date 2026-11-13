@@ -1,6 +1,6 @@
 # Next steps
 
-## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR -> `short-1`)
+## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
 (delisted included), Bybit, Hyperliquid (~550 coins, 2021-2025, 10 bps + every funding event).

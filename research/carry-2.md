@@ -209,7 +209,7 @@ Code: `scripts/fetch_carry2.py` (download), `research/lib/carry2.py` (books and 
 **Done:** card; `scripts/fetch_carry2.py` (Binance archive 588 perps after the volume
 pre-filter, Bybit 392, Hyperliquid 58; manifest lines in the cache); `research/lib/carry2.py`
 and `carry2_panel.py` (test `tests/test_carry2.py`); the logged run; `results/carry-2.md`; this
-write-up. Draft PR `carry-2` -> `short-1`.
+write-up. Draft PR #26 (`carry-2` -> `short-1`), not merged.
 
 **Doing:** nothing. No process left running.
 
