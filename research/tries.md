@@ -907,3 +907,24 @@ Never edit or delete a row.
 | 2026-11-13 08:17 | invest-1 | 6040-sma10 (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.81 | +318.7% | 15.3% | 1.84 |
 | 2026-11-13 08:17 | invest-1 | xmom (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.55 | +553.9% | 28.2% | 3.88 |
 | 2026-11-13 08:17 | invest-1 | ecy-trend (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.94 | +409.7% | 9.6% | 1.23 |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-small-tilt | variant | train | 2000-01-07 | 2025-11-09 | 1.09 | +7326.7% | 34.1% | 7.60 |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-small weekly IC +0.105 (post-release +0.105), WF gain +0.057 | screen | train | 2000-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-small daily IC +0.034 (post-release -0.032) | screen | train | 2000-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-small hourly btc-binance-1h IC -0.0054 (post-release -0.0251, partial -0.0057) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-small hourly btc-binance-24h IC +0.0129 (post-release +0.0076, partial +0.0083) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-small hourly eth-binance-1h IC +0.0110 (post-release +0.0279, partial +0.0109) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-small hourly eth-binance-24h IC +0.0305 (post-release +0.0475, partial +0.0288) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-base-tilt | variant | train | 2000-01-07 | 2025-11-09 | 1.17 | +10210.2% | 29.6% | 8.10 |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-base weekly IC +0.148 (post-release +0.164), WF gain +0.110 | screen | train | 2000-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-base daily IC +0.040 (post-release -0.005) | screen | train | 2000-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-base hourly btc-binance-1h IC -0.0159 (post-release -0.0379, partial -0.0141) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-base hourly btc-binance-24h IC +0.0052 (post-release -0.0439, partial -0.0007) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-base hourly eth-binance-1h IC -0.0066 (post-release +0.0128, partial -0.0055) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-bolt-base hourly eth-binance-24h IC +0.0341 (post-release +0.0297, partial +0.0317) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-chronos2-tilt | variant | train | 2000-01-07 | 2025-11-09 | 0.99 | +4478.0% | 34.9% | 9.78 |
+| 2026-11-13 08:29 | fm-1 | fm-chronos2 weekly IC +0.020 (post-release +0.303), WF gain -0.008 | screen | train | 2000-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-chronos2 daily IC -0.012 (post-release -0.064) | screen | train | 2000-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-chronos2 hourly btc-binance-1h IC -0.0285 (post-release +0.1273, partial -0.0290) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-chronos2 hourly btc-binance-24h IC +0.0123 (post-release -0.0060, partial +0.0127) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-chronos2 hourly eth-binance-1h IC -0.0195 (post-release +0.1392, partial -0.0182) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
+| 2026-11-13 08:29 | fm-1 | fm-chronos2 hourly eth-binance-24h IC -0.0138 (post-release +0.1293, partial -0.0151) | screen | train | 2023-01 | 2025-11 | - | - | - | - |
