@@ -81,3 +81,9 @@ beat `tsmom12` out of sample? Plan and results: `research/rl-2.md`; rules: `rese
 - Doing: nothing. No process running.
 - Next (not started): planted-signal control of the residual pipeline (can it find a known
   weak signal?); then funding rates / basis for coins, which need shorting or futures in the gym.
+
+## Ideas 1 (research run, branch `ideas-1`, started 2026-11-13 ~06:00 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-ideas-1.md`. Test eight YouTube rules (harvest 1) by the
+protocol: cards in `research/cards/yt-1.md` (fixed before any test), runner
+`research/lib/idea_yt.py`, write-up `research/ideas-1.md`. Status: cards written; testing next.
