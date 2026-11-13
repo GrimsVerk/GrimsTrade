@@ -9,24 +9,24 @@ does it beat `tsmom12` out of sample?
 ## In plain words (results, 2026-11-13)
 
 **Constraining the agent stopped it from losing, but it still adds nothing. No residual agent
-beat `tsmom12`; all three fail their bar.** Three agents, ten seeds each, 13 walk-forward folds
-2000-2025 (390 models), every decision replayed through the real gym. The held-out year was not
-looked at.
+beat `tsmom12`; all four fail their bar.** Four agents (the three planned, then one with on-chain
+inputs for coins), ten seeds each, 13 walk-forward folds 2000-2025 (520 models), every decision
+replayed through the real gym. The held-out year was not looked at.
 
 - **Did constraining help?** Against rl-1, enormously: Sharpe 0.97-0.98 instead of 0.57-0.71,
   worst loss 35-36% instead of 60-87%. But only because the agent is now almost `tsmom12`. Against
-  `tsmom12` itself (0.99 over 2000-2025, 1.19 since 2003) all three are a hair behind:
+  `tsmom12` itself (0.99 over 2000-2025, 1.19 since 2003) the three planned agents are a hair behind:
   `res-lin` -0.008 (bootstrap p = 0.71), `res-mlp` -0.020 (p = 0.87), `res-pool` -0.023
   (p = 0.92); since 2003 -0.007 to -0.021. One seed in ten is ahead for each. The seed spread is
   narrow (0.93 to 1.00) and the best seed of 30 merely ties `tsmom12`.
 - **How much did it move?** Very little. Its weights differ from `tsmom12`'s by 1.8%
   (`res-lin`, under the 2% floor: "fail, it learned nothing to add") or 2.7% (the two MLPs) of
   the account on an average Friday. What it learned: hold uptrending assets a touch fuller (1.02
-  to 1.04 slots instead of 1), keep a sliver of downtrending ones (0.01 to 0.03 slots), sit in
-  cash 27% of the time instead of 30%. Coins stay at `tsmom12`'s 10% (the cap). It trades a
+  to 1.04 slots instead of 1), keep a sliver of downtrending ones (0.01 to 0.03 slots), hold
+  27% of the account in cash on average instead of 30%. Coins stay at `tsmom12`'s 10% (the cap). It trades a
   little more (3.0-3.1 times equity a year against 2.8).
-- **How sure?** Sure that it does not beat `tsmom12` on these inputs: three different set-ups,
-  thirty seeds, all landing within 0.03 Sharpe of `tsmom12`, slightly on the wrong side. Not a
+- **How sure?** Sure that it does not beat `tsmom12` on these inputs: four different set-ups,
+  forty seeds, all landing within 0.04 Sharpe of `tsmom12`, slightly on the wrong side. Not a
   near miss with a hidden edge: the edge is not there even in the training years.
 - **Training discipline did what it should and showed why.** Early stopping kept zero tilt
   (pure `tsmom12`) in 44% of the fold models of `res-lin`, 34% of `res-mlp` and 26% of
@@ -37,6 +37,15 @@ looked at.
   was noise, just less of it than in rl-1.
 - **The wider book did not help.** `res-pool`, trained on 33 markets, is no better than the
   six-asset MLP (0.97 and 0.97). More independent bets did not uncover a pattern that holds.
+- **On-chain inputs did not help either.** `res-mlp-chain` (the MLP plus three Coin Metrics
+  inputs per coin: market/realised value, active-address growth, fee growth, used from the day
+  after their date) scored 0.96, against 0.97 for the same agent without them and 0.99 for
+  `tsmom12` (-0.032, p = 0.95); 0 of 10 seeds ahead. Early stopping kept zero tilt in 44% of its
+  fold models; tilted folds were ahead out of sample in 4 of 9. Its worst fold (2006-07: +0.17
+  in training, -0.12 out of sample) is the overfitting signature again. Caveat: coins are only
+  in the book from 2013, so the on-chain inputs had at most six folds and three crypto winters
+  to prove themselves; and exchange-flow data, the most-cited on-chain signal, was left out
+  because its history is revised (look-ahead).
 - **Out of universe:** the same picture on the 8 other ETFs, 6 other coins and 4 indexes: within
   0.03 Sharpe of `tsmom12`, mostly just behind. Bar 6 is formally "passed" only because those tiny
   differences share the six assets' negative sign.
@@ -45,16 +54,17 @@ looked at.
 
 The residual frame is the right harness and should be kept: it cannot lose much to `tsmom12`,
 and it makes "the agent found nothing" visible instead of hiding it in a coin bet. What it
-showed is that there is nothing in these inputs (prices and macro, weekly) for any learner to
-find beyond the trend rule; run 2, macro-1, rl-1 and now rl-2 agree. In order:
+showed is that this learner finds nothing beyond the trend rule in these inputs (prices, macro
+and three on-chain measures, weekly); run 2, macro-1 and rl-1 point the same way. Whether that is
+the inputs or the learner is not yet proven, hence the first item. In order:
 
 1. **A planted-signal control** (cheap, a few hours): put a known weak signal into one input of
    the residual environment and check that this exact pipeline finds it and beats `tsmom12`.
    If it cannot, the learner or budget is the limit; if it can, the inputs are, and the lane
    needs new information before more training.
-2. **New information for coins**, the only place it is likely to exist: Coin Metrics on-chain
-   inputs (brief item 4; the cache in `~/data/grimstrade/coinmetrics`) with the macro as-of rule,
-   and later perpetual funding rates (needs shorting in the gym).
+2. **Different information for coins**: the three simple on-chain inputs tried here did not
+   help. Left: perpetual funding rates and basis (need shorting or futures in the gym), and
+   point-in-time exchange flows if a vintage source exists.
 3. Not worth a night: more seeds, bigger networks, longer training, other RL algorithms, or a
    wider book of the same price features.
 
@@ -211,23 +221,25 @@ them beyond "`res-mlp` is the variant to extend" (the most active of the three).
 - Times in this file are UTC (an earlier draft wrote local time, UTC+1, by mistake; corrected
   before any result).
 
-## Status (2026-11-13 ~05:50 UTC)
+## Status (2026-11-13 ~06:20 UTC)
 
-**Done:** plan, pass bar and protocol section before code; residual environment with tests (zero
+**Done:** plan, pass bar and protocol section before code; on-chain card before its code
+(`lib/onchain.py`, as-of test); residual environment with tests (zero
 tilt equals `tsmom12` exactly through the gym: synthetic test and real data, error 0); trainer
-with purged validation and early stopping; 3 variants x 10 seeds x 13 folds trained on the CPU
-(390 models, git-ignored in `research/data/rl/models2/`, about 12 minutes); evaluation through
-the real gym, 42 rows in `tries.md` (3 `variant` ensembles, 30 seeds and 9 out-of-universe runs
-as `robustness`); tables in `results/rl-2.md`; this write-up. All three fail. Held-out year
+with purged validation and early stopping; 4 variants x 10 seeds x 13 folds trained on the CPU
+(520 models, git-ignored in `research/data/rl/models2/`, about 16 minutes); evaluation through
+the real gym, 56 rows in `tries.md` (4 `variant` ensembles, 40 seeds and 12 out-of-universe runs
+as `robustness`); tables in `results/rl-2.md`; this write-up. All four fail. Held-out year
 untouched.
 
 **Doing:** nothing half-finished. No process left running.
 
-**Next (not started):** planted-signal control, then on-chain inputs for coins (brief item 4),
-see "What next for the RL lane".
+**Next (not started):** planted-signal control of the residual pipeline, see "What next for
+the RL lane".
 
 Reproduce: `uv run python research/lib/rl2_data.py` (tables + zero-tilt check; needs rl-1's
 `tables.pkl` from `rl_data.py`), then
-`RL_TRAIN=rl2_train.py RL_VARIANTS=res-lin,res-mlp,res-pool RL_TAG=rl2- setsid -f uv run --with torch python research/lib/rl_launch.py`,
+`uv run python research/lib/rl2_data.py --chain` (on-chain tables), then
+`RL_TRAIN=rl2_train.py RL_VARIANTS=res-lin,res-mlp,res-pool,res-mlp-chain RL_TAG=rl2- setsid -f uv run --with torch python research/lib/rl_launch.py`,
 then `uv run --with torch python research/lib/rl2_eval.py` (logs tries: run once) and
 `uv run python research/lib/rl2_eval.py --report`.

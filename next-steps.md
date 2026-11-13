@@ -73,10 +73,11 @@ beat `tsmom12` out of sample? Plan and results: `research/rl-2.md`; rules: `rese
 "Residual RL tests".
 
 - Done: residual environment + tests (zero tilt == `tsmom12` exactly), trainer with purged
-  validation and early stopping, 3 variants x 10 seeds x 13 folds, evaluated through the gym,
-  42 rows in `research/tries.md`, tables `research/results/rl-2.md`, write-up. Answer: no. All
-  three fail (Sharpe 0.97-0.98 against 0.99; active share 1.8-2.7%; 1 of 10 seeds ahead each).
+  validation and early stopping, on-chain inputs for coins (`research/lib/onchain.py`, as-of
+  test), 4 variants x 10 seeds x 13 folds, evaluated through the gym, 56 rows in
+  `research/tries.md`, tables `research/results/rl-2.md`, write-up. Answer: no. All four fail
+  (Sharpe 0.96-0.98 against 0.99; active share 1.8-2.7%; at most 1 of 10 seeds ahead).
   Held-out year unused. Draft PR #18 (`rl-2` -> `rl-1`), not merged.
 - Doing: nothing. No process running.
-- Next (not started): planted-signal control of the residual pipeline; then on-chain inputs for
-  coins (Coin Metrics, macro as-of rule).
+- Next (not started): planted-signal control of the residual pipeline (can it find a known
+  weak signal?); then funding rates / basis for coins, which need shorting or futures in the gym.
