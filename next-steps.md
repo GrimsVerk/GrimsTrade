@@ -81,3 +81,24 @@ beat `tsmom12` out of sample? Plan and results: `research/rl-2.md`; rules: `rese
 - Doing: nothing. No process running.
 - Next (not started): planted-signal control of the residual pipeline (can it find a known
   weak signal?); then funding rates / basis for coins, which need shorting or futures in the gym.
+
+## RL 3 (research run, branch `rl-3`, started 2026-11-13 ~05:30 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-rl-3.md`. Question: is RL 2's null the inputs or the
+learner? A known weak signal (IC 0.00-0.20) was planted into one input of RL 2's residual
+environment, to see at what strength the same pipeline beats `tsmom12`. Card and results:
+`research/rl-3.md`; rules: `research/protocol.md` "Planted-signal controls".
+
+- Done: card before code, planted input with tests, 10 planted configurations + 4
+  pre-registered diagnostics x 10 seeds x 13 folds, ceiling rules, a post-hoc supervised check,
+  183 `control` rows in `research/tries.md`, tables `research/results/rl-3.md` and
+  `research/results/rl-3-inputs.md`, write-up. Answer: the pipeline finds only 0.20 (capturing
+  9-21% of its +0.45 ceiling) and misses 0.10 (worth +0.16). More budget or no early stopping
+  does not help; least squares misses it too, so the cause is too many noisy inputs for the data.
+  Real inputs: weekly IC at most ~0.05 alone and ~0 together, below the 0.10 at which even a
+  perfect learner gains anything on this book. Both limits are real; the inputs bind first.
+  Held-out year unused. Draft PR #19 (`rl-3` -> `rl-2`), not merged.
+- Doing: nothing. No process running.
+- Next (not started): (1) gate every learner change on "finds 0.10 in the planted control" (few
+  inputs, shrinkage, pooled books); (2) screen new inputs (funding/basis, open interest,
+  minute-bar features, VIX term structure) with a cheap weekly-IC table before any RL run.

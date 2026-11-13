@@ -34,6 +34,7 @@ MODELS = Path(os.environ.get("RL_MODELS", str(rl2_data.harness.DATA / "rl" / "mo
 VAL_WEEKS = 104
 MAX_UPDATES = int(os.environ.get("RL_UPDATES", "60"))
 EVAL_EVERY = 5
+KEEP_LAST = False  # rl-3 diagnostic `diag-noes` only: keep the last checkpoint, no early stopping
 MIN_TRAIN_WEEKS = 26
 REWARD_SCALE = 100.0
 N_PAD = 9  # the widest book (sectors)
@@ -239,7 +240,7 @@ def train_fold(
                 opt.step()
         if u % EVAL_EVERY == 0:
             val_scores.append(validate())
-            if val_scores[-1] > best:
+            if KEEP_LAST or val_scores[-1] > best:
                 best, best_u, best_state = val_scores[-1], u, copy.deepcopy(net.state_dict())
     net.load_state_dict(best_state)
     info: dict[str, object] = {
