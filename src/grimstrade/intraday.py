@@ -2,13 +2,15 @@
 runs it after the record is pushed (`run_daily --intraday DIR`); DIR is kept in an Actions cache,
 never published (docs/DECISIONS.md, 2026-11-13).
 
-Three append-only CSV series, each row stamped with `available_at` (UTC time it could first have
-been known); a row is stored only once `available_at <= now`:
+Four kinds of append-only CSV series, each row stamped with `available_at` (UTC time it could
+first have been known); a row is stored only once `available_at <= now`:
 - crypto 1-hour bars from Coinbase (`BTC-USD`, `ETH-USD`): available at open + 1 h + 15 min;
 - ETF 1-hour bars from Yahoo (SPY, QQQ, GLD, TLT): available at open + 1 h + 15 min (the last
   bar of a session is shorter; using a full hour is the conservative side);
 - Kraken Futures funding rates (`PF_XBTUSD`, `PF_ETHUSD`): the timestamp is the settlement, so
   available at timestamp + 15 min. Live/estimated rates are never stored.
+- Kraken Futures open interest (same perpetuals): open/high/low/close of each hour as served,
+  available at the hour's start + 1 h + 15 min. Back to `OI_START` on the first run.
 
 Files: `<dir>/<kind>/<symbol>.csv`. A run appends only rows newer than the last stored one and
 never rewrites a line. Each series fails on its own: one broken source never stops the others.
@@ -38,6 +40,9 @@ FUNDING_FIELDS = ["time", "funding_rate", "relative_funding_rate", "available_at
 CRYPTO = ["BTC-USD", "ETH-USD"]
 ETFS = ["SPY", "QQQ", "GLD", "TLT"]
 PERPS = ["PF_XBTUSD", "PF_ETHUSD"]
+OI_FIELDS = ["time", "oi_open", "oi_high", "oi_low", "oi_close", "available_at"]
+OI_START = datetime(2022, 1, 1, tzinfo=UTC)  # before the PF_ perpetuals' first served hour
+OI_PAGE = 2000 * HOUR  # the analytics API serves at most this much from `since` per call
 RECHECK = timedelta(hours=24)  # stored Coinbase hours fetched again to look for revisions
 REVISIONS = "revisions.jsonl"
 
@@ -112,6 +117,30 @@ def stored_rows(path: Path, key: str) -> dict[str, Row]:
         return {row[key]: row for row in csv.DictReader(f)}
 
 
+def kraken_open_interest(symbol: str, since: datetime, now: datetime, get: Get) -> list[Row]:
+    """Hourly open interest from `since`, paging forward. Each call returns up to 2,000 hours
+    starting at `since` and `more` while later data exists; an empty page (before the series
+    starts) moves on by a full page."""
+    out: dict[str, Row] = {}
+    start = since
+    while start < now:
+        url = (
+            f"https://futures.kraken.com/api/charts/v1/analytics/{symbol}/open-interest"
+            f"?since={int(start.timestamp())}&interval=3600"
+        )
+        res = json.loads(get(url))["result"]
+        stamps = res["timestamp"]
+        for ts, vals in zip(stamps, res["data"], strict=True):
+            t = datetime.fromtimestamp(ts, UTC)
+            o, h, lo, c = (repr(float(v)) for v in vals)
+            out[iso(t)] = {"time": iso(t), "oi_open": o, "oi_high": h, "oi_low": lo,
+                           "oi_close": c, "available_at": iso(t + HOUR + SETTLE)}  # fmt: skip
+        if not res.get("more"):
+            break
+        start = datetime.fromtimestamp(stamps[-1], UTC) + HOUR if stamps else start + OI_PAGE
+    return [out[k] for k in sorted(out)]
+
+
 def last_key(path: Path, key: str) -> str | None:
     return max(stored_rows(path, key), default=None)
 
@@ -182,6 +211,12 @@ def _crypto(product: str, path: Path, now: datetime, get: Get) -> list[Row]:
     return coinbase_1h(product, since, now, get)
 
 
+def _open_interest(symbol: str, path: Path, now: datetime, get: Get) -> list[Row]:
+    last = last_key(path, "time")
+    since = parse(last) + HOUR - RECHECK if last else OI_START
+    return kraken_open_interest(symbol, since, now, get)
+
+
 def collect(base: Path, now: datetime, get: Get) -> dict[str, str]:
     """Run every series once; returns {series: "+N" or "error: ..."} and never raises."""
     jobs: list[tuple[str, list[str], str, Callable[[], list[Row]]]] = []
@@ -193,6 +228,9 @@ def collect(base: Path, now: datetime, get: Get) -> dict[str, str]:
         jobs.append((f"etf-1h/{t}", BAR_FIELDS, "open_time", partial(yahoo_1h, t, get)))
     for s in PERPS:
         jobs.append((f"funding/{s}", FUNDING_FIELDS, "time", partial(kraken_funding, s, get)))
+        oi_path = base / "open-interest" / f"{s}.csv"
+        fetch_oi: Callable[[], list[Row]] = partial(_open_interest, s, oi_path, now, get)
+        jobs.append((f"open-interest/{s}", OI_FIELDS, "time", fetch_oi))
     report: dict[str, str] = {}
     for name, fields, key, fetch in jobs:
         try:

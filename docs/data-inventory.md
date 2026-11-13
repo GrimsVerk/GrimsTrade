@@ -26,7 +26,7 @@ current state run the commands under "Check progress".
 | --- | --- | --- | --- | --- | --- |
 | Yahoo 1h bars SPY, QQQ, GLD, TLT | `snapshots/yahoo-1h/2026-11-12/` | 2023-12 to 2026-11-12 (~730 days) | 5,093 bars each | 2 MB raw | **Cannot**: rolling window. `scripts/snapshot_rolling.py` adds a new day's snapshot |
 | Kraken Futures funding PF_XBTUSD, PF_ETHUSD | `snapshots/kraken-funding/2026-11-12/` | 2025-11-11 to 2026-11-12, hourly | 8,771 each | 2 MB raw | **Cannot**: 12-month window. Same script |
-| Kraken Futures open interest PF_XBTUSD, PF_ETHUSD | `snapshots/kraken-oi/2026-11-12/` | last ~83 days, hourly (API returns 2,000 points per call) | 2,000 each | 0.25 MB | Same script. Paging further back: Next |
+| Kraken Futures open interest PF_XBTUSD, PF_ETHUSD | `snapshots/kraken-oi/2026-11-12/` | ~83 days, hourly (one call: 2,000 points) | 2,000 each | 0.25 MB | Same script. Since 2026-11-13 (ingest 2) it pages with `since`: every hour from 2023-03-07 (~32,300 rows each, checked live); the first snapshot with it is the next dated folder |
 
 ## Running (detached; PIDs in `pids/<job>.pid`, logs in `logs/<job>.log`)
 
