@@ -78,7 +78,9 @@ def near_high(dates: np.ndarray, close: np.ndarray, s: str) -> macro.Step:
 def _macro_steps() -> dict[str, macro.Step]:
     def pct(snap: dict[date, float], obs: list[date]) -> float:
         prev = [snap[o] for o in obs[-241:-1]]
-        return 100 * float(np.mean(np.array(prev) < snap[obs[-1]])) if len(prev) >= 120 else math.nan
+        if len(prev) < 120:
+            return math.nan
+        return 100 * float(np.mean(np.array(prev) < snap[obs[-1]]))
 
     def chg(days: int, log: bool) -> Callable[[list[date], list[float], int], float]:
         def f(obs: list[date], vals: list[float], i: int) -> float:
@@ -113,8 +115,9 @@ def main() -> None:
         "",
         "Run ideas-1. Script `lib/yt_skill.py`, method of `macro_skill.py`: each indicator as",
         "known on the Friday against the next 28-day log return; rho = Spearman on all Fridays,",
-        "t from every fourth Friday (non-overlapping); `vs 12m` = rank correlation with the asset's",
-        "own 12-month return. Train only. 8 indicators x 4 assets x 2 windows: a few |t| > 2 are",
+        "t from every fourth Friday (non-overlapping); `vs 12m` = rank correlation with the",
+        "asset's own 12-month return. Train only. 8 indicators x 4 assets x 2 windows:",
+        "a few |t| > 2 are",
         "expected from luck. `days_since_breakout` is days since card 3's breakout (any age).",
         "",
     ]

@@ -82,8 +82,10 @@ beat `tsmom12` out of sample? Plan and results: `research/rl-2.md`; rules: `rese
 - Next (not started): planted-signal control of the residual pipeline (can it find a known
   weak signal?); then funding rates / basis for coins, which need shorting or futures in the gym.
 
-## Ideas 1 (research run, branch `ideas-1`, started 2026-11-13 ~06:00 UTC)
+## Ideas 1 (research run, branch `ideas-1`, draft PR #20, 2026-11-13)
 
-Brief: `chief-of-staff/briefs/grimstrade-ideas-1.md`. Test eight YouTube rules (harvest 1) by the
-protocol: cards in `research/cards/yt-1.md` (fixed before any test), runner
-`research/lib/idea_yt.py`, write-up `research/ideas-1.md`. Status: cards written; testing next.
+Done: eight YouTube rules carded (`research/cards/yt-1.md`) and tested on train; all dead, card 3
+(`ath`, days since the old high) the nearest miss and coin-only. Write-up `research/ideas-1.md`.
+Next (not started): feed days-since-breakout, band width percentile, distance from the 52-week
+high, UMCSENT percentile, oil 6-month and 10-year 3-month changes to the RL agent as inputs;
+harvest 2 can reuse `research/lib/idea_yt.py`.
