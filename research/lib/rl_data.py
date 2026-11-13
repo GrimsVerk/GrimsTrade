@@ -17,7 +17,7 @@ import harness
 import numpy as np
 import rl_env
 import rl_sim
-from harness import OOU_COINS, OOU_ETFS, OOU_INDEXES, SYMS, TRAIN_END, TRAIN_START
+from harness import OOU_COINS, OOU_ETFS, OOU_INDEXES, TRAIN_END, TRAIN_START
 
 from grimstrade import gym
 

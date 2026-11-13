@@ -150,6 +150,15 @@ coin share move with trend, volatility and macro inputs). Every variant gets row
 - Prices for this worktree were copied from the macro-1 worktree's cache (fetched 2026-11-13 by
   `lib/fetch.py`); the macro cache is the shared one in `~/data/grimstrade`.
 
+### Disclosure
+
+- 2026-11-13 ~02:55 UTC: `rl_eval.py` was checked in dry mode (`RL_DRY=1`, nothing logged) on
+  throwaway `ppo-mlp` models trained for 2 updates per fold (about 0.2% of the budget). It
+  printed baseline Sharpe ratios from 2000-01-07 (`tsmom12` 0.99, 1.19 since 2003) and the
+  near-untrained ensemble's numbers. No setting was changed after it.
+- The first launch ran 16 training jobs at once and filled the PC's memory; it was stopped by
+  PID before any fold finished and restarted with 4 at a time. No result was involved.
+
 ## Status
 
 Plan written. Nothing built or trained yet.

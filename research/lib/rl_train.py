@@ -101,7 +101,7 @@ N_PAD = 6
 
 def to_tensors(o: Obs, sc: Scaler, dev: torch.device) -> dict[str, torch.Tensor]:
     n = o.X.shape[1]
-    pad = N_PAD - n
+    pad = max(N_PAD - n, 0)
     xa = sc.asset(o.X) * o.elig[..., None]
     w = o.w
     el = o.elig
