@@ -6,11 +6,59 @@ If the agent may only tilt `tsmom12`'s weights a little, is rewarded only for be
 stopped early on a validation slice, and (one variant) learns from 33 markets instead of six,
 does it beat `tsmom12` out of sample?
 
-## In plain words
+## In plain words (results, 2026-11-13)
 
-(Written after the results.)
+**Constraining the agent stopped it from losing, but it still adds nothing. No residual agent
+beat `tsmom12`; all three fail their bar.** Three agents, ten seeds each, 13 walk-forward folds
+2000-2025 (390 models), every decision replayed through the real gym. The held-out year was not
+looked at.
 
-## Plan (written 2026-11-13 ~05:35 UTC, before any rl-2 code or training)
+- **Did constraining help?** Against rl-1, enormously: Sharpe 0.97-0.98 instead of 0.57-0.71,
+  worst loss 35-36% instead of 60-87%. But only because the agent is now almost `tsmom12`. Against
+  `tsmom12` itself (0.99 over 2000-2025, 1.19 since 2003) all three are a hair behind:
+  `res-lin` -0.008 (bootstrap p = 0.71), `res-mlp` -0.020 (p = 0.87), `res-pool` -0.023
+  (p = 0.92); since 2003 -0.007 to -0.021. One seed in ten is ahead for each. The seed spread is
+  narrow (0.93 to 1.00) and the best seed of 30 merely ties `tsmom12`.
+- **How much did it move?** Very little. Its weights differ from `tsmom12`'s by 1.8%
+  (`res-lin`, under the 2% floor: "fail, it learned nothing to add") or 2.7% (the two MLPs) of
+  the account on an average Friday. What it learned: hold uptrending assets a touch fuller (1.02
+  to 1.04 slots instead of 1), keep a sliver of downtrending ones (0.01 to 0.03 slots), sit in
+  cash 27% of the time instead of 30%. Coins stay at `tsmom12`'s 10% (the cap). It trades a
+  little more (3.0-3.1 times equity a year against 2.8).
+- **How sure?** Sure that it does not beat `tsmom12` on these inputs: three different set-ups,
+  thirty seeds, all landing within 0.03 Sharpe of `tsmom12`, slightly on the wrong side. Not a
+  near miss with a hidden edge: the edge is not there even in the training years.
+- **Training discipline did what it should and showed why.** Early stopping kept zero tilt
+  (pure `tsmom12`) in 44% of the fold models of `res-lin`, 34% of `res-mlp` and 26% of
+  `res-pool`. Where it allowed a tilt, the gain on the training years was tiny (typically 0.70
+  against 0.68 weekly Sharpe), the gain on the validation slice that chose it small, and out of
+  sample the tilted folds were ahead in only 3 of 7 (`res-lin`), 5 of 11 (`res-mlp`) and 4 of 9
+  (`res-pool`). The validation gain did not carry into the next two years: what the agent found
+  was noise, just less of it than in rl-1.
+- **The wider book did not help.** `res-pool`, trained on 33 markets, is no better than the
+  six-asset MLP (0.97 and 0.97). More independent bets did not uncover a pattern that holds.
+- **Out of universe:** the same picture on the 8 other ETFs, 6 other coins and 4 indexes: within
+  0.03 Sharpe of `tsmom12`, mostly just behind. Bar 6 is formally "passed" only because those tiny
+  differences share the six assets' negative sign.
+
+### What next for the RL lane
+
+The residual frame is the right harness and should be kept: it cannot lose much to `tsmom12`,
+and it makes "the agent found nothing" visible instead of hiding it in a coin bet. What it
+showed is that there is nothing in these inputs (prices and macro, weekly) for any learner to
+find beyond the trend rule; run 2, macro-1, rl-1 and now rl-2 agree. In order:
+
+1. **A planted-signal control** (cheap, a few hours): put a known weak signal into one input of
+   the residual environment and check that this exact pipeline finds it and beats `tsmom12`.
+   If it cannot, the learner or budget is the limit; if it can, the inputs are, and the lane
+   needs new information before more training.
+2. **New information for coins**, the only place it is likely to exist: Coin Metrics on-chain
+   inputs (brief item 4; the cache in `~/data/grimstrade/coinmetrics`) with the macro as-of rule,
+   and later perpetual funding rates (needs shorting in the gym).
+3. Not worth a night: more seeds, bigger networks, longer training, other RL algorithms, or a
+   wider book of the same price features.
+
+## Plan (written 2026-11-13 ~05:10 UTC, before any rl-2 code or training)
 
 ### Prior
 
@@ -109,7 +157,7 @@ A variant passes only if its seed ensemble, over 2000-01-07 to 2025-11-09 on the
 
 Held-out year (2025-11-11 to 2026-11-09): at most once, one finalist, only if a variant passes.
 
-### Settings fixed from the timing test (2026-11-13 ~06:00 UTC, before the first logged run)
+### Settings fixed from the timing test (2026-11-13 ~05:15 UTC, before the first logged run)
 
 - One fold of 60 updates takes about 8 s (`res-mlp`) to 12 s (`res-pool`) on one CPU core, so
   training runs on the CPU (`RL_DEVICE=cpu`), 4 jobs at a time (`rl_launch.py`, now
@@ -129,6 +177,32 @@ Held-out year (2025-11-11 to 2026-11-09): at most once, one finalist, only if a 
   `tests/test_rl2.py`). Training and the agent's view of its own account use rl-1's simulator,
   which repeats Friday's weights all week; the two differ only in holiday weeks.
 
-## Status
+### Disclosure
 
-Plan and code done, tests pass. Training next.
+- 2026-11-13 ~05:25 UTC: after all 390 fold models were trained, `rl2_eval.py` was run once in
+  dry mode (`RL_DRY=1`, nothing logged) on `res-lin` to check the plumbing before logging. It
+  printed `res-lin`'s out-of-sample verdict (behind `tsmom12` by 0.008 Sharpe, active share
+  1.75%, fails). Nothing was changed after it; the logged run followed with the same code.
+- Times in this file are UTC (an earlier draft wrote local time, UTC+1, by mistake; corrected
+  before any result).
+
+## Status (2026-11-13 ~05:50 UTC)
+
+**Done:** plan, pass bar and protocol section before code; residual environment with tests (zero
+tilt equals `tsmom12` exactly through the gym: synthetic test and real data, error 0); trainer
+with purged validation and early stopping; 3 variants x 10 seeds x 13 folds trained on the CPU
+(390 models, git-ignored in `research/data/rl/models2/`, about 12 minutes); evaluation through
+the real gym, 42 rows in `tries.md` (3 `variant` ensembles, 30 seeds and 9 out-of-universe runs
+as `robustness`); tables in `results/rl-2.md`; this write-up. All three fail. Held-out year
+untouched.
+
+**Doing:** nothing half-finished. No process left running.
+
+**Next (not started):** planted-signal control, then on-chain inputs for coins (brief item 4),
+see "What next for the RL lane".
+
+Reproduce: `uv run python research/lib/rl2_data.py` (tables + zero-tilt check; needs rl-1's
+`tables.pkl` from `rl_data.py`), then
+`RL_TRAIN=rl2_train.py RL_VARIANTS=res-lin,res-mlp,res-pool RL_TAG=rl2- setsid -f uv run --with torch python research/lib/rl_launch.py`,
+then `uv run --with torch python research/lib/rl2_eval.py` (logs tries: run once) and
+`uv run python research/lib/rl2_eval.py --report`.

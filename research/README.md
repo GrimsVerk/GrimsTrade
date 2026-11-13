@@ -82,6 +82,13 @@ agents learned to hold coins (a third of the book) and overfit their training ye
 if any: a residual policy that tilts `tsmom12` with a coin cap, or more independent bets (wider
 book, hourly crypto), or new information (on-chain, funding).
 
+RL run 2 (rl-2, 2026-11-13; [`rl-2.md`](rl-2.md)): **an agent allowed only to tilt the trend
+rule (at most half a slot, coins never above `tsmom12`'s weight, rewarded on beating it, early
+stopped on a purged validation slice) no longer loses badly, but adds nothing.** Three variants
+(linear, MLP, MLP pooled over 33 markets), ten seeds each: Sharpe 0.97-0.98 against `tsmom12`'s
+0.99, weights 1.8-2.7% away from `tsmom12`'s, all fail. Next: a planted-signal control of this
+pipeline, then new information for coins (on-chain).
+
 ## Ranking after run 2
 
 For forward paper trading (M3), best first. Run 2 changed nothing here: no ML model comes

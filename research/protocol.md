@@ -287,7 +287,7 @@ Everything above still applies, the macro as-of rule included. The full design i
   variant fails to train at all (a bug, a divergence), the fix is noted with its date and every
   variant is rerun with it; a fix is never chosen by out-of-sample Sharpe.
 
-## Residual RL tests (added 2026-11-13 05:35 UTC, run rl-2, before any rl-2 code or training)
+## Residual RL tests (added 2026-11-13 05:10 UTC, run rl-2, before any rl-2 code or training)
 
 Everything above still applies, the RL section included. The full design is the plan in
 `rl-2.md`; these are the rules a result is judged by.
