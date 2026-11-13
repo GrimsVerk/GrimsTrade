@@ -112,3 +112,18 @@ Idea name `rl-3-control`, kind `control` for every row (ensembles, seeds, ceilin
 selectable, not counted as strategy tries. Each configuration: one ensemble row and ten seed
 rows; each strength: five ceiling rows. Out-of-universe runs are not done (no planted signal
 there). The held-out year is not needed and not looked at.
+
+### Settings and disclosures (2026-11-13 ~07:10 UTC, before the first logged run)
+
+- Code: `lib/rl3_plant.py` (the planted input; `tests/test_rl3.py` proves the held week and the
+  exact yearly IC), `lib/rl3_train.py` (RL 2's `train_fold` on the planted tables). One change
+  to `rl2_train.py`: a `KEEP_LAST` switch, off by default (RL 2's behaviour unchanged), for the
+  `diag-noes` diagnostic only.
+- Realised pooled IC over all years is a little below `rho` (0.049 at 0.05, 0.197 at 0.20)
+  because the years' means differ; inside each year it is exact.
+- Timing test: `plant-mlp-0.00`, seed 0, folds 2024 and 2000, to a throwaway folder (deleted):
+  7.8 s and 5.4 s per fold model, about 1 GB of memory per process. It printed validation
+  scores inside the training windows (2024: update 30 best; 2000: all zero, since the 2000 fold
+  holds only SPY, which a full slot cannot tilt up). No out-of-sample number was computed and
+  nothing was changed after it. Training: 3 processes at a time on the CPU (the brief's cap).
+- Price and RL 2 table caches (git-ignored) were copied from the rl-2 worktree, read only.
