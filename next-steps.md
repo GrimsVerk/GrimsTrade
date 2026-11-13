@@ -1,9 +1,16 @@
 # Next steps
 
-## Breadth 1 (in progress 2026-11-13, branch `breadth-1`)
+## Breadth 1 (done 2026-11-13, branch `breadth-1`, draft PR #22 -> `info-1`)
 
-Do weak signals pay on a wide book (Coin Metrics coins, 30 Binance pairs, 33-market pool) or at
-hourly frequency in BTC/ETH? Card and status in `research/breadth-1.md`.
+Wide books and hourly frequency, after 30 bps costs. One pass: in the wide Coin Metrics coin book
+(top 100, dead coins included, 2019-2025), tilting toward low volume-to-market-cap coins inside
+the trend rule lifted Sharpe from 0.72 to 1.06 (held-out year 0.61 against 0.31). It did not carry
+over to the 30 liquid Binance pairs, and it stays below plain BTC `tsmom12` (~1.16), so it is
+no case for widening the crypto slot. The 33-market pool and the hourly BTC/ETH rules add nothing
+(hourly reversal is real, IC ~-0.08, but the costs are ten times the edge). Write-up
+`research/breadth-1.md`. Open owner options: a short-side card on perpetuals with funding costs,
+or a coin-book RL agent behind rl-3's gate. Neither matters while the paper system stays on
+long-only BTC/ETH.
 
 ## Info 1 (done 2026-11-13, branch `info-1`, draft PR #21 -> `rl-3`)
 
