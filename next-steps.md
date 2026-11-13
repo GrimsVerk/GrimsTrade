@@ -1,5 +1,13 @@
 # Next steps
 
+## Info 1 (done 2026-11-13, branch `info-1`, draft PR #21 -> `rl-3`)
+
+23 new inputs (COT, Cboe options/vol and put/call, crypto funding/basis/DVOL, on-chain, Fear &
+Greed, cross-asset) screened for weekly IC: none useful (best walk-forward gain over the trend
+inputs +0.025; one candidate above chance in sample). Write-up `research/info-1.md`. Open
+options for the owner: more independent bets (30 Binance perps, 33-market pool), a wider action
+(short side), or a slower-horizon (4/13-week) screen as a new card.
+
 ## M0 status: built, not yet proven live
 
 Done: template scaffold, data ingest (BTC, ETH, SPY, QQQ, GLD, TLT, append-only CSV), gym

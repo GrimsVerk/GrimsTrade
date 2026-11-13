@@ -10,6 +10,8 @@ Never edit or delete a row.
   run after the choice was made).
 - `control` (added 2026-11-13, rl-3): a planted-signal control experiment, never a strategy, not
   selectable and not counted as a strategy try (`protocol.md`, "Planted-signal controls").
+- `screen` (added 2026-11-13, info-1): a descriptive weekly IC row for one candidate input, no
+  backtest, not selectable and not counted as a strategy try; numbers in `results/info-1.md`.
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
@@ -672,3 +674,26 @@ Never edit or delete a row.
 | 2026-11-13 07:31 | rl-3-control | sup-ols-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.87 | +2749.2% | 45.6% | 7.02 |
 | 2026-11-13 07:31 | rl-3-control | sup-ols-0.10 | control | train | 2000-01-07 | 2025-11-09 | 0.91 | +3245.2% | 45.1% | 8.98 |
 | 2026-11-13 07:31 | rl-3-control | sup-ols-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.08 | +6989.5% | 44.1% | 11.32 |
+| 2026-11-13 07:43 | info-1-screen | cot_spec (IC +0.003, chance 0.032, WF -0.007, gain -0.018) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | cot_spec_chg4 (IC -0.035, chance 0.033, WF +0.034, gain +0.012) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | cot_spec_z3y (IC -0.024, chance 0.028, WF +0.026, gain +0.007) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | cot_lev (IC +0.026, chance 0.061, WF -0.001, gain -0.005) | screen | train | 2006-06-23 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | cot_am (IC -0.020, chance 0.044, WF -0.007, gain -0.018) | screen | train | 2006-06-23 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | fund_bn (IC -0.005, chance 0.251, WF -0.015, gain +0.025) | screen | train | 2020-01-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | prem_bn (IC +0.034, chance 0.218, WF +0.046, gain +0.006) | screen | train | 2020-01-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | fund_drb (IC +0.009, chance 0.245, WF +0.059, gain -0.002) | screen | train | 2019-05-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | dvol_rv (IC -0.002, chance 0.236, WF +nan, gain +nan) | screen | train | 2021-03-26 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | puell (IC +0.056, chance 0.218, WF +0.015, gain +0.012) | screen | train | 2013-01-04 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | hash_growth (IC -0.003, chance 0.230, WF +0.106, gain +0.009) | screen | train | 2013-01-04 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | tx_growth (IC +0.065, chance 0.225, WF +0.037, gain +0.001) | screen | train | 2013-01-04 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | fng (IC +0.083, chance 0.285, WF +0.083, gain +0.015) | screen | train | 2018-02-09 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | vix_term (IC +0.012, chance 0.046, WF +0.033, gain +0.012) | screen | train | 2009-09-25 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | vix_term6 (IC -0.007, chance 0.049, WF +0.028, gain -0.019) | screen | train | 2008-01-04 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | skew_z (IC +0.023, chance 0.035, WF +0.007, gain -0.004) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | vvix_vix (IC +0.014, chance 0.052, WF +0.018, gain -0.020) | screen | train | 2006-03-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | vrp (IC -0.002, chance 0.034, WF -0.007, gain -0.011) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | pc_total (IC +0.022, chance 0.068, WF +0.033, gain +0.025) | screen | train | 2006-11-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | pc_equity (IC +0.025, chance 0.072, WF +0.038, gain +0.020) | screen | train | 2006-11-17 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | usd_13w (IC -0.019, chance 0.033, WF +0.003, gain -0.005) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | oil_13w (IC -0.008, chance 0.036, WF +0.021, gain +0.009) | screen | train | 2000-11-24 | 2025-11-09 | - | - | - | - |
+| 2026-11-13 07:43 | info-1-screen | hy_ief_13w (IC -0.015, chance 0.050, WF +0.015, gain -0.002) | screen | train | 2007-07-13 | 2025-11-09 | - | - | - | - |
