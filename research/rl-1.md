@@ -133,6 +133,23 @@ coin share move with trend, volatility and macro inputs). Every variant gets row
   that decision is scrambled or deleted; features equal those built from history truncated by
   the gym's visibility rule.
 
+### Settings fixed from the timing test (2026-11-13, before the first logged run)
+
+- One process trains about 40,000 environment-weeks a second (numpy simulator, networks on the
+  GPU). Budget per fold, every variant and seed: **1,664,000 environment-weeks** (PPO: 500
+  updates of 64 episodes x 52 weeks; ES: 125 iterations of 32 members x 8 episodes x 52 weeks).
+  For the last fold that is about a thousand passes over the six-asset training history, enough
+  to overfit if overfitting is there to be had.
+- PPO details: initial noise scale 0.7 on the scores, rewards x 10 inside the optimiser, entropy
+  bonus 0.001, gradient clip 0.5, 4 epochs of 4 minibatches. The end of a 52-week episode is
+  treated as terminal (no bootstrap).
+- ES: sigma 0.1, Adam 0.02, 16 antithetic pairs, all members on the same 8 episodes (6 six-asset,
+  2 S&P 500 index) per iteration, deterministic policy.
+- Test-time support: numpy and scikit-learn joined the repo's dev group so the environment tests
+  run in the checks (`tests/test_rl_env.py`); torch stays outside (`uv run --with torch`).
+- Prices for this worktree were copied from the macro-1 worktree's cache (fetched 2026-11-13 by
+  `lib/fetch.py`); the macro cache is the shared one in `~/data/grimstrade`.
+
 ## Status
 
 Plan written. Nothing built or trained yet.
