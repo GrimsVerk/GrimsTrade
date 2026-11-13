@@ -46,9 +46,35 @@ def build() -> dict[str, rl2_env.RTable]:
     return out
 
 
-def load() -> dict[str, rl2_env.RTable]:
-    with PATH.open("rb") as f:
+CHAIN_PATH = harness.DATA / "rl" / "tables2c.pkl"
+
+
+def load(chain: bool = False) -> dict[str, rl2_env.RTable]:
+    with (CHAIN_PATH if chain else PATH).open("rb") as f:
         return pickle.load(f)  # type: ignore[no-any-return]
+
+
+def build_chain() -> dict[str, rl2_env.RTable]:
+    """The same tables with the three on-chain inputs appended to every asset (0 off coins)."""
+    import dataclasses
+
+    import onchain
+
+    out = {}
+    for k, rt in load().items():
+        t = rt.t
+        extra = np.zeros((len(t.fridays), len(t.book.syms), len(onchain.FEATS)))
+        for j, s in enumerate(t.book.syms):
+            if not rt.coin[j] or (ser := onchain.load(s)) is None:
+                continue
+            for i, d in enumerate(t.fridays):
+                extra[i, j] = onchain.features_at(ser, d)
+            print(k, s, "on-chain mean", extra[t.elig[:, j], j].mean(0).round(3), flush=True)
+        x = np.concatenate([t.X, extra * t.elig[..., None]], axis=2)
+        out[k] = dataclasses.replace(rt, t=dataclasses.replace(t, X=x))
+    with CHAIN_PATH.open("wb") as f:
+        pickle.dump(out, f)
+    return out
 
 
 def check(tabs: dict[str, rl2_env.RTable]) -> None:
@@ -73,4 +99,7 @@ def check(tabs: dict[str, rl2_env.RTable]) -> None:
 
 
 if __name__ == "__main__":
-    check(load() if "--check" in sys.argv else build())
+    if "--chain" in sys.argv:
+        build_chain()
+    else:
+        check(load() if "--check" in sys.argv else build())

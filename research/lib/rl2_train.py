@@ -37,7 +37,7 @@ EVAL_EVERY = 5
 MIN_TRAIN_WEEKS = 26
 REWARD_SCALE = 100.0
 N_PAD = 9  # the widest book (sectors)
-A_DIM = len(rl_env.ASSET_FEATS) + 2  # features + current weight + base weight
+A_DIM = len(rl_env.ASSET_FEATS) + 2  # features + current weight + base weight (+3 on-chain)
 G_DIM = len(rl_env.MACRO_FEATS) + 1  # macro + cash weight
 SMALL = {"six": 48, "gspc": 16}
 POOL = {"six": 16, "etf": 12, "sec": 12, "coin": 8, "idx": 8, "gspc": 8}
@@ -48,6 +48,11 @@ class Variant:
     name: str
     hidden: int
     books: dict[str, int]  # book -> parallel episodes per update
+    chain: bool = False  # on-chain inputs for coins (tables2c.pkl)
+
+    @property
+    def a_dim(self) -> int:
+        return A_DIM + (3 if self.chain else 0)
 
 
 VARIANTS = {
@@ -56,6 +61,7 @@ VARIANTS = {
         Variant("res-lin", 0, SMALL),
         Variant("res-mlp", 32, SMALL),
         Variant("res-pool", 32, POOL),
+        Variant("res-mlp-chain", 32, SMALL, chain=True),  # card added after the three above
     ]
 }
 
@@ -84,8 +90,8 @@ def split(rt: RTable, year: int, validate: bool) -> Split | None:
     return Split(lo, hi, (v0, end)) if hi - lo >= MIN_TRAIN_WEEKS else None
 
 
-def new_net(hidden: int) -> Net:
-    net = Net(A_DIM, G_DIM, hidden)
+def new_net(hidden: int, a_dim: int = A_DIM) -> Net:
+    net = Net(a_dim, G_DIM, hidden)
     last = net.score[-1] if isinstance(net.score, nn.Sequential) else net.score
     assert isinstance(last, nn.Linear)
     nn.init.zeros_(last.weight)
@@ -164,7 +170,7 @@ def train_fold(
     base_eq = {
         k: rl_env.run_policy(tabs[k].t, base_policy(tabs[k]), a, b)[1] for k, (a, b) in vals.items()
     }
-    net = new_net(v.hidden).to(dev)
+    net = new_net(v.hidden, v.a_dim).to(dev)
     opt = torch.optim.Adam(net.parameters(), lr=3e-4)
     gamma, lam, clip, epochs, n_mb = 0.99, 0.95, 0.2, 4, 4
 
@@ -251,7 +257,7 @@ def main() -> None:
     seed = int(sys.argv[2])
     years = [int(y) for y in sys.argv[3:]] or FOLDS
     dev = torch.device(os.environ.get("RL_DEVICE", "cpu"))  # timing test: CPU is fast enough
-    tabs = rl2_data.load()
+    tabs = rl2_data.load(v.chain)
     out = MODELS / v.name / f"s{seed}"
     out.mkdir(parents=True, exist_ok=True)
     for y in years:

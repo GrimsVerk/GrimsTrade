@@ -26,7 +26,7 @@ IDEA = "rl-2"
 OOS_START = date(2000, 1, 7)
 SINCE = date(2003, 1, 1)
 SEEDS = range(10)
-VARIANTS = ["res-lin", "res-mlp", "res-pool"]
+VARIANTS = ["res-lin", "res-mlp", "res-pool", "res-mlp-chain"]
 ERAS = ["2000-09", "2010-16", "2017-21", "2022-25"]
 
 
@@ -42,13 +42,14 @@ def evaluate(variant: str) -> dict:  # noqa: PLR0915
     from harness import TRAIN_END
     from ml import first_friday
     from rl2_env import RObs, RTable, residual
-    from rl2_train import A_DIM, FOLDS, G_DIM, MODELS, base_policy, scores, split
+    from rl2_train import FOLDS, G_DIM, MODELS, base_policy, scores, split
+    from rl2_train import VARIANTS as V2
     from rl_env import Obs
     from rl_train import Net, Scaler
 
     r1.IDEA = IDEA  # log_run writes rl-2 rows
     cpu = torch.device("cpu")
-    tabs = rl2_data.load()
+    tabs = rl2_data.load(V2[variant].chain)
     hists = rl2_data.histories()
     models: dict[int, list[tuple[Net, Scaler, int]]] = {}
     for y in FOLDS:
@@ -56,7 +57,7 @@ def evaluate(variant: str) -> dict:  # noqa: PLR0915
         for s in SEEDS:
             ck = torch.load(MODELS / variant / f"s{s}" / f"{y}.pt", weights_only=False,
                             map_location=cpu)  # fmt: skip
-            net = Net(A_DIM, G_DIM, ck["hidden"])
+            net = Net(V2[variant].a_dim, G_DIM, ck["hidden"])
             net.load_state_dict(ck["state"])
             net.eval()
             models[y].append((net, Scaler(**ck["scaler"]), int(ck["chosen_update"])))

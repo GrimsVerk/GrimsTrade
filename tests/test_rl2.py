@@ -136,3 +136,32 @@ def test_zero_scores_earn_zero_reward(lib: dict[str, ModuleType]) -> None:
     assert total == 0.0
     r, _ = env.step(np.full_like(env.obs().b, -3.0))  # cutting everything: a nonzero reward
     assert np.abs(r).sum() > 0
+
+
+def test_onchain_inputs_ignore_the_future(lib: dict[str, ModuleType]) -> None:
+    pytest.importorskip("numpy")
+    spec = importlib.util.spec_from_file_location("onchain", LIB / "onchain.py")
+    assert spec and spec.loader
+    oc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(oc)
+    rng = random.Random(5)
+    days = [date(2018, 1, 1) + timedelta(days=i) for i in range(900)]
+
+    def rows(scramble_from: date | None) -> list[dict[str, str | None]]:
+        out: list[dict[str, str | None]] = []
+        for d in days:
+            junk = scramble_from is not None and d >= scramble_from
+            out.append({
+                "time": d.isoformat() + "T00:00:00.000000000Z",
+                "CapMVRVCur": str(rng.uniform(0.5, 3) if junk else 1 + d.toordinal() % 7 / 10),
+                "AdrActCnt": str(rng.uniform(1, 1e9) if junk else 1000 + d.toordinal() % 30),
+                "FeeTotNtv": None if junk else str(5 + d.toordinal() % 11),
+            })  # fmt: skip
+        return out
+
+    clean = oc.from_rows(rows(None))
+    for d in (date(2019, 1, 5), date(2019, 6, 7), date(2020, 3, 1)):
+        got = oc.features_at(oc.from_rows(rows(d)), d)
+        assert got == oc.features_at(clean, d)
+        assert got != [0.0, 0.0, 0.0]
+    assert oc.features_at(clean, date(2018, 6, 1)) == [0.0, 0.0, 0.0]  # under 365 rows
