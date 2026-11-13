@@ -16,6 +16,7 @@ dev = [
     "pytest>=8.3",
     "ruff~=0.15.22",
     "scikit-learn>=1.9.1",
+    "xlrd>=2.0.1",
 ]
 
 [build-system]
