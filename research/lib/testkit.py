@@ -29,7 +29,7 @@ def standard(
     fresh_twins: bool = False,
     start: date | None = None,
     note: str = "",
-) -> None:
+) -> dict[str, object]:
     """`variants`: first one is the primary. `twins`: first one is THE twin for the pass bar."""
     primary = next(iter(variants))
     twin = next(iter(twins))
@@ -95,3 +95,4 @@ def standard(
     verdict = "PASSES train" if all(ok for _, ok, _ in bars) else "FAILS train"
     out += ["", f"**{verdict}.**", ""]
     c.write_result(idea, "\n".join(out))
+    return {"variants": vs, "twins": tw, "ew": ew, "text": "\n".join(out), "passed": verdict}

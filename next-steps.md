@@ -32,3 +32,11 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 Classic strategies live in paper (time-series momentum, cross-sectional momentum, vol targeting,
 risk parity, crypto mean reversion), each registered in `ledger/tries.jsonl`; deflated Sharpe in
 the scoreboard; weekly one-screen summary for the owner.
+
+## Macro 1 (research run, branch `macro-1`, started 2026-11-13 ~01:40 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-macro-1.md`. Question: does knowing the macro phase
+(Fed policy, real rates, yield curve, money supply, credit spreads, the Bitcoin halving cycle)
+add anything over `tsmom12`? Write-up: `research/macro-1.md`.
+
+- Doing: look-ahead-safe macro layer `research/lib/macro.py` + tests, then cards, then tests.
