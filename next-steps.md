@@ -1,5 +1,10 @@
 # Next steps
 
+## Info 1 (in progress, 2026-11-13, branch `info-1`)
+
+Screening new kinds of information (COT, options/vol, crypto derivatives, on-chain, sentiment,
+cross-asset) for weekly IC against the trend rule's inputs. Card and status: `research/info-1.md`.
+
 ## M0 status: built, not yet proven live
 
 Done: template scaffold, data ingest (BTC, ETH, SPY, QQQ, GLD, TLT, append-only CSV), gym
