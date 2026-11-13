@@ -2,6 +2,36 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-13 (ingest 2): The finer data the daily job now collects (`grimstrade.intraday`:
+  Coinbase 1-hour BTC-USD/ETH-USD, Yahoo 1-hour SPY/QQQ/GLD/TLT, Kraken Futures funding
+  PF_XBTUSD/PF_ETHUSD) is **not published**: none of it goes on `paper-trail`. Terms read
+  2026-11-13: Kraken Global Terms (last updated 2026-11-06) section 8 allows its content "only for
+  your own benefit" and section 9 forbids to "distribute" or "make available to any third party";
+  Yahoo's terms forbid using the services "to create any database, archive, ... data feed" and to
+  "reproduce ... distribute" (OTOS 2(d)(10), 2(h)), and its API terms claim the API output;
+  Coinbase's Market Data Terms of Use (they govern the Exchange market data API) answered 403 to
+  our fetch, so unread, and unclear counts as no. Where it lives instead: a **GitHub Actions
+  cache** of this repo, restored and re-saved under a new key (`intraday-<run>-<attempt>`) by the
+  daily job after the record is pushed (four best-effort steps, `continue-on-error`). Why a
+  cache: nobody outside can download it (there is no download API; only this repo's workflows
+  restore it, and outside pull requests are off). Not artifacts: in a public repo anyone signed in
+  to GitHub can download them, which is publishing, and they expire within 90 days. How long it
+  survives: GitHub deletes a cache entry not read for 7 days and caps a repo at 10 GB; the daily
+  job reads it every day and saves a full new copy (a few MB), so it lives as long as the daily
+  job runs. A missed restore must not let a shorter fresh copy become the newest entry:
+  `scripts/intraday-store.sh` skips the day when a store exists but did not restore. If the job
+  stops for over a week the store is gone; the owner's local snapshots
+  (`scripts/snapshot_rolling.py`, `docs/data-inventory.md`) are the backup. A cache can't be
+  downloaded to a PC directly: reading it locally needs a manual job that encrypts it with a key
+  the owner adds as a secret (not built; owner's call). Compared with the daily bars on
+  `paper-trail`: those come from the same sources under the same terms but are public, permanent
+  and tamper-evident in git, which the record needs (every score is recomputed from them); that
+  existing practice stays the owner's call (`docs/data-sources.md`). The intraday files are not
+  part of the record: nothing that trades or scores reads them (`tests/test_intraday_wiring.py`),
+  so they need no tamper evidence. Yahoo's terms also frown on automated collection as such; the
+  project already fetches Yahoo daily bars, so this adds no new kind of risk. The repository
+  variable `INTRADAY_COLLECT=off` turns the collection off.
+
 - 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
   refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
   before the one under it or in the future; no record file or folder that is a symbolic link;

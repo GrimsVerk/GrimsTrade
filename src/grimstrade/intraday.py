@@ -1,5 +1,6 @@
-"""Daily collection of finer data (docs/data-sources.md section 9, items 1 and 2). Not yet wired
-into `run_daily`.
+"""Daily collection of finer data (docs/data-sources.md section 9, items 1 and 2). The daily job
+runs it after the record is pushed (`run_daily --intraday DIR`); DIR is kept in an Actions cache,
+never published (docs/DECISIONS.md, 2026-11-13).
 
 Three append-only CSV series, each row stamped with `available_at` (UTC time it could first have
 been known); a row is stored only once `available_at <= now`:
