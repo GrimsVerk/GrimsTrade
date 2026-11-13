@@ -8,6 +8,8 @@ Never edit or delete a row.
 - `kind`: `variant` (a strategy configuration that could have been selected), `baseline`
   (benchmark or naive comparator), `robustness` (the same configuration on other data or costs,
   run after the choice was made).
+- `control` (added 2026-11-13, rl-3): a planted-signal control experiment, never a strategy, not
+  selectable and not counted as a strategy try (`protocol.md`, "Planted-signal controls").
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |

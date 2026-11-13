@@ -303,3 +303,11 @@ Everything above still applies, the RL section included. The full design is the 
 - **Pass bar** as written in `rl-2.md`: rl-1's bar, plus ahead of `tsmom12` since 2003 and an
   average active share of at least 2% (an agent that only matches `tsmom12` with a near-zero
   tilt fails).
+
+## Planted-signal controls (added 2026-11-13 06:55 UTC, run rl-3, before any rl-3 code or training)
+
+A control experiment plants a known signal into an input to measure what a pipeline can find.
+It is never a strategy. Its rows in `tries.md` carry kind `control` and an idea name ending in
+`-control`; they are not selectable and are not counted as strategy tries. The rules of the
+pipeline under test apply unchanged; the card (`rl-3.md`) fixes the strengths, the "found" rule
+and the ceiling before any run. Held-out data is never used by a control.

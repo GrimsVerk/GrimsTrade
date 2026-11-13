@@ -81,3 +81,14 @@ beat `tsmom12` out of sample? Plan and results: `research/rl-2.md`; rules: `rese
 - Doing: nothing. No process running.
 - Next (not started): planted-signal control of the residual pipeline (can it find a known
   weak signal?); then funding rates / basis for coins, which need shorting or futures in the gym.
+
+## RL 3 (research run, branch `rl-3`, started 2026-11-13 ~06:45 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-rl-3.md`. Question: is RL 2's null the inputs or the
+learner? Plant a known weak signal (IC 0.00-0.20) into one input of RL 2's residual environment
+and see at what strength the same pipeline beats `tsmom12`. Card and results: `research/rl-3.md`.
+
+- Done: card, pass rules and ceiling fixed before any code (`research/rl-3.md`); protocol section
+  "Planted-signal controls"; `control` kind in `research/tries.md`.
+- Doing: planted tables, trainer wrapper, evaluation.
+- Next: train 10 configurations x 10 seeds x 13 folds, evaluate, write up.
