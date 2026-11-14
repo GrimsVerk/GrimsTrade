@@ -1,5 +1,19 @@
 # Next steps
 
+## Invest 1 (done 2026-11-13, branch `invest-1`, draft PR #24 -> `short-1`)
+
+First run for the investing agent: monthly stock/bond/cash allocation, train 1927-1989, out of
+sample 1990-2025 (Shiller, French, FRED; `research/lib/invest1.py`, as-of test
+`tests/test_invest1_asof.py`). Nothing passed. Valuation (CAPE, excess CAPE yield) forecasts the
+next decade (R² ~0.3, but only 14 non-overlapping decades, t ~2), yet a CAPE tilt of 60/40
+earned nothing after 1990; the excess-CAPE-yield tilt was +0.08 / +0.06 Sharpe (p 0.002 / 0.15).
+Term spread, real yields, an inflation switch and dual momentum: dead. Monthly `tsmom12` keeps
+its lead, mostly as drawdown (8% vs 29% after 1990). Parked: `ecy-trend` (best Sharpe both
+periods, beats trend only before 1990). Write-up and a sketch of the investing agent's own book:
+`research/invest-1.md`. Held-out year untouched. Owner options: a maintained monthly valuation
+source (Shiller's sheet stops 2023), or start the investing book with `6040` and `tsmom12-m`
+monthly as baselines only.
+
 ## Short 1 (done 2026-11-13, branch `short-1`, draft PR #23 -> `breadth-1`)
 
 A short side on Binance USDT perps (30 pairs and BTC/ETH, 2020-2025, 10 bps + every funding

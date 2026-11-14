@@ -13,6 +13,10 @@ Never edit or delete a row.
 - `screen` (added 2026-11-13, info-1): a descriptive weekly IC row for one candidate input, no
   backtest, not selectable and not counted as a strategy try; numbers in `results/info-1.md`.
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
+- `invest-1` rows (added 2026-11-13): monthly decisions; Sharpe is of monthly returns in excess
+  of T-bills x sqrt(12); period `train` = 1927-01..1989-12, `oos` = 1990-01..2025-10 (both fixed
+  on the card in `invest-1.md`, neither is the protocol's held-out year); Return is total, not
+  per year; Turnover/yr = sum of |weight changes| in stocks and bonds per year.
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
 |---|---|---|---|---|---|---|---:|---:|---:|---:|
@@ -870,3 +874,36 @@ Never edit or delete a row.
 | 2026-11-13 08:08 | short-1-P30 | ls-combo short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.74 | -95.8% | 97.4% | 8.95 |
 | 2026-11-13 08:08 | short-1-P30 | ls-rev_1 (daily) long leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -0.01 | -49.5% | 77.7% | 243.76 |
 | 2026-11-13 08:08 | short-1-P30 | ls-rev_1 (daily) short leg alone (diagnostic) | robustness | train | 2020-02-15 | 2025-11-09 | -1.47 | -98.6% | 99.0% | 239.48 |
+| 2026-11-13 08:17 | invest-1 | 6040 | baseline | train | 1927-01 | 1989-12 | 0.41 | +14628.4% | 63.0% | 0.23 |
+| 2026-11-13 08:17 | invest-1 | 6040 | baseline | oos | 1990-01 | 2025-10 | 0.67 | +2028.4% | 28.8% | 0.22 |
+| 2026-11-13 08:17 | invest-1 | bh-stocks | baseline | train | 1927-01 | 1989-12 | 0.40 | +38532.5% | 83.7% | 0.00 |
+| 2026-11-13 08:17 | invest-1 | bh-stocks | baseline | oos | 1990-01 | 2025-10 | 0.59 | +4022.9% | 50.3% | 0.00 |
+| 2026-11-13 08:17 | invest-1 | tsmom12-m | baseline | train | 1927-01 | 1989-12 | 0.53 | +9429.0% | 19.1% | 0.95 |
+| 2026-11-13 08:17 | invest-1 | tsmom12-m | baseline | oos | 1990-01 | 2025-10 | 0.77 | +1428.2% | 7.6% | 0.94 |
+| 2026-11-13 08:17 | invest-1 | cape-tilt | variant | train | 1927-01 | 1989-12 | 0.43 | +22785.1% | 60.7% | 0.54 |
+| 2026-11-13 08:17 | invest-1 | cape-tilt | variant | oos | 1990-01 | 2025-10 | 0.67 | +1232.7% | 22.2% | 0.34 |
+| 2026-11-13 08:17 | invest-1 | ecy-tilt | variant | train | 1927-01 | 1989-12 | 0.49 | +34921.3% | 56.6% | 0.48 |
+| 2026-11-13 08:17 | invest-1 | ecy-tilt | variant | oos | 1990-01 | 2025-10 | 0.73 | +2107.9% | 30.7% | 0.54 |
+| 2026-11-13 08:17 | invest-1 | term-tilt | variant | train | 1927-01 | 1989-12 | 0.38 | +10865.4% | 63.0% | 1.40 |
+| 2026-11-13 08:17 | invest-1 | term-tilt | variant | oos | 1990-01 | 2025-10 | 0.57 | +1442.9% | 34.6% | 1.06 |
+| 2026-11-13 08:17 | invest-1 | real-tilt | variant | train | 1927-01 | 1989-12 | 0.46 | +18935.0% | 49.3% | 0.48 |
+| 2026-11-13 08:17 | invest-1 | real-tilt | variant | oos | 1990-01 | 2025-10 | 0.64 | +2261.5% | 37.8% | 0.57 |
+| 2026-11-13 08:17 | invest-1 | infl-regime | variant | train | 1927-01 | 1989-12 | 0.41 | +13926.2% | 63.0% | 0.34 |
+| 2026-11-13 08:17 | invest-1 | infl-regime | variant | oos | 1990-01 | 2025-10 | 0.69 | +2051.7% | 32.7% | 0.35 |
+| 2026-11-13 08:17 | invest-1 | 6040-sma10 | variant | train | 1927-01 | 1989-12 | 0.52 | +11432.5% | 24.7% | 1.38 |
+| 2026-11-13 08:17 | invest-1 | 6040-sma10 | variant | oos | 1990-01 | 2025-10 | 0.75 | +1436.2% | 9.1% | 1.66 |
+| 2026-11-13 08:17 | invest-1 | xmom | variant | train | 1927-01 | 1989-12 | 0.51 | +33056.3% | 43.5% | 2.10 |
+| 2026-11-13 08:17 | invest-1 | xmom | variant | oos | 1990-01 | 2025-10 | 0.59 | +2182.9% | 20.6% | 2.57 |
+| 2026-11-13 08:17 | invest-1 | ecy-trend | variant | train | 1927-01 | 1989-12 | 0.62 | +22702.7% | 19.4% | 1.14 |
+| 2026-11-13 08:17 | invest-1 | ecy-trend | variant | oos | 1990-01 | 2025-10 | 0.82 | +1633.1% | 9.7% | 1.19 |
+| 2026-11-13 08:17 | invest-1 | 6040 (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.76 | +486.7% | 29.5% | 0.21 |
+| 2026-11-13 08:17 | invest-1 | bh-stocks (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.68 | +915.8% | 50.8% | 0.00 |
+| 2026-11-13 08:17 | invest-1 | tsmom12-m (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.97 | +357.2% | 6.8% | 0.99 |
+| 2026-11-13 08:17 | invest-1 | cape-tilt (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.71 | +300.8% | 22.9% | 0.35 |
+| 2026-11-13 08:17 | invest-1 | ecy-tilt (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.75 | +481.6% | 31.5% | 0.51 |
+| 2026-11-13 08:17 | invest-1 | term-tilt (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.60 | +352.0% | 35.1% | 0.75 |
+| 2026-11-13 08:17 | invest-1 | real-tilt (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.68 | +540.8% | 38.4% | 0.56 |
+| 2026-11-13 08:17 | invest-1 | infl-regime (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.80 | +508.2% | 32.6% | 0.40 |
+| 2026-11-13 08:17 | invest-1 | 6040-sma10 (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.81 | +318.7% | 15.3% | 1.84 |
+| 2026-11-13 08:17 | invest-1 | xmom (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.55 | +553.9% | 28.2% | 3.88 |
+| 2026-11-13 08:17 | invest-1 | ecy-trend (ETF) | robustness | oos | 2003-09 | 2025-10 | 0.94 | +409.7% | 9.6% | 1.23 |
