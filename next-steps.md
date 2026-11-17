@@ -5,7 +5,7 @@
 Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes through subagents.
 
 - Done: lane 1 health check (all 11 live books decide and fill daily; weekly-report names fix,
-  draft PR #27 -> `main`); lane 2 this summary.
+  draft PR #27 -> `main`); lane 2 this summary (draft PR #28).
 - Running: lane 3 `carry-3` (funding carry with real fee tiers and spreads, slower rebalance,
   one held-out look if train passes); lane 4 `rl-4` (a learner that passes rl-3's planted gate,
   then the perp cross-section).
@@ -19,7 +19,7 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   move the schedule? (details: `health-1` next-steps, PR #27).
 - `next-steps.md` on `main` is stale (still lists merged PR #5 as waiting).
 
-## Summary 1 (done 2026-11-17, branch `summary-1`, draft PR -> `carry-2`)
+## Summary 1 (done 2026-11-17, branch `summary-1`, draft PR #28 -> `carry-2`)
 
 One screen for the owner on every research run so far: `research/SUMMARY.md` (what was tried, the
 leads, the dead ends and why, what is not tested yet, how sure we are). Docs only, no new test. It
