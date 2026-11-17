@@ -9,8 +9,25 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 - Running: lane 3 `carry-3` (funding carry with real fee tiers and spreads, slower rebalance,
   one held-out look if train passes); lane 4 `rl-4` (a learner that passes rl-3's planted gate,
   then the perp cross-section).
-- Next: lane 5 engineering holes (G2 pending unfilled buy, G4 dividends, crypto fee tiers) as
-  draft PRs to `main`.
+- Running: lane 5 engineering holes (G2 pending unfilled buy, G4 dividends, crypto fee tiers)
+  as draft PRs to `main`.
+- Owner direction 2026-11-17 ~23:30 UTC: never stop early (only weekly 0.74, the reset or the
+  Chief of Staff); always one WIDER lane (new ideas, from other fields if needed) and one DEEPER
+  lane (failure modes, tuning, combining models). Queue below; next free slot takes the top.
+
+### Lane queue (W = wider, D = deeper)
+
+1. W `wide-1`: other fields (ecology, signal processing, control, information theory,
+   evolutionary computation) crossed with computational maths: invent 3-5 new hypotheses not in
+   `ideas.md`, card each, test by the protocol.
+2. D `deep-1`: failure atlas: where and why each tested model loses to `tsmom12` (era, asset,
+   regime, drawdown episode); find models whose wins cover `tsmom12`'s losses; one honest
+   combination card (stacking / regime switch / meta-learner), walk-forward.
+3. W `slow-1`: 4- and 13-week horizon screen of info-1's inputs (info-1 lever 3), new card.
+4. D `trend-carry`: after carry-3, combine `tsmom12` with the cost-realistic carry sleeve
+   (sizing, correlation in crashes), held-out rules respected.
+5. W `evo-1`: evolved rule search (genetic programming) under strict multiple-testing control
+   (reality check / deflated Sharpe), as a test of whether search finds anything honest.
 
 ### For the owner
 
