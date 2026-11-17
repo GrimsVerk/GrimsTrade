@@ -984,3 +984,11 @@ Never edit or delete a row.
 | 2026-11-17 23:09 | rl-4-perp-pooled | ls-equal, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.06 | -0.5% | 27.4% | nan |
 | 2026-11-17 23:09 | rl-4-perp-pooled | ls-equal @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | -0.51 | -26.9% | 38.8% | nan |
 | 2026-11-17 23:09 | rl-4-perp-pooled | tsmom12 twin, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.01 | -22.7% | 49.6% | nan |
+| 2026-11-17 23:11 | rl-4-perp-B-out | ls-ml-ret, perp 10 bps + funding | variant | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-B-out | ls-ml-ret, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Bybit | ls-ml-ret, perp 10 bps + funding | variant | train | 2022-05-14 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Bybit | ls-ml-ret, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Hyperliquid | ls-ml-ret, perp 10 bps + funding | variant | train | 2023-06-10 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Hyperliquid | ls-ml-ret, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-pooled | ls-ml-ret, equal capital per venue | variant | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | nan |
+| 2026-11-17 23:11 | rl-4-perp-pooled | ls-ml-ret @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | nan |
