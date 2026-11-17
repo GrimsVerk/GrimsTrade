@@ -1,5 +1,30 @@
 # Next steps
 
+## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
+
+Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes through subagents.
+
+- Done: lane 1 health check (all 11 live books decide and fill daily; weekly-report names fix,
+  draft PR #27 -> `main`); lane 2 this summary.
+- Running: lane 3 `carry-3` (funding carry with real fee tiers and spreads, slower rebalance,
+  one held-out look if train passes); lane 4 `rl-4` (a learner that passes rl-3's planted gate,
+  then the perp cross-section).
+- Next: lane 5 engineering holes (G2 pending unfilled buy, G4 dividends, crypto fee tiers) as
+  draft PRs to `main`.
+
+### For the owner
+
+- Daily runs fire at 02:00-04:40 UTC, not 22:30 (GitHub delays scheduled jobs). No look-ahead,
+  but crypto orders now fill ~22 h after the decision while backtests assume ~1.5 h. Accept, or
+  move the schedule? (details: `health-1` next-steps, PR #27).
+- `next-steps.md` on `main` is stale (still lists merged PR #5 as waiting).
+
+## Summary 1 (done 2026-11-17, branch `summary-1`, draft PR -> `carry-2`)
+
+One screen for the owner on every research run so far: `research/SUMMARY.md` (what was tried, the
+leads, the dead ends and why, what is not tested yet, how sure we are). Docs only, no new test. It
+also covers the side branches (`ideas-1`, `invest-1`, `fm-1`, `review-1`); update it when a run ends.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
