@@ -1,5 +1,16 @@
 # Next steps
 
+## Trend tune (research run, branch `trend-tune`, started 2026-11-18)
+
+Question: what part of `tsmom12` earns its money and where does it bleed (Part A, anatomy), and
+does walk-forward tuning of its lookback beat the fixed 12 months (Part B)? Card, fixed before any
+number: `research/trend-tune.md`.
+
+- Done: card.
+- Doing: Part A (anatomy tables, `research/results/trend-tune-anatomy.md`).
+- Next: Part B (three walk-forward procedures, `research/results/trend-tune.md`), write-up,
+  `ideas.md` rows, draft PR to `carry-2`.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
