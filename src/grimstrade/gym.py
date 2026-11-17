@@ -26,13 +26,31 @@ DECIDE_AT = time(22, 30)
 
 @dataclass(frozen=True)
 class Costs:
-    fee: float  # share of traded value
+    fee: float  # share of traded value (with `tiers`: the fee at no volume)
     slip: float  # half-spread + slippage, share of price
+    # (30-day volume in USD from which it applies, fee) by rising volume; empty = flat `fee`
+    tiers: tuple[tuple[float, float], ...] = ()
+
+    def fee_at(self, volume: float) -> float:
+        """The fee for an account that traded `volume` USD in this asset class in the last
+        30 days."""
+        return max((t for t in self.tiers if t[0] <= volume), default=(0.0, self.fee))[1]
 
 
-# Crypto fee: a fill at the open is a market order, so the taker fee applies: 0.60% on Kraken Pro
-# for an account trading 2,500 to 10,000 USD a month (DECISIONS, 2026-11-12, audit G3).
-COSTS: dict[str, Costs] = {CRYPTO: Costs(fee=0.0060, slip=0.0005), ETF: Costs(fee=0.0, slip=0.0002)}
+# Kraken Pro spot taker fee by 30-day spot volume in USD (kraken.com/pro/fees, read 2026-11-12
+# and again 2026-11-18; DECISIONS, crypto fee tiers). A fill at the open is a market order, so
+# the taker fee applies. Each strategy is its own account; only its crypto fills count.
+KRAKEN_TAKER: tuple[tuple[float, float], ...] = (
+    (0, 0.0080), (2_500, 0.0060), (10_000, 0.0038), (25_000, 0.0035), (50_000, 0.0030),
+    (100_000, 0.0025), (250_000, 0.0022), (500_000, 0.0020), (1_000_000, 0.0018),
+    (2_500_000, 0.0015), (5_000_000, 0.0012), (10_000_000, 0.0010), (50_000_000, 0.0009),
+    (100_000_000, 0.0008), (250_000_000, 0.0007), (400_000_000, 0.0006), (500_000_000, 0.0005),
+)  # fmt: skip
+VOLUME_WINDOW = timedelta(days=30)
+COSTS: dict[str, Costs] = {
+    CRYPTO: Costs(fee=0.0080, slip=0.0005, tiers=KRAKEN_TAKER),
+    ETF: Costs(fee=0.0, slip=0.0002),
+}
 
 
 @dataclass(frozen=True)
@@ -147,22 +165,31 @@ def _execute(
         full_exit = target == 0 and held > 0
         if full_exit or abs(delta) >= band * eq:
             trades.append((delta, sym, full_exit))
+    # Each asset class's fee for fills at this open: by the volume of its fills in the 30 days
+    # before (not those at this same open).
+    since = t - VOLUME_WINDOW
+    rate: dict[str, float] = {}
+    for cls in {UNIVERSE[s] for _, s, _ in trades}:
+        volume = sum(abs(f.qty) * f.price for f in res.fills
+                     if since < f.time < t and UNIVERSE[f.symbol] == cls)  # fmt: skip
+        rate[cls] = costs[cls].fee_at(volume)
     for delta, sym, full_exit in sorted(trades):  # sells (negative) first, to free cash
         c = costs[UNIVERSE[sym]]
+        fee_rate = rate[UNIVERSE[sym]]
         if delta < 0:
             px = price[sym] * (1 - c.slip)
             qty = res.positions[sym] if full_exit else min(-delta / price[sym], res.positions[sym])
-            fee = qty * px * c.fee
+            fee = qty * px * fee_rate
             res.cash += qty * px - fee
             res.positions[sym] -= qty
             res.fills.append(Fill(t, sym, -qty, px, fee))
         else:
             px = price[sym] * (1 + c.slip)
-            spend = min(delta / price[sym] * px * (1 + c.fee), res.cash)
+            spend = min(delta / price[sym] * px * (1 + fee_rate), res.cash)
             if spend <= 0:
                 continue
-            qty = spend / (px * (1 + c.fee))
-            fee = qty * px * c.fee
+            qty = spend / (px * (1 + fee_rate))
+            fee = qty * px * fee_rate
             res.cash -= qty * px + fee
             res.positions[sym] += qty
             res.fills.append(Fill(t, sym, qty, px, fee))

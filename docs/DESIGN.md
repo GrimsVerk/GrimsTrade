@@ -49,7 +49,8 @@ daily job checks it out into `trail/`, runs, and pushes it. Code changes go to `
 
 ## Costs (defaults in `gym.py`)
 
-Crypto: 60 bps fee (taker) + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A trade smaller than 1% of
+Crypto: Kraken Pro's taker fee for the strategy's 30-day crypto volume (0.80% from 0 USD, 0.60%
+from 2,500, 0.38% from 10,000, ...; DECISIONS) + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A trade smaller than 1% of
 equity is skipped (rebalance band), except full exits.
 
 ## Benchmarks (what "making money" must beat)
