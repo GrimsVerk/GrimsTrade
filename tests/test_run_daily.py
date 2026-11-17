@@ -12,8 +12,11 @@ DAY0 = date(2026, 10, 1)
 
 
 def fake_market(url: str) -> bytes:
-    """Kraken-style JSON for crypto, Stooq CSV for ETFs (Yahoo 'down'). Prices rise 1/day."""
+    """Kraken-style JSON for crypto, Stooq CSV for ETFs (Yahoo's prices 'down', its dividend
+    events up but empty). Prices rise 1/day."""
     days = [DAY0 + timedelta(days=i) for i in range(60)]
+    if "yahoo" in url and "events=div" in url:
+        return json.dumps({"chart": {"result": [{"meta": {}}], "error": None}}).encode()
     if "kraken" in url:
         ts = [int(datetime(d.year, d.month, d.day, tzinfo=UTC).timestamp()) for d in days]
         rows = [[t, str(100 + i), str(101 + i), str(99 + i), str(100.5 + i), "0", "10", 1]

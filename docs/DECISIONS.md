@@ -2,6 +2,27 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-17 (audit G4): ETF distributions are paid into the gym as cash, on the ex-date, at
+  that day's open, on the units held before the open (a unit sold at that open is paid, one
+  bought there is not). Source: Yahoo's chart API with `events=div` (keyless, the same host as
+  the bars; amounts per unit, split-adjusted like its prices). Stored append-only in
+  `data/dividends.csv` (`symbol,ex_date,amount`) on the record branch; each daily run asks for
+  the whole stored span of each ETF and appends what is new, so a failed or late answer is
+  caught up next run (a failure is still a problem line). Refused, and a problem line: an
+  ex-date with no stored session on and before it, an amount over 10% of the previous close.
+  `check_record` refuses rows no run writes (a second payout for one day, a crypto symbol, a
+  bad day or amount). Why the ex-date, not the pay date: the raw price drops at the ex-date's
+  open, so paying then keeps a holder's equity whole on the day the drop shows; Yahoo gives no
+  pay date. The price: the cash is spendable early (TLT and QQQ pay about a week after, SPY
+  about six weeks after), at most one quarterly payout (about 0.3% of the position) a few
+  weeks early, which is far smaller than the 1-4% a year missing before. The cash is not
+  reinvested by itself: it sits in cash until the strategy's next decision buys back to target
+  (band applied), as for a real account without automatic reinvestment. Cash still earns no
+  interest. Strategies do not see dividends (they decide on raw bars as before). Every score is
+  replayed from the stored record each run, so stored payouts change past backtests once (700
+  days to 2026-11-17: buy-and-hold SPY +2.1%, 60/40 +4.9%, equal weight +2.4%); the live
+  record had no ex-date yet (it began 2026-11-11).
+
 - 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
   refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
   before the one under it or in the future; no record file or folder that is a symbolic link;
@@ -108,8 +129,9 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   a data-only branch keeps the record's history clean and CI quiet.
 - 2026-11-11: Bars and ledger are CSV/JSONL, stdlib only. Why: diff-able in git (the tamper
   evidence), no dependencies to break the unattended runner.
-- 2026-11-11: Prices are raw (not dividend-adjusted); dividends are not credited yet. Why: adjusted
-  history changes retroactively, which breaks append-only data. Understates SPY/TLT a little.
+- 2026-11-11: Prices are raw (not dividend-adjusted). Why: adjusted history changes
+  retroactively, which breaks append-only data. Dividends are paid separately as cash since
+  2026-11-17 (audit G4, above).
 - 2026-11-11: Sharpe uses 365 calendar days and a zero risk-free rate. Why: crypto trades every day;
   one convention for all strategies.
 - 2026-11-11: No real-money broker, ever, without the owner's explicit decision. No keys in git.
