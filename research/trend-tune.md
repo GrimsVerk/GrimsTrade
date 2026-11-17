@@ -73,8 +73,12 @@ Part A may be used to choose a setting; Part B's procedures are fixed here, befo
    if the asset was lower at re-entry, and was a *whipsaw* if it was higher. Per asset: flips
    a year, spells by length (under 4 weeks, 4-13, 13-26, over 26), total saved, total whipsaw
    cost, trading cost, all in log points a year; the ten best and ten worst spells.
-5. **Bear markets, rebounds, the rest.** Per asset, a bear window runs from a closing high to
-   the lowest close before the next new high, for falls of at least 20% (ETFs) or 50% (coins).
+5. **Bear markets, rebounds, the rest.** Per asset, with a threshold of 20% (ETFs) or 50%
+   (coins): a bear window runs from the highest close since the last bear low to the lowest
+   close that follows it, once the fall has reached the threshold; the low is settled when the
+   close has risen by the threshold from it. (Amended 2026-11-18, still before any number: the
+   first wording, "to the lowest close before the next new high", would have filed QQQ's 2008
+   fall under "the rest", because QQQ made no new high between 2000 and 2015.)
    A rebound window is the 365 days after that low (cut where the next bear window starts).
    Everything else is "the rest". For each bucket: what holding earned and what the rule
    earned, how far below the high the rule got out, and how far above the low it got back in.
