@@ -1,5 +1,15 @@
 # Next steps
 
+## RL 4 (research run, branch `rl-4`, started 2026-11-17 ~22:50 UTC)
+
+Question: which of rl-3's cheap fixes (few inputs, shrinkage, more rows) makes a learner find a
+planted weekly IC of 0.10, and does the passing learner find anything real on carry-2's
+perpetual-futures cross-section? Card and results: `research/rl-4.md`.
+
+- Done: card part 1 (learners, gate, budget) before any code.
+- Doing: the planted-control grid (5 forecasters + `ppo3`, IC 0.00/0.05/0.10/0.20).
+- Next: card part 2 (real perp book, train only) if a learner passes; write-up; draft PR.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
