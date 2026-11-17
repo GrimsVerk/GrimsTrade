@@ -992,3 +992,7 @@ Never edit or delete a row.
 | 2026-11-17 23:11 | rl-4-perp-Hyperliquid | ls-ml-ret, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
 | 2026-11-17 23:11 | rl-4-perp-pooled | ls-ml-ret, equal capital per venue | variant | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | nan |
 | 2026-11-17 23:11 | rl-4-perp-pooled | ls-ml-ret @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | nan |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.99 | +5395.5% | 36.5% | 2.79 |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.05 | control | train | 2000-01-07 | 2025-11-09 | 1.02 | +4982.8% | 32.1% | 10.53 |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.10 | control | train | 2000-01-07 | 2025-11-09 | 1.13 | +7125.5% | 29.6% | 14.63 |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.42 | +19509.5% | 22.2% | 17.35 |

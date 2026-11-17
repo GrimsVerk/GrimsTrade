@@ -54,8 +54,10 @@ SPECS = {
         Spec("ridge28", None, SMALL, "ridge"),
         Spec("lasso28", None, SMALL, "lasso"),
         Spec("ols28-pool", None, POOL, "ols"),
+        Spec("ols1", (PEEK,), SMALL, "ols"),  # post-hoc diagnostic, not on the card
     ]
 }
+POSTHOC = {"ols1"}
 
 
 # --- pure helpers (numpy and scikit-learn only; tests import these) ---
@@ -329,7 +331,7 @@ def report() -> None:
         bars = gate(r, ceil["0.10"], rl=k.startswith("ppo"))
         ok = [b.split()[0] for b, v in bars.items() if v]
         L.append(
-            f"| `{k}` | {f(r['0.10']['diff'], '+.3f')} ({f(r['0.10']['p'])}) | {r['0.10']['diff'] / ceil['0.10']:.0%} "
+            f"| `{k}`{' (post-hoc)' if k in POSTHOC else ''} | {f(r['0.10']['diff'], '+.3f')} ({f(r['0.10']['p'])}) | {r['0.10']['diff'] / ceil['0.10']:.0%} "
             f"| {f(r['0.20']['diff'], '+.3f')} ({f(r['0.20']['p'])}) | {r['0.20']['diff'] / ceil['0.20']:.0%} "
             f"| {f(r['0.00']['diff'], '+.3f')} ({f(r['0.00']['p'])}) | {', '.join(ok) or 'none'} of {len(bars)} "
             f"| {'**passes**' if all(bars.values()) else 'fails'} |"
@@ -380,5 +382,5 @@ if __name__ == "__main__":
     elif "--smoke" in sys.argv:
         smoke()
     else:
-        for n in sys.argv[1:] or list(SPECS):
+        for n in sys.argv[1:] or [k for k in SPECS if k not in POSTHOC]:
             evaluate(n)
