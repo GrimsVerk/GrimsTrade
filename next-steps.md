@@ -6,8 +6,10 @@ New trading hypotheses from other fields (ecology, epidemiology, signal processi
 information theory, game theory, physics, queueing, neuroscience, immunology), each tested by the
 protocol. Research only. Plan and results: `research/wide-1.md`.
 
-- Doing: step 1, ideation (written before any number).
-- Next: cards in `research/cards/`, pushed before any test; then train tests; then write-up.
+- Done: ideation (`research/wide-1.md`), four cards (`research/cards/auction-concession.md`,
+  `rebalance-pressure.md`, `contagion-catchup.md`, `vol-echo.md`), pushed before any test.
+- Doing: step 3, train tests (scripts `research/lib/idea_wide1_*.py`).
+- Next: write-up at the top of `research/wide-1.md`, `ideas.md` statuses, draft PR.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

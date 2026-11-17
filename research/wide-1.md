@@ -178,7 +178,11 @@ trend rule, not replacements for it.
   skill table has faint hints (curve slope against TLT rho +0.11, t = 2.0). Not from another
   field, so not carded here.
 
-## Step 2. Cards
+## Step 2. Cards (written 2026-11-17 23:20 UTC, pushed before any test)
 
-To come: `cards/auction-concession.md`, `cards/rebalance-pressure.md`,
-`cards/contagion-catchup.md`, `cards/vol-echo.md`, committed and pushed before any test.
+[auction-concession](cards/auction-concession.md),
+[rebalance-pressure](cards/rebalance-pressure.md),
+[contagion-catchup](cards/contagion-catchup.md), [vol-echo](cards/vol-echo.md). Each fixes the
+rule, the variants (two each: eight in all), the twin, the out-of-universe sets and the pass
+bar. The only thing looked at before writing them was the Treasury's auction calendar (dates and
+terms, no prices).

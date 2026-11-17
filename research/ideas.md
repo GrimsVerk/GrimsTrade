@@ -130,3 +130,19 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
 | ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
 | ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
+
+### Run wide-1: hypotheses from other fields (2026-11-17)
+
+Ideation, field by field, in [wide-1.md](wide-1.md) (about 45 mechanisms; the ones killed there
+collapse into ideas already in this file and are not repeated here). Four got a card.
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| auction-concession | Queueing / inventory theory | testing | [card](cards/auction-concession.md) | TLT out for the five sessions ending with a 20/30-year Treasury auction |
+| rebalance-pressure | Control theory | testing | [card](cards/rebalance-pressure.md) | Lean against the month's stock/bond leader in the last five sessions |
+| contagion-catchup | Epidemiology / graph diffusion | testing | [card](cards/contagion-catchup.md) | Among 21 ETFs, hold those whose relatives moved and which did not |
+| vol-echo | Signal processing / control theory | testing | [card](cards/vol-echo.md) | Hold stocks on the days a shock leaves the 21-day volatility window |
+| stablecoin-resource | Ecology (consumer-resource) | parked | - | Two cycles, two coins: cannot be validated (wide-1, E1) |
+| attention-sir | Epidemiology | parked | - | Three manias; Wikipedia page views are free from 2015-07 (wide-1, P2) |
+| validator-queue | Queueing theory | parked | - | Ethereum exit queue; data from 2023-04, one coin (wide-1, Q4) |
+| token-unlocks | Ecology (supply pulse) | parked | - | Needs paid data (price not checked, nothing bought); small coins only (wide-1, Q6) |
