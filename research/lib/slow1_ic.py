@@ -764,9 +764,88 @@ def check() -> None:
     print("inputs:", len(xs))
 
 
+# ---------- post-hoc reading of the logged run (no new test) ----------
+
+POSTHOC_ERAS = [("2004-09", 2004, 2009), ("2010-16", 2010, 2016), ("2017-21", 2017, 2021),
+                ("2022-25", 2022, 2025)]  # fmt: skip
+
+
+def posthoc(closest: str = "usd_13w") -> str:
+    """Written after the table was seen. Family-adjusted p-values of the closest inputs (from
+    the saved rotations), and where the closest input's walk-forward IC comes from."""
+    res = json.loads((out_dir() / "slow1.json").read_text())
+    nulls = np.load(out_dir() / "nulls.npz")
+    fam = []
+    for r in res["recs"]:
+        for mdl in ("per", "pool"):
+            if "ic" in r and np.isfinite(r[f"z_{mdl}"]):
+                v = nulls[f"{r['name']}|{r['h']}|{mdl}"]
+                fam.append((r, mdl, (v - r[f"mean_{mdl}"]) / r[f"sd_{mdl}"]))
+    zmax = np.nanmax(np.column_stack([f[2] for f in fam]), axis=1)
+    out = [
+        "## Post-hoc: reading the closest inputs (written after the table; no new test)",
+        "",
+        "Family-adjusted p = the share of rotations in which the largest z anywhere in the",
+        f"family of {len(fam)} is at least this input's z. Below 0.05 would be a pass.",
+        "",
+        "| Input | h | model | WF IC | z | single-test p | family-adjusted p |",
+        "|---|---:|---|---:|---:|---:|---:|",
+    ]
+    for r, mdl, _ in sorted(fam, key=lambda f: -f[0][f"z_{f[1]}"])[:10]:
+        zz = r[f"z_{mdl}"]
+        out.append(
+            f"| `{r['name']}` | {r['h']} | {mdl} | {r[f'wf_{mdl}']:+.3f} | {zz:+.2f} | "
+            f"{r[f'p_{mdl}']:.3f} | {float((zmax >= zz).mean()):.2f} |"
+        )
+    t, coin = load()
+    g = Grid(t)
+    xs, _ = inputs(t, coin)
+    x = np.nan_to_num(xs[closest])
+    syms = t.book.syms
+    for h in HORIZONS:
+        z = horizon_z(t, h)
+        m = np.isfinite(z) & np.isfinite(xs[closest])
+        m[: g.i0] = False
+        pred = np.full(z.shape, np.nan)
+        for tr, te in g.blocks(m):
+            pred[te] = fit_predict(
+                per_design(x[tr], g.asset[tr], g.n), z[tr], per_design(x[te], g.asset[te], g.n)
+            )
+        ok = np.isfinite(pred)
+        out += [
+            "",
+            f"`{closest}`, {h} weeks, slope per asset: walk-forward IC inside each asset and era",
+            f"(all out-of-sample cells: {corr(pred[ok], z[ok]):+.3f}). Windows = out-of-sample",
+            f"weeks / {h}, the non-overlapping {h}-week periods behind each number.",
+            "",
+            "| Slice | Cells | Windows | WF IC |",
+            "|---|---:|---:|---:|",
+        ]
+        for j, s in enumerate(syms):
+            mj = ok & (g.asset == j)
+            out.append(
+                f"| {s} | {int(mj.sum())} | {int(mj.any(1).sum()) // h} | "
+                f"{corr(pred[mj], z[mj]):+.3f} |"
+            )
+        for name, a, b in POSTHOC_ERAS:
+            me = ok & (g.years >= a) & (g.years <= b)
+            out.append(
+                f"| {name} | {int(me.sum())} | {int(me.any(1).sum()) // h} | "
+                f"{corr(pred[me], z[me]):+.3f} |"
+            )
+        nc = ok & ~np.repeat(coin[None, :], g.f, 0)
+        out.append(
+            f"| the four ETFs only | {int(nc.sum())} | {int(nc.any(1).sum()) // h} | "
+            f"{corr(pred[nc], z[nc]):+.3f} |"
+        )
+    return "\n".join(out)
+
+
 if __name__ == "__main__":
     if "--check" in sys.argv:
         check()
+    elif "--posthoc" in sys.argv:
+        print(posthoc())
     elif "--report" in sys.argv:
         print(render(json.loads((out_dir() / "slow1.json").read_text())))
     elif "--run" in sys.argv:

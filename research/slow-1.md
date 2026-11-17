@@ -190,6 +190,16 @@ likewise (`screen`); the four planted inputs as `control`. Table: `results/slow-
   seconds only, no statistic) was run to size the job. No `h` = 4 or 13 number had been computed
   when the run was launched.
 
-## Status
+## Status (2026-11-18, paused by the lead at the usage limit)
 
-Card and code written, weekly reproduction passed. The slow-horizon run has not started.
+**Done:** card; code and tests; weekly reproduction; the logged run (once, `--run --log`: 98
+input rows + 6 combined rows of kind `screen`, 4 `control` rows in `tries.md`); table
+`results/slow-1.md` with a post-hoc section. Held-out year not loaded.
+
+**Result in one line (write-up still to come):** nothing survives. Family of 192, critical
+z 3.40. Closest: `usd_13w` at 13 weeks, walk-forward IC +0.151, z 2.82, family-adjusted p 0.23;
+it comes from BTC and ETH in 2017-2025 and is zero on the four ETFs. No combined forecast beats
+`up_12m` (best gain +0.028, z 1.25). No trading card, no backtest.
+
+**Next:** the plain-words write-up at the top of this file, the `next-steps.md` section, the
+PR text. No process running.
