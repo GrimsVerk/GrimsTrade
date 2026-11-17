@@ -1,6 +1,6 @@
 # Next steps
 
-## Crypto fee by 30-day volume tier (branch `fee-tiers`, draft PR, not merged)
+## Crypto fee by 30-day volume tier (branch `fee-tiers`, draft PR #32, not merged)
 
 Replaces the flat 0.60% crypto fee with Kraken Pro's taker schedule by each strategy's own
 30-day crypto volume. Schedule, date read and why: `docs/DECISIONS.md` (2026-11-18). Code:
