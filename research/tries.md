@@ -936,3 +936,42 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-17 23:25 | vol-echo | echo21@SPY | variant | train | 1994-02-01 | 2025-11-09 | 0.25 | +56.0% | 23.4% | 20.77 |
+| 2026-11-17 23:25 | vol-echo | constant@SPY | baseline | train | 1994-02-01 | 2025-11-09 | 0.63 | +66.5% | 9.6% | 0.05 |
+| 2026-11-17 23:25 | auction-concession | six | variant | train | 1994-02-01 | 2025-11-09 | 1.06 | +19941.1% | 35.9% | 4.23 |
+| 2026-11-17 23:25 | vol-echo | echo21@QQQ | variant | train | 2000-03-10 | 2025-11-09 | 0.13 | +20.8% | 38.6% | 20.32 |
+| 2026-11-17 23:25 | vol-echo | constant@QQQ | baseline | train | 2000-03-10 | 2025-11-09 | 0.41 | +46.3% | 19.1% | 0.09 |
+| 2026-11-17 23:25 | auction-concession | tlt@TLT | variant | train | 2003-07-31 | 2025-11-09 | 0.50 | +242.4% | 44.1% | 25.35 |
+| 2026-11-17 23:25 | auction-concession | constant@TLT | baseline | train | 2003-07-31 | 2025-11-09 | 0.33 | +97.2% | 39.7% | 0.07 |
+| 2026-11-17 23:25 | vol-echo | echo21@IWM | robustness | train | 2001-05-27 | 2025-11-09 | 0.04 | -0.0% | 35.7% | 17.67 |
+| 2026-11-17 23:25 | vol-echo | constant@IWM | baseline | train | 2001-05-27 | 2025-11-09 | 0.43 | +33.3% | 8.8% | 0.05 |
+| 2026-11-17 23:25 | auction-concession | six@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.57 | +207.8% | 16.9% | 6.11 |
+| 2026-11-17 23:25 | vol-echo | echo21@EFA | robustness | train | 2002-08-28 | 2025-11-09 | -0.01 | -8.9% | 27.8% | 21.09 |
+| 2026-11-17 23:25 | vol-echo | constant@EFA | baseline | train | 2002-08-28 | 2025-11-09 | 0.45 | +33.5% | 10.8% | 0.06 |
+| 2026-11-17 23:25 | auction-concession | tlt@IEF | robustness | train | 2003-07-31 | 2025-11-09 | 0.26 | +34.5% | 22.7% | 41.34 |
+| 2026-11-17 23:25 | auction-concession | constant@IEF | baseline | train | 2003-07-31 | 2025-11-09 | 0.55 | +69.4% | 16.2% | 0.05 |
+| 2026-11-17 23:25 | vol-echo | echo21@EEM | robustness | train | 2004-04-14 | 2025-11-09 | -0.09 | -24.6% | 36.8% | 19.07 |
+| 2026-11-17 23:25 | vol-echo | constant@EEM | baseline | train | 2004-04-14 | 2025-11-09 | 0.36 | +30.7% | 11.9% | 0.07 |
+| 2026-11-17 23:25 | vol-echo | echo21@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.24 | +118.8% | 40.6% | 19.26 |
+| 2026-11-17 23:25 | vol-echo | constant@N225 | baseline | train | 1966-01-06 | 2025-11-09 | 0.40 | +84.8% | 16.2% | 0.05 |
+| 2026-11-17 23:25 | vol-echo | echo21@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.38 | +116.4% | 18.0% | 19.26 |
+| 2026-11-17 23:25 | vol-echo | constant@FTSE | baseline | train | 1985-01-03 | 2025-11-09 | 0.39 | +40.6% | 8.1% | 0.04 |
+| 2026-11-17 23:25 | vol-echo | echo21@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.27 | +85.2% | 20.9% | 21.04 |
+| 2026-11-17 23:25 | vol-echo | constant@GDAXI | baseline | train | 1988-12-30 | 2025-11-09 | 0.47 | +64.7% | 14.7% | 0.06 |
+| 2026-11-17 23:25 | vol-echo | echo21@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.42 | +71.6% | 14.6% | 18.61 |
+| 2026-11-17 23:25 | vol-echo | constant@GSPC | baseline | train | 1962-01-02 | 1993-01-27 | 0.51 | +29.9% | 7.2% | 0.03 |
+| 2026-11-17 23:25 | vol-echo | echo63@SPY | variant | train | 1994-02-01 | 2025-11-09 | -0.22 | -27.8% | 43.0% | 10.79 |
+| 2026-11-17 23:25 | vol-echo | constant@SPY | baseline | train | 1994-02-01 | 2025-11-09 | 0.63 | +32.3% | 5.2% | 0.02 |
+| 2026-11-17 23:25 | vol-echo | echo63@QQQ | variant | train | 2000-03-10 | 2025-11-09 | -0.17 | -25.7% | 39.0% | 10.48 |
+| 2026-11-17 23:25 | vol-echo | constant@QQQ | baseline | train | 2000-03-10 | 2025-11-09 | 0.41 | +21.7% | 9.7% | 0.03 |
+| 2026-11-17 23:25 | rebalance-pressure | me | variant | train | 1994-02-01 | 2025-11-09 | 1.04 | +17811.8% | 37.3% | 5.41 |
+| 2026-11-17 23:26 | rebalance-pressure | me-rebound | variant | train | 1994-02-01 | 2025-11-09 | 1.03 | +17026.1% | 39.8% | 6.97 |
+| 2026-11-17 23:26 | contagion-catchup | TS@etf21 | baseline | train | 1999-12-22 | 2025-11-09 | 0.60 | +284.3% | 20.8% | 2.67 |
+| 2026-11-17 23:26 | contagion-catchup | EW@etf21 | baseline | train | 1999-12-22 | 2025-11-09 | 0.55 | +549.2% | 41.5% | 0.17 |
+| 2026-11-17 23:26 | contagion-catchup | rev7@etf21 | baseline | train | 1999-12-22 | 2025-11-09 | 0.53 | +268.2% | 20.6% | 48.04 |
+| 2026-11-17 23:26 | contagion-catchup | catchup@etf21 | variant | train | 1999-12-22 | 2025-11-09 | 0.50 | +232.7% | 21.4% | 47.91 |
+| 2026-11-17 23:26 | contagion-catchup | nbr@etf21 | variant | train | 1999-12-22 | 2025-11-09 | 0.33 | +101.0% | 36.8% | 49.42 |
+| 2026-11-17 23:26 | rebalance-pressure | me@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.63 | +242.7% | 15.8% | 6.89 |
+| 2026-11-17 23:26 | contagion-catchup | TS@coin8 | baseline | train | 2019-08-08 | 2025-11-09 | 0.74 | +401.7% | 64.3% | 4.19 |
+| 2026-11-17 23:26 | contagion-catchup | EW@coin8 | baseline | train | 2019-08-08 | 2025-11-09 | 0.81 | +659.8% | 83.4% | 2.49 |
+| 2026-11-17 23:26 | contagion-catchup | catchup@coin8 | robustness | train | 2019-08-08 | 2025-11-09 | 0.38 | +14.9% | 70.2% | 46.05 |

@@ -8,8 +8,24 @@ protocol. Research only. Plan and results: `research/wide-1.md`.
 
 - Done: ideation (`research/wide-1.md`), four cards (`research/cards/auction-concession.md`,
   `rebalance-pressure.md`, `contagion-catchup.md`, `vol-echo.md`), pushed before any test.
-- Doing: step 3, train tests (scripts `research/lib/idea_wide1_*.py`).
-- Next: write-up at the top of `research/wide-1.md`, `ideas.md` statuses, draft PR.
+- Done: step 3, train tests (scripts `research/lib/idea_wide1_*.py`, tables
+  `research/results/{auction-concession,rebalance-pressure,contagion-catchup,vol-echo}.md`,
+  rows in `research/tries.md`). **All four fail their bar; held-out year unspent.** Post-hoc
+  tables in `research/results/wide-1-posthoc.md`. Draft PR #33 (base `carry-2`), not merged.
+  - `auction-concession`: fails (six-asset book +0.01, p 0.14; nothing in IEF). TLT alone 0.50 vs
+    0.33 (p 0.05), right sign in every period, mostly 2020-25. A lead, not a result.
+  - `rebalance-pressure`: fails (book -0.005). The month-end spread has the predicted sign
+    (+38 bps a month, t 1.7), halved since 2014; it is the month's loser rising, not the leader falling.
+  - `contagion-catchup`: dead. Relatives' moves do not spill over (IC -0.015); plain one-week
+    reversal is the whole signal (IC +0.03, t 2.9) and does not pay.
+  - `vol-echo`: dead. Worse than constant exposure everywhere; the placebo era shows the same.
+- Paused 2026-11-18 ~00:00 UTC (usage window). Not yet done: the write-up at the top of
+  `research/wide-1.md` (plain words, table, how sure, next lanes), `ideas.md` statuses
+  (still `testing`), the PR body, disclosures (dry runs printed last-120-day numbers and the
+  rebalance event study before the logged run; cards were already pushed).
+- Idea in progress when paused (not started): check the two bond patterns on data never used,
+  Treasury par yields 1990-2002 (`<cache_root>/treasury/`): the dip before long-bond auctions and
+  the month-end bond rally. Descriptive only.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
