@@ -1,5 +1,13 @@
 # Next steps
 
+## Carry 3 (in progress, started 2026-11-17, branch `carry-3` from `carry-2`)
+
+Question: does `ls-funding` survive the costs a small fake-money account would really pay
+(venue taker fees + spread + impact by coin size), with a slower shape fixed in advance, and
+does it hold in the held-out year? Card: `research/carry-3.md` (pushed before any number).
+Doing: cost model, shapes and tests; then one logged train run; the held-out year only if the
+primary (`band`) passes train.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
