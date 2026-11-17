@@ -6,10 +6,18 @@ Question: what part of `tsmom12` earns its money and where does it bleed (Part A
 does walk-forward tuning of its lookback beat the fixed 12 months (Part B)? Card, fixed before any
 number: `research/trend-tune.md`.
 
-- Done: card.
-- Doing: Part A (anatomy tables, `research/results/trend-tune-anatomy.md`).
-- Next: Part B (three walk-forward procedures, `research/results/trend-tune.md`), write-up,
-  `ideas.md` rows, draft PR to `carry-2`.
+- Done: card (pushed before any number); draft PR #34 to `carry-2`; rules and tuners in
+  `research/lib/trend_tune.py` with tests (`tests/test_trend_tune.py`: all-12 equals `tsmom12`,
+  no look-ahead, shrinkage arithmetic).
+- Paused 2026-11-18 (usage window) at this point: `research/lib/trend_tune_anatomy.py` is
+  written but has NEVER been run. No new number exists yet; `tries.md` is untouched. The price
+  cache was copied into the git-ignored `research/data/` from the `slow-1` worktree.
+- Next: run `DRY=1 uv run python research/lib/trend_tune_anatomy.py` first (plumbing, logs
+  nothing), fix what breaks, then the real run (logs 4 baseline rows, about 98 surface variants
+  and 3 robustness rows once; reruns re-score unlogged). Then Part B
+  (`research/lib/trend_tune_b.py`, not written: three `Tuner` procedures on the six assets and
+  the out-of-universe sets, the card's seven bars), write-up at the top of
+  `research/trend-tune.md`, `ideas.md` rows.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
