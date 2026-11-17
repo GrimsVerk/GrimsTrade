@@ -52,7 +52,6 @@ VARIANTS = ("w1", "w2", "w4", "band", "f30")
 PRIMARY = "band"
 POOL = ("B-out", "Bybit", "Hyperliquid")
 FILES = {"B-out": "binance", "B-all": "binance", "Bybit": "bybit", "Hyperliquid": "hyperliquid"}
-HELD_DIR = "2025-11-11-to-2026-11-10"
 
 
 def raw() -> Path:
@@ -74,20 +73,27 @@ def _ts(a: np.ndarray) -> np.ndarray:
 # ---------------------------------------------------------------- panels
 
 
+def held_raw() -> Path:
+    """The held-out downloads (`scripts/fetch_carry3.py heldout`), kept apart from train's."""
+    return raw() / "carry-3" / "heldout"
+
+
 def load_binance(grid: cp.Grid) -> None:
-    root = raw() / "binance" / "futures" / "um"
+    root = raw() / "binance" / "futures" / "um" / "monthly"
     held = grid.tag == "heldout"
-    last_month = "2026-10" if held else "2025-11"
+    extra = held_raw() / "binance"
     acc = cp.Acc(grid)
-    for d in sorted((root / "monthly" / "klines").iterdir()):
-        files = [p for p in sorted((d / "1d").glob("*.zip")) if p.stem[-7:] <= last_month]
+    for d in sorted((root / "klines").iterdir()):
+        files = [p for p in sorted((d / "1d").glob("*.zip")) if p.stem[-7:] <= "2025-11"]
         fz = [
             p
-            for p in sorted((root / "monthly" / "fundingRate" / d.name).glob("*.zip"))
-            if p.stem[-7:] <= last_month
+            for p in sorted((root / "fundingRate" / d.name).glob("*.zip"))
+            if p.stem[-7:] <= "2025-11"
         ]
         if held:
-            files += sorted((root / "daily" / "klines" / d.name / "1d").glob("*.zip"))
+            files += sorted((extra / "monthly" / "klines" / d.name / "1d").glob("*.zip"))
+            files += sorted((extra / "daily" / "klines" / d.name / "1d").glob("*.zip"))
+            fz += sorted((extra / "monthly" / "fundingRate" / d.name).glob("*.zip"))
         if not files or not fz:
             continue  # never passed the volume pre-filter (or no funding history)
         k = np.concatenate([a for a in (_kline_rows(p) for p in files) if len(a)])
@@ -98,7 +104,7 @@ def load_binance(grid: cp.Grid) -> None:
                     f = ln.split(",")
                     if f[0].isdigit():
                         rows.append((int(f[0]) // 1000, float(f[-1])))
-        rest = root / "rest" / "fundingRate-2026-11" / f"{d.name}.json"
+        rest = extra / "rest" / "fundingRate-2026-11" / f"{d.name}.json"
         if held and rest.exists():
             for x in json.loads(rest.read_text()):
                 rows.append((int(x["fundingTime"]) // 1000, float(x["fundingRate"])))
@@ -117,12 +123,13 @@ def _json(paths: list[Path]) -> list[Any]:
 
 
 def load_bybit(grid: cp.Grid) -> None:
-    base = raw() / "bybit" / "linear"
-    dirs = ["to-2025-11-10"] + ([HELD_DIR] if grid.tag == "heldout" else [])
+    dirs = [raw() / "bybit" / "linear" / "to-2025-11-10"]
+    if grid.tag == "heldout":
+        dirs.append(held_raw() / "bybit")
     acc = cp.Acc(grid)
-    for d in sorted((base / dirs[0]).iterdir()):
-        fl = _json([base / x / d.name / "funding.json" for x in dirs])
-        kl = _json([base / x / d.name / "kline-D.json" for x in dirs])
+    for d in sorted(dirs[0].iterdir()):
+        fl = _json([x / d.name / "funding.json" for x in dirs])
+        kl = _json([x / d.name / "kline-D.json" for x in dirs])
         if not fl or not kl:
             continue
         k = np.array(kl, dtype=float)
@@ -135,12 +142,13 @@ def load_bybit(grid: cp.Grid) -> None:
 
 
 def load_hyperliquid(grid: cp.Grid) -> None:
-    base = raw() / "hyperliquid" / "perp"
-    dirs = ["to-2025-11-10"] + ([HELD_DIR] if grid.tag == "heldout" else [])
+    dirs = [raw() / "hyperliquid" / "perp" / "to-2025-11-10"]
+    if grid.tag == "heldout":
+        dirs.append(held_raw() / "hyperliquid")
     acc = cp.Acc(grid)
-    for d in sorted((base / dirs[0]).iterdir()):
-        fl = _json([base / x / d.name / "funding.json" for x in dirs])
-        c = _json([base / x / d.name / "candles-1d.json" for x in dirs])
+    for d in sorted(dirs[0].iterdir()):
+        fl = _json([x / d.name / "funding.json" for x in dirs])
+        c = _json([x / d.name / "candles-1d.json" for x in dirs])
         if not fl or not c:
             continue
         t = np.array([int(x["t"]) // 1000 for x in c], dtype=np.int64)

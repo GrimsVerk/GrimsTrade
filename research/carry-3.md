@@ -206,5 +206,10 @@ carry-2's modules are not edited), `scripts/fetch_carry3.py`. Tables: `results/c
 - **`nocost` and flat-cost rows** have no smallest-order rule (they are reference rows).
 - **Snapshots:** the first was taken 2026-11-17 22:57 UTC, right after the card was pushed; the
   code that reads them was written after. Requests use a generic client name.
+- **Where downloads go:** everything this run downloads or derives is written under the cache's
+  `carry-3/` and `derived/carry-3/` folders only. Held-out bars are kept out of the shared venue
+  folders so no other loader can pick them up by accident. (The first snapshot's manifest lines
+  had already been appended to the cache's shared `manifest.jsonl`; later ones go to
+  `carry-3/manifest.jsonl`.)
 - **Copy check:** `carry3.py --check` reproduces carry-2 exactly (`w1` at flat 10 bps: 0.57 /
   0.31 / 0.47, pooled 0.69; twin 0.20): the copied code is the same book. No new number.

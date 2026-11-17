@@ -1,16 +1,20 @@
 """Downloads for research run carry-3 (card in research/carry-3.md). Resumable, write-once.
 
     uv run python -I scripts/fetch_carry3.py book [name]          # one order-book snapshot
-    uv run python -I scripts/fetch_carry3.py book3                # the card's three, 61 min apart
+    uv run python -I scripts/fetch_carry3.py book3 <prefix>       # the card's three, 61 min apart
     uv run python -I scripts/fetch_carry3.py heldout binance|bybit|hyperliquid
+
+Everything is written under `<cache_root>/carry-3/` only (files and `manifest.jsonl`); the
+train downloads of carry-2 are read, never touched.
 
 `book`: today's public order books and 24-hour volumes of every live USDT/USD perpetual on
 Binance USDT-M, Bybit linear and Hyperliquid, for calibrating the cost model only (the card
-takes three snapshots at least an hour apart). Saved under `<root>/carry-3/book/<name>/`.
+takes three snapshots at least an hour apart). Saved under `carry-3/book/<name>/`.
 
-`heldout`: bars and funding for 2025-11-11 .. 2026-11-10. **Run it only after the card's train
-bar passed** (the card: if train fails the held-out bars are not even downloaded). Loaders
-read these files only through `carry3.py --heldout`, which is guarded.
+`heldout`: bars and funding for 2025-11-11 .. 2026-11-10, under `carry-3/heldout/` (kept out of
+the shared venue folders so no other loader can pick them up). **Run it only after the card's
+train bar passed** (the card: if train fails the held-out bars are not even downloaded).
+Loaders read these files only through `carry3.py --heldout`, which is guarded.
 
 Keyless public market-data endpoints only; nothing here can reach an account. Downloaded files
 are data: parsed as CSV/JSON, never run. Never commit them. Helpers come from
@@ -19,9 +23,12 @@ are data: parsed as CSV/JSON, never run. Never commit them. Helpers come from
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import re
 import sys
+import threading
 import time
 import urllib.error
 import zipfile
@@ -33,15 +40,40 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_carry2 as f2  # noqa: E402
-from fetch_carry2 import BVIS, BYBIT, HL, ROOT, SAFE, http, pool, save  # noqa: E402
+from fetch_carry2 import BVIS, BYBIT, HL, ROOT, SAFE, http, pool  # noqa: E402
 
 f2.UA = "research-client/0.1 (python urllib)"  # generic client name for every request here
+MINE = ROOT / "carry-3"  # the only folder this script writes to
 FAPI = "https://fapi.binance.com/fapi/v1/"
-HELD_FROM = datetime(2025, 11, 11, tzinfo=UTC)
-HELD_END = datetime(2026, 11, 11, tzinfo=UTC)  # exclusive
-HELD_FROM_MS = int(HELD_FROM.timestamp() * 1000)
-HELD_END_MS = int(HELD_END.timestamp() * 1000)
-HELD_DIR = "2025-11-11-to-2026-11-10"
+HELD_FROM_MS = int(datetime(2025, 11, 11, tzinfo=UTC).timestamp() * 1000)
+HELD_END_MS = int(datetime(2026, 11, 11, tzinfo=UTC).timestamp() * 1000)  # exclusive
+BN_TRAIN = ROOT / "binance" / "futures" / "um" / "monthly"
+BY_TRAIN = ROOT / "bybit" / "linear" / "to-2025-11-10"
+HL_TRAIN = ROOT / "hyperliquid" / "perp" / "to-2025-11-10"
+_lock = threading.Lock()
+
+
+def save(rel: str, url: str, body: bytes) -> None:
+    """Write-once under `carry-3/`, with a line in `carry-3/manifest.jsonl`."""
+    dst = MINE / rel
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dst.with_name(dst.name + ".part")
+    tmp.write_bytes(body)
+    os.replace(tmp, dst)
+    line = {
+        "bytes": len(body),
+        "fetched_at": _now(),
+        "path": f"carry-3/{rel}",
+        "sha256": hashlib.sha256(body).hexdigest(),
+        "url": url,
+    }
+    with _lock, (MINE / "manifest.jsonl").open("a") as f:
+        f.write(json.dumps(line, sort_keys=True) + "\n")
+
+
+def _now() -> str:
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
 
 # ---------------------------------------------------------------- order-book snapshots
 
@@ -61,7 +93,7 @@ def book_binance(base: str) -> None:
 
     def one(sym: str) -> None:
         rel = f"{base}/binance/depth/{sym}.json"
-        if not (ROOT / rel).exists():
+        if not (MINE / rel).exists():
             url = FAPI + f"depth?symbol={sym}&limit=500"
             save(rel, url, http(url))
             time.sleep(0.35)  # weight 10 a call, limit 2400 a minute
@@ -82,7 +114,7 @@ def book_bybit(base: str) -> None:
 
     def one(sym: str) -> None:
         rel = f"{base}/bybit/orderbook/{sym}.json"
-        if not (ROOT / rel).exists():
+        if not (MINE / rel).exists():
             u = BYBIT + f"orderbook?category=linear&symbol={sym}&limit=200"
             save(rel, u, http(u))
             time.sleep(0.25)
@@ -101,7 +133,7 @@ def book_hyperliquid(base: str) -> None:
 
     def one(coin: str) -> None:
         rel = f"{base}/hyperliquid/l2Book/{coin}.json"
-        if not (ROOT / rel).exists():
+        if not (MINE / rel).exists():
             save(rel, HL + f" l2Book {coin}", http(HL, {"type": "l2Book", "coin": coin}))
             time.sleep(0.5)
 
@@ -110,7 +142,7 @@ def book_hyperliquid(base: str) -> None:
 
 
 def book(name: str) -> None:
-    base = f"carry-3/book/{name}"
+    base = f"book/{name}"
     started = _now()
 
     def run(fn: object) -> None:
@@ -125,40 +157,36 @@ def book(name: str) -> None:
     save(f"{base}/done.json", "local", json.dumps(done).encode())
 
 
-def book3() -> None:
-    """The card's three snapshots, starts at least 61 minutes apart."""
-    day = datetime.now(UTC).strftime("%Y-%m-%d")
-    t0 = time.time()
-    for k in range(3):
-        wait = t0 + k * 3660 - time.time()
+def book3(prefix: str) -> None:
+    """The card's three snapshots `<prefix>-s1..3`, starts at least 61 minutes apart. A snapshot
+    that is already complete is kept, and the next one waits 61 minutes from its start."""
+    last = 0.0
+    for k in (1, 2, 3):
+        name = f"{prefix}-s{k}"
+        done = MINE / "book" / name / "done.json"
+        if done.exists():
+            started = json.loads(done.read_text())["started"]
+            last = datetime.strptime(started, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC).timestamp()
+            continue
+        wait = last + 3660 - time.time()
         if wait > 0:
             time.sleep(wait)
-        book(f"{day}-s{k + 1}")
-        print(f"snapshot {k + 1} done", flush=True)
-
-
-def _now() -> str:
-    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+        last = time.time()
+        book(name)
+        print(f"snapshot {k} done", flush=True)
 
 
 # ---------------------------------------------------------------- held-out year: Binance
 
 
-def _month_ok(key: str) -> bool:
-    m = re.search(r"(\d{4})-(\d{2})\.zip$", key)
-    return bool(m) and ("2025", "11") <= (m.group(1), m.group(2)) <= ("2026", "10")
-
-
-def _bn_fetch_dir(prefix: str, all_months: bool) -> None:
-    """Monthly zips under `prefix`: 2025-11 .. 2026-10, or everything up to 2026-10."""
+def _bn_fetch_dir(prefix: str, first_month: str) -> None:
+    """Monthly archive zips under `prefix` from `first_month` to 2026-10, into carry-3/heldout."""
     for key in f2.s3_list(prefix, False):
-        m = re.search(r"(\d{4})-(\d{2})\.zip$", key)
-        if not m or (m.group(1), m.group(2)) > ("2026", "10"):
+        m = re.search(r"(\d{4}-\d{2})\.zip$", key)
+        if not m or not first_month <= m.group(1) <= "2026-10":
             continue
-        if not all_months and not _month_ok(key):
-            continue
-        rel = "binance/" + key.removeprefix("data/")
-        if not (ROOT / rel).exists():
+        rel = "heldout/binance/" + key.removeprefix("data/futures/um/")
+        if not (MINE / rel).exists():
             save(rel, BVIS + key, http(BVIS + key))
             time.sleep(0.1)
 
@@ -168,8 +196,8 @@ def _bn_daily_klines(sym: str) -> None:
     d = date(2026, 11, 1)
     while d <= date(2026, 11, 10):
         key = f"data/futures/um/daily/klines/{sym}/1d/{sym}-1d-{d}.zip"
-        rel = "binance/" + key.removeprefix("data/")
-        if not (ROOT / rel).exists():
+        rel = "heldout/binance/" + key.removeprefix("data/futures/um/")
+        if not (MINE / rel).exists():
             try:
                 save(rel, BVIS + key, http(BVIS + key))
             except urllib.error.HTTPError:
@@ -179,9 +207,10 @@ def _bn_daily_klines(sym: str) -> None:
 
 
 def _bn_vol_ok(sym: str) -> bool:
-    root = ROOT / "binance" / "futures" / "um"
-    paths = sorted((root / "monthly" / "klines" / sym / "1d").glob("*.zip"))
-    paths += sorted((root / "daily" / "klines" / sym / "1d").glob("*.zip"))
+    held = MINE / "heldout" / "binance"
+    paths = sorted((BN_TRAIN / "klines" / sym / "1d").glob("*.zip"))
+    paths += sorted((held / "monthly" / "klines" / sym / "1d").glob("*.zip"))
+    paths += sorted((held / "daily" / "klines" / sym / "1d").glob("*.zip"))
     rows = []
     for p in paths:
         with zipfile.ZipFile(p) as z:
@@ -199,8 +228,8 @@ def _bn_vol_ok(sym: str) -> bool:
 
 def _bn_rest_funding(sym: str) -> None:
     """Funding events of 2026-11-01 .. 2026-11-10 (not in the monthly archive yet)."""
-    rel = f"binance/futures/um/rest/fundingRate-2026-11/{sym}.json"
-    if (ROOT / rel).exists():
+    rel = f"heldout/binance/rest/fundingRate-2026-11/{sym}.json"
+    if (MINE / rel).exists():
         return
     start = int(datetime(2026, 11, 1, tzinfo=UTC).timestamp() * 1000)
     out: list[dict[str, object]] = []
@@ -223,18 +252,19 @@ def _bn_rest_funding(sym: str) -> None:
 def bn_one(sym: str) -> None:
     if not SAFE.match(sym):
         return
-    had_funding = (ROOT / "binance/futures/um/monthly/fundingRate" / sym).exists()
-    _bn_fetch_dir(f"data/futures/um/monthly/klines/{sym}/1d/", False)
+    _bn_fetch_dir(f"data/futures/um/monthly/klines/{sym}/1d/", "2025-12")
     _bn_daily_klines(sym)
     if not _bn_vol_ok(sym):
         return
-    # a coin that first passes the volume pre-filter in the held-out year needs all its funding
-    _bn_fetch_dir(f"data/futures/um/monthly/fundingRate/{sym}/", not had_funding)
+    # train already holds funding to 2025-11 for coins that passed its pre-filter; a coin that
+    # first passes in the held-out year needs all its funding
+    had = (BN_TRAIN / "fundingRate" / sym).exists()
+    _bn_fetch_dir(f"data/futures/um/monthly/fundingRate/{sym}/", "2025-12" if had else "2019-01")
     _bn_rest_funding(sym)
 
 
 def heldout_binance() -> None:
-    root = ROOT / "binance/futures/um/monthly/klines"
+    root = BN_TRAIN / "klines"
     syms = sorted(p.name for p in root.iterdir() if p.name.endswith("USDT") and "_" not in p.name)
     print(f"heldout binance: {len(syms)} symbols with train klines", flush=True)
     pool(bn_one, syms, 6)
@@ -268,12 +298,12 @@ def _by_funding(sym: str, start_ms: int, end_ms: int) -> list[dict[str, str]]:
 def by_one(sym: str) -> None:
     if not SAFE.match(sym):
         return
-    train = ROOT / "bybit/linear/to-2025-11-10" / sym
+    train = BY_TRAIN / sym
     if not (train / "kline-D.json").exists():
         return  # no train bars: cannot have 365 days of history inside the held-out year
-    base = f"bybit/linear/{HELD_DIR}/{sym}"
+    base = f"heldout/bybit/{sym}"
     rel = f"{base}/kline-D.json"
-    if not (ROOT / rel).exists():
+    if not (MINE / rel).exists():
         x = _by_get(
             f"kline?category=linear&symbol={sym}&interval=D&start={HELD_FROM_MS}"
             f"&end={HELD_END_MS - 1}&limit=1000"
@@ -282,7 +312,7 @@ def by_one(sym: str) -> None:
             return
         url = BYBIT + f"kline?category=linear&symbol={sym}&interval=D"
         save(rel, url, json.dumps(x["result"]["list"]).encode())  # type: ignore[index]
-    rows = json.loads((train / "kline-D.json").read_text()) + json.loads((ROOT / rel).read_text())
+    rows = json.loads((train / "kline-D.json").read_text()) + json.loads((MINE / rel).read_text())
     if len(rows) < 30:
         return
     a = np.array(sorted({(float(r[0]), float(r[6])) for r in rows}))
@@ -290,7 +320,7 @@ def by_one(sym: str) -> None:
     if not (med >= f2.MIN_VOL).any():
         return
     rel = f"{base}/funding.json"
-    if not (ROOT / rel).exists():
+    if not (MINE / rel).exists():
         # all history if train has none (the coin first passed the pre-filter after train)
         start = HELD_FROM_MS if (train / "funding.json").exists() else f2.START_MS
         out = _by_funding(sym, start, HELD_END_MS)
@@ -299,7 +329,7 @@ def by_one(sym: str) -> None:
 
 
 def heldout_bybit() -> None:
-    syms = sorted(p.name for p in (ROOT / "bybit/linear/to-2025-11-10").iterdir())
+    syms = sorted(p.name for p in BY_TRAIN.iterdir())
     print(f"heldout bybit: {len(syms)} symbols with train klines", flush=True)
     pool(by_one, syms, 2)
 
@@ -316,12 +346,12 @@ def _hl_post(body: dict[str, object]) -> object:
 def hl_one(coin: str) -> None:
     if not SAFE.match(coin):
         return
-    train = ROOT / "hyperliquid/perp/to-2025-11-10" / coin
+    train = HL_TRAIN / coin
     if not (train / "candles-1d.json").exists():
         return
-    base = f"hyperliquid/perp/{HELD_DIR}/{coin}"
+    base = f"heldout/hyperliquid/{coin}"
     rel = f"{base}/candles-1d.json"
-    if not (ROOT / rel).exists():
+    if not (MINE / rel).exists():
         req = {
             "coin": coin,
             "interval": "1d",
@@ -331,7 +361,7 @@ def hl_one(coin: str) -> None:
         rows = _hl_post({"type": "candleSnapshot", "req": req})
         save(rel, HL + f" candleSnapshot {coin} 1d", json.dumps(rows).encode())
     rows = json.loads((train / "candles-1d.json").read_text()) + json.loads(
-        (ROOT / rel).read_text()
+        (MINE / rel).read_text()
     )
     if len(rows) < 30:
         return
@@ -341,7 +371,7 @@ def hl_one(coin: str) -> None:
     if not (med[a[29:, 0] >= first + 365 * 86400_000] >= f2.MIN_VOL).any():
         return
     rel = f"{base}/funding.json"
-    if (ROOT / rel).exists():
+    if (MINE / rel).exists():
         return
     # train funding starts at the coin's day 350; continue from the train cut, or from day 350
     # if train fetched none (the coin first passed the pre-filter after train)
@@ -362,7 +392,7 @@ def hl_one(coin: str) -> None:
 
 
 def heldout_hyperliquid() -> None:
-    coins = sorted(p.name for p in (ROOT / "hyperliquid/perp/to-2025-11-10").iterdir())
+    coins = sorted(p.name for p in HL_TRAIN.iterdir())
     print(f"heldout hyperliquid: {len(coins)} coins with train candles", flush=True)
     pool(hl_one, coins, 1)
 
@@ -371,7 +401,7 @@ if __name__ == "__main__":
     if sys.argv[1] == "book":
         book(sys.argv[2] if len(sys.argv) > 2 else _now().replace(":", ""))
     elif sys.argv[1] == "book3":
-        book3()
+        book3(sys.argv[2])
     elif sys.argv[1] == "heldout":
         {
             "binance": heldout_binance,
