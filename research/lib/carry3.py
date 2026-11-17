@@ -5,6 +5,7 @@ research/carry-3.md).
     uv run python -I research/lib/carry3.py --calibrate      # cost model from the snapshots
     uv run python -I research/lib/carry3.py [--log]          # the train run
     uv run python -I research/lib/carry3.py --heldout        # once, only after a train pass
+    uv run python -I research/lib/carry3.py --heldout-dry    # crash test on train bars, no output
 
 Reads (never runs) the raw downloads of `scripts/fetch_carry2.py` and `scripts/fetch_carry3.py`
 from the shared cache, builds one daily panel per venue (cached under
@@ -515,8 +516,16 @@ def log_row(
         f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | {idea} | {variant} | {kind} | {period} | "
         f"{first} | {last} | {cells} |\n"
     )
+    PENDING.append(row)
+
+
+PENDING: list[str] = []  # rows are written together, only once the whole run has succeeded
+
+
+def flush_log() -> None:
     with TRIES.open("a") as f:
-        f.write(row)
+        f.writelines(PENDING)
+    PENDING.clear()
 
 
 # ---------------------------------------------------------------- descriptive extras
@@ -959,7 +968,10 @@ def train(log: bool) -> None:
             f" {r['model_bps']:.1f} |"
         )
     body.append("\n".join(ar_lines) + "\n")
-    OUT.write_text(head + "\n".join(body))
+    text = head + "\n".join(body)
+    if log:
+        flush_log()
+    OUT.write_text(text)
     dump = {
         "verdicts": verdicts,
         "deflated": defl,
@@ -981,30 +993,34 @@ def train(log: bool) -> None:
     print(OUT.read_text())
 
 
-def heldout() -> None:
+def heldout(dry: bool = False) -> None:
+    """The one held-out run. `dry`: the same code on the train panels, scoring train's last
+    year, with no claim, no log row, no file and no number printed (a crash test only)."""
     res = derived() / "results-train.json"
-    if not res.exists():
-        raise SystemExit("no train run found")
-    vd = json.loads(res.read_text())["verdicts"][PRIMARY]
-    if not vd["train_pass"]:
-        raise SystemExit("the primary failed train: the held-out year stays unspent (card)")
-    ce.claim_heldout(TRIES, f"{datetime.now(UTC):%Y-%m-%d %H:%M}")
-    grid = cp.Grid(cp.HELD_LAST_BAR)
+    if not dry:
+        if not res.exists():
+            raise SystemExit("no train run found")
+        vd = json.loads(res.read_text())["verdicts"][PRIMARY]
+        if not vd["train_pass"]:
+            raise SystemExit("the primary failed train: the held-out year stays unspent (card)")
+        ce.claim_heldout(TRIES, f"{datetime.now(UTC):%Y-%m-%d %H:%M}")
+    grid = cp.Grid() if dry else cp.Grid(cp.HELD_LAST_BAR)
     ensure_panels(grid)
     cms = models()
-    venues, runs, share = run_all(grid, HELD_END, (PRIMARY,))
+    venues, runs, share = run_all(grid, TRAIN_END if dry else HELD_END, (PRIMARY,))
     n_days = grid.n_days
     # look-ahead check: the train part of this run equals the train run
-    saved = np.load(derived() / "train-series.npz")
     stop = (date(2025, 11, 6) - DAY0).days  # the train run drops its last Friday (2025-11-07)
-    for lab in POOL:
-        b0 = venues[lab].b0
-        assert b0 == int(saved[f"{lab}|b0"]), f"{lab}: start moved"
-        a, b = runs[lab][PRIMARY][0].r[: stop - b0], saved[f"{lab}|{PRIMARY}"][: stop - b0]
-        assert np.allclose(a, b, rtol=0, atol=1e-12), f"{lab}: train part differs (look-ahead?)"
-    h0 = (HELD_START - DAY0).days
+    if not dry:
+        saved = np.load(derived() / "train-series.npz")
+        for lab in POOL:
+            b0 = venues[lab].b0
+            assert b0 == int(saved[f"{lab}|b0"]), f"{lab}: start moved"
+            a, b = runs[lab][PRIMARY][0].r[: stop - b0], saved[f"{lab}|{PRIMARY}"][: stop - b0]
+            assert np.allclose(a, b, rtol=0, atol=1e-12), f"{lab}: train part differs"
+    h0 = (date(2024, 11, 11) - DAY0).days if dry else (HELD_START - DAY0).days
     h1 = n_days - 1
-    first, last = HELD_START, DAY0 + timedelta(days=h1)
+    first, last = DAY0 + timedelta(days=h0), DAY0 + timedelta(days=h1)
     years = (h1 - h0 + 1) / 365
 
     def cut(r: ce.Run, b0: int) -> ce.Run:
@@ -1026,7 +1042,7 @@ def heldout() -> None:
     keys = list(held["B-out"])
     pooled = {k: mean_runs([held[lab][k] for lab in POOL]) for k in keys}
     start = min(v.b0 for v in venues.values()) + 1
-    btc = btc_eth_perp(grid, HELD_END, start)[h0 - start : h1 - start + 1]
+    btc = btc_eth_perp(grid, TRAIN_END if dry else HELD_END, start)[h0 - start : h1 - start + 1]
     tested = tuple(k for k in keys if k != "tsmom12 twin")
     per = {}
     for lab in POOL:
@@ -1066,6 +1082,11 @@ def heldout() -> None:
             f" {int(v.delisted.sum())}."
         )
         lines.append(table(lab, per[lab], note))
+    if dry:
+        PENDING.clear()
+        print(f"dry run ok: {len(lines)} blocks, {len(btc)} days scored, nothing written")
+        return
+    flush_log()  # result rows first: from here on the guard refuses any further run
     OUT_HELD.write_text("\n".join(lines))
     dump = {"pass": ok, "pool": pool_rows, "per": per, "btc_sharpe": stats.sharpe(btc)}
     (derived() / "results-heldout.json").write_text(json.dumps(dump, indent=1, default=str))
@@ -1113,6 +1134,8 @@ def check() -> None:
 def main() -> None:
     if "--check" in sys.argv:
         check()
+    elif "--heldout-dry" in sys.argv:
+        heldout(dry=True)
     elif "--calibrate" in sys.argv:
         calibrate()
     elif "--heldout" in sys.argv:

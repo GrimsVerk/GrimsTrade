@@ -149,8 +149,14 @@ def test_heldout_guard_refuses_a_second_look(tmp_path: Path) -> None:
     assert not ce.heldout_used(tries)
     ce.claim_heldout(tries, "2026-11-18 00:00")
     assert ce.heldout_used(tries) and ce.CLAIM in tries.read_text()
+    # a run that crashed before any result left only its claim: it may restart, one claim stays
+    ce.claim_heldout(tries, "2026-11-18 00:01")
+    assert tries.read_text().count(ce.CLAIM) == 1
+    # once a result row exists the year is spent
+    with tries.open("a") as f:
+        f.write("| 2026-11-18 00:02 | carry-3-pooled | band | variant | heldout | a | b | 1 |\n")
     with pytest.raises(RuntimeError, match="already spent"):
-        ce.claim_heldout(tries, "2026-11-18 00:01")
+        ce.claim_heldout(tries, "2026-11-18 00:03")
     assert tries.read_text().count(ce.CLAIM) == 1
 
 

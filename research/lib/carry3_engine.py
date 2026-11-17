@@ -162,18 +162,33 @@ def top_n(adv: np.ndarray, m: np.ndarray, n: int) -> np.ndarray:
 CLAIM = "claim: the one held-out run of carry-3 starts"
 
 
-def heldout_used(tries: Path, idea: str = "carry-3") -> bool:
+def heldout_rows(tries: Path, idea: str = "carry-3") -> tuple[int, int]:
+    """(claim rows, result rows) of the idea's held-out period in tries.md."""
+    claims = results = 0
     for line in tries.read_text().splitlines():
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         if len(cells) >= 5 and cells[1].startswith(idea) and cells[4] == "heldout":
-            return True
-    return False
+            if cells[2] == CLAIM:
+                claims += 1
+            else:
+                results += 1
+    return claims, results
+
+
+def heldout_used(tries: Path, idea: str = "carry-3") -> bool:
+    return sum(heldout_rows(tries, idea)) > 0
 
 
 def claim_heldout(tries: Path, stamp: str, idea: str = "carry-3") -> None:
-    """Write the claim row before any held-out bar is loaded; refuse if one exists already."""
-    if heldout_used(tries, idea):
+    """Write the claim row before any held-out bar is loaded. Refuse once result rows exist (the
+    year was looked at). A run that crashed before it wrote or showed any result has left only
+    its claim: it may be restarted, and the claim is not written twice."""
+    claims, results = heldout_rows(tries, idea)
+    if results:
         raise RuntimeError(f"{idea}: the held-out year was already spent; no second look")
+    if claims:
+        print("restarting a held-out run that never produced a result (claim row found)")
+        return
     row = (
         f"| {stamp} | {idea} | {CLAIM} | variant | heldout | 2025-11-11 | 2026-11-09 |"
         " - | - | - | - |\n"

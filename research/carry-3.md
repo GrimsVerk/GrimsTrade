@@ -189,3 +189,22 @@ Every scored row gets a line in `research/tries.md` when it runs: `variant` for 
 each set and pooled, `baseline` for twins, `robustness` for the rest, `heldout` period for the
 one held-out run. Code: `research/lib/carry3.py`, `carry3_panel.py`, `carry3_cost.py` (copies;
 carry-2's modules are not edited), `scripts/fetch_carry3.py`. Tables: `results/carry-3.md`.
+
+### Details fixed while coding (2026-11-18, before the snapshots were parsed or any row was run)
+
+- **Book check, the coin's `vol`:** the snapshots hold no bars, so the model side of `R_v` uses
+  each coin's 30-day daily volatility at the end of train (the venue's median for a coin not in
+  the train panel).
+- **Held-out guard, restart rule:** the run writes its result rows, its file and its printout
+  only at the very end, together. A run that crashed before that has shown no number and has
+  left only its claim row: it may be restarted. Once a result row exists the guard refuses.
+- **Look-ahead check:** the train run drops its last Friday (2025-11-07, as carry-2: no full
+  week follows it), the long run does not, so the two are compared up to 2025-11-06.
+- **BTC/ETH in the held-out year:** the cache has no held-out spot bars, so the held-out blend of
+  bar 5 uses the same `tsmom12` rule on Binance BTC/ETH perp closes (30 bps, no funding). On
+  train both versions are shown.
+- **`nocost` and flat-cost rows** have no smallest-order rule (they are reference rows).
+- **Snapshots:** the first was taken 2026-11-17 22:57 UTC, right after the card was pushed; the
+  code that reads them was written after. Requests use a generic client name.
+- **Copy check:** `carry3.py --check` reproduces carry-2 exactly (`w1` at flat 10 bps: 0.57 /
+  0.31 / 0.47, pooled 0.69; twin 0.20): the copied code is the same book. No new number.
