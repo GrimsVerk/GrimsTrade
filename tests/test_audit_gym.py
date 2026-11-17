@@ -35,20 +35,65 @@ def test_non_finite_weights_are_rejected(bad: float) -> None:
         gym.simulate([Decision(at(0), {"BTC": 1.0}), Decision(at(1), {"BTC": bad})], hist)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit G2: an order that cannot be paid for when its market opens is dropped, not "
-    "kept: moving from an ETF into crypto leaves the money in cash until a later decision",
-)
 def test_a_switch_from_etf_to_crypto_ends_up_in_crypto() -> None:
+    """Audit G2 (fixed): an order that could not be paid for at its open was dropped."""
     hist: History = {"SPY": flat(12, 100.0, weekdays_only=True), "BTC": flat(12, 100.0)}
     # Monday: all in SPY. Wednesday 22:30: switch everything to BTC. No decision after that.
     decisions = [Decision(at(0), {"SPY": 1.0}), Decision(at(2), {"BTC": 1.0})]
     res = gym.simulate(decisions, hist, costs=NO_COSTS)
-    # BTC opens Thursday 00:00, before SPY can be sold at 13:30: the buy finds no cash and is
-    # forgotten. SPY is then sold, and the 10,000 sits in cash for good.
+    # BTC opens Thursday 00:00, before SPY can be sold at 13:30: the buy finds no cash. It stays
+    # pending, SPY is sold Thursday 13:30, and BTC is bought at the next open, Friday 00:00.
     assert res.positions["SPY"] == 0
     assert res.positions["BTC"] == pytest.approx(100.0)
+    btc = [f for f in res.fills if f.symbol == "BTC"]
+    spy_sold = next(f.time for f in res.fills if f.symbol == "SPY" and f.qty < 0)
+    assert [f.time for f in btc] == [at(4, 0, 0)]  # Friday 00:00: the first open after the sale
+    assert spy_sold == at(3, 13, 30) < btc[0].time
+
+
+def test_a_newer_decision_replaces_a_buy_still_waiting_for_cash() -> None:
+    hist: History = {"SPY": flat(12, 100.0, weekdays_only=True), "BTC": flat(12, 100.0)}
+    # Wednesday 22:30: switch to BTC (cannot be paid at Thursday 00:00). Thursday 22:30, before
+    # the next BTC open: all cash. The waiting buy must not fill on Friday.
+    decisions = [Decision(at(0), {"SPY": 1.0}), Decision(at(2), {"BTC": 1.0}), Decision(at(3), {})]
+    res = gym.simulate(decisions, hist, costs=NO_COSTS)
+    assert res.positions["BTC"] == 0 and res.positions["SPY"] == 0
+    assert res.cash == pytest.approx(gym.START_CASH)
+
+
+SIX = ("BTC", "ETH", "SPY", "QQQ", "GLD", "TLT")
+
+
+@pytest.mark.parametrize("costs", [NO_COSTS, gym.COSTS], ids=["no-costs", "costs"])
+@pytest.mark.parametrize("decide_at", [(0, 22, 30), (1, 3, 0)], ids=["22:30", "late-cron-03:00"])
+def test_a_fully_invested_equal_weight_tops_up_crypto_that_fell_behind(
+    costs: dict[str, gym.Costs], decide_at: tuple[int, int, int]
+) -> None:
+    """Audit G2 as seen live (health check 2026-11-17): fully invested `equal_weight` holds no
+    cash, so the crypto buy at 00:00 found none; the ETF sells that would fund it come at 13:30
+    and each was inside the 1% band, so nothing was sold and crypto stayed 1.2-1.6% under target
+    for good. Now the ETFs above target are sold down to it when the decision's buys need the
+    cash, and the crypto buy waits for that cash. Both decision times: the planned 22:30 UTC
+    (crypto opens before the ETFs) and the late cron seen live, about 03:00 (ETFs first)."""
+    n = 16
+    # Crypto falls 10% on day 5 and stays there; the ETFs never move.
+    crypto = [
+        b if b.date < DAY1 + timedelta(days=5) else Bar(b.date, 90.0, 90.0, 90.0, 90.0, 1.0)
+        for b in flat(n, 100.0)
+    ]
+    hist: History = {"BTC": crypto, "ETH": crypto} | {
+        s: flat(n, 100.0, weekdays_only=True) for s in ("SPY", "QQQ", "GLD", "TLT")
+    }
+    off, hh, mm = decide_at
+    w = {s: 1 / 6 for s in SIX}
+    decisions = [Decision(at(d + off, hh, mm), w) for d in range(n - 3)]
+    res = gym.simulate(decisions, hist, costs=costs)
+    # After the drop crypto is 15.5% each, ETFs 17.2%: each ETF is inside the band.
+    equity = res.cash + sum(q * (90.0 if s in ("BTC", "ETH") else 100.0)
+                            for s, q in res.positions.items())  # fmt: skip
+    for s in ("BTC", "ETH"):
+        assert res.positions[s] * 90.0 / equity == pytest.approx(1 / 6, abs=0.005)
+    assert res.cash >= -1e-6
 
 
 def test_a_crypto_fill_pays_the_taker_fee() -> None:

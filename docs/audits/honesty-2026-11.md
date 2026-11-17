@@ -58,7 +58,7 @@ open first, then what is fixed, each by severity.
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L13 | Old code can still write the record (a re-run of an old run, a stale branch) | medium | half fixed; clean-up after merging |
 | L14 | An accepted back-dated push keeps the date it claims | medium | open: proposed |
-| G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
+| G2 | An order that cannot be paid for at its open is dropped | low | fixed 2026-11-17 (waits for cash) |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
 | G5 | Small gym and table quirks (turnover, one-sided band, tiny weights) | low | open |
@@ -94,7 +94,7 @@ open first, then what is fixed, each by severity.
 | D5 | The record did not say where a bar came from | low | fixed |
 
 Tests: `tests/test_audit_*.py`. A finding that is still open and has a crisp expected behaviour
-is an `xfail(strict=True)` test (1 left: G2); findings about size or judgement are
+is an `xfail(strict=True)` test (none left; G2 was fixed 2026-11-17); findings about size or judgement are
 ordinary tests that pin the numbers quoted here. L10 to L15, D10, S9 and S10 come from the
 second independent review (2026-11-12, 06:35 to 07:00 UTC); a third, narrow review (07:12 to
 07:21 UTC) went over the code written in answer to it.
@@ -278,6 +278,10 @@ second independent review (2026-11-12, 06:35 to 07:00 UTC); a third, narrow revi
   rotation strategies look slightly worse, never better. Test:
   `tests/test_audit_gym.py::test_a_switch_from_etf_to_crypto_ends_up_in_crypto` (xfail).
   Proposed (changes gym behaviour, so not done): keep an unfilled buy pending until cash arrives.
+  **Fixed 2026-11-17** (DECISIONS, audit G2): an unpaid buy waits for cash, and while a
+  decision's buys need cash, assets above target are sold to it inside the band too. The test
+  passes now, next to `test_a_fully_invested_equal_weight_tops_up_crypto_that_fell_behind` (the
+  live case from the 2026-11-17 health check, which also closes the band half of G5).
 - **S6. The newest row of the scoreboard is provisional.** At 22:30 UTC today's crypto bar is
   still open, so today's equity mixes today's ETF close with crypto at yesterday's close; the
   same date shows another number the next day
