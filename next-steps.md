@@ -1,6 +1,6 @@
 # Next steps
 
-## G4: ETF dividends paid as cash (branch `g4-dividends`, draft PR, not merged)
+## G4: ETF dividends paid as cash (branch `g4-dividends`, draft PR #30, not merged)
 
 Fix for audit G4 (dividends half; cash still earns nothing). Rule and why: `docs/DECISIONS.md`
 (2026-11-17, audit G4). Code: `data.py` (dividend store), `sources.yahoo_dividends`,
