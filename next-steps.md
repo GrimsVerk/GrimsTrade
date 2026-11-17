@@ -1,5 +1,16 @@
 # Next steps
 
+## Deep 1 (in progress since 2026-11-18, branch `deep-1` from `carry-2`)
+
+Question: why does each tested model fail where it fails, and does a combination chosen with past
+data only beat `tsmom12`? Card: `research/deep-1.md` (Part A atlas, descriptive; Part B three
+combination rules with a pass bar fixed before any number).
+
+- Done: card.
+- Doing: Part A (rebuild model series, atlas tables `research/results/deep-1-atlas.md`).
+- Next: Part B (`research/results/deep-1.md`, rows in `research/tries.md`), write-up, draft PR.
+- `tsmom12` anatomy and tuning are the `trend-tune` lane's, not this one's.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
