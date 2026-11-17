@@ -392,13 +392,26 @@ def compare(series: dict[str, np.ndarray], rows: dict[str, dict[str, Any]]) -> N
             rows[key] |= {f"vs_{other}": d, f"vs_{other}_p": p}
 
 
-def run_books(kind: str, log: bool, target: str = "rank") -> dict[str, Any]:
+def book_name(target: str) -> str:
+    """`ls-ml` (card), `ls-ml-ret` (addendum), `ls-ppo` and its seeds `ls-ppo-s<k>`."""
+    if target == "rank":
+        return "ls-ml"
+    return f"ls-{target}" if target.startswith("ppo") else f"ls-ml-{target}"
+
+
+def run_books(
+    kind: str, log: bool, target: str = "rank", given: dict[int, rl4_sup.Fit] | None = None
+) -> dict[str, Any]:
+    """Every book on the same days. `given`: ready models per fit day (the PPO policies) instead
+    of fitting the forecaster. Runs after the card's own log only their own book's rows."""
     import breadth_books as bb
     import short_engine as se
 
-    tag = "" if target == "rank" else f"-{target}"  # the addendum logs only its own book
+    tag = "" if target == "rank" else f"-{target}"
+    mine = book_name(target)
+    seed_run = "-s" in target
     sets = load()
-    models = fold_models(sets, kind, target)
+    models = given if given is not None else fold_models(sets, kind, target)
     fits = sorted(models)
     out: dict[str, Any] = {"sets": {}, "models": {}}
     for f in fits:
@@ -461,7 +474,9 @@ def run_books(kind: str, log: bool, target: str = "rank") -> dict[str, Any]:
                         if twin
                         else f"perp {cost * 1e4:.0f} bps + funding"
                     )
-                    bb.log_row(f"rl-4-perp-{label}", f"{name}{tag}, {cd}", kd, first, run.r, turn)
+                    kd = "robustness" if seed_run else kd
+                    nm = name.replace("ls-ml", mine)
+                    bb.log_row(f"rl-4-perp-{label}", f"{nm}, {cd}", kd, first, run.r, turn)
         compare(series, rows)
         out["sets"][label] = {"first": str(first), "years": years, "weeks": len(dw), "b0": b0,
                               "coins": float(r.m[sel].sum(1).mean()), "rows": rows, "series": series,
@@ -488,7 +503,8 @@ def run_books(kind: str, log: bool, target: str = "rank") -> dict[str, Any]:
             if tag and not k.startswith("ls-ml"):
                 continue
             kd = "robustness" if k.endswith("@30") else ("variant" if k == "ls-ml" else "baseline")
-            nm = k.replace("ls-ml", f"ls-ml{tag}")
+            kd = "robustness" if seed_run else kd
+            nm = k.replace("ls-ml", mine)
             bb.log_row(
                 "rl-4-perp-pooled", f"{nm}, equal capital per venue", kd, first, s, float("nan")
             )
@@ -523,21 +539,29 @@ def f(x: Any, fmt: str) -> str:
     return "-" if x is None or (isinstance(x, float) and not np.isfinite(x)) else format(x, fmt)
 
 
+NOTES = {
+    "ret": [
+        "**Addendum run (`ls-ml-ret`, post-hoc):** here `ls-ml` is trained on the week's return",
+        "itself (percent, as a z-score across the venue's coins), not on its rank. Everything",
+        "else is as in `results/rl-4-perp.md`.",
+        "",
+    ],
+    "ppo": [
+        "**`ls-ppo` run:** here the row `ls-ml` is `ls-ppo`, the ten-seed PPO policy of",
+        "`lib/rl4_perp_rl.py` (a linear score on the four ranked inputs, trained on the book's",
+        "weekly return after costs and funding), not the lasso. Everything else is as in",
+        "`results/rl-4-perp.md`.",
+        "",
+    ],
+}
+
+
 def write_books(out: dict[str, Any], kind: str, target: str = "rank") -> Path:
     tag = "" if target == "rank" else f"-{target}"
     L = [
         "# RL 4, part 2: the gate-passing learner on the perp cross-section (train only)",
         "",
-        *(
-            []
-            if not tag
-            else [
-                "**Addendum run (`ls-ml-ret`, post-hoc):** here `ls-ml` is trained on the week's return",
-                "itself (percent, as a z-score across the venue's coins), not on its rank. Everything",
-                "else is as in `results/rl-4-perp.md`.",
-                "",
-            ]
-        ),
+        *NOTES.get(target.split("-s")[0], []),
         f"Script `lib/rl4_perp.py --run`; card part 2 in `research/rl-4.md`. `ls-ml`: {kind} on the four",
         "ranked inputs, refitted on the first Friday of each year on every earlier venue-week (7-day",
         "embargo); long the top third of its forecast, short the bottom third, per venue. `ls-funding`:",

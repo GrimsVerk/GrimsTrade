@@ -6,9 +6,22 @@ Question: which of rl-3's cheap fixes (few inputs, shrinkage, more rows) makes a
 planted weekly IC of 0.10, and does the passing learner find anything real on carry-2's
 perpetual-futures cross-section? Card and results: `research/rl-4.md`.
 
-- Done: card part 1 (learners, gate, budget) before any code.
-- Doing: the planted-control grid (5 forecasters + `ppo3`, IC 0.00/0.05/0.10/0.20).
-- Next: card part 2 (real perp book, train only) if a learner passes; write-up; draft PR.
+- Done (pushed): card parts 1 and 2 and the addendum before their numbers; forecaster grid
+  (`results/rl-4.md`: `lasso28` passes the gate, +0.071 at IC 0.10, 45% of the ceiling; `ols3`,
+  `ridge28`, `ols28-pool`, `ols28` fail; post-hoc `ols1` 93%); perp part 2
+  (`results/rl-4-perp-ic.md`: screen passed, `vol` rank IC 0.10; `results/rl-4-perp.md`: `ls-ml`
+  fails every bar, pooled Sharpe 0.03 against `ls-funding` 0.57; `results/rl-4-perp-why.md`: rank
+  IC is not return; `results/rl-4-perp-ret.md`: `ls-ml-ret` keeps no input, flat book).
+  Held-out year untouched.
+- Paused 2026-11-17 ~23:30 UTC (usage window). `ppo3` training (520 fold models,
+  `research/data/rl/models4/`, launcher log `research/data/rl/rl4-launch.log`) was finishing.
+- Next, in order: (1) `uv run --with torch python research/lib/rl4_train.py --eval ppo3-0.00
+  ppo3-0.05 ppo3-0.10 ppo3-0.20` (logs 44 control rows), then `rl4_sup.py --report`; (2) if
+  `ppo3` fails the gate: train and evaluate `ppo3-warm-<rho>` (card follow-up; same launcher with
+  `RL_VARIANTS=ppo3-warm-0.00,...`); (3) only if an RL variant passes: `ls-ppo` on the perp book
+  (`lib/rl4_perp_rl.py --train [--warm]`, then `--books --log`; written, checked on made-up data
+  only, never run on real data); (4) write-up on top of `research/rl-4.md` ending with 2-3 next
+  lanes, this section, draft PR to `carry-2`.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
