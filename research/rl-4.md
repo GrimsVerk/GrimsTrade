@@ -234,3 +234,24 @@ run does not. Passing 1 and 4 but not 2 means "the learner rebuilds the carry an
 
 Idea `rl-4-perp-<set>`: `ls-ml` (and `ls-ppo`) kind `variant`, baselines `baseline`, 30 bps
 `robustness`. The IC table writes no row (no backtest), like `rl-3-inputs`.
+
+## Addendum to part 2 (written 2026-11-17 ~23:12 UTC, after `ls-ml`'s result, before the run below)
+
+**What was seen.** The screen passed (`results/rl-4-perp-ic.md`: `vol` has a walk-forward rank IC
+of 0.10, the other three 0.02-0.03). `ls-ml` then failed every bar (`results/rl-4-perp.md`:
+pooled Sharpe 0.03 against 0.57 for `ls-funding`), although its forecast's weekly rank IC out of
+sample is +0.08 to +0.15. The lasso kept `vol` almost alone. A descriptive table written after
+that (`results/rl-4-perp-why.md`, `--why`, no backtest) shows why: low-volatility coins beat
+high-volatility coins *in rank* most weeks, but not *in average return* (spread +0.05% a week,
+t 0.2), because the wild coins' rare big weeks pay the difference back; `funding` and `premium`
+have small rank ICs but a spread of +0.40% a week (t 2). The learner was scored on ranks; the
+book is paid in returns.
+
+**One follow-up variant, fixed now: `ls-ml-ret`.** The same learner (lasso, same penalty grid
+and purged CV), the same four ranked inputs, folds, book, costs and bars. One change: the target
+is the coming week's total return itself, in percent, as a z-score across the venue's coins that
+Friday (minus the venue-week mean, divided by its standard deviation), instead of its rank. So a
+coin that triples counts for what it costs a short. It is a post-hoc variant: chosen after seeing
+`ls-ml` fail and after the table above, which already shows `funding` and `premium` earning in
+return terms. A pass would be weak evidence and would say so; it is logged as a `variant`
+(`ls-ml-ret`), with the baselines not logged again.

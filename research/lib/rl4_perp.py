@@ -91,6 +91,7 @@ class Rows:
     x: np.ndarray  # [W, n, 4] centred ranks of the inputs (0 = missing or outside m)
     y: np.ndarray  # [W, n] centred rank of the coming week's total return
     fwd: np.ndarray  # [W, n] that return itself
+    yz: np.ndarray  # [W, n] the return in percent as a z-score across the coins (addendum)
     raw: np.ndarray  # [W, n, 4] the inputs before ranking
 
 
@@ -101,6 +102,7 @@ def build_rows(
     m = np.zeros((w, n), bool)
     x = np.zeros((w, n, raw.shape[2]))
     y = np.zeros((w, n))
+    yz = np.zeros((w, n))
     fwd = np.full((w, n), np.nan)
     for i, t in enumerate(days):
         fwd[i] = week_total(px, fund, int(t))
@@ -108,7 +110,10 @@ def build_rows(
         for k in range(raw.shape[2]):
             x[i, :, k] = centred_rank(raw[t, :, k], m[i])
         y[i] = centred_rank(fwd[i], m[i])
-    return Rows(days, m, x, y, fwd, raw[days])
+        ret = np.expm1(fwd[i, m[i]])
+        if len(ret) > 1 and ret.std() > 0:
+            yz[i, m[i]] = (ret - ret.mean()) / ret.std()
+    return Rows(days, m, x, y, fwd, yz, raw[days])
 
 
 def weekly_ic(rows: Rows, k: int) -> np.ndarray:
@@ -285,8 +290,57 @@ def write_ic(res: dict[str, Any]) -> None:
     (RESULTS / "rl-4-perp-ic.md").write_text("\n".join(L) + "\n")
 
 
-def fold_models(sets: dict[str, tuple[Any, Rows]], kind: str) -> dict[int, rl4_sup.Fit]:
-    """One pooled model per yearly fit day that has MIN_ROWS usable rows."""
+def why_table() -> None:
+    """Post-hoc, descriptive: what a long-short third-against-third book on each input earns a
+    week before costs, next to the input's rank IC. Written after the books had been seen."""
+    sets = load()
+    L = [
+        "# RL 4, part 2: why a good rank forecast made no money (post-hoc, descriptive)",
+        "",
+        "Script `lib/rl4_perp.py --why`, written after `results/rl-4-perp.md` had been seen; no",
+        "backtest, no costs. For each input, every venue-week (at least 10 coins with the input): the",
+        "coins are split into thirds by the input. Long third = the side the rank IC favours. Return",
+        "= the week's total return of a long position in plain percent (price change minus funding),",
+        "equal weight inside a third. Spread = long third minus short third: what the book's two",
+        "legs earn together per unit of gross exposure x 2. All venue-weeks from 2021-02 to 2025-11.",
+        "",
+        "| Input | Long side | Rank IC | Mean return, long third | Mean return, short third | **Mean spread per week (t)** | Median coin, long third | Median coin, short third | Weeks spread > 0 | Worst week's spread | Best week's spread |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for k, name in enumerate(INPUTS):
+        ics, lo, hi, mlo, mhi = [], [], [], [], []
+        for _, r in sets.values():
+            for i in range(len(r.day)):
+                ok = r.m[i] & np.isfinite(r.raw[i, :, k])
+                if ok.sum() < MIN_COINS:
+                    continue
+                x = r.raw[i, ok, k]
+                ret = np.expm1(r.fwd[i, ok])  # log total return -> percent (funding is small)
+                order = np.argsort(x, kind="mergesort")
+                n3 = max(1, round(len(x) / 3))
+                ics.append(spearman(x, ret))
+                lo.append(ret[order[:n3]].mean())
+                hi.append(ret[order[-n3:]].mean())
+                mlo.append(float(np.median(ret[order[:n3]])))
+                mhi.append(float(np.median(ret[order[-n3:]])))
+        ic = float(np.mean(ics))
+        a, b, ma, mb = (np.array(v) for v in ((lo, hi, mlo, mhi) if ic < 0 else (hi, lo, mhi, mlo)))
+        sp = a - b
+        t = float(sp.mean() / sp.std(ddof=1) * np.sqrt(len(sp)))
+        L.append(
+            f"| `{name}` | {'low' if ic < 0 else 'high'} | {ic:+.3f} | {a.mean():+.2%} | {b.mean():+.2%} "
+            f"| **{sp.mean():+.2%} ({t:+.1f})** | {ma.mean():+.2%} | {mb.mean():+.2%} | {(sp > 0).mean():.0%} "
+            f"| {sp.min():+.1%} | {sp.max():+.1%} |"
+        )
+    (RESULTS / "rl-4-perp-why.md").write_text("\n".join(L) + "\n")
+    print((RESULTS / "rl-4-perp-why.md").read_text())
+
+
+def fold_models(
+    sets: dict[str, tuple[Any, Rows]], kind: str, target: str = "rank"
+) -> dict[int, rl4_sup.Fit]:
+    """One pooled model per yearly fit day that has MIN_ROWS usable rows. Target: the week's
+    return as a rank (card part 2) or as a z-score of the return itself (the addendum)."""
     out = {}
     for f in fit_days():
         xs, ys, ds = [], [], []
@@ -294,7 +348,7 @@ def fold_models(sets: dict[str, tuple[Any, Rows]], kind: str) -> dict[int, rl4_s
             ok = usable(r.day, f)
             mm = r.m[ok]
             xs.append(r.x[ok][mm])
-            ys.append(r.y[ok][mm])
+            ys.append((r.y if target == "rank" else r.yz)[ok][mm])
             ds.append(np.repeat(r.day[ok][:, None], r.m.shape[1], 1)[mm])
         x, y, d = np.concatenate(xs), np.concatenate(ys), np.concatenate(ds)
         if len(y) >= MIN_ROWS:
@@ -338,12 +392,13 @@ def compare(series: dict[str, np.ndarray], rows: dict[str, dict[str, Any]]) -> N
             rows[key] |= {f"vs_{other}": d, f"vs_{other}_p": p}
 
 
-def run_books(kind: str, log: bool) -> dict[str, Any]:
+def run_books(kind: str, log: bool, target: str = "rank") -> dict[str, Any]:
     import breadth_books as bb
     import short_engine as se
 
+    tag = "" if target == "rank" else f"-{target}"  # the addendum logs only its own book
     sets = load()
-    models = fold_models(sets, kind)
+    models = fold_models(sets, kind, target)
     fits = sorted(models)
     out: dict[str, Any] = {"sets": {}, "models": {}}
     for f in fits:
@@ -395,7 +450,7 @@ def run_books(kind: str, log: bool) -> dict[str, Any]:
                     "funding_yr": float(run.funding.sum() / years),
                     "turn_yr": turn,
                 }
-                if log:
+                if log and (not tag or name == "ls-ml"):
                     kd = (
                         "robustness"
                         if key.endswith("@30")
@@ -406,7 +461,7 @@ def run_books(kind: str, log: bool) -> dict[str, Any]:
                         if twin
                         else f"perp {cost * 1e4:.0f} bps + funding"
                     )
-                    bb.log_row(f"rl-4-perp-{label}", f"{name}, {cd}", kd, first, run.r, turn)
+                    bb.log_row(f"rl-4-perp-{label}", f"{name}{tag}, {cd}", kd, first, run.r, turn)
         compare(series, rows)
         out["sets"][label] = {"first": str(first), "years": years, "weeks": len(dw), "b0": b0,
                               "coins": float(r.m[sel].sum(1).mean()), "rows": rows, "series": series,
@@ -430,9 +485,12 @@ def run_books(kind: str, log: bool) -> dict[str, Any]:
     }
     if log:
         for k, s in series.items():
+            if tag and not k.startswith("ls-ml"):
+                continue
             kd = "robustness" if k.endswith("@30") else ("variant" if k == "ls-ml" else "baseline")
+            nm = k.replace("ls-ml", f"ls-ml{tag}")
             bb.log_row(
-                "rl-4-perp-pooled", f"{k}, equal capital per venue", kd, first, s, float("nan")
+                "rl-4-perp-pooled", f"{nm}, equal capital per venue", kd, first, s, float("nan")
             )
     compare(series, rows)
     out["pooled"] = {"first": str(first), "years": n / 365, "rows": rows}
@@ -465,10 +523,21 @@ def f(x: Any, fmt: str) -> str:
     return "-" if x is None or (isinstance(x, float) and not np.isfinite(x)) else format(x, fmt)
 
 
-def write_books(out: dict[str, Any], kind: str) -> None:
+def write_books(out: dict[str, Any], kind: str, target: str = "rank") -> Path:
+    tag = "" if target == "rank" else f"-{target}"
     L = [
         "# RL 4, part 2: the gate-passing learner on the perp cross-section (train only)",
         "",
+        *(
+            []
+            if not tag
+            else [
+                "**Addendum run (`ls-ml-ret`, post-hoc):** here `ls-ml` is trained on the week's return",
+                "itself (percent, as a z-score across the venue's coins), not on its rank. Everything",
+                "else is as in `results/rl-4-perp.md`.",
+                "",
+            ]
+        ),
         f"Script `lib/rl4_perp.py --run`; card part 2 in `research/rl-4.md`. `ls-ml`: {kind} on the four",
         "ranked inputs, refitted on the first Friday of each year on every earlier venue-week (7-day",
         "embargo); long the top third of its forecast, short the bottom third, per venue. `ls-funding`:",
@@ -525,7 +594,9 @@ def write_books(out: dict[str, Any], kind: str) -> None:
                 f"{r['blend_diff']:+.2f} ({r['blend_p']:.2f})" if "blend_p" in r else "",
             ]
             L.append("| " + " | ".join(cells) + " |")
-    (RESULTS / "rl-4-perp.md").write_text("\n".join(L) + "\n")
+    path = RESULTS / f"rl-4-perp{tag}.md"
+    path.write_text("\n".join(L) + "\n")
+    return path
 
 
 def main() -> None:
@@ -538,17 +609,18 @@ def main() -> None:
         (d / "ic.json").write_text(json.dumps(res, indent=1))
         write_ic(res)
         print((RESULTS / "rl-4-perp-ic.md").read_text())
+    elif "--why" in sys.argv:
+        why_table()
     elif "--smoke" in sys.argv:  # plumbing check: runs everything, logs and prints no number
-        out = run_books("lasso", False)
-        write_books(out, "lasso")
-        (RESULTS / "rl-4-perp.md").unlink()
+        out = run_books("lasso", False, "ret")
         print("ok", sorted(out["sets"]), len(out["models"]), "models")
     elif "--run" in sys.argv:
         kind = next((a.split("=")[1] for a in sys.argv if a.startswith("--fit=")), "lasso")
-        out = run_books(kind, "--log" in sys.argv)
-        (d / "books.json").write_text(json.dumps(out, indent=1, default=str))
-        write_books(out, kind)
-        print((RESULTS / "rl-4-perp.md").read_text())
+        target = next((a.split("=")[1] for a in sys.argv if a.startswith("--target=")), "rank")
+        out = run_books(kind, "--log" in sys.argv, target)
+        tag = "" if target == "rank" else f"-{target}"
+        (d / f"books{tag}.json").write_text(json.dumps(out, indent=1, default=str))
+        print(write_books(out, kind, target).read_text())
 
 
 if __name__ == "__main__":
