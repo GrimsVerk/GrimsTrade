@@ -2,6 +2,25 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-18 (crypto fee tiers, replaces the flat 0.60% of audit G3): A crypto fill pays Kraken
+  Pro's spot taker fee for the strategy's crypto volume in the 30 days before the fill (fills at
+  the same open not counted). Each strategy is its own account; ETF trades are elsewhere and
+  do not count. Schedule (kraken.com/pro/fees, read 2026-11-18, same as on 2026-11-12), 30-day
+  spot volume in USD -> taker: 0 -> 0.80%, 2,500 -> 0.60%, 10,000 -> 0.38%, 25,000 -> 0.35%,
+  50,000 -> 0.30%, 100,000 -> 0.25%, 250,000 -> 0.22%, 500,000 -> 0.20%, 1M -> 0.18%, 2.5M ->
+  0.15%, 5M -> 0.12%, 10M -> 0.10% (and lower above 50M; all in `gym.KRAKEN_TAKER`). Not
+  modelled: the page's 0.02% discount on "selected pairs" (it does not say whether BTC/USD and
+  ETH/USD are among them; leaving it out charges more, the cautious side) and reaching a tier
+  through assets held or futures volume (out of reach at 10,000 USD). Kraken's public
+  `AssetPairs` endpoint lists empty fee tables now, so the page is the source. Why: the flat
+  0.60% was the tier of the busiest live crypto strategy; a 10,000 USD account's tier really
+  moves with what it trades: its first purchase pays 0.80%, and one that turns its crypto over
+  about twice a month pays 0.38%. Every score is replayed with this table, so past results
+  change once (record to 2026-11-17: `buy_hold_btc` live -17 USD, `equal_weight` -7,
+  `risk_parity` and `xs_momentum` -3; backtests: `crypto_mean_reversion` +3.8% (it trades
+  often enough for 0.38%), `equal_weight` -0.5%, `buy_hold_btc` -0.2%). Change the table only
+  with a new entry here, giving the date the page was read.
+
 - 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
   refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
   before the one under it or in the future; no record file or folder that is a symbolic link;
@@ -17,7 +36,7 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   10,000, 0.35% from 25,000, 0.30% from 50,000; 25 bps is below all of them. The busiest live
   crypto strategy turns its book over about 10 times a year (about 9,000 USD a month): the
   0.60% tier. One flat number is still a simplification: slower accounts really pay 0.80%,
-  faster ones 0.38% or less; volume tiers are in the BACKLOG. Every score is recomputed with
+  faster ones 0.38% or less (replaced by volume tiers on 2026-11-18, above). Every score is recomputed with
   today's cost table, so changing it changes all past results too: change it only with a new
   entry here. If the owner would trade elsewhere, set that venue's taker fee.
 - 2026-11-12 (honesty audit 1): Scoring conventions. (a) Every day in a record has a return, the

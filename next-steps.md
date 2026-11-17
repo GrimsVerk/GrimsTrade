@@ -1,5 +1,22 @@
 # Next steps
 
+## Crypto fee by 30-day volume tier (branch `fee-tiers`, draft PR, not merged)
+
+Replaces the flat 0.60% crypto fee with Kraken Pro's taker schedule by each strategy's own
+30-day crypto volume. Schedule, date read and why: `docs/DECISIONS.md` (2026-11-18). Code:
+`gym.Costs.fee_at`, `gym.KRAKEN_TAKER`, `gym._execute`. Tests: `tests/test_audit_gym.py`
+(the two fee tests), `tests/test_gym.py`.
+
+- [ ] After merging: the first run replays every score with the tiers (`buy_hold_btc` live
+      about -0.2%; `crypto_mean_reversion` backtest about +3.8%). Tell the research lane: a
+      backtest's crypto fee is now 0.38-0.80% by how much it trades, not a flat 0.60%.
+- [ ] Re-read kraken.com/pro/fees now and then; a change needs a new DECISIONS entry.
+
+### For the owner
+
+- Changes the live gym's costs: merging is your call. If you would trade crypto elsewhere,
+  that venue's schedule goes in `gym.KRAKEN_TAKER`'s place.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
@@ -20,7 +37,7 @@ ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/te
       directly, not through a file in the record (L14).
 - [ ] Open findings to build next: credit dividends (G4); a second ETF source, Stooq is dead
       (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
-      tier (BACKLOG).
+      tier (branch `fee-tiers`).
 
 ## M0 status: built, not yet proven live
 
@@ -43,7 +60,7 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 
 - CSV + stdlib only (no parquet/pandas). Raw prices; dividends not credited yet.
 - Bot commits to orphan branch `paper-trail` because `main` requires PRs.
-- Costs: crypto 60 bps fee (was 25 until the audit, G3) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
+- Costs: crypto Kraken Pro taker fee by 30-day volume, 0.38-0.80% (flat 60 bps after audit G3, 25 before) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
 - Decisions at ~22:30 UTC see crypto bars through yesterday (today's still open) and ETFs through
   today. Fills show up a day later, once the fill bar has closed and been stored.
 - A run with no new data since a strategy's last decision writes no new decision.

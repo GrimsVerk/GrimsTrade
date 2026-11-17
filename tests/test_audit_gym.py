@@ -51,17 +51,43 @@ def test_a_switch_from_etf_to_crypto_ends_up_in_crypto() -> None:
     assert res.positions["BTC"] == pytest.approx(100.0)
 
 
-def test_a_crypto_fill_pays_the_taker_fee() -> None:
+def test_a_crypto_fill_pays_the_taker_fee_of_its_30_day_volume_tier() -> None:
     """Audit G3 (fixed): the gym charged crypto fills 25 basis points. A fill at the open is a
-    market order and pays the taker fee: on Kraken Pro 0.80% / 0.60% / 0.38% for a 30-day volume
-    from 0 / 2,500 / 10,000 USD (its fee page, read 2026-11-12). The default is now 0.60%, the
-    tier of the busiest live crypto strategy; nothing below the cheapest tier in reach of a
-    10,000 USD account may come back unnoticed."""
-    assert gym.COSTS["crypto"].fee >= 0.0038
-    hist: History = {"BTC": flat(4, 100.0)}
+    market order and pays Kraken Pro's taker fee, which depends on the account's spot volume in
+    the 30 days before (kraken.com/pro/fees, read 2026-11-12 and again 2026-11-18). Each
+    strategy is its own account. The flat 0.60% that replaced the 25 bps under-charged a slow
+    account (a first purchase really pays 0.80%) and over-charged a busy one (0.38% from 10,000
+    USD a month)."""
+    taker = gym.COSTS["crypto"]
+    assert [taker.fee_at(v) for v in (0, 2_499, 2_500, 9_999, 10_000, 25_000, 50_000, 100_000)] == [
+        0.0080, 0.0080, 0.0060, 0.0060, 0.0038, 0.0035, 0.0030, 0.0025
+    ]  # fmt: skip
+    hist: History = {"BTC": flat(40, 100.0)}
     res = gym.simulate([Decision(at(0), {"BTC": 1.0}), Decision(at(1), {})], hist)
+    buy, sell = res.fills
+    assert buy.fee == pytest.approx(buy.qty * buy.price * 0.0080)  # no volume yet
+    # The buy traded 9,915 USD (10,000 less its fee and slippage): the 2,500 tier.
+    assert sell.fee == pytest.approx(-sell.qty * sell.price * 0.0060)
     paid = 1 - res.cash / gym.START_CASH
-    assert paid == pytest.approx(2 * (0.0060 + 0.0005), abs=1e-4)  # in and out: 1.3%
+    assert paid == pytest.approx(0.0080 + 0.0060 + 2 * 0.0005, abs=2e-4)  # in and out: 1.5%
+
+
+def test_crypto_volume_older_than_30_days_no_longer_lowers_the_fee() -> None:
+    hist: History = {"BTC": flat(80, 100.0), "SPY": flat(80, 100.0, weekdays_only=True)}
+    # In and out of BTC (2 x 10,000 USD), then SPY trades (not crypto volume, not counted).
+    decisions = [
+        Decision(at(0), {"BTC": 1.0}),
+        Decision(at(1), {}),
+        Decision(at(3), {"SPY": 1.0}),
+        Decision(at(10), {}),
+        Decision(at(20), {"BTC": 0.5}),  # 19 days after the last crypto fill: 0.38%
+        Decision(at(21), {}),
+        Decision(at(60), {"BTC": 0.5}),  # 39 days later: back to 0.80%
+    ]
+    res = gym.simulate(decisions, hist)
+    btc = [f for f in res.fills if f.symbol == "BTC"]
+    rates = [round(f.fee / abs(f.qty * f.price), 4) for f in btc]
+    assert rates == [0.0080, 0.0060, 0.0038, 0.0038, 0.0080]
 
 
 def test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year() -> None:
