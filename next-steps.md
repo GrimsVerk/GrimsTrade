@@ -1,5 +1,14 @@
 # Next steps
 
+## Wide 1 (in progress, started 2026-11-17, branch `wide-1`, base `carry-2`)
+
+New trading hypotheses from other fields (ecology, epidemiology, signal processing, control,
+information theory, game theory, physics, queueing, neuroscience, immunology), each tested by the
+protocol. Research only. Plan and results: `research/wide-1.md`.
+
+- Doing: step 1, ideation (written before any number).
+- Next: cards in `research/cards/`, pushed before any test; then train tests; then write-up.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
