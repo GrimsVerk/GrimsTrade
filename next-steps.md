@@ -9,9 +9,16 @@ combination rules with a pass bar fixed before any number).
 - Done: card; Part A (52 series, `research/lib/deep1_models.py` rebuilds them into
   `<cache_root>/derived/deep-1/`, `research/lib/deep1_atlas.py` writes
   `research/results/deep-1-atlas.md`; findings in `research/deep-1.md`).
-- Doing: Part B (`research/lib/deep1_combo.py`, `research/results/deep-1.md`, rows in
-  `research/tries.md`).
-- Next: write-up, `ideas.md`, draft PR.
+- Doing: Part B. Written and committed, NOT yet run: `research/lib/deep1_mix.py` (the three
+  rules, unit-tested in `tests/test_deep1_combo.py`), `research/lib/deep1_combo.py` (gym replay,
+  pass bar, `check`). Sleeve series for six, etf, coin, idx are built (18 new component rows in
+  `research/tries.md` under idea `deep-1`). No Part B number exists yet.
+- Next, in this order: (1) `uv run --with numpy --with scikit-learn --with numba python
+  research/lib/deep1_combo.py check` (look-ahead check, logs nothing); (2) `uv run --with numpy
+  python research/lib/deep1_combo.py` once (logs 3 `variant` and 9 `robustness` rows, writes
+  `research/results/deep-1.md`; replays are cached under `<cache_root>/derived/deep-1/runs/`, so
+  a rerun after a crash logs nothing twice); (3) write-up on top of `research/deep-1.md`,
+  `ideas.md`, draft PR to `carry-2`. Held-out year only for a rule that passes all six bars.
 - `tsmom12` anatomy and tuning are the `trend-tune` lane's, not this one's.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)

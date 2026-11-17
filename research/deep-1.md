@@ -246,5 +246,17 @@ book equal to `tsmom12`: the pool holds no complement at all.
 - 2026-11-18, Part A. Two tables beyond the card's list were added to the atlas after the first
   tables were seen: 2b (what the slots `tsmom12` leaves empty earned, by trend state) and the
   "gain share minus loss share" column of table 5. Both are descriptions; neither feeds Part B.
+- 2026-11-18, before any Part B number. Three details the card left open or got slightly wrong,
+  settled while writing `lib/deep1_mix.py`: (1) the weekly returns run from one Friday decision
+  to the next, so that a week has one trend state; at a refit the week still running is left out
+  (the card said "7-day blocks counted back from the day before the refit": the same data less
+  at most a week). (2) In `meta`, a sleeve that starts later than the others (`absorption`, the
+  ML models outside the six assets) has its earlier weeks filled with the average return of the
+  other sleeves that week, so that its arrival does not throw away everyone's earlier history.
+  (3) `switch` compares Sharpe ratios of weekly returns inside a state; a sleeve that sat in
+  cash through a state scores 0 there, which beats a sleeve that lost money.
+- 2026-11-18, before any Part B number. Component runs that were not in `tries.md` (a card's
+  rule on a set it had not been run on: 4 on the ETFs and coins, 14 on the four-index
+  portfolio) were logged as `robustness` under idea `deep-1` when the sleeves were built.
 - 2026-11-18. The ideas-1 series are the primary `-and` variant of six cards plus the two
   fear-and-greed rules; card 10 (`trend3`) runs on three assets and is left out.

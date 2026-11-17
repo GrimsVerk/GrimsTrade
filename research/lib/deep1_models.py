@@ -214,14 +214,17 @@ def load(universe: str, name: str) -> Series:
 
 
 def to_series(run: harness.Run, u: c.Ctx, name: str) -> Series:
-    """Put a run that may start late onto the universe's full calendar."""
+    """Put a run that may start late onto the universe's full calendar. If the history ends on
+    the last decision day (the look-ahead check), a last day with an unknown return is added so
+    that every decision has a row."""
     syms = u.panel.syms
-    lo, hi = u.start.toordinal(), run.days[-1].toordinal()
+    lo = u.start.toordinal()
+    hi = max(run.days[-1].toordinal(), run.days[0].toordinal() + len(run.decisions))
     days = np.arange(lo, hi + 1, dtype=np.int64)
     n = len(days) - 1
     off = run.days[0].toordinal() - lo
     rets = np.full(n, np.nan)
-    rets[off:] = run.rets
+    rets[off : off + len(run.rets)] = run.rets
     w = np.zeros((n, len(syms)))
     for k, d in enumerate(run.decisions):
         for s, x in d.weights.items():
