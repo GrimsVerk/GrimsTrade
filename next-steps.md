@@ -1,6 +1,6 @@
 # Next steps
 
-## G2: an unpaid buy waits for cash (branch `g2-pending-buy`, draft PR, not merged)
+## G2: an unpaid buy waits for cash (branch `g2-pending-buy`, draft PR #29, not merged)
 
 Fix for audit G2 and the 2026-11-17 health-check symptom (fully invested `equal_weight` could
 not top up crypto). Rule and why: `docs/DECISIONS.md` (2026-11-17, audit G2). Code:
