@@ -956,3 +956,31 @@ Never edit or delete a row.
 | 2026-11-17 22:58 | rl-4-control | ols28-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.90 | +2879.4% | 40.8% | 7.48 |
 | 2026-11-17 22:58 | rl-4-control | ols28-0.10 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +3953.6% | 39.4% | 10.84 |
 | 2026-11-17 22:58 | rl-4-control | ols28-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.25 | +10922.9% | 35.3% | 14.80 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-ml, perp 10 bps + funding | variant | train | 2022-01-08 | 2025-11-09 | -0.55 | -36.1% | 47.7% | 21.48 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-ml, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | -0.83 | -47.5% | 55.6% | 21.48 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-funding, perp 10 bps + funding | baseline | train | 2022-01-08 | 2025-11-09 | 0.37 | +14.2% | 24.2% | 42.45 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-funding, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | -0.46 | -19.5% | 34.7% | 42.45 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-equal, perp 10 bps + funding | baseline | train | 2022-01-08 | 2025-11-09 | -0.38 | -20.4% | 36.0% | 35.82 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-equal, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | -0.95 | -41.1% | 51.5% | 35.82 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2022-01-08 | 2025-11-09 | -0.30 | -43.2% | 52.7% | 4.00 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-ml, perp 10 bps + funding | variant | train | 2022-05-14 | 2025-11-09 | -0.00 | -7.1% | 35.7% | 23.04 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-ml, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | -0.26 | -23.0% | 40.8% | 23.04 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-funding, perp 10 bps + funding | baseline | train | 2022-05-14 | 2025-11-09 | 0.31 | +12.9% | 19.5% | 46.16 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-funding, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | -0.35 | -19.6% | 29.5% | 46.16 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-equal, perp 10 bps + funding | baseline | train | 2022-05-14 | 2025-11-09 | 0.19 | +6.4% | 25.6% | 37.20 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-equal, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | -0.26 | -19.7% | 30.6% | 37.20 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2022-05-14 | 2025-11-09 | 0.20 | +1.3% | 51.3% | 5.64 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-ml, perp 10 bps + funding | variant | train | 2023-06-10 | 2025-11-09 | 0.49 | +27.2% | 33.5% | 25.08 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-ml, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.29 | +11.0% | 33.6% | 25.08 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-funding, perp 10 bps + funding | baseline | train | 2023-06-10 | 2025-11-09 | 0.47 | +23.6% | 27.1% | 44.28 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-funding, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.10 | -1.5% | 27.3% | 44.28 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-equal, perp 10 bps + funding | baseline | train | 2023-06-10 | 2025-11-09 | 0.43 | +20.4% | 33.8% | 40.34 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-equal, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.09 | -2.2% | 37.1% | 40.34 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2023-06-10 | 2025-11-09 | 0.52 | +37.6% | 51.3% | 11.32 |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-ml, equal capital per venue | variant | train | 2022-01-08 | 2025-11-09 | 0.03 | -4.0% | 31.6% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-ml @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | -0.27 | -21.8% | 39.6% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-funding, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.57 | +24.4% | 19.1% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-funding @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | -0.27 | -13.1% | 28.6% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-equal, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.06 | -0.5% | 27.4% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-equal @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | -0.51 | -26.9% | 38.8% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | tsmom12 twin, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.01 | -22.7% | 49.6% | nan |

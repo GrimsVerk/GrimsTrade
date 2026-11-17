@@ -363,7 +363,7 @@ def run_books(kind: str, log: bool) -> dict[str, Any]:
         ics = [
             spearman(fc[i][r.m[j]], r.fwd[j][r.m[j]])
             for i, j in enumerate(sel)
-            if np.ptp(fc[i][r.m[j]]) > 0
+            if r.m[j].sum() >= MIN_COINS and np.ptp(fc[i][r.m[j]]) > 0
         ]
         up = v.up
         targets = {
@@ -538,6 +538,11 @@ def main() -> None:
         (d / "ic.json").write_text(json.dumps(res, indent=1))
         write_ic(res)
         print((RESULTS / "rl-4-perp-ic.md").read_text())
+    elif "--smoke" in sys.argv:  # plumbing check: runs everything, logs and prints no number
+        out = run_books("lasso", False)
+        write_books(out, "lasso")
+        (RESULTS / "rl-4-perp.md").unlink()
+        print("ok", sorted(out["sets"]), len(out["models"]), "models")
     elif "--run" in sys.argv:
         kind = next((a.split("=")[1] for a in sys.argv if a.startswith("--fit=")), "lasso")
         out = run_books(kind, "--log" in sys.argv)
