@@ -14,6 +14,105 @@ really pay, and does it hold in the held-out year?**
 
 Not run yet. The card below was committed and pushed before any new number.
 
+## What going live in paper would need (described, not built)
+
+"Live in paper" = the daily runner decides on real data and the gym keeps a fake-money account,
+as it does today for long-only BTC/ETH and the ETFs. Nothing below places an order anywhere.
+Sizes: **S** = under a day of agent work, **M** = 1-3 days, **L** = about a week.
+
+**Gym (`src/grimstrade/gym.py`)**
+
+1. **Signed weights and a perpetual instrument (M).** `validate` rejects weights below 0 and
+   sums above 1, and `_execute` assumes cash buys units. A perp needs: its own instrument per
+   venue (`BTC-PERP@hyperliquid`), weights in [-1, 1] with the sum of absolute weights <= 1,
+   and margin accounting (a trade moves no cash except costs; equity = cash + open profit).
+   Test: equal to `research/lib/carry3_engine.simulate` on the same decisions.
+2. **Funding as a cash flow (M).** A new replay event: at each funding time,
+   `cash -= quantity x mark price x rate`. Needs an append-only funding store next to the bars
+   (`data/funding/<instrument>.csv`). Hourly on Hyperliquid, 8/4/1-hourly on Binance and Bybit:
+   booked as published.
+3. **Costs by venue and coin (M).** `Costs` is one fee and one slippage per asset class. Port
+   `carry3_cost.CostModel` (taker fee per venue + half-spread from the coin's volume + impact
+   from the order's size), with the calibration file under version control and a dated
+   re-calibration (the snapshot script) every quarter. The gym's 1% rebalance band has to become
+   per strategy: this book holds ~25-70 positions of 0.7-2% of equity each, so a 1% band would
+   block most of its trades; the book brings its own band and a 10 USD smallest order.
+4. **Margin, liquidation, delisting (S-M).** At gross 1 a liquidation needs a short coin to rise
+   ~90% inside one bar, but the gym should still check each bar's high/low against a
+   maintenance margin and close at the worst price plus a fee. A delisted perp is closed at its
+   last price.
+
+**Data ingest (`sources.py`, `data.py`, `run_daily.py`)**
+
+5. **A perp universe feed (L, the biggest piece).** Today: 6 symbols. Needed per venue: daily
+   bars with quote volume and every funding event for every live perp (180 on Hyperliquid, ~520
+   on Binance, ~830 on Bybit), plus the instrument list saved every day, so listings and
+   delistings come from the record and not from hindsight. All keyless: Hyperliquid `info`
+   (`candleSnapshot`, `fundingHistory`, `meta`), Binance `fapi/v1` or its public archive, Bybit
+   v5 `market`. Storage on the `paper-trail` branch grows from 6 files to hundreds: one file per
+   venue per day is the simpler append-only shape.
+6. **Which venue can the unattended runner reach? (S to test, decides the design.)** The runner
+   is a GitHub-hosted job. Binance's and Bybit's APIs are known to refuse US addresses, where
+   those runners sit; Hyperliquid's API and Binance's public archive (one day late) are open.
+   One manual test run settles it. If only Hyperliquid answers, the first paper book is
+   Hyperliquid alone (about 13 tradable coins in train, ~25 today): a thin book.
+7. **History to start from (S).** A coin needs 365 days of bars and 30 days of funding before
+   its first decision: a one-off import from the research cache into the trail.
+
+**Daily runner and strategy**
+
+8. **The strategy file (M).** `strategies/funding_carry.py`: universe rule, 7-day funding rank
+   per venue, the `band` rule. The band needs the book's current weights, and
+   `decide(history)` sees only bars: either the runner passes the gym's positions in, or the
+   strategy replays its own past decisions from the ledger. It decides on Fridays and must be
+   able to say "no change" on other days.
+9. **One implementation (S).** `long_short`, `band_weights` and the universe rule move to `src/`;
+   research imports them, with a test that pins the research numbers.
+
+**Scoreboard and ledger (`report.py`, `ledger.py`)**
+
+10. **What the owner must see (S-M).** Per strategy: price profit, funding received, fees and
+    spread paid, gross and net exposure, number of positions, turnover; next to the long-only
+    `tsmom12` twin and the 50/50 blend. A market-neutral book judged on return alone looks dull;
+    judged on what it adds to the trend book it may not be.
+11. **Tries (S).** The book registers with the count of shapes scored in research (5 here, 2 in
+    carry-2), so the scoreboard's deflated Sharpe is honest.
+
+Total: about three to four weeks of agent work. The first milestone that proves the plumbing is
+a Hyperliquid-only sleeve (smallest feed, no address block), 10,000 USD fake money, gross 1.
+
+## Funding as an input for the ML/RL work
+
+Numbers: not run yet (the table is the last section of `results/carry-3.md`).
+
+### What an ML/RL rung on the perp cross-section would look like (card sketch, not run)
+
+- **Why here and not on the six assets.** rl-3's limit was few independent bets: six assets
+  that move together, long-only, half-slot tilts. A cross-section of ~100 perps ranked against
+  each other every week has far more of them, and a long-short book can use both ends of a
+  ranking. The same weak input is worth more there (skill grows with the square root of the
+  number of independent bets).
+- **Rows.** One per tradable coin per Friday per venue (carry-3's universe). About 25,000 on
+  Binance for 2021-2025, against ~1,300 weeks x 6 assets before; but coins move together, so
+  the honest count is nearer the number of weeks times a handful.
+- **Inputs (at most five, ranked 0..1 inside the venue each week; rl-3: few inputs):** 7-day
+  funding, 30-day funding, 7-day premium, 28-day return, 30-day volume rank.
+- **Target.** Next week's return of a long position including funding, minus the venue's mean
+  that week (so the model learns ranking, not the market).
+- **Gate 1 (cheap, before any model):** each input's weekly cross-sectional IC on train with
+  t >= 3 and the same sign in both halves; inputs that fail are dropped, and if funding itself
+  fails there is no rung.
+- **Gate 2 (rl-3's rule):** plant a known cross-sectional signal in one input and show the
+  learner finds it at the strength of the real inputs, before any real run.
+- **Learners, in order, each only if the one before adds something:** a pooled ridge regression
+  on the ranks, yearly walk-forward refits with a 7-day purge; a small gradient-boosted model
+  on the same five inputs; only then an RL agent whose action is a bounded tilt on `band`'s
+  weights (rl-2's residual shape) with this card's cost model as the penalty.
+- **Book and bar.** Long-short thirds on the model's score with the `band` rule and this card's
+  costs. Twin: `band` on raw 7-day funding. Pass: beats the twin pooled with p < 0.10, same sign
+  on 2 of 3 venues, still ahead at `x2`. The held-out year is spent by carry-3 if `band` passes
+  train here; then the only clean test left is forward paper trading.
+
 ## Card (written 2026-11-17, before any new number)
 
 Words used: a *perpetual* ("perp") is a futures contract with no expiry. *Funding* is the fee
