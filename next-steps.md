@@ -6,9 +6,12 @@ Question: why does each tested model fail where it fails, and does a combination
 data only beat `tsmom12`? Card: `research/deep-1.md` (Part A atlas, descriptive; Part B three
 combination rules with a pass bar fixed before any number).
 
-- Done: card.
-- Doing: Part A (rebuild model series, atlas tables `research/results/deep-1-atlas.md`).
-- Next: Part B (`research/results/deep-1.md`, rows in `research/tries.md`), write-up, draft PR.
+- Done: card; Part A (52 series, `research/lib/deep1_models.py` rebuilds them into
+  `<cache_root>/derived/deep-1/`, `research/lib/deep1_atlas.py` writes
+  `research/results/deep-1-atlas.md`; findings in `research/deep-1.md`).
+- Doing: Part B (`research/lib/deep1_combo.py`, `research/results/deep-1.md`, rows in
+  `research/tries.md`).
+- Next: write-up, `ideas.md`, draft PR.
 - `tsmom12` anatomy and tuning are the `trend-tune` lane's, not this one's.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)

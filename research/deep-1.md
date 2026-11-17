@@ -1,8 +1,74 @@
 # deep-1: a failure atlas of the tested models, then one honest combination test
 
-Status: **card only** (2026-11-18). No deep-1 number exists yet. The write-up goes above this
-line when the run is done; the card below is not edited after its commit, only added to under
-"Changes after the card" with a date.
+Status: **Part A done, Part B not run yet** (2026-11-18). The card below is not edited after
+its commit, only added to under "Changes after the card" with a date.
+
+## Part A: where each model fails (written before Part B was run)
+
+Tables: [`results/deep-1-atlas.md`](results/deep-1-atlas.md). 52 return series, every one a
+configuration already in `tries.md`: 35 rebuilt with positions (all reproduce their logged Sharpe;
+three boosting models differ by 0.01-0.02, see "Changes after the card"), 17 read from saved
+equity curves. Nothing was selected. Sharpe = return per unit of risk; a drawdown = the fall from
+a high to the next low.
+
+**The six failure modes that matter**
+
+1. **The trend rule is slow out of a coin top.** Eight of `tsmom12`'s ten deepest drawdowns are
+   Bitcoin and Ether (2013 twice, 2017 twice, 2018-20, 2021 twice, 2024-25); over the ten falls
+   coins cost 166 points, stocks 55. A coin can halve in weeks while its 12-month return is still
+   far above zero after a year in which it rose five-fold. The rules that lose least there are the
+   ones that hold fewer coins when coins are wild (`trend-vol`: 84 points instead of 166; worst
+   loss 26% against 36%) and the cycle clocks (`halving-and`, `ath-and`), which we do not believe.
+   *Mitigation:* size or cap the coin slots by volatility (known: `trend-vol`, the crypto slot
+   size), or a faster exit for coins only (that is the `trend-tune` lane's question).
+2. **Stepping out means missing the rebound.** In the six months after the seven stress windows
+   `tsmom12` made 0, -1, +31, 0, 0, +5 and +1%; equal weight made +20, +25, +53, +30, +11, +61 and
+   +29%. Every trend clone, every macro gate and the rl-2 agents share this. Table 2b takes the
+   gap apart: when at most a third of the book is in trend (13% of days, nine tenths of them in
+   2000-09 and 2022-25) the empty slots lost 4% a year, so being out was right. When more of the
+   book is in trend, the slots `tsmom12` leaves empty earned 16 to 23% a year, most of it coins
+   coming back from a winter while stocks were fine. So an asset out of trend was bad news only
+   when most of the book was out of trend with it. *Mitigation idea:* a breadth gate (keep an
+   out-of-trend asset unless the book is broadly out of trend), or a faster way back in
+   (`sma200` and `ensemble-tsmom` earn +1% a year in the "off" state where `tsmom12` loses 2%).
+   Found after looking: it needs its own card and out-of-universe test before anyone believes it.
+3. **The always-invested rules have one long bear market on a narrow book, and 2022.** Equal
+   weight, `inverse-vol`, `kelly-shrunk`, `vol-target`, `hawkes`, `hmm` and `logit` all have
+   the same worst drawdown: 2000-2002, 57-69%, on a book of SPY and QQQ. Since 2003 several are
+   ahead of `tsmom12` (`kelly` 1.36, `inverse-vol` 1.32, `vol-target` 1.28 against 1.20). The
+   bond-heavy ones then lost 26-28% in the 2022 rate shock, when bonds fell with stocks. *Mitigation:* a trend
+   or volatility test on top, which is what `trend-vol` is; it is ahead of `tsmom12` in 70% of
+   three-year windows and behind by 0.25 or more in 1%.
+4. **The boosting models lost by not holding Bitcoin, and by sitting through the dot-com bust.**
+   They held about half of `tsmom12`'s Bitcoin in 2013-2021 (8% of the book against 15%): Bitcoin
+   gave `gbm` 2.6 points a year against `tsmom12`'s 6.9, which is most of the 5.7-point gap.
+   For four of the six the worst three-year window starts in October 2012: Bitcoin joined the
+   book in 2013 with no history a model could have learned from. In the dot-com bust they were
+   about half invested (`tsmom12`: a quarter), having been trained on the S&P of 1962-99, where
+   trend did not pay. In falls they were often better than `tsmom12` (covid -6 to
+   -11% against -24%), and in 2022-25 four of them are ahead. *Mitigation:* none cheap; rl-2
+   already tried "only tilt the trend rule" and got the trend rule back.
+5. **The free RL agents are a geared coin position.** Four of the five take 1.6 to 2.0 times `tsmom12`'s
+   losing weeks and 1.6 to 1.9 times its winning weeks, and fell 60-87% in the coin winters.
+   *Mitigation:* a coin cap, which rl-2 had; with it the agent copies `tsmom12` (correlation 1.00).
+6. **Gates that leave early pay for the recession that did not come.** The macro gates beat
+   `tsmom12` in 2000-09 (`curve-and` 0.57, `spread-and` 0.54, `hike-and` 0.52 against 0.19) and
+   lose 2022-25 (`curve-and` -0.07, `walcl-and` -0.12, `real-and` 0.20 against 0.90): out of
+   the market through the 2023-24 rise. *Mitigation:* none; each gate rests on three to five
+   episodes.
+
+**What the atlas says about combining.** Every six-asset rule shares `tsmom12`'s bad weeks: in
+the weeks `tsmom12` lost, the correlations of the rules in Part B's pool run from 0.62 to 0.96
+(only the 60/40 benchmark is lower, 0.44), and no rule keeps clearly more of the good weeks than
+of the bad ones (the best, `halving-and` and `curve-and`: 0.08 more of `tsmom12`'s average good
+week than of its average bad week). The models are the
+same six assets held at different sizes. The two SPY-only timing rules are the exception
+(correlations 0.05 and 0.21) and are too small to matter (2-6% a year). Part B is the test of
+whether past data can pick a useful mix anyway.
+
+**How sure.** These are descriptions of one history. Failure modes 1, 3, 4 and 5 are arithmetic
+(which asset lost what, when). Mode 2's breadth reading is the weakest: the "off" state is two
+episodes (2000-03 and 2008-09) plus 2022, and it was seen after looking.
 
 ---
 
@@ -174,4 +240,11 @@ book equal to `tsmom12`: the pool holds no complement at all.
 
 ### Changes after the card
 
-(none yet)
+- 2026-11-18, Part A. Re-scores against the logged Sharpe: 32 of 35 agree to two decimals. `gbm`
+  0.80 (logged 0.81), `gbm-wk` 0.81 (0.82), `gbm-pay` 0.70 (0.68): scikit-learn's boosting does
+  not reproduce to the last digit across runs or versions. Nothing rests on those digits.
+- 2026-11-18, Part A. Two tables beyond the card's list were added to the atlas after the first
+  tables were seen: 2b (what the slots `tsmom12` leaves empty earned, by trend state) and the
+  "gain share minus loss share" column of table 5. Both are descriptions; neither feeds Part B.
+- 2026-11-18. The ideas-1 series are the primary `-and` variant of six cards plus the two
+  fear-and-greed rules; card 10 (`trend3`) runs on three assets and is left out.
