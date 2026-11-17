@@ -171,6 +171,25 @@ descriptive row, not a backtest, not selectable), 98 rows; the six combined-fore
 likewise (`screen`); the four planted inputs as `control`. Table: `results/slow-1.md`. Script
 `lib/slow1_ic.py`; derived arrays under `<cache_root>/derived/slow-1/`. No downloads.
 
+## Disclosures
+
+- 2026-11-18, before the logged run. Reproduction at `h` = 1 (`slow1_ic.py --check`): the
+  script's weekly IC, rank IC, IC held, walk-forward (per, pooled, trend) and gain match
+  `results/info-1.md` for all 23 inputs (largest difference 0.0005, the rounding), and its weekly
+  IC matches `results/rl-3-inputs.md` for 25 of the 26 rl-3 inputs. The 26th, `halving`, differs
+  by design: rl-3 pooled it over all six assets with zeros off coins, this card measures it on
+  coins only.
+- Details the card left open, fixed in the code before the run: a combined-forecast input with
+  fewer than 104 finite training cells in a block is 0 in that block; the ridge penalty is the
+  number of training rows for every input, read literally, so an input with partial coverage is
+  shrunk by more than half; `halving` off coins is missing, and rl-3's price inputs are missing
+  where the asset is not eligible (so a rotation cannot move a placeholder zero into a live
+  cell). The family counts only walk-forward ICs that exist (an input too short for a
+  walk-forward block, like `dvol_rv` at 1 week, drops out), so it may be smaller than 196.
+- A timing print at `h` = 1 (20 rotations of three inputs, three combined-forecast rotations;
+  seconds only, no statistic) was run to size the job. No `h` = 4 or 13 number had been computed
+  when the run was launched.
+
 ## Status
 
-Card written. Nothing computed yet.
+Card and code written, weekly reproduction passed. The slow-horizon run has not started.
