@@ -49,11 +49,51 @@ def tables(rho: float) -> dict[str, RTable]:
     return out
 
 
+def warm_weights(tabs: dict[str, RTable], year: int) -> np.ndarray:
+    """10 x the `ols3` coefficients on [up_12m, log_vol, peek], fitted on the Fridays PPO trains
+    on in this fold (before its validation slice), in the trainer's own input scaling."""
+    used = {k: s for k in R.SMALL if (s := R.split(tabs[k], year, k != "gspc")) is not None}
+    sc = R.fit_scaler([(tabs[k].t, s.hi) for k, s in used.items()], macro=True)
+    xs, ys = [], []
+    for k, s in used.items():
+        t = tabs[k].t
+        z = rl3_train.rl3_plant.week_z(t)[: s.hi]
+        ok = np.isfinite(z) & t.elig[: s.hi]
+        xs.append(sc.asset(t.X[: s.hi])[ok][:, KEEP])
+        ys.append(z[ok])
+    x, y = np.concatenate(xs), np.concatenate(ys)
+    beta = np.linalg.lstsq(np.column_stack([np.ones(len(y)), x]), y, rcond=None)[0]
+    return np.asarray(rl4_sup.C * beta[1:])
+
+
 def install() -> None:
     """Point rl-3's trainer and evaluator at this run's configs, tables and model folder."""
     rl3_train.config = config  # type: ignore[assignment]
     rl3_train.tables = tables
     rl3_train.MODELS = MODELS
+    plain_fold, plain_net = R.train_fold, R.new_net
+
+    def train_fold(v, tabs, year, seed, dev):  # type: ignore[no-untyped-def]
+        """`ppo3-warm` only: the linear score starts at the forecaster instead of at zero."""
+        if not v.name.startswith("ppo3-warm"):
+            return plain_fold(v, tabs, year, seed, dev)
+        import torch
+
+        w0 = torch.as_tensor(warm_weights(tabs, year), dtype=torch.float32)
+
+        def new_net(hidden: int, a_dim: int = R.A_DIM):  # type: ignore[no-untyped-def]
+            net = plain_net(hidden, a_dim)
+            with torch.no_grad():
+                net.score.weight[0, KEEP] = w0
+            return net
+
+        R.new_net = new_net
+        try:
+            return plain_fold(v, tabs, year, seed, dev)
+        finally:
+            R.new_net = plain_net
+
+    R.train_fold = train_fold
 
 
 def main() -> None:

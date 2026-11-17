@@ -135,3 +135,102 @@ if two are within 0.01, the one with fewer inputs, then the one with no tuned pe
 - Code: `lib/rl4_sup.py` (forecasters and the gate), `lib/rl4_train.py` (the 3-input tables for
   rl-3's trainer), report in `results/rl-4.md`. A plumbing check may run before the logged run;
   it prints shapes only, no performance number.
+
+## Card, part 2: real data (written 2026-11-17 ~23:10 UTC, before any real-data number)
+
+Written after the forecasters' gate results (`results/rl-4.md`: `lasso28` is the only forecaster
+that passes) and while `ppo3` was still training. No number on the perp data has been computed
+in this run; the code (`lib/rl4_perp.py`) was written and tested on made-up data only.
+
+### What was already seen (disclosure)
+
+On this same data: carry-2 (`research/carry-2.md`): `ls-funding` pooled Sharpe 0.69 (p 0.04) and
+`ls-premium` 0.44 over 2021-2025 at 10 bps, both near zero at 30 bps. So two of the four inputs
+are known to carry something here, in the direction "low funding, low premium". On short-1's 30
+large Binance coins (not in this part's sets): a long-short low-volatility book lost (-0.43) and
+a long-short 12-month trend book made 0.24. Momentum and volatility have not been scored on
+these sets. The held-out year has never been loaded for any of this.
+
+### Data and book (carry-2's, unchanged)
+
+carry-2's three sets from its cached daily panels (`<cache_root>/derived/carry-2/`): Binance
+USDT perpetuals outside short-1's 30 (delisted included), Bybit, Hyperliquid. carry-2's
+tradable rule (funding paid in the last two days, 365 days of price history, 30-day median volume
+of 5M USD, at least 10 coins), weekly decisions at Friday's close, 10 bps a side plus every
+funding event, each venue ranked on its own, pooled = equal capital per venue. **Train only:
+decisions to 2025-11-09. The held-out year (2025-11-11 .. 2026-11-09) is not spent in this run,
+whatever the result** (another lane may spend it on `ls-funding`).
+
+### Inputs (four, fixed now) and target
+
+All known at Friday's close, per coin:
+
+1. `funding`: mean funding rate of the last 7 days (carry-2's signal, unsigned).
+2. `premium`: mean perp premium over spot of the last 7 days (carry-2's signal, unsigned).
+3. `mom_12_1`: the log return from 365 days ago to 30 days ago ("12-1 momentum": the last
+   month is left out because it tends to reverse).
+4. `vol`: the log of the volatility of daily returns over the last 30 days.
+
+Each input is turned into its rank among that venue's tradable coins that Friday, scaled to
+-0.5 .. +0.5; a missing input sits in the middle (0). **Target:** the coming week's total return
+of a long position (price change minus the funding it pays), also as a rank among the same
+coins. Ranks make every venue-week count the same and keep one wild coin from deciding the fit.
+
+### Step 1: a cheap screen before any training
+
+For each input: its weekly cross-sectional IC (Spearman rank correlation with the coming week's
+total return, across the coins of one venue on one Friday; mean over all venue-weeks, with a
+t-statistic), per venue and pooled. **Walk-forward IC:** the same, but the input's sign is set
+at each yearly fit from the weeks before it, and only weeks after the first fit count; this is
+what a learner could have had.
+
+**Screen (fixed now):** training goes ahead only if at least one input has a pooled walk-forward
+IC of at least **0.04 with t >= 2**. The brief said "about 0.05"; 0.04 is used because this book
+holds 50-200 coins a week instead of six, and a signal's value grows with the square root of the
+number of independent bets, so 0.04 here is worth more than 0.10 on the six assets. If no input
+passes, this run stops here and says so.
+
+### Step 2: the learner (only if the screen passes)
+
+- **`ls-ml`:** the best passing learner of part 1, `lasso28`'s method: lasso with the penalty
+  chosen by purged CV (same grid, same 14-day gap), on the four ranked inputs, target scaled to
+  unit spread so the penalty grid means the same as in part 1. One model for all venues.
+  Refitted on the first Friday of each year 2021-2025 on every venue-week whose target week ended
+  at least 7 days earlier; the first model is the first with 1,000 rows (protocol). Each Friday
+  each venue goes long the top third of its coins by forecast and short the bottom third (+0.5
+  and -0.5 of equity: carry-2's book). If the lasso keeps no input, the book holds nothing.
+- **Baselines on the same days:** `ls-funding` (carry-2's book: the single hand-picked input),
+  `ls-equal` (the four ranks averaged with textbook signs, no fitting: low funding, low premium,
+  high momentum, low volatility) and the `tsmom12` twin (long-only, 30 bps, no funding, as
+  carry-2).
+- **RL, only if an RL variant passes part 1's gate (`ppo3`, or the follow-up `ppo3-warm`):**
+  `ls-ppo`, a PPO policy on the same four ranked inputs and the same book. A linear score per
+  coin (four weights, shared by all coins and venues); the book is the top and bottom third by
+  score; the reward is the book's weekly return after 10 bps on every change of target weight
+  and after funding. It starts from zero if `ppo3` passed, from the lasso's weights if only
+  `ppo3-warm` did. Same yearly folds and embargo; the last quarter of each fold's weeks is the
+  validation slice (two weeks purged before it); at most 60 updates, the best of 13 checkpoints
+  on validation is kept (update 0 included); ten seeds, the ensemble averages their scores.
+  Reported numbers come from the same replay as every other book. If no RL variant passes the
+  gate, no RL is run on real data.
+
+### Bars for `ls-ml` (and `ls-ppo`), pooled, 10 bps + funding (fixed now)
+
+1. Sharpe above 0 with a one-sided stationary-bootstrap p < 0.10 (carry-2's bar 1).
+2. **Beats `ls-funding`** on the same days: Sharpe difference above 0, paired bootstrap
+   p < 0.10. This is the point: the learner has to add to the best single input, which it is
+   handed.
+3. Not behind `ls-equal`: a learner that only matches an unfitted average is not worth having.
+4. Sharpe above 0 on Binance-outside-30 and on at least one of Bybit and Hyperliquid (the latter
+   only with a year of decisions).
+5. The 50/50 blend with the `tsmom12` twin beats the twin with p < 0.10.
+
+Reported, not a bar: the same at 30 bps (carry-2 showed the carry does not survive it), each
+year, turnover, funding collected, the models' weights, the forecast's own weekly IC out of
+sample. A pass makes `ls-ml` a candidate for a later card that may spend the held-out year; this
+run does not. Passing 1 and 4 but not 2 means "the learner rebuilds the carry and adds nothing".
+
+### Tries
+
+Idea `rl-4-perp-<set>`: `ls-ml` (and `ls-ppo`) kind `variant`, baselines `baseline`, 30 bps
+`robustness`. The IC table writes no row (no backtest), like `rl-3-inputs`.
