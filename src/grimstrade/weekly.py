@@ -20,12 +20,14 @@ PLAIN: dict[str, str] = {
     "buy_hold_btc": "Hold Bitcoin",
     "buy_hold_spy": "Hold the US stock market (SPY)",
     "sixty_forty": "60% stocks, 40% bonds",
-    "equal_weight": "Equal parts of all six",
+    "equal_weight": "Equal parts of all six (also the Bold preset)",
     "ts_momentum": "Trend following: hold what rose over the last year",
     "xs_momentum": "Winners: hold the best risers of the last 6 months",
     "vol_target_spy": "Stocks, but less of them when markets are wild",
     "risk_parity": "Balanced risk: less of the wild assets, more of the calm",
     "crypto_mean_reversion": "Buy sharp crypto dips in an uptrend",
+    "preset_careful": "Careful preset: trend, calmed when wild, 5% per coin",
+    "preset_middle": "Middle preset: trend, 10% per coin",
 }
 
 
