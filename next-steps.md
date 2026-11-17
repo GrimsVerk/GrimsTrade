@@ -1,5 +1,11 @@
 # Next steps
 
+## Slow 1 (in progress 2026-11-18, branch `slow-1` -> `carry-2`)
+
+Do info-1's 23 inputs and rl-3's real inputs forecast 4-week and 13-week returns of the six
+assets, where they failed at 1 week? Card `research/slow-1.md` (committed before any number).
+Doing: the IC table (`research/lib/slow1_ic.py` -> `research/results/slow-1.md`).
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
