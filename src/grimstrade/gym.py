@@ -3,6 +3,8 @@
 An order decided at time T fills at the open of each asset's first bar that opens after T, at
 open * (1 +/- slippage), plus a fee on the traded value. Long-only, no leverage, fractional units.
 The same replay serves the live ledger and backtests, so they can't disagree on the rules.
+Distributions are paid as cash at the open of the ex-date, on the units held before that open
+(DECISIONS, audit G4).
 """
 
 from __future__ import annotations
@@ -12,7 +14,16 @@ from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime, time, timedelta
 
-from grimstrade.data import CRYPTO, ETF, UNIVERSE, History, close_time, open_time, visible_history
+from grimstrade.data import (
+    CRYPTO,
+    ETF,
+    UNIVERSE,
+    Dividends,
+    History,
+    close_time,
+    open_time,
+    visible_history,
+)
 
 Weights = dict[str, float]
 Strategy = Callable[[History], tuple[Weights, str]]
@@ -57,6 +68,7 @@ class Result:
     fills: list[Fill] = field(default_factory=list)
     equity: list[tuple[date, float]] = field(default_factory=list)  # end of each UTC day
     start_cash: float = START_CASH  # what the first day's return is measured from
+    income: list[tuple[datetime, str, float]] = field(default_factory=list)  # dividends paid
 
 
 def validate(weights: Mapping[str, float]) -> None:
@@ -71,7 +83,9 @@ def validate(weights: Mapping[str, float]) -> None:
         raise ValueError("no leverage: weights must sum to <= 1")
 
 
-_CLOSE, _OPEN, _DECIDE = 0, 1, 2  # order of events that share a timestamp
+# Order of events that share a timestamp. A dividend is paid at its ex-date's open before that
+# open's fills: a unit sold at that open still gets it, a unit bought there does not.
+_CLOSE, _DIVIDEND, _OPEN, _DECIDE = 0, 1, 2, 3
 
 
 def simulate(
@@ -80,6 +94,7 @@ def simulate(
     start_cash: float = START_CASH,
     costs: Mapping[str, Costs] = COSTS,
     band: float = BAND,
+    dividends: Dividends | None = None,
 ) -> Result:
     events: list[tuple[datetime, int, str, float, int]] = []
     for sym, bars in history.items():
@@ -87,6 +102,8 @@ def simulate(
         for b in bars:
             events.append((open_time(cls, b.date), _OPEN, sym, b.open, 0))
             events.append((close_time(cls, b.date), _CLOSE, sym, b.close, 0))
+        for dv in (dividends or {}).get(sym, []):
+            events.append((open_time(cls, dv.ex_date), _DIVIDEND, sym, dv.amount, 0))
     decs = sorted(decisions, key=lambda d: d.time)
     for i, d in enumerate(decs):
         validate(d.weights)
@@ -119,6 +136,12 @@ def simulate(
             started = True
             w = decs[group[-1][4]].weights
             pending = {s: w.get(s, 0.0) for s in history}
+            continue
+        if kind == _DIVIDEND:
+            for _, _, sym, amount, _ in group:
+                if (paid := res.positions[sym] * amount) > 0:
+                    res.cash += paid
+                    res.income.append((t, sym, paid))
             continue
         for _, _, sym, px, _ in group:
             price[sym] = px
