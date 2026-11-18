@@ -388,6 +388,25 @@ them.
   replay worlds are run, seeds 101 to 140, pass if at most one replay score is at or above**
   (p at most 2/41). Decided by the lane at the timing test, before any replay world exists;
   the lead may still choose 20 (none at or above) before the first replay runs.
+- **Lead's decisions, card note 2026-11-18** (lead's message ~20:05 UTC by the lead's clock,
+  written here 19:15 UTC by this machine's clock; after the first control runs, before any
+  replay world or real-data search exists):
+  1. **Null fix, option (b):** the control worlds (noise and planted) are rebuilt with **zero
+     mean simple return** per asset: after the redraw, each asset's open-to-close log returns
+     are shifted by `log(mean(exp(overnight + open-to-close)))`, so the average simple daily
+     return (close to close) is exactly 0 and a holder earns no premium; the plant is added on
+     top as before. Cash stays the controls' benchmark; each procedure is also shown against
+     equal weight in the same world (bootstrap p), as a secondary column, not the bar. All six
+     controls and the three ceilings are rerun. If the noise control still "finds" something
+     in more than 1 of 3 worlds, the lane stops and writes it up; no replays.
+  2. **Replays: 40 worlds, seeds 101-140; a procedure passes bar 3 only if at most one replay
+     score is at or above its real score.**
+  3. If the controls pass: the 40 replays, then the one real search on train only, the bar
+     applied, every row logged, the verdict written up. Held-out year untouched.
+  The decision names the control worlds only: **the replay worlds stay as written above**
+  (block bootstrap, zero total log return). Their statistic is relative to `tsmom12` in the
+  same world, so the holding premium mostly cancels, and what is left rewards rules that hold
+  more high-volatility assets than `tsmom12`: it can only make bar 3 harsher.
 
 ### Controls (run before the real search; kind `control`, idea `evo-1-control`)
 
