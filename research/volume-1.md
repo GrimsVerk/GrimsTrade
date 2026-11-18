@@ -135,7 +135,8 @@ selectable). Table in `results/volume-1.md`. Nothing is downloaded: the bar cach
 
 **Done:** card; `lib/volume1_ic.py` (features, family chance level, table; reuses
 `info1_ic.py` and `info1_features.asof`); `tests/test_volume1_asof.py`; table
-`results/volume-1.md`; six `screen` rows in `tries.md`; this write-up. Held-out year untouched.
+`results/volume-1.md`; six `screen` rows in `tries.md`; this write-up; draft PR #41 (`volume-1` ->
+`carry-2`), not merged. Held-out year untouched.
 
 **Doing:** nothing half-finished. No process left running.
 

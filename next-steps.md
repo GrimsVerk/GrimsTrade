@@ -1,6 +1,6 @@
 # Next steps
 
-## Volume 1 (done 2026-11-18, branch `volume-1`, draft PR -> `carry-2`)
+## Volume 1 (done 2026-11-18, branch `volume-1`, draft PR #41 -> `carry-2`)
 
 The six assets' own trading volume as a weekly input (4/13-week volume change, abnormal-volume
 z-score, volume-weighted trend, up/down volume, price-volume divergence), screened for weekly
