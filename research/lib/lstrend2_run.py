@@ -299,6 +299,7 @@ class Blend:
         self.reset_cost: dict[date, float] = {}
         self.reset_traded: dict[date, float] = {}
         self.start = LAST_DAY
+        self.held_split = 0  # months the split was kept because a sleeve's vol was 0
 
 
 def blend(s1: Sleeve, s2: Sleeve, cost: float) -> Blend:
@@ -311,12 +312,16 @@ def blend(s1: Sleeve, s2: Sleeve, cost: float) -> Blend:
         m = (m[0] + m[1] // 12, m[1] % 12 + 1)
     out.start = date(m[0], m[1], 1)
     v1, v2 = 0.0, 0.0  # sleeve shares of the book (start in cash)
+    a = 0.5
     for d in cal_days(out.start, LAST_DAY):
         today_cost = 0.0
         if d.day == 1:
             e = d - timedelta(days=1)
-            w1, w2 = 1 / s1.sigma(e), 1 / s2.sigma(e)
-            a = w1 / (w1 + w2)
+            sg1, sg2 = s1.sigma(e), s2.sigma(e)
+            if sg1 > 0 and sg2 > 0:  # else keep the previous split (a sleeve all in cash)
+                a = (1 / sg1) / (1 / sg1 + 1 / sg2)
+            else:
+                out.held_split += 1
             t1, t2 = abs(a - v1), abs(1 - a - v2)
             today_cost = cost * (t1 * s1.gross(d) + t2 * s2.gross(d))
             out.reset_traded[d] = t1 * s1.gross(d) + t2 * s2.gross(d)
@@ -357,7 +362,8 @@ def tsmom12_sleeve() -> tuple[Sleeve, dict[date, float], dict[date, float], harn
         i = bisect.bisect_right(dec_days, d) - 1
         return dec_expo[i] if i >= 0 else 0.0
 
-    return Sleeve(ex, dd[0], gross, gross), rfd, drag, run
+    start = next(d for d in dd if gross(d) > 0)  # first day invested (cash before)
+    return Sleeve(ex, start, gross, gross), rfd, drag, run
 
 
 def wide_sleeve(bk: Book) -> Sleeve:
@@ -570,6 +576,7 @@ def part_a(root: Path) -> None:
         else ("a risk choice, not an edge" if rule_b else "neither an edge nor crash insurance")
     )
     out += ["", f"## Verdict (card's wording): **{verdict}**.", ""]
+    out.append(f"Months the split was kept (a sleeve's trailing vol 0): {bl.held_split}.")
     out.append(f"Rows logged this run: {'6' if logged else '0 (already logged)'}.")
     text = "\n".join(out) + "\n"
     (harness.RESEARCH / "results" / "ls-trend-2-blend.md").write_text(text)

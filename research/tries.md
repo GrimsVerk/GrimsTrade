@@ -1055,3 +1055,9 @@ Never edit or delete a row.
 | 2026-11-18 22:45 | ls-trend-1 | wide-LO@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.24 | +42.4% | 27.7% | 6.57 |
 | 2026-11-18 22:45 | ls-trend-1 | narrow-LS@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.58 | +500.2% | 47.9% | 8.85 |
 | 2026-11-18 22:45 | ls-trend-1 | narrow-LO@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.93 | +1618.7% | 38.1% | 5.24 |
+| 2026-11-18 22:56 | ls-trend-2 | blend-er@L07 | variant | train | 2007-04-01 | 2025-10-31 | 0.97 | +158.0% | 8.8% | 3.26 |
+| 2026-11-18 22:56 | ls-trend-2 | blend-er@L | robustness | train | 2010-02-01 | 2025-10-31 | 1.13 | +136.0% | 7.6% | 3.26 |
+| 2026-11-18 22:56 | ls-trend-2 | blend-er@F | robustness | train | 1995-03-01 | 2025-10-31 | 0.79 | +542.5% | 19.7% | 3.26 |
+| 2026-11-18 22:56 | ls-trend-2 | blend-er-cost2@L07 | robustness | train | 2007-04-01 | 2025-10-31 | 0.83 | +124.0% | 9.0% | 3.26 |
+| 2026-11-18 22:56 | ls-trend-2 | tsmom12-split-bills@L07 | baseline | train | 2007-04-01 | 2025-10-31 | 1.26 | +130.9% | 5.6% | 0.71 |
+| 2026-11-18 22:56 | ls-trend-2 | wide-LS-g1@L07 | replication | train | 2007-04-01 | 2025-10-31 | 0.14 | +11.8% | 16.2% | 2.82 |
