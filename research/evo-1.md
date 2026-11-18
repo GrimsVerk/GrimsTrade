@@ -19,8 +19,10 @@ Not run yet. This file holds only the card until the runs are done.
 
 Built and tested: `research/lib/evo_stats.py` (Reality Check, SPA, effective number, deflated
 best; rules arrive in chunks), `research/lib/evo_gp.py` (the grammar, evaluation, the genetic
-operators, one GP run), `research/lib/evo_smoke.py` (a toy world). Not built yet: the inputs
-from real bars, the fast scorer, the walk-forward, the card's control worlds.
+operators, one GP run), `research/lib/evo_smoke.py` (a toy world), `research/lib/evo_feat.py`
+(the 72 inputs per Friday, tested on a synthetic panel only: equal to the harness `tsmom12` and
+`sma200`, blind to later bars). Not built yet: the fast scorer, the walk-forward, the card's
+control and replay worlds. No evo-1 code has been run on real bars.
 
 **The toy smoke is not one of the card's controls.** The toy world has no prices: the 72 inputs
 are random numbers per day and asset, 6 assets, 3,000 days to search and 3,000 unseen days;
@@ -76,6 +78,10 @@ Details the card left open, fixed in code before any real-data run (2026-11-18):
   constant 70% of the time, else `volcap`; a comparison is `coin` 10%, input against input 20%,
   input against a constant 70%; a subtree mutation inserts a freely grown subtree of depth 1 to
   3. `volcap` with an undefined 30-day volatility holds nothing.
+- Inputs: realised volatility is the root mean square of the last `b(h)` daily log returns (zero
+  mean), annualised on the asset's own clock; `volcap`'s 30-day volatility is that number for
+  h = 30; ranks give ties the middle rank; cross-asset inputs use the eligible assets for which
+  the number is defined.
 - Reality Check and SPA: a resample that ties the observed statistic counts as reaching it; a
   rule identical to the benchmark on every resample is left out of the SPA (its standard error
   is zero).

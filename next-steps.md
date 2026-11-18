@@ -1,6 +1,6 @@
 # Next steps
 
-## Evo 1 (PAUSED 2026-11-18 ~11:15 UTC after burst 1, branch `evo-1`, draft PR #44 -> `carry-2`)
+## Evo 1 (PAUSED 2026-11-18 ~11:20 UTC after burst 1, branch `evo-1`, draft PR #44 -> `carry-2`)
 
 Question: can a genetic-programming search over trading rules find anything that beats `tsmom12`
 once it is charged for its luck (walk-forward selection, Reality Check / SPA over every rule
@@ -10,7 +10,8 @@ tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protoc
 - Done: card and protocol section (before any code or number). Burst 1: `research/lib/evo_stats.py`
   (Reality Check, SPA, effective number, deflated best, chunked), `research/lib/evo_gp.py`
   (grammar, evaluation, operators, one GP run), `research/lib/evo_smoke.py` (toy world, no market
-  data), tests `tests/test_evo_stats.py`, `tests/test_evo_gp.py`. 12 toy runs logged as
+  data), `research/lib/evo_feat.py` (the 72 inputs per Friday from `harness.Panel.view`; no
+  scorer yet), tests `tests/test_evo_stats.py`, `tests/test_evo_gp.py`, `tests/test_evo_feat.py`. 12 toy runs logged as
   `control` rows `evo-1-smoke` in `research/tries.md`; table and reading in `research/evo-1.md`
   "Build notes, burst 1".
 - Found in the toy: the SPA is right over a fixed list of rules (p 0.23-0.55 in noise) but
@@ -26,13 +27,15 @@ tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protoc
 - Doing: nothing. No process running. No real price read by any evo-1 code. Held-out year
   untouched.
 - Next, in this order (all specified on the card):
-  1. `research/lib/evo_feat.py`: the 72 inputs per Friday from `harness.Panel.view` (causal) as
-     the `Feats` arrays `evo_gp.evaluate` takes (`(name, lookback)` -> decisions x assets, plus
-     `"coin"`, `"vol30"`), the eligibility mask, and the fast scorer (sparse matrix from Friday
-     weights to daily returns, costs on the fill day). Add to `tests/`: `evo_gp.TSMOM12` weights
-     equal the harness `tsmom12` weights exactly; scorer within a stated tolerance of
-     `gym.simulate` on fixed rules; inputs unchanged when later bars are scrambled; a fit
-     unchanged when bars after its date are scrambled.
+  1. The fast scorer, in `research/lib/evo_feat.py` (sparse matrix from Friday weights to daily
+     returns, each asset's fill at its next open, overnight and open-to-close parts split on the
+     fill day, costs on the fill day), with a test that it stays within a stated tolerance of
+     `gym.simulate` on fixed rules, and a test that a fit is unchanged when bars after its date
+     are scrambled. The inputs are done: `evo_feat.friday_feats(panel, fridays)` gives the 72
+     inputs, `"coin"`, `"vol30"` and the eligibility mask; `tests/test_evo_feat.py` shows
+     `mom(365) > 0` equals the harness `tsmom12` and `gap(290) > 0` equals `sma200` exactly on a
+     synthetic panel, and that inputs do not see later bars. It loops over views in Python:
+     time it on the real panel (1962-2025 is ~3,300 Fridays) before the timing test.
   2. `evo_wf.py` (15 fits, 5 seeds each, the three selection rules, candidates = 20 best
      behaviourally different rules per run) and `evo_world.py` (shuffled zero-drift worlds from
      real train bars, planted rule `H`). Timing test with no result looked at (budget escape on
