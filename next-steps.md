@@ -1,13 +1,32 @@
 # Next steps
 
-## Wide 5 (doing 2026-11-18, branch `wide-5`, draft PR #71 -> `wide-4`)
+## Wide 5 (done 2026-11-18, branch `wide-5`, draft PR #71 -> `wide-4`)
 
-Two new mechanisms (W9 `dealer-backlog`, queueing; W10 `extension-dose`, control theory) added
-to `research/wide-1.md` with a written choice rule, cards pushed before any number; code and
-tests pushed before the logged runs. Doing: the two logged train runs. Write-up will be
-`research/wide-5.md`. Data (git-ignored): the auction file with dealer fields in
-`<cache_root>/downloads/wide-5/treasury-auctions/`, parsed to `derived/wide-5/auctions.csv` by
-`uv run python -I research/lib/wide5_auctions.py`.
+Two new mechanisms from queueing and control theory, picked by a written six-point choice
+rule; choice note, cards, code and the step 3 questions were each pushed before any number.
+**Both fail train; held-out year unspent.** Write-up `research/wide-5.md`; tables
+`research/results/dealer-backlog.md`, `extension-dose.md`, `wide-5-deeper.md`; 6 rows in
+`tries.md`.
+
+- `dealer-backlog` (W9): idle cash into TLT for five sessions after 20/30-year auctions with
+  an above-normal primary-dealer share: 1.02 vs 1.05 (-0.026, p 0.95). TLT after such
+  auctions -13 bps vs +6 after the others; slope t -1.0 (wrong sign for the recovery story).
+- `extension-dose` (W10): month-end TLT window only in high index-extension months: 1.06 vs
+  1.05 (+0.013, p 0.19, 2 of 4 eras). Slope t 0.8; high-low gap +46 bps before 2014, -3
+  after; the whole book gain is 2008-09. Not consistent with an index-buying flow.
+
+Count: 56 mechanisms (46 listed + W1-W10), 14 tested, none passed. The next test is read at
+p < 0.10 / 56 = 0.00179 (lower if more are added first).
+
+- Doing: nothing. No process running.
+- Next: (1) Treasury forced flows are now spent (four tested with doses or regimes, none
+  supported); do not add another. (2) If a published calendar effect is wanted, W3 `lunar` is
+  the only listed entry with post-sample years (2007-2025): an event study gate as ann-1 did,
+  no strategy unless t >= 2 after publication. (3) Any idle-cash-into-TLT overlay should
+  report its result without 2008-09 first: that is where these +0.01s come from.
+- Data added (git-ignored cache): the auction file with dealer and competitive awards
+  (`<cache_root>/downloads/wide-5/treasury-auctions/`), parsed to
+  `derived/wide-5/auctions.csv` by `uv run python -I research/lib/wide5_auctions.py`.
 
 ## Wide 4 (done 2026-11-18, branch `wide-4`, draft PR #57 -> `wide-3`)
 
