@@ -1,6 +1,6 @@
 # Next steps
 
-## Evo 2 (STOPPED 2026-11-18 ~19:50 UTC: gate failed; recommend closing the evo line, branch `evo-2`, draft PR -> `evo-1`)
+## Evo 2 (STOPPED 2026-11-18 ~19:50 UTC: gate failed; recommend closing the evo line, branch `evo-2`, draft PR #58 -> `evo-1`)
 
 Redesign of evo-1 after its planted control failed. Card: `research/cards/evo-2.md` (committed
 before any evo-2 number); reading and verdict: `research/evo-2.md`; tables:
