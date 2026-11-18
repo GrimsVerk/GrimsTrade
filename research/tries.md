@@ -1002,3 +1002,6 @@ Never edit or delete a row.
 | 2026-11-18 19:28 | tax-drain | drain-ttl | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +16177.2% | 36.5% | 3.02 |
 | 2026-11-18 19:28 | tax-drain | drain@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +212.7% | 17.0% | 5.52 |
 | 2026-11-18 19:28 | tax-drain | drain@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4188.6% | 26.7% | 3.41 |
+| 2026-11-18 19:39 | coupon-dose | dose | variant | train | 1994-02-01 | 2025-11-09 | 1.04 | +17793.6% | 36.3% | 6.34 |
+| 2026-11-18 19:39 | coupon-dose | dose-neg | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +17447.2% | 36.8% | 5.86 |
+| 2026-11-18 19:39 | coupon-dose | dose@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.57 | +209.4% | 18.5% | 6.89 |
