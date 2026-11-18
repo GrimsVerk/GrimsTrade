@@ -32,8 +32,9 @@ not a finding, and needs no held-out year.
 **What a new idea now has to clear.** On the primary test, against `tsmom12`, with today's
 947 selectable tries counted as 96 independent ones (rho 0.9): z >= 4.2, about **+0.27 Sharpe**
 for a rule close to `tsmom12` (SE 0.065) and +0.50 for a far one (SE 0.12). With all 947 as
-independent: +0.32 / +0.59. Nothing the project has seen comes near; the largest edge on a
-like-for-like test was +0.15 (`halving-and`).
+independent: +0.32 / +0.59. Nothing the project has seen comes near; the largest edges over
+`tsmom12` on the primary test were +0.18 (`fomc-cycle`, reversed after publication) and +0.15
+(`halving-and`).
 
 **Found on the way: the live scoreboard undercounts N.** `grimstrade.ledger` reads tries from
 `main` and `research-*` branches only (`_RESEARCH_REFS`). Lanes since 2026-11-13 are named
