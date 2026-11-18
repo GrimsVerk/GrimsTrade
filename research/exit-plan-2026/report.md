@@ -62,9 +62,11 @@ What the evidence says, in short:
   200-day average (second close below; 6.3% below its 6 Oct high), Nasdaq 2.9% below (11.5% off
   its high), MSCI World ETF 1.0% below, Oslo's OSEBX 3.2% above. VIX 24.6 with a slightly
   inverted VIX curve; credit calm; CAPE 39.4, near its record.
-- **Only euro cash never lost value** in any crash measured. Gold fell 22% (in dollars) within
-  the Lehman weeks of 2008; Berkshire fell 54% in 2007-09; long euro bonds lost 32% in 2022;
-  Oslo's OBX lost 62% in euros in 2007-09, more than the S&P's 52% (but less in 2022 and 2025).
+- **Euro cash lost at most about 0.5%** in any crash measured (an overnight-rate ETF in 2020,
+  from negative rates); every other candidate lost far more in some crash. Gold fell 22% (in
+  dollars) within the Lehman weeks of 2008; Berkshire fell 54% in 2007-09 (in dollars); long euro
+  bonds lost 32% in 2022; Oslo's OBX lost 62% in 2007-09, more than the S&P's 52% (both in
+  euros; but OBX lost less in 2022 and 2025).
 - **No re-entry rule beat buying back at once** over 10 years. Waiting won when the sale was near
   the real top and lost when it was 2-3 years early. A plan can cap regret, not add return; the
   deadline is its most important part.
@@ -128,7 +130,7 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 - **Flight to quality, and when it fails.** In the March 2020 "dash for cash", even government bonds were sold ([FSB 2020](https://www.fsb.org/2020/11/holistic-review-of-the-march-market-turmoil/)). Stocks and bonds fall together when inflation uncertainty dominates ([Brixton et al. 2023](https://www.aqr.com/insights/research/journal-article/a-changing-stock-bond-correlation)). **Ours:** long Bunds lost 32% in 2022.
 - **Money funds can break.** The Reserve Primary Fund fell to 97 cents on 16 Sep 2008 ([SEC](https://www.sec.gov/litigation/litreleases/2009/lr21025.htm)). Between 11 and 25 March 2020, euro-area LVNAV funds had outflows of about EUR 85bn (16% of assets), while public-debt funds had inflows ([ECB](https://www.ecb.europa.eu/pub/financial-stability/macroprudential-bulletin/html/ecb.mpbu202104_2~a205b46756.en.html)).
 - **Trend following as "crisis alpha"** (Hurst-Ooi-Pedersen; [Neville et al. 2021](https://www.man.com/maninstitute/best-strategies-for-inflationary-times)). Both come from firms that sell trend products. It is a strategy with losing years, not a parking place.
-- **Upshot:** every haven in the literature is conditional on the kind of crash. In our crash table, euro cash is the only holding that never lost value (section 7).
+- **Upshot:** every haven in the literature is conditional on the kind of crash. In our crash table, euro cash is the only holding that lost at most about 0.5% in every crash (section 7).
 
 ## 3. What investors with proven records did
 
@@ -165,8 +167,8 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 | **1. On your start day, sell half of each holding; sell all of a holding whose index already closed below its 200-day average** | Six-week returns are mostly noise (2.1). Staging costs little and caps regret (Vanguard, 2.2) | Scale, don't flip (lesson 3) | "Half now, half at the fallback" passed the six-week bar (bt Part A). Per holding: Oslo fits the card's `late` sample; US and tech holdings fit only the post-hoc `now-like` sample, where staging also held up (section 6.1) | Bar fixed before any number. But `late` was defined to fit Nov 2026, its windows come from only about 20 separate spells, and the US/tech evidence is post hoc |
 | **2. Sell the rest on the trading day after the first close below the 200-day average, else at the fallback** | Trend is the only reaction rule with a long out-of-sample record (Faber, Moskowitz-Ooi-Pedersen, Hurst-Ooi-Pedersen). Its whipsaw cost (Zakamulin) does not matter for a forced sale. The 200-day daily line is a heuristic (2.3) | React, don't predict (lessons 1, 6). Pre-commit, because exits are a race (Abreu-Brunnermeier) | Avoided a third or more of the fall in 8 of 8 crashes (bt Part B). Added to staging, it cut the mean loss when a 10% fall came in the window from -5.0% to -1.4% (S&P, `late`) | **Post hoc:** the combination was added after the first results (bt amendment). 8 crashes are 8 observations |
 | **Fallback 18 Dec for shares, 11 Dec for funds (4 Dec for slow funds); last safe 21 Dec (shares), 15-16 Dec (funds with cash at the broker within 2-6 business days), 9 Dec (within 5-10)** | None: this is the calendar | A plan must work if the pop comes late (lesson 2) | Settlement, fund cut-offs and the holiday calendar (park sections 4 and 7). The fallback day is the forced sale in the test | A fact, not a market signal. Fund dates rest on a platform's "normally" figures |
-| **3. Move the money to euros the same day** | None | None | Currency risk of a smaller non-euro market: the krone (NOK) fell about 20% against the euro in late 2008 and 18.5% in one month in 2020. OBX lost 62% in euros in 2007-09, more than the S&P's 52% (haven, park) | Descriptive |
-| **4. Park in euro cash** | Havens are conditional on the kind of crash; money funds can break (2.4) | Crash safety from the asset (lesson 6). Berkshire fell 54% in 2007-09 | In our table of 10 crashes, only euro cash never lost value (haven) | Descriptive, nothing fitted |
+| **3. Move the money to euros the same day** | None | None | Currency risk of a smaller non-euro market: the krone (NOK) fell about 20% against the euro in late 2008 and 18.5% in one month in 2020. OBX lost 62% in 2007-09, more than the S&P's 52% (both in euros; haven, park) | Descriptive |
+| **4. Park in euro cash** | Havens are conditional on the kind of crash; money funds can break (2.4) | Crash safety from the asset (lesson 6). Berkshire fell 54% in 2007-09 | In our table of 10 crashes, euro cash lost at most about 0.5% (negative-rate years); every other candidate lost more in some crash (haven) | Descriptive, nothing fitted |
 | **5. Buy back in 12 monthly buys through 2027; as a bet on a real bust only, in thirds at -20%, -30% and -40%, all in by 29 Dec 2028** | A lump sum usually wins; spreading lowers regret (Vanguard). The literature gives no threshold | Re-enter with rules set in advance, and expect to be early (lesson 4). A fixed end date avoids the Grantham/Hussman failure | No re-entry rule beat buying back at once. In the high-valuation months that fit today, 12 monthly buys had the better median (0.97 vs 0.92 times buying at once) and the milder worst tenth (0.90 vs 0.72); the thirds won only in real busts (1.4-1.6 times) (section 8.2) | Both rules and levels fixed on the reentry card before any number; which one is the default was chosen after seeing them (review round 2). 8 high-valuation episodes, only 3 since 1972 |
 
 **Left out on purpose:** CAPE, breadth and concentration, sentiment indices, LPPL, GSADF and IPO counts as sell triggers. The literature gives them no date (sections 2.1, 2.3), and our tests agree for CAPE, VIX and credit. VIX and credit appear only as a way to bring a re-entry tranche forward.
@@ -570,9 +572,13 @@ where no euro data exist (`lanes/haven-table.md`). Yields read 2026-11-15/18 (pa
 ### 7.3 What the evidence supports
 
 1. **First choice: euro cash.** A Dutch savings account under the guarantee, or a euro
-   overnight-rate or 0-1 year government ETF. These are the only holdings that kept their euro
-   value in every crash and every window measured, including the first days (haven). Cash also
-   keeps the full amount ready for buying back.
+   overnight-rate or 0-1 year government ETF. Euro cash lost at most about 0.5% in any crash
+   window measured, including the first days: a savings account at a rate of zero or more cannot
+   fall; the overnight-rate ETF XEON lost 0.5% at worst in 2020 and 3-month Euribor cash 0.2% at
+   worst in 2022, both from negative rates (haven).
+   The 0-1 year ETF IEGE was not in the crash table; it has lost 4.9% in total since launch,
+   over the negative-rate years rather than in one crash, and 0.07% at worst in the last year.
+   Cash also keeps the full amount ready for buying back.
 2. **Practical pick:** if you will buy back through a Dutch broker, holding XEON/CSH or IEGE in
    that account lets you switch in seconds; IEGE avoids the swap. If you want no product risk at
    all, a savings account costs about one bank day to move.
@@ -726,8 +732,8 @@ above, against the same literature and data.
 
 ### 9.3 A savings account until the bubble pops
 
-- **Supported:** euro cash is the only holding that never lost value in any crash measured
-  (section 7), and it keeps the money ready for buying back.
+- **Supported:** euro cash lost at most about 0.5% in any crash measured, less than any other
+  candidate (section 7), and it keeps the money ready for buying back.
 - **The risk is the pop coming late or never.** After the Shiller/Greenspan warning of Dec 1996
   the S&P doubled, and even the 2002 low (777) was above the warning-day close (744). After
   Grantham's "superbubble" call of 5 Jan 2021 the S&P was 97% higher by 17 Nov 2026. That is why
