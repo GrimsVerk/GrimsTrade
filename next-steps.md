@@ -1,5 +1,16 @@
 # Next steps
 
+## rp-1 (DEEPER lane, night 2026-11-18, branch `rp-1`, draft PR -> `survey-5`, never merged by agents)
+
+Task: why did `where-vol` lose -27.4% in 2022 against about -18% for live risk-parity funds
+(survey-5 live-check)? Step 1: descriptive diagnosis from existing configurations (slots,
+weights, when it de-risked vs the funds; attribute the gap to bond duration, leverage/vol
+target, rebalance speed, stock-bond correlation, coins). Step 2 only if one structural cause:
+one carded fix, train only (2022 is in train; held-out 2025-11-11.. untouched). Step 3: plain
+verdict on reviving `where-vol` / `blend-ws`. Write-up `research/rp-1.md`.
+
+- Doing: step 1.
+
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 
 Live track records as post-sample evidence. List of keyless live fund series pushed first
