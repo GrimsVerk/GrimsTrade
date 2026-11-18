@@ -1,18 +1,26 @@
 # Next steps
 
-## insure-1 (in progress 2026-11-18 night, branch `insure-1` -> `trend-1926-fix`)
+## insure-1 (done 2026-11-18 night, branch `insure-1`, draft PR #87 -> `trend-1926-fix`)
 
-Is "trend = crash insurance" statistically solid across 1927-2025 (French market and 10
-industries), how many effective (clustered) episodes back it, and what does it cost per unit of
-loss avoided? Card `research/cards/crash-insurance.md` (pushed before any number).
+Is "trend = crash insurance" statistically solid across 1927-2025, and what does it cost? Card
+`research/cards/crash-insurance.md` (card 1 and card 2, each pushed before its numbers),
+write-up `research/insure-1.md` (top: one-screen answer), tables `research/results/insure-1.md`,
+code `research/lib/insure1.py`; 41 rows of the new kind `insure-check` in `research/tries.md`.
+Held-out year unspent.
 
-- Step 1 done: card.
-- Step 2 done: `research/lib/insure1.py` (needs trend-1926's saved primary runs copied into the
-  git-ignored `research/data/runs/trend-1926/` and `research/macro.local.json`); tables
-  `research/results/insure-1.md`; 41 rows of the new kind `insure-check` in `research/tries.md`.
-  Card verdict: "insurance real, handed back in the rebound" (I: 48 of 50 market-anchored
-  clusters positive; N = I + rebound: 16 of 50, mean -0.3 log pts; premium P 1.07).
-- Doing: card 2 (exposure-matched controls: is the insurance timing or just lower exposure?).
+- Card 1: "insurance real, handed back in the rebound". 270 falls of 25%+ on the French market
+  and 10 industries, 50 effective episodes (market-anchored; 37 strict): rule lost less in 48
+  (p 1e-12); net of the year after the low 16 of 50, mean -0.3 log pts. Premium 1.07 (0.97
+  with T-bills); 0.86 in 1927-61, 1.38 in 1962-2001, 1.34 in 2002-25.
+- Card 2: "timing, not just exposure". Share of fall avoided 0.50 vs 0.27 for rotated positions
+  (0 of 1,000) and 0.29 for a fixed 73%; premium 1.07 vs 1.63 (fixed) and 1.82 (rotations).
+- Fails in fast falls (<= 92 days): net -6.6 log pts, 15 of 63 positive.
+- Doing: nothing. No process running.
+- Rerun: copy trend-1926's saved primary runs (`tsmom12@F-*`, `tsmom12@F62-*`) into the
+  git-ignored `research/data/runs/trend-1926/`, keep `research/macro.local.json`, then
+  `uv run python -I research/lib/insure1.py` (5 s; no new rows if they are already in the file).
+- Next lanes (not started): `insure-era` (card 2's controls per era), `fast-reentry` judged on
+  N over these 50 episodes, the same count on non-US stock indices.
 
 ## Trend 1926 fix (in progress 2026-11-18, branch `trend-1926-fix` -> `trend-1926`)
 

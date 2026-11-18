@@ -180,6 +180,7 @@ class Episode:
     net_tb: float = 0.0
     cluster: int = -1
     linked: int = -1
+    idx: tuple[int, int, int] = (0, 0, 0)  # session index of peak, trough, rebound end
 
     @property
     def days(self) -> int:
@@ -249,6 +250,7 @@ def score(s: Series, down: float, up: float, rule: np.ndarray | None = None) -> 
         eps.append(Episode(
             s.name, s.days[a], s.days[b], 1 - s.px[b] / s.px[a], hold, hold + ins, ins,
             float(cum[e] - cum[b]), float(cum_tb[b] - cum_tb[a]), float(cum_tb[e] - cum_tb[a]),
+            idx=(a, b, e),
         ))  # fmt: skip
         mask[a + 1 : e + 1] = True
     calm_d, calm_tb_d = np.where(mask, 0.0, d), np.where(mask, 0.0, d_tb)
@@ -620,11 +622,119 @@ def report(primary: list[Series], ind30: list[Series]) -> str:
     return "\n".join(out) + "\n"
 
 
+# --- card 2: exposure-matched controls ---
+
+ROTATIONS = 1000
+
+
+@dataclass
+class Ctl:
+    s_mean: float  # mean over market-anchored clusters of the share avoided S
+    n_mean: float  # mean over clusters of N
+    prem: float  # pooled premium P
+
+
+def control_stats(
+    rets: Sequence[np.ndarray], hl: Sequence[np.ndarray], eps: Sequence[Sequence[Episode]],
+    clusters: Sequence[Sequence[tuple[int, Episode]]],
+) -> Ctl:  # fmt: skip
+    """Rule-minus-holding stats of one set of return series on card 1's episodes."""
+    ins: dict[int, float] = {}
+    net: dict[int, float] = {}
+    sum_i, total = 0.0, 0.0
+    for j, (r, h, ee) in enumerate(zip(rets, hl, eps, strict=True)):
+        cum = np.cumsum(100 * (np.log1p(r) - h))
+        total += float(cum[-1])
+        for e in ee:
+            a, b, x = e.idx
+            ins[id(e)] = float(cum[b] - cum[a])
+            net[id(e)] = float(cum[x] - cum[a])
+            sum_i += ins[id(e)]
+        del j
+    s_vals = [np.mean([ins[id(e)] / abs(e.hold) for _, e in g]) for g in clusters]
+    n_vals = [np.mean([net[id(e)] for _, e in g]) for g in clusters]
+    prem = -(total - sum_i) / sum_i if sum_i > 0 else math.inf
+    return Ctl(float(np.mean(s_vals)), float(np.mean(n_vals)), prem)
+
+
+def card2(primary: list[Series]) -> str:
+    if any(s.days != primary[0].days for s in primary):
+        raise ValueError("card 2 needs one session calendar for the 11 series")
+    sc = [score(s, *PRIMARY) for s in primary]
+    eps = [x.eps for x in sc]
+    anch = market_anchored([e for ee in eps for e in ee], t.MKT)
+    clusters = [[(0, e) for e in g] for g in anch]
+    hl = []
+    bar = []
+    for s in primary:
+        h = np.zeros(len(s.px))
+        h[1:] = np.log(s.px[1:] / s.px[:-1])
+        hl.append(h)
+        b = np.zeros(len(s.px))
+        b[1:] = s.px[1:] / s.px[:-1] - 1
+        bar.append(b)
+    rule = control_stats([s.paper for s in primary], hl, eps, clusters)
+    xs = [float(s.pos[1:].mean()) for s in primary]
+    fixed = control_stats([x * b for x, b in zip(xs, bar, strict=True)], hl, eps, clusters)
+    n = len(primary[0].px)
+    rng = np.random.default_rng(SEED)
+    rots = []
+    for _ in range(ROTATIONS):
+        k = int(rng.integers(365, n - 365))
+        rr = []
+        for s, b in zip(primary, bar, strict=True):
+            p = np.roll(s.pos, k)
+            flips = np.abs(np.diff(p, prepend=p[0]))
+            r = p * b - 0.0002 * flips
+            r[0] = 0.0
+            rr.append(r)
+        rots.append(control_stats(rr, hl, eps, clusters))
+    rs = np.array([c.s_mean for c in rots])
+    rn = np.array([c.n_mean for c in rots])
+    rp = np.array([c.prem for c in rots])
+    p_s = float((rs >= rule.s_mean).mean())
+    p_p = float((rp <= rule.prem).mean())
+    p_n = float((rn >= rule.n_mean).mean())
+    if p_s < 0.05 and p_p < 0.05 and rule.prem < fixed.prem:
+        verdict2 = "Timing, not just exposure"
+    elif p_s >= 0.10 and p_p >= 0.10:
+        verdict2 = "Exposure, not timing"
+    else:
+        verdict2 = "In between"
+
+    def q(a: np.ndarray) -> str:
+        lo, mid, hi = np.quantile(a, [0.05, 0.5, 0.95])
+        return f"{mid:+.2f} ({lo:+.2f} to {hi:+.2f})"
+
+    out = [
+        "## Card 2: timing or just lower exposure? (exposure-matched controls)",
+        "",
+        "Same 11 series, card 1's 25% episodes and market-anchored clusters, cash at 0. The rule "
+        "here is its paper series. Rotations: median (5th to 95th percentile) of 1,000.",
+        "",
+        "| | Mean cluster S (share avoided) | Mean cluster N, log pts | Pooled premium P |",
+        "|---|---:|---:|---:|",
+        f"| `tsmom12` (paper series) | {rule.s_mean:+.2f} | {rule.n_mean:+.1f} | {rule.prem:.2f} |",
+        f"| Fixed exposure (x = rule's average position, mean {np.mean(xs):.0%}) | "
+        f"{fixed.s_mean:+.2f} | {fixed.n_mean:+.1f} | {fixed.prem:.2f} |",
+        f"| Random timing (rotated positions) | {q(rs)} | {q(rn)} | {q(rp)} |",
+        f"| p: rotations at least as good as the rule | {p_s:.3f} | {p_n:.3f} | {p_p:.3f} |",
+        "",
+        "Average position per series: "
+        + ", ".join(f"{s.name} {x:.0%}" for s, x in zip(primary, xs, strict=True))
+        + ".",
+        "",
+        f"**Verdict by card 2: {verdict2}.**",
+        "",
+    ]
+    return "\n".join(out) + "\n"
+
+
 def main() -> None:
     primary = load_primary()
     rf = dict(zip(primary[0].days, primary[0].rf, strict=True))
     ind30 = load_ind30(rf)
-    OUT.write_text(report(primary, ind30))
+    OUT.write_text(report(primary, ind30) + card2(primary))
     n = log_tries([("insure", primary), ("insure30", ind30)])
     print(f"wrote {OUT}; {n} new tries.md rows")
 
