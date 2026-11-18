@@ -1,5 +1,11 @@
 # Next steps
 
+## Coin cap (in progress 2026-11-18, branch `coin-cap`, draft PR -> `cointop-1`)
+
+Is a plain cap on the combined coin weight inside `tsmom12` as good as cointop-1's `stop-0.25`
+at cutting the worst loss, at less cost in growth? Card `research/cards/coin-cap.md` (written
+before any number). Doing: card pushed; next `research/lib/coin_cap.py`, run once, write-up.
+
 ## Cointop 1 (done 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
 
 `tsmom12` is slow out of coin tops. Coin tops studied on breadth-1's top-100 coin book; one
