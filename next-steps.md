@@ -1,18 +1,30 @@
 # Next steps
 
-## rp-1 (DEEPER lane, night 2026-11-18, branch `rp-1`, draft PR -> `survey-5`, never merged by agents)
+## rp-1 (done 2026-11-18, branch `rp-1`, draft PR #86 -> `survey-5`, never merged by agents)
 
-Task: why did `where-vol` lose -27.4% in 2022 against about -18% for live risk-parity funds
-(survey-5 live-check)? Step 1: descriptive diagnosis from existing configurations (slots,
-weights, when it de-risked vs the funds; attribute the gap to bond duration, leverage/vol
-target, rebalance speed, stock-bond correlation, coins). Step 2 only if one structural cause:
-one carded fix, train only (2022 is in train; held-out 2025-11-11.. untouched). Step 3: plain
-verdict on reviving `where-vol` / `blend-ws`. Write-up `research/rp-1.md`.
+Why `where-vol` lost -27% in 2022 against about -18% for live risk-parity funds, one carded
+fix, a verdict. Write-up `research/rp-1.md`; tables `research/results/rp-1-diag.md`,
+`research/results/rp-1.md`; 4 rows in `tries.md` (1 `variant`, 3 `robustness`).
 
-- DONE step 1 (diagnosis): the 2022 gap to the funds is the coin slot (-17.3 pts; coins 89% of
-  ex-ante risk at equal-dollar slots); bonds, leverage, rebalance speed, stock-bond correlation
-  do not explain it (`research/rp-1.md`, `results/rp-1-diag.md`).
-- Card `where-rp` pushed (research/rp-1.md, step 2). Doing: code and one run.
+- Step 1 (descriptive): `where-vol` is not a risk-parity book. Equal dollar slots, filter
+  dropped on TLT, GLD, BTC: going into 2022 the coins held 89% of its risk (book vol 24% vs the
+  funds' 7%). The gap to the funds is the coin slot (-17.3 points); bonds were in its favour
+  (+3.5), the funds did not de-risk (betas flat, vol 7% -> 13%), the stock-bond correlation
+  turned positive only from August 2022.
+- Step 2: `where-rp` (inverse-vol slot sizes, MRT 2010 / Kirby-Ostdiek 2012), card before the
+  number: 1.05 vs 1.05 (p 0.50), worst loss 24.5% vs 36.5%, growth 12.4% vs 17.8%; 2022 -19.7%
+  (TLT now the loss) vs `tsmom12` -12.8%. Fails bar 1; passes the other five. A risk dial.
+- Step 3: do not revive `where-vol` or `blend-ws`; the loss is the trend-where idea (it holds
+  what `tsmom12` sells), not its sizing. Family 74 (combo lineage), none passed; next test at
+  p < 0.10 / 75.
+
+- Doing: nothing. No process running.
+- Next: (1) `stop-reentry` (combo-1's lane 1) is the only open overlay line; (2) a shallower
+  book is a size choice for the owner (`tsmom12` at ~70% invested), not a new rule.
+- Data: none added. A fresh worktree needs `research/macro.local.json` (copy the `.example`),
+  the price cache in `research/data/` and survey-5's fund CSVs in
+  `<cache_root>/derived/survey-5/`. Rerun: `uv run python -I research/lib/rp1_diag.py
+  <cache_root>`; `uv run python -I research/lib/rp1_run.py` (logs only the first time).
 
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 

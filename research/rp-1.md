@@ -144,3 +144,67 @@ answered: `where-vol`'s extra loss was the coin slot's dollar size, a risk level
 risk-parity fix turns into an edge.
 
 Held-out year (2025-11-11 .. 2026-11-09): not touched in this lane.
+
+## Step 2 result: `where-rp` ties `tsmom12` and fails (one run, 2026-11-18)
+
+Tables: [`results/rp-1.md`](results/rp-1.md), from `lib/rp1_run.py` (rule `lib/rp1_rule.py`,
+test `tests/test_rp1.py`: all-no answers give exactly `inverse-vol`, all-yes filter it by
+`tsmom12`, no later bar is read). Code pushed before the run (6190b78). 4 rows in `tries.md`
+(1 `variant`, 3 `robustness`). Held-out year untouched.
+
+| Six assets, 1994-2025 | Sharpe | vs `tsmom12` (p) | Growth/yr | Vol | Worst loss | 2022 | Since 2003 | 2022-25 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `where-rp` | 1.05 | +0.00 (0.50) | +12.4% | 11.8% | 24.5% | -19.7% | 1.31 | 0.98 |
+| `where-vol` | 1.07 | +0.03 (0.27) | +18.9% | 17.5% | 35.3% | -26.6% | 1.23 | 0.83 |
+| `tsmom12` | 1.05 | | +17.8% | 17.1% | 36.5% | -12.8% | 1.20 | 0.88 |
+| RC (live risk-parity funds) | | | | | | -16.1% | | |
+
+**Bar: fails bar 1** (+0.003 Sharpe, p 0.50 against p < 0.00135; project-wide p <= 4.9e-5 not
+met either); passes the other five (4 of 5 eras, worst loss 24.5% vs 36.5%, out of universe
++0.08 / +0.08 / -0.01, above equal weight, since 2003 1.31 vs 1.20).
+
+1. **The coin problem is fixed and a bond problem appears.** Coin weight fell to 7% on average
+   (from up to 33%); 2022 coin loss -6.4 points instead of -17.3. But inverse-vol gives the
+   calm, unfiltered TLT the largest slot, and TLT now costs -8.2 points (was -5.9). 2022:
+   -19.7%, between the funds (-16.1%) and `where-vol` (-26.6%), still 7 points worse than
+   `tsmom12` (-12.8%), whose filter was out of TLT and BTC all year. The 2022 rate shock is
+   the same story as for the live risk-parity funds: risk-sizing loads up on the asset that
+   was calm until it was not.
+2. **Same Sharpe, lower risk: a risk dial, not an edge.** `where-rp` runs at 11.8% volatility
+   against 17.1%; `tsmom12` scaled to 69% invested would have about the same Sharpe, volatility
+   and worst loss (36.5% x 0.69 = 25%). The bootstrap range is wide (-0.18 .. +0.19) because
+   the book is far from `tsmom12`, so nothing smaller than about +0.3 could ever clear the bar.
+3. Out of universe the rule changes little (ETFs +0.08, coins +0.08: the same signs
+   `where-vol` had; indexes -0.01).
+
+The outcome is the one the card expected (a shallower worst loss at the same Sharpe).
+
+## Step 3 verdict: do not revive `where-vol` or `blend-ws`
+
+**Plain answer: no.** `where-vol`'s extra 2022 loss was not a risk-parity design error that a
+risk-parity fix repairs. It was the trend-where idea itself: it drops the trend filter on the
+slots whose past falls were calm (TLT, GLD, BTC), and in 2022 those were exactly the slots that
+fell. Sized in dollars the loss came through BTC; sized by risk it comes through TLT. Either way
+the book holds what `tsmom12` would have sold. The Sharpe edges are +0.03 (`where-vol`),
++0.00 (`where-rp`) and +0.08 (`blend-ws`, in-sample pick), against a family bar of about +0.15
+and a project-wide bar of about +0.3.
+
+**What evidence would revive them** (none of it exists, none of it is cheap):
+
+- On train: a variant clearing p < 0.10 / 75 and the project-wide bar (N 1,012, p <= 5e-5) with
+  2022-25 not behind `tsmom12`. Every variant of this line so far sits at +0.00 to +0.08.
+- On new data: a non-stock history long enough to hold more than one joint bond-and-risk-asset
+  fall with the filter dropped (bonds and gold before 2002; trend-where found none keyless).
+  Without it the worst-loss question rests on 2022 alone.
+- Forward: `blend-ws`'s excess over `tsmom12` (information ratio about 0.28) needs about a
+  century to show at 80% power (combo-1), so a forward test cannot decide it either.
+
+**What stands instead.** `where-rp` shows that this book can have `tsmom12`'s Sharpe with a
+24.5% worst loss and 12.4% growth a year: a risk level, the same choice as holding less of
+`tsmom12`. If the owner wants a shallower book, the plain way is a smaller `tsmom12`, not a new
+rule. The survey-5 comparison is also settled: `where-vol` is not a risk-parity book (equal
+dollars, coins 89% of its risk going into 2022), so the live risk-parity funds are not its
+benchmark.
+
+Count: family 74 (combo lineage; survey-5 lineage 66), none passed. Next test at
+p < 0.10 / 75 = 0.00133; project-wide N 1,013 after these rows.
