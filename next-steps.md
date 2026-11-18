@@ -1,5 +1,39 @@
 # Next steps
 
+## Wide 4 (done 2026-11-18, branch `wide-4`, draft PR #57 -> `wide-3`)
+
+W2 `tax-drain` from the list, then five new mechanisms from unused fields and a test of the
+best one. Fact check, choice note, cards and code were each pushed before any number. **Both
+tested ideas fail train; held-out year unspent.** Write-up `research/wide-4.md`; tables
+`research/results/tax-drain.md`, `research/results/coupon-dose.md`; 7 rows in `tries.md`.
+
+- Fact (NY Fed, Santoro 2012): tax receipts sat in bank TT&L accounts with the Fed's account
+  held near $5 billion until fall 2008; from 2008-12 the cash goes to the Fed. wide-3's date
+  was right; the source adds that the drain only matters when reserves are scarce.
+- `tax-drain` (W2, hydraulics): SPY, QQQ, TLT out for five sessions around each tax date
+  from 2008-12-16: 1.03 vs 1.05 (-0.016, p 0.88). The drain is real (Treasury's Fed account
+  +88 $bn over D-2 .. D+1 since 2008, t 13.7; +1 $bn before). Prices: right sign, right order
+  by regime (SPY -62 bps while the Fed shrank reserves, t -1.3; ~0 before 2008), too weak.
+- New W4-W8 in `research/wide-1.md` (last section): `coupon-dose` (pharmacokinetics),
+  `tidal-trigger` (seismology), `payday-inflow` (actuarial science), `fatigue-damage`
+  (materials fatigue), `snapshot-shrink` (metrology).
+- `coupon-dose` (W4, picked): idle cash into TLT for four sessions when the Treasury's net
+  payment on the 15th is positive: 1.04 vs 1.05 (-0.011, p 0.71). Positive-dose days +2 bps
+  vs +18 on the others; wrong sign since 2014.
+
+Count: 54 mechanisms (46 listed + W1-W8), 12 tested, none passed. The next test is read at
+p < 0.10 / 54 = 0.00185.
+
+- Doing: nothing. No process running.
+- Next: W5 `tidal-trigger` is the only W entry with a prior above 1%, and it must be checked
+  on a calendar not used to suggest it (forward, or the tax-date drain in future
+  scarce-reserve years). Forced Treasury flows are now spent for this book. The `tax-drain`
+  event study is worth re-running forward as a descriptive check, not as a trade.
+- Data added (git-ignored cache): Daily Treasury Statement cash balances
+  (`<cache_root>/treasury/dts-2026-11-18/`, parsed to `derived/wide-4/tga.csv`), the auction
+  file with rates and amounts (`downloads/wide-4/treasury-auctions/`, parsed to
+  `derived/wide-4/payments.csv`). FRED refuses automated downloads from this machine.
+
 ## Wide 3 (done 2026-11-18, branch `wide-3`, draft PR #54 -> `wide-2`)
 
 Two more picks from wide-1's list, then three new mechanisms and a test of the best one. Choice
