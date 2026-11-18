@@ -12,6 +12,7 @@ research/data/runs/ is re-scored without a new row. Nothing after 1961-12-31 is 
 from __future__ import annotations
 
 import math
+import os
 import sys
 import zipfile
 from collections.abc import Iterator, Sequence
@@ -48,10 +49,16 @@ CONFIGS: dict[str, tuple[bool, float, str]] = {
     "-50bps": (False, 0.0050, "robustness"),
 }
 DRAWS = 2000
+ERA = os.environ.get("TREND_ERA", "1926")  # "1962": card 2, 1962-2001
+PREFIX, RESULT = "F", "trend-1926"
+if ERA == "1962":
+    FIRST, LAST = date(1961, 1, 1), date(2001, 12, 31)
+    START = FIRST + timedelta(days=366)
+    PREFIX, RESULT = "F62", "trend-1926-era2"
 
 
 def sym(name: str) -> str:
-    return f"F-{name}"
+    return f"{PREFIX}-{name}"
 
 
 # --- loader (raw cache, read only) ---
@@ -106,8 +113,8 @@ def parse_industries(lines: Sequence[str], last: date = LAST) -> dict[date, list
 def load(root: Path | None = None) -> Raw:
     root = root or cache_root()
     snap = sorted(p for p in (root / "french").iterdir() if p.is_dir())[-1]
-    fac = parse_factors(_lines(snap / "F-F_Research_Data_Factors_daily_CSV.zip"))
-    ind = parse_industries(_lines(snap / "10_Industry_Portfolios_daily_CSV.zip"))
+    fac = parse_factors(_lines(snap / "F-F_Research_Data_Factors_daily_CSV.zip"), LAST)
+    ind = parse_industries(_lines(snap / "10_Industry_Portfolios_daily_CSV.zip"), LAST)
     days = sorted(d for d in fac if d >= FIRST)
     if days != sorted(d for d in ind if d >= FIRST):
         raise ValueError("the market and industry files disagree on the sessions")
@@ -189,12 +196,12 @@ class Window:
     label: str
     lo: date = date.min
     hi: date = date.max
-    drop: tuple[date, date] | None = None
+    drop: tuple[tuple[date, date], ...] = ()
 
     def mask(self, ords: np.ndarray) -> np.ndarray:
         m = (ords >= self.lo.toordinal()) & (ords <= self.hi.toordinal())
-        if self.drop:
-            m &= ~((ords >= self.drop[0].toordinal()) & (ords <= self.drop[1].toordinal()))
+        for a, b in self.drop:
+            m &= ~((ords >= a.toordinal()) & (ords <= b.toordinal()))
         return np.asarray(m, dtype=bool)
 
 
@@ -203,10 +210,25 @@ WINDOWS = [
     WHOLE,
     Window("1927-45", "1927-07 to 1945-12", hi=date(1945, 12, 31)),
     Window("1946-61", "1946-01 to 1961-12", lo=date(1946, 1, 1)),
-    Window("d1", "without 1929-1932", drop=(date(1929, 1, 1), date(1932, 12, 31))),
-    Window("d2", "without 1929-09-03 to 1932-07-08", drop=(date(1929, 9, 3), date(1932, 7, 8))),
+    Window("d1", "without 1929-1932", drop=((date(1929, 1, 1), date(1932, 12, 31)),)),
+    Window("d2", "without 1929-09-03 to 1932-07-08", drop=((date(1929, 9, 3), date(1932, 7, 8)),)),
     Window("d3", "1933-01 to 1961-12", lo=date(1933, 1, 1)),
 ]
+KEYS = ("1927-45", "1946-61", "d1", "d3")  # two eras, then the two cuts that decide
+if ERA == "1962":
+    Y73 = (date(1973, 1, 1), date(1974, 12, 31))
+    Y87 = (date(1987, 1, 1), date(1987, 12, 31))
+    WHOLE = Window("whole", "1962-01 to 2001-12")
+    WINDOWS = [
+        WHOLE,
+        Window("1962-81", "1962-01 to 1981-12", hi=date(1981, 12, 31)),
+        Window("1982-01", "1982-01 to 2001-12", lo=date(1982, 1, 1)),
+        Window("x1", "without 1973-1974", drop=(Y73,)),
+        Window("x2", "without 1987", drop=(Y87,)),
+        Window("x3", "without 1973-1974 and 1987", drop=(Y73, Y87)),
+        Window("to1993", "1962-01 to 1993-12", hi=date(1993, 12, 31)),
+    ]
+    KEYS = ("1962-81", "1982-01", "x3", "x1")
 
 
 def day_ords(run: c.Run) -> np.ndarray:
@@ -419,12 +441,17 @@ def section_data(
     early = sum(d.year < 1952 for d in raw.days) / ((date(1952, 1, 1) - FIRST).days / 365.25)
     lateyrs = sum(d.year >= 1952 for d in raw.days) / ((LAST - date(1951, 12, 31)).days / 365.25)
     sat = sum(d.weekday() == 5 for d in raw.days)
+    allyrs = len(raw.days) / ((LAST - FIRST).days / 365.25)
     missing = {n: int(np.isnan(r).sum()) for n, r in raw.ret.items()}
     out = ["## 0. Data and checks", ""]
     out += [
         f"- Cache snapshot `french/{raw.snapshot}`. {len(raw.days)} sessions from {raw.days[0]} "
-        f"to {raw.days[-1]}; {sat} of them Saturdays. Sessions a year: {early:.0f} before 1952, "
-        f"{lateyrs:.0f} from 1952.",
+        f"to {raw.days[-1]}; {sat} of them Saturdays. Sessions a year: "
+        + (
+            f"{early:.0f} before 1952, {lateyrs:.0f} from 1952."
+            if ERA != "1962"
+            else f"{allyrs:.0f}."
+        ),
         f"- Returns marked missing in the window: {sum(missing.values())}"
         + ("." if not sum(missing.values()) else f" ({missing})."),
         f"- First decision {START}; holding's first fill "
@@ -594,27 +621,28 @@ def section_outcome(pairs: dict[str, Pair], solos: dict[str, Solo], late_mkt: Pa
         return m is not None and m.ratio > 1 and m.p < 0.10
 
     yn = {True: "yes", False: "no"}
+    ea, eb, c1, c2 = KEYS
     m_whole, b_whole = d(MKT, "whole"), d(BOOK, "whole")
     late = window_diff(late_mkt, WHOLE).diff
     checks = [
         ("market ahead over the whole period", m_whole > 0),
-        ("market ahead in 1927-45", d(MKT, "1927-45") > 0),
-        ("market ahead in 1946-61", d(MKT, "1946-61") > 0),
-        ("market ahead in `d1`", d(MKT, "d1") > 0),
-        ("market ahead in `d3`", d(MKT, "d3") > 0),
+        (f"market ahead in {ea}", d(MKT, ea) > 0),
+        (f"market ahead in {eb}", d(MKT, eb) > 0),
+        (f"market ahead in `{c1}`", d(MKT, c1) > 0),
+        (f"market ahead in `{c2}`", d(MKT, c2) > 0),
         ("book agrees in sign over the whole period", b_whole * m_whole > 0),
-        ("book agrees in sign in `d1`", d(BOOK, "d1") * d(MKT, "d1") > 0),
+        (f"book agrees in sign in `{c1}`", d(BOOK, c1) * d(MKT, c1) > 0),
         ("mechanism present on the market, whole period", present(MKT, "whole")),
-        ("mechanism present on the market, `d3`", present(MKT, "d3")),
+        (f"mechanism present on the market, `{c2}`", present(MKT, c2)),
     ]
     fragile = b_whole * m_whole <= 0 or late * m_whole <= 0
-    remains = d(MKT, "d1") > 0 and d(MKT, "d3") > 0
+    remains = d(MKT, c1) > 0 and d(MKT, c2) > 0
     if fragile:
         verdict = "Too fragile to call"
     elif m_whole <= 0:
         verdict = "No"
     elif not remains:
-        verdict = "One crash again"
+        verdict = "One crash again" if ERA != "1962" else "Crashes only"
     elif all(ok for _, ok in checks):
         verdict = "A property"
     else:
@@ -622,10 +650,10 @@ def section_outcome(pairs: dict[str, Pair], solos: dict[str, Solo], late_mkt: Pa
     out = ["## 6. The card's outcome, applied mechanically", ""]
     out += [f"- {text}: {yn[ok]}" for text, ok in checks]
     out += [f"- primary and `late` fills agree in sign on the market: {yn[late * m_whole > 0]}"]
-    both = [sum(present(n, k) for n in INDUSTRIES) for k in ("1927-45", "1946-61")]
+    both = [sum(present(n, k) for n in INDUSTRIES) for k in (ea, eb)]
     out += [
-        f"- mechanism on its own: market present in 1927-45 {yn[present(MKT, '1927-45')]}, in "
-        f"1946-61 {yn[present(MKT, '1946-61')]}; industries present {both[0]} of 10 and "
+        f"- mechanism on its own: market present in {ea} {yn[present(MKT, ea)]}, in "
+        f"{eb} {yn[present(MKT, eb)]}; industries present {both[0]} of 10 and "
         f"{both[1]} of 10.",
         "",
         f"**Outcome: {verdict}.**",
@@ -658,8 +686,10 @@ def main() -> None:
     body += section_robust(raw, pairs, alt)
     body += section_spells(solos)
     body += section_outcome(pairs, solos, alt["-late"][MKT])
-    path = harness.RESEARCH / "results" / ("trend-1926.md" if not c.DRY else "trend-1926.dry.md")
-    head = "# trend-1926: `tsmom12` on US stocks 1926-1961\n\nCard: `trend-1926.md`.\n"
+    path = harness.RESEARCH / "results" / (f"{RESULT}.md" if not c.DRY else f"{RESULT}.dry.md")
+    head = (
+        f"# {RESULT}: `tsmom12` on US stocks {FIRST.year}-{LAST.year}\n\nCard: `trend-1926.md`.\n"
+    )
     if path.exists() and MARK in path.read_text():
         head = path.read_text().split(MARK)[0].rstrip() + "\n"
     path.write_text(head + "\n" + "\n".join(body).rstrip() + "\n")
