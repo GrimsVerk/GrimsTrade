@@ -299,6 +299,9 @@
     in every crash). Paper-to-live kept: median 8% of published Sharpe. 15 `live-check` rows.
     Next (judged on crash behaviour): small SPY/QQQ downtrend short sleeve; defensive weights
     write-up; descriptive multi-signal screen (low prior).
+  - 23:14 UTC 5h 0.71: `diversifier-1` started (W, <- survey-6): a live-evidence diversifier
+    (merger-arb ETF) as a held 7th slot, judged as risk choice and at the bar. Last lane before
+    the 02:15 fill window.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
