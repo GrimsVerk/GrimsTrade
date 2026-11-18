@@ -13,8 +13,9 @@ number; write-up at the top of `research/trend-1926.md`; tables `research/result
   and in 1946-1961 the market trails (-0.09). Days out were rougher than days in on 10 of 10
   industries in 1927-1945 and on 1 of 10 in 1946-1961. Crash insurance, not an edge.
 - Live rule: no change (fixed on the card). Held-out year not involved.
-- Open point: the replay check shows one day 1.5% apart between the gym and the paper series on
-  durables (0.011 log growth over 34 years). Small, not chased down.
+- Replay check: the gym and the gym-free paper series agree except on 2 days (market) and 6
+  days (durables) of 9,731, all in weeks whose Friday was a holiday with a Saturday session;
+  they pick a different decision day there. Explained, not a fill error.
 - Doing: nothing. No process running.
 - Next lanes (not started): `trend-where-it-pays` with 1946-1961 as its hard case;
   `fast-reentry` with this period as an out-of-universe set; French daily data 1962-1993 on its

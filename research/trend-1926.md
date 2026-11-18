@@ -73,7 +73,11 @@ stocks is the smaller worst loss in a collapse (38% against 84%), a risk choice 
   description.
 - Replay check (the gym against a paper series with no gym code): total log growth within
   0.002 on the market, 0.011 on durables over 34 years, with one day 1.5% apart on durables.
-  Not chased down in this burst; small next to the differences above.
+  Looked at after the run (the saved runs re-scored, no new run): the two agree to 0.00001 a
+  day except on 2 days of 9,731 on the market and 6 on durables, all in weeks whose Friday was
+  a holiday with a Saturday session (1933-04-14, 1934-10-12, 1941-07-04, 1948-03-26). There the two pick a
+  different decision day, and it shows only when the signal flips that week. A calendar
+  convention, not a fill error.
 - Only one rule was run, exactly as pre-registered, so nothing was selected and nothing needs
   deflating.
 
