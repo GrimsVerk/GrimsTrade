@@ -135,6 +135,13 @@
     Treasury flows (4 failed). 6 rows.
   - 22:40 UTC `wide-6` started (W, <- wide-5): critical-slowing-down early-warning gate,
     `lunar` gate, 3-4 new mechanisms from unused fields.
+  - DONE `combo-1` (draft #70 -> main, adds research tree to main): failure map: `trend-vol`,
+    `stop-0.25`, `inverse-vol`, `sixty-forty` are one bet (excess corr +0.5..0.9; give back
+    17-32%/yr after lows); `where-vol` fails elsewhere (corr 0.00 with stop). `blend-ws`
+    (where-vol + stop-0.25) 1.13 vs 1.05 (p 0.059, worst loss 28.9% vs 36.5%) fails family bar
+    (72) and eras (behind 2022-25); `blend-iv` 1.07. 8 rows. Closest miss in the repo so far.
+  - 22:50 UTC `combo-2` started (D, <- combo-1): blends with T-bill interest (#61), one
+    long-only partner for stock+bond co-falls (2022).
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
