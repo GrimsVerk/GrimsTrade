@@ -1,5 +1,36 @@
 # Next steps
 
+## Wide 7 (done 2026-11-18, branch `wide-7`, draft PR #81 -> `wide-6`)
+
+Three event-study gates (rule, script and tests pushed before any number; one dry run with
+counts only, then one run each), then two new mechanisms. **All three gates fail; no card, no
+strategy, no `tries.md` row; held-out year untouched.** Write-up `research/wide-7.md`; tables
+`research/results/wash-sale-echo.md`, `festival-gold.md`, `rmd-december.md`.
+
+- W14 `wash-sale-echo` (tax law): 21 ETFs, return over days 31-45 after the third Friday of
+  December on the November loss: -0.003 (t -0.07) 1994-2011, +0.023 (t 0.43) 2012-2024; coin
+  placebo above the ETFs. Dead. Shown, not gating: a turn-of-year loser rebound after 2012 (t
+  3.9 by year clusters, but a placebo window also reaches |t| 2.5-4: fragile).
+- W13 `festival-gold` (anthropology): GLD 15 sessions before Dhanteras / Lunar New Year minus
+  the month's mean: -1.9 bps a day (t -0.30), rank 10 of 15 shifts. Dead. Baur's autumn
+  effect reversed after 2010.
+- W12 `rmd-december` (demography): SPY late December in the RMD waiver years 2009 and 2020:
+  -0.06% vs other years (p 0.51). Dead.
+- New W16 `geomagnetic-storm` (heliophysics), W17 `fork-premium` (software release
+  engineering) in `research/wide-1.md`, last section.
+
+Count: 70 mechanisms, 16 tested by a strategy, none passed. The next strategy test is read at
+p < 0.10 / 70 = 0.00143. Gates so far: 6, all failed.
+
+- Doing: nothing. No process running.
+- Next: (1) W16 `geomagnetic-storm` gate: the only queued entry whose post-sample years are
+  inside train (2003-2025); needs the GFZ Kp/Ap file (check keyless access). (2) W15
+  `cat-claims` gate (HURDAT2 landfalls, LQD vs TLT). (3) If the turn-of-year ETF loser
+  rebound is wanted, pre-register it for the 2026 turn (tax year 2025 needs bars after train)
+  rather than test it on the years that suggested it.
+- Data: none added. A fresh worktree needs the price cache in `research/data/` (copy from
+  another worktree or `research/lib/fetch.py`) and `research/macro.local.json`.
+
 ## Wide 6 (done 2026-11-18, branch `wide-6`, draft PR #76 -> `wide-5`)
 
 Two event-study gates (ann-1's method: rule pushed before any number, no card unless the raw
