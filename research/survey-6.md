@@ -187,7 +187,38 @@ matched holding is itself live and net of its (small) fee.
 | BXM, PUT | CBOE, `cdn.cboe.com/api/global/us_indices/daily_prices/<n>_History.csv` | BXM 2002-03-22, PUT daily 2007-02 | PUT's file has only 7 scattered points before 2007 `[data]`, so its backfilled years are not usable |
 | TSMOM | AQR (survey-5) | 1985-01 | reused through survey-5's result, not recomputed |
 
-Paper citations and their printed in-sample numbers: being verified (next commit).
+### The published backtests, as printed (in-sample)
+
+Checked 2026-11-19 against the paper text where it says `[paper]` (journal print, or the
+authors' draft or accepted manuscript where noted; volume, issue and pages checked against
+Crossref). "Computed" = monthly mean / sd x sqrt 12 from the printed table (excess returns
+for long-short factors). No post-publication numbers were read.
+
+| Family | Paper | Sample | Printed result | Sharpe (paper) |
+|---|---|---|---|---|
+| value | Fama and French, "Common risk factors in the returns on stocks and bonds", JFE 33(1), 1993, 3-56 `[paper]` | 1963-07..1991-12 | HML 0.40%/month, sd 2.54, t 2.91 (Table 2) | **0.55** computed (market 0.33) |
+| momentum | Jegadeesh and Titman, "Returns to buying winners and selling losers", JF 48(1), 1993, 65-91 `[paper]` | 1965-01..1989-12 | 12/3 winners minus losers 1.31%/month, t 3.74; 6/6 0.95%, t 3.07 (Table I; equal weight, deciles) | not printed (no sd) |
+| momentum | Carhart, "On persistence in mutual fund performance", JF 52(1), 1997, 57-82 `[paper]` | 1963-07..1993-12 | PR1YR 0.82%/month, sd 3.49, t 4.46 (Table II) | **0.81** computed |
+| quality | Fama and French, "A five-factor asset pricing model", JFE 116(1), 2015, 1-22 `[paper]` | 1963-07..2013-12 | RMW 0.25%/month, sd 2.14, t 2.92; CMA 0.33, sd 2.01, t 4.07 (Table 4, 2x3) | **RMW 0.40**, CMA 0.57 computed |
+| quality | Novy-Marx, "The other side of value", JFE 108(1), 2013, 1-28 (author's 2012 version) `[paper]` | 1963-07..2010-12 | gross profitability high minus low 0.31%/month, t 2.49, sd 2.94 | 0.37 computed |
+| quality | Asness, Frazzini and Pedersen, "Quality minus junk", Review of Accounting Studies 24(1), 2019, 34-112 `[paper]`; working paper Oct 2013 `[paper]` | WP: US 1956-06..2012-12; journal: US 1957-07..2016-12 | US QMJ 0.40%/month, t 4.38 (WP); 0.29%/month, t 3.62 (journal) | **0.58** (WP) / 0.47 (journal), stated |
+| low-vol | Frazzini and Pedersen, "Betting against beta", JFE 111(1), 2014, 1-25 (authors' 2013 draft) `[paper]` | 1926-01..2012-03 | US BAB 0.70%/month, t 7.12, vol 10.7% | **0.78** stated |
+| low-vol | Baker, Bradley and Wurgler, "Benchmarks as limits to arbitrage", FAJ 67(1), 2011, 40-54 `[paper]` | 1968-01..2008-12 | lowest-volatility quintile of the top 1,000 stocks, long-only | 0.38 stated (min-variance 0.47; large stocks 0.27) |
+| multi-factor | Asness, Moskowitz and Pedersen, "Value and momentum everywhere", JF 68(3), 2013, 929-985 `[paper]` | 1972-01..2011-07 | 50/50 value + momentum, all asset classes, 6.8%/yr, sd 4.3% | **1.59** stated |
+| dividend | none found with an in-sample Sharpe. McQueen, Shields and Thorley, FAJ 53(4), 1997 (Dow-10, 1946-1995): beats the Dow statistically, not after risk, costs and taxes `[secondary]` | | Koijen et al. (below): equity dividend-yield carry, long-short, Sharpe 0.36 `[paper]` | (0.36, long-short) |
+| FX carry | Koijen, Moskowitz, Pedersen and Vrugt, "Carry", JFE 127(2), 2018, 197-225 (accepted manuscript) `[paper]` | currencies 1983-11..2012-09 | currency carry 5.29%/yr, sd 7.80% | **0.68** stated |
+| FX carry | Lustig, Roussanov and Verdelhan, "Common risk factors in currency markets", RFS 24(11), 2011, 3731-3777 `[paper]` | 1983-11..2009-12 | HML_FX net of bid-ask 4.54%/yr, sd 9.05% | 0.50 stated (0.95 before bid-ask) |
+| merger arb | Mitchell and Pulvino, "Characteristics of risk and return in risk arbitrage", JF 56(6), 2001, 2135-2175 `[paper]` | 1963-1998 (4,750 deals) | index-manager series after costs 10.64%/yr, sd 7.74%; returns like selling index puts; beta 0.49 in down markets | **0.57** stated (CRSP market 0.40) |
+| option writing | Whaley, "Return and risk of CBOE Buy Write Monthly Index", Journal of Derivatives 10(2), 2002, 35-42 `[secondary]`: text not read | 1988-06..2001-12 | BXM 1.12%/month, sd 2.66; S&P 500 1.19%, sd 4.10 `[secondary, a search snippet: unverified]` | not found; ~0.9 vs ~0.65 if bills ~5%/yr (rough, unverified) |
+| option writing | Ennis Knupp + Associates, "Evaluating the performance characteristics of the CBOE S&P 500 PutWrite Index", Dec 2008, for CBOE `[paper]` | 1986-06..2008-10 (index launched 2007; mostly backfill) | PUT 10.32%/yr, sd 9.91%; S&P 500 8.77%, sd 15.39% | **0.63** vs S&P 0.30 stated (gap +0.33) |
+| risk parity | Asness, Frazzini and Pedersen, "Leverage aversion and risk parity", FAJ 68(1), 2012, 47-59 `[paper]` | 1926-01..2010-06 | risk parity 7.99%/yr excess, vol 15.08%; 60/40 4.65%, vol 11.68% | **0.53** vs 60/40 0.40 stated (gap +0.13) |
+| trend | Moskowitz, Ooi and Pedersen 2012 via AQR's TSMOM factor (survey-5) | 1985-01..2009-12 | | **1.41** (survey-5, today's data) |
+| tail hedge | Israelov, "Pathetic protection", Journal of Alternative Investments 21(3), 2019, 6-33 `[secondary]` | 1986-07..2016-05 | CBOE PPUT (5% OTM puts on the S&P 500): alpha -1.8%/yr, beta 0.74; a plain stock/cash mix of equal return had ~60% higher Sharpe | no positive edge claimed: insurance has a cost |
+| gold miners, defensive sectors | no published long-short backtest used | | | - |
+
+Paper series computed by code (card): HML, Mom (UMD), RMW, CMA from Ken French; BAB and QMJ
+from AQR. Their in-sample Sharpe from today's data need not equal the printed one (the
+libraries are rebuilt; French's Mom is value-weighted, not Jegadeesh-Titman's deciles).
 
 ## Tried and not usable keyless
 
