@@ -1,6 +1,6 @@
 # Next steps
 
-## Evo 1 (PAUSED 2026-11-18 ~19:20 UTC after burst 2, branch `evo-1`, draft PR #44 -> `carry-2`)
+## Evo 1 (PAUSED 2026-11-18 ~19:30 UTC after burst 2, waiting for the lead, branch `evo-1`, draft PR #44 -> `carry-2`)
 
 Question: can a genetic-programming search over trading rules find anything that beats `tsmom12`
 once it is charged for its luck (walk-forward selection, a full-search replay test, out-of-universe
@@ -12,46 +12,45 @@ sets)? Card: `research/evo-1.md`; rules: `research/protocol.md` "Evolved-rule se
   **full-search replay test** (lead, 2026-11-18 ~11:15 UTC, on the card before any real number):
   pass only if none of 20 replay worlds is at or above the real score, or 40 worlds with at
   most one, chosen at the timing test.
-- Done, burst 2 (2026-11-18 ~18:30-19:20 UTC), all in `research/lib/`, tests in `tests/`:
+- Done, burst 2 (2026-11-18 ~18:30-19:30 UTC), all in `research/lib/`, tests in `tests/`:
   - `evo_score.py`, the fast scorer (`test_evo_score.py`): within 0.04 Sharpe of `gym.simulate`
-    on 16 fixed rules (measured 0.028), growth within 0.4 points, daily correlation > 0.995.
-    It models cash-limited coin buys on the weekend (without it, ETF-to-coin rotations were off
-    by up to 0.13 Sharpe).
-  - `evo_world.py` (shuffle and block-bootstrap worlds, the plant `H`) and `evo_wf.py` (the
-    walk-forward driver: 14 fits x 5 GP runs, candidates, `evo-top1` / `evo-ens10` /
-    `evo-val`, gym replay, commands `timing`, `ceilings`, `control`, `baselines`, `replay`);
-    `test_evo_wf.py`.
-  - **Timing test** (on the card, "Bar 3, replaced"): one walk-forward search ~0.04 CPU-hours
-    (a GP run 1.3-3.2 CPU s); the whole plan ~1.2 CPU-hours with 20 replays, ~2.1 with 40. No
-    halving. By the card's rule the lane chose **40 replay worlds (seeds 101-140, at most one at
-    or above)**; the lead may still pick 20 before the first replay runs.
-  - **Controls** (33 `control` rows `evo-1-control`, table `research/results/evo-1.md`):
-    planted `H` found at k=0.04 (top1 0.46, ens10 0.51; ceiling 0.82; equal weight -0.26 there)
-    and k=0.02 (all three), not at k=0.01. Noise found in 1 of 3 worlds (world 3: ens10 0.31 p
-    0.051, val 0.37 p 0.024), so bar 5 is not triggered.
-- **Open question for the lead (blocks the replays):** the control worlds have zero *log* drift,
-  which still pays a holder about half the variance a day: equal weight earns Sharpe 0.32 / 0.41
-  / 0.47 in the three noise worlds. Cash is the wrong null for the noise control, and noise
-  world 3's "find" is that premium (every procedure trails equal weight in its world). Options,
-  to be written as a dated card note before any replay or real number: (a) judge the noise
-  control against equal weight in the same world; (b) zero *mean simple* return worlds (shift
-  log returns by mean + variance / 2), rerun the 6 controls (~15 CPU-minutes) and decide
-  whether the replay worlds change too (the replay statistic is relative to `tsmom12`, so the
-  premium mostly cancels; the rest makes bar 3 harsher). Details in `research/evo-1.md`, end of
-  "Build notes, burst 2".
-- Doing: nothing. No process running. Held-out year untouched. No real-data search, replay
-  world or real-data number of evo-1 exists.
-- Next, in this order:
-  1. The lead answers the open question (card note), and confirms 40 replays (or 20).
-  2. Replay worlds: `uv run python research/lib/evo_wf.py replay SEED` for seeds 101-140 (or
-     101-120), each one `evo-1-replay` control row; ~2.5 CPU-minutes each with 8 workers
-     (~20 s wall). Run them one after another (each uses 8 processes).
-  3. Then the real walk-forward (needs a `real` command: 15 fits incl. the final fit, the three
-     procedures through the gym as `variant` rows, the `search` row, Reality Check / SPA /
-     deflated Sharpe as descriptions), transfer to the three out-of-universe sets, static
-     twins, re-evolved runs. Rows in `research/tries.md` as the card says.
-  4. Tables `research/results/evo-1.md`, write-up at the top of `research/evo-1.md`, this
-     section, PR text. Never merge.
+    on 16 fixed rules (measured 0.028), growth within 0.4 points, daily correlation > 0.995;
+    models cash-limited weekend coin buys.
+  - `evo_world.py` (shuffle / block-bootstrap worlds, zero log or zero mean simple return, the
+    plant `H`) and `evo_wf.py` (walk-forward driver: 14 fits x 5 GP runs, candidates,
+    `evo-top1` / `evo-ens10` / `evo-val`, gym replay; commands `timing`, `ceilings`, `control`,
+    `baselines`, `replay`); `test_evo_wf.py`.
+  - Timing (card, "Bar 3, replaced"): one walk-forward search ~0.04 CPU-hours; the whole plan
+    ~2.1 CPU-hours with 40 replays. No halving.
+  - Lead's decisions (card note, "Lead's decisions", committed before any replay): control
+    worlds with zero mean simple return; 40 replays (seeds 101-140, at most one at or above);
+    then the real search if the controls pass. Replay worlds stay zero log return (the note
+    says why).
+  - Controls, first run (zero log drift, superseded): planted found, noise 1 of 3, but equal
+    weight earned 0.32-0.47 in noise (the holding premium).
+  - **Controls after the fix** (27 rows, `research/results/evo-1.md`): **noise found in 0 of
+    3; planted not found at any strength** (k=0.04: 0.10 / 0.19 / 0.27 against a ceiling of
+    0.72). Diagnostic: at 12 of 14 fits the search's best in-sample fitness beats `H`'s own,
+    i.e. it overfits past the true rule. By the card a real fail would read "too weak to
+    tell".
+- **Stopped before the replays and the real search** (planted control failed; reasons on the
+  card, end of "Build notes, burst 2"). Doing: nothing. No process running. Held-out year
+  untouched. No replay world, real-data search or real-data number of evo-1 exists.
+- **For the lead, choose one (dated card note before any replay or real number):**
+  1. Run the replays and the real search anyway, knowing a fail reads "too weak to tell"
+     (a pass would still be meaningful: bar 3 controls the search's luck). ~2 CPU-hours.
+  2. Make the search less greedy, then rerun the controls first: e.g. a larger node penalty
+     (0.03-0.05 per node), fewer generations or a smaller population, or select on the
+     ensemble only; the planted k=0.04 world is the gate (must be found, noise must not).
+     Every change must hold for real, control and replay runs alike.
+  3. Close the lane: on this data (one index alone for 30 years, six assets for 30), a free
+     rule search cannot tell a Sharpe-0.7 planted rule from its own luck, so it cannot find
+     a smaller real one either.
+- Next after the lead's answer: `uv run python research/lib/evo_wf.py replay SEED` for seeds
+  101-140 (one `evo-1-replay` row each, ~20 s wall each with 8 workers), then a `real` command
+  (not written yet: 15 fits incl. the final fit, the three procedures through the gym as
+  `variant` rows, the `search` row, bars 1-5, transfer to the three out-of-universe sets,
+  Reality Check / SPA as descriptions), tables, write-up, PR text. Never merge.
 - Compute: CPU only; `evo_wf.py` uses 8 worker processes (a few hundred MB in all); run with
   `OMP_NUM_THREADS=1`. Scratch (JSON per world) under `<cache_root>/derived/evo-1/`.
 

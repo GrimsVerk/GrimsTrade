@@ -147,6 +147,31 @@ Details the card left open, fixed in code before any control, replay or real-dat
   high-volatility assets than `tsmom12`, which makes bar 3 harsher, not softer. Not changed
   here: the controls were run as the card says.
 
+**Controls rerun after the null fix (2026-11-18 ~19:20-19:24 UTC, card note "Lead's
+decisions")**, zero mean simple return worlds; table in `results/evo-1.md`, 27 more `control`
+rows.
+
+- **Noise: found in 0 of 3 worlds** (every procedure's Sharpe -0.34 to 0.22, smallest p x 3
+  0.395; equal weight -0.10, -0.01, 0.05). The lead's stop rule (more than 1 of 3) is not hit.
+- **Planted: not found at any strength.** At k=0.04 the procedures make 0.10, 0.19 and 0.27
+  against a ceiling of 0.72 (half is 0.36; `evo-val` p 0.073), with weights correlated
+  0.32-0.48 with `H`'s. Against equal weight in the same world they are far ahead (+0.85 to
+  +1.02, p 0.000), so they do pick up part of `H`, but not enough. The first run's "found" at
+  0.02 and 0.04 came from the holding premium the fix took out.
+- **Why** (diagnostic, k=0.04): at 12 of 14 fits the best rule the search found has a higher
+  in-sample fitness than `H` itself (by 0.01-0.12). The search is not too weak to reach the
+  true rule; with ~600,000 formulas tried it overfits past it, and the true edge (fitness
+  ~0.5 over 1962-`D`, most of it the index alone) is smaller than the luck of the best of the
+  search.
+- **Reading, by the card:** the planted control is not found at its strongest strength, so a
+  fail of the real search would read "this search is too weak to tell", not "nothing honest".
+- **The lane stopped here** (no replay world, no real-data search). The lead's chain says
+  "if the controls pass"; the noise half passes, the planted half fails, and the original
+  chain said the planted world must pass. Spending the one real search on a pipeline that
+  cannot find a planted Sharpe-0.72 rule would only buy an uninformative fail and would make
+  any improved pipeline a second look at the real data. Options for the lead are in
+  `next-steps.md`.
+
 ## Card (written 2026-11-18 ~01:50 UTC, before any evo-1 code or number)
 
 Seen before writing: every result in `ideas.md`, `tries.md` and `results/` up to carry-2. No
