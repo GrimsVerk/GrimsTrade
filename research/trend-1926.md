@@ -11,6 +11,11 @@ of US stocks from 1926 to 1961, on the rule exactly as it is, with nothing tuned
 
 ## In plain words (results, 2026-11-18)
 
+**Both eras in one line:** over 1927-2001 the rule's lead over holding US stocks is the
+collapses of 1929-1932 and 1973-1974 only; outside them it ties or trails. Era 2 (1962-2001,
+card 2 and its result at the end of this file) came out "crashes only": market +0.07 (p 0.26),
+-0.03 without 1973-1974. Era 1 follows.
+
 **Yes over the whole period, but not as a property. `tsmom12` beat holding on US stocks
 1927-1961 (Sharpe 0.88 against 0.55 on the market, worst loss 38% against 84%), and about two
 thirds of that lead is the crash of 1929-1932. After the war (1946-1961) it trailed holding on
@@ -308,3 +313,13 @@ loss 32% against 48%. Ten-industry book +0.05 (p 0.29); 6 of 10 industries ahead
   one day, 0.027 total log growth over 40 years). Era 1's gaps were holiday-Friday weeks; that
   explanation is not verified for this era. Era 1's table was rebuilt after the code change
   and came out identical.
+- **Replay gaps explained (trend-1926-fix, 2026-11-18, re-scoring only, no number changed).**
+  Every gap above 0.0001 in both eras is the Monday (or Saturday) after a Friday holiday, and
+  the Tuesday after it: `common.weekly` takes the week's Friday from the latest visible close,
+  so in a holiday-Friday week the gym fills the new signal one session later than the paper
+  series. Conservative, no look-ahead, the house convention for every lane. With the paper's
+  returns on those sessions: market +0.070 (was +0.071), `x1` -0.032 (was -0.031), `x3` -0.020
+  (was -0.019); "crashes only" stands. In era 1 only energy's whole-period sign is on the
+  knife-edge (-0.002 published, +0.007 re-scored: "9 of 10 industries" would read 10 of 10).
+  Evidence and tables: top of `results/trend-1926-era2.md`; script
+  `lib/trend_1926_gaps.py`.

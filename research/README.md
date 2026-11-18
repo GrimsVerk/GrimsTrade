@@ -100,12 +100,17 @@ Sharpe. Settings from 6 to 12 months, any decision frequency, any threshold: a f
 settings, descriptive, not candidates). Next lanes: the same rule on US stocks 1926-1961, a
 filter only where it buys calm, a faster re-entry.
 
-Trend 1926 (trend-1926, 2026-11-18; [`trend-1926.md`](trend-1926.md)): **`tsmom12` beat
-holding on US stocks 1927-1961, mostly through the crash of 1929-1932; it is crash insurance,
-not a property of stocks.** French daily market and ten industries, rule unchanged, one
-pre-registered run: market Sharpe 0.88 against 0.55 (+0.33, p 0.02), worst loss 38% against
-84%, ten-industry book +0.45. Without 1929-1932 the market's lead is +0.11 (p 0.18), and in
-1946-1961 it trails (-0.09). Days out were rougher than days in across 1927-1945 and not after.
+Trend 1926 (trend-1926, 2026-11-18; [`trend-1926.md`](trend-1926.md)): **over 75 years of
+US stocks (1927-2001), `tsmom12`'s lead over holding is the collapses of 1929-1932 and
+1973-1974; outside them it ties or trails. Crash insurance, not a property of stocks.** French
+daily market and ten industries, rule unchanged, two cards, each fixed before its one run.
+Era 1, 1927-1961: market Sharpe 0.88 against 0.55 (+0.33, p 0.02), worst loss 38% against 84%,
+ten-industry book +0.45; without 1929-1932 +0.11 (p 0.18), and 1946-1961 trails (-0.09).
+Era 2, 1962-2001 ("crashes only"): 0.88 against 0.80 (+0.07, p 0.26), worst loss 32% against
+48%, book +0.05; without 1973-1974 -0.03. In both eras the days out were rougher than the days
+in during the bear-market half only (1927-1945, 1962-1981). The replay check's one-day gaps are
+holiday-Friday weeks, where the gym trades one session later than the gym-free check; they move
+no deciding number (`results/trend-1926-era2.md`).
 
 ## Ranking after run 2
 
