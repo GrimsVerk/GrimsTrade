@@ -12,8 +12,16 @@ DAY0 = date(2026, 10, 1)
 
 
 def fake_market(url: str) -> bytes:
-    """Kraken-style JSON for crypto, Stooq CSV for ETFs (Yahoo 'down'). Prices rise 1/day."""
+    """Kraken-style JSON for crypto, Stooq CSV for ETFs (Yahoo 'down' for ETFs, up for the
+    T-bill rate ^IRX at 4%). Prices rise 1/day."""
     days = [DAY0 + timedelta(days=i) for i in range(60)]
+    if "yahoo" in url and "%5EIRX" in url:
+        sessions = [d for d in days if d.weekday() < 5]
+        ts = [int(datetime(d.year, d.month, d.day, 14, 30, tzinfo=UTC).timestamp())
+              for d in sessions]  # fmt: skip
+        quote = {k: [4.0] * len(ts) for k in ("open", "high", "low", "close")}
+        result = {"timestamp": ts, "indicators": {"quote": [quote | {"volume": [0] * len(ts)}]}}
+        return json.dumps({"chart": {"result": [result], "error": None}}).encode()
     if "kraken" in url:
         ts = [int(datetime(d.year, d.month, d.day, tzinfo=UTC).timestamp()) for d in days]
         rows = [[t, str(100 + i), str(101 + i), str(99 + i), str(100.5 + i), "0", "10", 1]
@@ -72,7 +80,7 @@ def test_a_failing_source_is_reported_but_the_rest_still_runs(tmp_path: Path) ->
         raise OSError("blocked")
 
     problems = run_daily.run(tmp_path, datetime(2026, 11, 2, 22, 30, tzinfo=UTC), no_etfs, tmp_path)
-    assert len(problems) == 4
+    assert len(problems) == 5  # the four ETFs and the T-bill rate
     assert len(ledger.decisions(tmp_path, "buy_hold_btc")) == 1
 
 

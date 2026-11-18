@@ -1,5 +1,13 @@
 # Next steps
 
+## combo-2 (DEEPER lane, night 2026-11-18, branch `combo-2`, draft PR -> `combo-1`, never merged by agents)
+
+Task: (1) `combo-cash`: merge #61's cash interest (`origin/cash-interest`, merged into this
+branch, not cherry-picked) and rerun combo-1's failure map and both blends exactly as carded,
+robustness rows only; (2) card one long-only partner for the years stocks and bonds fall
+together, test on train, count it in the family bar; (3) a 5-line verdict on the combo line.
+Write-up `research/combo-2.md`. Costs: protocol 25 + 5 bps crypto, 2 bps ETFs, as combo-1.
+
 ## combo-1 (DEEPER lane, night 2026-11-18, branch `combo-1`, draft PR -> `main`, never merged by agents)
 
 Task: failure map of the most credible models/overlays against `tsmom12` (where each loses:
@@ -23,6 +31,29 @@ map by a stated rule, train only, every try logged, then a verdict. Write-up `re
   fails. 8 rows in `research/tries.md`; held-out unspent. Next lanes (in `research/combo-1.md`):
   `stop-reentry` (coin stop + re-entry rule, 21 episodes), `combo-cash` (map and blends with
   T-bill cash), a long-only complement for the stock-bond-together regime (DBC, T-bill slot).
+
+## Cash interest (branch `cash-interest`, draft PR #61, not merged)
+
+Idle cash earns the 13-week T-bill rate (Yahoo `^IRX`), accrued daily, in the live record from
+the first run with this code and in backtests over all stored rates; Sharpe is measured above
+that rate. Rule and why: `docs/DECISIONS.md` (2026-11-18, cash interest). Code: `rates.py` (store,
+knowledge times), `gym.simulate(rates=...)`, `report.py` plumbing, `run_daily._rates`. Tests:
+`tests/test_cash_interest.py` (offline, fixture rates). Train-period effect (PR #61): CAGR
+`tsmom12` +17.64% -> +18.19%, `sixty_forty` +8.09% -> +8.63%; Sharpe above T-bills is lower for
+every book (convention change, not a loss).
+
+- [ ] After merging: the first daily run creates `data/rates.csv` on `paper-trail` with `^IRX`
+      closes since the first stored bar. Check the log shows `rates: +N (yahoo ^IRX)` and no
+      "rates not fetched".
+- [ ] Rebase notes: PRs #29 (G2), #30 (G4) and #32 (fee tiers) touch the same `simulate`
+      signature and `report.py` lines; conflicts are mechanical (keep both parameters). G4's
+      `weekly.md` sentence "cash earns no interest" must then say cash earns the T-bill rate.
+
+### For the owner
+
+- Merging is your call: it changes every score once (interest on cash, Sharpe above the cash
+  rate). Open questions in PR #61: a broker spread below the T-bill rate; should the research
+  harness also measure Sharpe above T-bills; a second rate source (US Treasury CSV).
 
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
