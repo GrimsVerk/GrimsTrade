@@ -6,8 +6,26 @@ Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 i
 already in the cache), and were its days out rougher than its days in? Card:
 `research/trend-1926.md` (fixed before any number).
 
-- Doing: card pushed; next the loader and runner (`research/lib/trend_1926.py`), then the runs
-  (96 rows in `research/tries.md`), table `research/results/trend-1926.md`, write-up.
+- **Paused 2026-11-18 (usage window), before any number.** No run on the real data has been
+  made: `research/tries.md` has no `trend-1926` row and there is no result file yet.
+- Done and pushed: the card (commit `1465853`, before any code); the loader, runner and report
+  (`research/lib/trend_1926.py`); tests (`tests/test_trend_1926.py`, 9 pass: the loader, the
+  bars, and a hand replay of `tsmom12` that matches the gym's equity on every day for both
+  fill conventions, on made-up data). The script itself has only been exercised through those
+  tests, never end to end.
+- **Next, in this order:**
+  1. `research/macro.local.json` must exist (git-ignored; copy
+     `research/macro.local.json.example`).
+  2. `uv run python -I research/lib/trend_1926.py`: one run, a few minutes, light. It appends
+     96 rows to `research/tries.md` (24 `baseline`, 72 `robustness`) and writes
+     `research/results/trend-1926.md`. If it crashes part-way, fix and rerun: configurations
+     whose equity file exists under `research/data/runs/trend-1926/` are re-scored without a
+     second row. Do not use `DRY=1` on the real data (it would be an unlogged run).
+  3. Commit and push the rows and the table.
+  4. Write-up at the top of `research/trend-1926.md` (plain words, table, how sure, 2-3 next
+     lanes), the findings above the marker line in the result file, the `trend-1926` row in
+     `research/ideas.md`, this section, then the draft PR "trend-1926: does trend pay on
+     stocks before 1962? (research only)" with base `trend-tune`. No PR exists yet.
 - No process running.
 
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
