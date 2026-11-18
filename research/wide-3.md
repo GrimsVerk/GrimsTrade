@@ -3,7 +3,7 @@
 Research run wide-3, 2026-11-18. Branch `wide-3` (from `wide-2`). Research only: fake money,
 public data, no change to the gym, the daily runner or the live strategies.
 
-## Step 1. Choice (written 2026-11-18 ~19:20 UTC, before any number of this run)
+## Step 1. Choice (pushed 2026-11-18 19:05 UTC, commit 3dea3e7, before any number of this run)
 
 ### The count, kept honest
 
@@ -74,3 +74,41 @@ and P2.
   episodes).
 
 Cards: `cards/hedge-regime.md`, `cards/attention-peak.md`, each pushed before any number.
+
+## Pick 1 result: hedge-regime (run once, 2026-11-18 19:08 UTC, train only)
+
+**It fails. Holding TLT out of trend while it hedges stocks changes nothing: Sharpe 1.05
+against 1.05 for `tsmom12` (difference +0.003, p 0.39), and -0.006 on the other ETFs. The
+held-out year was not looked at.** Table: `results/hedge-regime.md`; 2 rows in `tries.md`
+(1 variant, 1 robustness).
+
+| | `hedge` | `tsmom12` |
+|---|---:|---:|
+| Sharpe, six assets, 1994-2025 | 1.05 | 1.05 |
+| Difference (p; 90% range) | +0.00 (0.39; -0.01 to +0.02) | |
+| Eras ahead (from 2000-09) | 3 of 4 (by 0.00-0.04 each; behind in 2022-25 by 0.09) | |
+| Max drawdown | 35.8% | 36.5% |
+| 2022 rate shock | -17% | -13% |
+| Other ETFs (IEF, LQD) | -0.006 (p 0.78) | |
+
+Bars 1 and 4 fail; 2, 3 and 5 pass.
+
+**What it shows.**
+
+1. **The power problem was worse than stated on the card, and in a different place.** TLT's
+   one-year correlation with stocks was below zero on 81% of Fridays and in every week of
+   2008-2020; it turned positive only in 2023 (mean +0.14 in 2023, +0.16 in 2024), not in 2021
+   as I remembered. One flip, as feared.
+2. **The weeks the rule adds are worth nothing.** On the 267 Fridays where `hedge` holds TLT and
+   the twin does not, TLT earned +1.2 bps a week (t 0.1), +3% in all. Out of trend, the bond
+   was neither insurance that paid nor drift worth having: when TLT is below its level of a year
+   ago in a hedge phase, the stocks it would hedge are usually doing fine.
+3. **A one-year order parameter is too slow for the one flip that mattered.** In 2022 rho was
+   still below zero on 85% of Fridays, so the rule held TLT into the bond crash (-17% against
+   -13% for the twin). That is where the 2022-25 era is lost.
+
+**How sure.** Sure that it adds nothing on these assets: the 90% range of the difference is
+-0.01 to +0.02, and the out-of-universe bonds agree. Not a test of the phase idea on data with
+many flips (1962-2000 bond yields would have some); our ETFs have one.
+
+**Compared with my guess** (card): 2%, -0.04 to +0.05. It came out at +0.00, inside the range.

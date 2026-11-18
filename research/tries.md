@@ -990,3 +990,5 @@ Never edit or delete a row.
 | 2026-11-18 11:19 | crowded-trend | crowd@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.47 | +122.0% | 16.2% | 3.85 |
 | 2026-11-18 11:19 | crowded-trend | crowd@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +349.3% | 91.5% | 4.95 |
 | 2026-11-18 11:19 | crowded-trend | crowd@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +1932.4% | 24.6% | 2.88 |
+| 2026-11-18 19:08 | hedge-regime | hedge | variant | train | 1994-02-01 | 2025-11-09 | 1.05 | +18562.6% | 35.8% | 2.57 |
+| 2026-11-18 19:08 | hedge-regime | hedge@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +223.1% | 16.5% | 2.85 |

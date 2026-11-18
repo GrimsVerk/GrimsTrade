@@ -3,7 +3,7 @@
 Field: epidemiology (SIR: an epidemic turns when new infections fall). It is mechanism P2 of
 `wide-1.md` step 1 ("attention is the infection: a mania ends when new infections peak"),
 which wide-1 parked: "three manias, all coins at once. Data is free (Wikimedia, from 2015-07)".
-Written 2026-11-18 ~19:30 UTC, run wide-3, before any test or number of this card, and before
+Written 2026-11-18, pushed 19:06 UTC (commit f25b507), run wide-3, before any test or number of this card, and before
 any page-view number was downloaded or seen. Seen before: every earlier result in `tries.md`,
 the coin price history in general terms (tops in 2017-12 and 2021, as public knowledge).
 

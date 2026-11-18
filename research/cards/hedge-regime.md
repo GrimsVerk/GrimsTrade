@@ -4,7 +4,7 @@ Field: statistical physics (an order parameter that says which phase the system 
 mechanism F2 of `wide-1.md` step 1 ("the sign of the stock-bond correlation is an order
 parameter that says which hedge works"), which wide-1 killed without a test as "a refinement
 of `trend-to-safe`; one flip since TLT exists".
-Written 2026-11-18 ~19:25 UTC, run wide-3, before any test or number of this card. Seen
+Written 2026-11-18, pushed 19:06 UTC (commit f25b507), run wide-3, before any test or number of this card. Seen
 before: every earlier result in `tries.md`, including `trend-to-safe` (empty slots to safe
 assets in trend) and the wide-2 results. No stock-bond correlation has been printed by me.
 
