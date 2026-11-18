@@ -1,6 +1,8 @@
+import math
 import subprocess
 from datetime import UTC, date, datetime
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -87,6 +89,38 @@ def test_tries_count_each_strategy_once(tmp_path: Path) -> None:
     assert not ledger.register_try(tmp_path, "x", "", T)
     assert ledger.register_try(tmp_path, "y", "", T)
     assert ledger.tries(tmp_path) == 2
+
+
+def test_a_try_can_carry_its_record_length_and_shape(tmp_path: Path) -> None:
+    assert ledger.register_try(tmp_path, "old", "no shape", T)  # old callers: unchanged line
+    assert ledger.register_try(tmp_path, "new", "", T, weeks=1660, skew=-0.4, excess_kurtosis=5.0)
+    assert ledger.register_try(tmp_path, "part", "", T, weeks=52)
+    lines = (tmp_path / ledger.TRIES).read_text().splitlines()
+    assert lines[0] == '{"first_tried":"2026-11-10T22:30:00Z","name":"old","note":"no shape"}'
+    assert ledger.tries(tmp_path) == 3
+    assert ledger.try_moments(tmp_path) == {
+        "new": {"weeks": 1660, "skew": -0.4, "excess_kurtosis": 5.0},
+        "part": {"weeks": 52},
+    }
+    # Counted once: a second call with the fields does not add them to the first line.
+    assert not ledger.register_try(tmp_path, "old", "", T, weeks=10)
+    assert "old" not in ledger.try_moments(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        {"weeks": 0},
+        {"weeks": 2.5},
+        {"weeks": True},
+        {"skew": math.nan},
+        {"excess_kurtosis": math.inf},
+    ],
+)
+def test_a_try_refuses_a_shape_that_is_not_a_number(tmp_path: Path, bad: dict[str, Any]) -> None:
+    with pytest.raises(ValueError):
+        ledger.register_try(tmp_path, "x", "", T, **bad)
+    assert ledger.tries(tmp_path) == 0
 
 
 def test_live_strategies_give_valid_weights() -> None:

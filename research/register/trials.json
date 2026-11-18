@@ -1,0 +1,94 @@
+{
+  "card": "research/register-2.md",
+  "generated_by": "uv run --with numpy python research/register2.py all",
+  "harness_ref": "origin/summary-2",
+  "harness_series": 39,
+  "harness_series_matched": 36,
+  "k_max": 60,
+  "main_window": "2012-2025",
+  "method": "Lopez de Prado and Lewis (2019), ONC; Bailey and Lopez de Prado (2014), A.3",
+  "n_init": 5,
+  "onc_check_planted_found": [
+    [
+      6,
+      6
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      20,
+      20
+    ]
+  ],
+  "rows_backfilled": 1209,
+  "rows_backfilled_by_source": {
+    "curve": 1122,
+    "harness": 87,
+    "live": 11
+  },
+  "rows_backfilled_selectable": 410,
+  "sample_series": 365,
+  "seed": 20261118,
+  "sensitivity_one_per_family": {
+    "cluster_sharpe_mean": 0.6737,
+    "cluster_sharpe_var": 0.6579,
+    "from": "2012-01-06",
+    "onc_k": 2,
+    "onc_k_at_cap": false,
+    "onc_sizes": [
+      48,
+      8
+    ],
+    "participation_ratio": 1.74,
+    "rho_mean": 0.7011,
+    "rho_median": 0.8005,
+    "series": 56,
+    "to": "2025-11-07",
+    "weeks": 722
+  },
+  "shape": {
+    "excess_kurtosis_median": 9.042,
+    "excess_kurtosis_p90": 17.427,
+    "series": 421,
+    "skew_median": -0.095,
+    "skew_p10": -1.058
+  },
+  "windows": {
+    "1994-2025": {
+      "cluster_sharpe_mean": 0.4452,
+      "cluster_sharpe_var": 0.025,
+      "from": "1994-02-04",
+      "onc_k": 2,
+      "onc_k_at_cap": false,
+      "onc_sizes": [
+        182,
+        33
+      ],
+      "participation_ratio": 1.72,
+      "rho_mean": 0.7197,
+      "rho_median": 0.8165,
+      "series": 215,
+      "to": "2025-11-07",
+      "weeks": 1657
+    },
+    "2012-2025": {
+      "cluster_sharpe_mean": 1.2108,
+      "cluster_sharpe_var": 0.0383,
+      "from": "2012-01-06",
+      "onc_k": 2,
+      "onc_k_at_cap": false,
+      "onc_sizes": [
+        206,
+        88
+      ],
+      "participation_ratio": 2.28,
+      "rho_mean": 0.5785,
+      "rho_median": 0.6771,
+      "series": 294,
+      "to": "2025-11-07",
+      "weeks": 722
+    }
+  }
+}

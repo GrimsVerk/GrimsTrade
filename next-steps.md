@@ -1,5 +1,22 @@
 # Next steps
 
+## Waiting for review: register-2 (branch `register-2`, draft PR #92 into `register-1`)
+
+Measured inputs for the bar (card and results: `research/register-2.md`). Done:
+
+1. `ledger.register_try` takes optional `weeks`, `skew`, `excess_kurtosis` (new lines only).
+2. `research/register2.py all` (numpy; needs `research/data/` prices and, for saved curves,
+   `research/register2.local.json`, see the `.example`) writes `research/register/moments.jsonl`
+   (1,209 rows + 11 live with T, skew, excess kurtosis) and `trials.json` (effective trials).
+3. `grimstrade.register` reads both: BAR.md shows the measured N (433 of 1,027, measured rho
+   0.58; ONC finds 2 clusters) and a per-record-length bar table.
+
+- [ ] Owner/lead: accept the measured bar (N 433: +0.30 close / +0.56 far over `tsmom12`).
+- [ ] Next: lanes pass `weeks`/`skew`/`excess_kurtosis` when logging (a column in
+      `research/tries.md` or the harness's `_log`), so the backfill stops depending on caches.
+- [ ] Next: a correlation sample that covers more families (only 40% of selectable rows have
+      returns; one family is a third of the sample).
+
 ## Waiting for review: register-1 (branch `register-1`, draft PR #79 into `dsr-1`, not merged)
 
 From dsr-1's findings; no backtests, no tries. Done:
