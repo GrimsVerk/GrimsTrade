@@ -1,5 +1,16 @@
 # Next steps
 
+## insure-2 (in progress 2026-11-18 night, branch `insure-2` -> `insure-1`)
+
+Deeper check of insure-1's "trend = cheapest crash insurance". Chain: (1) `insure-era`: card 2's
+controls (rotations, fixed exposure) per era, card `research/cards/insure-era.md`; (2) the same
+episode count and metrics on non-US stock indices (keyless long history), its own card;
+(3) one-screen verdict in `research/insure-2.md`. Code `research/lib/insure2.py`, tables
+`research/results/insure-2.md`. Rerun needs insure-1's setup (saved trend-1926 runs in
+`research/data/runs/trend-1926/`, `research/macro.local.json`).
+
+- Step 1: card pushed before numbers.
+
 ## insure-1 (done 2026-11-18 night, branch `insure-1`, draft PR #87 -> `trend-1926-fix`)
 
 Is "trend = crash insurance" statistically solid across 1927-2025, and what does it cost? Card
