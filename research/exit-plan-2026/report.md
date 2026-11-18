@@ -39,8 +39,8 @@ script and logged test behind it.
 >    Not gold, Berkshire, long bonds or anything in dollars.
 > 5. **Buy back** in 12 equal monthly buys, January to December 2027. In the past high-valuation
 >    months that fit today this had a better typical result and a milder bad tail than buying
->    in thirds on falls. Only as a bet that a real bust comes: a third each time a month-end close of the
->    S&P 500 is 20%, 30% and 40% below its high (about 6,255, 5,473 and 4,691), the rest by
+>    in thirds on falls. Only as a bet that a real bust comes: a third each time a month-end
+>    close of the S&P 500 is 20%, 30% and 40% below its high (about 6,255, 5,473 and 4,691), the rest by
 >    **Fri 29 Dec 2028**; it paid 1.4-1.6 times in real busts and cost more otherwise (section 8.2).
 
 What the evidence says, in short:
@@ -673,8 +673,11 @@ Neither rule beat buying back at once; both are ways to limit regret.
 2. **Alternative, a bet that a real bust comes:** buy in thirds (`staged-24`): one third at the
    first month-end close of the S&P 500 20% below its all-time high, one third at 30%, one third
    at 40%, decided at month-end closes as tested; whatever is left goes in by the deadline, 24
-   months after the sale: 31 Dec 2028 is a Sunday, so **Fri 29 Dec 2028** (2028 exchange
-   holidays not checked). From the 6 Oct 2026 closing high of about 7,819 the levels are about
+   months after the sale: 31 Dec 2028 is a Sunday, so **Fri 29 Dec 2028** (not an NYSE holiday
+   on its 2026-2028 calendar, section 11.2; Euronext's 2028 calendar not checked). The test
+   counts the sale month's own month-end close; since you hold no stocks over 31 Dec 2026, a
+   level already reached at the Dec 2026 month-end close is bought on the first trading day of
+   January 2027, just as the monthly buys start then. From the 6 Oct 2026 closing high of about 7,819 the levels are about
    **6,255 / 5,473 / 4,691** (`report_checks.py`); if the index makes a new high first, the
    levels move up. On 18 Nov it was 6.3% below its high. Choose this only if you accept the bet:
    a belief that the AI boom is a bubble that will burst within two years is such a bet. In the
