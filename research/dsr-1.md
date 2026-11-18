@@ -398,3 +398,142 @@ as 0.005, the largest value it can mean (cautious). (3) The difference-form DSR 
 family count: gsy-1 12, macro-1 13 (six macro cards), breadth-1 61, carry-3 25, coin-cap 16
 (the lane counts 15 rules). (5) Rows logged after the census snapshot (22:17 UTC) are left out
 so the numbers reproduce. Script: `python research/dsr1.py dsr`.
+
+### Results (computed 2026-11-18 ~23:15 UTC, after the card and the candidate note above were pushed)
+
+`uv run python research/dsr1.py dsr`, unedited output:
+
+Rows up to 2026-11-18 22:17 UTC: 2811. T for the primary test = 11,605 calendar days. Luck floor 1/T = 0.0315 a year (variance of an annual Sharpe).
+
+| Trial count | N | at rho 0.5 | at rho 0.9 |
+|---|---:|---:|---:|
+| N1 bar (first harness run) | 8 | 4.5 | 1.7 |
+| N2 live preset (risk map) | 89 | 45 | 9.8 |
+| N3 if chosen today | 947 | 474 | 96 |
+| M4 every row with a Sharpe | 2,414 | 1,208 | 242 |
+
+Variance of trial Sharpes (annual): primary test 0.0142 (mean 0.95, 256 rows); project-wide selectable variants 0.1032 (mean 0.78). The primary-test spread is below the luck floor 0.0315, so the floor is used there.
+
+#### (a1) `tsmom12`, absolute (paper's null: no trial has skill)
+
+| N | V | SR0 (annual) | DSR normal | DSR stress (skew -1, kurt 30) |
+|---|---|---:|---:|---:|
+| N1 bar (first harness run): 8.0 | primary | 0.26 | 1.0000 | 1.0000 |
+| N1 bar (first harness run): 8.0 | project | 0.47 | 0.9995 | 0.9992 |
+| N1 bar (first harness run) (rho 0.9): 1.7 | primary | 0.06 | 1.0000 | 1.0000 |
+| N1 bar (first harness run) (rho 0.9): 1.7 | project | 0.12 | 1.0000 | 1.0000 |
+| N2 live preset (risk map): 89 | primary | 0.44 | 0.9997 | 0.9995 |
+| N2 live preset (risk map): 89 | project | 0.80 | 0.9207 | 0.9130 |
+| N2 live preset (risk map) (rho 0.9): 9.8 | primary | 0.28 | 1.0000 | 1.0000 |
+| N2 live preset (risk map) (rho 0.9): 9.8 | project | 0.50 | 0.9990 | 0.9985 |
+| N3 if chosen today: 947 | primary | 0.57 | 0.9963 | 0.9951 |
+| N3 if chosen today: 947 | project | 1.04 | 0.5205 | 0.5197 |
+| N3 if chosen today (rho 0.9): 96 | primary | 0.45 | 0.9997 | 0.9995 |
+| N3 if chosen today (rho 0.9): 96 | project | 0.81 | 0.9136 | 0.9057 |
+| M4 every row with a Sharpe: 2,414 | primary | 0.62 | 0.9923 | 0.9902 |
+| M4 every row with a Sharpe: 2,414 | project | 1.12 | 0.3387 | 0.3441 |
+| M4 every row with a Sharpe (rho 0.9): 242 | primary | 0.50 | 0.9990 | 0.9986 |
+| M4 every row with a Sharpe (rho 0.9): 242 | project | 0.91 | 0.7873 | 0.7790 |
+
+For comparison, equal weight (Sharpe 0.88, a rule nobody searched for) in the same test: V project, N3 if chosen today: 0.182; N1, V primary: 0.9998. The absolute test cannot tell a trend rule from holding the market.
+
+Break-even N (largest number of independent trials with DSR >= 0.95): V primary: 58,940; V project: 62.
+
+#### (a2) `tsmom12` against the project's own trials (eq. 1 with their mean)
+
+| N | Mean and V of the trials | SR0 (annual) | DSR normal | DSR stress |
+|---|---|---:|---:|---:|
+| N1 bar (first harness run): 8.0 | primary (0.95) | 1.21 | 0.180 | 0.189 |
+| N1 bar (first harness run): 8.0 | project (0.78) | 1.25 | 0.132 | 0.140 |
+| N1 bar (first harness run) (rho 0.9): 1.7 | primary (0.95) | 1.02 | 0.573 | 0.571 |
+| N1 bar (first harness run) (rho 0.9): 1.7 | project (0.78) | 0.89 | 0.809 | 0.800 |
+| N2 live preset (risk map): 89 | primary (0.95) | 1.40 | 0.026 | 0.030 |
+| N2 live preset (risk map): 89 | project (0.78) | 1.58 | 0.001 | 0.002 |
+| N2 live preset (risk map) (rho 0.9): 9.8 | primary (0.95) | 1.23 | 0.154 | 0.163 |
+| N2 live preset (risk map) (rho 0.9): 9.8 | project (0.78) | 1.28 | 0.095 | 0.103 |
+| N3 if chosen today: 947 | primary (0.95) | 1.53 | 0.004 | 0.005 |
+| N3 if chosen today: 947 | project (0.78) | 1.82 | 0.000 | 0.000 |
+| N3 if chosen today (rho 0.9): 96 | primary (0.95) | 1.40 | 0.024 | 0.029 |
+| N3 if chosen today (rho 0.9): 96 | project (0.78) | 1.59 | 0.001 | 0.002 |
+| M4 every row with a Sharpe: 2,414 | primary (0.95) | 1.57 | 0.002 | 0.002 |
+| M4 every row with a Sharpe: 2,414 | project (0.78) | 1.90 | 0.000 | 0.000 |
+| M4 every row with a Sharpe (rho 0.9): 242 | primary (0.95) | 1.46 | 0.011 | 0.014 |
+| M4 every row with a Sharpe (rho 0.9): 242 | project (0.78) | 1.69 | 0.000 | 0.000 |
+
+Break-even N: primary (0.95): none (fails at N = 1); project (0.78): none (fails at N = 1).
+
+#### (a3) `tsmom12`'s edge over equal weight (difference form)
+
+| Window | d | z | N | DSR | Edge left after luck (d - SE maxZ) |
+|---|---:|---:|---|---:|---:|
+| `tsmom12` vs equal weight | +0.17 | 1.41 | N1 bar (first harness run): 8 | 0.478 | -0.01 |
+| `tsmom12` vs equal weight | +0.17 | 1.41 | N2 live preset (risk map): 89 | 0.139 | -0.13 |
+| `tsmom12` vs equal weight | +0.17 | 1.41 | N3 if chosen today: 947 | 0.033 | -0.22 |
+| `tsmom12` vs equal weight | +0.17 | 1.41 | M4 every row with a Sharpe: 2,414 | 0.018 | -0.25 |
+| `tsmom12` vs equal weight, 2003-2025 | +0.00 | 0.03 | N1 bar (first harness run): 8 | 0.076 | - |
+| `tsmom12` vs equal weight, 2003-2025 | +0.00 | 0.03 | N2 live preset (risk map): 89 | 0.007 | - |
+| `tsmom12` vs equal weight, 2003-2025 | +0.00 | 0.03 | N3 if chosen today: 947 | 0.001 | - |
+| `tsmom12` vs equal weight, 2003-2025 | +0.00 | 0.03 | M4 every row with a Sharpe: 2,414 | 0.000 | - |
+| | | | break-even N (1994-2025) | none (fails at N = 1) | |
+
+#### (b) The five near-misses
+
+| Near-miss | Lane | Against | d | p | z | N_family | DSR at N_family | DSR at N3 = 947 | at N3, rho 0.9 | Absolute DSR at N3 (V project) | Held-out year |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| `gsy-runup` flag100-sma | gsy-1 | `tsmom12`, 30 French industries 1928-2001 | +0.027 | 0.0010 | 3.09 | 12 | 0.923 | 0.441 | 0.718 | 0.396 | unspent |
+| `halving-and` | macro-1 | `tsmom12`, six assets | +0.15 | 0.0050 | 2.60 | 13 | 0.814 | 0.260 | 0.533 | 0.815 | unspent |
+| quiet coins (`turnover` TOP-TS) | breadth-1 | `tsmom12` on the same coin book | +0.34 | 0.0050 | 2.58 | 61 | 0.589 | 0.253 | 0.524 | 0.310 | spent (passed: 0.61 vs 0.31) |
+| funding carry `band` | carry-3 | zero (pooled Sharpe > 0) | +0.79 | 0.0250 | 1.96 | 25 | 0.485 | 0.100 | 0.290 | 0.064 | spent (failed: -0.65) |
+| coin `stop-0.25` | coin-cap 1-4 | a coin cap of the same cost (sign test, 21 episodes) | +0.714 | 0.0392 | 1.76 | 16 | 0.484 | 0.069 | 0.225 | 0.609 | unspent |
+
+#### Bonferroni and Holm (one-sided p, alpha 0.05)
+
+| Hypothesis | p | Survives Bonferroni up to m = | Holm-adjusted, m = 6 | Bonferroni at N_family | Holm-adjusted at m = N3 = 947 |
+|---|---:|---:|---:|---:|---:|
+| `tsmom12` vs equal weight | 0.0800 | 0.6 | 0.080 | 0.640 (m = 8) | 1.000 |
+| `gsy-runup` flag100-sma | 0.0010 | 50 | 0.006 | 0.012 (m = 12) | 0.947 |
+| `halving-and` | 0.0050 | 10 | 0.025 | 0.065 (m = 13) | 1.000 |
+| quiet coins (`turnover` TOP-TS) | 0.0050 | 10 | 0.025 | 0.305 (m = 61) | 1.000 |
+| funding carry `band` | 0.0250 | 2.0 | 0.075 | 0.625 (m = 25) | 1.000 |
+| coin `stop-0.25` | 0.0392 | 1.3 | 0.078 | 0.627 (m = 16) | 1.000 |
+
+`tsmom12` absolute (Sharpe > 0): p = 1.7e-09, survives Bonferroni up to m = 30,292,480.
+
+Card's held-out rule (unspent, DSR >= 0.95 at N_family and >= 0.50 at N3):
+
+- `gsy-runup` flag100-sma: no
+- `halving-and`: no
+- quiet coins (`turnover` TOP-TS): no
+- funding carry `band`: no
+- coin `stop-0.25`: no
+
+### What the numbers say
+
+- **The trials on the primary test are mostly copies of one another.** Their Sharpe spread
+  (variance 0.014) is below what luck alone gives one rule over 32 years (0.0315). That is
+  only possible if they move together: most are `tsmom12` with something added. So the raw
+  counts overstate the independent trials, and the rho 0.9 rows are the realistic ones for the
+  primary test. The project-wide spread (0.103) mixes tests of different data and lengths and
+  is the cautious upper end, as DECISIONS 2026-11-12 intends.
+- **`tsmom12` makes money: that survives everything.** Sharpe 1.05 over 11,605 days is > 0 with
+  p = 1.7e-9 (Bonferroni would allow 30 million tests). The absolute DSR stays >= 0.95 up to
+  58,940 independent trials at the primary test's spread; only with the project-wide spread and
+  more than 62 independent trials does it drop (0.52 at N3 = 947 raw, 0.91 at rho 0.9). But
+  equal weight, which nobody searched for, passes the same test (0.9998 at N1): this test
+  rewards holding risky assets, not the trend rule.
+- **`tsmom12`'s edge over holding does not survive, and never did.** Alone it was +0.17,
+  p = 0.08: below 0.95 already at N = 1 (0.92). At the eight baselines it was ranked first
+  among, DSR 0.48 and the edge left after luck is -0.01; at the live pick (N2 = 89) 0.14; if
+  picked today (947) 0.03. Since 2003 the edge is zero (review-1). Against the project's own
+  trials (test 2) it is not outstanding at any N (DSR 0.18 at N1, 0.02-0.15 at N2).
+- **No near-miss survives the project's search.** At its own family's size the best is
+  `gsy-runup` (DSR 0.92; Bonferroni at m = 12 gives 0.012, Holm in the family of six 0.006),
+  but its edge is +0.027 Sharpe, from 1928-2001, and fades after 2002 (p 0.2). At N3 = 947
+  every near-miss is between 0.07 and 0.44 (0.23-0.72 at rho 0.9); Holm at m = 947 adjusts
+  every p to >= 0.95. By the card's rule **none is worth a held-out year**: the two whose
+  year is unspent and that come closest (`gsy-runup`, `halving-and`) fail 0.95 at their own
+  family size.
+- **Sensitivity.** Skew -1 and kurtosis 30 move the absolute DSR by less than 0.01 (daily
+  Sharpe is small, so the higher moments hardly enter); the verdicts rest on N and V.
+
+Tries rows: none added (no configuration was run; the repo logs harness runs, see the card).

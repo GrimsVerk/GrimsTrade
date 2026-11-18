@@ -361,6 +361,8 @@ def holm(ps: list[float], m: int) -> list[float]:
 def fmt_n(x: float) -> str:
     if x == math.inf:
         return "> 1e15"
+    if x == 0:
+        return "none (fails at N = 1)"
     return f"{x:,.0f}" if x >= 10 else f"{x:.1f}"
 
 
@@ -420,7 +422,17 @@ def deflate_all() -> None:
                 ds, _ = dsr_abs(1.05, t, ne, v, moments=STRESS)
                 rl = f" (rho {rho})" if rho else ""
                 out.append(f"| {lab}{rl}: {fmt_n(ne)} | {vlab} | {sr0:.2f} | {d0:.4f} | {ds:.4f} |")
+    ew = [
+        f"{lab}: {dsr_abs(0.88, t, n, v)[0]:.3f}"
+        for lab, n in ns[2:3]
+        for vlab, v in vs
+        if vlab == "project"
+    ] + [f"N1, V primary: {dsr_abs(0.88, t, n1, v_prim)[0]:.4f}"]
     out += [
+        "",
+        "For comparison, equal weight (Sharpe 0.88, a rule nobody searched for) in the same "
+        f"test: V project, {'; '.join(ew)}. The absolute test cannot tell a trend rule from "
+        "holding the market.",
         "",
         "Break-even N (largest number of independent trials with DSR >= 0.95): "
         + "; ".join(
@@ -463,7 +475,8 @@ def deflate_all() -> None:
         for lab, n in ns:
             out.append(
                 f"| {cand.name} | {cand.d:+.2f} | {cand.z:.2f} | {lab}: {n:,} | "
-                f"{dsr_diff(cand.z, n):.3f} | {cand.d - se * max_z(n):+.2f} |"
+                f"{dsr_diff(cand.z, n):.3f} | "
+                f"{f'{cand.d - se * max_z(n):+.2f}' if cand.d else '-'} |"
             )
     out.append(
         f"| | | | break-even N (1994-2025) | "
