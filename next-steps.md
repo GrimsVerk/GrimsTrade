@@ -44,8 +44,13 @@
     (p 0.001), `flag100-vol` +0.030 (p 0.007) pass the Sharpe route pre-2002, fade after 2002
     (p ~0.2) and trail on sector ETFs; no worst-loss gain (`tsmom12` already out of 88% of
     industry crashes). Not a candidate; use run-up crash rates for risk description only.
-  - RUNNING: `evo-1` (greed tuning on synthetic worlds), `wide-4` (`grimstrade-wide4`:
-    tax-drain + 5 new cross-field mechanisms) (`grimstrade-gsy1`, Greenwood-Shleifer-You
+  - DONE `evo-1` (#44): greed grid (penalty 0.01/0.03/0.06 x 30/10/5 gens) on fresh synthetic
+    worlds: plant never found (best 0.20 vs ceiling ~0.22-0.24), noise 0/3; confirmation of the
+    pre-picked setting FAILS. No replays, no real search, held-out untouched (154 control rows).
+    Plant strength was not calibrated across worlds (0.72 vs 0.22). Lead: redesign as evo-2.
+  - RUNNING: `wide-4` (`grimstrade-wide4`: tax-drain + 5 new cross-field mechanisms), `evo-2`
+    (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
+    must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
     run-up exit on French industries 1928-), `coin-cap-3` (daily-checked stop vs weekly).
 - 3. Then the Lead 1 lane queue below.
 
