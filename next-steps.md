@@ -1,5 +1,13 @@
 # Next steps
 
+## eu-7 (doing 2026-11-18 night, branch `eu-7` from `eu-6`, draft PR -> `eu-6`)
+
+DEEPER lane on eu-6: keep trend's crash insurance, lose less of the rest? Card
+`research/cards/eu-7.md` (pushed before any number): A = trend on the three stock funds only,
+bonds/gold/commodities held at 1/7; B = hold the seven with a fixed cash share (1 - T's average
+exposure on W, from positions). eu family 10 -> 12 (bar p < 0.0083). Doing: step 2 (run on
+train, code `research/lib/eu7.py`).
+
 ## eu-6 (done 2026-11-18 night, branch `eu-6` from `eu-5`, draft PR #77 -> `eu-5`)
 
 DEEPER lane on eu-5: should a small coin-free euro book run trend at all? Card
