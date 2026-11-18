@@ -106,3 +106,44 @@ def month_matrix(days: Sequence[date]) -> np.ndarray:
     for n, d in enumerate(days):
         x[n, d.month - 1] = 1.0
     return x
+
+
+# --- W12 RMD waiver years ---
+
+RMD_WAIVED = (2009, 2020)
+
+
+def december_window(
+    days: Sequence[date], logc: np.ndarray, y: int, n: int = 10, first: bool = False
+) -> tuple[float, float] | None:
+    """(excess, raw) log return over the last n (or first n) trading sessions of December y.
+    Raw = close of the session before the window to its last close. Excess = raw minus n
+    times the mean daily log return over year y's other sessions. None if the year's bars
+    are incomplete (no close before 1 January y, or December has fewer than n + 1 sessions)."""
+    i_prev = last_on_or_before(days, date(y - 1, 12, 31))
+    i_end = last_on_or_before(days, date(y, 12, 31))
+    dec = [i for i in range(i_prev + 1, i_end + 1) if days[i].month == 12]
+    if i_prev < 0 or len(dec) < n + 1 or days[i_end].month != 12:
+        return None
+    w = dec[:n] if first else dec[-n:]
+    raw = float(logc[w[-1]] - logc[w[0] - 1])
+    rets = np.diff(logc[i_prev : i_end + 1])  # rets[k] = return of day i_prev + 1 + k
+    inside = {i - i_prev - 1 for i in w}
+    other = [rets[k] for k in range(len(rets)) if k not in inside]
+    return raw - n * float(np.mean(other)), raw
+
+
+def pair_permutation(x: dict[int, float], treat: Sequence[int]) -> tuple[float, float]:
+    """D = mean x over the treated years minus mean over the rest, and the exact one-sided
+    p: share of all equal-sized sets of years whose mean x is at or above the treated set's."""
+    from itertools import combinations
+
+    years = sorted(x)
+    t = [y for y in treat if y in x]
+    if not t or len(t) == len(years):
+        return math.nan, math.nan
+    rest = [x[y] for y in years if y not in t]
+    d = float(np.mean([x[y] for y in t]) - np.mean(rest))
+    m = float(np.mean([x[y] for y in t]))
+    sets = [float(np.mean(c)) for c in combinations([x[y] for y in years], len(t))]
+    return d, sum(s >= m - 1e-15 for s in sets) / len(sets)

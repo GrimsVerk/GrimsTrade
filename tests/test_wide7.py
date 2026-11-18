@@ -110,3 +110,31 @@ def test_run_flags_marks_sessions_strictly_before() -> None:
     assert r.run_flags(days, [date(2020, 1, 1)], 3).sum() == 0
     assert r.month_matrix([date(2020, 3, 1)])[0, 2] == 1.0
     assert r.run_flags(days, [date(2020, 1, 20)], 3).sum() == 0  # after the last day: skipped
+
+
+def test_december_window_excess_removes_the_year_drift() -> None:
+    r = _rules()
+    days = [date(2019, 12, 31)] + [
+        date(2020, 1, 1) + timedelta(days=k)
+        for k in range(366)
+        if (date(2020, 1, 1) + timedelta(days=k)).weekday() < 5
+    ]
+    logc = 0.001 * np.arange(len(days))  # constant drift: excess must be zero
+    got = r.december_window(days, logc, 2020)
+    assert got is not None
+    assert abs(got[0]) < 1e-12 and abs(got[1] - 0.010) < 1e-12
+    logc2 = logc.copy()
+    logc2[-10:] += 0.05  # a jump on the 10th-last session
+    ex, raw = r.december_window(days, logc2, 2020)
+    assert abs(raw - 0.06) < 1e-12 and ex > 0.049
+    assert r.december_window(days, logc, 2021) is None
+
+
+def test_pair_permutation() -> None:
+    r = _rules()
+    x = {2000 + k: float(k) for k in range(10)}  # 2009 the largest
+    d, p = r.pair_permutation(x, [2009, 2008])
+    assert abs(d - (8.5 - 3.5)) < 1e-12
+    assert abs(p - 1 / 45) < 1e-12
+    _, p2 = r.pair_permutation(x, [2000, 2001])
+    assert p2 == 1.0
