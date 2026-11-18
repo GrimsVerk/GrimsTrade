@@ -1065,3 +1065,5 @@ Never edit or delete a row.
 | 2026-11-18 23:10 | survey-6 | defensive-sectors@live-fund | live-check | train | 1999-01-01 | 2025-10-31 | 0.57 | +708.2% | 33.6% | - |
 | 2026-11-18 23:10 | survey-6 | trend@live-fund | live-check | train | 2007-03-01 | 2025-10-31 | 0.17 | +58.9% | 19.6% | - |
 | 2026-11-18 23:10 | survey-6 | risk-parity@live-fund | live-check | train | 2009-07-01 | 2025-10-31 | 0.63 | +184.8% | 20.4% | - |
+| 2026-11-18 23:18 | diversifier-1 | merfx7 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +11421.5% | 30.8% | 2.36 |
+| 2026-11-18 23:18 | diversifier-1 | mna7@mna | robustness | train | 2010-11-17 | 2025-11-09 | 1.37 | +2606.7% | 31.5% | 2.46 |
