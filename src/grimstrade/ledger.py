@@ -101,12 +101,47 @@ def decisions(root: Path, strategy: str | None = None) -> list[dict[str, Any]]:
     return [r for r in rows if strategy is None or r["strategy"] == strategy]
 
 
-def register_try(root: Path, name: str, note: str, now: datetime) -> bool:
-    """Count a strategy as tried. Returns False if it was already counted."""
+def register_try(
+    root: Path,
+    name: str,
+    note: str,
+    now: datetime,
+    *,
+    weeks: int | None = None,
+    skew: float | None = None,
+    excess_kurtosis: float | None = None,
+) -> bool:
+    """Count a strategy as tried. Returns False if it was already counted.
+
+    Optional, for the deflated Sharpe (record length T and the shape of the returns): `weeks`,
+    the length of the record the try was judged on, in weeks, and the `skew` and
+    `excess_kurtosis` (0 for normal returns) of its weekly returns. Written only when given, so
+    older lines and callers stay valid; a line never gains them later (append-only)."""
     if any(r["name"] == name for r in _read(root / TRIES)):
         return False
-    _append(root / TRIES, {"name": name, "first_tried": iso(now), "note": note})
+    entry: dict[str, Any] = {"name": name, "first_tried": iso(now), "note": note}
+    if weeks is not None:
+        if isinstance(weeks, bool) or not isinstance(weeks, int) or weeks < 1:
+            raise ValueError(f"weeks must be a positive whole number, not {weeks!r}")
+        entry["weeks"] = weeks
+    for key, value in (("skew", skew), ("excess_kurtosis", excess_kurtosis)):
+        if value is not None:
+            if not math.isfinite(value):
+                raise ValueError(f"{key} must be finite, not {value!r}")
+            entry[key] = float(value)
+    _append(root / TRIES, entry)
     return True
+
+
+def try_moments(root: Path) -> dict[str, dict[str, float]]:
+    """The optional record length and shape fields of each counted strategy that has any."""
+    keys = ("weeks", "skew", "excess_kurtosis")
+    out = {}
+    for r in _read(root / TRIES):
+        got = {k: r[k] for k in keys if k in r}
+        if got:
+            out[r["name"]] = got
+    return out
 
 
 def record_problems(root: Path, now: datetime, problems: Iterable[str]) -> None:
