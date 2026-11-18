@@ -7,10 +7,10 @@ z-score, volume-weighted trend, up/down volume, price-volume divergence), screen
 IC on train only: none useful. Largest |IC| 0.021 against a family chance level of 0.048 (maxT
 over the six); best walk-forward IC +0.017, best gain over the trend inputs +0.002 (bars 0.10
 and +0.05). Lane closed by its card: no re-run with other windows. Held-out year untouched.
-Write-up `research/volume-1.md`. Open, NOT RUN: "Card 2" there (the same six features as a
-cross-sectional weekly IC in the top-100 coin book, maxT bar). Card committed before any
-number; no code yet. Next: check which loader cointop-1 used, write the screen and its test,
-run once, log six rows.
+Write-up `research/volume-1.md`. Card 2 (same six features, cross-sectional weekly rank IC
+in the top-100 coin book, 344 Fridays 2019-2025): also none useful, largest |IC| 0.020 against
+a family level of 0.043. A volume jump is followed by a slightly weaker week (t -2.3), below
+the bar and already known from breadth-1's low-turnover tilt. Nothing open in this lane.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

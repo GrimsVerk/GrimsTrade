@@ -942,3 +942,9 @@ Never edit or delete a row.
 | 2026-11-18 11:05 | volume-1-screen | vw_trend13 (IC +0.003, chance 0.038, family 0.048, WF +0.012, gain +0.002) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
 | 2026-11-18 11:05 | volume-1-screen | updown13 (IC -0.003, chance 0.037, family 0.048, WF +0.001, gain -0.017) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
 | 2026-11-18 11:05 | volume-1-screen | pv_div13 (IC -0.021, chance 0.040, family 0.048, WF +0.017, gain +0.001) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:19 | volume-1-coins-screen | vol_chg4 (xs rank IC -0.020, t -2.3, chance 0.017, family 0.043, no) | screen | train | 2019-04-05 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:19 | volume-1-coins-screen | vol_chg13 (xs rank IC +0.003, t +0.2, chance 0.013, family 0.043, no) | screen | train | 2019-04-05 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:19 | volume-1-coins-screen | vol_z52 (xs rank IC -0.019, t -1.8, chance 0.016, family 0.043, no) | screen | train | 2019-04-05 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:19 | volume-1-coins-screen | vw_trend13 (xs rank IC -0.010, t -0.9, chance 0.034, family 0.043, no) | screen | train | 2019-04-05 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:19 | volume-1-coins-screen | updown13 (xs rank IC -0.019, t -1.7, chance 0.043, family 0.043, no) | screen | train | 2019-04-05 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:19 | volume-1-coins-screen | pv_div13 (xs rank IC +0.007, t +0.7, chance 0.024, family 0.043, no) | screen | train | 2019-04-05 | 2025-11-09 | - | - | - | - |

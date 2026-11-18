@@ -146,12 +146,37 @@ across many coins (the wide coin book), as its own card, not through time on six
 Reproduce: `uv run python research/lib/volume1_ic.py` (dry; `--log` writes tries rows: run
 once). Needs the bar cache (`research/lib/fetch.py`) and RL 2's `tables2.pkl` (`rl2_data.py`).
 
-## Card 2: volume across many coins (written 2026-11-18 ~11:16 UTC, before any number; NOT RUN)
+## Card 2: volume across many coins (written 2026-11-18 ~11:16 UTC, before any number)
 
-Asked for by the coordinator at ~11:15 UTC as a continuation of this lane, with a final push
-at 11:22 UTC. Seven minutes do not fit a tested implementation and a single clean run, so
-this burst commits the card only. **No code for it exists and no number has been computed.**
-The six-asset result above is unchanged.
+Asked for by the coordinator at ~11:15 UTC as a continuation of this lane. The card was
+committed first as "card only, not run" (`c3c351d`), because the time looked too short; the
+code and test then went in (`6f281fb`, pushed before the run) and the screen ran once
+at ~11:19 UTC. The card text below is unchanged apart from this paragraph and the heading.
+
+### Result of card 2 (2026-11-18)
+
+**No. Across the top-100 coin book too, none of the six volume features passes. The largest
+cross-sectional weekly rank IC is -0.020 (`vol_chg4`), under half the family chance level
+(0.043) and under the card's 0.03 floor. All six verdicts are "no"; the lane closes.** 344
+Fridays 2019-04-05 to 2025-11-09, about 89 coins a week, train only. Table:
+`results/volume-1-coins.md`.
+
+- The one pattern: coins whose volume has just jumped do slightly worse the next week
+  (`vol_chg4` -0.020, t -2.3; `vol_z52` -0.019, t -1.8; negative in both eras). Both are
+  just above their own single-test chance levels (0.017, 0.016) and well below the family
+  level, which is what the correction is for: one of six looking like this is expected. The
+  sign agrees with breadth-1's low-turnover tilt in this book, so it is not new information.
+- The trend-like features (`vw_trend13`, `updown13`) have high chance levels (0.034, 0.043),
+  which set the family level; they show nothing either.
+- Deviations from the card, all disclosed: the first Friday is 2019-04-05, not 2019-01-04
+  (the book's own start rule, 30 eligible coins, begins there); the rank correlation breaks
+  ties by column order instead of averaging them (continuous inputs; ties are rare); the
+  loader check is done: cointop-1 uses `breadth_books.cm_book()`, the one used here.
+- No dry run before the logged run. The shared-cache pointer (`macro.local.json`,
+  git-ignored) was copied from another worktree; the train-cut panel `cm-panel.npz` was read,
+  the held-out panel was not.
+
+### Card 2 as written
 
 Seen before: the six-asset table above (all "no"); breadth-1's summary that a tilt toward low
 volume-to-market-cap coins helped the trend rule in this same book, and that the book already
