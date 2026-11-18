@@ -1,10 +1,25 @@
 # Next steps
 
-## Slow 1 (in progress 2026-11-18, branch `slow-1` -> `carry-2`)
+## Slow 1 (done 2026-11-18, branch `slow-1`, draft PR #35 -> `carry-2`)
 
-Do info-1's 23 inputs and rl-3's real inputs forecast 4-week and 13-week returns of the six
-assets, where they failed at 1 week? Card `research/slow-1.md` (committed before any number).
-Doing: the IC table (`research/lib/slow1_ic.py` -> `research/results/slow-1.md`).
+Do info-1's 23 inputs and rl-3's real inputs (49 in all) forecast 4-week and 13-week returns of
+the six assets, where they failed at 1 week? No: 0 of 49 survive at either horizon (192 tests
+together, z must reach 3.40; best 2.82), and no combined forecast beats `tsmom12`'s own state
+(best gain +0.028, bar +0.05). Closest: the dollar's 13-week change at 13 weeks (walk-forward IC
++0.151, family-adjusted p 0.23), all of it BTC and ETH in 2017-2025, zero on the four ETFs.
+Slow horizons have few independent observations (about 340 behind a 13-week IC, 50 for coin
+inputs); a planted true 0.10 is not detectable at 13 weeks. No trading card, no backtest;
+held-out year unspent. Write-up `research/slow-1.md`, table `research/results/slow-1.md`.
+
+Next lanes (not started; details in the write-up):
+- `usd-1`: the dollar effect with its sign fixed in advance, on data this screen never saw (the
+  33-market pool and other ETFs back to 1971, the other coins); trading card only if it holds.
+- `slow-2`: the macro near-misses (`cpi_yoy`, `real_ff`, `dff30`, `usd_13w`) at 4 and 13 weeks
+  on the long index pool from 1962: a family of 16 and several times the quarters.
+- `chain-1`: on-chain activity growth as a 4-week cross-sectional rank signal across many
+  coins (Coin Metrics community data), the only way to judge a coin-specific input.
+
+For the owner: nothing needed.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
