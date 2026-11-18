@@ -284,6 +284,13 @@
     Regeneration needs local equity curves (`research/register2.local.json`, `.example`).
   - 23:08 UTC 5h 0.69: `fast-reentry` started (D, small, <- insure-2): one faster re-entry card
     judged net of the rebound over the 69 effective falls.
+  - DONE `wide-9` (draft #93 -> wide-8): W19 `enso-commodity` (t -0.92, rank 32/41) and W17
+    `fork-premium` (t 0.23, rank 19/41) dead. Method note `research/gate-null.md`: placebo-t SD
+    depends on design (clustered/autocorrelated 1.3-2.2x; independent events ~1.0); every gate
+    now uses 40 fixed placebos and rank decides. Ten earlier gates re-read: no verdict changes.
+    CAVEAT: W17 upgrade dates were from memory, not checked against ethereum.org (verdict
+    unlikely to move; check before reuse). List 72 / 16. 0 rows.
+  - 23:10 UTC 5h 0.71, weekly 0.92: no new lanes; running survey-6, fast-reentry.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
