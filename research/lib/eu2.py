@@ -300,5 +300,127 @@ def fees_report() -> None:
     c.write_result(f"{IDEA}-fees", "\n".join(out))
 
 
+# --- amendment 2: EUR-hedged US equity ---
+
+IUSE = "IUSEL"  # iShares S&P 500 EUR Hedged (Acc), London EUR line (research/eu-2.md)
+XAD1 = "XAD1"  # Xtrackers Physical Gold EUR Hedged ETC, Xetra
+for _s in (IUSE, XAD1):
+    UNIVERSE.setdefault(_s, ETF)
+EUW_H = [IUSE if s == "SXR8" else s for s in eu1.EUW]
+EUW_HH = [XAD1 if s == "4GLD" else s for s in EUW_H]
+EU6_H = [IUSE if s == "SXR8" else s for s in eu1.EU6]
+DRAG = 0.06  # eu-1's currency part of euw's gap (usw-eur -0.10 vs usw -0.04)
+
+
+def go2(
+    variant: str, strategy: c.ResearchStrategy, syms: Sequence[str], kind: str
+) -> Run:  # the eu-1 path (`nl` percentage costs, house band), logged under eu-2
+    hist, pan = eu1.panel_for(syms)
+    saved = harness.DATA / "runs" / IDEA / f"{variant}.train.csv"
+    log = not saved.exists() and not c.DRY
+    start = date(2023, 11, 1) if c.DRY else W_START
+    run = harness.run(
+        IDEA, variant, strategy, kind=kind, period="train", panel=pan, history=hist,
+        start=start, end=TRAIN_END, costs=NL, log=log,
+    )  # fmt: skip
+    print(f"{'logged' if log else 're-scored'} {variant}", flush=True)
+    return run
+
+
+def hedge_pair(name: str, syms: list[str]) -> tuple[Run, Run]:
+    return (
+        go2(f"tsmom12@{name}", eu1.TSMOM, syms, "robustness"),
+        go2(f"equal-weight@{name}", eu1.EW, syms, "baseline"),
+    )
+
+
+def gap(p: tuple[Run, Run]) -> float:
+    return c.describe(p[0])["sharpe"] - c.describe(p[1])["sharpe"]
+
+
+def hedge_report() -> None:
+    out = ["# eu-2 results, amendment 2: EUR-hedged US equity", ""]
+    out += [
+        "Train period only, window W (decisions 2012-01-02 .. 2025-11-09). Total-return prices; "
+        "EUR books at Dutch percentage costs (`nl`: ETFs 0.10% + 0.05%), US books at the gym's, "
+        "coins 0.25% + 0.05%; house band 1%. Sharpe on calendar days, zero risk-free rate. "
+        "`IUSEL` = IUSE, iShares S&P 500 EUR Hedged (London EUR line); `XAD1` = Xtrackers "
+        "Physical Gold EUR Hedged. Rows from eu-1 are re-scored from its saved runs (no new "
+        "rows). Card: `cards/eu-2.md`.",
+        "",
+    ]
+    books = {k: b for k, b in [
+        ("usw", eu1.Book("usw", eu1.USW, "gym")),
+        ("usw-eur", eu1.Book("usw-eur", eu1.USW_EUR, "gym")),
+        ("euw", eu1.Book("euw", eu1.EUW, "nl")),
+        ("us6", eu1.Book("us6", eu1.US6, "gym")),
+        ("eu6", eu1.Book("eu6", eu1.EU6, "nl")),
+    ]}  # fmt: skip
+    old = {k: eu1.pair(b, W_START) for k, b in books.items()}
+    new = {
+        "euw-h": hedge_pair("euw-h", EUW_H),
+        "euw-hh": hedge_pair("euw-hh", EUW_HH),
+        "eu6-h": hedge_pair("eu6-h", EU6_H),
+    }
+    singles = {}
+    for sym in (IUSE, XAD1):
+        singles[sym] = (
+            go2(f"tsmom12@{sym}", eu1.TSMOM, [sym], "robustness"),
+            go2(f"hold@{sym}", c.weekly(c.hold(sym)), [sym], "baseline"),
+        )
+    for sym, costs in (("SPY", "gym"), ("SXR8", "nl"), ("4GLD", "nl"), ("GLD", "gym")):
+        singles[sym] = (
+            eu1.go(f"tsmom12@{sym}", eu1.TSMOM, [sym], costs, "robustness", W_START),
+            eu1.go(f"hold@{sym}", c.weekly(c.hold(sym)), [sym], costs, "baseline", W_START),
+        )
+    allp = {**old, **new}
+
+    out += ["## 1. Coin-free asset classes: does hedging remove the currency drag?", ""]
+    keys = ["usw", "usw-eur", "euw", "euw-h", "euw-hh"]
+    out += [c.table([r for k in keys for r in allp[k]]), ""]
+    out += ["| Book | tsmom12 - EW Sharpe | Change vs euw |", "|---|---:|---:|"]
+    for k in keys:
+        out.append(f"| {k} | {gap(allp[k]):+.2f} | {gap(allp[k]) - gap(allp['euw']):+.2f} |")
+    out.append("")
+    verdicts = {}
+    for k in ("euw-h", "euw-hh"):
+        d = gap(allp[k]) - gap(allp["euw"])
+        verdicts[k] = "removes" if d >= DRAG else "in part" if d >= DRAG / 2 else "no"
+        out.append(
+            f"- `{k}`: gap change {d:+.2f} (card: >= +{DRAG:.2f} removes, >= +{DRAG / 2:.2f} in "
+            f"part): **{verdicts[k]}**"
+        )
+    out.append("")
+
+    out += ["## 2. The live six with a hedged S&P 500 slot", ""]
+    out += [c.table([r for k in ["us6", "eu6", "eu6-h"] for r in allp[k]]), ""]
+
+    out += ["## 3. eu-1's character tests on the hedged books", ""]
+    for name, eu, us in [("eu6-h vs us6", "eu6-h", "us6"), ("euw-h vs usw", "euw-h", "usw")]:
+        lines, v = eu1.criteria(allp[eu], allp[us])
+        out += [f"### {name}: **{v}**", "", *lines, ""]
+
+    out += ["## 4. Single slots: the filter against holding", ""]
+    srun = [r for s in (IUSE, "SXR8", "SPY", XAD1, "4GLD", "GLD") for r in singles[s]]
+    out += [c.table(srun, eras=False), ""]
+    out += ["| Slot | tsmom12 - hold Sharpe |", "|---|---:|"]
+    for s in (IUSE, "SXR8", "SPY", XAD1, "4GLD", "GLD"):
+        out.append(f"| {s} | {gap(singles[s]):+.2f} |")
+    us_like = abs(gap(singles[IUSE]) - gap(singles["SPY"])) <= 0.05
+    out += [
+        "",
+        f"US slot behaves as in USD (IUSE's gap within 0.05 of SPY's): "
+        f"**{'yes' if us_like else 'no'}** ({gap(singles[IUSE]):+.2f} vs "
+        f"{gap(singles['SPY']):+.2f}; SXR8 {gap(singles['SXR8']):+.2f}).",
+        "",
+    ]
+    out += ["Crash windows (total return inside each):", ""]
+    crash = [*allp["euw"], *allp["euw-h"], *allp["euw-hh"], *srun]
+    out += [eu1.crash_table(crash), ""]
+    out += ["## Verdicts", ""] + [f"- `{k}`: currency drag {v}" for k, v in verdicts.items()]
+    out.append(f"- US slot as in USD: {'yes' if us_like else 'no'}")
+    c.write_result(f"{IDEA}-hedge", "\n".join(out))
+
+
 if __name__ == "__main__":
-    {"fees": fees_report}[sys.argv[1]]()
+    {"fees": fees_report, "hedge": hedge_report}[sys.argv[1]]()
