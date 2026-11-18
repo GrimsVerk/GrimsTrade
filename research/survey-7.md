@@ -120,3 +120,58 @@ years is t of about 1.1. Only a large effect can pass.
 **My guess before any number.** Mean y between -0.5% and +0.5% a month, |t| < 1.5, rank
 somewhere in the upper half (the placebos may lean negative); placebo t sd 0.9-1.3 (independent
 monthly spreads). Chance of a pass: 3%.
+
+## What came out (one run, 2026-11-19; table `results/seasonal-20y.md`)
+
+Dry run first (counts only): 23 assets, 106 gate months, 21-23 assets a month (median 22),
+years per signal median 20 (min 5), all 40 placebos with 106 months; earlier years start
+2004-01 (first month with n >= 6). Then one real run.
+
+**The gate fails on both counts. After 2016 the same-month spread is +0.12% a month (t +0.19,
+106 months); the true signal ranks 31 of 41 (empirical one-sided p 0.76). `seasonal-20y` is
+dead by the gate: no card, no strategy, no `tries.md` row.** Held-out year untouched.
+
+| Same-month spread, top fifth minus bottom fifth | Mean a month | t | Months |
+|---|---:|---:|---:|
+| **Gate: Friday clock, 2017-01 .. 2025-10, 23 assets** | **+0.12%** | **+0.19** | 106 |
+| Calendar months, 2017-2025 (shown) | +0.41% | +0.65 | 106 |
+| Friday clock, 2004-01 .. 2016-12 (shown) | -0.10% | -0.31 | 156 |
+| Calendar months, 2004-2016 (shown) | -0.06% | -0.17 | 156 |
+| Six live assets only, 2017-2025 (shown, k = 1) | +0.37% | +0.18 | 53 |
+| 17 ETFs only, 2017-2025 (shown) | -0.12% | -0.33 | 106 |
+
+- **Absent in every cut, not only after publication.** The 2004-2016 years (inside KLN's and
+  R5's samples for most of it) are slightly negative too, and the calendar-month version (no
+  Friday misalignment) is no better than t 0.65. The ETF cross-section, where coins cannot
+  dominate a leg, is negative after 2016. Consistent with R5's failed 1981-2011 replication and
+  R3's listing of seasonality among the clusters that do not replicate; it does not reach the
+  stock-level evidence of Heston-Sadka and KLN, which this universe of 23 funds cannot test.
+- **The placebo null leaned positive, not negative** (median t +0.58; my pre-run note expected
+  the papers' negative non-annual lags). Every placebo is also an average of 20 past monthly
+  returns, so it carries the assets' long-run mean return (coins and growth funds rank high in
+  most lags and kept earning); the true annual lag adds nothing on top of that common part.
+- **Null width: SD of placebo t 0.79, 2% with |t| >= 2**, quantiles 5/50/95% -0.72 / +0.58 /
+  +1.57, extremes -1.58 / +2.08. Non-overlapping monthly spreads: the normal null is about
+  right here (narrower than N(0, 1), like W17's 1.05), so this design is of the independent
+  kind in `gate-null.md`'s table.
+- My guess before the run (|t| < 1.5, a pass at 3%) held; the rank was lower than guessed.
+
+## Verdict and count
+
+`seasonal-20y` fails the gate (t 0.19 < 2; rank 31/41 > 2). No proposed card. Published
+effects in this book after publication: 0 for 6 (`fomc-cycle`, `xtsmom`,
+`announcement-premium`, `ts-carry`, `halloween`, and now `seasonal-20y` by its gate).
+
+Count used: the union, **76 mechanisms, 18 tested by a strategy, none passed** (wide-9's 72/16
+plus survey-4's four mechanisms and two tests, which are not on this base). A gate does not
+raise the tested count. Next strategy test: family p < 0.10 / 76 = 0.00132, register p <=
+4.9e-5 (2,904 tries, N 1,012). Gates so far (wide line plus this): 11, all failed.
+
+## Next
+
+1. survey-4's D `ts-value` is the last of its four; R15 already documents its out-of-sample
+   failure. If run at all, as a gate like this one (dividend yield above its running median ->
+   next-quarter SPY return, placebo = the yield series shifted by whole years), not a card.
+2. W18 `elimination-mood` (wide-9's queue) still needs a keyless match-results list.
+3. Whoever merges the wide and survey lines should carry 76/18 (this file) into the mechanism
+   list on the merged branch.

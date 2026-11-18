@@ -1,9 +1,23 @@
 # Next steps
 
-## Survey 7 (in progress 2026-11-19, branch `survey-7`, draft PR -> `wide-9`)
+## Survey 7 (done 2026-11-19, branch `survey-7`, draft PR #97 -> `wide-9`)
 
-- Doing: `seasonal-20y` event-study gate (rule in `research/survey-7.md`, pushed before any
-  number); then script + tests, dry run (counts only), one real run, verdict.
+`seasonal-20y` (survey-4's candidate C, same-calendar-month seasonality; Heston-Sadka 2008,
+Keloharju-Linnainmaa-Nyberg 2016, citations checked) as an event-study gate under
+`research/gate-null.md`: rule, script and tests pushed before any number; one dry run with
+counts, one real run. **Fails: 23 assets, top minus bottom fifth on the Friday clock,
+2017-01..2025-10: +0.12% a month (t 0.19), rank 31/41 month-shifted placebos (placebo t sd
+0.79). Also absent 2004-2016 and in calendar months. No card, no `tries.md` row.** Write-up
+`research/survey-7.md`; table `research/results/seasonal-20y.md`.
+
+Count used: union **76 mechanisms, 18 tested, none passed** (wide-9's 72/16 plus survey-4's
+4 mechanisms / 2 tests, not on this base). Next strategy test p < 0.00132 (family), register
+p <= 4.9e-5. Gates: 11, all failed.
+
+- Doing: nothing. No process running.
+- Next: (1) `ts-value` only as a gate, if at all. (2) W18 `elimination-mood` (needs keyless
+  match results). (3) Carry 76/18 into the mechanism list when the lines merge.
+- Data: none added (price cache in `research/data/`, gitignored).
 
 ## Wide 9 (done 2026-11-19, branch `wide-9`, draft PR #93 -> `wide-8`)
 
