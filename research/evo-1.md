@@ -15,6 +15,69 @@ test over every rule tried, and assets the search never saw.
 
 Not run yet. This file holds only the card until the runs are done.
 
+## Build notes, burst 1 (2026-11-18 ~11:10 UTC): code and a toy smoke, no market data
+
+Built and tested: `research/lib/evo_stats.py` (Reality Check, SPA, effective number, deflated
+best; rules arrive in chunks), `research/lib/evo_gp.py` (the grammar, evaluation, the genetic
+operators, one GP run), `research/lib/evo_smoke.py` (a toy world). Not built yet: the inputs
+from real bars, the fast scorer, the walk-forward, the card's control worlds.
+
+**The toy smoke is not one of the card's controls.** The toy world has no prices: the 72 inputs
+are random numbers per day and asset, 6 assets, 3,000 days to search and 3,000 unseen days;
+returns are noise plus the card's planted rule `H` at strength `k` (`k` = 0: noise). No costs.
+12 runs, logged as `control` rows under `evo-1-smoke` in `tries.md`.
+
+| Toy world | Search | Rules | Best fit Sharpe | Same rule, unseen days | `H`, unseen days | SPA p |
+|---|---|---:|---:|---:|---:|---:|
+| noise, seed 1 | 2,000 random rules, no evolution | 1,983 | 0.73 | 0.12 | - | 0.552 |
+| noise, seed 2 | 2,000 random rules, no evolution | 1,986 | 0.75 | 0.04 | - | 0.476 |
+| noise, seed 3 | 2,000 random rules, no evolution | 1,972 | 0.83 | -0.07 | - | 0.232 |
+| noise, seed 1 | GP 200 x 15 | 2,274 | 1.49 | 0.19 | - | 0.002 |
+| noise, seed 2 | GP 200 x 15 | 2,257 | 1.52 | 0.39 | - | 0.004 |
+| noise, seed 3 | GP 200 x 15 | 2,243 | 1.36 | -0.06 | - | 0.006 |
+| noise, seed 1 | GP 500 x 30 (the card's size, one seed) | 10,076 | 1.88 | -0.66 | - | 0.000 |
+| plant k=0.05 | GP 200 x 15 | 2,101 | 1.09 | -0.19 | 1.33 | 0.090 |
+| plant k=0.1 | GP 200 x 15 | 2,063 | 0.56 | -0.37 | 2.49 | 0.896 |
+| plant k=0.2 | GP 200 x 15 | 2,053 | 1.64 | 1.16 | 4.74 | 0.000 |
+| plant k=0.1 | GP 500 x 30 | 10,274 | 2.95 | 2.52 | 2.49 | 0.000 |
+| plant k=0.2 | GP 500 x 30 | 10,013 | 3.15 | 2.70 | 4.74 | 0.000 |
+
+What it shows:
+
+- **The correction is right for a fixed set of rules and wrong for an evolved one.** Over 2,000
+  random rules in pure noise the SPA p is 0.23 to 0.55, as it should be. Over the rules a GP run
+  visited in the same noise it is 0.002 to 0.006, and 0.000 at the card's population and
+  generations, while the "found" rule earns nothing on unseen days (0.19, 0.39, -0.06, -0.66).
+  This is the card's "known weakness", and in the toy it is not small: it is a false find in 4
+  of 4 noise runs. The reason: a GP builds its best rule out of the lucky parts of earlier
+  rules, so the best is luckier than the best of any fixed list of the same length, and the
+  bootstrap only replays the list.
+- So bar 3 of the card (SPA consistent p < 0.10) is likely to pass for any evolved search,
+  noise included. The card is not changed here: its noise control (bar 5, three worlds of
+  shuffled real bars) is the pre-registered check of exactly this, and the walk-forward series
+  is not affected. **For the lead to decide before the real search runs:** if the card's noise
+  worlds also show small SPA p, bar 3 says nothing and should be replaced, by a dated card
+  note made before any real number, with a test that replays the whole search (the best
+  fitness of the real search against the best fitness of the same search in shuffled worlds).
+- The search itself works at the card's size: the planted rule at k=0.1 is recovered (weights
+  0.99 correlated with `H`'s, the same Sharpe on unseen days). At 200 x 15 it is not (only the
+  trend half, and only at k=0.2). At k=0.2 with 500 x 30 the run got 2.70 of `H`'s 4.74.
+- The toy is easier than the card's worlds in one way (no costs, inputs unrelated day to day,
+  so every rule is a fresh bet) and one seed per row: treat the sizes as rough.
+
+Details the card left open, fixed in code before any real-data run (2026-11-18):
+
+- Initial population: a draw over 20 nodes or depth 6 is drawn again. A full tree of depth 4
+  cannot fit in 20 nodes (it has at least 26), so "full" at depth 4 means: grown freely, redrawn
+  until it reaches depth exactly 4.
+- Random trees: a free branch stops with probability 0.4 at each level; a weight leaf is a
+  constant 70% of the time, else `volcap`; a comparison is `coin` 10%, input against input 20%,
+  input against a constant 70%; a subtree mutation inserts a freely grown subtree of depth 1 to
+  3. `volcap` with an undefined 30-day volatility holds nothing.
+- Reality Check and SPA: a resample that ties the observed statistic counts as reaching it; a
+  rule identical to the benchmark on every resample is left out of the SPA (its standard error
+  is zero).
+
 ## Card (written 2026-11-18 ~01:50 UTC, before any evo-1 code or number)
 
 Seen before writing: every result in `ideas.md`, `tries.md` and `results/` up to carry-2. No

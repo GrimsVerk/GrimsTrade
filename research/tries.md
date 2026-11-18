@@ -939,3 +939,15 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-18 11:07 | evo-1-smoke | toy noise seed 1, GP 200x15 (2274 rules; fit Sharpe 1.49; SPA p 0.002; no market data, Sharpe = best rule on unseen toy days) | control | - | - | - | 0.19 | - | - | - |
+| 2026-11-18 11:07 | evo-1-smoke | toy noise seed 2, GP 200x15 (2257 rules; fit Sharpe 1.52; SPA p 0.004) | control | - | - | - | 0.39 | - | - | - |
+| 2026-11-18 11:07 | evo-1-smoke | toy noise seed 3, GP 200x15 (2243 rules; fit Sharpe 1.36; SPA p 0.006) | control | - | - | - | -0.06 | - | - | - |
+| 2026-11-18 11:07 | evo-1-smoke | toy plant k=0.05 seed 1, GP 200x15 (2101 rules; SPA p 0.090; H itself 1.33) | control | - | - | - | -0.19 | - | - | - |
+| 2026-11-18 11:07 | evo-1-smoke | toy plant k=0.1 seed 1, GP 200x15 (2063 rules; SPA p 0.896; H itself 2.49) | control | - | - | - | -0.37 | - | - | - |
+| 2026-11-18 11:07 | evo-1-smoke | toy plant k=0.2 seed 1, GP 200x15 (2053 rules; SPA p 0.000; H itself 4.74) | control | - | - | - | 1.16 | - | - | - |
+| 2026-11-18 11:08 | evo-1-smoke | toy noise seed 1, 2000 random rules, no evolution (1983 rules; fit Sharpe 0.73; SPA p 0.552) | control | - | - | - | 0.12 | - | - | - |
+| 2026-11-18 11:08 | evo-1-smoke | toy noise seed 2, 2000 random rules, no evolution (1986 rules; fit Sharpe 0.75; SPA p 0.476) | control | - | - | - | 0.04 | - | - | - |
+| 2026-11-18 11:08 | evo-1-smoke | toy noise seed 3, 2000 random rules, no evolution (1972 rules; fit Sharpe 0.83; SPA p 0.232) | control | - | - | - | -0.07 | - | - | - |
+| 2026-11-18 11:08 | evo-1-smoke | toy noise seed 1, GP 500x30 (10076 rules; fit Sharpe 1.88; SPA p 0.000) | control | - | - | - | -0.66 | - | - | - |
+| 2026-11-18 11:08 | evo-1-smoke | toy plant k=0.1 seed 1, GP 500x30 (10274 rules; SPA p 0.000; H itself 2.49; weights corr to H 0.99) | control | - | - | - | 2.52 | - | - | - |
+| 2026-11-18 11:08 | evo-1-smoke | toy plant k=0.2 seed 1, GP 500x30 (10013 rules; SPA p 0.000; H itself 4.74; weights corr to H 0.62) | control | - | - | - | 2.70 | - | - | - |
