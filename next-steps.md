@@ -1,13 +1,35 @@
 # Next steps
 
-## Survey 5 (started 2026-11-18, branch `survey-5`, draft PR -> `survey-4`)
+## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 
-Live track records as post-sample evidence. Chain: (1) list of keyless live fund series
-(`research/survey-5.md`, done); (2) card, then a descriptive check of `tsmom12`, `where-vol`,
-`sixty-forty` against live funds of their family, and the backtest-to-live haircut; (3) plain
-statement: Sharpe to expect live from `tsmom12` and the forward-test length it implies.
+Live track records as post-sample evidence. List of keyless live fund series pushed first
+(`research/survey-5.md`: 10 trend funds, 3 risk-parity, 2 low-vol, 2 multi-style; DBV carry
+delisted; SG/MLM indexes not keyless), card before any number (`cards/live-check.md`, 045422c),
+script before its run. Descriptive only: no pick, 4 `live-check` rows in `tries.md`.
 
-- Doing: step 2, card pushed (`research/cards/live-check.md`); script and run next.
+- `tsmom12` is not a trend fund: correlation 0.17 with nine live trend funds, 0.40 with SPY.
+  Sharpe above bills 2010-2025: 1.11, the same as holding the six assets (1.11); live trend
+  funds 0.19. Its lead over holding was +0.29 in 1994-2009 and 0.00 since.
+- Haircut, same manager: AQR's paper TSMOM factor 1.41 (1985-2009) -> 0.35 (2010-2025);
+  live AQMIX 0.29. h = 80% (literature: 73% median bank strategy, 25% Harvey-Liu ceiling).
+- Crash years: trend funds +7% / +4% / +18% in 2008 / 2020-Q1 / 2022; `tsmom12` -2% / -14% /
+  -13% (holding -13% / -12% / -38%). The rule cuts losses, it does not gain from falls.
+- Plain statement (step 3): expect about holding's Sharpe with smaller bear-market losses.
+  Sharpe > 0 forward: 7 years if the backtest is true, 170 at the measured haircut. Sharpe
+  above holding: 107 years even at the backtest gap. A risk choice, not a forward verdict.
+
+Count unchanged: 65 mechanisms, 16 tested, none passed (p < 0.00154).
+
+- Doing: nothing. No process running.
+- Next: (1) owner decision framed as risk: `tsmom12` vs holding is a drawdown choice (see
+  `risk-map.md`), not an edge; (2) if anything is tested, prefer rules whose case is crash
+  behaviour, judged on worst-year loss, not Sharpe; (3) `where-vol` lost more than the live
+  risk-parity funds in 2022 (-27% vs -18%): check its 2022 bond/gold exposure before any
+  revival.
+- Data added (git-ignored cache): `<cache_root>/downloads/survey-5/` (Yahoo JSON, AQR TSMOM
+  xlsx, Hurst et al. PDF text) and `<cache_root>/derived/survey-5/<TICKER>.csv`, made by
+  `python -I research/lib/survey5_fetch.py <cache_root>`. Rerun:
+  `uv run --with openpyxl python -I research/lib/survey5_live.py <cache_root>` (no new rows).
 
 ## Survey 4 (done 2026-11-18, branch `survey-4`, draft PR #72 -> `ann-1`)
 

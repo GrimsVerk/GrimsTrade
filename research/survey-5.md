@@ -131,4 +131,99 @@ is Yahoo's first bar `[data]`; inception and fees are from the sources tagged. D
 - Already in survey-4 (R1): McLean and Pontiff 2016, 26% lower out of sample and 58% lower
   after publication for 97 stock anomalies.
 
-Next: step 2's card, committed before any return of these series is computed.
+## Step 2: the live check (card 045422c, script d9f5846, run 2026-11-18)
+
+Card: [`cards/live-check.md`](cards/live-check.md), pushed before any number. Tables:
+[`results/live-check.md`](results/live-check.md). Everything is a monthly return above the
+13-week T-bill; our rules earn the bill on cash. Window L = 2010-02 to 2025-10; nothing after
+2025-10 was read (held-out year unspent). The four re-scores reproduce their logged Sharpe
+(`tsmom12` 1.05, `tsmom12-c00` 0.79, `where-vol` 1.07, `sixty-forty` 0.76, `hold-c17` 0.88).
+
+**Logged as:** 4 rows of the new kind `live-check` in `tries.md` (`<rule>@live-L`, defined in
+its header: descriptive re-score, not selectable, not counted). No strategy picked; the
+family stays 65 mechanisms, 16 tested; no `ledger/tries.jsonl` row.
+
+### What the numbers say (card's reading rules applied)
+
+| | Corr. with family (L) | Reading | Sharpe in L | Family's Sharpe in L | Gap |
+|---|---:|---|---:|---:|---:|
+| `tsmom12` vs trend funds (TC) | 0.17 | does not move with it | 1.11 | 0.19 | +0.92 |
+| `tsmom12-c00` (no coins) vs TC | 0.17 | does not | 1.02 | 0.19 | +0.83 |
+| `where-vol` vs risk-parity funds (RC) | 0.43 | partly | 1.14 | 0.60 | +0.54 |
+| `sixty-forty` vs RC | 0.85 | moves with it | 0.93 | 0.60 | +0.34 |
+
+1. **`tsmom12` is not a trend fund.** Its monthly returns correlate 0.17 with the nine live
+   trend funds, 0.09 with AQR's paper TSMOM factor, but 0.40 with SPY (without coins 0.72) and
+   0.36 / 0.68 with the risk-parity funds. The funds are long/short and market-neutral on
+   average (TC with SPY -0.06); our rule is long-only with a trend exit. The card's coin
+   rule: the gap to TC is not the coins (`tsmom12-c00` is +0.83 ahead too). It is beta: in L,
+   holding the same six assets (`hold-c17`) also has Sharpe 1.11, SPY 0.92. **In the live
+   window `tsmom12` had exactly the Sharpe of holding everything (1.11 vs 1.11).** Its lead
+   over holding is all from 1994-2009 (0.55 vs 0.26 above bills).
+2. **Crash years: the funds gained, ours lost less than holding.** 2008: TC (RYMFX only)
+   +7.1%, AQR factor +24.6%, `tsmom12` -1.6%, holding -12.9%, SPY -37.7%. 2020-02..03: TC
+   +3.6%, `tsmom12` -14.1%, holding -11.8%. 2022: TC +17.6% (AQMIX +32.8%), `tsmom12` -12.9%,
+   `where-vol` -27.4%, holding -37.7%. Our rule cuts losses by stepping out; it cannot gain
+   from a fall, which is where live trend funds earn most of their keep.
+3. **The haircut, trend family (the clean same-manager pair).** AQR's paper TSMOM factor:
+   Sharpe **1.41** in the paper's sample (1985-2009) and **0.35** in L (25% kept). AQR's live
+   fund AQMIX: **0.29** in L, 83% of the paper factor in the same months (fees and real
+   costs), correlation 0.76 with it. **Total: h = 1 - 0.29 / 1.41 = 80%.** The fund panel
+   (survivors only, so flattering) has 0.19, 54% of the factor. Most of the loss is the
+   effect itself fading after its sample, not implementation. That is at the pessimistic end
+   of the literature: H1's median bank strategy loses 73% (trend among the mildest), H2 caps
+   the haircut at about 25% for Sharpe above 1, McLean-Pontiff 58% for stock anomalies.
+4. **Our own split agrees for the part that is trend.** `tsmom12`'s lead over holding was
+   +0.29 Sharpe in 1994-2009 and +0.00 in L: the trend edge kept nothing in our own data
+   after 2009, the same story as the paper factor (25% kept) and the funds.
+5. **`sixty-forty` and `where-vol`.** `sixty-forty` moves with the live risk-parity funds
+   (0.85) and beats them by 0.34: a plain SPY/TLT mix over a decade when stocks and long
+   bonds both did well, against funds with fees and commodity sleeves (RPAR 0.14, AQRIX 0.63).
+   `where-vol` only partly (0.43); in 2022 it lost -27.4% against RC's -17.8%.
+6. Context, not a candidate: the low-volatility ETFs (SPLV 0.74, USMV 0.90 in L) and AQR's
+   multi-style funds (QSPIX 0.46, QRPIX 0.37; -22% in 2020, +23-28% in 2022). The one pure
+   carry ETF (DBV) is delisted, so the carry family's live record is not keyless here.
+
+Caveats: TC is survivors only; RYMFX changed method twice; the AQR factor is rebuilt at each
+update ("AQR reconstructs the full history"), so its 1985-2009 numbers are today's version of
+the paper data, not the 2012 printout; monthly Sharpe above bills is not the repo's daily
+zero-rate Sharpe (`tsmom12` 1.05 there is 0.86 here over 1994-2025).
+
+## Step 3: what to expect from `tsmom12` live, in plain words
+
+**The card's rule** (backtest Sharpe 1.05 x (1 - h)) gives an expected live Sharpe of
+**0.21** at the measured haircut (80%), 0.28 at the bank-strategy median (73%), 0.79 at
+Harvey-Liu's ceiling (25%). Forward length with forward-1's formula (power 0.8, weekly,
+skew +0.33, kurtosis 12.6 from the backtest; `docs/forward-registry.md` on `forward-1`,
+PR #67): to show **Sharpe above 0** takes 7.3 years if the backtest were true, 12.7 at 0.79,
+97 at 0.28 and **170 years at 0.21** (one-sided alpha 0.025, forward-1's per-rule level;
+4.2 / 7.3 / 56 / 98 at alpha 0.10).
+
+**But the haircut belongs on the trend edge, not on the whole Sharpe.** Most of `tsmom12`'s
+Sharpe is the market return of the assets it holds; in L that part did not shrink at all.
+The honest plain statement for a reader:
+
+> Expect `tsmom12` to earn about what holding the same assets earns, with smaller losses in
+> long bear markets. Do not expect it to beat holding on risk-adjusted return: its 0.17
+> Sharpe lead in the 1994-2025 backtest was 0.00 to 0.04 in 2010-2025, and live trend
+> funds kept only about a fifth of the published trend effect. What it does buy is a shallower worst year
+> (2022: -13% against -38% for holding everything; 2008: -2% against -13%), not a higher
+> Sharpe. And no forward test can tell us within a lifetime whether the Sharpe edge is real:
+> a 0.17 lead with weekly correlation 0.80 needs **107 years** to show at alpha 0.025 (62 at
+> 0.10); at the measured haircut, thousands. Showing merely "Sharpe above 0" takes 7 years
+> if the backtest is right and over a century if the live funds are a guide.
+
+(The Sharpe-gap power is an addition after the first run, marked in the results file: the
+card's own lead measure, the mean weekly return difference, is below 0, because `tsmom12`
+earns slightly less than holding at lower risk.)
+
+What this means for the forward registry: like forward-1's `stop-0.25`, `tsmom12` against
+holding is a **risk choice** (shallower worst loss), to be decided as one, not something to
+wait for a forward verdict on. Its forward record is still worth keeping as a descriptive
+check that the rule runs as built.
+
+## Count and next
+
+Family unchanged: 65 mechanisms, 16 tested, none passed; next test at p < 0.00154. Published
+effects 0 for 5 after publication in this book, and the live funds of the one effect we run
+show the same decay (paper 1.41, live 0.29).
