@@ -49,13 +49,12 @@ def sample(asset: str, closes: np.ndarray, days: list[date], detrend: bool) -> l
     w = 365 if crypto else 252
     h = 91 if crypto else 63
     logc = np.log(closes)
-    ret = np.diff(logc, prepend=np.nan)  # ret[i] = log return into bar i
-    if detrend:
-        z = logc - r.trailing_mean(logc, 25)
-        src = z
-    else:
-        src = ret.copy()
-        src[0] = 0.0  # never inside a window used below (windows need 2w + 1 bars)
+    # ret[i] = log return into bar i; ret[0] = 0 is never inside a window used below (the
+    # sample needs 2w + 1 bars), and a NaN there would poison the cumulative sums
+    ret = np.diff(logc, prepend=logc[0])
+    # detrended: the first 24 values are undefined; 0 keeps the cumulative sums finite (no
+    # window used below reaches back to them: the sample then needs 2w + 26 bars)
+    src = np.nan_to_num(logc - r.trailing_mean(logc, 25), nan=0.0) if detrend else ret
     ac1 = r.rolling_ac1(src, w)
     var = r.rolling_var(src, w)
     sd21 = np.sqrt(r.rolling_var(ret, 21))

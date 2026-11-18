@@ -136,3 +136,41 @@ two-sided kernel detrending, which looks ahead) in place of returns.
 literature). tauVAR: positive without controls (rising variance means high variance now,
 and volatility clusters), near zero or negative once the level of volatility is in, because
 volatility also mean-reverts. Chance the gate passes: 3%.
+
+### What came out (one run, 2026-11-18; table `results/critical-slowing.md`)
+
+**The gate fails for both indicators. `critical-slowing` is dead by the gate: no card, no
+strategy, no `tries.md` row.**
+
+Linear probability of a top-decile forward drawdown (base rate 0.10), slope per unit of
+Kendall tau, Driscoll-Kraay t, with the two volatility controls:
+
+| Period | obs | tauAC1 slope (t) | tauVAR slope (t) | log sd21 (t) |
+|---|---:|---:|---:|---:|
+| In-sample (to 2015) | 3,038 | +0.039 (1.44) | -0.019 (-0.53) | +0.195 (3.81) |
+| Post-sample (2016 on) | 2,887 | +0.003 (0.12) | +0.040 (1.82) | +0.038 (0.97) |
+
+- **AC1 does not rise before large drawdowns**, in our six assets or in the S&P 500 index
+  over 1962-2015 (-0.025, t -0.8). A tau of +1 (a full year of steadily rising AC1) would add
+  4 points to a 10% chance in-sample and nothing after 2015. As the papers found.
+- **Rising variance carries no information beyond the level of volatility.** Without the
+  controls it has a raw effect (S&P 500 1962-2015 t 2.6; six assets after 2016 t 2.1; in-sample
+  t 1.2). With last month's volatility in the regression, it drops to t -0.5 in-sample and 1.8
+  after 2016. The one predictor that works is plain recent volatility (t 3.8 in-sample), which
+  `tsmom12`'s siblings `vol-target` and `trend-vol` already use. This is the survey's "reduces
+  to volatility targeting", now measured.
+- Per asset nothing reaches the bar: the largest cells are TLT's tauVAR after 2016 (+0.15,
+  t 2.1, against -0.01 before) and QQQ's tauAC1 in-sample (t 1.9, then 1.2), out of 22 cells.
+  The Guttal-style variant (log price minus its trailing 25-bar mean) gives the same picture
+  (tauAC1 t 1.1 and 0.2). The continuous drawdown target likewise (all |t| < 1.9).
+- **Compared with my guess:** AC1 near zero with |t| < 1.5: yes (1.4, 0.1). Variance positive
+  raw and near zero with controls: yes. 3% chance of a pass: no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only sample counts per asset and period. The first
+full run crashed before any statistic (a NaN at bar 0 poisoned the rolling sums of the
+volatility controls); the fix (bar 0 return set to 0, the detrended series' first 24 values
+set to 0, none inside any window used) was checked by counting non-finite values, then run.
+The fix was meant to be pushed before the run; a lint error stopped that commit and the run
+went ahead, so the fix is in the commit after the run. The code that ran is the code pushed
+there (the only later change is a ruff-required ternary). Family count unchanged by a gate:
+63 mechanisms, 16 tested (W11 makes it 64; see the count at the end).
