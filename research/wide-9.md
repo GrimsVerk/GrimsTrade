@@ -132,3 +132,83 @@ no `tries.md` row.**
 Disclosures: one dry run (`DRY=1`) printed only month counts (136 gate months, 95 in the paper's
 years, 40 placebos with at least 136 months each), then one run. Rule pushed at aa78d95, script
 and tests at a24686b, both before either run.
+
+## Step 2. W17 `fork-premium` (software release engineering)
+
+### Data access (checked 2026-11-19, before any price was cut by it)
+
+wide-7 named no outside source for W17: it needs ETH and BTC daily closes and a list of
+upgrade dates. Both coins are in the research cache (`research/data/bars/ETH.csv` from
+2016-05-18, `BTC.csv` from 2012, Coinbase Exchange's keyless public candles via
+`research/lib/fetch.py`; train bars to 2025-11-10). The upgrade list is public (ethereum.org's
+history page and each fork's specification); the dates below are written `[memory]`, each the
+UTC day of the mainnet activation block, believed right to a day (a one-day error moves a
+ten-day window by a tenth). So the gate is keyless and runs.
+
+### The idea
+
+Before a scheduled Ethereum network upgrade holders face a known date of protocol risk; a
+premium for that risk should show as ETH outperforming BTC into a well-tested upgrade and
+lagging after it ("buy the rumour, sell the news"), more so when the upgrade changes the coin's
+supply or consensus. No academic paper is known to me on this; it is trader folklore, so there
+is no "paper's years", and every train event is equally unseen by a literature (and seen by
+this project's general crypto work only as part of whole-period returns).
+
+### Decision rule (fixed and pushed before any number)
+
+**Events (execution-layer mainnet forks with ETH data on both sides, train only).** Activation
+day d, scope s (1 = changes issuance or consensus, 0 otherwise), `[memory]`:
+
+| Fork | Day | s | | Fork | Day | s |
+|---|---|---:|---|---|---|---:|
+| DAO fork | 2016-07-20 | 0 | | London | 2021-08-05 | 1 |
+| Tangerine Whistle | 2016-10-18 | 0 | | Arrow Glacier | 2021-12-09 | 0 |
+| Spurious Dragon | 2016-11-22 | 0 | | Gray Glacier | 2022-06-30 | 0 |
+| Byzantium | 2017-10-16 | 1 | | The Merge (Paris) | 2022-09-15 | 1 |
+| Constantinople/Petersburg | 2019-02-28 | 1 | | Shapella | 2023-04-12 | 1 |
+| Istanbul | 2019-12-08 | 0 | | Dencun | 2024-03-13 | 0 |
+| Muir Glacier | 2020-01-02 | 0 | | Pectra | 2025-05-07 | 0 |
+| Berlin | 2021-04-15 | 0 | | | | |
+
+15 events, 5 with s = 1. Left out: Frontier and Homestead (before the ETH data), beacon-chain
+only upgrades (genesis, Altair, Bellatrix: the Merge carries the switch), Fusaka (2025-12-03,
+inside the held-out year, not read). The DAO fork's scope is arguable (a state change that
+split the chain, not an issuance change); it is coded 0 as wide-7's list implies, and the gate
+is shown without it.
+
+**Outcome.** E(t) = log(ETH close / BTC close) on UTC day t (daily closes at 00:00 UTC of the
+next day, as cached). Pre = E(d - 1) - E(d - 11), the ten days into the activation day; Post
+= E(d + 10) - E(d - 1), the activation day and the nine after. Y = Pre - Post (the premium:
+positive if ETH ran up relative to BTC and then gave it back).
+
+**Statistic.** The plain one-sample t of mean Y over the events (n - 1 degrees of freedom;
+the windows do not overlap). Dose: OLS slope b of Y on s.
+
+**Placebo null (the decider).** The whole event calendar moved by k x 30 days, k = -20 .. -1,
+1 .. 20 (40 placebos; a moved event whose window leaves the ETH data or passes 2025-11-10 is
+dropped for that k; a placebo with fewer than 10 events is dropped). Rank of the true t among
+the true one and the placebos.
+
+**Gate.** Pass only if all four hold:
+1. Mean Y > 0 with t >= 2.
+2. Placebo rank of the true t among the 2 highest (one-sided empirical p = rank / (1 +
+   placebos) <= about 0.05).
+3. Dose: b > 0 (supply or consensus forks carry a larger premium).
+4. Both legs: mean Pre > 0 and mean Post < 0.
+
+On a pass: a card for an ETH-vs-BTC overlay around scheduled upgrades with rows in
+`tries.md`, read at p < 0.00139 (family) and the register's p <= 4.9e-5. On a fail: W17 dead
+by the gate, no card, no row.
+
+**Shown, not gating.** Each event's Pre, Post and Y; mean Y by scope; the gate statistic
+without the DAO fork; ETH alone (not against BTC); 5-day windows; the placebo t's standard
+deviation and share with |t| >= 2.
+
+**Power, written before any number.** ETH over BTC moves about 3% a day in 2016-2018 and 2%
+since, so a ten-day leg has a standard deviation of about 8% and Y about 11%; with 15 events
+the standard error of mean Y is about 3%, and t >= 2 needs a premium of about 6% per upgrade.
+Only a large effect can pass.
+
+**My guess before any number.** Mean Y between -4% and +4%, |t| < 1.5; b of either sign;
+placebo t spread 1.0-1.3 (non-overlapping events, unlike the clustered designs before). Chance
+of a pass: 2%.
