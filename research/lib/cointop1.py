@@ -454,7 +454,7 @@ def auc_boot(
     ok = np.isfinite(x)
     x, y, k = x[ok], y[ok], k[ok]
     point = core.auc(x, y)
-    if not np.isfinite(point):
+    if not np.isfinite(point) or draws == 0:
         return point, np.nan, np.nan
     uniq, inv = np.unique(k, return_inverse=True)
     order = np.argsort(inv, kind="mergesort")
