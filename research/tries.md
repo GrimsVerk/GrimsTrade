@@ -15,7 +15,11 @@ Never edit or delete a row.
 - `live-check` (added 2026-11-18, survey-5): a descriptive re-score of an already logged
   configuration over a live-fund window (variant tagged `@live-L`, 2010-02 to 2025-10), set
   against live funds; not selectable, not a strategy try, not counted in the family
-  (`cards/live-check.md`, numbers in `results/live-check.md`).
+  (`cards/live-check.md`, numbers in `results/live-check.md`). Survey-6 extends it:
+  `<family>@live-fund` rows are equal-weight composites of live funds of a strategy family
+  over their own months (From/To), Sharpe = monthly return above the T-bill (not the daily
+  convention), Return and Max DD of the total return, turnover `-`
+  (`cards/live-families.md`, numbers in `results/live-families.md`).
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
