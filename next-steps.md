@@ -129,6 +129,12 @@
     (coin-years worst loss 36.5% -> 17.7%; ~2 pts/yr growth cost). 6 rows. Coin line parked.
   - 22:35 UTC `dsr-1` started (D, <- main): project-wide tries census + Deflated Sharpe on
     `tsmom12` and the best near-misses.
+  - DONE `wide-5` (draft #71 -> wide-4): new W9 `dealer-backlog` (queueing) 1.02 vs 1.05
+    (p 0.95, slope wrong sign) and W10 `extension-dose` (control) 1.06 (p 0.19; gain is all
+    2008-09) FAIL. List 56 / 14 tested / 0 passed; next bar p < 0.00179. Stop testing forced
+    Treasury flows (4 failed). 6 rows.
+  - 22:40 UTC `wide-6` started (W, <- wide-5): critical-slowing-down early-warning gate,
+    `lunar` gate, 3-4 new mechanisms from unused fields.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
