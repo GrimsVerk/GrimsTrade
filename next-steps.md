@@ -1,5 +1,14 @@
 # Next steps
 
+## Night lead 2026-11-18 (brief `chief-of-staff/briefs/grimstrade-night-2026-11-18.md`)
+
+- 1. Exit research (owner priority, `chief-of-staff/briefs/grimstrade-exit-research.md`):
+  IN PROGRESS. Branch `research/exit-1` (worktree `grimstrade-exit1`), draft PR #50. Lanes since
+  18:58 UTC, each `research/exit-1-<lane>` in `grimstrade-exit-<lane>`: lit, haven, bt, inv,
+  reentry, park; notes land in `research/exit-plan-2026/lanes/`. Then merged `report.md` and the
+  review loop (`review-log.md`). Mark DONE here when a reviewer says FINAL.
+- 2. Then the Lead 1 lane queue below.
+
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
 
 Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes through subagents.
