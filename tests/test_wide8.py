@@ -169,3 +169,42 @@ def test_storm_design_and_rank() -> None:
     assert x[:, 1].tolist() == [0, 0, 0, 1, 1]
     assert x[:, 2].tolist() == [0, 1, 1, 0, 0]
     assert ev.rank_most_negative(-3.0, [-1.0, -4.0, 2.0]) == 2
+
+
+def test_parse_hurdat_and_us_landfalls() -> None:
+    ev = _events()
+    text = (
+        "AL122005,            KATRINA,      3,\n"
+        "20050825, 2230, L, HU, 25.9N,  80.3W,  70,  984, -999\n"
+        "20050829, 1110, L, HU, 29.3N,  89.6W, 110,  920, -999\n"
+        "20050830, 0000,  , TS, 33.0N,  89.0W,  50,  980, -999\n"
+        "AL012004,            BAHAMA,      1,\n"
+        "20040901, 1200, L, HU, 26.5N,  77.0W, 120,  950, -999\n"
+    )
+    storms = ev.parse_hurdat(text)
+    assert storms["AL122005"][0] == "KATRINA" and len(storms["AL122005"][1]) == 3
+    assert ev.landfall_events(storms) == [("AL122005", date(2005, 8, 25), 3)]
+
+
+def test_us_mainland_box_and_category() -> None:
+    ev = _events()
+    assert ev.us_mainland(29.3, -89.6)  # Louisiana
+    assert not ev.us_mainland(26.5, -77.0)  # Bahamas
+    assert not ev.us_mainland(23.0, -82.0)  # Cuba
+    assert not ev.us_mainland(24.0, -97.7)  # Mexico (south of the box)
+    assert not ev.us_mainland(25.5, -97.5)  # Tamaulipas
+    assert ev.us_mainland(26.0, -97.2)  # South Texas
+    assert not ev.us_mainland(44.5, -65.5)  # Nova Scotia
+    assert [ev.category(w) for w in (63, 64, 83, 96, 113, 137)] == [0, 1, 2, 3, 4, 5]
+
+
+def test_after_return_and_shift_years() -> None:
+    ev = _events()
+    days = _daily(date(2020, 1, 1), date(2020, 2, 28))
+    logc = np.arange(len(days), dtype=float)
+    d = date(2020, 1, 4)  # a Saturday: last close Fri 3 Jan
+    assert ev.after_return(days, logc, d, 2) == 2.0
+    assert math.isnan(ev.after_return(days, logc, date(2019, 12, 1), 2))
+    assert math.isnan(ev.after_return(days, logc, date(2020, 2, 27), 5))
+    assert ev.shift_years(date(2024, 2, 29), 1) == date(2025, 2, 28)
+    assert ev.shift_years(date(2005, 8, 29), -3) == date(2002, 8, 29)
