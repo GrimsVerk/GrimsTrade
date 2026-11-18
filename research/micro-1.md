@@ -8,6 +8,40 @@ Question: every weekly input screened so far stays under a weekly IC of ~0.05 (`
 raw-data cache (ingest 1 and 2) have never been used. Do realised volatility, jumps, or the
 overnight/intraday split of the return, built from minute bars, reach a weekly IC of ~0.10?
 
+## In plain words (results, 2026-11-18)
+
+**No. None of the six minute-bar features forecasts the coming week. The largest in-sample IC
+is +0.030 (`overnight13`), under half the family chance level (0.064) and under its own
+single-test level (0.049). The best walk-forward IC is +0.048 and the best gain over the trend
+inputs is +0.021 (both `intraday13`), against bars of 0.10 and +0.05. All six verdicts are
+"no", so by the card the lane is closed: no re-run with other windows.** Descriptive only: no
+backtest, held-out year not loaded. Table: `results/micro-1.md`.
+
+- **What was measured.** Change and 52-week z-score of realised volatility (five-minute
+  returns), the share of variance from jumps, signed jumps, and 13-week t-statistics of the
+  overnight and the intraday return, each on the asset's own minute bars, used from the day
+  after. 513 Fridays 2016-2025, about 2,950 asset-weeks (5.4 million BTC minute bars, 2.0
+  million for SPY), the same target as info-1 and volume-1.
+- **Honest reading of the numbers.**
+  - The four volatility and jump features are new information (overlap with the trend inputs
+    0.11-0.18) with no forecasting power: |IC| 0.000-0.018, walk-forward -0.05 to 0.00, and
+    every one makes the trend forecast slightly worse (gain -0.004 to -0.036).
+  - The overnight and intraday t-statistics are mostly the trend again (overlap 0.75 and
+    0.62). `overnight13` has the largest IC (+0.030) and nothing out of sample (+0.007 at best).
+  - `intraday13` is the only number near a bar: walk-forward +0.048 with a slope per asset,
+    gain +0.021. Its in-sample IC is +0.012, a fifth of the family level, so it is not a
+    "second look" by the card. The per-asset signs differ (coins +0.07 to +0.09, SPY and QQQ
+    -0.06): trend in the coins, reversal in the stock ETFs. With 36 asset-candidate pairs and
+    ~500 weeks each, numbers of that size are what chance gives. Shown, not judged.
+- **How sure.** Less sure than volume-1, and only about large effects. Ten years gives a
+  family chance level of 0.064 (volume-1: 0.048 on 26 years). A real IC of 0.10 would stand
+  clear of it and nothing reaches half; a real IC of 0.03-0.05 cannot be told from zero on
+  this history, and the walk-forward has three test blocks. Since rl-3's ceiling gives nothing
+  below ~0.10 on this book, the conclusion that matters holds: nothing here is worth an RL run.
+- **What it means.** Minute-bar volatility, jumps and the overnight/intraday split join
+  prices, macro, on-chain, positioning, options and volume: no weekly input within reach of
+  free data lifts this six-asset book above the 12-month trend.
+
 ## Card (written 2026-11-18 ~11:10 UTC, before any minute-bar number was computed or printed)
 
 Seen before: every earlier result in this repo, volume-1's card and result included. Seen of
@@ -87,3 +121,44 @@ One logged run. Every candidate gets one `screen` row in `tries.md`. Table in
 `results/micro-1.md`. Nothing is downloaded. The raw minute files are read by one script run
 with `python -I` (`lib/micro1_days.py`, standard library and numpy only), which writes a daily
 table under the cache root (`derived/micro-1/`, never committed); the screen reads that table.
+
+### Disclosures (2026-11-18)
+
+- Order, by commit: card (`a2a5b49`, stamped 11:09 UTC; the heading's "~11:10" was a guess),
+  then code and tests (`e56545a`, pushed before the screen ran), then the one run with `--log`
+  (six `screen` rows in `tries.md`). No dry run of the screen before it.
+- The daily table was built after the card commit (it finished about when the code was
+  committed, before the screen ran), by `micro1_days.py` as it stood before
+  `ruff format` re-wrapped it (layout only; the committed file is the formatted one). Its log (minute bars and days per asset) was read before the
+  screen ran: SPY/QQQ/GLD/TLT 2,478 days each, BTC 3,767, ETH 3,457. No other number was seen
+  before the result table.
+- `overnight` runs from the last close of the previous day **present in the table**; after a
+  day dropped for too few bars it spans that day too. The card said "the previous session day".
+- Coins sit on a calendar grid (a UTC day with no row is a missing day); for ETFs the rows are
+  the session days, so a holiday is not a missing day.
+- `rv_z52` starts 2016-01-29 and the others 2016-01-08 through BTC alone (its minute bars start
+  2015-07-20); the ETFs join as their windows fill during 2016.
+- The Alpaca minute bars were downloaded by ingest 1 with the owner's free key. Nothing was
+  downloaded here. The bar and RL table caches (git-ignored) were copied read-only from the
+  `volume-1` worktree, the local config file from `carry-3`'s.
+- Not corrected, as the card said: ex-dividend drops in the ETFs' `overnight`.
+- `ledger/tries.jsonl` has no rows: a screen is not a strategy (as info-1 and volume-1).
+
+## Status (2026-11-18 ~11:16 UTC)
+
+**Done:** card; `lib/micro1_days.py` (daily table from the minute bars, run with `python -I`);
+`lib/micro1_ic.py` (features, family chance level, table; reuses `info1_ic.py` and
+`info1_features.asof`); `tests/test_micro1.py`; table `results/micro-1.md`; six `screen` rows
+in `tries.md`; this write-up; draft PR #46 (`micro-1` -> `carry-2`), not merged. Held-out year
+untouched.
+
+**Doing:** nothing half-finished. No process left running.
+
+**Next:** nothing in this lane (closed by its own card). Minute bars could still matter at
+their own horizon (the next day or the next hour), which is a different question from a weekly
+input and needs its own card and cost model.
+
+Reproduce: `.venv/bin/python -I research/lib/micro1_days.py <cache root>` (needs ingest 1's
+`alpaca/1m-sip` and `coinbase/1m` folders), then `uv run python research/lib/micro1_ic.py`
+(dry; `--log` writes tries rows: run once). Needs the bar cache (`research/lib/fetch.py`), RL
+2's `tables2.pkl` (`rl2_data.py`) and `research/macro.local.json`.

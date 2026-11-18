@@ -1,13 +1,18 @@
 # Next steps
 
-## Micro 1 (started 2026-11-18, branch `micro-1`, from `carry-2`)
+## Micro 1 (done 2026-11-18, branch `micro-1`, draft PR #46 -> `carry-2`)
 
-Weekly IC screen of minute-bar features (realised volatility, jumps, overnight against
-intraday return) on the six assets, ~10 years of minute bars (2016-2025). Card:
-`research/micro-1.md`.
+Weekly IC screen of six minute-bar features (realised volatility change and z-score, jump
+share, signed jumps, overnight and intraday return) on the six assets, ~10 years of minute
+bars (2016-2025, 513 Fridays). Nothing: largest in-sample IC +0.030 against a family chance
+level of 0.064; best walk-forward IC +0.048 and best gain over the trend inputs +0.021
+(`intraday13`), against bars of 0.10 and +0.05. All six "no"; lane closed by its card. Ten
+years cannot tell an IC of 0.03-0.05 from zero, only rule out ~0.10. Held-out year untouched.
+Write-up `research/micro-1.md`, table `research/results/micro-1.md`.
 
-- Doing: card written and pushed; next the daily table (`research/lib/micro1_days.py`), the
-  screen (`research/lib/micro1_ic.py`), a test, one logged run.
+- Doing: nothing. No process running.
+- Next (not started): none in this lane. Minute bars at their own horizon (next day, next
+  hour) would be a new card with its own cost model.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

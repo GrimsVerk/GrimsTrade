@@ -936,3 +936,9 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-18 11:12 | micro-1-screen | rv_chg (IC -0.004, chance 0.048, family 0.064, WF -0.023, gain -0.036) | screen | train | 2016-01-08 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:12 | micro-1-screen | rv_z52 (IC -0.000, chance 0.048, family 0.064, WF -0.002, gain -0.009) | screen | train | 2016-01-29 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:12 | micro-1-screen | jump4 (IC +0.002, chance 0.052, family 0.064, WF -0.005, gain -0.010) | screen | train | 2016-01-08 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:12 | micro-1-screen | sjump4 (IC -0.018, chance 0.043, family 0.064, WF -0.001, gain -0.004) | screen | train | 2016-01-08 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:12 | micro-1-screen | overnight13 (IC +0.030, chance 0.049, family 0.064, WF +0.007, gain -0.009) | screen | train | 2016-01-08 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:12 | micro-1-screen | intraday13 (IC +0.012, chance 0.057, family 0.064, WF +0.048, gain +0.021) | screen | train | 2016-01-08 | 2025-11-09 | - | - | - | - |
