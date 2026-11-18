@@ -103,7 +103,7 @@ strategy tries: the net pooled weeks are a small backtest, so they are counted i
 `research/lib/rl5_screen.py` (reuses `rl4_perp`), test `tests/test_rl5.py` on made-up data,
 table `results/rl-5-screen.md`.
 
-## Results (written 2026-11-18 ~11:12 UTC, after the one screen run; nothing else run)
+## Results (written 2026-11-18 ~11:09 UTC, after the one screen run; nothing else run)
 
 **In one line:** no input clears the return-spread screen, so by the card no lasso was trained;
 the fixed learner has nothing on this book that is distinguishable from luck, and nothing here
@@ -160,4 +160,4 @@ RL lane: no learner here is limited by the optimizer; all are limited by ~250 in
 
 ### Status
 
-Done 2026-11-18. Nothing running. Draft PR to `rl-4`, not merged.
+Done 2026-11-18. Nothing running. Draft PR #42 to `rl-4`, not merged.

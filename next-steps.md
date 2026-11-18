@@ -1,6 +1,6 @@
 # Next steps
 
-## RL 5 (done 2026-11-18, branch `rl-5`, draft PR -> `rl-4`)
+## RL 5 (done 2026-11-18, branch `rl-5`, draft PR #42 -> `rl-4`)
 
 Does any perp input clear a return-spread screen, and does rl-4's fixed lasso on the survivors
 beat `ls-funding` (pooled Sharpe 0.57)? Answer: no input passes. Nine inputs (rl-4's four plus
