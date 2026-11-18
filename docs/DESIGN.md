@@ -24,6 +24,8 @@ keeps score per strategy against the benchmarks.
 - `ledger.py`: `ledger/decisions.jsonl` (one line per decision) and `ledger/tries.jsonl` (one line
   per strategy ever tried, for the deflated Sharpe).
 - `report.py`: scoreboard (return, Sharpe, max drawdown, turnover) per strategy.
+- `register.py`: the project-wide tries register and its bar (`research/register/`; not used by
+  the daily runner, which only reads the register through `ledger.py`).
 - `run_daily.py`: the entry point, `uv run python -m grimstrade.run_daily --root trail`.
 
 ## Timing rules (no look-ahead)
@@ -77,6 +79,26 @@ train period, check the held-out period once, forward-paper only if it passes. M
 fractional Kelly, random matrix theory, HMM regimes, Hawkes processes, fractional differentiation,
 path signatures, optimal stopping, information theory, TDA; then econophysics and ecology. Sources:
 arXiv q-fin, SSRN, JF/JFE classics, AQR and Man Group research.
+
+### Project-wide count and bar (PROPOSED 2026-11-18, register-1; not settled)
+
+Lanes log tries on their own branches; each one only sees its own family, so "passed its bar"
+can hide a search of thousands. Proposed convention, until the owner settles it:
+
+- `research/register/tries.jsonl` holds every distinct try on every pushed branch (dedup rule in
+  `src/grimstrade/register.py`); `research/register/BAR.md` states the project-wide count, the
+  selectable count, N for a new pick and the deflated Sharpe / Bonferroni bar at that N. One
+  command regenerates both: `git fetch origin && uv run python -m grimstrade.register`.
+- Every card quotes, before any number is computed, the project-wide count and N from BAR.md
+  (with the commit of BAR.md it read, or the regenerated numbers if newer) and the bar at that N:
+  the z needed for a deflated Sharpe of 0.95 and the Bonferroni p. The card's own family bar
+  stays; it is the lane's question.
+- Every result reports its deflated Sharpe at the project-wide N next to its family bar.
+  "Passed its family bar" without the project-wide number is not a lead.
+- The night lead regenerates the register once per night in one PR; the file only grows (ids
+  already in it stay), and `.gitattributes` merges it by union so the PRs never conflict.
+- The live scoreboard counts the same tries: `ledger` reads every branch (except `paper-trail`)
+  and the register (DECISIONS 2026-11-18).
 
 ## Graduation bar (before real money is even discussed)
 
