@@ -1,5 +1,11 @@
 # Next steps
 
+## In progress: dsr-1 (branch `dsr-1`, draft PR into `main`)
+
+Project-wide multiple-testing check: census of every branch's tries, then a deflated Sharpe and
+Bonferroni/Holm view of `tsmom12` and the five best near-misses. Write-up: `research/dsr-1.md`;
+script: `research/dsr1.py`. Steps: 1 census (done), 2 card then numbers, 3 plain verdict.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
