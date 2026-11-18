@@ -118,3 +118,37 @@ def test_patch_leaving_uses_no_later_data() -> None:
     same = [d for d in a if d <= last_seen]
     assert len(same) > 20 and any(a[d] for d in same)
     assert all(a[d] == b[d] for d in same)
+
+
+def _crowd_weights(hist: dict[str, list[Bar]]) -> dict[date, Any]:
+    sys.path.insert(0, str(LIB))
+    try:
+        idea = importlib.import_module("idea_wide2_crowded_trend")
+        c = importlib.import_module("common")
+        h = importlib.import_module("harness")
+    finally:
+        sys.path.remove(str(LIB))
+    first, last = hist["SPY"][260].date, hist["SPY"][-1].date
+    ds = h.decisions(c.weekly(idea.crowd), h.Panel(hist), first, last)
+    return {d.time.date(): d.weights for d in ds if d.time.date().weekday() == 4}
+
+
+def test_crowded_trend_halves_only_when_all_three_are_in_trend() -> None:
+    up = [50.0 + 0.1 * k for k in range(699)]
+    hist = {"SPY": _bars(_path()), "QQQ": _bars(up), "GLD": _bars(up)}
+    w = _crowd_weights(hist)
+    early, late = min(w), max(w)  # SPY is falling early and in trend at the end
+    assert set(w[early]) == {"QQQ", "GLD"} and abs(w[early]["QQQ"] - 1 / 3) < 1e-9
+    assert set(w[late]) == {"SPY", "QQQ", "GLD"} and abs(w[late]["SPY"] - 1 / 6) < 1e-9
+
+
+def test_crowded_trend_uses_no_later_data() -> None:
+    up = [50.0 + 0.1 * k for k in range(699)]
+    closes = _path()
+    cut = 500
+    other = closes[:cut] + [5.0 + (k % 7) for k in range(len(closes) - cut)]  # scrambled future
+    a = _crowd_weights({"SPY": _bars(closes), "QQQ": _bars(up), "GLD": _bars(up)})
+    b = _crowd_weights({"SPY": _bars(other), "QQQ": _bars(up), "GLD": _bars(up)})
+    last_seen = _bars(closes)[cut - 1].date
+    same = [d for d in a if d <= last_seen]
+    assert len(same) > 20 and all(a[d] == b[d] for d in same)

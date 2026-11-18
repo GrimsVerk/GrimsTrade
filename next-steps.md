@@ -16,9 +16,14 @@ average. **Fails all five bars: 0.85 against 1.05 (difference -0.19, 90% range -
 `research/results/patch-leaving.md`; 4 rows in `tries.md`. Both picks were read at
 p < 0.10 / 42.
 
+Third pick, same day: G2, crowded-trend (halve the book when at least three assets are eligible
+and all are in trend). **Fails: 0.98 against 1.05 (difference -0.07, 90% range -0.16 to
++0.03), ahead in 1 of 5 eras; held-out year unspent.** Drawdown 29% against 37%, but 3 points
+less return a year. Table `research/results/crowded-trend.md`; 4 rows in `tries.md`.
+
 - Doing: nothing. No process running.
-- Next: nothing from either card. 40 of wide-1's mechanisms stay uncarded; neither test gives a
-  reason to card a third price-only one. wide-1's three lanes below stand as written.
+- Next: nothing from the three cards. 39 of wide-1's mechanisms stay uncarded; three price-only
+  changes to the trend rule have now failed. wide-1's three lanes below stand as written.
 
 ## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
 

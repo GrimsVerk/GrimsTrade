@@ -1,7 +1,7 @@
-# Wide 2: two more mechanisms from wide-1's list (trend age, patch-leaving)
+# Wide 2: three more mechanisms from wide-1's list (trend age, patch-leaving, crowded-trend)
 
-Research run wide-2, 2026-11-18, two bursts of about ten minutes each. **Both picks fail on
-train.** The first is described first; the second has its own section below. Branch `wide-2` (from
+Research run wide-2, 2026-11-18, three bursts of a few minutes each. **All three picks fail on
+train.** The first is described first; the second and third have their own sections below. Branch `wide-2` (from
 `wide-1`). Research only: fake money, public data, no change to the gym, the daily runner or the
 live strategies.
 
@@ -109,8 +109,53 @@ drawdown. It came out at -0.19, below the range; the drawdown was as feared (+17
 left on wide-1's list are mostly gates, smoother trends or ideas that need other data; neither
 test gives a reason to card a third from the price-only ones.
 
+## Third pick: crowded-trend (burst 3, same day)
+
+**It fails as well: Sharpe 0.98 against 1.05 for `tsmom12` (difference -0.07, 90% range -0.16
+to +0.03; the twin is ahead in 87% of bootstrap draws), ahead in 1 of 5 eras. The held-out year
+was not looked at.** The sentence above ("no reason to card a third") was written before this
+pick; the coordinator asked for a third, and the card says so.
+
+- **Picked:** G2, evolutionary game theory ("when every trend signal agrees, the trade is
+  crowded"). Rule `crowd` (`cards/crowded-trend.md`, pushed before any number): `tsmom12`'s
+  weights, all halved in weeks when at least three assets are eligible and every one is in
+  trend. One variant. Bar p < 0.10 / 42, three picks counted.
+- It acts on 451 of 1,658 Fridays (27%).
+
+| | `crowd` | `tsmom12` |
+|---|---:|---:|
+| Sharpe, six assets, 1994-2025 | 0.98 | 1.05 |
+| Return a year | +14.8% | +17.8% |
+| Volatility | 15.2% | 17.1% |
+| Max drawdown | 28.9% | 36.5% |
+| Average exposure | 62% | 76% |
+| Covid crash (2020-02-19 to 03-23) | -8% | -22% |
+| Other ETFs / other coins / four indexes (difference) | -0.12 / +0.05 / -0.01 | |
+
+**What it shows.** Halving the book when everything is in trend does cut risk: the drawdown is
+7.6 points shallower and the covid crash cost 8% instead of 22% (so it must have begun with
+the book halved; not checked week by week). But it gives up 3 points of return a year for 2 points of volatility, which is a
+worse trade than the twin's own. "All in trend" is mostly a good market, not a crowded one.
+The 2000-09 era is where it loses most (-0.02 against 0.19). Bars 3 and 5 pass, bars 1, 2 and 4
+fail. The coin set went the other way (+0.05, p 0.29): one of three side comparisons, not
+evidence.
+
+**How sure.** Less sure than for the first two: the 90% range includes zero. Sure enough that
+it is not a gain: the other ETFs trail clearly (-0.12, range -0.22 to -0.03) and the indexes
+do not help. The shallower drawdown is one episode (covid) more than a pattern.
+
+**Compared with my guess** (card): 1% chance of a pass, -0.10 to +0.02. It came out at -0.07,
+inside the range.
+
+**All three together.** Later entry (-0.06), fewer and stronger assets (-0.19), less when all
+agree (-0.07): three price-only changes to the trend rule, three failures, none near the bar.
+39 mechanisms stay uncarded.
+
 ## Disclosures
 
+- **`crowded-trend`: one run, no dry run** (2026-11-18 11:19 UTC), 4 rows in `tries.md` (1
+  variant, 3 robustness); two more tests in `tests/test_wide2.py` (halves only when all three
+  are in trend, no later bar read). The repo checks were run before its card was pushed.
 - **`patch-leaving`: one run, no dry run** (2026-11-18 11:16 UTC), 4 rows in `tries.md` (1
   variant, 3 robustness); two more tests in `tests/test_wide2.py` (same exposure as the twin,
   never an asset the twin does not hold, no later bar read). The repo checks were run before
@@ -130,5 +175,6 @@ test gives a reason to card a third from the price-only ones.
   others were not re-examined in depth.
 - **Not run:** the held-out year.
 
-Tables: `results/trend-age.md`, `results/patch-leaving.md`. Scripts:
-`lib/idea_wide2_trend_age.py`, `lib/idea_wide2_patch_leaving.py`.
+Tables: `results/trend-age.md`, `results/patch-leaving.md`, `results/crowded-trend.md`. Scripts:
+`lib/idea_wide2_trend_age.py`, `lib/idea_wide2_patch_leaving.py`,
+`lib/idea_wide2_crowded_trend.py`.

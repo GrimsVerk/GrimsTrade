@@ -986,3 +986,7 @@ Never edit or delete a row.
 | 2026-11-18 11:16 | patch-leaving | mvt@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.54 | +218.3% | 20.1% | 8.70 |
 | 2026-11-18 11:17 | patch-leaving | mvt@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.14 | -78.6% | 97.4% | 9.95 |
 | 2026-11-18 11:17 | patch-leaving | mvt@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.66 | +5694.5% | 33.3% | 9.16 |
+| 2026-11-18 11:19 | crowded-trend | crowd | variant | train | 1994-02-01 | 2025-11-09 | 0.98 | +7879.3% | 28.9% | 3.30 |
+| 2026-11-18 11:19 | crowded-trend | crowd@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.47 | +122.0% | 16.2% | 3.85 |
+| 2026-11-18 11:19 | crowded-trend | crowd@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +349.3% | 91.5% | 4.95 |
+| 2026-11-18 11:19 | crowded-trend | crowd@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +1932.4% | 24.6% | 2.88 |
