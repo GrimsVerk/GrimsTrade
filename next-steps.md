@@ -35,7 +35,10 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
     points less growth a year: a smaller coin position, not a better rule.
   - #37 `trend-1926` (-> trend-tune): `tsmom12` beats holding on US stocks 1927-1961 (Sharpe
     0.88 vs 0.55, p 0.02; worst loss 38% vs 84%) but two thirds is 1929-1932: crash insurance,
-    not an edge.
+    not an edge. Era 2 (1962-2001): Sharpe 0.88 vs 0.80 (p 0.26); without 1973-74 the lead is
+    gone. Trend's lead on US stocks is 1929-32 and 1973-74 only. Open: unexplained one-day gaps
+    in era 2's replay check (utilities 1.7%), no test for the `TREND_ERA=1962` path, ideas.md
+    and README describe era 1 only.
   - #41 `volume-1`: own trading volume does not forecast (max |IC| 0.021 vs chance 0.048), nor
     across ~89 coins a week (max |IC| 0.020 vs 0.043). Lane closed.
   - #43 `trend-where` (-> trend-tune): per-asset walk-forward trend filter (`where-vol`) ties
@@ -72,7 +75,7 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
     the same cost (-72% vs -110% summed). Sharpe in noise; bar not met. Coin-years re-reading
     (2013-25): the stop wins (worst loss 17.7% vs 21-27% for caps of similar cost), but mostly on
     the single 2018-20 fall: close to one observation.
-- Running at the end of burst 1 (results land in their PRs): `trend-1926` on 1962-2001.
+- Nothing running at the end of burst 1 (11:21 UTC); every lane pushed.
 - Owner direction 2026-11-17: never stop early (only weekly 0.74, the reset or the Chief of
   Staff); always WIDER and DEEPER lanes. 2026-11-18: bursts use only the last 30 min of each
   5-hour window (`chief-of-staff/briefs/grimstrade-burst.md`), weekly stop 0.84.
