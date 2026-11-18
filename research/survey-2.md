@@ -209,3 +209,66 @@ the family is 54 + 7 = 61 and the pick is read at p < 0.10 / 61 = 0.00164. That 
 the lineage; counting every card the lab has run since 2026-11-12 (well over 100 configurations
 in `tries.md`) would be stricter still, and is noted next to the result. Because 1994-2016 is
 the paper's own sample, the card adds two bars on 2017-2025 alone.
+
+## Test of the pick: `fomc-cycle` (run 2026-11-18, train only)
+
+Card `cards/fomc-cycle.md` and code were pushed before any number. Table:
+`results/fomc-cycle.md`; 7 rows in `tries.md` (2 variants, 5 robustness). Held-out year
+unspent (the card allows it only after a pass).
+
+**Verdict: fails train. The FOMC cycle replicates in the paper's own years and is gone after
+publication.**
+
+- The data and labels are right: SPY's even-minus-odd spread is +11.0 bps a day in 1994-2013
+  (t 3.1; the paper: +10 to +13.6) and +17.8 in the authors' 2014-16 holdout (t 2.9). QQQ
+  likewise (+16.0, +21.4). At our fills (next open to next open) the spreads are the same
+  size, so the fill rule is not what kills it.
+- After the published sample, 2017-01 to 2025-11 (about 70 cycles, 2,226 SPY sessions): SPY
+  -5.7 bps a day (t -1.2), QQQ -1.5 (t -0.3). Odd weeks earned more than even weeks.
+- `even-gate` (stock slots only in even weeks) on the six assets: Sharpe 1.22 against 1.05 for
+  `tsmom12` (difference +0.18, p 0.03), ahead in 4 of 5 eras, drawdown 36% vs 37%, positive on
+  the other ETFs (+0.07) and the indexes (+0.03), above its placebo `odd-gate` (0.65). All of
+  that is 1994-2016: from 2017 it trails the twin (-0.05). Fails bar 1 (p 0.03 against the
+  family's 0.00164), bar 6 (behind since 2017) and bar 7 (post-publication spread negative).
+- `even-overlay` (idle cash into stocks in even weeks): 0.96 vs 1.05, drawdown 53% (it put the
+  idle cash into stocks during the dot-com bust); fails six of seven bars.
+
+**The bar, counted honestly.** Read against the `wide-*` lineage's family (54 + this list's 7 =
+61): p must be below 0.00164; it is 0.03. Under the protocol's default single-test bar
+(p < 0.10, bars 1-5) `even-gate` would have passed train: that is exactly the trap the card's
+post-publication bars were written for, and they fail. Counting every configuration the lab has
+run would make bar 1 stricter still; it changes nothing here.
+
+**What this adds.** Another published calendar effect that died around publication (after the
+pre-FOMC drift, gone after 2015 in the literature, and `month-end-liquidity`, faded since 2014
+in our data), and the cleanest case: the
+effect replicates to the basis point in-sample and reverses after. My guess before the test
+(0 to +6 bps after 2016; -0.03 to +0.05 Sharpe) was too kind on the spread and right on the
+Sharpe.
+
+### Disclosures
+
+- A plumbing run (`DRY=1`, last 120 days for the backtests, nothing logged) printed the event
+  study on the full history before the logged run. Nothing was changed after it; the logged run
+  is the card's code as pushed in commit 7813539.
+- The Fed's 2003 page lists two "meetings" on 2003-09-15 and 2003-09-16; the parser merges
+  meetings at most 3 days apart and keeps the later day (the announcement). Not in the card;
+  it moves one cycle by a day.
+- Parser fixes before the first number (month abbreviations such as "Jan/Feb", headings such
+  as "June 30-July 1"): the parse prints only counts; the final file has 8 meetings in every
+  year 1994-2025 (256).
+
+### Count after this lane
+
+Family (wide-1 lineage): 61 mechanisms, 13 tested, none passed. The next test is read at
+p < 0.10 / 61 = 0.00164 (or lower if a further list is added).
+
+### Next
+
+- Rank 2, `xtsmom` (stocks only while long bonds also trend up; prior 3%), is the cheapest
+  next card: no new data, one rule, a 2016-2025 post-sample window. Its 2023-24 weakness is
+  visible in advance.
+- Ranks 3-4 (`fomc-bond-drift`, `announcement-premium`) are central-bank calendar effects of
+  the kind that just failed; I would not spend a test on them before `xtsmom`.
+- S17 (Hartley and Schwarz) gives `month-end-bonds` a prior from print that predates our post
+  hoc look; that lane (`month-end-bonds` branch) should cite it.

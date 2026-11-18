@@ -127,4 +127,7 @@ Difference to the twin: -0.03 to +0.05 Sharpe for `even-gate`; `even-overlay` wi
 
 ## Result
 
-See `results/fomc-cycle.md` once tested.
+Tested 2026-11-18: **fails train** (bars 1, 6, 7). Even weeks beat odd weeks in 1994-2016 as
+published (SPY +11.0 bps a day, t 3.1) and not after (2017-2025: -5.7, t -1.2); `even-gate`
++0.18 Sharpe over the twin on full train (p 0.03), -0.05 since 2017. Table
+`results/fomc-cycle.md`; verdict in `survey-2.md`. Held-out year unspent.

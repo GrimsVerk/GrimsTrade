@@ -163,3 +163,19 @@ their pre-set bar; none used the held-out year. Sharpe on the six assets: `tsmom
 | fatigue-damage | Materials science (Basquin, Miner's rule) | new | - | wide-4's W7: rainflow-counted damage of leveraged coin longs; mostly collapses into `dip-rsi2` and P4. Plan in `wide-1.md`, last section |
 | snapshot-shrink | Metrology (snapshot sampling, Goodhart) | new | - | wide-4's W8: quarter-end leverage-ratio snapshots thin Treasury intermediation from 2015; sits on top of the post hoc month-end bond rally, so descriptive only. Plan in `wide-1.md`, last section |
 | lunar | Astronomy x chronobiology | new | - | wide-3's W3: returns around new moons beat those around full moons (Dichev and Janes 2003). Every phase shift is a placebo. Lowest prior of the three; plan in `wide-1.md`, last section |
+
+### Run survey-2: 2023-2026 literature (2026-11-18)
+
+Sources and the ranking note (written before any number) in [survey-2.md](survey-2.md). Seven
+new candidates; the family of the `wide-*` lineage is now 61. One carded and tested; held-out
+year unspent.
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| fomc-cycle | Monetary-policy calendar (Cieslak, Morse, Vissing-Jorgensen, JF 2019) | dead (tested) | [card](cards/fomc-cycle.md) | Stock slots only in even FOMC-cycle weeks: +0.18 Sharpe over `tsmom12` on full train (p 0.03, 4 of 5 eras, both other sets positive), all of it 1994-2016, the paper's sample. After publication (2017-2025) SPY's even-minus-odd spread is -5.7 bps a day (t -1.2; in-sample +11.0, t 3.1) and the gate trails the twin (-0.05). Fails the family bar (0.00164) and both post-publication bars. `even-overlay` (idle cash into stocks in even weeks) 0.96 vs 1.05. [result](results/fomc-cycle.md) |
+| xtsmom | Cross-asset trend (Pitkäjärvi, Suominen, Vaittinen, JFE 2020) | new | - | Stock slots only while the long bond's 12-month return is also positive. In sample only (1980-2015); modest in the US. No new data. Rank 2, prior 3% |
+| fomc-bond-drift | Monetary-policy calendar (Pan and Peng 2025; Hillenbrand, RFS 2025) | new | - | Idle cash into TLT around FOMC days; about 12 bps a meeting; half is the 1989-2020 fall in yields. Prior 2% |
+| announcement-premium | Macro announcements (Ai, Bansal, Guo 2023; disputed, Management Science 2025) | new | - | Idle cash into stocks on FOMC, CPI, payroll days; 8:30 releases need a day-early fill; BLS dates needed. Prior 2% |
+| turning-points | Trend (Goulding, Harvey, Mazzoleni, JFE 2023) | new | - | State-dependent blend of 12- and 1-month trend; 0.52 vs 0.51 gross in the paper; close to `ensemble-tsmom`. Prior 1% |
+| nonlinear-tsmom | Machine learning (Moskowitz et al., SSRN 2025) | new | - | ML on past returns; run 2's seven ML cards found nothing. Prior 1% |
+| crypto-corr | Crypto (Yae and Tian 2021) | new | - | BTC timed by its correlation with stocks; daily horizon against 60 bps. Prior under 1% |
