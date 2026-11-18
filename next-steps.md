@@ -1,5 +1,21 @@
 # Next steps
 
+## Month-end bonds (done 2026-11-18, branch `month-end-bonds`, draft PR -> `wide-1`)
+
+Clean test of wide-1's post-hoc pattern (bonds earn their return in the last four sessions of
+the month). Card `research/cards/month-end-bonds.md`, pushed before any number; write-up
+`research/month-end-bonds.md`; tables `research/results/month-end-bonds.md`; 4 rows in
+`tries.md`, each variant run once.
+
+- **Not replicated by the card's bar.** LQD 2002-2025 (279 months): the four sessions earn
+  +22.5 bps a month gross (t 4.1), +10.5 after cost and LQD's ordinary drift (t 1.93; bar 2.0).
+  Both halves positive. Sharpe 0.52 against 0.60 for LQD at a constant 19% and 0.59 for
+  buy-and-hold. LQD's window return moves with TLT's (correlation +0.57): not independent.
+- TLT's first year (11 months, the only new time): -1.8 bps net, t about zero.
+- Doing: nothing. No process running.
+- For the owner: the held-out year was not touched. The card's fixed reading is that it should
+  not be spent on this pattern. Forward paper on TLT would be the honest next test, if wanted.
+
 ## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
 
 New hypotheses from ten other fields (ecology, epidemiology, signal processing, control,

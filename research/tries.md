@@ -975,3 +975,7 @@ Never edit or delete a row.
 | 2026-11-17 23:26 | contagion-catchup | TS@coin8 | baseline | train | 2019-08-08 | 2025-11-09 | 0.74 | +401.7% | 64.3% | 4.19 |
 | 2026-11-17 23:26 | contagion-catchup | EW@coin8 | baseline | train | 2019-08-08 | 2025-11-09 | 0.81 | +659.8% | 83.4% | 2.49 |
 | 2026-11-17 23:26 | contagion-catchup | catchup@coin8 | robustness | train | 2019-08-08 | 2025-11-09 | 0.38 | +14.9% | 70.2% | 46.05 |
+| 2026-11-18 11:10 | month-end-bonds | last4@LQD | variant | train | 2002-07-31 | 2025-11-09 | 0.52 | +65.4% | 11.6% | 23.96 |
+| 2026-11-18 11:10 | month-end-bonds | last4@TLT-y1 | variant | train | 2002-07-31 | 2003-07-29 | 0.22 | +1.1% | 4.9% | 22.05 |
+| 2026-11-18 11:10 | month-end-bonds | constant@LQD | baseline | train | 2002-07-31 | 2025-11-09 | 0.60 | +24.4% | 5.2% | 0.03 |
+| 2026-11-18 11:10 | month-end-bonds | hold@LQD | baseline | train | 2002-07-31 | 2025-11-09 | 0.59 | +190.0% | 25.0% | 0.02 |
