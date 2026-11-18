@@ -10,9 +10,111 @@ on Fridays. This run looks inside that one rule (Part A) and then tests whether 
 honest way, walk-forward, beats leaving it at 12 months (Part B). Another lane (deep-1) maps
 failures across all models; this one stays on `tsmom12`.
 
-## Write-up
+## In plain words (results, 2026-11-18)
 
-Not written yet: the card below was committed and pushed before any new number was produced.
+**Tuning the trend rule does not help: 12 months stays. And the rule is now understood: it
+pays only on stocks, by sitting out the wildest stretches of long bear markets, and it hands
+most of that back by returning late.** Nothing new has earned a paper slot. Held-out year not
+looked at. Tables: `results/trend-tune-anatomy.md` (Part A) and `results/trend-tune.md`
+(Part B); 129 rows in `tries.md`.
+
+Sharpe is return per unit of risk (higher is better); `tsmom12` scores 1.05 over 1994-2025 and
+1.20 since 2003.
+
+| Question | Answer | Number |
+|---|---|---|
+| Does letting past data pick the lookback beat 12 months? | No, three ways | 1.01, 1.02 and 1.05 against 1.05; since 2003 -0.01, -0.01, 0.00 |
+| What would a tuner with perfect hindsight have gained? | Very little | +0.10 |
+| Does last period's best lookback stay best? | No | ranks 4.2 of 7 next period (chance: 4) |
+| Is there a better setting nearby? | No: a flat plateau | 6 to 12 months give 1.02 to 1.13; the best of 98 settings is +0.08, luck alone gives +0.17 |
+| Where does the rule beat holding? | Stocks only, 2000-2009 | SPY +0.09, QQQ +0.11; gold -0.08, bonds -0.06, BTC +0.01, ETH -0.02 |
+| What does it give back after a fall? | Nearly all it saved | +13.6 saved in falls, -14.4 lost in rebounds (log points a year, average asset) |
+| How late is it back in? | Seven months | sells 21% below the high, buys back 23% above the low |
+| How often is an exit a mistake? | Three times in four | 82 of 112 exits were bought back higher |
+| What has it been since 2003? | "Hold three quarters of everything" | same Sharpe (1.20 against 1.19), same worst loss (36% against 38%) |
+
+**Part B, honest tuning.** Three procedures chose the lookback each January from past data
+only: one per asset, one for the whole book, and one per asset that leaves 12 months only on
+strong evidence. The first two moved (mostly to 6 and 9 months), traded half again as much and
+ended slightly behind. The third never found evidence strong enough to move and stayed
+`tsmom12` to the cent. On 18 other markets the differences are small and of both signs. All
+three fail the bar fixed on the card.
+
+**Part A, anatomy.**
+
+- **What earns the money.** A few long absences from falling stock markets (2000-2003,
+  2008-2009, 2022). The rule does not avoid losses on balance: on five of the six assets the
+  price rose, in total, while the rule was out. What it avoids on stocks is rough days: days
+  out were almost twice as volatile as days in (SPY 29% against 16%), and 12 of the 20 worst
+  stock days fell while it was out. That lifts return per unit of risk even though it costs
+  growth.
+- **Why not elsewhere.** On bonds, gold and coins the days out were no rougher than the days
+  in. Coin crashes come out of uptrends: the rule was in for 74% of Bitcoin's crash time. So
+  there it gives up return and buys no calm.
+- **Where it bleeds.** (1) Late re-entry: the 12 months after a low cost about what the fall
+  saved. Its worst years against holding everything are the years after a fall (2003, 2009,
+  2019, 2020, 2023: 20 to 39 points behind). (2) Whipsaw: 84 short trips out (under 13 weeks)
+  cost a net 339 log points across the six slots; 22 long ones earned 247, a third of it one
+  trade (QQQ out from November 2000 to June 2003). Fees are a rounding error next to this.
+- **The settings do not matter.** Lookback anywhere from 6 to 12 months, deciding daily,
+  weekly or monthly, two lookbacks together, entry and exit thresholds: all within a few
+  hundredths. Slowing the rule down to avoid whipsaw does not help, because the later exits
+  cost what the fewer whipsaws save. A wider no-trade band cuts trading by a quarter to a
+  third at the same Sharpe; that is a cost saving, not an edge.
+
+### What this means
+
+1. **Leave the live rule at 12 months.** No tuned version is worth a slot or a revision.
+2. **Expect `tsmom12` to trail "hold everything" in most years** (17 of 23 since 2003) and
+   badly in the year after a fall. That is the rule working as built, not a fault.
+3. **Its value is insurance on the stock slots.** On the bond, gold and coin slots the
+   backtest shows cost without benefit on Sharpe, though it did shrink the worst losses there
+   (TLT 33% against 48%). Whether to keep the filter on those slots is a risk choice like the
+   ones in `risk-map.md`; a test of it is next lane 2.
+
+### How sure
+
+- **Tuning (Part B): fairly sure it is not a large win.** The test measures the gap to
+  `tsmom12` with a standard error of 0.05 to 0.08: it would have seen +0.15 and would likely
+  have missed +0.05. Three procedures, six assets and 18 other markets agree, and the
+  hindsight ceiling (+0.10) says there was little to find.
+- **Anatomy (Part A): a description of one history, in sample.** The stock result rests on
+  three bear markets and two funds that move together. "Rough days cluster in stock
+  downtrends" is a well-known property of stocks, but here it is two assets; next lane 1
+  tests it on data no run has seen.
+- **The 98 settings are a descriptive surface, not candidates.** They were logged as `variant`
+  rows to be conservative for the deflated Sharpe; none may be picked from this table.
+- The card was pushed before any number (commit `81ea406`; one amendment, the bear-window
+  wording, also before any number). The held-out year is unspent.
+- Two places where the card's wording met the data: the pooled hindsight pick (9 months) is
+  already a cell of the surface, so it has no row of its own; and the card's robustness runs
+  (raw prices, double costs) go to the procedure with the largest train difference, which is
+  `wf-shrunk` at 0.00, so on total-return prices they compare `tsmom12` with itself.
+
+### Next lanes
+
+1. **`trend-1926`: does the stock result hold on 35 years nobody here has looked at?** The US
+   market and 10 industries, daily from 1926 (Ken French's data library, already in the cache,
+   keyless), cash at the T-bill rate in the same file. Run `tsmom12` against holding over
+   1926-1961 (1929-32, 1937, the 1940s) and check the mechanism directly: were the days out
+   rougher than the days in? If yes, "insurance on stocks" is a property; if no, it was
+   2000-2002. Our only earlier evidence before 1994 is the S&P 500 index 1962-1993, where the
+   rule did not beat holding (0.45 against 0.49).
+2. **`trend-where-it-pays`: use the filter only where it buys calm.** Each January, an asset
+   keeps its trend filter only if, on its own past, its days out were rougher than its days
+   in; otherwise it is simply held. A yes/no per asset with no number to tune, walk-forward,
+   tested on the 8 other ETFs, 4 indexes and 6 coins. The bar must include the worst loss:
+   holding bonds and coins through their winters deepens it, and this lane would show the
+   owner that trade in one table.
+3. **`fast-reentry`: a mitigation for the worst bleed.** The only direction on the surface
+   that pointed up was "slow to leave, quick to return" (held if the 3-month OR the 12-month
+   return is positive: +0.01 over 1994-2025, +0.08 since 2003; in sample, one of 98 cells).
+   "Quick to leave" pointed down (-0.11). One pre-registered rule, tested only where it has
+   not been seen (the three out-of-universe sets, then the held-out year), deflated for 98
+   cells. Expect little; it is the cheapest honest shot at the rebound give-back.
+
+Cost note for the M1 lane (not a research lane): a 2.5% to 5% rebalance band gave the same
+Sharpe (1.07 against 1.05) with 15% to 25% less trading in the backtest.
 
 ## Card (fixed 2026-11-18, before any new number)
 

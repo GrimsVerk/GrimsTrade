@@ -130,3 +130,18 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
 | ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
 | ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
+
+### Trend tune: anatomy and honest tuning of `tsmom12` (trend-tune, 2026-11-18)
+
+Card and write-up: [trend-tune.md](trend-tune.md), fixed before any number. Sharpe on the six
+assets, 1994-2025 / since 2003: `tsmom12` 1.05 / 1.20. Held-out year unspent.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| wf-asset | Walk-forward lookback per asset | dead (tested) | [trend-tune.md](trend-tune.md) | 1.01 / 1.18 (-0.04, p 0.78); 45% more trading, nothing gained. [result](results/trend-tune.md) |
+| wf-pooled | Walk-forward lookback for the book | dead (tested) | [trend-tune.md](trend-tune.md) | 1.02 / 1.19 (-0.03, p 0.63); wanders between 6 and 9 months. [result](results/trend-tune.md) |
+| wf-shrunk | Per asset, shrunk toward 12 months | dead (tested) | [trend-tune.md](trend-tune.md) | Never leaves 12 months on the six assets: it is `tsmom12`. [result](results/trend-tune.md) |
+| trend-tune-surface | 98 settings of the trend rule | described (no pass bar) | [trend-tune.md](trend-tune.md) | A flat plateau from 6 to 12 months, any decision frequency, any threshold; best cell +0.08, luck alone +0.17. Not candidates. [result](results/trend-tune-anatomy.md) |
+| trend-1926 | Trend, older data | new | - | `tsmom12` against holding on the US market and 10 industries, daily 1926-1961 (French library, cached): is "pays on stocks because days out are rougher" a property or 2000-2002? |
+| trend-where-it-pays | Trend, per-asset switch | new | - | Keep the filter only on assets whose past days out were rougher than days in (walk-forward yes/no, nothing to tune); the bar must include worst loss. |
+| fast-reentry | Trend, re-entry | new | - | Held if the 3-month OR the 12-month return is positive: +0.01 / +0.08 in sample (one of 98 cells). Test only out of universe, then held-out; deflate for 98. |

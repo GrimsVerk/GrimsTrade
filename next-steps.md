@@ -1,23 +1,40 @@
 # Next steps
 
-## Trend tune (research run, branch `trend-tune`, started 2026-11-18)
+## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
-Question: what part of `tsmom12` earns its money and where does it bleed (Part A, anatomy), and
-does walk-forward tuning of its lookback beat the fixed 12 months (Part B)? Card, fixed before any
-number: `research/trend-tune.md`.
+What earns `tsmom12` its money, where it bleeds, and whether walk-forward tuning of its lookback
+beats the fixed 12 months. Card fixed before any number; write-up `research/trend-tune.md`;
+tables `research/results/trend-tune-anatomy.md` and `research/results/trend-tune.md`; 129 rows
+in `research/tries.md`.
 
-- Done: card (pushed before any number); draft PR #34 to `carry-2`; rules and tuners in
-  `research/lib/trend_tune.py` with tests (`tests/test_trend_tune.py`: all-12 equals `tsmom12`,
-  no look-ahead, shrinkage arithmetic).
-- Paused 2026-11-18 (usage window) at this point: `research/lib/trend_tune_anatomy.py` is
-  written but has NEVER been run. No new number exists yet; `tries.md` is untouched. The price
-  cache was copied into the git-ignored `research/data/` from the `slow-1` worktree.
-- Next: run `DRY=1 uv run python research/lib/trend_tune_anatomy.py` first (plumbing, logs
-  nothing), fix what breaks, then the real run (logs 4 baseline rows, about 98 surface variants
-  and 3 robustness rows once; reruns re-score unlogged). Then Part B
-  (`research/lib/trend_tune_b.py`, not written: three `Tuner` procedures on the six assets and
-  the out-of-universe sets, the card's seven bars), write-up at the top of
-  `research/trend-tune.md`, `ideas.md` rows.
+- Tuning: no. Three walk-forward procedures (a lookback per asset, one for the book, per asset
+  shrunk toward 12): 1.01, 1.02 and 1.05 Sharpe against 1.05 for fixed `tsmom12`; nothing out of
+  universe. Perfect hindsight would have been worth +0.10, and the best lookback of one era says
+  nothing about the next. 12 months stays. Held-out year unspent.
+- Anatomy: the rule beats holding only on stocks (SPY +0.09, QQQ +0.11), by sitting out the
+  roughest stretches of 2000-03, 2008-09 and 2022; on bonds, gold and coins the days out were no
+  rougher than the days in, so it costs return there for no gain in Sharpe. It buys back seven
+  months after a low, 23% above it, and hands back in the rebound what it saved in the fall; 82
+  of 112 exits were whipsaws. Since 2003 it has behaved like holding 76% of everything. Settings
+  (lookback 6-12 months, decision frequency, thresholds, bands) sit on a flat plateau.
+- Doing: nothing. No process running.
+- Next lanes (not started; rows in `research/ideas.md`): (1) `trend-1926`: the stock result on
+  the US market and 10 industries 1926-1961 (French library, already cached); (2)
+  `trend-where-it-pays`: keep the filter only on assets whose past days out were rougher than
+  days in; (3) `fast-reentry`: held if the 3-month or the 12-month return is positive, tested
+  only out of universe and on the held-out year.
+- Rerun: `uv run python research/lib/trend_tune_anatomy.py` and
+  `uv run python research/lib/trend_tune_b.py` rebuild the tables; runs already saved under the
+  git-ignored `research/data/runs/` are re-scored without new `tries.md` rows (on a fresh
+  machine they would be logged again: copy that folder or accept duplicate rows).
+
+For the owner:
+
+- Nothing to decide for the live rule: it stays at 12 months.
+- Optional, for the M1 lane: a 2.5-5% rebalance band gave the same Sharpe with 15-25% less
+  trading in the backtest (a cost saving, not an edge).
+- A risk choice the next lane would inform: the trend filter on the bond, gold and coin slots
+  has cost return without lifting Sharpe, but it did shrink their worst losses.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
