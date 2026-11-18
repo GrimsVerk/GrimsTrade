@@ -1,5 +1,14 @@
 # Next steps
 
+## insure-1 (in progress 2026-11-18 night, branch `insure-1` -> `trend-1926-fix`)
+
+Is "trend = crash insurance" statistically solid across 1927-2025 (French market and 10
+industries), how many effective (clustered) episodes back it, and what does it cost per unit of
+loss avoided? Card `research/cards/crash-insurance.md` (pushed before any number).
+
+- Step 1 done: card.
+- Doing: step 2, `research/lib/insure1.py` on cached data (reuses trend-1926's saved runs).
+
 ## Trend 1926 fix (in progress 2026-11-18, branch `trend-1926-fix` -> `trend-1926`)
 
 Three loose ends of trend-1926: (1) explain the era-2 replay-check gaps (utilities 1.7% on one
