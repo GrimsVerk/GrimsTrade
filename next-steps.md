@@ -24,6 +24,9 @@ tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protoc
   passes if its out-of-sample Sharpe difference to `tsmom12` beats the 95th percentile of the
   replays' best scores. SPA and Reality Check are reported only. Budget escape now ~24
   CPU-hours (this number is the lane's guess: the lead should confirm it).
+- Bar 3 tightened by the lead (2026-11-18 ~11:15 UTC, on the card): pass only if none of the 20
+  replays is at or above the real score (p = 1/21); if the budget allows, 40 worlds with at most
+  one above, chosen at the timing test. Seeds, bootstrap and the 24 CPU-hour budget confirmed.
 - Doing: nothing. No process running. No real price read by any evo-1 code. Held-out year
   untouched.
 - Next, in this order (all specified on the card):

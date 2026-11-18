@@ -297,6 +297,15 @@ them.
   of the 20 replay scores, that is, at most one replay score is at or above it (nearest rank;
   permutation p = (1 + the number at or above) / 21, at most 0.095). Each replay score is
   already the best of three procedures, so there is no further x3.
+- **Bar 3 tightened (card note 2026-11-18 ~11:15 UTC, the lead's decision, still before any
+  real-data number and before any replay world exists):** "at most one of 20 at or above" is
+  about a 10% test (p up to 2/21 = 0.095), too loose. The rule is now: a procedure passes only
+  if **none** of the 20 replay scores is at or above its statistic on the real data (permutation
+  p = 1/21, about 0.048). Escape, only if the budget allows: 40 replay worlds (seeds 101 to 140)
+  with at most one at or above (p at most 2/41, about 0.049). Whether 20 or 40 are run is
+  decided at the timing test, with no result looked at, and written here with its date; never
+  after a replay score has been seen. Seeds, the bootstrap, the statistic and the 24 CPU-hour
+  budget are confirmed unchanged.
 - **Order and logging:** the replay worlds run before the real search, with the controls. Their
   scores are written to `results/` and logged as `control` rows (idea `evo-1-replay`, one per
   world) before any real-data number exists.
