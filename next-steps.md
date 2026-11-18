@@ -1,6 +1,6 @@
 # Next steps
 
-## Trend where (done 2026-11-18, branch `trend-where`, draft PR -> `trend-tune`)
+## Trend where (done 2026-11-18, branch `trend-where`, draft PR #43 -> `trend-tune`)
 
 Keep the `tsmom12` filter only on assets whose past days out were rougher than days in
 (walk-forward yes/no each January). Card fixed before any number; write-up
