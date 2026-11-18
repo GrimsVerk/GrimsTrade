@@ -213,3 +213,31 @@ Only a large effect can pass.
 **My guess before any number.** Mean Y between -4% and +4%, |t| < 1.5; b of either sign;
 placebo t spread 1.0-1.3 (non-overlapping events, unlike the clustered designs before). Chance
 of a pass: 2%.
+
+### What came out (one run, 2026-11-19; table `results/fork-premium.md`)
+
+**The gate fails on three of four counts. Over 15 Ethereum upgrades 2016-2025, ETH did not run
+up against BTC into the activation day and give it back after: mean Pre -0.06%, mean Post
+-0.76%, premium Y +0.70% (t +0.23); the true calendar ranks 19 of 41 shifted ones (empirical
+p 0.46). W17 `fork-premium` is dead by the gate: no card, no strategy, no `tries.md` row.**
+
+- **The scope dose has the right sign and nothing under it:** supply or consensus forks
+  +2.9% (5 events), the others -0.4% (10); the gap comes from the Merge (+17.8%: ETH fell 15%
+  against BTC in the ten days after) and London (+9.2%), while Shapella (-10.2%) and
+  Byzantium (-0.8%) go the other way. Five events cannot carry a dose.
+- **Single events dominate:** Pectra (-29.3%: ETH +27% against BTC in the ten days after the
+  May 2025 upgrade, part of a broad rally) and Arrow Glacier (+19.8%) are a third of the
+  spread; without the DAO fork the mean is +1.3% (t 0.40); five-day windows -0.1% (t -0.04).
+- **The placebo null here matches N(0, 1):** 40 calendars moved by k x 30 days give t with
+  standard deviation 1.05 and 2% with |t| >= 2 (one, +3.08). Non-overlapping events with an
+  equal-weighted one-sample t carry no clustering, so the normal null is about right in this
+  design. The contrast with wide-8's 2.18 and W19's 1.74 is the point of the method note in
+  step 3: the overdispersion comes from clustered events and autocorrelated doses, not from
+  event studies as such.
+- **Compared with my guess:** mean Y between -4% and +4% with |t| < 1.5: yes (+0.7%, t 0.23).
+  b either sign: positive (+3.3%). Placebo spread 1.0-1.3: yes (1.05). 2% chance of a pass:
+  no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only counts (15 events, 5 with scope 1; 40 of 40
+placebos kept, 11-15 events each), then one run. Rule pushed at 1b9452d (post window fixed to
+ten days at d0d35a9, before any code), script and tests at 3501d26, all before either run.
