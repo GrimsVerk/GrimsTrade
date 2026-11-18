@@ -12,6 +12,11 @@ Never edit or delete a row.
   selectable and not counted as a strategy try (`protocol.md`, "Planted-signal controls").
 - `screen` (added 2026-11-13, info-1): a descriptive weekly IC row for one candidate input, no
   backtest, not selectable and not counted as a strategy try; numbers in `results/info-1.md`.
+- `insure-check` (added 2026-11-18, insure-1): a descriptive re-score of an already logged
+  configuration (`tsmom12`) on a span or set it was not logged on (trend-1926's saved gym runs
+  spliced with the gym-free paper series to 1927-2025; the 30 French industries, paper series);
+  not selectable, not a strategy try, not counted in any family (`cards/crash-insurance.md`,
+  numbers in `results/insure-1.md`). Turnover/yr there = position flips a year.
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
@@ -1257,3 +1262,44 @@ Never edit or delete a row.
 | 2026-11-18 11:18 | trend-1926 | tsmom12-50bps@F62-Other | robustness | train | 1962-01-02 | 2001-12-30 | 0.78 | +2693.6% | 40.1% | 2.53 |
 | 2026-11-18 11:18 | trend-1926 | equal-weight-50bps@F62-ind10 | robustness | train | 1962-01-02 | 2001-12-30 | 0.91 | +8089.3% | 46.9% | 0.16 |
 | 2026-11-18 11:18 | trend-1926 | tsmom12-50bps@F62-ind10 | robustness | train | 1962-01-02 | 2001-12-30 | 0.87 | +2472.9% | 32.4% | 2.33 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Mkt | insure-check | train | 1927-07-02 | 2025-10-31 | 0.82 | +1202861.5% | 38.2% | 1.40 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-NoDur | insure-check | train | 1927-07-02 | 2025-10-31 | 0.87 | +600276.0% | 35.5% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Durbl | insure-check | train | 1927-07-02 | 2025-10-31 | 0.60 | +1108597.3% | 72.5% | 2.36 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Manuf | insure-check | train | 1927-07-02 | 2025-10-31 | 0.74 | +845637.1% | 49.4% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Enrgy | insure-check | train | 1927-07-02 | 2025-10-31 | 0.57 | +231174.0% | 57.0% | 2.55 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-HiTec | insure-check | train | 1927-07-02 | 2025-10-31 | 0.67 | +2644856.0% | 56.9% | 2.01 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Telcm | insure-check | train | 1927-07-02 | 2025-10-31 | 0.76 | +446328.0% | 32.7% | 1.83 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Shops | insure-check | train | 1927-07-02 | 2025-10-31 | 0.81 | +1384864.3% | 52.4% | 1.73 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Hlth | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +1068443.5% | 38.5% | 2.03 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Utils | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +541036.3% | 56.0% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Other | insure-check | train | 1927-07-02 | 2025-10-31 | 0.73 | +510119.9% | 48.1% | 1.73 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Food | insure-check | train | 1927-07-02 | 2025-10-31 | 0.82 | +528569.4% | 36.1% | 1.74 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Beer | insure-check | train | 1927-07-02 | 2025-10-31 | 0.61 | +881019.0% | 67.8% | 2.23 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Smoke | insure-check | train | 1927-07-02 | 2025-10-31 | 0.69 | +917498.3% | 51.4% | 2.48 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Games | insure-check | train | 1927-07-02 | 2025-10-31 | 0.59 | +1016849.6% | 57.3% | 2.07 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Books | insure-check | train | 1927-07-02 | 2025-10-31 | 0.69 | +1311500.2% | 45.2% | 1.91 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Hshld | insure-check | train | 1927-07-02 | 2025-10-31 | 0.64 | +236720.3% | 42.7% | 2.21 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Clths | insure-check | train | 1927-07-02 | 2025-10-31 | 0.64 | +184951.2% | 46.5% | 2.27 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Hlth | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +1108305.7% | 38.5% | 2.03 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Chems | insure-check | train | 1927-07-02 | 2025-10-31 | 0.56 | +120707.8% | 59.6% | 2.47 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Txtls | insure-check | train | 1927-07-02 | 2025-10-31 | 0.56 | +123659.1% | 59.4% | 1.90 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Cnstr | insure-check | train | 1927-07-02 | 2025-10-31 | 0.59 | +173008.1% | 61.8% | 2.36 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Steel | insure-check | train | 1927-07-02 | 2025-10-31 | 0.47 | +99832.9% | 76.7% | 2.62 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-FabPr | insure-check | train | 1927-07-02 | 2025-10-31 | 0.66 | +715688.5% | 60.7% | 1.99 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-ElcEq | insure-check | train | 1927-07-02 | 2025-10-31 | 0.63 | +1318608.6% | 59.6% | 1.99 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Autos | insure-check | train | 1927-07-02 | 2025-10-31 | 0.58 | +1031972.7% | 69.4% | 2.50 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Carry | insure-check | train | 1927-07-02 | 2025-10-31 | 0.68 | +1780214.2% | 45.6% | 1.85 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Mines | insure-check | train | 1927-07-02 | 2025-10-31 | 0.45 | +62420.2% | 63.0% | 2.46 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Coal | insure-check | train | 1927-07-02 | 2025-10-31 | 0.41 | +91226.1% | 85.3% | 2.38 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Oil | insure-check | train | 1927-07-02 | 2025-10-31 | 0.58 | +284878.3% | 57.7% | 2.47 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Util | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +526398.9% | 56.0% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Telcm | insure-check | train | 1927-07-02 | 2025-10-31 | 0.76 | +450017.8% | 32.7% | 1.83 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Servs | insure-check | train | 1927-07-02 | 2025-10-31 | 0.45 | +1026331.0% | 91.7% | 1.56 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-BusEq | insure-check | train | 1927-07-02 | 2025-10-31 | 0.70 | +3428047.4% | 49.8% | 2.36 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Paper | insure-check | train | 1927-07-02 | 2025-10-31 | 0.62 | +171532.0% | 48.3% | 2.29 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Trans | insure-check | train | 1927-07-02 | 2025-10-31 | 0.52 | +68510.5% | 55.2% | 2.52 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Whlsl | insure-check | train | 1927-07-02 | 2025-10-31 | 0.66 | +1084716.2% | 53.6% | 2.04 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Rtail | insure-check | train | 1927-07-02 | 2025-10-31 | 0.77 | +1198842.3% | 66.5% | 1.81 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Meals | insure-check | train | 1927-07-02 | 2025-10-31 | 0.71 | +1565555.2% | 48.1% | 1.78 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Fin | insure-check | train | 1927-07-02 | 2025-10-31 | 0.72 | +744261.3% | 48.6% | 2.05 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Other | insure-check | train | 1927-07-02 | 2025-10-31 | 0.57 | +128598.1% | 57.9% | 2.38 |
