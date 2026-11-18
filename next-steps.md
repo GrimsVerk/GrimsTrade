@@ -1,5 +1,31 @@
 # Next steps
 
+## eu-2 (done 2026-11-18 night, branch `eu-2` from `eu-1`, draft PR #62 -> `eu-1`)
+
+DEEPER lane on eu-1: (1) real Dutch fixed per-order fees (DEGIRO EUR 1 / EUR 3 + EUR 2.50/yr
+Xetra, Trade Republic EUR 2; pages read 2026-11-18) at constant books of EUR 5k/25k/100k, with a
+5% rebalance band as the mitigation; (2) an EUR-hedged S&P 500 line (IUSE) in place of SXR8.
+Card `research/cards/eu-2.md` (two amendments, each pushed before its numbers); write-up
+`research/eu-2.md`; tables `research/results/eu-2-fees.md`, `eu-2-hedge.md`, `eu-2-data.md`;
+96 rows in `research/tries.md` (idea `eu-2`, all robustness/baseline). Held-out year unspent.
+
+- Fees: the coin book (eu6) is fine from EUR 5k (break-even ~6k only at EUR 3 orders with the
+  1% band). The coin-free book (euw) needs ~EUR 16k at EUR 3 orders (~10k with a 5% band),
+  ~6k at EUR 1. At EUR 25k+ fixed fees cost <= 0.07 Sharpe.
+- Band 5%: fails the card's test. eu6: orders 42 -> 11/yr, fee loss halved, but the rule changes
+  (Sharpe +0.06, DD -3.1 pts at no fee). euw: orders only 30 -> 21/yr (signal flips, not drift).
+- Hedge: IUSE does not remove euw's gap to EW (-0.21 either way); hedging gold too makes it worse
+  (-0.27). Hedge costs ~2.5%/yr vs SPY in USD. It restores the US crash pattern of the filter
+  (2022: -15% filtered vs -26% held) but not its Sharpe. Keep unhedged SXR8/CSPX.
+- Data: hedged lines from Yahoo (IUSE.L EUR line, XAD1.DE; IBCF.DE as cross-check) into the
+  cache root; rerun commands in `research/eu-2.md` section 3. Local `research/data/` was copied
+  from the eu-1 worktree (eu-1's saved runs let eu-2 re-score eu-1 rows without new rows).
+- Doing: nothing. No process running.
+- Next (not started): (1) for a small coin-free book, test fewer signal flips (monthly
+  decisions) or fewer, larger slots as a new card; (2) check which of our lines are in DEGIRO's
+  core selection (EUR 1 vs EUR 3 is the biggest lever); (3) the owner's actual book size and
+  broker decide which row of `results/eu-2-fees.md` applies.
+
 ## eu-1 (done 2026-11-18 night, branch `eu-1` from `trend-tune`, draft PR #59 -> `trend-tune`)
 
 Does `tsmom12` keep its character on European-listed UCITS ETFs/ETCs, in euros (the owner lives
