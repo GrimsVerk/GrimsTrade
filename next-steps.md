@@ -53,8 +53,12 @@
     from pharmacokinetics, seismology, actuarial, materials fatigue, metrology; W4
     `coupon-dose` fails (1.04, p 0.71). List 54 mechanisms, 12 tested, 0 passed: next needs
     p < 0.00185. FRED blocked here: DTS used instead.
+  - DONE `evo-2` (draft #58 -> evo-1): 8 inputs, six-asset days, plant calibrated per world.
+    Noise 0/3 (pass) but plant 0.8 found in 1/3 (two near-misses: 0.001, 0.03): gate FAILS. No
+    replays, no real data ever used. Evo line CLOSED (recovery 0.45 of target vs evo-1 0.26).
   - RUNNING: `eu-1` (`grimstrade-eu1`: `tsmom12` on EUR UCITS ETF universe, robustness, card
-    first), `evo-2`
+    first), `cash-interest` (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
+    -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
     must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
     run-up exit on French industries 1928-), `coin-cap-3` (daily-checked stop vs weekly).
