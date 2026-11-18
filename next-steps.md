@@ -1,5 +1,14 @@
 # Next steps
 
+## Micro 1 (started 2026-11-18, branch `micro-1`, from `carry-2`)
+
+Weekly IC screen of minute-bar features (realised volatility, jumps, overnight against
+intraday return) on the six assets, ~10 years of minute bars (2016-2025). Card:
+`research/micro-1.md`.
+
+- Doing: card written and pushed; next the daily table (`research/lib/micro1_days.py`), the
+  screen (`research/lib/micro1_ic.py`), a test, one logged run.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
