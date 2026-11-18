@@ -30,6 +30,10 @@ P_BAR = 0.10 / 65  # the wide-* lineage's family: 61 + survey-4's 4 (cards/ts-ca
 POST = date(2012, 10, 1)  # after the paper's sample (ends 2012-09)
 EQUITY = {"SPY", "QQQ", "IWM", "EFA", "EEM", "VNQ", "GSPC"}
 BOND = {"TLT", "IEF", "LQD"}
+# Run 1 (2026-11-18 22:13) logged every row, but `gate` returned a numpy bool, so `carry-mean`
+# never gated and its three rows equal the twin. Rows of the other configurations were correct
+# (their cut-off is a Python float); in the rerun they are re-scored without a new row.
+LOGGED_OK = {"carry", "carry-bond", "carry-equity", "carry@etf", "carry@GSPC"}
 CHECK_DAYS = [date(1999, 10, 1), date(2008, 10, 10), date(2018, 12, 21), date(2023, 6, 2)]
 
 _carry: dict[str, macro.Step] = {}
@@ -105,7 +109,7 @@ def gate(view: c.View, s: str, mean: bool) -> bool | None:
     v, cut = carry_at(s, d, mean)
     if math.isnan(v) or math.isnan(cut):
         return None
-    return v > cut
+    return bool(v > cut)  # a numpy bool would never be `is False` (bug fixed 2026-11-18)
 
 
 ALL_LEGS = frozenset(EQUITY | BOND)
@@ -119,6 +123,11 @@ def strat(mean: bool = False, legs: frozenset[str] = ALL_LEGS) -> c.ResearchStra
         return {s: x for s, x in held.items() if not (s in legs and gate(view, s, mean) is False)}
 
     return c.weekly(f)
+
+
+def go(name: str, s: c.ResearchStrategy, ctx: c.Ctx, kind: str) -> harness.Run:
+    tag = name if ctx.name == "six" else f"{name}@{ctx.name}"
+    return c.go(IDEA, name, s, ctx, kind, log=tag not in LOGGED_OK)
 
 
 def welch(a: np.ndarray, b: np.ndarray) -> float:
@@ -200,9 +209,9 @@ def main() -> None:
     twin_s = c.weekly(c.slots(c.tsmom_signal))
     twin = c.go("baselines", "tsmom12", twin_s, six, "baseline", log=False)
     ew = c.go("baselines", "equal-weight", c.weekly(c.equal_weight), six, "baseline", log=False)
-    runs = {name: c.go(IDEA, name, s, six, "variant") for name, s in variants}
-    rb = c.go(IDEA, "carry-bond", strat(False, bond_legs), six, "robustness")
-    re_ = c.go(IDEA, "carry-equity", strat(False, eq_legs), six, "robustness")
+    runs = {name: go(name, s, six, "variant") for name, s in variants}
+    rb = go("carry-bond", strat(False, bond_legs), six, "robustness")
+    re_ = go("carry-equity", strat(False, eq_legs), six, "robustness")
     allr = [*runs.values(), rb, re_, twin, ew]
     out += ["## The six live assets, train period", "", c.table(allr, twin), ""]
     out += ["Total return inside each stress window:", "", c.stress_table(allr), ""]
@@ -222,8 +231,8 @@ def main() -> None:
 
     t_e = c.go("baselines", "tsmom12", twin_s, etf, "baseline", log=False)
     t_g = c.go("baselines", "tsmom12", twin_s, gspc, "baseline", log=False)
-    oe = {n: c.go(IDEA, n, strat(n == "carry-mean"), etf, "robustness") for n, _ in variants}
-    og = {n: c.go(IDEA, n, strat(n == "carry-mean"), gspc, "robustness") for n, _ in variants}
+    oe = {n: go(n, strat(n == "carry-mean"), etf, "robustness") for n, _ in variants}
+    og = {n: go(n, strat(n == "carry-mean"), gspc, "robustness") for n, _ in variants}
     out += ["## Out of universe", "", "Other ETFs:", "", c.table([*oe.values(), t_e], t_e), ""]
     out += ["S&P 500 index alone, 1962-1993 (Shiller dividends, 3-month lag):", "",
             c.table([*og.values(), t_g], t_g, eras=False), ""]  # fmt: skip
