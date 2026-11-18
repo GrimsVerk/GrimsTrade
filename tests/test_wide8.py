@@ -126,3 +126,46 @@ def test_rule_hash_is_canonical() -> None:
     a = r.rule_hash({"f": "1"}, {"x": 1, "y": 2}, {"s": "z"})
     b = r.rule_hash({"f": "1"}, {"y": 2, "x": 1}, {"s": "z"})
     assert a == b and len(a) == 64
+
+
+def _events() -> Any:
+    sys.path.insert(0, str(LIB))
+    try:
+        return importlib.import_module("wide8_events")
+    finally:
+        sys.path.remove(str(LIB))
+
+
+def test_parse_ap_reads_the_24th_field_and_skips_missing() -> None:
+    ev = _events()
+    text = (
+        "# header\n"
+        "1932 01 01     0     0.5 1352 10  3.333  2.667  2.333  2.667  3.333  2.667  3.333  "
+        "3.333   18   12    9   12   18   12   18   18    15  22     -1.0     -1.0 2\n"
+        "1932 01 02     1     1.5 1352 11  3.667  3.667  3.333  3.667  3.333  4.667  3.000  "
+        "5.000   22   22   18   22   18   39   15   48    -1  43     -1.0     -1.0 2\n"
+    )
+    assert ev.parse_ap(text) == {date(1932, 1, 1): 15}
+
+
+def test_storm_max_covers_first_six_sessions_after_the_day() -> None:
+    ev = _events()
+    days = _daily(date(2024, 5, 1), date(2024, 5, 31))
+    storm = date(2024, 5, 10)  # a Friday
+    m = ev.storm_max(days, {storm: 200})
+    after = [d for d in days if d > storm][:6]
+    for d, v in zip(days, m, strict=True):
+        if d < days[6]:
+            assert math.isnan(v)
+        else:
+            assert v == (200 if d in after else 0), d
+    shifted = ev.storm_max(days, {storm: 200}, shift=3)  # storm now on Monday 13 May
+    assert [d for d, v in zip(days, shifted, strict=True) if v == 200][0] == date(2024, 5, 14)
+
+
+def test_storm_design_and_rank() -> None:
+    ev = _events()
+    x = ev.storm_design(np.array([0.0, 30.0, 99.0, 100.0, 250.0]))
+    assert x[:, 1].tolist() == [0, 0, 0, 1, 1]
+    assert x[:, 2].tolist() == [0, 1, 1, 0, 0]
+    assert ev.rank_most_negative(-3.0, [-1.0, -4.0, 2.0]) == 2
