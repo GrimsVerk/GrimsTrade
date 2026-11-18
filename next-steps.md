@@ -1,5 +1,12 @@
 # Next steps
 
+## Wide 8 (in progress 2026-11-18, branch `wide-8`, draft PR -> `wide-7`)
+
+- Doing: (1) forward pre-registration of the turn-of-year ETF loser rebound for the 2026/27
+  turn (`research/wide-8.md` step 1; proposed entry `research/forward/proposed-wide8.jsonl`);
+  (2) W16 `geomagnetic-storm` gate (GFZ Kp/Ap keyless check first); (3) W15 `cat-claims` gate
+  (HURDAT2); then two new mechanisms.
+
 ## Wide 7 (done 2026-11-18, branch `wide-7`, draft PR #81 -> `wide-6`)
 
 Three event-study gates (rule, script and tests pushed before any number; one dry run with
