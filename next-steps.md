@@ -23,8 +23,16 @@
     episodes (effective ~7.6). `stop-0.25` beats a matched-cost cap (f 0.663) on deepest loss in
     15/21 (sign p 0.039), 9/10 years; loses in fast crashes (weekly stop); Sharpe unchanged. Rule
     PR candidate: owner's call (see For the owner).
-  - RUNNING: `evo-1` (fast scorer, wf/world drivers, timing, controls; no real search),
-    `wide-3` (worktree `grimstrade-wide3`), `gsy-1` (`grimstrade-gsy1`, Greenwood-Shleifer-You
+  - DONE `wide-3` (draft #54 -> wide-2): `hedge-regime` 1.05 (+0.003, p 0.39), `attention-peak`
+    1.02, `opex-pin` 1.01 (trails its placebo): all fail vs `tsmom12` 1.05. List now 49
+    mechanisms, 10 tested, 0 passed: next test needs p < 0.0020. (wide-2's "39 uncarded" was
+    wrong: 35 of 46.)
+  - `evo-1` build done (fast scorer within 0.04 Sharpe of `gym.simulate`; one full search ~2.5
+    CPU-min, 40 replays ~2 CPU-h). Noise control flaw: zero log drift pays holders sigma^2/2, so
+    lead chose (dated card note): zero-mean-simple-return worlds, rerun controls, 40 replays
+    (<=1 at/above), then the one real search, train only.
+  - RUNNING: `evo-1` (controls fix -> replays -> real search), `wide-4` (`grimstrade-wide4`:
+    tax-drain + 5 new cross-field mechanisms), `gsy-1` (`grimstrade-gsy1`, Greenwood-Shleifer-You
     run-up exit on French industries 1928-), `coin-cap-3` (daily-checked stop vs weekly).
 - 3. Then the Lead 1 lane queue below.
 
