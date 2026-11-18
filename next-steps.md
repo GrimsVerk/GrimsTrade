@@ -1,5 +1,10 @@
 # Next steps
 
+## Survey 7 (in progress 2026-11-19, branch `survey-7`, draft PR -> `wide-9`)
+
+- Doing: `seasonal-20y` event-study gate (rule in `research/survey-7.md`, pushed before any
+  number); then script + tests, dry run (counts only), one real run, verdict.
+
 ## Wide 9 (done 2026-11-19, branch `wide-9`, draft PR #93 -> `wide-8`)
 
 Two event-study gates judged by rank among 40 placebo calendars (rule, script and tests pushed
