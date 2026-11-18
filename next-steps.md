@@ -1,5 +1,14 @@
 # Next steps
 
+## GSY 1 (in progress 2026-11-18, branch `gsy-1`, draft PR -> `trend-1926`)
+
+Does a Greenwood-Shleifer-You run-up flag (industry 2-year return >= 100% / 150%, raw and net
+of market) as an exit overlay improve `tsmom12` on French industry books? Card
+`research/cards/gsy-runup.md` (fixed before any number). Steps: (1) card, (2) replicate GSY's
+crash probability, (3) 6 variants, write-up `research/gsy-1.md`.
+
+- Doing: step 1 done (card committed).
+
 ## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 
 Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 industries, cache
