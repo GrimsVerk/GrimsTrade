@@ -1005,3 +1005,10 @@ Never edit or delete a row.
 | 2026-11-18 19:39 | coupon-dose | dose | variant | train | 1994-02-01 | 2025-11-09 | 1.04 | +17793.6% | 36.3% | 6.34 |
 | 2026-11-18 19:39 | coupon-dose | dose-neg | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +17447.2% | 36.8% | 5.86 |
 | 2026-11-18 19:39 | coupon-dose | dose@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.57 | +209.4% | 18.5% | 6.89 |
+| 2026-11-18 20:12 | fomc-cycle | even-gate | variant | train | 1994-02-01 | 2025-11-09 | 1.22 | +24221.9% | 36.2% | 17.38 |
+| 2026-11-18 20:12 | fomc-cycle | even-overlay | variant | train | 1994-02-01 | 2025-11-09 | 0.96 | +20181.7% | 53.1% | 17.21 |
+| 2026-11-18 20:12 | fomc-cycle | odd-gate | robustness | train | 1994-02-01 | 2025-11-09 | 0.65 | +1573.6% | 56.0% | 19.48 |
+| 2026-11-18 20:12 | fomc-cycle | even-gate@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.67 | +183.9% | 14.5% | 15.67 |
+| 2026-11-18 20:12 | fomc-cycle | even-overlay@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.58 | +458.1% | 25.9% | 20.38 |
+| 2026-11-18 20:12 | fomc-cycle | even-gate@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.75 | +2625.4% | 25.7% | 30.43 |
+| 2026-11-18 20:12 | fomc-cycle | even-overlay@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +8053.7% | 42.7% | 15.17 |

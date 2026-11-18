@@ -1,5 +1,33 @@
 # Next steps
 
+## Survey 2 (done 2026-11-18, branch `survey-2`, draft PR #60 -> `wide-4`)
+
+2023-2026 research read for ideas this book could use that the repo had not listed; 19 sources
+(tagged by how far each was read), 7 new candidates ranked by prior in a note pushed before any
+number; the top pick carded, coded and tested on train. **It fails; held-out year unspent.**
+Write-up `research/survey-2.md`; table `research/results/fomc-cycle.md`; 7 rows in `tries.md`.
+
+- `fomc-cycle` (Cieslak, Morse, Vissing-Jorgensen, JF 2019: the equity premium is earned in
+  even weeks of the FOMC cycle): replicates in the paper's years (SPY even-minus-odd +11.0 bps
+  a day 1994-2013, t 3.1; +17.8 in 2014-16) and reverses after publication (2017-2025: -5.7,
+  t -1.2). Stock slots only in even weeks: 1.22 vs 1.05 on full train (p 0.03), all of it
+  before 2017; -0.05 since. Fails the family bar and both post-publication bars.
+- Ranked, untested: `xtsmom` (stocks only while bonds also trend up, 3%), `fomc-bond-drift`
+  (2%), `announcement-premium` (2%), `turning-points`, `nonlinear-tsmom`, `crypto-corr` (<=1%).
+- Literature found for listed ideas: Hartley and Schwarz (2019) on month-end Treasury returns
+  (supports `month-end-bonds`); Harvey, Mazzoleni, Melone (NBER 2025) on front-run pension
+  rebalancing (`rebalance-pressure`, already dead here).
+
+Count: 61 mechanisms (54 + survey-2's 7), 13 tested, none passed. Next test at p < 0.10 / 61.
+
+- Doing: nothing. No process running.
+- Next: `xtsmom` is the cheapest next card (no new data, post-sample window 2016-2025). No
+  more central-bank calendar tests before it.
+- Data added (git-ignored cache): FOMC calendar pages (`<cache_root>/downloads/survey-2/fomc/`),
+  parsed to `<cache_root>/derived/survey-2/fomc.csv` (256 scheduled meetings 1994-2025) by
+  `python -I research/lib/survey2_fomc.py`. A fresh worktree also needs
+  `research/macro.local.json` (copy the `.example`) and the price cache in `research/data/`.
+
 ## Wide 4 (done 2026-11-18, branch `wide-4`, draft PR #57 -> `wide-3`)
 
 W2 `tax-drain` from the list, then five new mechanisms from unused fields and a test of the
