@@ -182,6 +182,14 @@
     2022 worse (signal opened Apr 2022, DBC fell 24% after June). 1962-2025: in co-fall months
     T-bills +5.4%/yr, commodities lost. 15 rows; family 73. Combo line CLOSED.
   - 22:32 UTC `stop-reentry` started (D, <- coin-cap-4): one pre-committed coin re-entry rule.
+  - DONE `survey-5` (draft #78 -> survey-4): live track records. `tsmom12` correlates 0.17
+    with 9 live trend funds, 0.40 with SPY; Sharpe above T-bills 1.11 = holding the six (edge
+    +0.29 in 1994-2009, 0.00 since). Paper-to-live decay: AQR TSMOM factor 1.41 -> 0.35, live
+    fund 0.29 (~80%). Crash years 2008/2020Q1/2022: trend funds +7/+4/+18%, `tsmom12`
+    -2/-14/-13%, holding -13/-12/-38%. Forward test cannot settle `tsmom12` vs holding (~107
+    yrs). 4 `live-check` rows (not selectable).
+  - 22:33 UTC `ls-trend-1` started (W, <- survey-5): is the missing crisis alpha the missing short
+    side and narrow universe? (research harness only).
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -282,6 +290,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, survey-5 (#78) + dsr-1 (#74): the live rule earns about what holding the
+  same six assets earns, with smaller losses in long bear markets; no forward test settles
+  "rule vs holding" in useful time. Treat it as a drawdown/risk choice, not an edge?
 - Night 2026-11-18, combo-2 (#75): it merged cash-interest (#61) into its branch to test with
   T-bill interest; no verdict changed. Merging #61 into main stays your call.
 - Night 2026-11-18, dsr-1 (#74): counting the whole project's search, `tsmom12` has no proven
