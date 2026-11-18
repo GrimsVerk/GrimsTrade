@@ -1,5 +1,17 @@
 # Next steps
 
+## USD 1 (started 2026-11-18, branch `usd-1`, from `slow-1`)
+
+Task: slow-1's closest input, the dollar index's 13-week change (`usd_13w`), tested again with
+its sign fixed in advance (a rising dollar is followed by a worse quarter) on data the screen
+never used: stock indexes 1971-1999, the rest of the 33-market pool from 2000, the other coins
+(Coin Metrics wide book without BTC and ETH). Card with the bar: `research/usd-1.md` (committed
+before any number). Trading card only if it replicates.
+
+- Done: card.
+- Doing: code (`research/lib/usd1.py`), reproduction of slow-1's public numbers, the logged run.
+- Next: table `research/results/usd-1.md`, write-up, draft PR.
+
 ## Slow 1 (done 2026-11-18, branch `slow-1`, draft PR #35 -> `carry-2`)
 
 Do info-1's 23 inputs and rl-3's real inputs (49 in all) forecast 4-week and 13-week returns of
