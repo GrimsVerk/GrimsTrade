@@ -143,6 +143,16 @@ choice walk-forward, refitted each January. Held-out year unspent.
 | deep-1-switch | Per trend state, the model with the best past Sharpe in that state | dead (tested) | [deep-1.md](deep-1.md) | 1.02 / 1.05; chose gates that had dodged the last crash and sat out 2023-24 (2022-25: -0.32). [result](results/deep-1.md) |
 | deep-1-meta | Ridge meta-learner on the sleeves' weekly returns | dead (tested; nearest miss) | [deep-1.md](deep-1.md) | 1.08 / 1.27 (p = 0.27), ahead on 2 of 3 other sets, but equal to the plain average of all sleeves (1.06 / 1.29). A smoother ride for less growth, not skill. [result](results/deep-1.md) |
 
+### Complementary blends from the failure map (combo-1, 2026-11-18)
+
+Card and bar in [combo-1.md](combo-1.md), fixed after the map and before any blend number. Bar
+p < 0.10 / 72. Six assets, 1994-2025 / since 2003: `tsmom12` 1.05 / 1.20. Held-out year unspent.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| combo-1 blend-ws | `where-vol` + `stop-0.25`, equal risk (excess correlation 0.00) | dead (tested; closest miss) | [combo-1.md](combo-1.md) | 1.13 / 1.35, p = 0.059, worst loss 28.9%; fails the family bar and eras (2 of 5; behind 2022-25, where both sleeves fail). Out of universe +0.02 / +0.02 / +0.00. [result](results/combo-1.md) |
+| combo-1 blend-iv | `tsmom12` + `inverse-vol`, equal risk | dead (tested) | [combo-1.md](combo-1.md) | 1.07 / 1.42, p = 0.39, worst loss 44.4% (2000-02). The risk dial again. [result](results/combo-1.md) |
+
 New, not yet carded (from the failure atlas, [results/deep-1-atlas.md](results/deep-1-atlas.md)):
 
 | Idea | Field | Status | Card | Note |

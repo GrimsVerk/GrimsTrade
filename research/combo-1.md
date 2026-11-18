@@ -142,3 +142,76 @@ held-out year is not touched in this lane), nothing more.
 **Tries.** Each blend on the six assets: `variant` under idea `combo-1` (2 rows). Each blend
 out of universe: `robustness` (6 rows). Sleeve rebuilds that reproduce a logged configuration
 are not logged again; a sleeve configuration that has no row yet is logged as `robustness`.
+
+## Step 3: verdict (2026-11-18)
+
+Tables: [`results/combo-1.md`](results/combo-1.md), from `lib/combo1_blend.py` (one logged run,
+2026-11-18 22:15 UTC; 8 rows in `tries.md`: 2 `variant`, 6 `robustness`). The sleeves
+reproduce their logged Sharpe; the look-ahead check (scrambled future returns leave a refit's
+shares unchanged) passed. Held-out year untouched.
+
+**Neither blend beats `tsmom12` honestly. `blend-ws` (`where-vol` + `stop-0.25`, equal risk) is
+the closest miss the repo has had: Sharpe 1.13 against 1.05 (p = 0.059), worst loss 28.9%
+against 36.5%, above both of its own sleeves (1.07, 1.09). It fails the family bar (p < 0.0014
+needs about +0.15) and the era bar (ahead in 2 of 5: ties in 1994-99 and 2000-09, behind in
+2022-25).**
+
+| Six assets, 1994-2025 | Sharpe | vs `tsmom12` (p) | Since 2003 | 2022-25 | Worst loss | Growth/yr | Bars passed |
+|---|---:|---:|---:|---:|---:|---:|---|
+| `blend-ws` = `where-vol` + `stop-0.25` | 1.13 | +0.08 (0.059) | 1.35 | 0.82 | 28.9% | +17.2% | 3, 4, 5, 6; fails 1, 2 |
+| `blend-iv` = `tsmom12` + `inverse-vol` | 1.07 | +0.02 (0.385) | 1.42 | 0.93 | 44.4% | +15.1% | 2, 4, 5, 6; fails 1, 3 |
+| `tsmom12` | 1.05 | | 1.20 | 0.88 | 36.5% | +17.8% | |
+| equal weight | 0.88 | | 1.19 | 0.67 | 68.8% | +18.2% | |
+
+Out of universe (Sharpe minus `tsmom12`): `blend-ws` +0.02 on the ETFs, +0.02 on the coins,
++0.00 on the indexes; `blend-iv` +0.01, +0.12, -0.03.
+
+**What it says.**
+
+1. **Complementarity is real but small.** Two overlays whose excess returns are uncorrelated
+   (0.00) blend into something better than either: +0.08 Sharpe and the stop's shallower worst
+   loss kept at almost no growth cost (17.2% against 17.8% a year). That is the diversification
+   arithmetic of two weak, independent edges (each about +0.03), not a new edge. With
+   uncorrelated excess the blend's information ratio rises by about the square root of two;
+   it would need edges about twice as large to clear the bar.
+2. **The blend fails exactly where the map said both sleeves are weak at once: 2022-25.**
+   `where-vol` lost the 2022 rate shock and crypto winter (unfiltered bonds, gold, coins);
+   `stop-0.25` lost the 2023-24 turn (late re-entry). Different months, same era: the blend is
+   behind there (0.82 against 0.88). By the map's regimes it still loses in the turn (-11.6% a
+   year in the six months after `tsmom12`'s lows) and gains in fast falls (+27%).
+3. **Out of universe there is almost nothing to carry.** The stop acts on coins only, and
+   `where-vol` equals `tsmom12` on the indexes, so on two of the three sets `blend-ws` is half
+   of a near-copy (distance from `tsmom12` 0-2%). Its "pass" on bar 4 is +0.02, +0.02, +0.00:
+   positive, not evidence.
+4. **`blend-iv` is the risk dial again.** Half in an always-invested book wins the turns and
+   the post-2003 years (1.42 against 1.20) and pays in the long bear on a narrow book: worst
+   loss 44.4% (2000-02). Same verdict as deep-1's average and `inverse-vol` itself.
+5. **The pick was made on the full-train map**, so bars 1-3, 5 and 6 are in-sample for the
+   choice; p = 0.059 overstates the evidence, not understates it.
+6. **Not judgeable forward either.** Its excess over `tsmom12` has an information ratio of
+   about 0.28 a year (t 1.56 over 31.8 years); detecting that at 80% power (alpha 0.025) takes
+   about a century of forward data.
+
+**Status:** both dead by the card. The held-out year stays unspent. No change to the live rule.
+
+### What the failure map says about the next lane
+
+The map's hard fact: **nothing on it wins both the fast fall and the turn.** Every model that
+loses less in a fall gives it back in the six months after the low (-17 to -32% a year), and
+the one model that wins the turn (`where-vol`) loses the fast joint fall. Blending two of them
+averages the two failures; it cannot remove them. So the next lanes worth running attack one
+failure directly, each with its own card:
+
+1. **`stop-reentry` (D, from coin-cap-3):** keep the coin stop's fall protection and fix its
+   turn loss (-21% a year after lows): a re-entry rule for a stopped coin (e.g. back in at a
+   new 4-week high), judged on coin-cap-2's 21 coin-crash episodes on 197 coins, twin
+   `stop-0.25`, then carried unchanged to BTC/ETH.
+2. **`combo-cash` (D, cheap):** rerun this map and both blends with T-bill interest on idle
+   cash (`cash-interest`, #61). Every de-risking model, `tsmom12` included, sits in cash in
+   its winning regimes, and in 2022-25 cash paid 0-5%: the de-risking sleeves gain against
+   `where-vol` and `inverse-vol`, so the ranking of the failures may move. Robustness rows only.
+3. **A complement for the stock-bond-together regime (W):** in the 2022 kind of year (stocks
+   and bonds positively correlated, 13% of days) every gym-tradable model loses; only the
+   out-of-gym carry book won. A long-only candidate needs another return source available in
+   the gym (commodities, short-dated Treasuries/T-bills as a slot): card a `tsmom12` slot set
+   that adds DBC and a T-bill ETF, judged on that regime first.

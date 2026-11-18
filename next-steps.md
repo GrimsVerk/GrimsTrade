@@ -14,7 +14,15 @@ map by a stated rule, train only, every try logged, then a verdict. Write-up `re
 - Inputs not rebuilt (saved equity curves of finished lanes, copied read-only into
   `<cache_root>/derived/combo-1/inputs/`): `where-vol` (trend-where), `stop-0.25` (cointop-1);
   deep-1's sleeve series; carry-3's `band` train series.
-- Status: started.
+- DONE 2026-11-18. Map: four of six models (`trend-vol`, `stop-0.25`, `inverse-vol`,
+  `sixty-forty`) are one de-risking bet (excess correlations +0.5..+0.9; win falls, lose the
+  turn); `where-vol` fails apart from them (0.00 with `stop-0.25`); `band` is the only one
+  uncorrelated with `tsmom12` (out of gym). Card: two blends. `blend-ws` (`where-vol` +
+  `stop-0.25`, equal risk) 1.13 vs 1.05 (p 0.059), worst loss 28.9%: closest miss so far, fails
+  the family bar (p < 0.0014) and eras (behind 2022-25). `blend-iv` 1.07, worst loss 44.4%:
+  fails. 8 rows in `research/tries.md`; held-out unspent. Next lanes (in `research/combo-1.md`):
+  `stop-reentry` (coin stop + re-entry rule, 21 episodes), `combo-cash` (map and blends with
+  T-bill cash), a long-only complement for the stock-bond-together regime (DBC, T-bill slot).
 
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
