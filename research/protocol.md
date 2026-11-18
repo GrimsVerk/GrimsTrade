@@ -330,6 +330,13 @@ result is judged by.
 - **Pass bar** as written in `evo-1.md`: the default bar on the out-of-sample series against
   `tsmom12` (the bootstrap p multiplied by the number of procedures), not behind `tsmom12` since
   2003, SPA consistent p < 0.10, out-of-universe transfer of the chosen rules in 2 of 3 sets.
+- **Amended 2026-11-18 ~11:15 UTC, before any real-data number of evo-1:** a Reality Check or SPA
+  over the rules a search visited is not a valid correction for an adaptive search (the search's
+  selection is not in the test's reference set; in evo-1's toy noise worlds it rejected in 4 of
+  4 runs). It is reported, never binding. The binding test is a **full-search replay**: the whole
+  search, same settings, is rerun on worlds built from the train data with no edge left in them
+  (block-bootstrapped, zero-drift returns), and the real search's out-of-sample score must beat
+  the 95th percentile of the replays' best scores. Details in `evo-1.md`, "Bar 3, replaced".
 - **Controls first.** Synthetic worlds with no edge (shuffled, zero-drift returns) and with a
   known rule's edge planted are run through the unchanged pipeline before the real data
   ("Planted-signal controls" above). Grammar, budget and seeds are fixed on the card and are

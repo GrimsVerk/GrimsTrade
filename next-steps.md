@@ -13,13 +13,16 @@ tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protoc
   data), tests `tests/test_evo_stats.py`, `tests/test_evo_gp.py`. 12 toy runs logged as
   `control` rows `evo-1-smoke` in `research/tries.md`; table and reading in `research/evo-1.md`
   "Build notes, burst 1".
-- Found in the toy (decision for the lead, before the real search): the SPA is right over a
-  fixed list of rules (p 0.23-0.55 in noise) but rejects in noise over the rules a GP visited
-  (p <= 0.006 in 4 of 4 runs; the "found" rule earns nothing on unseen days). Bar 3 of the card
-  is then no protection. The card's own noise control (step 3 below) is the registered check; if
-  it agrees, replace bar 3 by a test that replays the whole search in shuffled worlds, as a
-  dated card note before any real number. The search does recover the planted rule at k=0.1 at
-  the card's size (500 x 30), not at 200 x 15.
+- Found in the toy: the SPA is right over a fixed list of rules (p 0.23-0.55 in noise) but
+  rejects in noise over the rules a GP visited (p <= 0.006 in 4 of 4 runs; the "found" rule
+  earns nothing on unseen days). The search does recover the planted rule at k=0.1 at the
+  card's size (500 x 30), not at 200 x 15.
+- Decided by the lead (2026-11-18 ~11:12 UTC) and written on the card and in `protocol.md`
+  before any real number: bar 3 (SPA p) is replaced by the **full-search replay test**: the
+  whole search rerun on 20 block-bootstrapped zero-drift worlds (seeds 101-120); a procedure
+  passes if its out-of-sample Sharpe difference to `tsmom12` beats the 95th percentile of the
+  replays' best scores. SPA and Reality Check are reported only. Budget escape now ~24
+  CPU-hours (this number is the lane's guess: the lead should confirm it).
 - Doing: nothing. No process running. No real price read by any evo-1 code. Held-out year
   untouched.
 - Next, in this order (all specified on the card):
@@ -34,9 +37,10 @@ tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protoc
      behaviourally different rules per run) and `evo_world.py` (shuffled zero-drift worlds from
      real train bars, planted rule `H`). Timing test with no result looked at (budget escape on
      the card), then commit and push.
-  3. Controls first (3 noise worlds, 3 planted strengths; ceiling before search results), read
-     the noise worlds' SPA p against the toy finding above, then the real walk-forward through
-     the gym, transfer to the three out-of-universe sets, static twins, re-evolved runs. Rows in
+  3. Controls first (3 noise worlds, 3 planted strengths; ceiling before search results) and the
+     20 replay worlds of the new bar 3 (`evo_world.py` needs the block-bootstrap world next to
+     the plain shuffle; scores logged as `evo-1-replay` control rows before any real number),
+     then the real walk-forward through the gym, transfer to the three out-of-universe sets, static twins, re-evolved runs. Rows in
      `research/tries.md` as the card says.
   4. Tables `research/results/evo-1.md`, write-up at the top of `research/evo-1.md`, this
      section, PR text. Never merge.

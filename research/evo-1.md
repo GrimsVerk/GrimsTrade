@@ -59,6 +59,8 @@ What it shows:
   worlds also show small SPA p, bar 3 says nothing and should be replaced, by a dated card
   note made before any real number, with a test that replays the whole search (the best
   fitness of the real search against the best fitness of the same search in shuffled worlds).
+  **Decided by the lead 2026-11-18 ~11:12 UTC: replaced now**, without waiting for the card's
+  noise worlds; the note is "Bar 3, replaced: the full-search replay test" on the card.
 - The search itself works at the card's size: the planted rule at k=0.1 is recovered (weights
   0.99 correlated with `H`'s, the same Sharpe on unseen days). At 200 x 15 it is not (only the
   trend half, and only at k=0.2). At k=0.2 with 500 x 30 the run got 2.70 of `H`'s 4.74.
@@ -212,7 +214,8 @@ description, the data-snooping test and the held-out rule; it is not traded on t
   2025-11-09 and takes the best each time. Hansen's SPA (2005) is the sharper version: each
   difference is divided by its own standard error and clearly bad rules are not allowed to
   inflate the luck. Reported: Reality Check p, SPA lower / consistent / upper p. **The binding
-  number is the SPA consistent p.**
+  number is the SPA consistent p.** (No longer binding since the card note of 2026-11-18 ~11:15
+  UTC, made before any real-data number: see "Bar 3, replaced" below.)
 - **Deflated Sharpe** (Bailey & Lopez de Prado 2014): the best in-sample rule's Sharpe
   difference to `tsmom12`, against the expected best of N unskilled tries with the spread of
   differences seen across the universe; N = the number of different behaviours (too harsh:
@@ -237,7 +240,8 @@ Twin `tsmom12`. Also shown: `sma200`, equal weight, `inverse-vol`, re-scored fro
    below).
 2. Not behind `tsmom12` on Sharpe from 2003-01-01 (the lab's standing check: the trend rule's
    lead comes from 2000-2002).
-3. SPA consistent p < 0.10.
+3. ~~SPA consistent p < 0.10.~~ Replaced 2026-11-18 ~11:15 UTC, before any real-data number, by
+   the full-search replay test ("Bar 3, replaced" below).
 4. Out of universe, **transfer**: the very rules the procedure chose on the six assets, fit date
    by fit date, run unchanged on the 8 other ETFs, the 6 other coins and the four indexes as one
    portfolio (each from 2000-01-07 or its own start); the Sharpe difference to `tsmom12` is
@@ -252,6 +256,51 @@ at its strongest strength; otherwise the verdict is "this search is too weak to 
 passes 1-5. It is traded by the choice made at the final fit (for `evo-val`: the 2024 fit's
 candidates scored on 2024-01-05 to 2025-11-09), with no refit inside the year. Passes if not
 behind `tsmom12`. A finalist is also run on raw prices (`robustness`).
+
+### Bar 3, replaced: the full-search replay test
+
+Card note, 2026-11-18 ~11:15 UTC, the lead's decision. Seen before writing it: the toy smoke
+only. No evo-1 code had read a real price; no real-data input, fitness, timing or result existed.
+
+**Why.** An SPA over the rules the GP visited is not a valid correction for the search. Its
+reference set is the list of visited rules; the search's selection (which rules it went on to
+build, out of the lucky parts of earlier ones) is not in that set. The toy table under "Build
+notes, burst 1" shows the size of the error: over a fixed list of 2,000 random rules in pure
+noise the SPA p was 0.23 to 0.55, as it should be; over the rules a GP visited in the same
+noise it was 0.006 or less in 4 of 4 runs, while the rule it picked earned 0.19, 0.39, -0.06 and
+-0.66 on unseen days. A bar that pure noise passes is no bar.
+
+**The test.** The whole search is run again, with the same settings (grammar, fitness,
+population, generations, seeds per fit, the 15 fits, the three selection rules), on 20 **replay
+worlds** in which no rule can have the edge we are looking for. The real search has to beat
+them.
+
+- **Replay world** `w` (seeds 101 to 120): for each of the six assets and the S&P 500 index, the
+  real train-period bars' (overnight, open-to-close) log-return pairs are redrawn in blocks
+  (stationary bootstrap, mean block 20 bars, wrap-around, a fixed seed per world and asset,
+  independently per asset), then shifted so the asset's total log return is zero; calendars and
+  start dates stay. Blocks keep what a plain shuffle destroys: volatility clustering and
+  autocorrelation up to about a month. Nothing longer survives and there is no drift, so a rule
+  can only earn there what short-memory structure gives; that makes the bar a little harsher,
+  not softer. The card's three noise worlds (plain shuffles) stay as the noise control of bar 5.
+- **Statistic**, the same on the real data and in every replay world: a procedure's
+  walk-forward out-of-sample Sharpe minus `tsmom12`'s Sharpe, both from the fast scorer on the
+  same days of the same world (2000-01-07 to 2025-11-09), `tsmom12` recomputed inside that
+  world. A replay world's score is the best of its three procedures.
+- **Bar 3:** a procedure passes if its statistic on the real data is above the 95th percentile
+  of the 20 replay scores, that is, at most one replay score is at or above it (nearest rank;
+  permutation p = (1 + the number at or above) / 21, at most 0.095). Each replay score is
+  already the best of three procedures, so there is no further x3.
+- **Order and logging:** the replay worlds run before the real search, with the controls. Their
+  scores are written to `results/` and logged as `control` rows (idea `evo-1-replay`, one per
+  world) before any real-data number exists.
+- **What stays:** Reality Check, SPA and deflated Sharpe are still computed on the real search
+  and reported, as descriptions only; none is binding. The noise control still reports each
+  world's SPA p, now as the measure of how wrong it is.
+- **Cost:** a replay has no gym replay, transfer or twins, but it is 20 more full searches. The
+  budget escape under "The search" becomes: if the timing test (no result looked at) shows the
+  whole plan, replays included, needs more than about 24 CPU-hours, the population is halved
+  for every run, real, control and replay alike. Nothing else may change.
 
 ### Controls (run before the real search; kind `control`, idea `evo-1-control`)
 
