@@ -1,5 +1,11 @@
 # Next steps
 
+## Volume 1 (research run, branch `volume-1`, started 2026-11-18 ~11:03 UTC)
+
+Question: does the six assets' own trading volume (never screened) forecast the coming week?
+Card: `research/volume-1.md` (6 volume features, weekly IC screen on train only, info-1's bar,
+maxT correction over the six). Doing: implement `research/lib/volume1_ic.py`, run once, log.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
