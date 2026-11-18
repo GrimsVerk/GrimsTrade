@@ -954,3 +954,16 @@ Never edit or delete a row.
 | 2026-11-17 23:27 | deep-1 | liquidity/m2-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.59 | +1638.0% | 28.5% | 2.08 |
 | 2026-11-17 23:27 | deep-1 | liquidity/walcl-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.66 | +2602.2% | 25.7% | 2.12 |
 | 2026-11-17 23:27 | deep-1 | credit-spread/spread-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.70 | +3161.0% | 27.2% | 2.14 |
+| 2026-11-18 01:34 | deep-1-stack | stack | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +4061.1% | 30.9% | 1.21 |
+| 2026-11-18 01:34 | deep-1-switch | switch | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +8204.3% | 34.7% | 3.15 |
+| 2026-11-18 01:34 | deep-1-meta | meta | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +7647.5% | 32.3% | 2.26 |
+| 2026-11-18 01:34 | deep-1-stack | stack@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.52 | +180.5% | 17.3% | 3.91 |
+| 2026-11-18 01:34 | deep-1-switch | switch@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.56 | +154.8% | 16.8% | 6.00 |
+| 2026-11-18 01:34 | deep-1-meta | meta@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +189.8% | 16.7% | 2.13 |
+| 2026-11-18 01:34 | deep-1-stack | stack@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.44 | +67.1% | 92.4% | 7.49 |
+| 2026-11-18 01:34 | deep-1-switch | switch@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.54 | +192.1% | 92.4% | 5.57 |
+| 2026-11-18 01:34 | deep-1-meta | meta@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +310.5% | 91.9% | 3.89 |
+| 2026-11-18 01:34 | deep-1-stack | stack@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.73 | +2099.3% | 24.0% | 2.17 |
+| 2026-11-18 01:34 | deep-1-switch | switch@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.63 | +1617.6% | 22.9% | 3.73 |
+| 2026-11-18 01:34 | deep-1-meta | meta@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.75 | +2859.9% | 23.3% | 2.98 |
+| 2026-11-18 01:35 | deep-1-meta | naive-1n | baseline | train | 1994-02-01 | 2025-11-09 | 1.06 | +7367.4% | 39.7% | 2.49 |

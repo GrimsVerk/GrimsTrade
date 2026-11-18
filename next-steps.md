@@ -1,25 +1,28 @@
 # Next steps
 
-## Deep 1 (in progress since 2026-11-18, branch `deep-1` from `carry-2`)
+## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR -> `carry-2`)
 
-Question: why does each tested model fail where it fails, and does a combination chosen with past
-data only beat `tsmom12`? Card: `research/deep-1.md` (Part A atlas, descriptive; Part B three
-combination rules with a pass bar fixed before any number).
+Why does each tested model fail where it fails, and does a mix chosen from past data beat
+`tsmom12`? No mix passes: `stack` 1.01, `switch` 1.02, `meta` 1.08 against 1.05 (1994-2025); the
+best equals a plain average of all models (1.06), and even the best fixed mix with hindsight
+reaches only 1.22. The models are the same six assets held at different sizes; they lose in the
+same weeks. Failure atlas: 52 series, six failure modes (slow out of coin tops; missing the
+rebound; one long bear market for always-invested rules; boosting models short of Bitcoin; RL as
+a geared coin position; early-exit gates paying for 2023-24). Held-out year unspent. Write-up
+`research/deep-1.md`; tables `research/results/deep-1-atlas.md`, `research/results/deep-1.md`.
 
-- Done: card; Part A (52 series, `research/lib/deep1_models.py` rebuilds them into
-  `<cache_root>/derived/deep-1/`, `research/lib/deep1_atlas.py` writes
-  `research/results/deep-1-atlas.md`; findings in `research/deep-1.md`).
-- Doing: Part B. Written and committed, NOT yet run: `research/lib/deep1_mix.py` (the three
-  rules, unit-tested in `tests/test_deep1_combo.py`), `research/lib/deep1_combo.py` (gym replay,
-  pass bar, `check`). Sleeve series for six, etf, coin, idx are built (18 new component rows in
-  `research/tries.md` under idea `deep-1`). No Part B number exists yet.
-- Next, in this order: (1) `uv run --with numpy --with scikit-learn --with numba python
-  research/lib/deep1_combo.py check` (look-ahead check, logs nothing); (2) `uv run --with numpy
-  python research/lib/deep1_combo.py` once (logs 3 `variant` and 9 `robustness` rows, writes
-  `research/results/deep-1.md`; replays are cached under `<cache_root>/derived/deep-1/runs/`, so
-  a rerun after a crash logs nothing twice); (3) write-up on top of `research/deep-1.md`,
-  `ideas.md`, draft PR to `carry-2`. Held-out year only for a rule that passes all six bars.
-- `tsmom12` anatomy and tuning are the `trend-tune` lane's, not this one's.
+- Rebuild: `research/lib/deep1_models.py <universe>` (series into `<cache_root>/derived/deep-1/`),
+  `deep1_atlas.py`, `deep1_combo.py` (`check` = look-ahead check; a plain run reuses the cached
+  replays and logs nothing twice).
+- Next lanes (not started; detail in `research/deep-1.md`): a breadth-gate card judged on other
+  universes (agree the split with `trend-tune` first); coin tops on the top-100 coin book; carry
+  as the first real complement, with deep-1's `stack` rule unchanged, after carry-3.
+
+### For the owner
+
+- Nothing to decide. If you want a smoother ride, the plain average of all rules and `trend-vol`
+  both give a worst loss near 30% instead of 36.5%, for about 3 points less growth a year. That
+  is a choice of risk, like the presets in `research/risk-map.md`, not a better rule.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

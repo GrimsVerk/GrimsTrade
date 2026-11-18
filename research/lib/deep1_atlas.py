@@ -45,8 +45,9 @@ class Atlas:
         return int(np.clip(d.toordinal() - int(self.days[0]) - 1, 0, len(self.days) - 1))
 
     def cut(self, name: str, a: date, b: date) -> np.ndarray:
-        """Returns of days a..b inclusive (NaN-free only if the model ran then)."""
-        return self.rets[name][self.idx(a) : self.idx(b) + 1]
+        """Returns from the close of day a to the close of day b, the harness's convention
+        (`Run.rets_between`); NaN-free only if the model ran then."""
+        return self.rets[name][self.idx(a) + 1 : self.idx(b) + 1]
 
     def day(self, k: int) -> date:
         return date.fromordinal(int(self.days[k + 1]))

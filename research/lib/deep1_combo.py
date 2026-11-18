@@ -155,6 +155,47 @@ def choices(b: Books) -> list[str]:
     return out
 
 
+def naive_weights(b: Books) -> np.ndarray:
+    """The plain twin of `meta`: equal shares in `tsmom12` and every eligible complement,
+    refitted on the same days from the same weekly returns."""
+    r = np.column_stack([s.rets for s in b.series])
+    w = np.stack([s.w for s in b.series])
+    n, m = r.shape
+    shares = np.zeros((n, m))
+    shares[:, 0] = 1.0
+    ks = mix.refit_days(b.days)
+    for i, k in enumerate(ks):
+        blk, _ = mix.blocks(r, k)
+        if len(blk) == 0:
+            continue
+        el = mix.eligible(blk)
+        if el[0]:
+            hi = ks[i + 1] if i + 1 < len(ks) else n
+            shares[k:hi] = el / el.sum()
+    out: np.ndarray = np.einsum("dm,mda->da", shares, w)
+    return out
+
+
+def hindsight(b: Books, a: date) -> tuple[float, float, list[tuple[str, float]]]:
+    """Not a strategy: the constant long-only mix of the sleeves with the best Sharpe over
+    days from `a`, fitted on those same days (Britten-Jones, negative shares dropped in
+    turn). Returns its Sharpe, `tsmom12`'s on the same days, and the shares. Sleeve returns
+    are mixed as they are (no netting of trades), so it is a ceiling, not a backtest."""
+    lo = max(a.toordinal() - int(b.days[0]) - 1, 0)
+    r = np.column_stack([s.rets for s in b.series])[lo:]
+    cols = [j for j in range(r.shape[1]) if not np.isnan(r[:, j]).any() and r[:, j].std() > 0]
+    while True:
+        x = r[:, cols]
+        coef = np.linalg.solve(x.T @ x, x.sum(axis=0))
+        if (coef >= 0).all():
+            break
+        cols = [j for j, v in zip(cols, coef, strict=True) if v > 0]
+    sh = coef / coef.sum()
+    mixed = r[:, cols] @ sh
+    top = sorted(zip([b.names[j] for j in cols], sh, strict=True), key=lambda t: -t[1])
+    return stats.sharpe(mixed), stats.sharpe(r[:, 0]), [(nm, float(v)) for nm, v in top]
+
+
 def main() -> None:
     out = ["# deep-1, Part B: three combination rules", ""]
     out += ["Card and pass bar: `deep-1.md`. Twin: `tsmom12`. Train period, total-return prices, "
@@ -187,6 +228,26 @@ def main() -> None:
             x, y = c.align(ru[r], tu)
             signs[r][name] = stats.sharpe(x) - stats.sharpe(y)
 
+    out += ["## After the test: two reference points (not part of the card)", ""]
+    naive = replay("deep-1-meta", "naive-1n", naive_weights(b), six, b.days, "baseline")
+    out += ["`naive-1n` is the plain twin of `meta`, added after `meta`'s result was seen and "
+            "logged as a baseline: equal shares in `tsmom12` and every eligible complement, no "
+            "learning. It tells how much of `meta` is plain averaging.", ""]  # fmt: skip
+    out += [c.table([naive, runs["meta"], twin], versus=twin), ""]
+    out += [*window_table([naive, runs["meta"], twin, ew], twin, ew), ""]
+    x, y = c.align(runs["meta"], naive)
+    d, pv, _, _ = stats.sharpe_diff_boot(x, y)
+    out += [f"`meta` against `naive-1n`: {d:+.2f} Sharpe (p = {pv:.2f}).", ""]
+    out += ["The hindsight ceiling is no strategy: the best constant long-only mix of the "
+            "sleeves, fitted on the very days it is scored on, sleeve returns mixed as they are. "
+            "No rule that picks among these sleeves from past data can be expected to do "
+            "better.", ""]  # fmt: skip
+    out += ["| Days | Best mix with hindsight | `tsmom12` | Shares |", "|---|---:|---:|---|"]
+    for label, a0 in (("1994-2025", six.start), ("2003-2025", SINCE)):
+        hs, ts_, top = hindsight(b, a0)
+        txt = ", ".join(f"{nm} {v:.0%}" for nm, v in top if v > 0.005)
+        out.append(f"| {label} | {hs:.2f} | {ts_:.2f} | {txt} |")
+    out += [""]
     out += ["## Pass bar", ""]
     for r in RULES:
         run = runs[r]
@@ -240,6 +301,11 @@ def check() -> None:
         for nm in full.names:
             m = dm.BY_NAME[nm]
             start = m.first(u2) if m.first else u2.start
+            if start >= d:  # the model does not exist yet on this day: no returns, no weights
+                ref = series[0]
+                series.append(dm.Series(nm, ref.syms, ref.days, np.full(len(ref.rets), np.nan),
+                                        np.zeros_like(ref.w), start.toordinal()))  # fmt: skip
+                continue
             run = c.go(m.idea, m.variant, m.make(u2), u2, "robustness", log=False, start=start)
             series.append(dm.to_series(run, u2, nm))
         cut = combine(series)
