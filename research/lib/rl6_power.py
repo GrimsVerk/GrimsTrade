@@ -164,7 +164,7 @@ def write(res: dict[str, dict[str, Any]]) -> Path:
         "in mean weekly return a paired test detects (80% power). Next to it, the cost a slower book",
         "saves for certain: (turnover of `w1` - turnover of the slow book) x cost a side, per week.",
         "",
-        "| Slow book | Weeks | sd of difference | Gap MDE/week at 0.10 | at 0.10/8 | Cost saved/week at 8 bps | at 10 bps | at 30 bps |",
+        "| Slow book | Weeks | sd_eff of difference | Gap MDE/week at 0.10 | at 0.10/8 | Cost saved/week at 8 bps | at 10 bps | at 30 bps |",
         "|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for name, b in res.items():

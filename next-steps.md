@@ -1,12 +1,24 @@
 # Next steps
 
-## RL 6 (doing, started 2026-11-18, branch `rl-6`, from `rl-5`)
+## RL 6 (done 2026-11-18, branch `rl-6`, draft PR #52 -> `rl-5`)
 
-Close the RL/perp lane or try a slower carry. Chain: (1) power analysis in `research/rl-6.md`
-(no strategy numbers): the smallest weekly/monthly edge a slower carry could show on the
-2021-2025 train years, and how much of carry-2/carry-3's loss was cost vs price; (2) only if
-detectable: card `research/cards/slow-carry.md` first, then train-only runs; (3) closing note
-for the RL/perp line. Train only; carry-3 spent the held-out year.
+**Verdict: the RL / perp line is closed.** Can a slower funding carry (every 4 weeks, or 28/56-day
+funding) be detected on the perp train years? No. Power analysis only (noise, no book means):
+on 4.7 years (246 weeks) the smallest Sharpe a test finds 80% of the time is 0.98 at p < 0.10
+and 1.42 at the honest p < 0.10 / 8 (an 8th shape on this data), against 0.79, the best carry
+seen; a monthly book would need ~0.17-0.32% a week (1.0-1.3% a month). The cost a slow book
+saves (0.04% a week at the real ~8 bps) is eight times smaller than the gap a paired test can
+see. Cost vs price: carry-2's 30 bps failure was all cost (~12.6% a year against ~9% funding);
+carry-3's held-out failure was price (~-22 points against +16 funding, -2.3 cost; still -0.47
+with no cost), which no rebalance speed fixes. By the plan's rule no slow-carry card and no run;
+no row added to `tries.md`. Write-up and closing note for rl-1..rl-6: `research/rl-6.md`; table
+`research/results/rl-6-power.md`; code `research/lib/rl6_power.py`. Held-out untouched; nothing
+running.
+Reopen only on a trigger: (1) forward data: record carry-3 `band`'s weekly decisions from now
+and score them unseen (a true 0.79 needs ~7 years at p < 0.10; cheapest); (2) a fresh unseen
+perp year (from 2027-11) for a held-out-only `band` card; (3) a new input with t >= 3 that
+clears Holm and carries to a second venue, fed only to a learner that passed the planted gate;
+(4) a much wider and longer cross-section for any learner work.
 
 ## RL 5 (done 2026-11-18, branch `rl-5`, draft PR #42 -> `rl-4`)
 
