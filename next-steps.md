@@ -10,27 +10,36 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   it), #30 G4 ETF dividends (ex-date cash, append-only `data/dividends.csv`), #32 Kraken fee
   tiers (lowest tier 0.80% > flat 0.60%). The three touch neighbouring `gym.py` lines: the later
   merge needs a small rebase. Interest on cash not done.
-- Running (2026-11-18 ~00:15 UTC): `carry-3` (funding carry with real costs, one held-out look
-  if train passes), `rl-4` (learner that passes rl-3's planted gate, then the perp
-  cross-section), `wide-1` (cross-field hypotheses), `deep-1` (failure atlas + combinations),
-  `slow-1` (4/13-week horizon screen).
-- Owner direction 2026-11-17 ~23:30 UTC: never stop early (only weekly 0.74, the reset or the
-  Chief of Staff); always one WIDER lane (new ideas, from other fields if needed) and one DEEPER
-  lane (failure modes, tuning, combining models). Queue below; next free slot takes the top.
+- Done overnight (all draft PRs to `carry-2` unless noted, held-out year unspent everywhere):
+  - #35 `slow-1`: no input forecasts at 4 or 13 weeks (0 of 49 after correction); closest the
+    dollar's 13-week change, coins only.
+  - #36 `deep-1`: failure atlas of 52 models; no combination beats `tsmom12` (they hold the same
+    assets and lose in the same weeks); 8 of its 10 worst drawdowns are coin tops.
+  - #33 `wide-1`: 46 cross-field mechanisms, 4 carded, all fail; post-hoc: long bonds earn most
+    of their return in the last 4 sessions of each month (needs its own card).
+  - #34 `trend-tune`: walk-forward lookback tuning does not beat 12 months; the rule pays only on
+    stocks (sits out rough stretches), re-enters ~23% above the low, 7 months late.
+- Running (2026-11-18 ~03:00 UTC): `carry-3` (funding carry with real costs), `rl-4` (lasso
+  passes the planted gate; PPO being evaluated; perp book failed), `usd-1` (dollar effect,
+  pre-registered replication), `cointop-1` (coin-top exits learned on 100 coins, carried back
+  to BTC/ETH), `evo-1` (genetic programming under a data-snooping correction), `trend-1926`
+  (does trend pay on stocks 1926-1961?).
+- Owner direction 2026-11-17: never stop early (only weekly 0.74, the reset or the Chief of
+  Staff); always WIDER and DEEPER lanes. 2026-11-18: no auto-resume at the 06:30 reset (owner's
+  window); restart when the Chief of Staff says.
 
 ### Lane queue (W = wider, D = deeper)
 
-(Started: `wide-1`, `deep-1`, `slow-1`.)
-
-1. D `trend-carry`: after carry-3, combine `tsmom12` with the cost-realistic carry sleeve
-   (sizing, correlation in crashes), held-out rules respected.
-2. W `evo-1`: evolved rule search (genetic programming) under strict multiple-testing control
-   (reality check / deflated Sharpe), as a test of whether search finds anything honest.
-3. D `trend-tune`: why `tsmom12` works where it does (lookback, exit speed, per-asset), honest
-   walk-forward tuning vs the fixed rule; the live system's core deserves the deepest look.
-4. W `micro-1`: features from minute bars (realised vol, jumps, overnight vs intraday) as
-   weekly inputs, cheap IC screen first (rl-3 lever 2).
-5. D `rl-5`: whatever rl-4's gate result says next (pooled-book RL, or RL on the perp book).
+1. D `trend-carry`: after carry-3, deep-1's `stack` rule unchanged on `tsmom12` + the
+   cost-realistic carry book (the first real complement).
+2. W `month-end-bonds`: idle cash into the long bond for the last 4 sessions of each month; clean
+   tests left: LQD, TLT's first year, held-out once (owner's call: pattern found by looking).
+3. W `micro-1`: minute-bar features (realised vol, jumps, overnight vs intraday) as weekly
+   inputs, cheap IC screen first.
+4. D `trend-where-it-pays`: keep the trend filter only where past days out were rougher than
+   days in (walk-forward yes/no), worst loss in the bar.
+5. D `rl-5`: whatever rl-4's write-up says next.
+6. W `volume-1`: the six assets' own trading volume has never been screened.
 
 ### For the owner
 
@@ -38,6 +47,11 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   but crypto orders now fill ~22 h after the decision while backtests assume ~1.5 h. Accept, or
   move the schedule? (details: `health-1` next-steps, PR #27).
 - `next-steps.md` on `main` is stale (still lists merged PR #5 as waiting).
+- Engineering PRs #29 (G2), #30 (G4 dividends), #32 (fee tiers) are ready for review; merge is
+  yours. Optional (trend-tune): a 2.5-5% rebalance band gave the same Sharpe with 15-25% less
+  trading in backtest.
+- Should the paper broker be able to fill at the close? Two wide-1 effects are worth more at the
+  close than at the next open (design question).
 
 ## Summary 1 (done 2026-11-17, branch `summary-1`, draft PR #28 -> `carry-2`)
 
