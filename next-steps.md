@@ -1,5 +1,35 @@
 # Next steps
 
+## Coin cap 2 (done 2026-11-18, branch `coin-cap-2`, draft PR #53 -> `coin-cap`)
+
+Does the stop's edge over a cap of the same cost hold across many independent coin falls, or is
+it the one 2018-20 fall? Card section "Third reading" in `research/cards/coin-cap.md` (written
+before any number); write-up "Third reading" in `research/coin-cap.md`; tables
+`research/results/coin-cap-2.md` and (post-hoc, not in the bar)
+`research/results/coin-cap-2-posthoc.md`.
+
+**Verdict (by the card's bar): rule PR candidate, for the owner.** 445 coin falls (60% or more)
+on 197 coins of breadth-1's book, 2013-2025, in 21 episodes (effective 7.6; 10 calendar years).
+Against a cap of matched cost (0.663 of the slot: same mean return, about the same
+volatility), the stop's deepest loss is smaller in 15 of 21 episodes (sign p 0.039), +16% of a
+slot on average, +15% without the largest episode, and in 9 of 10 years. Not a one-episode
+effect. Caveats for the owner: it loses in fast crashes (2013-04, 2017 summer, 2021-05: a
+weekly stop cannot act inside days); on BTC alone it is behind a matched cap in 4 of 5 falls
+(ETH: ahead in 6 of 6); pooled Sharpe is unchanged (0.46 vs 0.47), so this buys a shallower
+worst loss for the same growth, not more return. Held-out year unspent.
+
+- Rebuild: `research/lib/coin_cap2.py` (**a plain run logs 4 tries rows**; `DRY=1` is a
+  plumbing run on random prices, logs nothing) and `research/lib/coin_cap2_posthoc.py` (logs
+  nothing).
+- Doing: nothing. No process running.
+- For the owner: whether to open a rule PR putting `stop-0.25` on the coin slots of `tsmom12`
+  (cointop-1 Part C: worst loss 36.5% -> 28.9%, about 2 points less growth a year; coin years
+  17.7% against 21-27% for caps of similar cost). Before such a PR: decide whether the BTC
+  result (1 of 5 falls) matters, and whether to spend the held-out year on it (the card spends
+  it only if the owner asks).
+- Next (not started, card first): a daily-read stop for the fast crashes is already known not to
+  help Sharpe (cointop-1, daily rows); cap 25% together with `stop-0.25`; time under water.
+
 ## Coin cap (done 2026-11-18, branch `coin-cap`, draft PR #49 -> `cointop-1`)
 
 Is a plain cap on the combined coin weight inside `tsmom12` as good as cointop-1's `stop-0.25`

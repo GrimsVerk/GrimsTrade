@@ -100,3 +100,100 @@ CAGR has an A as small as the stop's: "the stop does more than a cap of the same
 Anything else: mixed, the whole frontier is reported. B is expected to favour the stop (its
 summed returns in those windows are already seen, and the windows were drawn in hindsight);
 A is the fresh number and carries the reading.
+
+## Third reading, lane `coin-cap-2`: independent coin falls on the coin book (added 2026-11-18 19:05 UTC, before any of its numbers)
+
+Branch `coin-cap-2` (from `coin-cap`). Why: the second reading's edge for the stop rests mostly
+on one fall (BTC/ETH 2018-20). BTC and ETH have about four tops; the coin book has hundreds of
+coin falls, but coins fall together, so the question is how many of them are separate episodes
+and whether the stop's edge over a cap of the same cost holds across those episodes, not only in
+2018-20.
+
+Seen when this was written: everything on `coin-cap` and `cointop-1` (the coin book has 639
+tops in about 19 effective top months; `stop-0.25` holds a coin 16% of the time against the
+twin's 52% and is no better than its 26-weeks-late control on Sharpe). One coverage print of the
+book (no return, no fall, no rule): eligible coins on 1 July of each year are 1 (BTC) in
+2013-16, 13 in 2017, 15 in 2018, 36 in 2019, 87 in 2020, 100 from 2021; panel coins with a year
+of prices: 1, 2, 6, 12 in 2013-16. No coin fall was located and no rule run for this section.
+
+### Data and universe
+
+- breadth-1's Coin Metrics book A, unchanged (`breadth_books.cm_book()`), train bars only:
+  the top 100 coins by 30-day median market cap among those above the floors, dead coins
+  included, as-of rule `x + 1`, 30 bps a side. **All its coins** (BTC, ETH and the six protocol
+  coins included; they are also reported alone).
+- **Extended in time:** the book's own eligibility from its first eligible day (2013), not from
+  the day it first has 30 coins (2019-03-31). Before 2017 that is BTC alone; 2017-18 13 to 15
+  coins. Same eligibility rule, just fewer coins. Weekly Friday decisions as in cointop-1.
+- Per-coin paper series as cointop-1 (`cointop1_core.paper`): twin `TS` (slot held while
+  `r(365) > 0`) and `stop-0.25` (twin and `dd_1y >= -0.25`), unchanged.
+
+### The cap of matched cost
+
+On one coin slot a cap is a fraction `f` of the twin's slot: its daily return is exactly `f`
+times the twin's (costs scale too). **Matched cost:** `f*` = mean daily return of the stop / mean
+daily return of the twin, pooled over all coin-days the book counts (cointop-1's mask), so the
+cap and the stop give up the same arithmetic return per coin-day (what a small slot adds to a
+diversified book). If `f*` is not in (0, 1) the comparison is reported and no cap matches.
+Reported beside it, not used by the bar: `f_time` = the stop's share of time held / the twin's.
+Limit, stated now: on the six assets the cap binds on the summed coin weight, here on each
+coin's slot; and `f*` is a description made with the whole sample, not a rule parameter.
+
+### Coin falls
+
+- **Coin fall:** a cointop-1 top (`cointop1_core.find_tops`: high, then at least -50%; a low is
+  settled by a doubling) whose lowest price is at least 60% below the high, of a coin in the
+  universe on the top day, at which the twin held the coin (trend-on: the rules differ only
+  where the twin is in). Top day up to 2025-11-09.
+- **Window of a fall:** from 91 days before the top to the settled day (the doubling), at most
+  365 days after the low; an unsettled fall ends at the end of train.
+
+### Independent episodes (how coin falls are counted)
+
+- **Market index:** equal weight of the universe's coins, daily simple returns averaged over
+  the coins in the universe that day, compounded (BTC alone before 2017). **Market falls:** the
+  same top definition on the index (high, then at least -50%, settled by a doubling).
+- **Common falls:** a coin fall whose top lies between 60 days before a market top and that
+  market fall's low belongs to that market fall's episode. All coin falls of one market fall
+  are **one episode**, however many coins.
+- **Coin-own falls:** every other coin fall. Sorted by top day, a new episode starts when the
+  gap to the previous coin-own top exceeds 30 days (single linkage); each run is one episode.
+- Reported: number of episodes (common and coin-own), coin falls per episode, and the
+  effective number `1 / sum(share^2)` (share = an episode's coin falls over all coin falls).
+  Beside it (not used by the bar), cointop-1's effective number of top months.
+
+### Measures (per coin fall; per episode = mean over its coin falls, each coin fall counts once)
+
+- **M (carries the bar): the deepest fall of the slot's P&L inside the window.** P&L path =
+  running sum of the slot's daily simple returns; the largest peak-to-trough drop with both
+  ends in the window. The cap's M is `f*` times the twin's, exactly. **Edge** = cap's M minus
+  the stop's M (positive: the stop lost less at the same cost). Starting 91 days before the top
+  and running into the rebound charges the stop for whipsaws and late re-entry.
+- **S (as in the first reading):** the slot's summed return from the day after the top to the
+  low. Edge = stop's S minus `f*` times the twin's S. Expected to favour the stop (top and low
+  are hindsight; a stop is out by construction for most of a fall); reported, not used.
+
+### Bar (fixed here)
+
+**"Rule PR candidate, for the owner"** only if all hold:
+
+1. At least 8 episodes by the definition above.
+2. The stop's episode edge on M is positive in at least two thirds of the episodes, and the
+   one-sided sign test over episodes has p < 0.10.
+3. Not one episode: the mean episode edge on M stays positive with the episode of the largest
+   edge left out (and a bootstrap over episodes, 2,000 draws, seed 0, is reported).
+4. The eight coins kept out of choosing `stop-0.25` (BTC, ETH, LTC, XRP, BCH, ETC, XLM, DASH):
+   their summed edge on M over their coin falls is positive.
+
+If 1 fails: **"close: too few independent coin falls to tell"**. If 1 holds and 3 fails:
+**"close: one-episode effect"**. If 1 and 3 hold and 2 or 4 fails: **"close: no edge across
+episodes"**. A pass says the stop cuts coin falls better than a cap of the same cost across
+independent falls; it would still be a risk choice for the owner (cointop-1: no Sharpe edge),
+and the held-out year stays unspent unless the owner asks for the rule PR.
+
+### Tries
+
+Four rows, idea `coin-cap-2`, the book's equal-slot portfolio of the series (at least one coin
+in the universe): `TS` twin (`baseline`), `stop-0.25` (`robustness`: chosen before), the
+matched cap `f*` (`variant`) and the time-matched cap `f_time` (`variant`). Train only, normal
+costs. A `DRY=1` run on random prices checks the plumbing and logs nothing.
