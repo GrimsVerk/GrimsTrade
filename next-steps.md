@@ -1,5 +1,11 @@
 # Next steps
 
+## Survey 4 (in progress 2026-11-18, branch `survey-4`, draft PR -> `ann-1`)
+
+Doing: survey of effects with a documented post-publication record (`research/survey-4.md`,
+pick rule fixed before any number), then card and train test of the top two picks
+(`ts-carry`, then `halloween`). Family 65, bar p < 0.10 / 65.
+
 ## Ann 1 (done 2026-11-18, branch `ann-1`, draft PR #65 -> `survey-3`)
 
 Survey-3's last live candidate, `announcement-premium`, checked by an FOMC event study before
