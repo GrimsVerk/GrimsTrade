@@ -1,6 +1,6 @@
 # Next steps
 
-## Month-end bonds (done 2026-11-18, branch `month-end-bonds`, draft PR -> `wide-1`)
+## Month-end bonds (done 2026-11-18, branch `month-end-bonds`, draft PR #45 -> `wide-1`)
 
 Clean test of wide-1's post-hoc pattern (bonds earn their return in the last four sessions of
 the month). Card `research/cards/month-end-bonds.md`, pushed before any number; write-up
