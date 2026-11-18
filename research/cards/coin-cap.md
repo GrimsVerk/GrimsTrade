@@ -75,3 +75,28 @@ weight, never exceeds `C` or a book of 1, and equals `tsmom12` when `C` = 1.
 ## Result
 
 See `results/coin-cap.md` and `research/coin-cap.md` once run.
+
+## Second reading: coin years only (added 2026-11-18 11:18 UTC, before any of its numbers)
+
+Seen already: the first reading (`results/coin-cap.md`): every cell, `cap-wf` and `stop-0.25`
+tie at a full-train worst loss of 28.9%, the dot-com fall, and the summed returns inside deep-1's
+coin-crash windows favour the stop. Not seen: any drawdown measured from 2013 on, or any
+drawdown inside a window.
+
+Measures (fixed here):
+
+- A. Worst loss on equity re-based at 2013-01-01, through 2025-11-09 (the coin years).
+- B. The largest peak-to-trough fall inside each of deep-1's eight coin-crash windows (peak and
+  trough both inside the window): the worst of the eight and their mean.
+- CAGR over the same coin years, as the cost.
+
+Series: the same 8 cells, `cap-wf`, `stop-0.25` and `tsmom12`, rerun unlogged from the same
+code (configurations already logged). No new variant; counted as one more try (one tries row).
+Normal costs only.
+
+Bar: for `cap-wf`, A no larger than the stop's and coin-years CAGR above the stop's: "in the
+coin years a plain cap does the stop's job cheaper". If no series with at least the stop's
+CAGR has an A as small as the stop's: "the stop does more than a cap of the same cost".
+Anything else: mixed, the whole frontier is reported. B is expected to favour the stop (its
+summed returns in those windows are already seen, and the windows were drawn in hindsight);
+A is the fresh number and carries the reading.
