@@ -156,3 +156,74 @@ next turn is scored instead.
 Disclosures: one dry run (`DRY=1`) printed only the count of eligible placebo windows per
 month (153 in 21 years), then one run. Rule pushed at ae4f76c, code and tests at 4dc070a, both
 before either run. No `tries.md` row (not a strategy, not a test on train).
+
+## Step 2. W16 `geomagnetic-storm` (heliophysics)
+
+### Data access (checked 2026-11-18, before any price was cut by it)
+
+GFZ Potsdam's file `https://kp.gfz.de/app/files/Kp_ap_Ap_SN_F107_since_1932.txt` (the old host
+kp.gfz-potsdam.de redirects there) downloads without a key or account. Its header: licence
+**CC BY 4.0** for Kp, ap and Ap (the sunspot numbers in the same file are CC BY-NC 4.0; not
+used), cite Matzka et al. (2021), Space Weather, doi 10.1029/2020SW002641. Daily Ap from
+1932-01-01 to the day before download (recent values are nowcasts; all train-year values are
+definitive). The file goes to `research/data/kp/` (gitignored, never committed); the script
+reads it as text.
+
+### The idea and literature
+
+Severe geomagnetic storms are linked in medical studies to depression and sleep disruption; if
+mood moves prices, stock returns should be lower in the days after a storm. A clock set by
+the Sun, with no calendar collision.
+
+- **Krivelyova and Robotti (2003)**, "Playing the field: Geomagnetic storms and the stock
+  market", Federal Reserve Bank of Atlanta working paper 2003-5 (revised as 2003-5b, October
+  2003). `[record]` Abstract (RePEc): "the previous week's unusually high levels of
+  geomagnetic activity have a negative, statistically and economically significant impact on
+  today's stock returns" for the world index and most country indices; read as misattribution
+  of mood. `[memory]` A six-day post-storm window, US indices back to the 1930s, sample ending
+  about 2000; storm thresholds on Ap not checked in the paper.
+
+So the paper's years overlap our GSPC years (1950-2002 here); **post-sample = 2003-2025** (SPY,
+solar cycles 23's tail, 24 and 25 with the May 2024 G5 storm). No run here has cut returns by
+Ap.
+
+### Decision rule (fixed and pushed before any number)
+
+**Series.** SPY dividend-adjusted closes, train bars only (to 2025-11-10); the S&P 500 index
+(GSPC, price only, from 1950) for the in-sample check. Daily log close-to-close returns.
+
+**Storm exposure.** Storm on UT day d with daily Ap(d). A session t is in the window of d if it
+is one of the first six sessions dated after d (strictly: the session on day d itself is
+concurrent and not counted). M(t) = the largest Ap(d) over all d whose window holds t, i.e.
+over UT days d with date(t-6) <= d < date(t). **Severe**: M(t) >= 100. **Minor-to-major**:
+30 <= M(t) < 100. Everything else is calm.
+
+**Regression.** r(t) = a + b_sev Sev(t) + b_min Min(t) + e, Newey-West t with 5 lags (the
+windows overlap). b = extra daily return on post-storm sessions over calm ones.
+
+**Gate.** Pass only if all four hold:
+1. SPY 2003-01-01..2025-11-10: b_sev < 0 with t <= -2.
+2. Dose: on the same sample, b_sev < b_min (severe storms matter more).
+3. GSPC 1950-2002 (in the paper's years): b_sev < 0.
+4. Placebo calendar: the true SPY 2003-2025 b_sev ranks among the 2 most negative of 31: the
+   true one and the same regression with the whole Ap calendar shifted by k x 61 days, k = -15
+   .. -1, 1 .. 15 (61 days is not a multiple of the 27-day solar rotation, so a shift breaks
+   the storms' recurrence; Ap values outside the file count as calm). This is the empirical
+   null of step 1 applied to time instead of funds.
+
+On a pass: a card for a `tsmom12` overlay (SPY out for the six sessions after a severe storm)
+with rows in `tries.md`, read at p < 0.00143 (family) and the register's p <= 4.9e-5. On a
+fail: W16 dead by the gate, no card, no row.
+
+**Shown, not gating.** The same regression on GSPC 2003-2025 and SPY 1993-2002; a threshold of
+Ap >= 50 in place of 100; a continuous dose log(1 + M(t)); the raw mean six-session return
+after severe storm days; the count of severe and minor storm days and flagged sessions per
+sample; the 31 shifted b_sev.
+
+**Power, written before any number.** SPY's daily standard deviation is about 1.2%. Severe
+days (Ap >= 100) are rare: perhaps 15-25 UT days in 2003-2025, about 100 flagged sessions after
+overlaps, so the standard error of b_sev is about 12 bps a day and t <= -2 needs about -25 bps
+a day, -1.5% over six sessions. The gate can only see a large mood effect.
+
+**My guess before any number.** b_sev between -15 and +15 bps a day, |t| < 1.5 post-sample;
+b_min near zero; GSPC in-sample slightly negative. Chance of a pass: 2%.
