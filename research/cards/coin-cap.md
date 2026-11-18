@@ -290,3 +290,101 @@ Logged rows, idea `coin-cap-3`, the book's equal-slot portfolio of each series (
 reading): `stop-0.25-d` and `stop-0.25-dx` (`variant`), the same two at double costs, the weekly
 stop at double costs (`robustness`) and the twin at double costs (`baseline`): 6 rows. Train
 only. A `DRY=1` run on random prices checks the plumbing and logs nothing.
+
+## Fifth reading, lane `coin-cap-4`: the last candidates as one set (added 2026-11-18 22:10 UTC, before any of their numbers)
+
+Branch `coin-cap-4` (from `coin-cap-3`). The remaining next-step cards of coin-cap 1-3, carded
+together with one decision rule so the family bar counts them once and honestly: a stop whose
+band is a price drawdown instead of volatility units, and a 25% cap together with the stop.
+Time under water is not a rule: it is a risk measure reported for every series.
+
+Seen when this was written: everything on `coin-cap` .. `coin-cap-3`, and step 1 of this lane
+(`results/coin-cap-4-modes.md`, descriptive): the weekly stop loses mainly in the first leg of
+fast falls while still fully in (exit at -44% in the six lost episodes), partly because its
+volatility band is wide at hot tops (-34% in price; own-0 -44%), and also by re-entering
+bounces (falls with two or more re-entries: mean edge -3%). No price-drawdown series and no
+capped-plus-stopped series has been computed on any data.
+
+### Candidate A: `pstop` (price-drawdown stop, weekly)
+
+- Coin book, the third reading's book, twin and timing unchanged: on each Friday decision,
+  hold a coin iff the twin holds it and `close / highest close of the last 365 days - 1 >= -X`,
+  from values stamped the day before (the book's as-of shift, as `stop-0.25`). An unknown high
+  is not held. Read on Fridays only (coin-cap-3: daily reading does not fix the fast crashes).
+- **`X` is fixed by exposure, not by returns:** from the grid 0.10, 0.11, ..., 0.50, the `X`
+  whose pooled time held over the twin's (counted coin-days, cointop-1's mask) is closest to
+  the weekly stop's (0.311 in the third reading; the rerun number is used); ties: the smaller
+  `X`. Computed from positions only, printed, and frozen before any return, M or edge of
+  `pstop` is computed (the script asserts the order). Then the band no longer widens with
+  volatility, and the comparison with the weekly stop is at the same time in the market.
+- Six assets: the same `X`, carried unchanged into `tsmom12`'s coin slots through the gym
+  (`c.weekly`, the gym's own as-of rule), as cointop-1 Part C did for `stop-0.25`.
+
+### Candidate B: `cap25+stop` (six assets only)
+
+`tsmom12` with the weekly `stop-0.25` on the coin slots (cointop-1's rule), then the summed coin
+weight capped at 25%, the excess to cash (`coin_cap_core.cap_coins`, mode `cash`). It binds
+only while BTC and ETH are both held and both pass the stop. **Stated now:** on the coin book
+a cap on one coin's slot is a constant fraction of it, so `cap x stop` has exactly the stop's
+edge pattern against a matched cap (edge scales by the fraction, signs do not change: 15 of
+21). B therefore cannot pass the episode sign test by construction; it is judged only as a
+size choice on the live book, and at most can be "a risk preference, not a proven rule".
+
+### Time under water (reported for every series, the only bar use is B3)
+
+- Coin book, per coin fall: **TUW** = the longest run of consecutive days inside the fall's
+  window on which the slot's P&L path (summed daily returns from 0 at the window's start) is
+  below its running high. A cap of any size has its twin's TUW (scale does not change it).
+  Per episode: the mean over its falls. Series: twin (= every cap), weekly `stop-0.25`,
+  `stop-0.25-d` (coin-cap-3, reference, unlogged) and `pstop`.
+- Six assets, coin years (2013-01-01 .. 2025-11-09, equity re-based): the longest stretch
+  below a previous equity high (days), and the share of days 10% or more below it. Series:
+  `tsmom12`, `cap25-cash`, `stop-0.25`, `cap25+stop`, `pstop`.
+
+### Family bar (counts every coin-cap pick)
+
+coin-cap 13 picks (9 + 2 + 2) plus this reading's 2 (`pstop`, `cap25+stop`): **m = 15**; the
+sign test needs p < 0.10 / 15 = 0.0067, on 21 episodes at least **17 of 21** (p 0.0036; 16 of
+21 is 0.013).
+
+### One decision rule (fixed here)
+
+**A, "`pstop` replaces the weekly stop as the coin-stop candidate"**, only if all hold:
+
+1. Edge M against its own matched cap (`f*` of `pstop`, the third reading's definition)
+   positive in at least 17 of the 21 episodes.
+2. Shallower losses, not a cheaper cap: raw M smaller than the weekly stop's in at least 14 of
+   21 episodes (two thirds; the two are at the same time in the market by construction).
+3. Mean episode edge M at double costs at least the weekly stop's at double costs.
+4. The eight held-aside coins (BTC, ETH, LTC, XRP, BCH, ETC, XLM, DASH): summed edge M > 0.
+5. Six assets, coin years: worst loss no larger than `stop-0.25`'s and CAGR no more than 1.0
+   point a year below it.
+
+**B, "`cap25+stop` is worth adding to the stop" (a size preference)**, only if all hold on the
+six assets, coin years, against `stop-0.25` alone:
+
+1. Worst loss at least 2.0 points smaller.
+2. CAGR at most 1.0 point a year lower.
+3. Longest stretch under water no longer.
+4. 1 and 2 also hold at double costs (both series at double costs).
+
+**Combined reading (exactly one line each):**
+
+- If A holds: "`pstop` meets the family bar and replaces the weekly stop". If only A1 holds:
+  "meets the sign bar, not the rest: reported, not acted on". Otherwise: "no candidate meets the
+  family bar: the weekly stop stays a risk preference" (and whether the weekly stop or `-d` meet
+  it is restated from coin-cap-3, not retested).
+- If B holds: "a 25% cap on top of the stop is an optional size choice (not provable on
+  episodes)". Otherwise: "a 25% cap adds nothing worth its cost to the stop".
+- BTC's five falls, the six episodes the weekly stop trailed, and TUW are reported for every
+  series; none of them is a bar (except B3).
+
+### Tries
+
+Idea `coin-cap-4`, train only: `pstop` on the coin book's equal-slot portfolio (`variant`) and
+at double costs (`robustness`); on the six assets through the gym `pstop` (`variant`),
+`cap25+stop` (`variant`), and both at double costs (`robustness`): 6 rows. A `DRY=1` run on
+random prices / the last 120 days checks the plumbing and logs nothing. Look-ahead: a unit test
+that `pstop`'s hold at a decision does not change when later prices are scrambled and is never
+on where the twin is off; `harness.check_against_gym` on both six-asset rules before any
+number. Held-out year unspent.
