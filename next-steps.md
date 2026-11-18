@@ -79,7 +79,13 @@
     publication (2017-2025 -5.7, t -1.2); stock slots in even weeks only: Sharpe 1.22 vs 1.05
     (p 0.03) but all from 1994-2016; FAILS (family 13 of 61 tested, bar p < 0.00164).
     Next: `xtsmom` (stocks only while bonds trend up, JFE 2020), no more Fed-calendar tests.
-  - RUNNING: `eu-3` (`grimstrade-eu3`: fewer signal flips for small coin-free EUR books) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
+  - DONE `eu-3` (draft #63 -> eu-2): 6 variants on `euw` (Friday-only, monthly, monthly entry,
+    4-week hold, 4 class funds, 4 funds monthly), 81 rows. Only Friday-only keeps the character
+    (saves 2 orders/yr); the big cutters change the rule (monthly +0.14 Sharpe, p 0.03, not
+    significant after 6; monthly lost on the US six 1994-2025). Verdict: euw not worth it at
+    EUR 5k; at 10k only with EUR 1 orders; at 25k any fee. Next (owner): monthly-vs-weekly
+    card on held-out year if wanted; DEGIRO core selection check.
+  - RUNNING: `survey-3` (`grimstrade-survey3`: `xtsmom`, in-paper vs after-publication bars) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
     must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
