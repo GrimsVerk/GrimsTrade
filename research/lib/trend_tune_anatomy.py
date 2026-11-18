@@ -261,11 +261,13 @@ def section_in_out(solos: list[Solo]) -> list[str]:
         tot_in = s.in_log()
         tot_out = s.all_log() - tot_in
         worst = np.argsort(lr)[:20]
+        ann_in = tot_in / n_in * s.per_year * 100 if n_in else math.nan
+        ann_out = tot_out / n_out * s.per_year * 100 if n_out else math.nan
+        vol_in = lr[st].std() * math.sqrt(s.per_year) if n_in else math.nan
+        vol_out = lr[~st].std() * math.sqrt(s.per_year) if n_out else math.nan
         out.append(
-            f"| {s.sym} | {st.mean():.0%} | {tot_in / (n_in / s.per_year) * 100:+.1f} | "
-            f"{tot_out / (n_out / s.per_year) * 100:+.1f} | "
-            f"{lr[st].std() * math.sqrt(s.per_year):.0%} | "
-            f"{lr[~st].std() * math.sqrt(s.per_year):.0%} | {int((~st[worst]).sum())} |"
+            f"| {s.sym} | {st.mean():.0%} | {ann_in:+.1f} | {ann_out:+.1f} | {vol_in:.0%} | "
+            f"{vol_out:.0%} | {int((~st[worst]).sum())} |"
         )
     out += [
         "",
@@ -390,8 +392,8 @@ def section_spells(solos: list[Solo]) -> list[str]:
         return t
 
     ranked = sorted(every, key=lambda x: x.move)
-    out += listing("The ten spells that saved most:", ranked[:10])
-    out += listing("The ten costliest whipsaws:", ranked[::-1][:10])
+    out += listing("The ten spells that saved most:", [x for x in ranked if x.move < 0][:10])
+    out += listing("The ten costliest whipsaws:", [x for x in ranked[::-1] if x.move > 0][:10])
     return out + [""]
 
 
@@ -421,7 +423,8 @@ def section_bears(solos: list[Solo]) -> list[str]:
             out.append(
                 f"| {s.sym} | {names[k]} | {len(s.bears) if k else '-'} | {yrs:.1f} | "
                 f"{held * 100:+.0f} | {rule * 100:+.0f} | {(rule - held) * 100:+.0f} | "
-                f"{(rule - held) / s.years * 100:+.1f} | {s.state[m].mean():.0%} |"
+                f"{(rule - held) / s.years * 100:+.1f} | "
+                + (f"{s.state[m].mean():.0%} |" if m.any() else "- |")
             )
     for k in (1, 2, 0):
         out.append(
@@ -798,7 +801,7 @@ def section_surface(six: c.Ctx, twin: c.Run, warm: dict[str, tt.Warm]) -> list[s
     out += [""]
 
     # summary of the whole surface
-    every = list(cells.values())
+    every = [k for k in cells.values() if k.run is not twin]
     ahead = [k for k in every if k.diff > 0]
     ahead03 = [k for k in every if k.sharpe03 > stats.sharpe(since(twin, Y2003))]
     top = sorted(every, key=lambda k: -k.sharpe)[:8]
