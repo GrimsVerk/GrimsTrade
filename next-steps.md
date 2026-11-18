@@ -1,5 +1,14 @@
 # Next steps
 
+## ls-trend-1 (in progress 2026-11-18, branch `ls-trend-1`, draft PR -> `survey-5`)
+
+Question: is `tsmom12`'s missing crisis alpha the missing short side and the narrow universe?
+Chain: (1) literature, `research/ls-trend-1.md` (done); (2) card, then a research-harness
+long-short vol-scaled TSMOM on a wider keyless ETF universe vs live trend funds and `tsmom12`
+(descriptive replication, not a pick); (3) plain answer and a forward-test proposal.
+
+- Doing: step 3 (plain answer, forward proposal). Step 2 done: `results/ls-trend.md`, 4 `replication` rows.
+
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 
 Live track records as post-sample evidence. List of keyless live fund series pushed first
