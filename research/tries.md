@@ -1065,3 +1065,11 @@ Never edit or delete a row.
 | 2026-11-18 01:36 | trend-tune | wf-shrunk@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.41 | +553.4% | 54.6% | 3.09 |
 | 2026-11-18 01:36 | trend-tune | wf-shrunk-raw | robustness | train | 1994-02-01 | 2025-11-09 | 0.96 | +11127.8% | 38.4% | 3.31 |
 | 2026-11-18 01:36 | trend-tune | wf-shrunk-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +17327.2% | 37.1% | 2.74 |
+| 2026-11-18 11:07 | trend-where | where-vol | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +24412.0% | 35.3% | 1.71 |
+| 2026-11-18 11:07 | trend-where | where-dd | variant | train | 1994-02-01 | 2025-11-09 | 1.05 | +21300.2% | 35.7% | 2.41 |
+| 2026-11-18 11:07 | trend-where | where-vol@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.65 | +273.8% | 16.8% | 2.38 |
+| 2026-11-18 11:07 | trend-where | where-dd@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.53 | +185.1% | 19.5% | 2.61 |
+| 2026-11-18 11:07 | trend-where | where-vol@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.61 | +326.9% | 92.4% | 3.77 |
+| 2026-11-18 11:07 | trend-where | where-dd@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +297.6% | 92.4% | 3.80 |
+| 2026-11-18 11:07 | trend-where | where-vol@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4653.9% | 27.4% | 2.25 |
+| 2026-11-18 11:07 | trend-where | where-dd@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.69 | +4293.4% | 30.3% | 2.16 |
