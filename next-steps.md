@@ -325,6 +325,11 @@
     (Keloharju-Linnainmaa-Nyberg follow-up is JFE 139(1) 2021). Union count 76 mechanisms / 18
     tested / 0 passed; family bar p < 0.00132. 11 gates, all failed. 0 rows.
   - 23:28 UTC: all lanes done; idle until the 02:15 fill window (reserve). Queue below.
+  - DONE `vol-timing` (draft #98 -> ls-trend-2): ls-trend-2's control is vol timing of
+    `tsmom12`: all of its gain is time-varying share (fixed 26% + T-bills keeps 1.21). Own-vol
+    targeting 1.34 / max DD 6.3% (p 0.17 vs `tsmom12`); `trend-vol` +0.00. Card rule: covered by
+    `trend-vol` (corr 0.54 vs cutoff 0.5; borderline), no card. Best +0.13 vs needed +0.30. 3
+    `replication` rows. Vol-timing edge lanes CLOSED; own-vol targeting = a risk-map choice.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -417,8 +422,8 @@ trials; a new pick needs +0.30..+0.56 Sharpe over `tsmom12`) and gates use
 `research/gate-null.md` (40 fixed placebos, rank decides). Score anything that holds less money
 above T-bills, against a same-size T-bill slot (diversifier-1 lesson).
 
-1. D `vol-timing`: ls-trend-2's `tsmom12`+bills control (Sharpe 1.26, max DD 5.6%): first check
-   overlap with `trend-vol` (combo-1 map: failed as "hold less when it hurts"); card only if new.
+1. DONE `vol-timing` (#98): covered by `trend-vol`; no card. Optional: own-vol targeting of
+   `tsmom12` on the risk map next to ls-trend-2's fixed-split menu (descriptive).
 2. D `short-sleeve`: small SPY/QQQ downtrend short sleeve (ETFs only), judged as insurance above
    T-bills vs a T-bill slot (survey-6 next 1; ls-trend-1 narrow LS as prior).
 3. W gates: W18 `elimination-mood` (needs keyless match list; 2026 World Cup is held-out:
