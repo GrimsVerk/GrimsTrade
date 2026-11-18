@@ -1,0 +1,6 @@
+# Price caches fetched by research/lib/fetch.py. Re-create with:
+#   uv run python research/lib/fetch.py
+data/
+__pycache__/
+*.dry.md
+macro.local.json
