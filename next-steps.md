@@ -1,6 +1,6 @@
 # Next steps
 
-## Coin cap (done 2026-11-18, branch `coin-cap`, draft PR -> `cointop-1`)
+## Coin cap (done 2026-11-18, branch `coin-cap`, draft PR #49 -> `cointop-1`)
 
 Is a plain cap on the combined coin weight inside `tsmom12` as good as cointop-1's `stop-0.25`
 at cutting the worst loss, at less cost in growth? Card `research/cards/coin-cap.md` (written
