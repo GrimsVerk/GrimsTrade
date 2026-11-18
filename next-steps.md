@@ -1,5 +1,15 @@
 # Next steps
 
+## Trend 1926 (started 2026-11-18, branch `trend-1926`, from `trend-tune`)
+
+Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 industries,
+already in the cache), and were its days out rougher than its days in? Card:
+`research/trend-1926.md` (fixed before any number).
+
+- Doing: card pushed; next the loader and runner (`research/lib/trend_1926.py`), then the runs
+  (96 rows in `research/tries.md`), table `research/results/trend-1926.md`, write-up.
+- No process running.
+
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
 What earns `tsmom12` its money, where it bleeds, and whether walk-forward tuning of its lookback
