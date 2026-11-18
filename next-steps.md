@@ -1,5 +1,12 @@
 # Next steps
 
+## Diversifier 1 (doing, 2026-11-18, branch `diversifier-1`, draft PR -> `survey-6`)
+
+Does a held 1/7 merger-arbitrage slot (MERFX primary, MNA robustness) next to `tsmom12`
+improve the book as a risk choice; any Sharpe evidence? Card `research/cards/diversifier-1.md`
+(before numbers). Chain: card -> script -> one run (1 variant + 1 robustness row) -> verdict
+in `research/diversifier-1.md`.
+
 ## Survey 6 (done 2026-11-19, branch `survey-6`, draft PR #91 -> `survey-5`)
 
 Which strategy families paid investors live, net of fees? 15 families, 60 live funds against
