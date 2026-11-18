@@ -7,7 +7,18 @@
   18:58 UTC, each `research/exit-1-<lane>` in `grimstrade-exit-<lane>`: lit, haven, bt, inv,
   reentry, park; notes land in `research/exit-plan-2026/lanes/`. Then merged `report.md` and the
   review loop (`review-log.md`). Mark DONE here when a reviewer says FINAL.
-- 2. Then the Lead 1 lane queue below.
+  - 19:40 UTC: all 6 lanes done and merged into `research/exit-1` (bt 176 + reentry 32 rows in
+    `research/tries.md`; cards `exit-rules.md`, `reentry.md`). Writer merging into `report.md`.
+- 2. Normal lanes started alongside (Opus):
+  - DONE `data-long-2` (draft #51 -> data-long-1): gold loader (datahub, usable 1971-), Shiller
+    and gold cross-checked vs Damodaran (Shiller monthly yields interpolated before 1953-04: no
+    honest monthly signal earlier). `trend-where-long`: `where-vol` keeps the filter on 10y bonds
+    (71/71 refits); on gold it drops it from 1986 and deepens worst loss (51.7% vs 42.6% to 2001;
+    39.3% vs 21.7% 2002-25). Close trend-where; live rule unchanged. Next: FRED PPIACO retry.
+  - RUNNING: `evo-1` (fast scorer, wf/world drivers, timing, controls; no real search),
+    `wide-3` (worktree `grimstrade-wide3`), `coin-cap-2` (`grimstrade-coincap2`, more coin
+    falls), `rl-6` (`grimstrade-rl6`, power analysis, slower carry or close).
+- 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
 
