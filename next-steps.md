@@ -1,5 +1,15 @@
 # Next steps
 
+## Coin cap 2 (started 2026-11-18 19:05 UTC, branch `coin-cap-2`, draft PR -> `coin-cap`)
+
+Does the stop's edge over a cap of the same cost hold across many independent coin falls, or is
+it the one 2018-20 fall? Card section "Third reading" in `research/cards/coin-cap.md` (written
+before any number): coin falls of 60% or more on breadth-1's coin book (2013-2025, all coins),
+grouped into episodes (all coins in one market fall = one episode), the stop against a cap of
+matched cost per episode, bar of four parts.
+
+- Doing: code `research/lib/coin_cap2.py`, then one run (logs 4 tries rows).
+
 ## Coin cap (done 2026-11-18, branch `coin-cap`, draft PR #49 -> `cointop-1`)
 
 Is a plain cap on the combined coin weight inside `tsmom12` as good as cointop-1's `stop-0.25`
