@@ -1,5 +1,21 @@
 # Next steps
 
+## Data long 2 (research only, 2026-11-18, branch `data-long-2` -> `data-long-1`, draft PR #51)
+
+Write-up `research/data-long-2.md`. Done: (1) gold loader `research/lib/long_gold.py`
+(datahub monthly, `<cache_root>/datahub-gold/<date>/monthly.csv`, 1833-01..2026-10; usable from
+1971-01 only); (2) cross-check vs Damodaran annual 1928-2024 (`research/lib/long_check.py`,
+table `research/results/data-long-2-crosscheck.md`): Shiller's bond return at label t runs t to
+t+1; Shiller yields before 1953-04 are interpolated between Januaries (look-ahead: no monthly
+signals before 1953-04); datahub gold is a monthly average and pre-1960 an annual value
+repeated; (3) card `research/cards/trend-where-long.md`, then one run
+(`research/lib/trend_where_long.py`, 18 rows in `research/tries.md`, tables
+`research/results/trend-where-long.md`): `where-vol` never drops the filter on 10y bonds
+(1954-2024), drops it on gold from 1986, and gold's worst loss deepens (51.7% vs 42.6% to 2001,
+39.3% vs 21.7% 2002-2025). Live rule unchanged; held-out year untouched. Next: close
+trend-where; optionally retry FRED `PPIACO` (commodities 1913-) for a third non-stock slot,
+card first.
+
 ## Data long 1 (research only, 2026-11-18, branch `data-long-1` -> `carry-2`)
 
 Free long histories for the bond and gold slots (blocks PR #43, PR #37). Write-up
