@@ -197,6 +197,14 @@
     vs 11%). Gaps noise (B-T +0.17, SE 0.13). 24 rows; eu family 12.
   - 22:37 UTC `eu-8` started (D, <- eu-7): T/B with euro cash interest; idea C (trend on stocks +
     long bonds) judged first on US proxies 1994-2011.
+  - DONE `register-1` (draft #79 -> dsr-1): scoreboard read only `main`/`research-*` (285
+    tries, 78 Sharpes); now every branch except `paper-trail` plus an append-only register
+    `research/register/tries.jsonl` (reproduces dsr-1's census; today 2,904 tries, N 1,012 for a
+    new pick). Generated `research/register/BAR.md`: a new pick needs +0.27..+0.59 Sharpe over
+    `tsmom12`, Bonferroni p <= 5e-5. Regenerate: `uv run python -m grimstrade.register`.
+    Convention PROPOSED in docs/DESIGN.md; DECISIONS 2026-11-12 rule revised (owner sign-off).
+  - 22:39 UTC `summary-2` started (<- summary-1): rewrite `research/SUMMARY.md` for tonight's
+    picture. Lane rules now require quoting BAR.md's project-wide bar.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -297,6 +305,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, register-1 (#79): adopt the project-wide tries register and "every card
+  quotes BAR.md" (PROPOSED), which revises the 2026-11-12 counting rule? Once merged the live
+  scoreboard's N jumps from ~300 to ~2,840 and every live deflated Sharpe drops.
 - Night 2026-11-18, survey-5 (#78) + dsr-1 (#74): the live rule earns about what holding the
   same six assets earns, with smaller losses in long bear markets; no forward test settles
   "rule vs holding" in useful time. Treat it as a drawdown/risk choice, not an edge?
