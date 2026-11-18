@@ -1,5 +1,13 @@
 # Next steps
 
+## RL 6 (doing, started 2026-11-18, branch `rl-6`, from `rl-5`)
+
+Close the RL/perp lane or try a slower carry. Chain: (1) power analysis in `research/rl-6.md`
+(no strategy numbers): the smallest weekly/monthly edge a slower carry could show on the
+2021-2025 train years, and how much of carry-2/carry-3's loss was cost vs price; (2) only if
+detectable: card `research/cards/slow-carry.md` first, then train-only runs; (3) closing note
+for the RL/perp line. Train only; carry-3 spent the held-out year.
+
 ## RL 5 (done 2026-11-18, branch `rl-5`, draft PR #42 -> `rl-4`)
 
 Does any perp input clear a return-spread screen, and does rl-4's fixed lasso on the survivors
