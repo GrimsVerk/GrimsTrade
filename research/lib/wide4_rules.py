@@ -6,6 +6,7 @@ from __future__ import annotations
 import bisect
 import math
 from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 from datetime import date
 
 import numpy as np
@@ -90,3 +91,72 @@ def window_excess(
     if not len(base) or not len(ev):
         return np.array([])
     return ev - base.mean()
+
+
+# --- coupon-dose (research/cards/coupon-dose.md) ---
+
+
+@dataclass(frozen=True)
+class Payment:
+    day: date  # the payment's own date, before moving to a session
+    kind: str  # coupon, principal, settle
+    amount: float  # $ billion; settlements negative
+    announced: date
+
+
+def net_dose(pays: Sequence[Payment], pay_day: date, asof: date) -> float:
+    """Net cash paid to holders on `pay_day`, counting only what was announced by `asof`."""
+    return sum(p.amount for p in pays if p.day == pay_day and p.announced <= asof)
+
+
+def outstanding(pays: Sequence[Payment], d: date) -> float:
+    """Nominal notes and bonds outstanding just before `d` ($ billion)."""
+    issued = sum(-p.amount for p in pays if p.kind == "settle" and p.day < d)
+    repaid = sum(p.amount for p in pays if p.kind == "principal" and p.day < d)
+    return issued - repaid
+
+
+def mid_month_doses(
+    cal: Sequence[date], pays: Sequence[Payment], first: date, last: date
+) -> dict[int, tuple[float, float]]:
+    """For each month in [first, last]: P = index in `cal` of the first session on or after the
+    15th -> (net dose in $ billion as known at the close of P-1, the same as % of outstanding)."""
+    by_day: dict[date, list[Payment]] = {}
+    for p in pays:
+        if p.day.day == 15:
+            by_day.setdefault(p.day, []).append(p)
+    out: dict[int, tuple[float, float]] = {}
+    y, m = first.year, first.month
+    while date(y, m, 15) <= last:
+        d15 = date(y, m, 15)
+        j = bisect.bisect_left(cal, d15)
+        if 0 < j < len(cal) and (cal[j] - d15).days < 7 and d15 >= first:
+            net = net_dose(by_day.get(d15, []), d15, cal[j - 1])
+            tot = outstanding(pays, d15)
+            out[j] = (net, 100.0 * net / tot if tot > 0 else math.nan)
+        y, m = (y + 1, 1) if m == 12 else (y, m + 1)
+    return out
+
+
+def overlay_sessions(
+    cal: Sequence[date], doses: dict[int, tuple[float, float]], positive: bool
+) -> set[date]:
+    """Sessions P-1 .. P+2 after whose close idle cash goes to the bond, for the mid-month days
+    whose net dose is positive (`positive`) or zero or negative (the placebo)."""
+    out: set[date] = set()
+    for j, (net, _) in doses.items():
+        if (net > 0) == positive:
+            out.update(cal[k] for k in range(max(j - 1, 0), min(j + 3, len(cal))))
+    return out
+
+
+def hc1_slope(x: np.ndarray, y: np.ndarray) -> tuple[float, float]:
+    """OLS slope of y on x with a constant, and its heteroskedasticity-robust (HC1) t."""
+    n = len(x)
+    if n < 4:
+        return math.nan, math.nan
+    xm = x - x.mean()
+    b = float((xm * (y - y.mean())).sum() / (xm * xm).sum())
+    e = y - y.mean() - b * xm
+    var = float((xm * xm * e * e).sum() / (xm * xm).sum() ** 2) * n / (n - 2)
+    return b, b / math.sqrt(var) if var > 0 else math.nan
