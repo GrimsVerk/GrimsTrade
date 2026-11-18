@@ -556,3 +556,29 @@ law). Tie broken by data already cached: **W14 `wash-sale-echo` first**, as a ga
 only the cached ETF and coin prices, and its coin placebo is built in. W13 next if a gold
 question is wanted: its event-time against calendar-time cut separates a festival from a
 season, which a plain calendar mean cannot.
+
+## Added by wide-7 (2026-11-18): W12-W14 closed by gates, two new mechanisms
+
+Three of wide-6's four queued entries went through event-study gates, rules pushed first (see
+`wide-7.md`); all three fail and are dead by the gate, with no card:
+
+- **W14 `wash-sale-echo`**: ETF return over days 31-45 after the third Friday of December on
+  the November loss: -0.003 (t -0.07) in tax years 1994-2011, +0.023 (t 0.43) in 2012-2024;
+  the coin placebo's slope (+0.049) is above the ETFs' (+0.006).
+- **W13 `festival-gold`**: GLD over the 15 sessions before Dhanteras and the Lunar New Year,
+  against the same month's mean: -1.9 bps a day (t -0.30), rank 10 of 15 weekly shifts.
+  Baur's autumn months (September, November) turned from the best to among the worst after
+  2010.
+- **W12 `rmd-december`**: SPY's last ten December sessions in the RMD waiver years (2009,
+  2020) against the others, excess of the year's drift: -0.06% (permutation p 0.51).
+
+W15 `cat-claims` stays in the queue. Two new entries from fields the list has not used
+(heliophysics, software release engineering), each needing a gate first:
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W16 `geomagnetic-storm` | heliophysics x the Kp/Ap geomagnetic index | Lower stock returns in the days after severe geomagnetic storms, through mood (Krivelyova and Robotti 2003, from memory; check) | Daily Ap (G1-G5); severe storms must matter more than minor ones | SPY and the S&P 500 index over the six sessions after storm days on Ap, against calm weeks. Post-sample train years 2003-2025 (solar cycles 24 and 25), so gate-able now; 2026 on after that | 1% |
+| W17 `fork-premium` | software release engineering x releases with a fixed activation block | A risk premium into scheduled Ethereum upgrades and a fall after them, larger for upgrades that change supply or consensus | Upgrade scope fixed from its specification before the date (supply/consensus change or not; number of included proposals) | ETH minus BTC over 10 days before and after about 18 upgrades since 2016, on scope; weak. Unseen: Fusaka (2025-12) and 2026 on | 1% |
+
+**Family count: 70 mechanisms (68 + W16, W17), 16 tested by a strategy, none passed. The next
+strategy test is read at p < 0.10 / 70 = 0.00143.**

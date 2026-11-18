@@ -301,3 +301,81 @@ equities). The gate can only find a very large effect.
 
 **My guess before any number.** D for SPY between -1.5% and +1.5%, p between 0.2 and 0.8; TLT
 either sign. Chance of a pass: 2%.
+
+### What came out (one run, 2026-11-18; table `results/rmd-december.md`)
+
+**The gate fails: in the two RMD waiver years SPY's last ten December sessions were 0.06
+points weaker, not stronger, than in the other years (excess D -0.06%, permutation p 0.51);
+TLT likewise (-0.18%). W12 `rmd-december` is dead by the gate: no card, no strategy, no
+`tries.md` row.**
+
+| Series, Decembers | D, last ten sessions, excess (p) | 2009 rank | 2020 rank | First ten (placebo) |
+|---|---:|---:|---:|---:|
+| SPY 1994-2024 (gate) | -0.06% (0.51) | 20 of 31 | 11 of 31 | +1.07% (0.31) |
+| TLT 2003-2024 | -0.18% (0.59) | 15 of 22 | 12 of 22 | -3.37% (0.89) |
+| S&P 500 index 1975-2024 | -0.31% (0.57) | 35 of 50 | 19 of 50 | +1.02% (0.33) |
+
+- The waiver years sit in the middle of the pack for every series: one above and one below
+  the median for SPY, both below it on the index. Taking the RMD flow away for a whole year
+  did nothing visible to late December.
+- Read as power, not proof: with two waiver years the gate could only see an effect of about
+  4-5% in ten sessions (written before the run). What it rules out is a late-December RMD
+  effect large enough to trade.
+- **Compared with my guess:** D between -1.5% and +1.5% with p 0.2-0.8: yes (-0.06%, 0.51).
+  2% chance of a pass: no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only the year counts and the waiver years present,
+then one run. Script and tests pushed before both (commit a2fafc4). The rule says Decembers
+1993-2024 for SPY and 2002-2024 for TLT; each fund's first December has no close before
+1 January of that year, so the samples start in 1994 and 2003 (31 SPY years: 465 pairs, not
+the 496 the rule's text implied).
+
+## Step 4. Two new mechanisms for the queue (not tested)
+
+Written after the three gates, before any number on these two. Fields already used (the
+`ideas.md` field column and `wide-1.md`): ecology, epidemiology, signal processing, control,
+information theory, evolutionary game theory, statistical physics, queueing and reliability,
+neuroscience, immunology, physics of pinning, hydraulics, astronomy and chronobiology,
+seismology, Kelly, pharmacokinetics, actuarial science, materials fatigue, metrology,
+behavioural ecology, topological data analysis, econophysics, demography, anthropology of
+calendars, tax law, catastrophe meteorology, plus the finance and ML families. Two fields not
+yet used: **heliophysics** and **software release engineering**.
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate (event study first) and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W16 `geomagnetic-storm` | heliophysics x the planetary geomagnetic index (Kp/Ap: a 3-hourly measure of how hard the solar wind shakes Earth's magnetic field; storms cluster near solar maximum on the 11-year cycle) | Krivelyova and Robotti (2003, Federal Reserve Bank of Atlanta working paper; from memory, check) report lower stock returns in the days after severe geomagnetic storms, through mood (storms are linked in medical studies to depression and sleep disruption). A physical clock no trader sets, with no calendar collision | The storm's daily Ap index (G1 to G5 on NOAA's scale); a dose-response is required: severe storms (Ap >= 100) must matter more than minor ones. Daily Kp/Ap since 1932 from GFZ Potsdam (keyless file; check) | SPY and the S&P 500 index excess return over the six sessions after storm days, regressed on Ap, against the same weekdays in calm weeks. The paper's sample ends about 2000; **post-sample train years 2003-2025 include solar cycles 24 and 25 (the May 2024 G5 storm)**, so the gate can run on train now; 2026 on (cycle 25's decline) after that | 1% |
+| W17 `fork-premium` | software release engineering x scheduled releases with a fixed activation block (a release date set in code months ahead; a change with known scope) | Before a scheduled Ethereum network upgrade (about 18 since 2016: Byzantium, London, the Merge, Dencun, Pectra, ...) holders face a known date of protocol risk; a premium for that risk should show as a run-up into a well-tested upgrade and a fall after it ("sell the news"), larger when the upgrade changes the coin's supply (issuance cut, fee burn, proof-of-stake) than when it only fixes gas costs | The upgrade's scope, fixed before the date from its public specification: 1 if it changes issuance or consensus (Byzantium, Constantinople, London, the Merge, Shapella), 0 otherwise; the number of included improvement proposals as a second dose. BTC soft forks (SegWit 2017, Taproot 2021) as a second, tiny calendar | ETH excess over BTC over the 10 days before and the 10 days after each upgrade's activation, regressed on scope. About 18 events: weak. The unseen years are Fusaka (2025-12, just after train) and the 2026 upgrades on | 1% |
+
+Neither is carded; each needs its gate first, as W11-W15 had.
+
+## Family count
+
+68 carried in; W12, W13, W14 closed by gates (gates do not raise the tested count); W16 and
+W17 added. **70 mechanisms, 16 tested by a strategy, none passed. The next strategy test is
+read at p < 0.10 / 70 = 0.00143.** Gates run so far: ann-1 (1), wide-6 (2), wide-7 (3), all
+failed.
+
+## What wide-7 adds
+
+- **Three more ideas closed for the price of an event study, without spending the bar.** Each
+  gate's rule, script and tests were pushed before any number; each ran once after a dry run
+  that printed counts only. All three failed clearly and all three matched the guess written
+  before the run.
+- **The US wash-sale rule leaves no echo in ETF prices:** a 20% November loss adds nothing in
+  days 31-45 after the selling peak (-0.003 and +0.023 per unit of loss in the two halves).
+  The loser rebound that exists in funds is at the turn of the year after 2012 (t 3.9 by year
+  clusters; a placebo window shows t of 2.5 to 4 too, so this is a lead, not a result).
+- **Gold has no festival run; its published autumn effect reversed after its paper.** In
+  GLD's years inside Baur's sample September and November were the best months (+22 and +29
+  bps a day); since 2011 they are among the worst (-9 and -7). Published calendar effects are
+  now 0 for 5 after publication here.
+- **RMD waiver years look like any other December.**
+
+## Status (2026-11-18)
+
+**Done:** three gates (W14, W13, W12: rules, scripts, tests, one run each, write-ups), two
+new mechanisms (W16, W17), the list, `ideas.md`, `next-steps.md`. No card, no strategy, no
+`tries.md` row (gates get none). Held-out year untouched. Draft PR #81 (`wide-7` ->
+`wide-6`).
+
+**Doing:** nothing half-finished. No process running.
