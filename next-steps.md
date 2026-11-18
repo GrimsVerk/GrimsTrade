@@ -1,13 +1,29 @@
 # Next steps
 
-## eu-5 (in progress 2026-11-18 night, branch `eu-5` from `eu-4`, draft PR -> `eu-4`)
+## eu-5 (done 2026-11-18 night, branch `eu-5` from `eu-4`, draft PR #73 -> `eu-4`)
 
-DEEPER lane on eu-4: cut only the drift third of `euw`'s orders, leaving the signal untouched.
-Card `research/cards/eu-5.md` (before any number): D1 `flipreb` (top up/trim only on days a
-signal flips somewhere in the book), D2 `band25r` (trade drift only when a slot is off by more
-than 25% of its target, the 5/25 rule of thumb), eu-4's character test, family 8 + 2 = 10.
-Then: run on `euw` (+ `eu6`/`usw` robustness), minimum book per fee tier, a plain-language note
-on what eu-1..eu-5 concluded.
+DEEPER lane on eu-4: cut only the drift third of `euw`'s orders, signal untouched. Card
+`research/cards/eu-5.md` (pushed before any number), write-up `research/eu-5.md` (with a
+five-line plain summary of eu-1..eu-5), table `research/results/eu-5.md`, code
+`research/lib/eu5.py` (`check`, `run`); 24 rows in `research/tries.md` (idea `eu-5`). Held-out
+year unspent. Family now 10 (eu-3 V0-V5, C1, C2, D1, D2).
+
+- D1 `flipreb` (drift traded only on flip days): orders 30 -> 25, keeps the character on `euw`
+  and `usw`, but on the coin book `eu6` max DD 31% -> 65% (coins untrimmed): never on volatile
+  books.
+- D2 `band25r` (5/25 band: drift traded only when a slot is 25% off target, 3.57% of the book):
+  orders 30 -> 21 (drift 10 -> 1), Sharpe +0.01, max DD +0.6 pts, crash windows within 0.5 pts
+  (covid -12.2 vs -11.6%), robust on `eu6` and `usw`. The pick.
+- Minimum book with D2: EUR 1 tier <= 5k (~4k), EUR 2 ~6-7k, EUR 3 ~10-11k (R: 6k/10k/16k).
+  eu-3's verdict changes: 5k at the EUR 1 tier is now worth it; 10k at the EUR 3 tier is on the
+  line (0.098). Not an edge: same rule, cheaper.
+- Doing: nothing. No process running. Local `research/data/` copied from the eu-4 worktree
+  (git-ignored; holds eu-5's saved runs, so a rerun re-scores without new rows).
+- Next (not started): (1) a card to use the 5/25 band in the paper/live runner for small books,
+  judged on the held-out year (it changes the runner's band, an owner decision); (2) D2 on the
+  coin book `eu6` as its own card (orders 42 -> 12 there with DD unchanged, where eu-2's 5% band
+  changed the rule); (3) whether a small coin-free book should run trend at all versus simply
+  holding the seven funds (gap -0.15 Sharpe in euros).
 
 ## eu-4 (done 2026-11-18 night, branch `eu-4` from `eu-3`, draft PR #68 -> `eu-3`)
 
