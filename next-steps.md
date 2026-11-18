@@ -1,5 +1,16 @@
 # Next steps
 
+## Cointop 1 (in progress, started 2026-11-18, branch `cointop-1` from `deep-1`)
+
+Task: `tsmom12` is slow out of coin tops. Study coin tops on breadth-1's top-100 coin book
+(hundreds of tops), choose one setting for each of three exit rules there by a fixed procedure,
+then carry the settings unchanged to BTC/ETH in the six-asset book and to the six other coins.
+Card: `research/cointop-1.md` (pushed before any number). Tables: `research/results/cointop-1.md`.
+
+- Done: card.
+- Doing: event study and the choice of settings on the coin book.
+- Next: carry-back test through the gym, write-up, draft PR (base `deep-1`).
+
 ## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR #36 -> `carry-2`)
 
 Why does each tested model fail where it fails, and does a mix chosen from past data beat
