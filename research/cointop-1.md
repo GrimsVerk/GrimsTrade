@@ -1,9 +1,92 @@
 # cointop-1: learning coin-top exits on 100 coins, then carrying one setting back to BTC and ETH
 
-Status: **card fixed, nothing run yet** (2026-11-18). Branch `cointop-1` (from `deep-1`).
-Research only: fake money, cached data, no change to the gym, the daily runner or the live
-strategies. The write-up goes above this line when the run is done; the card below is as it was
-committed before any number.
+Status: **Parts A and B run (2026-11-18); Part C (the carry-back to BTC and ETH) not run yet.**
+Branch `cointop-1` (from `deep-1`). Research only: fake money, cached data, no change to the gym,
+the daily runner or the live strategies. Held-out year unspent. The card below the line is as it
+was committed before any number; what differs from it is listed under "Changes after the card".
+
+## Interim write-up: the coin book (Parts A and B)
+
+One run, `uv run python -I research/lib/cointop1.py --log`, after the look-ahead tests
+(`tests/test_cointop1.py`) and a plumbing run on random prices. Tables:
+`results/cointop-1-coins.md`. 16 rows in `tries.md` (12 `variant`, 1 `baseline`, 3 `control`,
+idea `cointop-1-cm`). Train only, 2019-04-05 to 2025-11-07, 30 bps a side.
+
+**In one line.** The coin book has 639 tops, but they fall in about 19 separate months, and on
+them a fast exit points the right way without clearing the card's bar: no chosen setting is
+labelled *works there*, and none beats its own 26-weeks-late control.
+
+### Part A: what coin tops look like
+
+- **Many tops, few episodes.** 639 study tops on 223 of the 292 selection-set coins; the twin
+  held the coin at 458 of them. They cluster: 2020Q1, 2020Q3, 2021Q2 to 2021Q4, 2024Q1 and
+  2024Q4 hold 421 of the 639. The effective number of top months is 19.1 (14.2 for trend-on
+  tops). That is the sample the settings were chosen on: more than BTC's and ETH's four tops,
+  far fewer than 639. Only 21% of study tops lie within 30 days of a BTC top (BTC's own:
+  2019-06-26, 2021-04-13, 2021-11-08).
+- **The fall is fast at first.** Median price against the top: -19% after a week, -34% after
+  four weeks, halved after 49 days, lowest at -72% after 134 days. 87% of the lows were later
+  settled by a doubling. The 108 tops before 2019 (40 coins) look the same or steeper (halved
+  in 30 days, low at -76%).
+- **The twin is slow, as on BTC and ETH.** At a trend-on top the 12-month rule leaves a median
+  106 days later, at -52%; it is still in at 80% of the tops when the coin has halved, and sits
+  through 83% of the fall (median; 66% of all falls taken together). Near a BTC top it is worse:
+  172 days, -65%, still in at 93%. Before 2019: 188 days, -60%.
+- **Almost everything "marks tops" by the card's test, and that says little.** In the 14 days
+  before a top the coin has high `z28` (AUC 0.79), high funding (0.78, survivors only), rising
+  volume (0.75), a strong coin market (`breadth_28` 0.74), and is close to its one-year high
+  (`dd_1y` 0.73). A top is a high by definition, so "the coin has just risen a lot" is partly
+  built into the label, and only 899 of 14,639 held coin-weeks carry it: most such weeks are
+  not tops. Just after a top the coin still looks strong on every slow feature (`z28` 0.72,
+  `z91` 0.73, `dd_1y` 0.72); what has changed is the last week (`z7` 0.41), a volatility jump
+  (`vol_shock` 0.74) and volume (0.75). Market cap rank and momentum decay mark nothing.
+
+### Part B: the three exit rules on the coin book
+
+| Rule | Chosen | Pooled single-coin Sharpe (twin 0.44) | Book Sharpe (twin 0.72) | Book worst loss (twin 64%) | Fall sat through, median (twin 83%) | Against its own control | Works there? |
+|---|---|---|---|---:|---:|---|---|
+| `stop` | `stop-0.25` | 0.42, -0.01 (p 0.55) | 1.00, +0.28 (p 0.16) | 37% | 28% | -0.02 (p 0.56) | no |
+| `fade` | `fade-28` | 0.58, +0.14 (p 0.103) | 1.23, +0.51 (p 0.01) | 36% | 35% | +0.14 (p 0.17) | no |
+| `breadth` | `breadth-28` | 0.61, +0.18 (p 0.14) | 1.12, +0.40 (p 0.09) | 43% | 30% | +0.15 (p 0.23) | no |
+
+- **The chosen settings are the fastest on each grid.** For `fade` and `breadth` each half of
+  the sample alone picks the same setting, and the score falls steadily as the window grows
+  (182 days is worse than the twin). The best window may be shorter than 28 days; the card's
+  grid stops there and is not extended.
+- **Why none is labelled *works there*.** `fade-28` meets three of the four conditions (ahead
+  in both halves, book not below, less of the fall sat through) and misses the first: p 0.103
+  against the bar's 0.10. `breadth-28` the same, p 0.14. `stop-0.25` is not ahead on the
+  selection score at all, and is behind in the first half. The bar was fixed before the run
+  and is not moved.
+- **Where the gain comes from.** All three leave about 20 days after the top, at -30% to -37%,
+  instead of 106 days at -52%. Per coin a year (log points): +44 to +56 saved inside falls, 21
+  to 41 given back in the rebounds after the lows, about 1 in costs; net +11 (`stop`), +20
+  (`fade`), +24 (`breadth`). Half (`fade`, `breadth`) to three quarters (`stop`) of what a
+  fast exit saves is paid back by coming late into the rebound.
+- **The control.** Reading the same condition 26 weeks late keeps the time out of the market
+  and removes the timing. `stop-0.25` is no better than its control (book 1.00 against 0.99):
+  its book gain is the effect of holding 16% of the time instead of 52%, not of when. `fade-28`
+  and `breadth-28` are ahead of theirs by +0.14 and +0.15, not significantly (p 0.17, 0.23).
+- **`fade` against `breadth`.** 0.58 against 0.61: a hundred coins know about as much as the
+  coin's own last four weeks, not more.
+- **The second half is weak for everything.** The twin's pooled Sharpe is 0.72 before
+  2022-07-01 and 0.09 after; the chosen `fade` and `breadth` reach 0.18 and 0.24.
+
+### What this means so far
+
+By the card's reading the coin book gives "fails on the coin book", narrowly for two of three
+rules: a faster exit cuts the fall sat through by more than half and the book's worst loss from
+64% to 36-43%, but on the score the card chose (one coin slot, for the average coin) the gain is within
+noise once dates are resampled together, and the timing is not shown to beat lateness. The
+book-level gains (+0.3 to +0.5 Sharpe) are larger than the single-coin ones. The run does not
+say why (not tested; one guess: falls that hit every coin at once weigh more in a portfolio
+than in the average single coin). The card scores the single coin because BTC's and ETH's
+slots are single coins.
+
+The card carries all three settings back regardless (`stop-0.25`, `fade-28`, `breadth-28`,
+saved in `<cache_root>/derived/cointop-1/chosen.json`). Part C is the test that matters for the
+live rule and is not run. Known in advance from trend-tune: "fast AND slow" on the six assets
+pointed down in sample, so `fade-28` on BTC and ETH is expected to struggle.
 
 ---
 
@@ -262,4 +345,17 @@ after `d - 1`; a rule whose extra condition is always true gives `tsmom12`'s wei
 
 ### Changes after the card
 
-(none yet)
+- **Where the tables are.** Parts A and B are in `results/cointop-1-coins.md` (written by the
+  run); `results/cointop-1.md` is kept for Part C.
+- **Buy and hold in table A3 is not 100%.** The card called it "100% by construction". The
+  paper series holds a coin only while it is in the book's universe, so buy and hold leaves a
+  coin that drops out of the top 100: still in when the coin has halved at 93% of tops, 87% of
+  all falls sat through. The yardstick is reported as computed.
+- **Details the card left open, fixed in the code before the run.** Table A4's interval:
+  stationary bootstrap over decision weeks, mean block 4 weeks, 500 draws, seed 0; the two
+  halves are point values. A coin-day counts in the pooled score on the days its decision is
+  in force and on the day on either side (where entry and exit costs fall). The book needs at
+  least 10 universe coins to hold anything. "Near a BTC top" uses BTC's tops by the same
+  definition.
+- **One code fix between the plumbing run and the real run:** the AUC bootstrap crashed when
+  asked for zero draws (the half-sample columns). No number existed yet.
