@@ -29,7 +29,9 @@ tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protoc
   one above, chosen at the timing test. Seeds, bootstrap and the 24 CPU-hour budget confirmed.
 - Doing (burst 2, 2026-11-18 evening, lead's chain): (1) fast scorer `research/lib/evo_score.py`
   + `tests/test_evo_score.py`: DONE (Sharpe within 0.04 of the gym on fixed rules, measured
-  0.028 max); (2) `evo_wf.py`, `evo_world.py`, timing test; (3) noise and planted controls
+  0.028 max); (2) `evo_wf.py`, `evo_world.py`, timing test: DONE (one walk-forward search
+  ~0.04 CPU-h, whole plan ~1.2 CPU-h with 20 replays, ~2.1 with 40: no halving, 40 replay
+  worlds chosen per the card, lead may still pick 20); (3) noise and planted controls
   through the full pipeline. Not tonight: the real search and the replay worlds. Held-out year
   untouched.
 - Next, in this order (all specified on the card):

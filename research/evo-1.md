@@ -86,6 +86,42 @@ Details the card left open, fixed in code before any real-data run (2026-11-18):
   rule identical to the benchmark on every resample is left out of the SPA (its standard error
   is zero).
 
+## Build notes, burst 2 (2026-11-18 ~19:00 UTC): fast scorer, walk-forward, worlds, timing
+
+Built and tested: `research/lib/evo_score.py` (the fast scorer, `tests/test_evo_score.py`),
+`research/lib/evo_world.py` (control and replay worlds, the plant) and `research/lib/evo_wf.py`
+(the walk-forward driver; `tests/test_evo_wf.py`). Timing: see "Bar 3, replaced".
+
+Details the card left open, fixed in code before any control, replay or real-data search:
+
+- **Fast scorer.** Mirrors the gym's weekly decisions day by day (`common.weekly`'s Friday,
+  including the Friday-holiday case), fills at each asset's next open with overnight and
+  open-to-close parts split, costs on the change of target weight. It also models the one
+  gym rule that mattered in the test: coins fill on Saturday before the ETFs are sold on
+  Monday, so a coin buy only gets the free cash until the ETF open (without this, `full` rules
+  rotating from ETFs to coins scored up to 0.13 Sharpe above the gym). Stated tolerance on a
+  synthetic panel, 16 fixed rules: Sharpe within 0.04 of the gym (measured 0.028 at most),
+  annual growth within 0.4 points (measured 0.27), daily correlation above 0.995 (0.9990).
+- **Invested share** (the 20% validity rule): the average row total of the Friday rows the
+  window's decisions use, pooled over the index part and the six-asset part.
+- **Candidates** of a fit: the 20 best behaviourally different rules of each of the 5 runs
+  ("different" = different weights on the window's six-asset Fridays), merged and deduplicated
+  across the runs, best first. `evo-val` scores them without the validity rule.
+- **Worlds.** The zero-drift shift is taken off the open-to-close part. The seed of asset `i`
+  in world `w` is `numpy.random.default_rng([w, i])`, `i` its place in (SPY, QQQ, GLD, TLT,
+  BTC, ETH, GSPC). Plant: `s` = sd of the asset's real daily close-to-close log returns; the
+  plant of a Friday goes on every bar that opens after that decision, up to the next one (the
+  bars a rule deciding that Friday trades into), so it can be earned. `H` is read on the
+  closes visible at the decision exactly as `evo_feat` computes `mom(91)` and `lvol(h)`
+  (tested: the plant's sign equals `H` on the world's own inputs).
+- **Controls and replays run the 14 walk-forward fits only**: the final fit (all train data)
+  enters no out-of-sample number, so it is run for the real search alone.
+- **Controls** are judged on the gym replay of each procedure, 2000-01-07 to 2025-11-09,
+  against cash: "found" = Sharpe above 0 with bootstrap p < 0.10 (unadjusted; the smallest
+  p x 3 is reported too), and for a plant also at least half the ceiling's Sharpe. Each
+  world's SPA p over its universe is not computed in this burst (the replay test replaced it
+  as the bar; it is reported later with the real search).
+
 ## Card (written 2026-11-18 ~01:50 UTC, before any evo-1 code or number)
 
 Seen before writing: every result in `ideas.md`, `tries.md` and `results/` up to carry-2. No
@@ -316,6 +352,17 @@ them.
   budget escape under "The search" becomes: if the timing test (no result looked at) shows the
   whole plan, replays included, needs more than about 24 CPU-hours, the population is halved
   for every run, real, control and replay alike. Nothing else may change.
+- **Timing test, 2026-11-18 ~19:00 UTC** (`evo_wf.py timing`; before any control, replay or
+  real-data search; no fitness or result printed, only CPU seconds and evaluation counts).
+  On control world 1 (shuffled train bars), one GP run at the card's size (500 x 30) took 1.3
+  CPU s at the 1998 fit and 3.2 CPU s at the 2024 fit (~8,200-8,500 different formulas
+  scored); a world's inputs 1.3 CPU s, a gym replay 0.1 CPU s. Extrapolated linearly in the
+  window: one walk-forward search (14 fits x 5 seeds) ~0.04 CPU-hours; the whole plan with 20
+  replay worlds ~1.2 CPU-hours, with 40 ~2.1 (re-evolved runs not included, smaller still).
+  Far below 24: **the population is not halved**, and by the rule above (budget allows) **40
+  replay worlds are run, seeds 101 to 140, pass if at most one replay score is at or above**
+  (p at most 2/41). Decided by the lane at the timing test, before any replay world exists;
+  the lead may still choose 20 (none at or above) before the first replay runs.
 
 ### Controls (run before the real search; kind `control`, idea `evo-1-control`)
 
