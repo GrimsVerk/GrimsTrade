@@ -239,11 +239,12 @@ def section(ss: fr.SetScore, ss_or: fr.SetScore, eras: tuple) -> tuple[list[str]
     on = sum(p.delayed for p in ss.pairs)
     out = []
     for ln in lines:
+        ln = ln.replace("`or3-12`", "`arm3-12`")
         if ln.startswith("`tsmom12` exits:"):
             ln = (f"`tsmom12` exits: {exits}; at {on} of them the 3-month return was still "
                   "positive (`or3-12` stays in; `arm3-12` leaves and waits for a dip and "
                   "recovery).")  # fmt: skip
-        out.append(ln.replace("`or3-12`", "`arm3-12`"))
+        out.append(ln)
     net = lambda e: e.net  # noqa: E731
     d = [a - b for a, b in zip(fr.cvals(ss, net, True), fr.cvals(ss_or, net, True), strict=True)]
     k, m_, p = i1.sign_test(d)
