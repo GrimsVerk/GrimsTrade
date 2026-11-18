@@ -222,6 +222,13 @@
     ETF loser rebound after 2012 (t 3.9, placebos also high).
   - 22:44 UTC `wide-8` started (W, <- wide-7): forward pre-registration of the turn-of-year lead
     for 2026/27, W16 and W15 gates.
+  - DONE `ls-trend-1` (draft #83 -> survey-5): crisis alpha needs BOTH shorts and a wide
+    universe. Long-short vol-scaled 12-month trend on 34 keyless ETFs: +35% 2008, +25% 2020Q1,
+    +13% 2022; corr 0.61 with live trend funds, 0.08 with `tsmom12`; 93-118% of crash gains from
+    shorts. Long-only wide (+1/-5/-3%) and long-short narrow (+24/-11/-4%) do not reproduce it.
+    Cost: Sharpe above T-bills 0.15 (2010-25), 3.7x gross, ~2%/yr costs+borrow. 4 rows
+    (`replication`, not counted).
+  - 22:48 UTC `ls-trend-2` started (D, <- ls-trend-1): `tsmom12` + wide long-short at <= 1x gross.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -322,6 +329,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, ls-trend-1 (#83): the crash gains of real trend funds need short positions
+  and a wide set of assets. A forward test would need shorts in the paper broker (borrow fees,
+  interest on short proceeds, leverage or rescale to 1x). Want that design change? (proposal only)
 - Night 2026-11-18, register-1 (#79): adopt the project-wide tries register and "every card
   quotes BAR.md" (PROPOSED), which revises the 2026-11-12 counting rule? Once merged the live
   scoreboard's N jumps from ~300 to ~2,840 and every live deflated Sharpe drops.
