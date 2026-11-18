@@ -1073,3 +1073,4 @@ Never edit or delete a row.
 | 2026-11-18 11:07 | trend-where | where-dd@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +297.6% | 92.4% | 3.80 |
 | 2026-11-18 11:07 | trend-where | where-vol@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4653.9% | 27.4% | 2.25 |
 | 2026-11-18 11:07 | trend-where | where-dd@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.69 | +4293.4% | 30.3% | 2.16 |
+| 2026-11-18 11:11 | trend-where | where-vol@F-ind10 | robustness | train | 1927-07-02 | 1961-12-28 | 1.07 | +5912.9% | 32.5% | 1.30 |

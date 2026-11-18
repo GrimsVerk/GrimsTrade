@@ -72,6 +72,33 @@ Run `where-vol`, unchanged, on the 1926-1961 US industries of lane `trend-1926` 
 here has tuned on, with 1929-32 and 1937 in it). It is the only place left where the worst-loss
 question can be asked on more than one episode. No held-out look is earned.
 
+## Follow-up result: on ten US industries 1926-1961 the switch never turns the filter off
+
+**`where-vol` is `tsmom12` to the cent there: it answered yes for every industry at every one
+of 34 yearly refits (0 of 340 industry-years no).** Tables: `results/trend-where-1926.md`; one
+new row in `tries.md`; one run.
+
+| Ten industries, one book, 1927-1961 | Sharpe | Growth a year | Worst loss | Worst loss 1929-32 |
+|---|---:|---:|---:|---:|
+| `where-vol` | 1.07 | +12.6% | 32.5% | 29.3% |
+| `tsmom12` | 1.07 | +12.6% | 32.5% | 29.3% |
+| Equal weight | 0.62 | +10.6% | 81.9% | 81.9% |
+
+- **What it shows.** On stocks the yes/no is stable and unanimous: in all ten industries the
+  days out were rougher than the days in (at the last refit 1.3 to 1.8 times as volatile), and
+  that was already so at every earlier refit. This is the "days out are rougher on stocks"
+  mechanism of `trend-tune.md` on 35 years no run here had tuned on. So the switch does no
+  harm on stocks, because on stocks it does nothing.
+- **What it does not show.** The open question was the worst loss on slots where the filter
+  gets dropped (bonds, gold, coins). This data has no such slot, so that question is exactly
+  where it was: one episode, 2022, in which the rule lost twice as much.
+- The outcome is the one the follow-up card expected. Card pushed before the number (commit
+  `966eddc`). Held-out year unspent.
+
+**Next step now:** none worth a lane with the data on disk. The worst-loss question needs long
+histories of non-stock assets (bonds and gold before 2002); if a keyless source for those is
+found, `where-vol` runs on it unchanged.
+
 ## Follow-up card: `where-vol` on US industries 1926-1961 (fixed 2026-11-18, before any number)
 
 **Seen when this was written:** everything above; the loader code of lane `trend-1926` (branch

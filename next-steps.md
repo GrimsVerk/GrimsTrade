@@ -4,17 +4,25 @@
 
 Keep the `tsmom12` filter only on assets whose past days out were rougher than days in
 (walk-forward yes/no each January). Card fixed before any number; write-up
-`research/trend-where.md`; tables `research/results/trend-where.md`; 8 rows in
-`research/tries.md`.
+`research/trend-where.md`; tables `research/results/trend-where.md` and
+`research/results/trend-where-1926.md`; 9 rows in `research/tries.md`.
 
 - Result: a tie. `where-vol` 1.07 Sharpe against 1.05 for `tsmom12` (p 0.27), worst loss 35.3%
   against 36.5%, +1 point of growth a year, a third less trading; but twice the loss in 2022
   (-26% against -13%), the one bad stretch after bonds, gold and Bitcoin had lost their filter.
   `where-dd` is worse. Both fail the bar; the live rule stays. Held-out year unspent.
 - Doing: nothing. No process running.
-- Next: run `where-vol` unchanged on the 1926-1961 industries of lane `trend-1926`.
-- Rerun: `uv run python research/lib/trend_where_run.py` (needs the git-ignored
-  `research/data/` price cache; saved runs are re-scored without new `tries.md` rows).
+- Follow-up (done): `where-vol` unchanged on Ken French's ten US industries 1926-1961 never
+  turns the filter off (0 of 340 industry-years no), so it is `tsmom12` there (1.07, worst loss
+  32.5%; equal weight 0.62, 81.9%). Days out were rougher in every industry at every refit. The
+  worst-loss question for non-stock slots is still open (one episode, 2022).
+- Next: nothing with the data on disk. The open question needs long bond and gold histories
+  (before 2002); if a keyless source is found, run `where-vol` on it unchanged.
+- Rerun: `uv run python research/lib/trend_where_run.py` and
+  `uv run python research/lib/trend_where_1926.py` (need the git-ignored `research/data/`
+  price cache, and for the second `research/macro.local.json` copied from its `.example`;
+  saved runs are re-scored without new `tries.md` rows). `research/lib/trend_1926.py` is an
+  unchanged copy from branch `trend-1926` (its test lives on that branch).
 
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
