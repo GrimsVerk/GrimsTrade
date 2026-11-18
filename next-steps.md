@@ -320,6 +320,11 @@
     0.37 (guard fails); the leak is the re-entry (1929-33 rallies). `or3-12`'s lower premium is
     timing, not exposure (0.97 vs 1.61 fixed-83%). 27 rows. Insure/re-entry line CLOSED: the
     late buy-back is part of the insurance's price.
+  - DONE `survey-7` (draft #97 -> wide-9): `seasonal-20y` gate fails (23 assets, 2017-01..
+    2025-10: +0.12%/month, t 0.19, rank 31/41 vs placebos; other cuts flat). Citations fixed
+    (Keloharju-Linnainmaa-Nyberg follow-up is JFE 139(1) 2021). Union count 76 mechanisms / 18
+    tested / 0 passed; family bar p < 0.00132. 11 gates, all failed. 0 rows.
+  - 23:28 UTC: all lanes done; idle until the 02:15 fill window (reserve). Queue below.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
