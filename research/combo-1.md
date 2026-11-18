@@ -81,3 +81,64 @@ falls of bonds/gold/coins, wins chop and turns) and `stop-0.25` (wins fast coin 
 chop and turns), excess correlation 0.00. Everything else either is the same de-risking bet as
 the other (pairs +0.5 to +0.9) or is out of the gym (`band`). Nothing on the map wins both the
 fast fall and the turn: whatever buys the fall pays for it in the six months after the low.
+
+## Step 2: card (fixed 2026-11-18, after the map, before any combination number)
+
+**What had been seen.** Everything on the map above (full-train tables, which is why the train
+test below is partly circular: see "How the bar reads"), deep-1's atlas and Part B, every
+finished lane's write-up. No blend of any kind has been computed in this lane.
+
+**Selection rules (stated, applied to the map, no weights fitted).** Gym-tradable means a
+long-only six-asset book with target weights (so `band` is out: perpetuals and shorts, 2021-25
+only, held-out year spent). Two combinations, no more:
+
+- **A `blend-iv` (cover `tsmom12`'s losses).** Rule: `tsmom12` plus the gym-tradable model with
+  the lowest correlation with `tsmom12` in `tsmom12`'s losing weeks, among those that exist on
+  all three out-of-universe sets (bar 4 needs them; `sixty-forty`, 0.44, needs SPY and TLT and
+  exists on none). Applied: `inverse-vol` 0.70 < `stop-0.25` 0.78 < `trend-vol` 0.88 <
+  `where-vol` 0.96, so **`tsmom12` + `inverse-vol`**. Mechanism: `inverse-vol` wins the turns
+  `tsmom12` misses and loses the slow bears `tsmom12` sits out.
+- **B `blend-ws` (two overlays that fail apart).** Rule: among gym-tradable models ahead of
+  `tsmom12` on full-train Sharpe, the pair whose excess returns (each minus `tsmom12`) have the
+  lowest correlation in `tsmom12`'s losing weeks. Qualify: `where-vol` 1.07, `stop-0.25` 1.09
+  (`trend-vol` 1.03, `inverse-vol` 0.85, `sixty-forty` 0.76 do not). One pair, correlation
+  0.00: **`where-vol` + `stop-0.25`**. Mechanism: `where-vol` loses fast joint falls and wins
+  chop and turns; `stop-0.25` the reverse, on the coin slots.
+
+**Machinery (both, the same).** Each sleeve is the logged configuration rebuilt through the
+harness (`where-vol`: trend-where's `Where("vol")`; `stop-0.25`: cointop-1's `rule(stop_ok)`;
+`tsmom12` and `inverse-vol`: the protocol's), checked against its logged Sharpe. Sleeve shares
+are equal risk: proportional to 1 / standard deviation of the sleeve's weekly returns (7-day
+blocks, its own gym replay) over the last 156 weeks before the refit (all there are if fewer;
+equal shares until 26 weeks exist), refitted on the first Friday of each calendar year from
+returns up to the day before, held to the next refit (deep-1's schedule). The combined target
+weights are the shares times the sleeves' target weights, summed per asset, replayed through
+`gym.simulate` as one account at the protocol's costs (25 bps fee + 5 bps slip on crypto, 2 bps
+on ETFs; `main`'s gym default of 60 bps is not used, so every number compares with the logged
+ones). No other parameter exists: no sweep, no fixed-capital alternative, no other pair.
+
+**Pass bar (each on its own; twin `tsmom12` rebuilt the same way).**
+
+1. Sharpe on the six assets, full train, beats `tsmom12` with paired stationary bootstrap
+   (block 20 days, 2,000 draws) one-sided **p < 0.10 / 72 = 0.0014**. Family: the `wide-*`
+   lineage's 61, survey-4's 4, wide-5's W9-W10 (2), deep-1's three combination rules and these
+   two (72). If a lane has added more by the verdict, the stricter bar is used.
+2. Ahead of `tsmom12` in at least 4 of the 5 eras.
+3. Worst loss not more than 5 points deeper than `tsmom12`'s.
+4. Out of universe: Sharpe difference to `tsmom12` positive in at least 2 of 3 sets (8 other
+   ETFs, 6 other coins, 4 indexes as one portfolio), the rule rerun unchanged with the sleeves
+   rebuilt there (`stop-0.25` acts on coins only, so on ETFs and indexes it equals `tsmom12`).
+5. Beats equal weight on Sharpe.
+6. Since 2003 not behind `tsmom12` and not behind equal weight.
+
+Also reported, not bars: average sleeve shares, the book's distance from `tsmom12`'s weights,
+the six regimes of the map for each blend.
+
+**How the bar reads.** The pairs were picked on the full-train map, so bars 1-3, 5 and 6 are
+in-sample for the choice; bar 4 is the honest part (where-vol's and stop's OOU runs exist, but
+no blend was ever computed there). A pass makes a candidate for a separate held-out card (the
+held-out year is not touched in this lane), nothing more.
+
+**Tries.** Each blend on the six assets: `variant` under idea `combo-1` (2 rows). Each blend
+out of universe: `robustness` (6 rows). Sleeve rebuilds that reproduce a logged configuration
+are not logged again; a sleeve configuration that has no row yet is logged as `robustness`.
