@@ -49,7 +49,7 @@ def replay_scores(setting: str) -> list[float]:
     out = {}
     for line in harness.TRIES.read_text().splitlines():
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
-        if len(cells) >= 8 and cells[1] == "evo-1-replay" and tag in cells[2]:
+        if len(cells) >= 8 and cells[1] == f"{wf.IDEA}-replay" and tag in cells[2]:
             seed = int(re.match(r"block (\d+)", cells[2]).group(1))  # type: ignore[union-attr]
             out[seed] = float(cells[7])
     return [out[s] for s in sorted(out)]
@@ -88,8 +88,14 @@ def mdd(run: harness.Run) -> float:
 
 
 def main(argv: Sequence[str]) -> None:
+    """`argv[0]`: a setting of evo-1's grid, or the name of a setting the caller has already
+    configured (evo-2: `evo2.configure()`)."""
     setting = argv[0]
-    wf.use(setting)
+    if setting in wf.SETTINGS:
+        wf.use(setting)
+    elif setting != wf.SETTING:
+        raise SystemExit(f"unknown setting {setting}")
+    idea = wf.IDEA
     replays = replay_scores(setting)
     if len(replays) != REPLAYS:
         raise SystemExit(f"need {REPLAYS} replay rows of setting {setting}, have {len(replays)}")
@@ -105,7 +111,7 @@ def main(argv: Sequence[str]) -> None:
     with harness.TRIES.open("a") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
         f.write(
-            f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | evo-1 | GP search [{wf.setting_text()}]: "
+            f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | {idea} | GP search [{wf.setting_text()}]: "
             f"{evals} rule evaluations ({evals} different formulas, {behaviours} different "
             f"behaviours) over 15 fits x {wf.SEEDS} seeds | search | train | 1962-01-02 | "
             f"{wf.SIX_END} | - | - | - | - |\n"
@@ -113,12 +119,12 @@ def main(argv: Sequence[str]) -> None:
 
     six = common.ctx("six")
     tsmom = wf.oos_weights(p, {y: [gp.TSMOM12] for y in wf.FIT_YEARS})
-    bench = run_weights(six, p.six_fridays, tsmom, "evo-1", "tsmom12", False)
+    bench = run_weights(six, p.six_fridays, tsmom, idea, "tsmom12", False)
     eq_w = gp.weights(wf.EQUAL, p.six_feats, p.six_elig)
     rows = slice(bisect.bisect_left(p.six_fridays, wf.OOS_START), None)
     eq_full = np.zeros_like(eq_w)
     eq_full[rows] = eq_w[rows]
-    equal = run_weights(six, p.six_fridays, eq_full, "evo-1", "equal-weight", False)
+    equal = run_weights(six, p.six_fridays, eq_full, idea, "equal-weight", False)
     b_es = common.era_sharpes(bench)
 
     sets = {}
@@ -131,7 +137,7 @@ def main(argv: Sequence[str]) -> None:
     out: dict[str, Any] = {"setting": setting, "replays": replays, "stat": stat, "procs": {}}
     for name, proc in procs.items():
         assert proc.weights is not None
-        run = run_weights(six, p.six_fridays, proc.weights, "evo-1", name, True)
+        run = run_weights(six, p.six_fridays, proc.weights, idea, name, True)
         d, pv, _, _ = stats.sharpe_diff_boot(run.rets, bench.rets, seed=0)
         r_es = common.era_sharpes(run)
         eras_ahead = sum(r_es[e] > b_es[e] for e in ERAS_OOS)
@@ -144,9 +150,9 @@ def main(argv: Sequence[str]) -> None:
         transfer = {}
         for sname, (c, fr, feats, elig) in sets.items():
             wt = chosen_weights(proc.chosen, fr, feats, elig)
-            rt = run_weights(c, fr, wt, "evo-1", name, True)
+            rt = run_weights(c, fr, wt, idea, f"{name}@{sname}", True)
             wb = chosen_weights({y: [gp.TSMOM12] for y in wf.FIT_YEARS}, fr, feats, elig)
-            rb = run_weights(c, fr, wb, "evo-1", "tsmom12", False)
+            rb = run_weights(c, fr, wb, idea, "tsmom12", False)
             transfer[sname] = stats.sharpe(rt.rets) - stats.sharpe(rb.rets)
         bars = {
             "1": d > 0 and 3 * pv < 0.10 and eras_ahead >= 3 and dd_gap <= 0.05 and vs_eq > 0,

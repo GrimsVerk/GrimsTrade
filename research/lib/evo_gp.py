@@ -40,6 +40,8 @@ FAMILY = {
     "vbreadth": "U",
 }
 INPUTS = tuple((name, h) for name in FAMILY for h in LOOKBACKS)
+# The inputs the search may use (evo-2's card narrows it to 8); every input is still computed.
+INPUT_SET: tuple[tuple[str, int], ...] = INPUTS
 GRID = {
     "M": (-2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0),
     "V": tuple(math.log(v) for v in (0.10, 0.15, 0.20, 0.30, 0.45, 0.60, 0.90)),
@@ -107,10 +109,10 @@ def valid(node: Node, want: str = "W") -> bool:
     if op == "volcap":
         return node[1] in VOLCAPS
     if op in ("gtc", "ltc"):
-        return node[1] in INPUTS and node[2] in GRID[FAMILY[node[1][0]]]
+        return node[1] in INPUT_SET and node[2] in GRID[FAMILY[node[1][0]]]
     if op == "gt":
         a, b = node[1], node[2]
-        return a in INPUTS and b in INPUTS and a != b and FAMILY[a[0]] == FAMILY[b[0]]
+        return a in INPUT_SET and b in INPUT_SET and a != b and FAMILY[a[0]] == FAMILY[b[0]]
     if op == "coin":
         return len(node) == 1
     if op in ("and", "or"):
@@ -209,9 +211,9 @@ def _comparison(rng: np.random.Generator) -> Node:
     u = rng.random()
     if u < 0.1:
         return ("coin",)
-    a = _pick(rng, INPUTS)
-    if u < 0.3:
-        same = tuple(b for b in INPUTS if FAMILY[b[0]] == FAMILY[a[0]] and b != a)
+    a = _pick(rng, INPUT_SET)
+    same = tuple(b for b in INPUT_SET if FAMILY[b[0]] == FAMILY[a[0]] and b != a)
+    if u < 0.3 and same:  # alone in its family (a narrowed set): compare with a constant
         return ("gt", a, _pick(rng, same))
     return ("gtc" if rng.random() < 0.5 else "ltc", a, _pick(rng, GRID[FAMILY[a[0]]]))
 
@@ -281,7 +283,9 @@ def subtree_mutation(a: Rule, rng: np.random.Generator) -> Rule:
 
 
 def point_mutation(a: Rule, rng: np.random.Generator) -> Rule:
-    """One lookback, constant, comparison direction, leaf or the slot/full switch changes."""
+    """One lookback, constant, comparison direction, leaf or the slot/full switch changes. With a
+    narrowed input set, a lookback change with no other lookback of that input in the set
+    changes the constant instead (`gtc`/`ltc`) or swaps the two sides (`gt`)."""
     ops = ("gtc", "ltc", "gt", "const", "volcap")
     spots = [p for p, _ in paths(a[1]) if get(a[1], p)[0] in ops]
     j = int(rng.integers(len(spots) + 1))
@@ -297,12 +301,17 @@ def point_mutation(a: Rule, rng: np.random.Generator) -> Rule:
     elif op == "gt":
         side = 1 + int(rng.integers(2))
         other = node[3 - side]
-        hs = tuple(h for h in LOOKBACKS if (node[side][0], h) not in (node[side], other))
-        new = put(node, (side,), (node[side][0], _pick(rng, hs)))
+        name = node[side][0]
+        hs = tuple(
+            h for h in LOOKBACKS if (name, h) not in (node[side], other) and (name, h) in INPUT_SET
+        )
+        new = put(node, (side,), (name, _pick(rng, hs))) if hs else ("gt", node[2], node[1])
     else:
         what = int(rng.integers(3))
+        hs = tuple(h for h in LOOKBACKS if h != node[1][1] and (node[1][0], h) in INPUT_SET)
+        if what == 0 and not hs:
+            what = 1
         if what == 0:
-            hs = tuple(h for h in LOOKBACKS if h != node[1][1])
             new = (op, (node[1][0], _pick(rng, hs)), node[2])
         elif what == 1:
             cs = tuple(c for c in GRID[FAMILY[node[1][0]]] if c != node[2])

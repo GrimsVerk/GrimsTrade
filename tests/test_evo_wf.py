@@ -245,3 +245,120 @@ def test_transfer_weights_match_the_walk_forward(lib: dict[str, ModuleType], sma
     chosen = {y: [gp.random_rule(rng, 3, False)] for y in wf.FIT_YEARS}
     got = real.chosen_weights(chosen, p.six_fridays, p.six_feats, p.six_elig)
     assert np.array_equal(got, wf.oos_weights(p, chosen))
+
+
+# --- evo-2 (research/cards/evo-2.md) ---
+
+
+@pytest.fixture
+def evo2(lib: dict[str, ModuleType], monkeypatch: pytest.MonkeyPatch) -> ModuleType:
+    """`evo2.configure()` with every module global it touches restored afterwards."""
+    gp, wf = lib["evo_gp"], lib["evo_wf"]
+    for mod, names in (
+        (gp, ("INPUT_SET", "MAX_NODES", "MAX_DEPTH")),
+        (wf, ("IDEA", "WARMUP", "SETTING", "POPULATION", "GENERATIONS", "PENALTY")),
+    ):
+        for n in names:
+            monkeypatch.setattr(mod, n, getattr(mod, n))
+    mod = importlib.import_module("evo2")
+    mod.configure()
+    return mod
+
+
+_KIDS = {"if": (1, 2, 3), "and": (1, 2), "or": (1, 2), "not": (1,)}
+
+
+def _walk(node: Any) -> list[Any]:
+    """Every node of a tree."""
+    return [node] + [x for i in _KIDS.get(node[0], ()) for x in _walk(node[i])]
+
+
+def _inputs(node: Any) -> set[Any]:
+    out: set[Any] = set()
+    for n in _walk(node):
+        if n[0] in ("gtc", "ltc"):
+            out.add(n[1])
+        elif n[0] == "gt":
+            out |= {n[1], n[2]}
+    return out
+
+
+def test_evo2_grammar_uses_only_the_eight_inputs(lib: dict[str, ModuleType], evo2: Any) -> None:
+    import numpy as np
+
+    gp, ew = lib["evo_gp"], lib["evo_world"]
+    assert len(evo2.INPUTS8) == 8 and set(evo2.INPUTS8) <= set(gp.INPUTS)
+    assert gp.valid(ew.H_RULE[1]) and gp.within_limits(ew.H_RULE[1])  # the plant is reachable
+    assert gp.valid(gp.TSMOM12[1])
+    rng = np.random.default_rng(7)
+    pop = [gp.random_rule(rng, 2 + i % 3, full=i % 2 == 1) for i in range(300)]
+    for _ in range(3000):
+        a, b = pop[int(rng.integers(len(pop)))], pop[int(rng.integers(len(pop)))]
+        u = rng.random()
+        if u < 0.4:
+            child = gp.crossover(a, b, rng)
+        elif u < 0.6:
+            child = gp.subtree_mutation(a, rng)
+        else:
+            child = gp.point_mutation(a, rng)
+        pop.append(child)
+    used = {x for r in pop for x in _inputs(r[1])}
+    assert used == set(evo2.INPUTS8)  # every one is reachable, nothing else is
+    assert all(gp.valid(r[1]) and gp.size(r[1]) <= 12 and gp.depth(r[1]) <= 5 for r in pop)
+    assert any(n[0] == "gt" for r in pop for n in _walk(r[1]))  # input against input occurs
+
+
+def test_evo1_draws_unchanged_by_the_narrowing_code(lib: dict[str, ModuleType]) -> None:
+    import numpy as np
+
+    gp = lib["evo_gp"]
+    assert gp.INPUT_SET == gp.INPUTS
+    rng = np.random.default_rng(11)
+    rules = [gp.random_rule(rng, 3, False) for _ in range(50)]
+    used = {x for r in rules for x in _inputs(r[1])}
+    assert len(used) > 30  # the full 72 are drawn from, not the eight
+    assert all(gp.valid(r[1]) for r in rules)
+
+
+def test_evo2_fitness_ignores_the_index(lib: dict[str, ModuleType], small: Any, evo2: Any) -> None:
+    import numpy as np
+
+    wf, gp, ew = small, lib["evo_gp"], lib["evo_world"]
+    assert wf.WARMUP is False and wf.PENALTY == 0.02 and wf.IDEA == "evo-2"
+    a = _world(lib)
+    other = _world(lib, scramble=date(2008, 1, 2))  # every index bar differs
+    b = ew.World(a.six, other.gspc, a.sd, "b")
+    pa, pb = wf.prepare(a), wf.prepare(b)
+    assert pa.gspc_book is None and pa.gspc_feats is None
+    rng = np.random.default_rng(2)
+    rules = [gp.TSMOM12] + [gp.random_rule(rng, 3, False) for _ in range(20)]
+    d = wf.first_friday(2020)
+    fa, fb = wf.Fitness(pa, d), wf.Fitness(pb, d)
+    assert [fa(r) for r in rules] == [fb(r) for r in rules]
+    st = lib["stats"]
+    six = pa.six_book.daily(gp.weights(gp.TSMOM12, pa.six_feats, pa.six_elig), before=d)
+    assert fa(gp.TSMOM12) == pytest.approx(st.sharpe(six) - 0.02 * 4)
+    runs = wf.search(pa, workers=1)
+    procs = wf.select(pa, runs)
+    assert all(gp.valid(r[1]) for p in procs.values() for rs in p.chosen.values() for r in rs)
+
+
+def test_evo2_plant_calibration_hits_the_target(
+    lib: dict[str, ModuleType], small: Any, evo2: Any
+) -> None:
+    ew = lib["evo_world"]
+    base = ew.world(_world(lib), "shuffle", 4, "simple")
+    k, got = evo2.calibrate(base, 1.0, tol=0.02, k_max=0.5)
+    assert 0 < k < 0.5 and abs(got - 1.0) <= 0.02
+    assert evo2.h_fast(ew.plant(base, k)) == got  # the world it reports is the world it builds
+    with pytest.raises(RuntimeError):
+        evo2.calibrate(base, 50.0, k_max=0.01)
+
+
+def test_evo2_gate(evo2: Any) -> None:
+    def r(found: bool) -> dict[str, bool]:
+        return {"found": found}
+
+    assert evo2.gate([r(False)] * 3, [r(True), r(True), r(False)])["pass"]
+    assert not evo2.gate([r(False), r(True), r(False)], [r(True)] * 3)["pass"]
+    assert not evo2.gate([r(False)] * 3, [r(True), r(False), r(False)])["pass"]
