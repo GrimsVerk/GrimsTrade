@@ -75,3 +75,68 @@ same 25% falls:
    re-entry from the slower exit that cost the insurance here. Second pick in the insure line
    (family bar 0.025); its own card first.
 3. Nothing for the live rule; if (2) also lands "in between", close the fast-reentry line.
+
+## fast-reentry-2: exposure controls and the "armed" re-entry (2026-11-18, PR #96)
+
+Card `cards/fast-reentry-2.md` (pushed before any number), code `lib/fastreentry2.py` (one
+run, 7 s), tables `results/fast-reentry-2.md`.
+
+**Verdict by the card: "In between" again. Keeping `tsmom12`'s exits and changing only the
+re-entry (`arm3-12`) gives almost the same result as `or3-12`: the insurance leaks through the
+re-entry itself (bear-market rallies), not through the slower exit. The fast-reentry line
+closes; the insure line has no pick left worth its bar.**
+
+### (a) Is `or3-12`'s lower premium timing or exposure? (description)
+
+insure-1's card 2 controls on the US 11 series, each rule against its own average position and
+its own rotated positions (1,000 rotations):
+
+| | Share avoided S | N, log pts | Premium P |
+|---|---:|---:|---:|
+| `tsmom12` / fixed 73% / rotations (median) | 0.50 / 0.29 / 0.27 | -0.3 / +2.5 / +1.3 | 1.07 / 1.63 / 1.82 |
+| `or3-12` / fixed 83% / rotations | 0.35 / 0.18 / 0.17 | +1.2 / +1.6 / +0.8 | 0.97 / 1.61 / 1.85 |
+| `arm3-12` / fixed 81% / rotations | 0.37 / 0.20 / 0.19 | +1.6 / +1.8 / +0.8 | 0.98 / 1.61 / 1.85 |
+
+- **Timing, not just exposure**, for all three (S and P: p 0.000 against rotations; P well
+  below fixed exposure). `or3-12`'s premium of 0.97 is not bought by its extra exposure alone:
+  holding 83% costs 1.61. Its margin over its own controls is about `tsmom12`'s (premium 0.64
+  below fixed vs 0.56; share +0.17 vs +0.21). Net of the rebound none beats simply holding its
+  average position (N against rotations: p 0.82 / 0.41 / 0.33 in table order).
+
+### (b) `arm3-12`: exit as `tsmom12`, re-enter when the 3-month return turns positive
+
+| | US, 50 effective falls (decides) | 13 developed non-US, 19 falls |
+|---|---|---|
+| Rebound dB | **+7.7**, 40 of 49 | +9.2, 19 of 19 |
+| Insurance dI | **-5.9**, 8 of 48 better | -3.9, 4 of 18 |
+| **Net dN** | **+1.8** (28 of 50; sign p 0.24, bootstrap p 0.11) | +5.3 (13 of 19; p 0.084, 0.000) |
+| Share avoided | 0.50 -> **0.37** (guard: drop 0.13 > 0.10, fails) | 0.49 -> 0.42 |
+| Premium, full period / 2002-2025 | 1.07 -> 0.98 / 1.34 -> 1.31 | 1.11 -> 0.97 / 1.11 -> 0.98 |
+| Mean position, flips a year | 73% -> 81%, 1.9 -> 2.9 | 66% -> 77%, 2.4 -> 3.8 |
+| Worst loss (first series) | 38% -> 51% (US market) | 41% -> 41% (Japan) |
+
+- **The exit was not the leak.** `arm3-12` leaves at every `tsmom12` exit (`or3-12` stayed in at
+  369 of 1,030), yet it keeps only one more log point of the fall (dI -5.9 vs -6.9; share 0.37
+  vs 0.35). Against `or3-12` directly: dN +0.4, 28 of 45 falls. The loss is in the re-entries:
+  the four worst US clusters are again 1929-1933 (-16 to -29 log points), where every 3-month
+  rally was bought and the next leg ridden down.
+- **Where it helps**, as before: slow falls (US +4.1 per episode) and the long rebounds after
+  1974 (+29) and the 1960s-70s falls; outside the US fast falls (+7.2, 17 of 23) and the 2008
+  rebound. Non-US is consistent by bootstrap (p 0.000) but not by sign (0.084), and those falls
+  overlap the US ones in time.
+- **Bar.** Second pick in the insure line, family bar p < 0.025: not met on the deciding set
+  (0.24 / 0.11). Project-wide bar (register-2: N 433 effective, Bonferroni p <= 1.2e-4): far.
+
+### Should the line close?
+
+**Yes, the re-entry line closes** (as the card set it: two pre-registered re-entry rules, both
+in between). Any 3-month re-entry trades insurance for rebound almost one for one on US data
+(dI about -6 to -7 against dB +8); the remaining +1.5 to +1.8 net is noise at 50 falls. **The
+insure line has no further pick worth its bar** (a third pick would need p < 0.017 on an effect
+two rules put at sign-test p 0.10-0.24): close it for new picks. Its standing description holds:
+`tsmom12`'s insurance is timing, not just exposure, at a premium of about 1.3-1.5 since 2002,
+and the late buy-back is the price of it. The held-out year stays unspent; nothing changes for
+the live rule.
+
+`tries.md`: 27 rows, idea `fast-reentry`: 1 `variant` (`arm3-12@insure-Mkt`), 26 `robustness`.
+Part (a) added none.

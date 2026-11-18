@@ -1,13 +1,18 @@
 # Next steps
 
-## fast-reentry-2 (doing 2026-11-18 night, branch `fast-reentry-2` -> `fast-reentry`)
+## fast-reentry-2 (done 2026-11-18 night, branch `fast-reentry-2` -> `fast-reentry`, draft PR #96)
 
-Card `research/cards/fast-reentry-2.md` (pushed before any number): (a) `or3-12` against
-insure-1's card 2 controls (fixed 83%, rotations), description; (b) one rule `arm3-12` (exit as
-`tsmom12`, re-enter when the 3-month return turns positive), second pick in the insure line,
-family bar p < 0.025. Code `research/lib/fastreentry2.py` (reuses `fastreentry.py`).
+Card `research/cards/fast-reentry-2.md` (pushed before any number), code
+`research/lib/fastreentry2.py` (7 s, reuses `fastreentry.py`; same setup), tables
+`research/results/fast-reentry-2.md`, verdict section at the end of `research/fast-reentry.md`.
 
-- Doing: card pushed; next the script, one run, verdict section in `research/fast-reentry.md`.
+- Done: (a) `or3-12` vs insure-1's card 2 controls: timing, not just exposure (premium 0.97 vs
+  1.61 fixed 83%, 1.85 rotations). (b) `arm3-12` run once, 27 `tries.md` rows (1 variant):
+  "In between" (US net +1.8, p 0.24 / 0.11; share avoided 0.50 -> 0.37, guard fails); keeping
+  `tsmom12`'s exits saved only 1 log pt, the leak is the re-entry. Second pick in the insure
+  line, family bar 0.025 not met.
+- Doing: nothing. No process running. Held-out year unspent.
+- Next: the re-entry line and the insure line are closed for new picks (see the write-up).
 
 ## fast-reentry (done 2026-11-18 night, branch `fast-reentry` -> `insure-2`, draft PR #94)
 
