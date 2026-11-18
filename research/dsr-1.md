@@ -266,3 +266,102 @@ Annualised Sharpe (365 days, zero rate). Per-day variance = annual variance / 36
 - `ledger/tries.jsonl` on `paper-trail`: 11 live strategies (M0/M1 yardsticks and rules, no backtest Sharpe recorded there). Counted separately below, not in the rows.
 
 </details>
+
+## 2. Card: deflated Sharpe and Bonferroni/Holm (fixed 2026-11-18 ~22:40 UTC, before any number below is computed)
+
+No new strategy test: every input is a number already logged in a tries row or written in a
+lane's write-up. Nothing touches the held-out year.
+
+### Formula, checked against the paper
+
+Bailey and López de Prado (2014), "The Deflated Sharpe Ratio", JPM 40(5), eq. (1)-(2), read
+from the authors' PDF tonight:
+
+- Expected best of N independent trials whose Sharpes have mean `E` and variance `V`:
+  `E + sqrt(V) * ((1 - g) * Z^-1(1 - 1/N) + g * Z^-1(1 - 1/(N e)))`, `g` = 0.5772 (Euler).
+- `DSR = Z( (SR - SR0) * sqrt(T - 1) / sqrt(1 - skew * SR + (kurt - 1) / 4 * SR^2) )`, with
+  `SR0` the expression above with `E = 0` (the null: no trial has skill), per-period Sharpes,
+  raw kurtosis (3 for a normal).
+- Dependent trials (appendix A.3, eq. 9): M correlated trials count as `N = rho + (1 - rho) M`
+  independent ones, `rho` the average correlation.
+
+The repo already implements eq. (2) in `src/grimstrade/stats.py`. Check run before the card:
+it reproduces the paper's worked example exactly (N = 100, V = 1/2, T = 1,250, skew -3,
+kurtosis 10, SR 2.5 a year: DSR 0.9004; 0.9505 at N = 46; with normal returns it passes 0.95
+up to N = 88, as the paper says). This lane reuses that code, unchanged.
+
+### (a) `tsmom12`
+
+Inputs: Sharpe 1.05 on the primary test (six assets, decisions 1994-02-01..2025-11-09, daily on
+all calendar days: T = the calendar days in that window); against equal weight +0.17, p = 0.08,
+SE about 0.12 (review-1, paired bootstrap, reproduced there); since 2003 +0.00 (p = 0.49).
+
+Three tests, all reported:
+
+1. **Absolute, as in the paper.** `DSR(SR = 1.05)`, null "no trial has skill" (`E` = 0).
+2. **Against the project's own trials.** `SR0` = `E` + the luck term, with `E` the mean Sharpe of
+   the trials on the same test (eq. 1 with its mean, as in the paper's appendix code). This asks
+   "is `tsmom12` better than the best of N rules drawn from what this project typically finds",
+   the question that matters for a long-only book whose trials all carry the market's Sharpe.
+3. **Edge over equal weight.** In difference form: `Z((d - SE * maxZ(N)) / SE)`, d = +0.17,
+   SE = 0.12 (bootstrap, so fat tails and serial dependence are already in it). Also d = +0.00
+   for 2003-2025.
+
+`V` (variance of trial Sharpes): (i) the primary test's spread from the census (variant +
+baseline rows on that test); (ii) the cautious project-wide spread (selectable rows on any data,
+the rule in DECISIONS 2026-11-12); never below 1/T. Skew and kurtosis are not logged anywhere:
+normal (0, 3) is the main case; skew -1 with kurtosis 30 is the stress case, shown beside it.
+
+**N, the trials made before `tsmom12` was chosen.** Reconstructed from the tries' UTC times and
+git history; the assumption is that a row's time is when it ran (the harness writes it then):
+
+- **N1, as the bar:** the protocol named `tsmom12` the plain twin before any test (commit times,
+  2026-11-12), copying a published rule (Moskowitz, Ooi, Pedersen 2012) with the literature's
+  12-month lookback. It then ranked first among the baselines of the first harness run on the
+  primary test. N1 = the baseline rows on the primary test at that first run's minute.
+- **N2, as the live rule (preset Middle):** the risk-map card (research-3, committed
+  2026-11-12 08:15 +0100 = 07:15 UTC) picked the presets after runs 1 and 2. N2 = selectable rows
+  (variant + baseline) on the primary test logged before 07:15 UTC that day, plus the risk map's
+  20 menu rows, plus the 11 live strategies on `paper-trail` (tried, so they count; the
+  repo's "overcounting is the cautious direction").
+- **N3, if chosen today:** every selectable row (variant + baseline, train) anywhere in the
+  project, plus the 11 live strategies. **M4, upper bound:** every row with a Sharpe of any kind.
+- Effective N: the trial correlations need return series this lane does not have. Each N is
+  shown raw and at `rho` = 0.5 and 0.9 (eq. 9). Also reported: the **break-even N**, the largest
+  number of independent trials at which each test still gives DSR >= 0.95.
+
+Bonferroni/Holm for `tsmom12`: p-values are `1 - PSR(0)` (absolute) and 0.08 (edge). Bonferroni
+at family size m: reject if `p * m < 0.05`. Holm's first step is Bonferroni, so for the single
+best hypothesis in a family the two agree; reported as the largest m at which each p survives
+(`0.05 / p`).
+
+### (b) The five best near-misses across the project
+
+**Which five (rule fixed now, before collecting them):** candidates are ideas the lanes' own
+write-ups (`research/*.md` on every branch) call a lead, a near miss, or parked, plus ideas that
+passed a family bar but were not adopted. From those, the five with the smallest one-sided
+p-value the lane reported against the comparator its card named (twin, `tsmom12`, equal weight
+or Bitcoin). Ties or missing p: the larger reported Sharpe difference. An idea counts once, at
+the variant its lane called primary (not its best variant, unless the card made it so).
+
+For each: the edge `d` and its SE as the lane reported them (SE = d / Z^-1(1 - p) when only p
+is given); `Z((d - SE * maxZ(N)) / SE)` at two N's: **N_family** (the selectable rows of its
+own family, the bar the lane used) and **N_project** (N3 above); plus Bonferroni/Holm as for
+`tsmom12`, with m = N_family, m = the number of candidates found, and m = N_project. Also the
+absolute DSR of its own Sharpe at N_project where its test is long enough.
+
+**Held-out year, rule fixed now.** A near-miss is worth a held-out year only if its held-out
+year is still unspent (no `heldout` row for that family) and its edge DSR is >= 0.95 at
+N_family and >= 0.50 at N_project. Passing 0.95 at N_project would make it a find on its own;
+below 0.50 at N_project the held-out year (one year, about a third of a Sharpe-SE) cannot
+change the verdict, so it would be spent for nothing.
+
+**Tries rows.** The repo logs a row per configuration run through the harness (protocol,
+"Counting tries"); this lane runs none, and `research/tries.md` does not exist on `main`.
+No rows are added; the analysis is this file plus `research/dsr1.py`.
+
+**Disclosed before the numbers:** the census numbers in section 1 (spreads 0.12 and 0.32), the
+inputs quoted above from review-1 and `results/deflation.md` (research-2: 52 variants, luck
+alone gives +0.24 over equal weight against +0.22 seen), and the lane's own rough mental guess
+while planning that the absolute DSR could land near 0.5 under the widest spread. Every
+scenario on this card is reported whatever it shows.
