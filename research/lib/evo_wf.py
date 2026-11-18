@@ -24,7 +24,10 @@ Commands (run from the repo root, `uv run python research/lib/evo_wf.py ...`):
 - `timing`: the timing test of the card (no fitness or result is printed), on control world 1.
 - `ceilings`: the planted controls' ceilings (`H` through the gym), logged first.
 - `baselines noise|plant`: equal weight and `tsmom12` (no search) in the control worlds.
-- `replay SEED`: one replay world of bar 3 (seeds 101-140), logged as an `evo-1-replay` row.
+- `tune`: the greed grid on the tuning worlds (card note "Lead's decision 2"); `confirm S`:
+  setting S on the confirmation worlds.
+- `replays S FIRST LAST`: replay worlds FIRST..LAST of bar 3 (seeds 101-140) under setting
+  S, one `evo-1-replay` row each.
   Built 2026-11-18, not run yet: the lead's open question on the worlds comes first.
 - `control noise SEED` / `control plant K`: one control world through the whole pipeline
   (14 fits; the final fit enters no out-of-sample number), logged as `control` rows
@@ -62,6 +65,30 @@ OOS_START = date(2000, 1, 7)
 FIT_YEARS = tuple(range(1998, 2025, 2))
 SEEDS = 5
 POPULATION, GENERATIONS = 500, 30
+PENALTY = gp.NODE_PENALTY  # per node; the tuning grid below may change it with GENERATIONS
+# The greed grid of the card note "Lead's decision 2" (2026-11-18): (node penalty, generations).
+SETTINGS = {
+    "A": (0.01, 30),
+    "B": (0.03, 30),
+    "C": (0.06, 30),
+    "D": (0.01, 5),
+    "E": (0.03, 10),
+    "F": (0.06, 10),
+}
+SETTING = "A"
+
+
+def use(setting: str) -> None:
+    """Switch every later search in this process (and its forked workers) to a grid setting."""
+    global PENALTY, GENERATIONS, SETTING
+    PENALTY, GENERATIONS = SETTINGS[setting]
+    SETTING = setting
+
+
+def setting_text() -> str:
+    return f"setting {SETTING}: penalty {PENALTY:g}, {GENERATIONS} generations"
+
+
 CANDIDATES, ENSEMBLE, ENS_CORR = 20, 10, 0.95
 MIN_INVESTED = 0.2
 PROCS = ("evo-top1", "evo-ens10", "evo-val")
@@ -151,7 +178,7 @@ class Fitness:
         if ng + n6 == 0 or (sg + s6) / (ng + n6) < MIN_INVESTED:
             return -math.inf
         r = [self.p.gspc_book.daily(wg), self.p.six_book.daily(w6, before=self.fit_date)]
-        return es.sharpe_of(r) - gp.NODE_PENALTY * gp.size(rule[1])
+        return es.sharpe_of(r) - PENALTY * gp.size(rule[1])
 
 
 _P: Prepared | None = None  # the world a worker process searches (set before forking)
@@ -378,11 +405,20 @@ def _log_control(run: harness.Run, variant: str) -> None:
     harness._log(run, "control", OOS_START, SIX_END)
 
 
-def control(kind: str, arg: str) -> None:
-    """One control world through the whole pipeline (benchmark: cash)."""
-    real = ew.load_real()
-    base = ew.world(real, "shuffle", int(arg) if kind == "noise" else 1, CONTROL_ZERO)
+def control(
+    kind: str,
+    arg: str,
+    world_seed: int = 1,
+    real: ew.World | None = None,
+    context: bool = True,
+    tagged: bool = False,
+) -> dict[str, Any]:
+    """One control world through the whole pipeline (benchmark: cash). `noise SEED` or
+    `plant K` on world `world_seed`. `context` logs the equal-weight row of the world."""
+    real = real or ew.load_real()
+    base = ew.world(real, "shuffle", int(arg) if kind == "noise" else world_seed, CONTROL_ZERO)
     w = base if kind == "noise" else ew.plant(base, float(arg))
+    tag = f"{w.label} [{setting_text()}]" if tagged else w.label
     t0 = time.time()
     p = prepare(w)
     print(f"{w.label}: inputs in {p.seconds:.0f} CPU s", flush=True)
@@ -395,7 +431,10 @@ def control(kind: str, arg: str) -> None:
     eq = gym_run(p, "evo-1-control", "equal weight", gp.weights(EQUAL, p.six_feats, p.six_elig))
     eq_p = stats.sharpe_diff_boot(eq.rets, np.zeros_like(eq.rets), seed=0)[1]
     print(f"equal weight (no search): Sharpe {stats.sharpe(eq.rets):.2f}, p {eq_p:.3f}", flush=True)
-    _log_control(eq, f"{w.label}: equal weight, no search (world context; p vs cash {eq_p:.3f})")
+    if context:
+        _log_control(
+            eq, f"{w.label}: equal weight, no search (world context; p vs cash {eq_p:.3f})"
+        )
     runs = search(p)
     cpu = sum(r["cpu"] for r in runs)
     evals = sum(r["evaluations"] for r in runs)
@@ -437,17 +476,28 @@ def control(kind: str, arg: str) -> None:
                      f", bootstrap p {pv:.3f}{extra}")  # fmt: skip
         _log_control(
             g,
-            f"{w.label}: {name}, walk-forward 2000-2025 ({evals} evaluations, {formulas} "
+            f"{tag}: {name}, walk-forward 2000-2025 ({evals} evaluations, {formulas} "
             f"formulas, {behaviours} behaviours; bootstrap p vs cash {pv:.3f}{extra})",
         )
     for line in lines:
         print(line, flush=True)
     print(f"smallest p x 3 = {min(1.0, 3 * p_min):.3f}; CPU {cpu / 3600:.2f} h, "
           f"wall {(time.time() - t0) / 60:.0f} min", flush=True)  # fmt: skip
-    name = w.label.replace(" ", "-").replace("=", "")
+    name = tag.replace(" ", "-").replace("=", "").replace(":", "").replace(",", "")
+    ceil = stats.sharpe(ceiling.rets) if ceiling else None
+    summary = {
+        "label": tag,
+        "found": any(r["found"] for r in res.values()),
+        "recovery": float(np.mean([r["gym_sharpe"] for r in res.values()])) / ceil
+        if ceil
+        else None,
+        "sharpes": {n: r["gym_sharpe"] for n, r in res.items()},
+        "ceiling": ceil,
+    }
     (scratch() / f"control-{name}.json").write_text(
         json.dumps(
             {
+                "summary": summary,
                 "label": w.label,
                 "procedures": res,
                 "p_min_x3": min(1.0, 3 * p_min),
@@ -463,17 +513,18 @@ def control(kind: str, arg: str) -> None:
             default=str,
         )
     )
+    return summary
 
 
 PLANTS = (0.01, 0.02, 0.04)
 CONTROL_ZERO = "simple"  # card note 2026-11-18: control worlds have zero mean simple return
 
 
-def ceilings() -> None:
+def ceilings(world_seed: int = 1, plants: Sequence[float] = PLANTS) -> None:
     """The planted controls' ceilings (`H` itself through the gym, no search), logged before
     any planted search result exists."""
-    base = ew.world(ew.load_real(), "shuffle", 1, CONTROL_ZERO)
-    for k in PLANTS:
+    base = ew.world(ew.load_real(), "shuffle", world_seed, CONTROL_ZERO)
+    for k in plants:
         w = ew.plant(base, k)
         p = prepare(w)
         run = gym_run(p, "evo-1-control", "H", gp.weights(ew.H_RULE, p.six_feats, p.six_elig))
@@ -501,19 +552,20 @@ def world_baselines(which: str) -> None:
             _log_control(run, f"{p.label}: {name}, no search (world context; p vs cash {pv:.3f})")
 
 
-def replay(seed: int) -> None:
+def replay(seed: int, real: ew.World | None = None) -> float:
     """One replay world of bar 3 (block bootstrap, zero log drift): the whole walk-forward,
     scored as the best of the three procedures' Sharpe differences to `tsmom12` (fast scorer).
     Logged as one `control` row (`evo-1-replay`) and written to the scratch folder."""
-    p = prepare(ew.world(ew.load_real(), "block", seed))
+    p = prepare(ew.world(real or ew.load_real(), "block", seed))
     runs = search(p)
     procs = select(p, runs)
     st = replay_stats(p, procs)
     formulas = sum(r["formulas"] for r in runs)
     cells = ", ".join(f"{n} {st[n]:+.3f}" for n in PROCS)
     row = (
-        f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | evo-1-replay | {p.label}: best Sharpe "
-        f"difference to tsmom12 out of sample, fast scorer ({cells}; {formulas} formulas) | "
+        f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | evo-1-replay | {p.label} "
+        f"[{setting_text()}]: best Sharpe difference to tsmom12 out of sample, fast scorer "
+        f"({cells}; {formulas} formulas) | "
         f"control | train | {OOS_START} | {SIX_END} | {st['best']:.3f} | - | - | - |\n"
     )
     with harness.TRIES.open("a") as f:
@@ -532,17 +584,82 @@ def replay(seed: int) -> None:
         )
     )  # fmt: skip
     print(f"{p.label}: best {st['best']:+.3f} ({cells})", flush=True)
+    return st["best"]
+
+
+TUNE_NOISE, TUNE_PLANT = (11, 12, 13), 11
+CONFIRM_NOISE, CONFIRM_PLANT = (21, 22, 23), 21
+
+
+def control_set(noise: Sequence[int], plant_world: int, setting: str, context: bool) -> dict:
+    """Three noise worlds and the k=0.04 plant under one grid setting."""
+    use(setting)
+    real = ew.load_real()
+    out = {
+        f"noise {n}": control("noise", str(n), real=real, context=context, tagged=True)
+        for n in noise
+    }
+    out["plant"] = control(
+        "plant", "0.04", world_seed=plant_world, real=real, context=context, tagged=True
+    )
+    out["noise_found"] = sum(out[f"noise {n}"]["found"] for n in noise)
+    return out
+
+
+def pick(results: dict[str, dict]) -> str | None:
+    """The card note's rule: noise found in 0 of 3, then the highest planted recovery; ties
+    within 0.01: fewer generations, then the larger penalty."""
+    ok = [s for s, r in results.items() if r["noise_found"] == 0]
+    if not ok:
+        return None
+    best = max(results[s]["plant"]["recovery"] for s in ok)
+    near = [s for s in ok if results[s]["plant"]["recovery"] >= best - 0.01]
+    return min(near, key=lambda s: (SETTINGS[s][1], -SETTINGS[s][0]))
+
+
+def tune() -> None:
+    ceilings(TUNE_PLANT, (0.04,))
+    results = {}
+    for i, setting in enumerate(SETTINGS):
+        results[setting] = control_set(TUNE_NOISE, TUNE_PLANT, setting, context=i == 0)
+        r = results[setting]
+        print(f"== {setting}: noise found {r['noise_found']}/3, plant recovery "
+              f"{r['plant']['recovery']:.2f}, found {r['plant']['found']}", flush=True)  # fmt: skip
+    chosen = pick(results)
+    print(f"chosen by the card's rule: {chosen}", flush=True)
+    (scratch() / "tune.json").write_text(
+        json.dumps({"results": results, "chosen": chosen}, indent=1, default=str)
+    )
+
+
+def confirm(setting: str) -> None:
+    ceilings(CONFIRM_PLANT, (0.04,))
+    r = control_set(CONFIRM_NOISE, CONFIRM_PLANT, setting, context=True)
+    ok = r["noise_found"] == 0 and r["plant"]["found"]
+    print(f"confirm {setting}: noise found {r['noise_found']}/3, plant found "
+          f"{r['plant']['found']} (recovery {r['plant']['recovery']:.2f}): "
+          f"{'PASS' if ok else 'FAIL'}", flush=True)  # fmt: skip
+    (scratch() / f"confirm-{setting}.json").write_text(
+        json.dumps({"result": r, "pass": ok}, indent=1, default=str)
+    )
 
 
 def main(argv: Sequence[str]) -> None:
     if argv[:1] == ["timing"]:
         timing()
+    elif argv[:1] == ["tune"]:
+        tune()
+    elif argv[:1] == ["confirm"] and len(argv) == 2:
+        confirm(argv[1])
     elif argv[:1] == ["ceilings"]:
         ceilings()
     elif argv[:1] == ["baselines"] and argv[1:] in (["noise"], ["plant"]):
         world_baselines(argv[1])
-    elif argv[:1] == ["replay"] and len(argv) == 2:
-        replay(int(argv[1]))
+    elif argv[:1] == ["replays"] and len(argv) == 4:
+        use(argv[1])
+        real = ew.load_real()
+        for seed in range(int(argv[2]), int(argv[3]) + 1):
+            replay(seed, real)
     elif argv[:1] == ["control"] and len(argv) == 3 and argv[1] in ("noise", "plant"):
         control(argv[1], argv[2])
     else:

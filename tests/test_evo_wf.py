@@ -214,3 +214,22 @@ def test_walk_forward_procedures(lib: dict[str, ModuleType], small: Any) -> None
     assert st["best"] == max(st[n] for n in wf.PROCS)
     twin = wf.Procedure("twin", weights=wf.oos_weights(p, {y: [gp.TSMOM12] for y in wf.FIT_YEARS}))
     assert wf.replay_stats(p, {**procs, "evo-top1": twin})["evo-top1"] == 0.0
+
+
+def test_greed_grid_and_pick_rule(lib: dict[str, ModuleType]) -> None:
+    wf = lib["evo_wf"]
+    assert len(wf.SETTINGS) == 6 and wf.SETTINGS["A"] == (0.01, 30)
+
+    def res(noise: int, rec: float) -> dict[str, Any]:
+        return {"noise_found": noise, "plant": {"recovery": rec}}
+
+    grid = {"A": res(1, 0.9), "B": res(0, 0.50), "C": res(0, 0.495), "E": res(0, 0.3)}
+    assert wf.pick(grid) == "C"  # B and C tie within 0.01: same generations, larger penalty
+    grid["F"] = res(0, 0.492)
+    assert wf.pick(grid) == "F"  # fewer generations wins the tie
+    assert wf.pick({"A": res(1, 0.9)}) is None
+    try:
+        wf.use("E")
+        assert (wf.PENALTY, wf.GENERATIONS) == (0.03, 10)
+    finally:
+        wf.use("A")
