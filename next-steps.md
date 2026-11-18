@@ -1,10 +1,31 @@
 # Next steps
 
-## Survey 4 (in progress 2026-11-18, branch `survey-4`, draft PR -> `ann-1`)
+## Survey 4 (done 2026-11-18, branch `survey-4`, draft PR #72 -> `ann-1`)
 
-Doing: survey of effects with a documented post-publication record (`research/survey-4.md`,
-pick rule fixed before any number), then card and train test of the top two picks
-(`ts-carry`, then `halloween`). Family 65, bar p < 0.10 / 65.
+New angle: effects with a documented record after publication or before their sample.
+Sources (McLean-Pontiff 2016, Hou-Xue-Zhang 2020, Jensen-Kelly-Pedersen 2023, Harvey-Liu-Zhu
+2016, Baltussen-Swinkels-van Vliet 2021 read as text, Koijen et al. "Carry" 2018 read as
+text, Halloween papers), four candidates and a scored pick rule pushed before any number
+(5310840); cards (3ad8ebd) and code before each run. **Both picks fail train; held-out year
+unspent.** Write-up `research/survey-4.md`; tables `research/results/ts-carry.md`,
+`research/results/halloween.md`; 17 rows in `tries.md` (3 are a disclosed bug run).
+
+- `ts-carry` (stock and bond trend slots only while carry > 0): 0.97 vs 1.05 (-0.08, p 0.78);
+  at the running mean 1.02 (-0.03). The stock leg is the loss (SPY out 54% of trend days; no
+  timing information in its carry sign). The surviving carry premium is cross-country.
+- `halloween` (stock slots only November-April): 0.96 vs 1.05 (-0.08), 0 of 5 eras; ahead
+  only in R13's new-data years 1998-2012; SPY winter minus summer -0.5 bps a day after 2012.
+
+Count: 65 mechanisms (61 + 4), 16 tested, none passed. Next test at p < 0.10 / 65 = 0.00154.
+
+- Doing: nothing. No process running.
+- Next: by the pre-set rule, `seasonal-20y` then `ts-value` (both prior under 1%); if run,
+  `seasonal-20y` as an event study first (gate: same-month spread after 2016 with t >= 2).
+  Published effects are 0 for 5 after publication in this book.
+- Data added: `<cache_root>/derived/survey-4/shiller_div.csv` (from the cached Shiller
+  `ie_data.xls`, `uv run --with xlrd python -I research/lib/survey4_shiller.py <cache_root>`).
+  A fresh worktree also needs `research/macro.local.json` (copy the `.example`) and the price
+  cache in `research/data/` (copy from another worktree).
 
 ## Ann 1 (done 2026-11-18, branch `ann-1`, draft PR #65 -> `survey-3`)
 

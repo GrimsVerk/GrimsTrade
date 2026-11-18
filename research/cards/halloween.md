@@ -84,3 +84,11 @@ Held-out year: once, for a variant that passes all seven (primary first), only t
 Chance any variant passes: 1%. `halloween` against the twin: -0.05 to +0.05 Sharpe, p far
 above the bar; `halloween-alone` worse (holds stocks through the 2001-02 and 2008 winters).
 SPY winter-minus-summer after 2012-05: positive but t < 2.
+
+## Result
+
+Tested 2026-11-18: **fails train, both variants** (`halloween` bars 1, 2, 6, 7). `halloween`
+0.96 against 1.05 (-0.08, p 0.87), 0 of 5 eras; ahead only in 1998-11 to 2012-04 (+0.06), the
+years of R13's new data; after 2012-05 -0.14. SPY winter minus summer: +5.9 bps a day (t 1.3)
+in 1998-2012, -0.5 (t -0.1) after. Out of universe positive (ETFs +0.09, indexes +0.13, old
+years). Table `results/halloween.md`; verdict `survey-4.md`. Held-out year unspent.

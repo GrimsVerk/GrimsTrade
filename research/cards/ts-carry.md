@@ -118,3 +118,12 @@ Chance any variant passes: 2%. `carry` against the twin: -0.05 to -0.15 Sharpe (
 1995-1999 and 2023-2025); `carry-bond` about even or slightly ahead (TLT out in 2022, also out
 in 2006-07 and 2019 when TLT rose); `carry-mean` closer to the twin than `carry`. With interest
 on cash the gap narrows by 0.05-0.1 but does not close.
+
+## Result
+
+Tested 2026-11-18: **fails train, both variants** (bars 1, 2, 4, 6, 7). `carry` 0.97 against
+1.05 (-0.08, p 0.78), `carry-mean` 1.02 (-0.03, p 0.62); since 2012-10 -0.05 / -0.02. All of the
+loss is the stock leg (SPY in cash on 54% of its trend days; SPY up-trend days with carry
+positive vs not: -0.7 / -1.2 bps a day before / after 2012-10). TLT leg about neutral. Table
+`results/ts-carry.md`; verdict `survey-4.md` (with the disclosed `carry-mean` bug in run 1).
+Held-out year unspent.

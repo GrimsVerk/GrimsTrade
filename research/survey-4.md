@@ -194,3 +194,102 @@ next two for a future lane if both fail.
 - `halloween`: `tsmom12` already leaves stocks in 2001-02 and 2008; what remains is cutting
   every summer. Guess: within +-0.05 of the twin, p far from the family bar; the SPY
   winter-minus-summer spread positive but t < 2 after 1998. Prior: 1%.
+
+## Test of pick A: `ts-carry` (run 2026-11-18, train only)
+
+Card `cards/ts-carry.md` (3ad8ebd) and code (90c7504) were pushed before any number. Table:
+`results/ts-carry.md`. **Fails train, both variants; held-out year unspent.**
+
+| Run (six assets, 1994-2025) | Sharpe | vs `tsmom12` (p) | Eras ahead | Since 2012-10 | Above T-bills, cash earning bills |
+|---|---:|---:|---:|---:|---:|
+| `carry` (cut-off 0) | 0.97 | -0.08 (0.78) | 1 of 4 | -0.05 | 0.94 |
+| `carry-mean` (cut-off at own running mean) | 1.02 | -0.03 (0.62) | 2 of 5 | -0.02 | 0.99 |
+| `carry-bond` (TLT leg only, robustness) | 1.05 | -0.00 | 1 of 5 | -0.00 | 0.93 |
+| `carry-equity` (stock legs only, robustness) | 0.97 | -0.08 | 1 of 4 | -0.05 | 0.93 |
+| `tsmom12` (twin) | 1.05 | | | | 0.93 |
+
+- Out of universe: other ETFs -0.12 for both; S&P 500 index 1962-1993 (before the paper's
+  sample) `carry` -0.55 (exposure 2% against 69%: Shiller dividend yields sat below bill rates),
+  `carry-mean` +0.02.
+- Pass bars failed: `carry` 1, 2, 4, 6, 7; `carry-mean` 1, 2, 4, 6, 7.
+- **Disclosure.** The first run (22:13) had a bug: `gate` returned a numpy bool, which is never
+  `is False`, so `carry-mean` never gated and its three rows in `tries.md` equal the twin. Fixed
+  (`bool(...)`), rerun at 22:14; the configurations whose first rows were correct (cut-off 0,
+  a Python float) were re-scored without new rows. Before the rerun I had seen the buggy table,
+  including the descriptive split at the running mean (which did not depend on the bug).
+
+**Where it lost.** All of it is the stock leg. The gate held SPY in cash on 54% of the days
+`tsmom12` held it (QQQ 53%): all of 1994-1999 (cash, so the era has no Sharpe; the twin made
+1.34), 2005-2007 and 2022-2025 (0.78 against 0.88). It gained in the dot-com bust (0% against
+-28%), which is the only reason the full-period gap is just -0.08. On SPY's up-trend days the
+next-day return is the same whether carry is positive or not (in R6's years -0.7 bps a day,
+t -0.2; after 2012-10 -1.2, t -0.3): the stock carry sign carries no timing information here.
+The bond leg is about neutral: TLT with positive carry beat TLT with negative carry by +1.0 and
++3.2 bps a day (t 0.2, 0.4), but cut-off 0 removes only 9% of TLT's trend days.
+
+**Consistent with the paper's mechanism?** Mostly yes, and that is the problem. R6's equity
+carry is a cross-country, futures-implied, long-short result; its own single-asset timing
+with cut-off 0 has the lowest Sharpe of its table (0.41) and the authors warn that it is close
+to a passive position. In one market, dividend yield minus the bill rate is the "Fed model",
+and R15 already showed dividend-yield timing fails out of sample. So the part of carry with a
+200-year record (the cross-section across countries) is not one this book can hold. One cell
+does point the paper's way after its sample: TLT with carry above its running mean beat TLT
+below it by +11.0 bps a day after 2012-10 (t 1.9; +1.9, t 0.5, in R6's years). That cell was
+not a variant on its own (`carry-mean` gates both legs) and is post hoc; recorded, not a lead.
+The gym pays 0 on cash: with bills on cash both variants tie or lead the twin above bills (0.94
+and 0.99 against 0.93), which says carry's cash periods were dear in the gym's terms, not that
+the rule is better; the protocol's bars use the gym's convention.
+
+## Test of pick B: `halloween` (run 2026-11-18, train only)
+
+Card `cards/halloween.md` (3ad8ebd) and code (988df8d) were pushed before any
+number. Table: `results/halloween.md`. **Fails train, both variants; held-out year unspent.**
+
+| Run (six assets, 1994-2025) | Sharpe | vs `tsmom12` (p) | Eras ahead | 1994-1998-10 | 1998-11 - 2012-04 | 2012-05 on |
+|---|---:|---:|---:|---:|---:|---:|
+| `halloween` (trend and winter) | 0.96 | -0.08 (0.87) | 0 of 5 | -0.11 | +0.06 | -0.14 |
+| `halloween-alone` (stocks every winter) | 0.88 | -0.17 (0.95) | 0 of 5 | -0.10 | -0.19 | -0.08 |
+| `tsmom12` (twin) | 1.05 | | | | | |
+
+- Out of universe positive: other ETFs +0.09 / +0.08, four indexes from 1962 +0.13 / +0.13
+  (p 0.12-0.30); the index gain sits in 1962-1999 and 2010-16, not in 2017-25.
+- SPY, winter minus summer weeks, bps a day: 1994-1998-10 +2.7 (t 0.4); R13's new data
+  1998-11 to 2012-04 +5.9 (t 1.3); after 2012-05 **-0.5 (t -0.1)**. S&P 500 index: 1962-1969
+  (before R12's sample) +6.0 (t 2.1), 1970-1993 +5.2 (t 2.0). QQQ after 2012-05: -2.2 (t -0.5).
+- Pass bars failed: `halloween` 1, 2, 6, 7; `halloween-alone` 1, 2, 3, 5, 6, 7.
+
+**Where it lost.** Every summer cut costs the trend book in calm years; the rule helped only
+in 1998-2012, the years of R13's new data, when summers held the 2001, 2002, 2008 and 2011
+falls (and even then `tsmom12` had already left stocks in most of them). After 2012-05 US
+summers paid as much as winters (SPY 5.6 against 5.1 bps a day), so the gate only removed half
+of the stock exposure in the best decade for US stocks.
+
+**Consistent with the paper's mechanism?** The pattern is the same as survey-2's three:
+the effect is in the data the papers used (and before them: the S&P 500 1962-1969, t 2.1) and
+absent after the last publication. R13 reads it as seasonal risk aversion, a premium that
+should not be arbitraged away; a premium that vanishes from US large caps exactly after
+2012 fits publication decay (R1) better than a risk story. Not ruled out: 13 years is short for
+a once-a-year effect (the spread's t before 2012 was itself only 1.3 in SPY).
+
+## Count and next candidates
+
+Family (wide-1 lineage): **65 mechanisms (61 + this survey's 4), 16 tested, none passed.** The
+next test is read at p < 0.10 / 65 = 0.00154. 17 rows added to `tries.md` (3 of them the
+buggy first `carry-mean` rows, disclosed above).
+
+Published effects in this book are now 0 for 5 after publication (`fomc-cycle`, `xtsmom`,
+`announcement-premium`, `ts-carry`, `halloween`), including two with the best documented
+post-publication records available. By the pick rule the next two are:
+
+1. **C `seasonal-20y`** (score 2): a slot only in calendar months whose 20-year same-month
+   average is not below the asset's 20-year average month (SPY via the S&P 500 index, QQQ via
+   the Nasdaq Composite, TLT via the 10-year yield). Strong in R5's pre-1981 data, absent in its
+   replication sample and in R3's stock clusters; the weekly decision misaligns a monthly signal
+   by a few days, and R5 shows a one-month lag kills it. Prior under 1%.
+2. **D `ts-value`** (score 2): stock slots only while the dividend yield is above its own
+   running median, TLT while the real yield is. R15 already reports dividend-yield timing
+   failing out of sample. Prior under 1%.
+
+My advice for the lead: neither is worth a lane on its own. If one is run, run C as an event
+study first (same-month spread by asset and by era, as ann-1 did), and card only if the
+spread after 2016 (R5's last year) is positive with t >= 2.

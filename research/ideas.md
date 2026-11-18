@@ -80,7 +80,7 @@ seen. Sharpe on the six assets, 1994-2025: `tsmom12` 1.05, equal weight 0.88.
 | lppls-bubble | Econophysics | parked | - | Three or four crypto bubbles cannot validate a warning signal (part 6, E) |
 | hurst-entropy-gate | Econophysics / information theory | parked | - | Time-varying efficiency is documented, exploiting it is not; about five independent readings in ten years (part 6, D-E) |
 | signature-leadlag | Path signatures | parked | - | No daily out-of-sample evidence; level 2 is lead-lag areas, which hit the non-synchronous-close problem; level 3+ overfits (part 6, B) |
-| halloween | Calendar | parked | - | One observation a year: cannot be confirmed or rejected in our lifetime (part 3, E5) |
+| halloween | Calendar | tested by survey-4: dead | [card](cards/halloween.md) | Parked by the first survey (one observation a year); tested in survey-4, see that section below |
 | crypto-carry | Carry | parked | - | Real, but needs perpetual futures; the gym has spot only (part 3, C3) |
 
 ## New (not yet carded; candidates for the next run)
@@ -179,3 +179,16 @@ year unspent.
 | turning-points | Trend (Goulding, Harvey, Mazzoleni, JFE 2023) | dead (literature) | - | State-dependent blend of 12- and 1-month trend; 0.52 vs 0.51 gross in the paper; `ensemble-tsmom` already tied (`survey-3.md`) |
 | nonlinear-tsmom | Machine learning (Moskowitz et al., SSRN 2025) | dead (literature) | - | ML on past returns; run 2's seven ML cards found nothing (AUC 0.50) (`survey-3.md`) |
 | crypto-corr | Crypto (Yae and Tian 2021) | dead (literature) | - | BTC timed by its correlation with stocks; daily horizon against 60 bps (`survey-3.md`) |
+
+### Run survey-4: effects with a post-publication record (2026-11-18)
+
+Sources, candidates and the pick rule (written before any number) in [survey-4.md](survey-4.md).
+Four mechanisms new to the lineage (family now 65, bar p < 0.10 / 65 = 0.00154); two carded and
+tested; held-out year unspent.
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| ts-carry | Carry (Koijen, Moskowitz, Pedersen, Vrugt, JFE 2018; Baltussen, Swinkels, van Vliet, JFE 2021) | dead (tested) | [card](cards/ts-carry.md) | SPY, QQQ, TLT trend slots only while carry (dividend yield or 10-year yield minus bills) is positive: 0.97 vs 1.05 (-0.08, p 0.78); at the running mean 1.02 (-0.03). All of the loss is the stock leg: SPY out 54% of its trend days, and stock carry's sign carries no timing information (-0.7 / -1.2 bps a day before / after 2012-10). The documented survivor is cross-country carry, which this book cannot hold. Post hoc trace only: TLT above its running-mean carry +11 bps a day after 2012-10 (t 1.9). [result](results/ts-carry.md) |
+| halloween | Calendar (Bouman and Jacobsen, AER 2002; Andrade et al., FAJ 2013; Zhang and Jacobsen, JIMF 2021) | dead (tested) | [card](cards/halloween.md) | Stock trend slots only November-April: 0.96 vs 1.05 (-0.08, p 0.87), 0 of 5 eras; ahead only in 1998-2012 (+0.06), R13's own new-data years. SPY winter minus summer +5.9 bps a day 1998-2012 (t 1.3), -0.5 (t -0.1) after 2012-05; S&P 500 1962-1993 t 2.0-2.1. Out of universe positive on old data. [result](results/halloween.md) |
+| seasonal-20y | Return seasonality (Heston and Sadka 2008; Keloharju et al. 2016; Baltussen et al. 2021) | new | - | A slot only in calendar months whose 20-year same-month average is not below the asset's average month. Strong pre-1981, absent in replication samples; a one-month lag kills it. Event study first (`survey-4.md`). Prior under 1% |
+| ts-value | Value (Baltussen et al. 2021; Welch and Goyal 2008) | new | - | Stock slots only while the dividend yield is above its running median; TLT while the real yield is. Dividend-yield timing already fails out of sample (Welch and Goyal). Prior under 1% |
