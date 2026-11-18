@@ -3,7 +3,8 @@
 ## Night lead 2026-11-18 (brief `chief-of-staff/briefs/grimstrade-night-2026-11-18.md`)
 
 - 1. Exit research (generic study, `research/exit-plan-2026/`):
-  IN PROGRESS. Branch `research/exit-1` (worktree `grimstrade-exit1`), draft PR #50. Lanes since
+  DONE 2026-11-18 ~22:30 UTC: review round 3 = FINAL at 3529214 (log 9c15492; rounds 1-2 were
+  CHANGES, all fixed). Optional round-3 polish follows on the same branch. Was IN PROGRESS. Branch `research/exit-1` (worktree `grimstrade-exit1`), draft PR #50. Lanes since
   18:58 UTC, each `research/exit-1-<lane>` in `grimstrade-exit-<lane>`: lit, haven, bt, inv,
   reentry, park; notes land in `research/exit-plan-2026/lanes/`. Then merged `report.md` and the
   review loop (`review-log.md`). Mark DONE here when a reviewer says FINAL.
