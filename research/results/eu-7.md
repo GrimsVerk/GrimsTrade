@@ -61,8 +61,8 @@ Long monthly proxy (stocks / 10y Treasuries / gold, 1972-2025, monthly averages,
 
 | Rule | Max DD vs T (<= +2 pts) | Crash windows within 3 pts of T (>= 5 of 6) | Keeps insurance | Sharpe vs T (>= +0.05; p) | Under water vs T (>= 3 mo shorter) | Orders vs T (>= 25% fewer) | Gains (>= 2 of 3) | Held-out card? |
 |---|---|---|---|---|---|---|---|---|
-| A trend on stocks only | +2.4% (**no**) | 4 (**no**) | ****no**** | -0.02 (p=0.600, not real; **no**) | -2 mo (**no**) | -52% (yes) | 1 (**no**) | ****no**** |
-| B hold7 + fixed cash | +0.1% (yes) | 3 (**no**) | ****no**** | +0.17 (p=0.101, not real; yes) | -28 mo (yes) | -89% (yes) | 3 (yes) | ****no**** |
+| A trend on stocks only | +2.4% (**no**) | 4 (**no**) | **no** | -0.02 (p=0.600, not real; **no**) | -2 mo (**no**) | -52% (yes) | 1 (**no**) | **no** |
+| B hold7 + fixed cash | +0.1% (yes) | 3 (**no**) | **no** | +0.17 (p=0.101, not real; yes) | -28 mo (yes) | -89% (yes) | 3 (yes) | **no** |
 
 Neither rule passes both tests: the held-out year stays unspent.
 

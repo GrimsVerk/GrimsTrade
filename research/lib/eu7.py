@@ -384,10 +384,10 @@ def report_all() -> None:
         real = "real" if p < P_FAM else "not real"
         txt.append(
             f"| {NAMES[k]} | {x['mdd'] - t['mdd']:+.1%} ({eu5.yn(dd_ok)}) | {near_t[k]} "
-            f"({eu5.yn(cw_ok)}) | **{eu5.yn(keep)}** | {x['sharpe'] - t['sharpe']:+.2f} "
+            f"({eu5.yn(cw_ok)}) | {eu5.yn(keep)} | {x['sharpe'] - t['sharpe']:+.2f} "
             f"(p={p:.3f}, {real}; {eu5.yn(g_sh)}) | {x['uw'] - t['uw']:+.0f} mo "
             f"({eu5.yn(g_uw)}) | {x['orders'] / t['orders'] - 1:+.0%} ({eu5.yn(g_or)}) | "
-            f"{gains} ({eu5.yn(gains >= GAINS_NEED)}) | **{eu5.yn(passes[k])}** |"
+            f"{gains} ({eu5.yn(gains >= GAINS_NEED)}) | {eu5.yn(passes[k])} |"
         )
     passed = [k for k in ("A", "B") if passes[k]]
     if passed:

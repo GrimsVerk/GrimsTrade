@@ -1,12 +1,29 @@
 # Next steps
 
-## eu-7 (doing 2026-11-18 night, branch `eu-7` from `eu-6`, draft PR -> `eu-6`)
+## eu-7 (done 2026-11-18 night, branch `eu-7` from `eu-6`, draft PR #80 -> `eu-6`)
 
 DEEPER lane on eu-6: keep trend's crash insurance, lose less of the rest? Card
-`research/cards/eu-7.md` (pushed before any number): A = trend on the three stock funds only,
-bonds/gold/commodities held at 1/7; B = hold the seven with a fixed cash share (1 - T's average
-exposure on W, from positions). eu family 10 -> 12 (bar p < 0.0083). Doing: step 2 (run on
-train, code `research/lib/eu7.py`).
+`research/cards/eu-7.md` (pushed before any number), write-up `research/eu-7.md` (section 4 is
+the plain answer), table `research/results/eu-7.md`, code `research/lib/eu7.py` (`check`, `run`;
+reuses `eu6.py`, needs `--with xlrd` and `research/macro.local.json`); 24 rows in
+`research/tries.md` (idea `eu-7`). eu family now 12 (bar p < 0.0083). Held-out year unspent.
+
+- A trend on the three stock funds only, bonds/gold/commodities held at 1/7: Sharpe 0.60 (T
+  0.62), max DD 16.1% (T 13.6%), 56 mo under water, 10 orders/yr (T 21). Matches T in stock
+  crashes (2000-02 +12.7%, 2008 -0.8%) but holds long euro bonds through 2022 (-3.8% vs T +1.7%).
+  Fails the card's "keeps the insurance" test (4 of 6 windows within 3 pts; DD +2.4 pts).
+- B hold the seven at 67% (T's average exposure, from positions), 33% cash: Sharpe 0.79, max
+  DD 13.8%, 31 mo, worst 12 months -8.3%, 2.3 orders/yr. Wins "smallest worst loss" on euw, but
+  2008 -15.7% (T -0.7%) and on the US proxy with 2008 its max DD is 22% vs T's 11%. Fails the
+  insurance test (3 of 6).
+- Sharpe gaps noise (B - T +0.17, SE 0.13, p 0.10). Neither rule earns a held-out-year card.
+- Doing: nothing. No process running. Local `research/data/` copied from the eu-6 worktree.
+- Next (not started): (1) cash interest for B and T (`lib/cash_interest.py` exists): B's case
+  rests on cash at 0, a card comparing B and T with a money-market rate on idle cash; (2) a
+  card for "trend on stocks and long bonds, hold short bonds/gold/commodities" (2022's
+  insurance came from the bond slots; post-hoc idea, counts in the family, judge on the US
+  proxies first); (3) the investor's actual preference picks the row of `research/eu-7.md`
+  section 3.
 
 ## eu-6 (done 2026-11-18 night, branch `eu-6` from `eu-5`, draft PR #77 -> `eu-5`)
 
