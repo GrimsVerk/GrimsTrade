@@ -356,8 +356,9 @@ no strategy, no `tries.md` row.**
   than the cells this night's nulls put at |t| 3 (steps 1 and 2), and the season-clustered
   events sit in late summer, when the bond calendar has its own patterns. Not a lead; noted
   only.
-- **The first half's negative slope is crisis timing:** 2008's Gustav and Ike (category 2)
-  landed in the September of the Lehman failure. The second half has the sign the other way.
+- **The first half's negative slope may be crisis timing:** 2008's Gustav and Ike (category 2)
+  landed in the September of the Lehman failure (not checked by dropping 2008; it is not
+  significant either way). The second half has the sign the other way.
 - **Compared with my guess:** b between -0.15 and +0.15 with |t| < 1.5: yes (+0.01, t 0.09).
   Katrina-Rita-Wilma either way: +0.38, -0.42, -0.05. 2% chance of a pass: no pass.
 
