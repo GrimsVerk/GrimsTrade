@@ -302,6 +302,12 @@
   - 23:14 UTC 5h 0.71: `diversifier-1` started (W, <- survey-6): a live-evidence diversifier
     (merger-arb ETF) as a held 7th slot, judged as risk choice and at the bar. Last lane before
     the 02:15 fill window.
+  - DONE `fast-reentry` (draft #94 -> insure-2): `or3-12` (hold if 12-month OR 3-month return
+    > 0; Goulding-Harvey-Mazzoleni 2023 JFE) "in between": rebound +8.4 log pts better but
+    share of fall avoided 0.50 -> 0.35 (fails guard); net +1.5/fall US (p 0.10-0.19), non-US
+    +4.7 (bootstrap p 0.002). Premium 1.07 -> 0.97 but exposure 73% -> 83%, worst loss 38% ->
+    51%: a bigger position, not cheaper insurance. 27 rows. Queue for next window: `or3-12` vs
+    fixed-83% controls; "armed" re-entry keeping `tsmom12`'s exits; then close the insure line.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
