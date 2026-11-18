@@ -198,7 +198,10 @@ def periods_needed(sharpe: float, per_year: float, alpha: float, skew: float, ku
 
 
 def weekly_rets(run: harness.Run) -> np.ndarray:
-    r = run.rets
+    return weekly_from(run.rets)
+
+
+def weekly_from(r: np.ndarray) -> np.ndarray:
     n = len(r) // 7
     return np.array([np.prod(1 + r[7 * i : 7 * i + 7]) - 1 for i in range(n)])
 
@@ -207,6 +210,54 @@ def moments(x: np.ndarray) -> tuple[float, float, float]:
     m, s = x.mean(), x.std()
     z = (x - m) / s
     return float(m / x.std(ddof=1) * math.sqrt(52)), float((z**3).mean()), float((z**4).mean())
+
+
+def weeks_for_gap(s1: float, s2: float, rho: float, gap: float, alpha: float) -> float:
+    """Weeks for a one-sided test of Sharpe(a) > Sharpe(b) to find an annual gap `gap` with
+    power 0.8: Jobson-Korkie with Memmel's (2003) correction, normal returns; s1, s2 annual."""
+    a, b, d = s1 / math.sqrt(52), s2 / math.sqrt(52), gap / math.sqrt(52)
+    v = 2 * (1 - rho) + 0.5 * (a * a + b * b - 2 * a * b * rho * rho)
+    z = NormalDist().inv_cdf(1 - alpha) + NormalDist().inv_cdf(0.8)
+    return v * (z / d) ** 2 if d > 0 else math.inf
+
+
+def sharpe_gap_power(runs: dict[str, harness.Run], h: float) -> list[str]:
+    """Added after the first run (not on the card): the card's lead measure (mean weekly
+    difference) is below 0, because `tsmom12` earns less than holding at lower risk. Its case is
+    a higher Sharpe, so this asks how long a forward test of the Sharpe gap takes."""
+    out = [
+        "",
+        "### Added after the first run: the Sharpe gap to holding everything",
+        "",
+        "Not on the card. The card's lead measure (mean weekly `tsmom12` minus `hold-c17`) is "
+        "below 0: `tsmom12` earns a little less than holding, at lower risk. Its case is the "
+        "higher Sharpe, so: weeks for a one-sided test of Sharpe(`tsmom12`) > Sharpe(`hold-c17`) "
+        "(Jobson-Korkie with Memmel's correction; normal returns, so if anything too few), "
+        "power 0.8, in years.",
+        "",
+        "| Window or haircut | Sharpe `tsmom12` | Sharpe `hold-c17` | Weekly correlation | Gap | "
+        "Years, a 0.025 | a 0.10 |",
+        "|---|---:|---:|---:|---:|---:|---:|",
+    ]
+    t, hd = runs["tsmom12"], runs["hold-c17"]
+    rows = []
+    for label, a, b in (("backtest 1994-2025", t.days[0], t.days[-1]),
+                        ("live window L (2010-02..2025-10)", date(2010, 2, 1),
+                         date(2025, 10, 31))):  # fmt: skip
+        x = weekly_from(t.rets_between(a, b))
+        y = weekly_from(hd.rets_between(a, b))
+        s1, s2 = moments(x)[0], moments(y)[0]
+        rho = float(np.corrcoef(x, y)[0, 1])
+        rows.append((label, s1, s2, rho, s1 - s2))
+    lab, s1, s2, rho, g = rows[0]
+    for name, hh in (("backtest gap x (1 - h), measured h", h), ("same, h = 25% (H2)", 0.25)):
+        rows.append((f"{name} {hh:.0%}", s1, s1 - g * (1 - hh), rho, g * (1 - hh)))
+    for label, s1, s2, rho, g in rows:
+        yrs = [weeks_for_gap(s1, s2, rho, g, a) / 52 for a in (0.025, 0.10)]
+        cells = [f"{x:.0f}" if math.isfinite(x) else "never (gap <= 0)" for x in yrs]
+        out.append(f"| {label} | {s1:.2f} | {s2:.2f} | {rho:.2f} | {g:+.2f} | {cells[0]} | "
+                   f"{cells[1]} |")  # fmt: skip
+    return out
 
 
 # --- output ---
@@ -226,6 +277,8 @@ def span(s: Series) -> str:
 
 
 def log_rows(runs: dict[str, harness.Run]) -> None:
+    if f"| {IDEA} | tsmom12@live-L | live-check |" in harness.TRIES.read_text():
+        return  # logged by the first run; a rerun only rewrites the tables
     a, b = date(2010, 2, 1), date(2025, 10, 31)
     lines = []
     for name in ("tsmom12", "tsmom12-c00", "where-vol", "sixty-forty"):
@@ -386,8 +439,10 @@ def main() -> None:
         e, ed = base * (1 - hh), sr_d * (1 - hh)
         y = [periods_needed(e, 52, a, sk, ku) / 52 for a in (0.025, 0.10)]
         yd = [periods_needed(ed, 52, a, sk_d, ku_d) / 52 for a in (0.025, 0.10)]
-        out.append(f"| {label} | {e:.2f} | {y[0]:.1f} | {y[1]:.1f} | {ed:.2f} | {yd[0]:.0f} | "
-                   f"{yd[1]:.0f} |")  # fmt: skip
+        ydt = [f"{x:.0f}" if ed > 0 else "never (mean below 0)" for x in yd]
+        out.append(f"| {label} | {e:.2f} | {y[0]:.1f} | {y[1]:.1f} | {ed:.2f} | {ydt[0]} | "
+                   f"{ydt[1]} |")  # fmt: skip
+    out += sharpe_gap_power(runs, h)
     text = "\n".join(out) + "\n"
     path = harness.RESEARCH / "results" / "live-check.md"
     path.write_text(text)
