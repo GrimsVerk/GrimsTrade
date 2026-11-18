@@ -275,6 +275,15 @@
     in fast falls. 27 `insure-check` rows. Next: `fast-reentry` on the 50 + 19 falls.
   - 23:08 UTC 5h 0.68, weekly 0.91: no new lane (would overshoot the 0.80 reserve line); running
     survey-6, register-2, wide-9.
+  - DONE `register-2` (draft #92 -> register-1): trial correlation measured (mean pairwise
+    0.58 over 294 weekly series 2012-25; 0.72 for 1994-2025) -> 1,027 tries = ~433 effective
+    trials (old rho 0.9 assumption gave 102). New bar for a new pick: +0.30 (close) to +0.56
+    (far) Sharpe over `tsmom12`, Bonferroni p <= 1.2e-4. Clustering (Lopez de Prado-Lewis) finds
+    only ~2 bets (crypto-heavy vs rest). Record length dominates: on 10 years a rule needs
+    +0.54..+1.00 over `tsmom12`. 410/1,016 selectable rows now carry weeks/skew/kurtosis.
+    Regeneration needs local equity curves (`research/register2.local.json`, `.example`).
+  - 23:08 UTC 5h 0.69: `fast-reentry` started (D, small, <- insure-2): one faster re-entry card
+    judged net of the rebound over the 69 effective falls.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -375,6 +384,8 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, register-2 (#92): accept the measured project-wide bar (433 effective
+  trials; a new rule needs +0.30..+0.56 Sharpe over `tsmom12`)?
 - Night 2026-11-18, wide-8 (#88): freeze the forward entry `turn-of-year-losers@1` (needs a
   `placebo_rank` metric in forward.py and changes how the registry splits its 0.10 alpha)? And
   W18 `elimination-mood` would use the 2026 World Cup, inside the held-out year: allow or not?
