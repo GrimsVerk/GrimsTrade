@@ -1,0 +1,76 @@
+# Wide 3: two more mechanisms from wide-1's list
+
+Research run wide-3, 2026-11-18. Branch `wide-3` (from `wide-2`). Research only: fake money,
+public data, no change to the gym, the daily runner or the live strategies.
+
+## Step 1. Choice (written 2026-11-18 ~19:20 UTC, before any number of this run)
+
+### The count, kept honest
+
+wide-1's list has 46 numbered mechanisms (E1-E6, P1-P4, S1-S5, C1-C5, I1-I5, G1-G4, F1-F5,
+Q1-Q6, N1-N3, M1-M3). Cards so far: 7 (wide-1: `auction-concession` = E5 and Q1,
+`contagion-catchup` = P1 with F5 as its tool, `vol-echo` = S4, `rebalance-pressure` = C2;
+wide-2: `trend-age` = Q5, `patch-leaving` = E6, `crowded-trend` = G2). Those 7 cards cover 9
+of the 46 entries, so 37 entries were uncarded before this run, not 39 as wide-2 wrote (two
+cards each cover two entries). This run adds 2 picks: **9 tests out of the list, 11 entries
+covered, 35 left.**
+
+**Bar 1 for this run: p < 0.10 / 46 = 0.0022.** The family the picks are drawn from is the
+whole list of 46, whatever is left of it; wide-2 used 0.10 / 42, which this is slightly
+stricter than. Bars 2-5 as in `protocol.md`.
+
+### What I ruled out before choosing, and why
+
+- **Lanes that other runs are already working on** (seen by PR title only, no PR body or
+  result read): `volume-1` (#41) covers Q3 (price impact per dollar traded, volume);
+  `month-end-bonds` (#45) covers S2 (lock-in on the monthly cycle); `cointop-1` (#40) and
+  `slow-1` (#35) are near N2 (variance risk premium at slow horizons) and coin tops. Picking
+  any of these would test the same thing twice.
+- **Another change to when or how much of the trend book is held** (the coordinator's rule
+  and wide-2's lesson): S1, C1, C5, I1, I2, G1, N3 (the 52-week-high anchor is a trend
+  measure), M2.
+- **The "step out of risk when X" gates**, which cannot be validated on 4-7 bear markets: P3,
+  I4, F1, F4, M1.
+- **Dead or killed by a measured number**: Q2 and G4 (reversal, costs), N1 and E2 (two
+  sibling pairs, no cross-sectional edge), S3, S5, C4, E3, E4, P4, I3, I5, G3, F3, M3.
+- **Data we do not have** or paid: E1, Q4, Q6.
+
+That leaves three: **F2** (stock-bond correlation as an order parameter), **P2** (attention as
+the infection, on free Wikipedia page views) and **C3** (volatility-control funds keep selling
+after a spike). C3 is close to `dip-rsi2` (real and small) and to `vol-echo` (dead). I pick F2
+and P2.
+
+### Pick 1: F2, `hedge-regime` (statistical physics: order parameter)
+
+- **Reason.** It is the only uncarded mechanism that changes *what* the idle part of the book
+  holds rather than when the trend rule acts, and it reads a quantity no rule here has used as
+  a rule: the sign of the stock-bond correlation. The mechanism has a clear physical reading:
+  the sign is an order parameter. Below zero, bonds are insurance (flight to quality: their
+  price rises when stocks fall), and insurance pays off in the weeks when the trend rule is
+  still long stocks. Above zero (inflation regime: 1970s, 2022), bonds and stocks fall
+  together and the bond must earn its slot by its own trend. `tsmom12` drops TLT whenever TLT
+  is below its level of a year ago, even in a regime where it hedges the stocks it holds.
+- **Why it is not a duplicate.** `trend-to-safe` gave empty slots to safe assets *in trend*;
+  this holds the bond *out of trend*, and only when the order parameter says it hedges.
+  wide-1 killed F2 as "a refinement of `trend-to-safe`; one flip since TLT exists". The second
+  half is the real objection: since 2002 the sign was negative almost all the time until 2021,
+  so the test is close to "hold TLT always until the flip". That is a power problem, stated
+  here before the number.
+- **Prior.** Low: about 2% that it passes; difference -0.04 to +0.05 Sharpe.
+
+### Pick 2: P2, `attention-peak` (epidemiology: SIR on attention)
+
+- **Reason.** It is the only uncarded mechanism whose data no run has ever read: Wikipedia page
+  views, free and keyless from 2015-07. The SIR reading: a mania is an epidemic of attention;
+  the price is carried by newly "infected" buyers, and once new infections fall after a surge,
+  the pool of new buyers is used up and the price has nothing left to carry it. `tsmom12` exits
+  coins about a year after the top (the 365-day return must turn negative), so an exit at the
+  attention peak could matter a lot in the asset class that sets the book's drawdowns.
+- **Why it is not a duplicate.** It reads attention, not price: the exit can come while the
+  12-month trend is still strongly positive. It is a gate, which is the weak family, and wide-1
+  parked it for that reason ("three manias, all coins at once"). It is picked anyway because
+  its data is clean (never seen by any rule) and the payoff, if real, is large.
+- **Prior.** About 3% that it passes; difference -0.10 to +0.15 Sharpe (wide range: few
+  episodes).
+
+Cards: `cards/hedge-regime.md`, `cards/attention-peak.md`, each pushed before any number.
