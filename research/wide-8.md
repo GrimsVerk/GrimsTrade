@@ -260,3 +260,72 @@ day). Only the in-sample sign holds, weakly: GSPC 1950-2002 -4.4 bps a day (t -1
 
 Disclosures: one dry run (`DRY=1`) printed only storm-day and session counts, then one run.
 Rule pushed at 070d5ab, script and tests at 84bde3e, both before either run.
+
+## Step 3. W15 `cat-claims` (catastrophe meteorology)
+
+### Data access (checked 2026-11-18, before any price was cut by it)
+
+NOAA's National Hurricane Center publishes the Atlantic best-track file HURDAT2 at
+`https://www.nhc.noaa.gov/data/hurdat/`; the latest, `hurdat2-1851-2025-092326.txt` (seasons
+1851-2025), downloads without a key or account. A US government work (public domain). Each
+six-hourly record carries a record identifier; `L` marks a landfall, with time (UTC), status,
+position and maximum sustained wind (knots). The file goes to `research/data/hurdat/`
+(gitignored); the script reads it as text.
+
+### The idea and literature
+
+After a large US hurricane landfall, property and casualty insurers must pay claims within
+months and hold mostly bonds; they sell liquid bonds to pay. The selling is forced and sized by
+the loss. Corporate bonds (thinner) should show it more than Treasuries.
+
+- **Massa and Zhang (2021)**, "The spillover effects of Hurricane Katrina on corporate bonds
+  and the choice between bank and bond financing", Journal of Financial and Quantitative
+  Analysis 56(3), pp. 885-913. `[search summary]` Property insurers heavily exposed to Katrina
+  cut their corporate bond holdings by 14% (others by 1%); bonds of issuers held by exposed
+  insurers had a large drop in risk-adjusted returns, though the issuers were outside the
+  region. One event, bond-level, not an index-level test across landfalls.
+
+No run here has cut bond returns by landfalls. The years that can judge it fully are the 2026
+season on.
+
+### Decision rule (fixed and pushed before any number)
+
+**Events.** From HURDAT2, every storm with at least one landfall record (`L`) on the US
+mainland: latitude >= 24.4 N, longitude between 98 W and 66.9 W, excluding points south of
+30 N and east of 80.0 W (Bahamas) and south of 25.85 N and west of 97.0 W (Mexico). Event day
+= the UTC date of the storm's first US landfall record; dose = **category** from the largest
+maximum wind over its US landfall records (Saffir-Simpson in knots: < 64 = 0, a tropical-storm
+landfall; 64-82 = 1; 83-95 = 2; 96-112 = 3; 113-136 = 4; >= 137 = 5). Events whose event day
+falls from 2002-08-01 (LQD and TLT start 2002-07-30) and whose window ends by 2025-11-10.
+
+**Outcome.** Y = log return of LQD minus 0.5 x log return of TLT (a fixed duration hedge: LQD's
+duration is about half of TLT's), from the last close on or before the event day to the close
+of the 20th session dated after it. Dividend-adjusted closes, train bars only.
+
+**Regression.** Y_e = a + b Category_e + e over events, t clustered by season (year).
+b < 0 means corporates lag Treasuries more after stronger landfalls.
+
+**Gate.** Pass only if all three hold:
+1. b < 0 with t <= -2 over all events 2002-2025.
+2. b < 0 in both halves (event days 2002-2013 and 2014-2025).
+3. Placebo calendar: the true b ranks among the 2 most negative of 23: the true one and the
+   same regression with every event day moved to the same month and day k years away, k = -11
+   .. -1, 1 .. 11 (doses kept; same season, no landfall; a moved event outside 2002-08-01 ..
+   the train end is dropped for that k; 29 February goes to 28 February).
+
+On a pass: a card (for example an overlay holding TLT in place of LQD-like credit after major
+landfalls; the six-asset book holds no LQD, so the card would need its own universe) with rows
+in `tries.md`, read at p < 0.00143 (family) and the register's p <= 4.9e-5. On a fail: W15
+dead by the gate, no card, no row.
+
+**Shown, not gating.** Slope on category for LQD alone, TLT alone and LQD minus IEF (IEF's
+duration is close to LQD's); mean Y for major landfalls (category >= 3) minus tropical-storm
+landfalls; a 60-session window; the event count per category; the 22 shifted slopes.
+
+**Power, written before any number.** The LQD - 0.5 TLT spread moves about 0.35% a day, about
+1.6% over 20 sessions; with about 80 events and a category spread of about 1.3, the standard
+error of b is about 0.15 points per category and t <= -2 needs about -0.3 points per category
+(-1.2% over 20 sessions for a category 4). Only a large flow effect can pass.
+
+**My guess before any number.** b between -0.15 and +0.15 points per category, |t| < 1.5; the
+largest single cell Katrina-Rita-Wilma 2005 either way. Chance of a pass: 2%.
