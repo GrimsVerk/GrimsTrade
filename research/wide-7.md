@@ -174,7 +174,9 @@ Lakshmi Puja (Diwali) and Lunar New Year dates 2004-2025 written from memory int
 (`research/lib/wide7_festival.py`), then checked against wide-6's mean new moons before any
 price was read: all 21 Lunar New Year dates fall 0 or 1 day after a mean new moon (UTC; China
 keeps UTC+8), and all 22 Diwali dates 1 or 2 days before one (one at 2), as the calendars
-require (Diwali is the new moon of Ashvin/Kartika in Indian time). The 2025 Dhanteras (18
+require (Diwali is the new moon of Ashvin/Kartika in Indian time). Correction made before any
+price was read: 6 Diwali dates fall on the mean new moon, 15 one day before, 1 two days
+before (the line above first misread the check). The 2025 Dhanteras (18
 October) and Diwali (20 October) were confirmed in news reports; no full published table was
 fetched (Wikipedia's pages list only recent years). Dhanteras = Diwali minus 2 days. A date
 off by one day moves one session at each end of a 15-session window.

@@ -82,3 +82,31 @@ def test_year_dummies() -> None:
     r = _rules()
     x = r.year_dummies([2001, 2000, 2001])
     assert x.tolist() == [[0.0, 1.0], [1.0, 0.0], [0.0, 1.0]]
+
+
+def test_festival_dates_sit_on_new_moons() -> None:
+    r = _rules()
+    sys.path.insert(0, str(LIB))
+    try:
+        r6 = importlib.import_module("wide6_rules")
+    finally:
+        sys.path.remove(str(LIB))
+    nm = r6.moon_dates(date(2004, 1, 1), date(2026, 12, 31), 0.0)
+
+    def off(d: date) -> int:
+        return int(min(((d - m).days for m in nm), key=abs))
+
+    assert all(off(d) in (0, 1) for d in r.LUNAR_NEW_YEAR)
+    assert all(off(d) in (0, -1, -2) for d in r.DIWALI)
+    assert all(date(d.year, 1, 21) <= d <= date(d.year, 2, 20) for d in r.LUNAR_NEW_YEAR)
+    assert all(date(d.year, 10, 15) <= d <= date(d.year, 11, 15) for d in r.DIWALI)
+
+
+def test_run_flags_marks_sessions_strictly_before() -> None:
+    r = _rules()
+    days = [date(2020, 1, k) for k in (2, 3, 6, 7, 8, 9, 10)]
+    f = r.run_flags(days, [date(2020, 1, 8)], 2)
+    assert f.tolist() == [0, 0, 1, 1, 0, 0, 0]
+    assert r.run_flags(days, [date(2020, 1, 1)], 3).sum() == 0
+    assert r.month_matrix([date(2020, 3, 1)])[0, 2] == 1.0
+    assert r.run_flags(days, [date(2020, 1, 20)], 3).sum() == 0  # after the last day: skipped

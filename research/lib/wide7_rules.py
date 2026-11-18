@@ -66,3 +66,43 @@ def year_dummies(years: Sequence[int]) -> np.ndarray:
     for n, y in enumerate(years):
         x[n, pos[y]] = 1.0
     return x
+
+
+# --- W13 festival dates (from memory; tests check each against wide-6's mean new moons) ---
+
+LUNAR_NEW_YEAR = [date.fromisoformat(s) for s in [
+    "2005-02-09", "2006-01-29", "2007-02-18", "2008-02-07", "2009-01-26", "2010-02-14",
+    "2011-02-03",
+    "2012-01-23", "2013-02-10", "2014-01-31", "2015-02-19", "2016-02-08", "2017-01-28",
+    "2018-02-16",
+    "2019-02-05", "2020-01-25", "2021-02-12", "2022-02-01", "2023-01-22", "2024-02-10",
+    "2025-01-29",
+]]  # fmt: skip
+DIWALI = [date.fromisoformat(s) for s in [
+    "2004-11-12", "2005-11-01", "2006-10-21", "2007-11-09", "2008-10-28", "2009-10-17",
+    "2010-11-05",
+    "2011-10-26", "2012-11-13", "2013-11-03", "2014-10-23", "2015-11-11", "2016-10-30",
+    "2017-10-19",
+    "2018-11-07", "2019-10-27", "2020-11-14", "2021-11-04", "2022-10-24", "2023-11-12",
+    "2024-11-01",
+    "2025-10-20",
+]]  # fmt: skip
+DHANTERAS = [d - timedelta(days=2) for d in DIWALI]
+
+
+def run_flags(days: Sequence[date], fest: Sequence[date], n: int) -> np.ndarray:
+    """1.0 on each of the n trading days strictly before each festival day, else 0.0. A
+    festival after the last day is skipped (its run is not known to be complete)."""
+    out = np.zeros(len(days))
+    for f in fest:
+        j = bisect.bisect_left(days, f)  # first day >= f
+        if j < len(days):
+            out[max(0, j - n) : j] = 1.0
+    return out
+
+
+def month_matrix(days: Sequence[date]) -> np.ndarray:
+    x = np.zeros((len(days), 12))
+    for n, d in enumerate(days):
+        x[n, d.month - 1] = 1.0
+    return x
