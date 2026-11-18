@@ -967,3 +967,19 @@ Never edit or delete a row.
 | 2026-11-18 01:34 | deep-1-switch | switch@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.63 | +1617.6% | 22.9% | 3.73 |
 | 2026-11-18 01:34 | deep-1-meta | meta@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.75 | +2859.9% | 23.3% | 2.98 |
 | 2026-11-18 01:35 | deep-1-meta | naive-1n | baseline | train | 1994-02-01 | 2025-11-09 | 1.06 | +7367.4% | 39.7% | 2.49 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.25 on the coin book (pooled single-coin 0.42, vs TS -0.01 p 0.55) | variant | train | 2019-04-07 | 2025-11-09 | 1.00 | +350.3% | 37.0% | 3.28 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.5 on the coin book (pooled single-coin 0.38, vs TS -0.06 p 0.72) | variant | train | 2019-04-07 | 2025-11-09 | 0.72 | +290.5% | 59.5% | 3.80 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.75 on the coin book (pooled single-coin 0.38, vs TS -0.06 p 0.83) | variant | train | 2019-04-07 | 2025-11-09 | 0.67 | +280.0% | 64.1% | 4.16 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-1 on the coin book (pooled single-coin 0.41, vs TS -0.03 p 0.86) | variant | train | 2019-04-07 | 2025-11-09 | 0.68 | +320.1% | 64.4% | 4.10 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-28 on the coin book (pooled single-coin 0.58, vs TS +0.14 p 0.10) | variant | train | 2019-04-07 | 2025-11-09 | 1.23 | +1026.1% | 35.9% | 7.07 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-56 on the coin book (pooled single-coin 0.47, vs TS +0.03 p 0.42) | variant | train | 2019-04-07 | 2025-11-09 | 0.84 | +441.6% | 46.8% | 5.35 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-91 on the coin book (pooled single-coin 0.43, vs TS -0.00 p 0.51) | variant | train | 2019-04-07 | 2025-11-09 | 0.79 | +397.5% | 53.8% | 4.70 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-182 on the coin book (pooled single-coin 0.33, vs TS -0.11 p 0.96) | variant | train | 2019-04-07 | 2025-11-09 | 0.57 | +181.0% | 67.4% | 4.29 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-28 on the coin book (pooled single-coin 0.61, vs TS +0.18 p 0.14) | variant | train | 2019-04-07 | 2025-11-09 | 1.12 | +951.6% | 42.7% | 6.81 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-56 on the coin book (pooled single-coin 0.44, vs TS +0.01 p 0.50) | variant | train | 2019-04-07 | 2025-11-09 | 0.73 | +343.2% | 62.8% | 5.24 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-91 on the coin book (pooled single-coin 0.44, vs TS +0.00 p 0.49) | variant | train | 2019-04-07 | 2025-11-09 | 0.72 | +339.7% | 63.1% | 3.95 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-182 on the coin book (pooled single-coin 0.33, vs TS -0.10 p 0.86) | variant | train | 2019-04-07 | 2025-11-09 | 0.50 | +121.2% | 75.5% | 3.71 |
+| 2026-11-18 11:02 | cointop-1-cm | TS twin on the selection set (pooled single-coin 0.44) | baseline | train | 2019-04-07 | 2025-11-09 | 0.72 | +391.2% | 64.5% | 4.04 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.25 control: condition read 26 weeks late (pooled 0.44) | control | train | 2019-04-07 | 2025-11-09 | 0.99 | +268.8% | 32.3% | 3.10 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-28 control: condition read 26 weeks late (pooled 0.44) | control | train | 2019-04-07 | 2025-11-09 | 0.87 | +369.9% | 45.5% | 6.39 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-28 control: condition read 26 weeks late (pooled 0.46) | control | train | 2019-04-07 | 2025-11-09 | 0.74 | +294.2% | 53.7% | 5.77 |
