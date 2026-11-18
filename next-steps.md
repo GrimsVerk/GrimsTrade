@@ -56,8 +56,13 @@
   - DONE `evo-2` (draft #58 -> evo-1): 8 inputs, six-asset days, plant calibrated per world.
     Noise 0/3 (pass) but plant 0.8 found in 1/3 (two near-misses: 0.001, 0.03): gate FAILS. No
     replays, no real data ever used. Evo line CLOSED (recovery 0.45 of target vs evo-1 0.26).
-  - RUNNING: `eu-1` (`grimstrade-eu1`: `tsmom12` on EUR UCITS ETF universe, robustness, card
-    first), `cash-interest` (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
+  - DONE `eu-1` (draft #59 -> trend-tune): `tsmom12` on a EUR UCITS copy of the live six
+    (SXR8, SXRV, 4GLD, IBGL, BTC/ETH in EUR; 2012-2025 train, Dutch costs): character holds
+    (Sharpe 1.44 vs 1.37 US twin, max DD 31% vs 36.5%, same crash pattern). Coin-free 7-asset
+    set: drawdown role holds, but trails equal weight by 0.21 Sharpe in EUR (currency + costs).
+    SE of each Sharpe ~0.27. Follow-ups (not started): eu6 paper book (owner), fixed per-order
+    fees, EUR-hedged vs unhedged US equity card.
+  - RUNNING: `cash-interest` (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
     must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
@@ -161,6 +166,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, eu-1 (#59): the live rule can be copied in the Netherlands with UCITS
+  ETFs (US ETFs are not buyable for EU retail) and keeps its character in EUR. Want an "eu6"
+  paper book in the live runner alongside the US one?
 - Night 2026-11-18, coin-cap-2 (#53) + coin-cap-3 (#56): weekly `stop-0.25` on the coin slots
   of `tsmom12` gives a shallower worst loss in 15 of 21 coin-crash episodes at the same Sharpe,
   but with all 13 coin-cap picks counted the bar is p < 0.0077 and 15/21 (p 0.039) does not meet
