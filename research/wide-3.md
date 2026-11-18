@@ -112,3 +112,45 @@ Bars 1 and 4 fail; 2, 3 and 5 pass.
 many flips (1962-2000 bond yields would have some); our ETFs have one.
 
 **Compared with my guess** (card): 2%, -0.04 to +0.05. It came out at +0.00, inside the range.
+
+## Pick 2 result: attention-peak (run once, 2026-11-18 19:11 UTC, train only)
+
+**It fails: Sharpe 1.02 against 1.05 for `tsmom12` (difference -0.03, p 0.74), behind in
+both eras in which it can act, and -0.21 on the six other coins. The held-out year was not
+looked at.** Table: `results/attention-peak.md`; 2 rows in `tries.md` (1 variant, 1
+robustness). Page views: 9 titles downloaded once (`lib/wide3_pageviews.py`), every series
+from its first day to 2025-11-10; none was printed or plotted before the run.
+
+| | `peak` | `tsmom12` |
+|---|---:|---:|
+| Sharpe, six assets, 1994-2025 | 1.02 | 1.05 |
+| Difference (p; 90% range) | -0.03 (0.74; -0.09 to +0.03) | |
+| 2017-21 / 2022-25 | 1.37 / 0.88 | 1.50 / 0.88 |
+| Max drawdown | 37.6% | 36.5% |
+| Crypto winter 2018 | -17% | -22% |
+| Other coins | 0.33 against 0.54 (-0.21, p 0.85) | |
+
+Bars 1, 2 and 4 fail; 3 and 5 pass.
+
+**What it shows (from the spell table).**
+
+1. **It saw the one classic mania.** BTC was out from 2017-12-15 to 2018-01-19, while BTC fell
+   47% (log) and the twin held it the whole time. That is the epidemic story exactly, and it is
+   why the 2018 winter cost 17% instead of 22%.
+2. **Every other surge was a false alarm, and the costly ones were early in a run.** Attention
+   peaked in January 2021 for both coins; the rule left ETH from 2021-01-15 to 2021-04-30 while
+   ETH rose 109%, and BTC twice in early 2021 (+26%, -2%). In 2021 attention peaked at the
+   *start* of the bull market (the first move above the old high), not at its end: the
+   November 2021 top, the one that mattered, did not trigger the rule at all.
+3. **Smaller coins surge and fade constantly.** 48 out spells on six other coins, turnover up
+   from 4.6 to 6.8 a year at 60 bps a round trip, Sharpe 0.33 against 0.54.
+
+So the mechanism fires on one real top in 2017 and on several starts of rallies. With four or
+five distinct episodes the sign could have gone either way; here it went against.
+
+**How sure.** Sure enough that it does not help: behind on the six assets and clearly behind
+on the six other coins. Not proof that attention carries no information: English Wikipedia may
+be the wrong audience after 2018 (the November 2021 top did not trigger it), and one form of the rule
+was tested, on purpose.
+
+**Compared with my guess** (card): 3%, -0.10 to +0.15. It came out at -0.03, inside the range.
