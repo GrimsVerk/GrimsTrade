@@ -107,3 +107,169 @@ Lead, 2026-11-18 21:15 UTC (review item 5, final refresh): reran `bt_now.py --fe
 S&P 7,323.63, 0.31% below its 200-day average (2 closes below), Nasdaq 2.9% below, URTH 1.0%
 below, OSEBX 3.2% above, VIX 24.3, VIX/VIX3M 1.007, HYG/LQD +0.53% vs 200-day. No state
 changed versus 17 Nov; the 17 Nov numbers are kept in one dated line in 5.1.
+
+## Round 2 (2026-11-18 ~22:10 UTC, fresh Opus reviewer, high effort): CHANGES
+
+Reviewed `report.md` at cfb50fe (branch `research/exit-1`), with `review-log.md` read first. None
+of round 1's fixes are undone below. Reviewer scratch output (bt_now rerun, extracted source texts) was kept outside the repo.
+
+Required:
+
+1. **The step 3 fund row for 5-10 days breaks the report's own assumptions, and its "last safe"
+   day is not safe.** The evidence is in report 6.2, step 3. That row says "Any fund paying out
+   5-10 business days after the order", with fallback Fri 4 Dec, last safe Fri 11 Dec, and
+   worst-case cash in NL "Mon 21 Dec / Wed 30 Dec". The assumptions paragraph under the table
+   applies one chain to every row: "the broker pays out within 2 bank days at worst; converting
+   and moving ... takes 1 day". The 2-5 and 2-6 rows use "paying out" to mean cash at the broker,
+   with the 2 payout days still to come (park 7.3: D+5 -> +2 -> +1 = D+8).
+   - The 5-10 row comes from park 7.3, which counts it differently: "Slow platform (5-10 days):
+     cash worst D+10 -> euro account +1. Worst = D+11". That count drops the 2 broker-payout
+     days. The same verb therefore means two different things in adjacent rows.
+   - Under the stated chain, Fri 4 Dec gives D+10 = Fri 18 Dec, then payout on Mon 21 and Tue 22,
+     and cash in a euro account on **Wed 23 Dec**, not Mon 21.
+   - Under the same chain, Fri 11 Dec gives D+10 = Tue 29 Dec (Wed 30 for a global fund that
+     skips 28 Dec). Adding 2 payout days and 1 transfer day puts the cash in **January 2027**.
+   - Even under park's own D+11 count, a global fund that skips 28 Dec lands on Thu 31 Dec, with
+     no spare day.
+   - Fix: define "5-10 days" exactly (cash at the broker, or cash in your bank account). If it
+     means cash at the broker, recompute: fallback Fri 4 Dec still lands Wed 23 Dec, but the last
+     safe day becomes **Wed 9 Dec** (10 fund days end Wed 23 Dec; payout Mon 28 and Tue 29;
+     euro account Wed 30). If it means cash in your bank, say so in the row label and add the
+     global-fund 28 Dec caveat.
+   - Use one verb with one meaning across all rows ("cash at the broker within N days"), and
+     update the summary step 2, the checklist in 6.4 and section 4's row.
+
+2. **Re-entry: the main rule's costs come from a different sample than the alternative's, which
+   hides that the alternative did better in the sample that fits today.** The evidence is in
+   report 8.2 and the summary step 5.
+   - For `staged-24` the report gives "about 3-4% of 10-year wealth on average". That is the
+     all-months mean (R 0.96-0.97). It then gives "median about 8% in high-valuation months;
+     worst tenth 0.72".
+   - For `dca12` it gives "median cost about 3%, worst tenth 0.90". Those are sample-B
+     (high-CAPE) numbers.
+   - In the reentry table (`lanes/reentry.md`, rules test) for sample B, the one that fits Nov
+     2026:
+
+     | Rule | Median R | Worst tenth | Share R > 1 |
+     |---|---:|---:|---:|
+     | `dca12` | 0.97 | 0.90 | 31% |
+     | `staged-24` | 0.92 | 0.72 | 35% |
+
+   - So in the sample that fits today, `dca12` beat `staged-24` on the median and on the worst
+     tenth, which is the regret measure. `staged-24` wins only in a real bust (1.4-1.6x, a few
+     episodes).
+   - The report nonetheless makes `staged-24` the default. It frames `dca12` as "better if
+     missing a rally would bother you more than missing a crash". But the data say `dca12` also
+     had the milder bad tail.
+   - Fix: give both rules side by side in the same sample (median, worst tenth, share above 1,
+     and the result in real busts). Then either make `dca12` the default, or say plainly that
+     `staged-24` is a bet that a real bust comes. That fits the investor's stated AI-bubble
+     belief, but in the test it cost more in the typical case and in the bad tail. Make the same
+     change in the summary step 5 and in section 4's row 5.
+
+Optional:
+
+- **The VIX readings were taken before the VIX close.** The refresh ran at 21:12 UTC, but VIX
+  and VIX3M close at 16:15 ET (21:15 UTC), and `bt_now.py` lets US bars through from 16:10 NY.
+  - My rerun at about 22:00 UTC gives VIX 24.56 (not 24.3), 1.378 times its 50-day mean (not
+    1.36), and VIX/VIX3M 1.011 (not 1.007).
+  - Every other reading reproduces exactly: closes, 200-day and 50-day averages, distance from
+    the highs, the 10-month values, 12-month and 24-month returns, HYG/LQD +0.5%, CAPE 39.37,
+    and the rule states.
+  - Fix: update the summary, 5.1 and the checklist. Move the US cut to 16:20 NY, or drop
+    VIX-type series before 16:20.
+- **Stale Nasdaq note in 6.1.** It says "The Nasdaq at -11.85% sits at the edge ... a further
+  0.2% fall puts it outside". At the 18 Nov close it is -11.49% (5.1 says -11.5%), so about a
+  0.6% further fall is needed. The 2.1 table's VIX cell ("On 17 Nov: VIX 25.5") is also stale
+  next to 5.1.
+- **"Only euro cash never lost value" overstates the case.** 7.3 says savings, XEON/CSH and IEGE
+  "kept their euro value in every crash and every window". But 7.1 lists XEON at -0.5% (2020),
+  3-month Euribor cash at -0.1% (2022) and IEGE at -4.91% since launch. Better wording: "lost
+  at most about 0.5% in any crash window".
+- **Section 4, row 2 labels the crash figure wrongly.** It says "-5.0% to -1.4% (S&P, `late`)",
+  but that figure is from all start days with a 10%+ fall (`crash-window`), as 6.1's column
+  header says.
+- **Summary bullet 2** says two steps "passed our pre-set test" but does not mention that the
+  200-day speed-up the playbook uses is post hoc. Add three words.
+- **The summary's crash list mixes currencies.** It gives the S&P 2007-09 fall as 52%, which is
+  in euros, while 9.2 gives the S&P's -57% (in dollars) and Berkshire's -54% (in dollars). Say
+  "(both in euros)" next to the OBX/S&P pair.
+- **Funds' shorter window was not tested.** The fund fallback (Fri 11 Dec) is about trading day
+  16-17, not day 22, so the six-week statistics apply only roughly. Say so in 6.1 or 10.3.
+- **ETFs need a line in step 0.** An exchange-traded fund (ETF) settles like a share (T+2) and
+  has no fund cut-off, so it follows the share rows. A non-expert may otherwise put it on the
+  slower fund path.
+- **Global fund tie-break.** If the S&P and `URTH` sit on different sides of their 200-day
+  lines, say which one governs. Today both are below. `URTH` matches no tested sample (its high
+  is older than 63 trading days).
+- **The Berkshire round-trip cost of "0.58%" depends on the amount.** Park gives 0.5% plus EUR 4
+  (about EUR 5,000 implied). State the formula.
+- **Comparisons count.** 10.2 says "15 strategies x up to 11 sample cuts", but bt's honesty
+  notes say "up to 14 sample cuts". Align them.
+- **Oslo evidence is thin.** The summary's "9% to 1%" for Oslo rests on 10 spells (2013-2025).
+  A clause in the summary ("10 spells") would keep the precision honest. 10.2 already says it.
+- **IPO lead time.** 9.1's "lead time ... 0 to 39 months (1996 ...)" uses 1996, which is not
+  one of the four years followed by a bear market within two years. Clarify what the range
+  covers.
+
+Checked and correct (do not redo):
+
+- **Priority order.** Literature (section 2) comes first and is the largest section, then
+  investors (3) with action-vs-talk, then a derivation table (4). Commonly heard ideas come last
+  (9: IPO wave, Berkshire, savings account, small bonds). Tax is out of scope, and the framing
+  is generic, with no personal details.
+- **Readings re-fetched** (`bt_now.py --fetch`, 18 Nov close) match 5.1, 5.2 and the summary
+  apart from the VIX point above: S&P 7,323.63 (-0.31% vs 200-day 7,346.55, 2 closes below,
+  last cross 17 Nov). Nasdaq -2.87% (since 13 Nov). OSEBX +3.15%, OBX +1.92%, URTH -0.99%.
+  Distances from highs -6.33 / -11.49 / -3.32 / -3.83. Faber month-end +3.78 / +1.81, live
+  -0.26. Sample matching: Oslo `late`, S&P and Nasdaq `now-like-below200`, URTH none.
+  The Nasdaq drawdown stop has been out since 2 Nov.
+- **Part A tables in 6.1** match `lanes/bt.md` Part A, the amendment and "Review round 1
+  fixes". That covers the `late`, `now-like` and crash-window rows, the per-holding table
+  (OSEBX 9.3% -> 1.0%, S&P 10.7% -> 1.7%, Nasdaq 15.7% -> 5.0%), and the drift costs (0.71-1.02
+  by the mean, 1.13-1.40 by the median; +0.06 / -0.26 in the below-the-line cuts).
+- **No look-ahead in the tested rule.** In `bt_amend.outcomes_new`, the first close below the
+  200-day average on day k means a sale at the close of day k+1, and closes before day 0 are
+  ignored. `bt_rules` signals are shifted by 2 days. CAPE is lagged and ranked on an expanding
+  window. Train period ends Nov 2025.
+- **Weekdays and day counts.** `report_checks.py` reproduces them, and I checked the following:
+  - Oslo trading day 22 = Fri 18 Dec counted from 18 Nov.
+  - Thu 26 Nov is Thanksgiving.
+  - Fri 29 Dec 2028 is a Friday, and 31 Dec 2028 a Sunday.
+  - Fri 22 Apr 2022 (ATB) was a Friday.
+  - The share chain (Fri 18 Dec -> Tue 29 Dec; Mon 21 -> Wed 30; Tue 22 settles Mon 28) holds.
+  - The 2-5 and 2-6 day fund chains hold: Wed 16 / Tue 15 Dec -> Wed 30 Dec, and Fri 11 Dec ->
+    Wed 23 / Mon 28 Dec.
+- **Re-entry levels.** 6,255 / 5,473 / 4,691 are 20/30/40% below 7,819 (18 Nov close / (1 -
+  6.33%) = 7,818.5). The 8% stop level of 7,193 is also right.
+- **GSY (NBER w23191 full text).**
+  - Turnover is elevated in run-ups that crash and in those that do not, and is "of little
+    use". Sales growth does not help in the US (the abstract lists turnover, but the body
+    supports the report's wording).
+  - Of the 21 crashes, the peak came about 6 months and +30% after the flag.
+  - The gsy-replication figures (38% / 51% / 15%, 104 / 51 episodes, 27% / 35% since 2002)
+    match `lanes/gsy-replication.md`.
+- **Goetzmann (2015) abstract.** "Only slightly higher" and "about 10%" after a doubling:
+  confirmed.
+- **Vanguard (2023) full text.** Lump sum ahead 68% of the time, 1976-2022, and "with higher
+  loss aversion would be better off": confirmed.
+- **Oaktree.** About $600m a week over the last 15 weeks of 2008: confirmed on the cited
+  Oaktree page.
+- **2026 events.** The AP 5 Nov sell-off (S&P -4.4%, Nasdaq -5.5%) and the Nasdaq Trader notice
+  listing ANT for Thu 19 Nov 2026 are both confirmed.
+- **Goyal-Welch-Zafirov 2024.** "Of those still significant in sample, half poor out of
+  sample" is consistent with the abstract.
+- **Historical numbers re-derived:**
+  - Berkshire 1999 -19.9% vs S&P +21.0%; 2000-02 about +30% vs -38%; 2008 -31.8% vs -37.0%.
+  - The Fed's first cuts: -42% and -56% to the lows.
+  - Buffett's op-ed came 28.5% above the low.
+  - The 1973-74 / 2000-02 / 2007-09 recovery months are counted from the trough.
+- **Citation metadata** (journal, volume, issue) checked for about 25 papers in 11.2: no errors
+  found.
+- **`tries.md` count.** 226 rows dated 2026-11-18 = 208 + 18, as 11.1 states.
+- **OBX-in-EUR conversion** in `haven_crash_table.py` is now NOK/USD x USD/EUR, with a range
+  assertion.
+
+### Changes made after round 2
+
+(filled in by the lead as fixes land)
