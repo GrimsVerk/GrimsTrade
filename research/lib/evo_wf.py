@@ -381,7 +381,7 @@ def _log_control(run: harness.Run, variant: str) -> None:
 def control(kind: str, arg: str) -> None:
     """One control world through the whole pipeline (benchmark: cash)."""
     real = ew.load_real()
-    base = ew.world(real, "shuffle", int(arg) if kind == "noise" else 1)
+    base = ew.world(real, "shuffle", int(arg) if kind == "noise" else 1, CONTROL_ZERO)
     w = base if kind == "noise" else ew.plant(base, float(arg))
     t0 = time.time()
     p = prepare(w)
@@ -392,6 +392,10 @@ def control(kind: str, arg: str) -> None:
         ceiling = gym_run(p, "evo-1-control", "H", wh)
         sh = stats.sharpe(ceiling.rets)
         print(f"ceiling (H through the gym, no search): Sharpe {sh:.2f}", flush=True)
+    eq = gym_run(p, "evo-1-control", "equal weight", gp.weights(EQUAL, p.six_feats, p.six_elig))
+    eq_p = stats.sharpe_diff_boot(eq.rets, np.zeros_like(eq.rets), seed=0)[1]
+    print(f"equal weight (no search): Sharpe {stats.sharpe(eq.rets):.2f}, p {eq_p:.3f}", flush=True)
+    _log_control(eq, f"{w.label}: equal weight, no search (world context; p vs cash {eq_p:.3f})")
     runs = search(p)
     cpu = sum(r["cpu"] for r in runs)
     evals = sum(r["evaluations"] for r in runs)
@@ -407,13 +411,14 @@ def control(kind: str, arg: str) -> None:
         rets = g.rets
         fast = p.oos_book.daily(proc.weights)
         d, pv, _, _ = stats.sharpe_diff_boot(rets, np.zeros_like(rets), seed=0)
+        d_eq, p_eq, _, _ = stats.sharpe_diff_boot(rets, eq.rets, seed=0)
         p_min = min(p_min, pv)
-        extra = ""
+        extra = f"; vs equal weight {d_eq:+.2f}, p {p_eq:.3f}"
         if ceiling is not None:
             wh = gp.weights(ew.H_RULE, p.six_feats, p.six_elig)
             rows = slice(bisect.bisect_left(p.six_fridays, OOS_START), None)
             corr = float(np.corrcoef(proc.weights[rows].ravel(), wh[rows].ravel())[0, 1])
-            extra = f"; weights corr to H {corr:.2f}; ceiling {stats.sharpe(ceiling.rets):.2f}"
+            extra += f"; weights corr to H {corr:.2f}; ceiling {stats.sharpe(ceiling.rets):.2f}"
         sharpe = stats.sharpe(rets)
         found = sharpe > 0 and pv < 0.10
         if ceiling is not None:
@@ -424,6 +429,8 @@ def control(kind: str, arg: str) -> None:
             "gym_sharpe": sharpe,
             "fast_sharpe": stats.sharpe(fast),
             "p": pv,
+            "vs_equal_weight": d_eq,
+            "p_vs_equal_weight": p_eq,
             "rules": {y: [gp.show_rule(r) for r in rs] for y, rs in proc.chosen.items()},
         }
         lines.append(f"{name}: gym Sharpe {stats.sharpe(rets):.2f} (fast {stats.sharpe(fast):.2f})"
@@ -445,6 +452,7 @@ def control(kind: str, arg: str) -> None:
                 "procedures": res,
                 "p_min_x3": min(1.0, 3 * p_min),
                 "ceiling_sharpe": stats.sharpe(ceiling.rets) if ceiling else None,
+                "equal_weight_sharpe": stats.sharpe(eq.rets),
                 "cpu_h": cpu / 3600,
                 "evaluations": evals,
                 "formulas": formulas,
@@ -458,12 +466,13 @@ def control(kind: str, arg: str) -> None:
 
 
 PLANTS = (0.01, 0.02, 0.04)
+CONTROL_ZERO = "simple"  # card note 2026-11-18: control worlds have zero mean simple return
 
 
 def ceilings() -> None:
     """The planted controls' ceilings (`H` itself through the gym, no search), logged before
     any planted search result exists."""
-    base = ew.world(ew.load_real(), "shuffle", 1)
+    base = ew.world(ew.load_real(), "shuffle", 1, CONTROL_ZERO)
     for k in PLANTS:
         w = ew.plant(base, k)
         p = prepare(w)
@@ -481,7 +490,7 @@ def world_baselines(which: str) -> None:
     world still pays a long holder about half the variance a day in simple returns, so
     holding is not exactly cash there."""
     real = ew.load_real()
-    noise = [ew.world(real, "shuffle", seed) for seed in (1, 2, 3)]
+    noise = [ew.world(real, "shuffle", seed, CONTROL_ZERO) for seed in (1, 2, 3)]
     worlds = noise if which == "noise" else [ew.plant(noise[0], k) for k in PLANTS]
     for w in worlds:
         p = prepare(w)

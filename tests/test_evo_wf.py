@@ -3,7 +3,7 @@
 Worlds (`evo_world`):
 - a shuffled world keeps every asset's (overnight, open-to-close) pairs, only reordered, and has
   zero total log return; a block world draws blocks of consecutive pairs; both are fixed by
-  their seed;
+  their seed; a `simple` world has zero mean simple daily return;
 - the planted edge is exactly `+k s` on the open-to-close part of every bar a Friday decision
   trades into when `H` holds on that Friday's inputs (`evo_feat`), `-k s` when not.
 
@@ -123,6 +123,21 @@ def test_worlds_reorder_pairs_and_take_out_the_drift(lib: dict[str, ModuleType])
                 pos = {round(float(x), 10): i for i, x in enumerate(on0)}
                 steps = np.diff([pos[round(float(x), 10)] for x in on])
                 assert (steps == 1).mean() > 0.9  # mostly runs of consecutive bars
+
+
+def test_zero_mean_simple_return_worlds(lib: dict[str, ModuleType]) -> None:
+    import numpy as np
+
+    ew = lib["evo_world"]
+    real = _world(lib)
+    w = ew.world(real, "shuffle", 1, zero="simple")
+    assert w.label == "shuffle 1 zero-mean"
+    for s, bars in w.six.items():
+        cl = np.array([b.close for b in bars])
+        assert abs((cl[1:] / cl[:-1] - 1).mean()) < 1e-12
+        on, _ = ew._pairs(bars)
+        on0, _ = ew._pairs(ew.world(real, "shuffle", 1).six[s])
+        assert np.allclose(on, on0)  # same draw, only the shift differs
 
 
 def test_plant_follows_h_on_the_world_inputs(lib: dict[str, ModuleType]) -> None:

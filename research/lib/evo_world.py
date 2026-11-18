@@ -79,8 +79,13 @@ def _rebuild(bars: Sequence[Bar], on: np.ndarray, oc: np.ndarray) -> list[Bar]:
     return out
 
 
-def redraw(bars: Sequence[Bar], kind: str, rng: np.random.Generator) -> list[Bar]:
-    """One asset's bars with its return pairs redrawn in time and the drift taken out."""
+def redraw(
+    bars: Sequence[Bar], kind: str, rng: np.random.Generator, zero: str = "log"
+) -> list[Bar]:
+    """One asset's bars with its return pairs redrawn in time and the drift taken out:
+    `zero="log"` makes the total log return 0 (the card's replay worlds), `zero="simple"` the
+    mean simple close-to-close return 0 (the control worlds since the card note of
+    2026-11-18: a zero log drift still pays a holder about half the variance a day)."""
     on, oc = _pairs(bars)
     n = len(on)
     if kind == "shuffle":
@@ -90,21 +95,26 @@ def redraw(bars: Sequence[Bar], kind: str, rng: np.random.Generator) -> list[Bar
     else:
         raise ValueError(kind)
     on, oc = on[idx], oc[idx]
-    oc = oc - (on.sum() + oc.sum()) / n
+    if zero == "log":
+        oc = oc - (on.sum() + oc.sum()) / n
+    elif zero == "simple":
+        oc = oc - math.log(float(np.exp(on + oc).mean()))
+    else:
+        raise ValueError(zero)
     return _rebuild(bars, on, oc)
 
 
-def world(real: World, kind: str, seed: int) -> World:
+def world(real: World, kind: str, seed: int, zero: str = "log") -> World:
     """World `seed` of the given kind (`shuffle`: controls 1-3, `block`: replays 101-140)."""
 
     def one(s: str, bars: list[Bar]) -> list[Bar]:
-        return redraw(bars, kind, np.random.default_rng([seed, ASSETS.index(s)]))
+        return redraw(bars, kind, np.random.default_rng([seed, ASSETS.index(s)]), zero)
 
     return World(
         {s: one(s, b) for s, b in real.six.items()},
         {s: one(s, b) for s, b in real.gspc.items()},
         dict(real.sd),
-        f"{kind} {seed}",
+        f"{kind} {seed}" + (" zero-mean" if zero == "simple" else ""),
     )
 
 
