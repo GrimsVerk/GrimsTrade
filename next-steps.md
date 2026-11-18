@@ -1,5 +1,18 @@
 # Next steps
 
+## Survey 6 (doing 2026-11-18, branch `survey-6`, draft PR -> `survey-5`)
+
+Which strategy FAMILIES paid investors live, net of fees, since their funds launched? Value,
+momentum, quality, low-vol, multi-factor, dividend, FX carry, merger arbitrage, option writing,
+tail hedges, gold miners, defensive sectors (trend and risk parity reused from survey-5).
+Chain: (1) keyless live fund list `research/survey-6.md`; (2) card, then a descriptive
+`live-check` per family (not selectable); (3) a one-screen ranking and the 2-3 directions next.
+
+- Doing: step 1 (fund list, inception dates and fees being verified).
+- Data (git-ignored): `python -I research/lib/survey6_fetch.py <cache_root>` writes
+  `<cache_root>/downloads/survey-6/` (Yahoo JSON, Ken French zips, AQR BAB/QMJ xlsx, CBOE
+  BXM/PUT csv) and `<cache_root>/derived/survey-6/<TICKER>.csv`.
+
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 
 Live track records as post-sample evidence. List of keyless live fund series pushed first
