@@ -1,6 +1,6 @@
 # Next steps
 
-## USD 1 (done 2026-11-18, branch `usd-1`, draft PR -> `slow-1`)
+## USD 1 (done 2026-11-18, branch `usd-1`, draft PR #39 -> `slow-1`)
 
 slow-1's closest input, the dollar index's 13-week change (`usd_13w`), tested again as a
 pre-registered replication (sign fixed in advance: a rising dollar, a worse quarter) on data the
