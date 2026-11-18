@@ -94,3 +94,68 @@ or "changes", and whether eu-7's plain answer (section 4) needs a new sentence.
 - Project-wide (register-1 `research/register/BAR.md`, 2026-11-18 22:34): 2,904 tries, N 1,012
   for a new pick, Bonferroni p <= 4.9e-5. No pick is made here.
 - Held-out year: untouched.
+
+## Step 2: idea C, trend on the stock and long-bond funds only (added before any C number)
+
+### Why, and why it is suspect
+
+eu-7 found that rule A (trend on the three stock funds, the rest held) lost trend's 2022
+protection because it held the long euro bonds (2022: A -3.8%, T +1.7%). Idea C adds the long
+bond fund to the filtered set. It was suggested by the 2012-2025 EUR years themselves (one
+window, 2022), so it is post-hoc. To avoid fitting on those years it is **judged first on US
+proxies 1994-2011** (before the euro funds existed), and only then on EUR 2012-2025. It counts
+in the eu family.
+
+### Seen before writing this
+
+Everything in eu-6, eu-7 and step 1 above (all cash at 0 or with the rate; no C number). General
+market history: in 2022 long bonds fell while gold and commodities rose; commodities fell hard in
+2008, 2015-16 and 2020; 1-3y euro govts barely moved. No backtest of C on any book.
+
+### The rule (fixed now; nothing else is run)
+
+- **C `trendsl`**: seven 1/7 slots. The three stock funds **and the long-bond fund** are held
+  only while their 365-day return is positive (the `tsmom12` signal, Friday decisions), else the
+  slot is cash; the other three are held at 1/7 always. `euw`: filtered SXR8, EXSA, IQQE, IBGL;
+  held IBGS (1-3y), 4GLD, EXXY. Band 5/25 of a 1/7 slot = 3.57% (as T and A). Everything else
+  as eu-7 (costs, window W, next-open fills, daily target weights from the Friday decision).
+- **`usw` proxy** (daily, USD, the gym's US costs): filtered SPY, EFA, EEM, TLT (20y+); held IEF
+  (7-10y, the shorter bond slot, as `euw`'s IBGS position), GLD, DBC. Run from 2007-03-01 with
+  bars cut after **2011-12-31** (no US bar after 2011 is loaded for C).
+- **Long monthly proxy** (Shiller stocks, 10y Treasuries, gold; eu-6's): stock and bond slots on
+  the lagged 12-month signal, gold 1/3 always; judged on months **1994-01 .. 2011-12** only.
+- Cash at 0 for every verdict (eu-7's terms, so C is judged like A and B were); C on `euw` with
+  rate (a) of step 1 is shown as a robustness row.
+
+### Stage 1: US proxies 1994-2011 (judged first; T and H re-scored on the same windows, no rows)
+
+C passes stage 1 only if both:
+
+1. **Keeps the insurance**: (a) worst loss no more than 2 points above T's on both proxy windows
+   (monthly 1994-2011, `usw` 2007-03 .. 2011-12); (b) in 2000-02 (monthly) and 2008 (`usw`),
+   C's return no more than 3 points below T's.
+2. **Loses less of the rest**, at least 2 of 3: (a) Sharpe at least 0.05 above T's on the
+   monthly proxy 1994-2011; (b) longest under water at least 3 months shorter there; (c) at least
+   25% fewer orders a year on `usw` 2007-2011.
+
+### Stage 2: EUR 2012-2025 (eu-7's test, unchanged)
+
+Keeps the insurance (max DD <= T + 2 points; at least 5 of the 6 crash windows within 3 points of
+T, the 2000-02 and 2008 windows from the stage-1 proxies) and loses less of the rest (2 of 3:
+Sharpe >= T + 0.05, under water >= 3 months shorter, >= 25% fewer orders). Preferences P1-P5 as
+eu-7, among T, B, C, H (A shown, not judged; it won nothing in eu-7).
+
+**C is worth a held-out-year card only if it passes stage 1 and stage 2.** Even then the year is
+not spent in this lane: a separate card would test only "C keeps the insurance" on 12 months.
+A Sharpe lead of C counts as real only at p < 0.10 / 13 = **0.0077** (eu family 13).
+
+### Rows (fixed now)
+
+- `euw`, no fee (`variant`) and 3 tiers x 3 books (`variant`): 10 rows.
+- `usw` 2007-03-01 .. 2011-12-31 (`robustness`): 1 row. Monthly proxy 1994-2011 (`robustness`,
+  eu-6's monthly format): 1 row. `euw` with rate (a) (`robustness`): 1 row.
+- **13 rows.** eu family 12 -> **13** (bar p < 0.0077). Project-wide: 2,904 tries, N 1,012 for a
+  new pick, Bonferroni p <= 4.9e-5 (register-1 `BAR.md`, 2026-11-18 22:34).
+- Plumbing before any row (no number shown): C's decisions equal T's on the four filtered funds
+  and hold exactly 1/7 in each of the other three on every day, on `euw` and `usw`; the `usw`
+  history for C ends 2011-12-31; the monthly C holds gold at 1/3 always.
