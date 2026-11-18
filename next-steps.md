@@ -36,7 +36,8 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   - #37 `trend-1926` (-> trend-tune): `tsmom12` beats holding on US stocks 1927-1961 (Sharpe
     0.88 vs 0.55, p 0.02; worst loss 38% vs 84%) but two thirds is 1929-1932: crash insurance,
     not an edge.
-  - #41 `volume-1`: own trading volume does not forecast (max |IC| 0.021 vs chance 0.048).
+  - #41 `volume-1`: own trading volume does not forecast (max |IC| 0.021 vs chance 0.048), nor
+    across ~89 coins a week (max |IC| 0.020 vs 0.043). Lane closed.
   - #43 `trend-where` (-> trend-tune): per-asset walk-forward trend filter (`where-vol`) ties
     always-on `tsmom12` (1.07 vs 1.05, p 0.27); fails the bar; live rule unchanged.
     Follow-up on 1927-1961 industries: the switch kept the filter on for every industry-year
@@ -56,13 +57,22 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   - #47 `wide-2` (-> wide-1): wide-1's "trend age / hazard rate" (`age4`: hold a slot only after
     4 Fridays on) fails train: Sharpe 0.99 vs 1.05, behind in 5 of 5 eras; skipping short spells
     costs more than it saves.
+    Second pick E6 "patch-leaving" (`mvt`: hold only above-average in-trend assets) fails all
+    five bars: Sharpe 0.85 vs 1.05, max drawdown 53% vs 37%, turnover 3.6x. Third pick G2
+    `crowded-trend` (halve the book when all eligible assets trend) fails: Sharpe 0.98 vs 1.05,
+    drawdown 29% vs 37% for 3 points less return a year. Picks so far: 3 of 42.
   - #48 `data-long-1`: free long histories verified: Shiller ie_data (monthly 1871-, 10y yield
     + bond total return; current file on shillerdata.com), Damodaran histretSP (annual 1928-2025,
     10y TR, Baa, gold), datahub gold monthly 1833-2026, JST R6 (annual, CC BY-NC-SA). Wire
-    Shiller first (loader started in burst 1); FRED timed out from this machine.
-- Running at the end of burst 1 (results land in their PRs): `coin-cap` (cap the coin weight
-  inside `tsmom12` vs cointop-1's exits), `data-long-1` (Shiller long-bond loader),
-  `wide-2` second mechanism, `volume-1` across 100 coins, `trend-1926` on 1962-2001.
+    Shiller first; FRED timed out from this machine. Loader `research/lib/long_bond.py` done
+    (1,870 monthly long-bond returns 1871-01..2026-10; needs `uv run --with xlrd`).
+  - #49 `coin-cap` (-> cointop-1): a plain 10-25% cap on coin weight cuts `tsmom12`'s worst loss
+    36.5% -> 28.9%, the same as `stop-0.25`, but that floor is the 2000-02 dot-com fall; a 25% cap
+    costs ~1 point CAGR vs the stop's 2.2, yet inside coin-crash windows the stop beats any cap of
+    the same cost (-72% vs -110% summed). Sharpe in noise; bar not met. Coin-years re-reading
+    (2013-25): the stop wins (worst loss 17.7% vs 21-27% for caps of similar cost), but mostly on
+    the single 2018-20 fall: close to one observation.
+- Running at the end of burst 1 (results land in their PRs): `trend-1926` on 1962-2001.
 - Owner direction 2026-11-17: never stop early (only weekly 0.74, the reset or the Chief of
   Staff); always WIDER and DEEPER lanes. 2026-11-18: bursts use only the last 30 min of each
   5-hour window (`chief-of-staff/briefs/grimstrade-burst.md`), weekly stop 0.84.
@@ -71,12 +81,12 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 1. D `evo-1` next step: fast scorer vs `gym.simulate`, `evo_wf.py`/`evo_world.py`, timing test,
    noise/planted controls, then the 20 replay worlds; no real search before those.
-2. W `data-long-1` -> wire the recommended long bond/gold histories into the cache, then
+2. W `data-long-1` -> gold (datahub monthly) and Damodaran cross-check next to the Shiller bond, then
    D `trend-where-long`: `where-vol` unchanged on bond/gold before 2002 (the worst-loss question
    now rests on 2022 alone).
-3. D `coin-cap` follow-up: whatever its write-up says (if a plain cap matches the learned exits,
-   a draft rule PR for the owner).
-4. W `wide-3`: next uncarded wide-1 mechanism; the bar counts every pick so far (k of 42).
+3. D `coin-cap` follow-up: `stop-0.25` beats plain caps on coin years but on ~one episode; find
+   more coin falls (the 100-coin book) before any rule PR.
+4. W `wide-3`: next uncarded wide-1 mechanism; the bar counts every pick so far (4 of 42).
 5. D `rl`: rl-5 says stop screening weekly perp inputs; close the RL lane or try slower carry
    (cost), both on train only (carry-3's held-out year is spent).
 6. W long-horizon / other assets: trend-1926 shows trend is crash insurance on stocks; test the
