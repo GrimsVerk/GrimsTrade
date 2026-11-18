@@ -8,7 +8,8 @@ Sheet "Data": the header is split over the rows above the row whose first cell i
 Column labels confirmed on the Yale copy (2023-09): "Rate GS10" (long rate, %),
 "Monthly Total Bond Returns" (gross one-month return on a 10y bond rebuilt from GS10, 0.98 =
 -2%), "Real Total Bond Returns" (CPI-deflated index). Dates are year.month floats, so
-1871.1 is October 1871.
+1871.1 is October 1871. The shillerdata.com file (fetched 2026-11-18, the "ie_data.xls" link on
+the home page) parses to 1,870 months, 1871-01 to 2026-10.
 """
 
 from __future__ import annotations

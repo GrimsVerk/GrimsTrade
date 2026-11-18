@@ -5,8 +5,10 @@
 Free long histories for the bond and gold slots (blocks PR #43, PR #37). Write-up
 `research/data-long-1.md`. Wire first: Shiller `ie_data.xls` (monthly 1871-, GS10 + bond TR),
 then Damodaran `histretSP.xls` (annual 1928-, 10y TR + gold; gold only from 1971). FRED csv
-timed out from this machine: retry. Next: a cache loader for Shiller, then rerun trend-where
-worst-loss on 1871-.
+timed out from this machine: retry. Loader done: `research/lib/long_bond.py` reads
+`<cache_root>/shiller/ie_data.xls` (download by hand from shillerdata.com; needs
+`uv run --with xlrd`), column "Monthly Total Bond Returns", 1871-01 to 2026-10. Next: rerun
+trend-where worst-loss on 1871- with it; then Damodaran gold from 1971.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
