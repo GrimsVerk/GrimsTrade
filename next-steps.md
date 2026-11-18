@@ -38,8 +38,14 @@
   - evo-1 controls after fix: noise 0/3 found, but planted k=0.04 NOT found (search overfits
     past the true rule). Lead (card note): tune greed on fresh synthetic worlds only, confirm on
     new controls, then replays + real search; else close-or-redesign.
+  - DONE `gsy-1` (draft #55 -> trend-1926): GSY replicates in direction, weaker: 49 French
+    industries 1928-2014, P(40% crash in 2y) 38% after +100% (GSY 53%), 51% after +150% (GSY
+    ~80%), base 15%; since 2002 27%/35% vs 12%. Overlay on `tsmom12`: `flag100-sma` +0.027
+    (p 0.001), `flag100-vol` +0.030 (p 0.007) pass the Sharpe route pre-2002, fade after 2002
+    (p ~0.2) and trail on sector ETFs; no worst-loss gain (`tsmom12` already out of 88% of
+    industry crashes). Not a candidate; use run-up crash rates for risk description only.
   - RUNNING: `evo-1` (greed tuning on synthetic worlds), `wide-4` (`grimstrade-wide4`:
-    tax-drain + 5 new cross-field mechanisms), `gsy-1` (`grimstrade-gsy1`, Greenwood-Shleifer-You
+    tax-drain + 5 new cross-field mechanisms) (`grimstrade-gsy1`, Greenwood-Shleifer-You
     run-up exit on French industries 1928-), `coin-cap-3` (daily-checked stop vs weekly).
 - 3. Then the Lead 1 lane queue below.
 
