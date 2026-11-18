@@ -1,5 +1,21 @@
 # Next steps
 
+## combo-1 (DEEPER lane, night 2026-11-18, branch `combo-1`, draft PR -> `main`, never merged by agents)
+
+Task: failure map of the most credible models/overlays against `tsmom12` (where each loses:
+eras, trend reversals, chop, crash speed, the 2022 rate shock), the complementarity story
+(correlation of excess returns by regime), then at most 2 carded combinations chosen from the
+map by a stated rule, train only, every try logged, then a verdict. Write-up `research/combo-1.md`.
+
+- Base is `main`, which has no research stack: `research/` was copied unchanged from
+  `origin/coin-cap-3` (it holds the deep-1 atlas code and series loader). `src/` stays `main`'s;
+  main's gym charges 60 bps on crypto, the research protocol 25 + 5 bps, so every combo-1 replay
+  passes the protocol costs explicitly (`lib/combo1_*.py`).
+- Inputs not rebuilt (saved equity curves of finished lanes, copied read-only into
+  `<cache_root>/derived/combo-1/inputs/`): `where-vol` (trend-where), `stop-0.25` (cointop-1);
+  deep-1's sleeve series; carry-3's `band` train series.
+- Status: started.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings

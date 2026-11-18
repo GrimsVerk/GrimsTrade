@@ -1,0 +1,248 @@
+"""cointop-1, Part C: the three settings chosen on the coin book, unchanged, through the gym
+(card in research/cointop-1.md).
+
+    uv run python -I research/lib/cointop1_carry.py          # the real run (once; logs tries)
+    DRY=1 uv run python -I research/lib/cointop1_carry.py    # plumbing: last 120 days, no log
+
+Settings (hard-coded from Part B, `results/cointop-1-coins.md`): `stop-0.25`, `fade-28`,
+`breadth-28`. Only coin slots get the extra condition; every other slot is plain `tsmom12`.
+Writes `research/results/cointop-1.md`.
+"""
+
+from __future__ import annotations
+
+import math
+import sys
+from collections.abc import Callable
+from datetime import date
+from pathlib import Path
+
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import breadth_books as bb  # noqa: E402
+import breadth_xs as xs  # noqa: E402
+import cointop1_core as core  # noqa: E402
+import common as c  # noqa: E402
+import harness  # noqa: E402
+import stats  # noqa: E402
+
+from grimstrade import gym  # noqa: E402
+from grimstrade.data import CRYPTO, UNIVERSE  # noqa: E402
+
+STOP_K = 0.25
+FADE_L = 28
+BREADTH_L = 28
+BOOK_START = date(2019, 3, 31)
+COIN_ERAS = ("2010-16", "2017-21", "2022-25")
+PARTS = [
+    ("2013-01-01 .. 2019-03-30", date(2013, 1, 1), date(2019, 3, 30)),
+    ("2019-03-31 .. 2025-11-09", date(2019, 3, 31), date(2025, 11, 9)),
+]
+CRASH = [
+    (date(2013, 4, 9), date(2013, 4, 16)),
+    (date(2013, 12, 4), date(2014, 4, 10)),
+    (date(2017, 6, 13), date(2017, 7, 16)),
+    (date(2017, 9, 1), date(2017, 9, 14)),
+    (date(2018, 1, 13), date(2020, 3, 12)),
+    (date(2021, 5, 8), date(2021, 7, 20)),
+    (date(2021, 11, 8), date(2022, 1, 22)),
+    (date(2024, 12, 16), date(2025, 4, 8)),
+]
+CHECK_DAYS = [
+    date(2014, 3, 7),
+    date(2017, 12, 22),
+    date(2018, 6, 15),
+    date(2020, 3, 13),
+    date(2021, 5, 21),
+    date(2024, 3, 15),
+]
+Extra = Callable[[c.View, str], bool]
+
+
+def stop_ok(view: c.View, s: str) -> bool:
+    """Within STOP_K years' worth of its own volatility of its one-year high."""
+    v = c.vol_series(view, s, 60)
+    if len(v) < 20 or not v[-1] > 0:
+        return False  # an unknown drawdown is not held (as on the coin book)
+    cl, d = view.close(s), view.dates(s)
+    hi = cl[d > d[-1] - 365].max()
+    return bool(math.log(cl[-1] / hi) / v[-1] >= -STOP_K)
+
+
+def fade_ok(view: c.View, s: str) -> bool:
+    r = c.trailing_logret(view, s, FADE_L)
+    return (not math.isnan(r)) and r > 0
+
+
+class Breadth:
+    """At least half of the coin book's coins are up over BREADTH_L days, read from the coin book
+    as of the day before the decision (row `today` of the lagged series uses prices stamped
+    `today - 1` or earlier). Met before the book starts and where the share is unknown."""
+
+    def __init__(self) -> None:
+        book = bb.cm_book()
+        r = xs.lag(xs.logret(book.px, BREADTH_L, 0), book.shift)
+        self.share = core.breadth_share(r, book.elig)
+        self.day0 = book.day0
+
+    def __call__(self, view: c.View, s: str) -> bool:
+        today = view.today
+        if today < BOOK_START:
+            return True
+        row = min((today - self.day0).days, len(self.share) - 1)
+        return not (self.share[row] < 0.5)
+
+
+def rule(extra: Extra, weekly: bool = True) -> c.ResearchStrategy:
+    def sig(view: c.View, s: str) -> bool:
+        if not c.tsmom_signal(view, s):
+            return False
+        return extra(view, s) if UNIVERSE[s] == CRYPTO else True
+
+    f = c.slots(sig)
+    return c.weekly(f) if weekly else f
+
+
+def sh(run: c.Run, a: date, b: date) -> float:
+    r = run.rets_between(a, b)
+    return stats.sharpe(r) if len(r) > 30 else math.nan
+
+
+def tot(run: c.Run, a: date, b: date) -> float:
+    r = run.rets_between(a, b)
+    return float(np.prod(1 + r) - 1) if len(r) else 0.0
+
+
+def main() -> None:
+    extras: dict[str, tuple[str, Extra]] = {
+        f"stop-{STOP_K:g}": ("cointop-1-stop", stop_ok),
+        f"fade-{FADE_L}": ("cointop-1-fade", fade_ok),
+        f"breadth-{BREADTH_L}": ("cointop-1-breadth", Breadth()),
+    }
+    twin_f = c.weekly(c.slots(c.tsmom_signal))
+    six = c.ctx("six")
+
+    # look-ahead checks before any number
+    tw = c.go("baselines", "tsmom12", twin_f, six, "baseline", log=False)
+    same = c.go("cointop-1", "always-true", rule(lambda v, s: True), six, "baseline", log=False)
+    if [d.weights for d in same.decisions] != [d.weights for d in tw.decisions]:
+        raise AssertionError("always-true rule differs from tsmom12")
+    for _, (_, ex) in extras.items():
+        harness.check_against_gym(rule(ex), six.hist, CHECK_DAYS)
+        harness.check_against_gym(rule(ex, weekly=False), six.hist, CHECK_DAYS[:2])
+    print("look-ahead checks passed", flush=True)
+
+    ew = c.go("baselines", "equal-weight", c.weekly(c.equal_weight), six, "baseline", log=False)
+    vs = {n: c.go(idea, n, rule(ex), six, "variant") for n, (idea, ex) in extras.items()}
+    out = [
+        "# cointop-1: the carry-back to BTC and ETH (Part C)",
+        "",
+        "Generated by `research/lib/cointop1_carry.py`; card and reading in "
+        "`research/cointop-1.md`; Parts A and B in `cointop-1-coins.md`. The three settings "
+        "chosen on the coin book, unchanged, through the gym (gym costs, train only). Only coin "
+        "slots get the extra condition.",
+        "",
+        "## (a) The six live assets, full train",
+        "",
+        c.table([*vs.values(), tw, ew], versus=tw),
+        "",
+        "Total return inside each of the protocol's stress windows:",
+        "",
+        c.stress_table([*vs.values(), tw, ew]),
+        "",
+        "Total return inside each coin-crash window (deep-1's atlas, table 4a):",
+        "",
+        "| Variant |" + "".join(f" {a} .. {b} |" for a, b in CRASH) + " Sum |",
+        "|---|" + "---:|" * (len(CRASH) + 1),
+    ]
+    crash = {r.variant: [tot(r, a, b) for a, b in CRASH] for r in [*vs.values(), tw]}
+    for name, xs_ in crash.items():
+        out.append(f"| {name} |" + "".join(f" {x:+.1%} |" for x in xs_) + f" {sum(xs_):+.1%} |")
+    out += ["", "Sharpe in the two parts of the coin years:", ""]
+    out += ["| Variant |" + "".join(f" {n} |" for n, _, _ in PARTS), "|---|---:|---:|"]
+    for r in [*vs.values(), tw]:
+        out.append(f"| {r.variant} |" + "".join(f" {sh(r, a, b):.2f} |" for _, a, b in PARTS))
+    out.append("")
+
+    # (b) the six other coins, and the robustness runs
+    coin = c.ctx("coin")
+    tw_coin = c.go("baselines", "tsmom12", twin_f, coin, "baseline", log=False)
+    vs_coin = {n: c.go(i, n, rule(ex), coin, "robustness") for n, (i, ex) in extras.items()}
+    out += [f"## (b) The six other coins, from {coin.start}", ""]
+    out += [c.table([*vs_coin.values(), tw_coin], versus=tw_coin), ""]
+    for sym in ("BTC", "ETH"):
+        u = c.ctx(sym)
+        tu = c.go("baselines", "tsmom12", twin_f, u, "baseline", log=False)
+        ru = [c.go(i, n, rule(ex), u, "robustness") for n, (i, ex) in extras.items()]
+        out += [f"## Robustness: {sym} alone, from {u.start}", "", c.table([*ru, tu], tu), ""]
+    costs2 = {k: gym.Costs(fee=v.fee * 2, slip=v.slip * 2) for k, v in gym.COSTS.items()}
+
+    def at2(idea: str, name: str, f: c.ResearchStrategy, kind: str, log: bool) -> c.Run:
+        return harness.run(
+            idea, name, f, kind=kind, panel=six.panel, history=six.hist, start=six.start,
+            end=six.end, costs=costs2, log=log and not c.DRY,
+        )  # fmt: skip
+
+    t2 = at2("robustness", "tsmom12-2xcost", twin_f, "robustness", False)
+    r2 = [at2(i, f"{n}-2xcost", rule(ex), "robustness", True) for n, (i, ex) in extras.items()]
+    out += ["## Robustness: the six assets at double costs", "", c.table([*r2, t2], t2), ""]
+    td = c.go("cointop-1", "tsmom12-daily", c.slots(c.tsmom_signal), six, "baseline")
+    rd = [
+        c.go(i, f"{n}-daily", rule(ex, weekly=False), six, "robustness")
+        for n, (i, ex) in extras.items()
+    ]
+    out += ["## Robustness: the six assets, every decision daily", "", c.table([*rd, td], td), ""]
+
+    # the pass bar, each rule on its own
+    out += ["## Pass bar (twin `tsmom12`; all seven must hold)", ""]
+    passed = []
+    for n, p in vs.items():
+        a, b = c.align(p, tw)
+        diff, pval, lo, hi = stats.sharpe_diff_boot(a, b)
+        ep, et = c.era_sharpes(p), c.era_sharpes(tw)
+        ahead = sum(ep[e] > et[e] for e in COIN_ERAS)
+        dp, dt = c.describe(p), c.describe(tw)
+        cp, ct = crash[n], crash[tw.variant]
+        better = sum(x > y + 1e-12 for x, y in zip(cp, ct, strict=True))
+        worse = sum(x < y - 1e-12 for x, y in zip(cp, ct, strict=True))
+        x, y = c.align(vs_coin[n], tw_coin)
+        dcoin = stats.sharpe(x) - stats.sharpe(y)
+        parts = [(sh(p, a_, b_), sh(tw, a_, b_)) for _, a_, b_ in PARTS]
+        use = parts[1:] if n.startswith("breadth") else parts
+        ok6 = all(u > v for u, v in use)
+        se = (hi - lo) / 3.29
+        luck3, luck12 = stats.expected_max_sharpe(3, se**2), stats.expected_max_sharpe(12, se**2)
+        bars = [
+            ("1. Sharpe beats `tsmom12` with p < 0.033", diff > 0 and pval < 0.033,
+             f"difference {diff:+.3f}, p = {pval:.3f}"),
+            ("2. Ahead in all three coin eras", ahead == 3,
+             f"{ahead} of 3: " + ", ".join(f"{e} {ep[e]:.2f} vs {et[e]:.2f}" for e in COIN_ERAS)),
+            ("3. Worst loss smaller, and coin-crash windows better",
+             dp["mdd"] < dt["mdd"] and sum(cp) > sum(ct) and better > worse,
+             f"worst loss {dp['mdd']:.1%} vs {dt['mdd']:.1%}; windows summed {sum(cp):+.1%} vs "
+             f"{sum(ct):+.1%}, better in {better}, worse in {worse}"),
+            ("4. Ahead of `tsmom12` on the six other coins", dcoin > 0, f"{dcoin:+.2f}"),
+            ("5. Beats equal weight on Sharpe", dp["sharpe"] > c.describe(ew)["sharpe"],
+             f"{dp['sharpe']:.2f} vs {c.describe(ew)['sharpe']:.2f}"),
+            ("6. Ahead in both parts of the coin years"
+             + (" (second part only: twin before the book)" if n.startswith("breadth") else ""),
+             ok6, "; ".join(f"{u:.2f} vs {v:.2f}" for u, v in parts)),
+            ("7. Larger than the best of 3 unskilled tries", diff > luck3,
+             f"{diff:+.3f} vs {luck3:+.3f} (12 tries: {luck12:+.3f}; SE {se:.3f})"),
+        ]  # fmt: skip
+        ok = all(o for _, o, _ in bars)
+        passed.append(ok)
+        out += [f"### `{n}`: {'PASSES' if ok else 'FAILS'} train", ""]
+        out += [f"- {'PASS' if o else 'FAIL'}: {text} ({detail})" for text, o, detail in bars]
+        out.append("")
+    out += [
+        f"**{sum(passed)} of 3 rules pass.** "
+        + ("" if any(passed) else "The held-out year stays unspent."),
+        "",
+    ]
+    c.write_result("cointop-1", "\n".join(out))
+
+
+if __name__ == "__main__":
+    main()
