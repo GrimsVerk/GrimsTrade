@@ -251,6 +251,14 @@
     73%: the cheapest way to lose less. By era 0.86 / 1.38 / 1.34. Fails in fast falls
     (<= 3 months: 15/63 positive); long falls 79/80. 41 `insure-check` rows (not selectable).
   - 22:54 UTC `insure-2` started (D, <- insure-1): controls per era; same count on non-US indices.
+  - DONE `ls-trend-2` (draft #89 -> ls-trend-1): `tsmom12` + wide long-short at 1x gross
+    (equal risk, ~26% in `tsmom12`): Sharpe 0.97 vs 1.21 (2007-25, p 0.89) FAILS; crash windows
+    2008/2020Q1/2022 +8.9/+2.2/+2.0% vs -1.6/-14.1/-12.9%, beating dilution and vol-matched
+    controls (22-40% of the raw book's crash gains survive at 1x; costs 0.5%/yr). Risk choice,
+    not edge. Side note: the `tsmom12`+bills control (same split) had Sharpe 1.26, max DD 5.6%
+    (vol timing, not a pick; check overlap with `trend-vol` before any card). 1/3/12-month
+    signal: Sharpe -0.09 at 29x turnover. 10 rows.
+  - 22:59 UTC: usage data stale since 22:39 (endpoint rate-limited); holding new lanes.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
