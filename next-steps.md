@@ -115,6 +115,12 @@
     effects with post-publication survival), D `eu-4` (<- eu-3, whipsaw in small books),
     D `coin-cap-4` (<- coin-cap-3, BTC/fast-crash failure modes, last 3 cards as one set),
     D `combo-1` (<- main: failure map of existing models, complementary blends).
+  - DONE `eu-4` (draft #68 -> eu-3): whipsaw is ~half of `euw`'s fee drag (30 orders/yr, a
+    third each entries/exits/drift; 83% of signal flips reversed within 4 weeks; z moves ~0.21
+    a week). Confirm-2-Fridays (Sharpe 0.62 = 0.62, orders 30 -> 20) and +-0.25 z dead zone
+    (0.64, 16.6 orders) both FAIL the character card (max DD +3.3 / +2.4 pts, later 2020 exits).
+    eu-3 verdict unchanged. 24 rows; family 8, none selected. Next: `eu-5` (drift third only).
+  - 22:25 UTC `eu-5` started (D, <- eu-4): cut drift top-ups, signal untouched.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
