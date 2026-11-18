@@ -1,5 +1,44 @@
 # Next steps
 
+## Coin cap 3 (done 2026-11-18, branch `coin-cap-3`, draft PR #56 -> `coin-cap-2`)
+
+Does checking `stop-0.25` daily (same as-of timing, no look-ahead) fix the fast-crash losses of
+the third reading without whipsaw cost eating the gain? Card section "Fourth reading" in
+`research/cards/coin-cap.md` (pushed before any number); write-up "Fourth reading" in
+`research/coin-cap.md`; tables `research/results/coin-cap-3.md`.
+
+**Verdict (by the card): the daily check does not fix the fast crashes; the weekly stop stays
+the recommendation.** Two variants, same 21 episodes. `stop-0.25-d` (daily exit and re-entry)
+beats its matched cap in 18 of 21 episodes (p 0.0007, meets the bar corrected for all 13
+coin-cap picks), mean edge +20.5% against the weekly +16.2%, but turns around only 3 of the 6
+episodes the weekly stop trailed (2017 summer, 2021-05; not BTC 2013-04, BTC 2013-14, XRP
+2020-11): bar 2 fails. `stop-0.25-dx` (Friday re-entry) is weaker (16 of 21, 2 of 6). The
+daily check does not make deepest losses smaller (raw, the same on average); it keeps more
+return (cheaper re-entries) despite 2.4x the switches and fees, an edge that mostly goes at
+double costs (+15.9% against +15.4%). BTC (post-hoc): the weekly stop loses there because the
+first leg is faster than any close-based rule (2013-04), because it re-enters a sharp rebound
+before a second leg down (2013-12, 2017-12), and because the twin's own exit is early enough
+that a cap of it is hard to beat (2021-11). Held-out year unspent.
+
+- Rebuild: `research/lib/coin_cap3.py` (**a plain run logs 6 tries rows**; `DRY=1` is a
+  plumbing run on random prices, logs nothing). Needs `GRIMSTRADE_DATA` or
+  `research/macro.local.json` (copy the `.example`).
+- Found: coin-cap-2's 4 tries rows cover 2015-09-23 .. 2025-11-09, not 2013-02-10 (a double
+  slice in `coin_cap2.portfolio`, fixed in code; rows not edited; its bar did not use them).
+- Doing: nothing. No process running.
+- For the owner (update to coin-cap-2's item): the daily check does not change the rule-PR
+  recommendation by the card; if a rule PR comes, it is still weekly `stop-0.25` on the coin
+  slots, a risk choice. Two things to weigh first: (1) counted against all 13 coin-cap picks the
+  weekly stop's episode edge is no longer significant (p 0.039 against 0.0077), so the case is
+  weaker than coin-cap-2 read it; (2) the daily-checked stop is the only series that meets the
+  corrected bar, but its gain is cost-matched return, not shallower losses, it is fee-sensitive,
+  and on the six assets cointop-1's all-daily stop was worse than weekly (Sharpe 1.05 against
+  1.09, worst loss 30.9% against 28.9%). Switching to daily would need its own card (and the
+  held-out year, only if the owner asks).
+- Next (not started, card first): a stop whose band does not loosen after a crash (price
+  drawdown instead of volatility units) for the rebound re-entries; cap 25% together with
+  `stop-0.25`; time under water.
+
 ## Coin cap 2 (done 2026-11-18, branch `coin-cap-2`, draft PR #53 -> `coin-cap`)
 
 Does the stop's edge over a cap of the same cost hold across many independent coin falls, or is
@@ -26,7 +65,8 @@ worst loss for the same growth, not more return. Held-out year unspent.
   (cointop-1 Part C: worst loss 36.5% -> 28.9%, about 2 points less growth a year; coin years
   17.7% against 21-27% for caps of similar cost). Before such a PR: decide whether the BTC
   result (1 of 5 falls) matters, and whether to spend the held-out year on it (the card spends
-  it only if the owner asks).
+  it only if the owner asks). **Updated by coin-cap-3 above:** the daily check does not change
+  this; counted against all coin-cap picks the weekly stop's episode edge is not significant.
 - Next (not started, card first): a daily-read stop for the fast crashes is already known not to
   help Sharpe (cointop-1, daily rows); cap 25% together with `stop-0.25`; time under water.
 

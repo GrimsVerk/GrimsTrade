@@ -197,3 +197,96 @@ Four rows, idea `coin-cap-2`, the book's equal-slot portfolio of the series (at 
 in the universe): `TS` twin (`baseline`), `stop-0.25` (`robustness`: chosen before), the
 matched cap `f*` (`variant`) and the time-matched cap `f_time` (`variant`). Train only, normal
 costs. A `DRY=1` run on random prices checks the plumbing and logs nothing.
+
+## Fourth reading, lane `coin-cap-3`: the same stop checked daily (added 2026-11-18 19:15 UTC, before any of its numbers)
+
+Branch `coin-cap-3` (from `coin-cap-2`). Why: the third reading's stop trails a cap of matched
+cost in 6 of 21 episodes, the fast ones (BTC 2013-04 and 2013-14, the 2017 summer falls, XRP
+2020-11, 2021-05) and on BTC alone in 4 of 5 falls. A stop read on Fridays cannot act inside a
+fall of a few days. Does reading the same stop every day fix those losses, or do the extra
+exits and re-entries (whipsaw, fees) cost more than they save?
+
+Seen when this was written: everything on `coin-cap-2` (`results/coin-cap-2.md`,
+`results/coin-cap-2-posthoc.md`: the 21 episodes, their edges, BTC's five falls with its own
+`f*`) and cointop-1's daily rows on the six assets (`stop-0.25-daily`: Sharpe 1.05, worst loss
+30.9%, turnover 7.96, against the weekly 1.09, 28.9%, 3.81; there the trend part was daily too).
+No daily-checked series on the coin book has been computed or looked at.
+
+### Variants (all that will be run; fixed here)
+
+Same book, universe, coins, prices, costs and weekly twin `TS` as the third reading. The twin's
+trend part stays weekly (Friday); only the stop condition (`dd_1y >= -0.25`, cointop-1's `dd`,
+unchanged) is read more often.
+
+- **`stop-0.25-d` (daily check):** every calendar day `t`, hold the coin iff the twin's latest
+  Friday decision at or before `t` holds it and the stop condition holds at `t`. Exits and
+  re-entries both on any day. On a Friday it equals the weekly stop exactly.
+- **`stop-0.25-dx` (daily exit, Friday re-entry):** as the weekly stop, but if the stop condition
+  fails on any day after the Friday decision in force, the coin is out until the next Friday
+  decision, which applies the weekly stop rule as usual. Exits on any day, re-entry only on
+  Fridays (no new parameter: the wait is the weekly rhythm already in the rule).
+
+**Timing (no look-ahead).** The book's own as-of rule, unchanged from the weekly stop: a decision
+on day `t` uses values stamped `t - 1` or earlier (the inputs are lagged one day) and the position
+earns the returns from the price stamped `t + 1` on (`bb.decisions(..., "daily")`, skip 1). That
+is one day later than DESIGN.md's "decision on the close, fill at the next open" would allow with
+Coin Metrics' publication lag, so it is conservative, and it is the same timing as the weekly stop:
+daily and weekly differ only in how often the condition is read. A unit test checks that a
+variant's hold at decision `t` does not change when prices after `t - 1` are scrambled, and that
+both variants equal the weekly stop on Fridays.
+
+### Comparison (fixed here)
+
+- The same 445 coin falls, windows and **21 episodes** as the third reading (they depend on the
+  twin and prices only, not on the stop), the same measure M (deepest fall of the slot's P&L in
+  the window, summed daily simple returns after costs).
+- **Against a matched cap:** each variant gets its own `f*_v` = its mean daily return per counted
+  coin-day / the twin's (the third reading's definition); edge M = `f*_v` x twin's M minus the
+  variant's M. Whipsaw and fees lower the variant's mean return, so they lower `f*_v` too: the
+  matched cap of a costlier stop is smaller.
+- **Against the weekly stop:** per episode, the weekly stop's M minus the variant's M (raw, no
+  cost match), and the difference of the two edges against their own matched caps.
+- **Fee and turnover accounting** (30 bps a side, the protocol's crypto cost = gym fee 25 + slip
+  5; no rebalance band applies to a 0/1 slot): per variant and the weekly stop, position changes
+  per held coin-year, fee drag in bp per counted coin-day (paper series with and without costs),
+  short round trips (out and back in within 7 days) per coin-year, and everything again at double
+  costs (60 bps a side, `f*` recomputed at that cost for every series).
+
+### Bar (fixed here; each variant judged alone)
+
+Multiple testing: this lane counts every coin-cap pick so far. Rows of kind `variant` under
+`coin-cap` (9) and `coin-cap-2` (2) plus this reading's 2 variants: **m = 13**. The sign test
+must reach p < 0.10 / 13 = 0.0077, which on 21 episodes means at least **17 of 21** (16 of 21
+gives 0.013). For reference only, computed from numbers already seen: the weekly stop's 15 of 21
+(p 0.039) would not meet this corrected bar.
+
+"**The daily check replaces the weekly one in the rule-PR recommendation**" only if all hold:
+
+1. Corrected sign test: edge M against its own matched cap positive in at least 17 of the 21
+   episodes.
+2. Fast crashes fixed: edge M against its own matched cap positive in at least 4 of the 6
+   episodes the weekly stop trailed (market-0, market-2, own-0, own-1, own-3, market-6).
+3. Gain not eaten: mean episode edge M at least the weekly stop's (+16.2% of a slot), and still
+   positive with the episode of the largest edge left out.
+4. Fees: at double costs the variant's mean episode edge M is at least the weekly stop's mean
+   episode edge M at double costs.
+5. The eight held-aside coins (BTC, ETH, LTC, XRP, BCH, ETC, XLM, DASH): summed edge M positive.
+
+If both variants pass, `stop-0.25-d` is named (fewer rules). If 2 holds and any of 1, 3, 4, 5
+fails: "**fixes the fast crashes, not overall: the weekly stop stays the recommendation**". If 2
+fails: "**the daily check does not fix the fast crashes**". Independent of the verdict, the
+result says plainly whether any stop (weekly or daily) meets the corrected sign test.
+
+### BTC mechanism note (descriptive, post-hoc by nature)
+
+For BTC's five falls: the weekly and daily stops' exits and re-entries in each window (date,
+price as % of the top), where each series' deepest P&L fall starts and ends, and the twin's exit,
+to see whether the stop is hit and then a sharp rebound pays for the re-entry. Marked post-hoc;
+not in the bar.
+
+### Tries
+
+Logged rows, idea `coin-cap-3`, the book's equal-slot portfolio of each series (as in the third
+reading): `stop-0.25-d` and `stop-0.25-dx` (`variant`), the same two at double costs, the weekly
+stop at double costs (`robustness`) and the twin at double costs (`baseline`): 6 rows. Train
+only. A `DRY=1` run on random prices checks the plumbing and logs nothing.
