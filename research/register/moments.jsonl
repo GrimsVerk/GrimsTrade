@@ -2,6 +2,7 @@
 {"excess_kurtosis":9.7181,"id":"00143dca8c4e5f98-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.08,"sharpe_weekly":1.1067,"skew":0.0419,"source":"curve","variant":"or-09-12","weeks":1657}
 {"excess_kurtosis":9.7665,"id":"00969acf1dbc1ba1-1","idea":"rl-4-control","kind":"control","sharpe_logged":0.93,"sharpe_weekly":0.9373,"skew":-0.0256,"source":"curve","variant":"ppo3-warm-0.00-s3","weeks":1348}
 {"excess_kurtosis":15.8361,"id":"00aa1aaed5a03c73-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.97,"sharpe_weekly":0.9126,"skew":-0.8056,"source":"curve","variant":"tsmom12-50bps@F-NoDur","weeks":1799}
+{"excess_kurtosis":35.0661,"id":"00b6fd0574b8c5fe-1","idea":"rp-1","kind":"robustness","sharpe_logged":0.61,"sharpe_weekly":0.5785,"skew":3.857,"source":"curve","variant":"where-rp@coin","weeks":429}
 {"excess_kurtosis":3.9308,"id":"00be7145e1a7568d-1","idea":"vol-echo","kind":"baseline","sharpe_logged":0.43,"sharpe_weekly":0.4546,"skew":-0.3466,"source":"curve","variant":"constant@IWM","weeks":1275}
 {"excess_kurtosis":7.9939,"id":"00dbc9b7d3f3c6d4-1","idea":"gap","kind":"variant","sharpe_logged":0.78,"sharpe_weekly":0.8107,"skew":-0.0895,"source":"curve","variant":"gap-alone","weeks":1657}
 {"excess_kurtosis":10.4254,"id":"01376bd6600e5c63-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.02,"sharpe_weekly":1.0484,"skew":0.0246,"source":"curve","variant":"L13-m","weeks":1657}
@@ -94,6 +95,7 @@
 {"excess_kurtosis":9.5834,"id":"14025b62866b198c-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.04,"sharpe_weekly":1.0668,"skew":0.4564,"source":"curve","variant":"z06-c+0.00-h0.50","weeks":1657}
 {"excess_kurtosis":6.621,"id":"1489d120e5eacfab-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.62,"sharpe_weekly":0.6242,"skew":-0.284,"source":"curve","variant":"equal-weight-10bps@F-ind10","weeks":1799}
 {"excess_kurtosis":2.4449,"id":"1490a325abd1b7a7-1","idea":"trend-1926","kind":"baseline","sharpe_logged":0.68,"sharpe_weekly":0.677,"skew":-0.0973,"source":"curve","variant":"tsmom12@F62-Enrgy","weeks":2086}
+{"excess_kurtosis":3.6177,"id":"14d183524f84989f-1","idea":"eu-8","kind":"robustness","sharpe_logged":0.7,"sharpe_weekly":0.7258,"skew":-0.6885,"source":"curve","variant":"trend525-irx@usw-2007","weeks":975}
 {"excess_kurtosis":10.918,"id":"14ef88e41f786a5a-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.95,"sharpe_weekly":0.9611,"skew":-0.3906,"source":"curve","variant":"diag-noes-0.05-s4","weeks":1348}
 {"excess_kurtosis":12.1362,"id":"153c19acb5aef455-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.98,"sharpe_weekly":0.9753,"skew":0.1453,"source":"curve","variant":"ceiling-0.02-k0.5","weeks":1348}
 {"excess_kurtosis":10.6278,"id":"15c2ef0261aaf2d7-1","idea":"rl-4-control","kind":"control","sharpe_logged":0.98,"sharpe_weekly":0.9825,"skew":-0.1918,"source":"curve","variant":"ppo3-0.10","weeks":1348}
@@ -122,6 +124,7 @@
 {"excess_kurtosis":18.0343,"id":"19ddb5d54ba949de-1","idea":"liquidity","kind":"variant","sharpe_logged":0.95,"sharpe_weekly":0.9496,"skew":0.0588,"source":"curve","variant":"walcl-and","weeks":1657}
 {"excess_kurtosis":7.4234,"id":"19eadb52ee9b53bb-1","idea":"contagion-catchup","kind":"baseline","sharpe_logged":0.74,"sharpe_weekly":0.7295,"skew":0.8057,"source":"curve","variant":"TS@coin8","weeks":326}
 {"excess_kurtosis":6.0514,"id":"1a671a4e5bdcb781-1","idea":"eu-2","kind":"robustness","sharpe_logged":0.27,"sharpe_weekly":0.2516,"skew":0.1943,"source":"curve","variant":"tsmom12@XAD1","weeks":722}
+{"excess_kurtosis":9.9238,"id":"1aa966445941dd48-1","idea":"rp-1","kind":"robustness","sharpe_logged":0.71,"sharpe_weekly":0.658,"skew":-1.1297,"source":"curve","variant":"where-rp@idx","weeks":3331}
 {"excess_kurtosis":12.786,"id":"1b17b8a344293b41-1","idea":"baselines","kind":"baseline","sharpe_logged":0.48,"sharpe_weekly":0.5007,"skew":-1.2945,"source":"harness@512ae2ce13e2","variant":"inverse-vol@etf","weeks":1275}
 {"excess_kurtosis":11.2073,"id":"1b39f2e332a188ad-1","idea":"rl-3-control","kind":"control","sharpe_logged":1.04,"sharpe_weekly":1.0367,"skew":0.076,"source":"curve","variant":"plant-lin-0.20-s5","weeks":1348}
 {"excess_kurtosis":8.9389,"id":"1b56c9ae70301faa-1","idea":"rl-1","kind":"robustness","sharpe_logged":0.67,"sharpe_weekly":0.6813,"skew":0.7762,"source":"curve","variant":"ppo-mlp-px-s7","weeks":1348}
@@ -449,6 +452,7 @@
 {"excess_kurtosis":9.4569,"id":"5e43e51be122f4e0-1","idea":"rl-3-control","kind":"control","sharpe_logged":1.08,"sharpe_weekly":1.1032,"skew":-0.0127,"source":"curve","variant":"sup-ols-0.20","weeks":1348}
 {"excess_kurtosis":22.7004,"id":"5e623217ea7c71d6-1","idea":"baselines","kind":"baseline","sharpe_logged":0.24,"sharpe_weekly":0.2333,"skew":-1.7679,"source":"harness@512ae2ce13e2","variant":"sma200@FTSE","weeks":2131}
 {"excess_kurtosis":8.7168,"id":"5e6a163341ddd93e-1","idea":"ath","kind":"robustness","sharpe_logged":0.45,"sharpe_weekly":0.4594,"skew":-0.8607,"source":"curve","variant":"ath-and@N225","weeks":3122}
+{"excess_kurtosis":6.1425,"id":"5ea45b55f3dee483-1","idea":"eu-8","kind":"robustness","sharpe_logged":0.63,"sharpe_weekly":0.6737,"skew":-0.6316,"source":"curve","variant":"hold7-irx@usw-2007","weeks":975}
 {"excess_kurtosis":3.5917,"id":"5eaebebeac71a973-1","idea":"eu-6","kind":"robustness","sharpe_logged":0.64,"sharpe_weekly":0.6591,"skew":-0.6757,"source":"curve","variant":"trend525@usw-2007","weeks":975}
 {"excess_kurtosis":4.804,"id":"5eeca3717c9d362c-1","idea":"auction-concession","kind":"robustness","sharpe_logged":0.57,"sharpe_weekly":0.5697,"skew":-0.8452,"source":"curve","variant":"six@etf","weeks":1275}
 {"excess_kurtosis":10.959,"id":"5f2a8f9043bf5f23-1","idea":"rl-4-control","kind":"control","sharpe_logged":1.17,"sharpe_weekly":1.1682,"skew":0.3278,"source":"curve","variant":"ppo3-0.20-s8","weeks":1348}
@@ -481,6 +485,7 @@
 {"excess_kurtosis":5.7906,"id":"64b85c200fe8ae8c-1","idea":"rl-1","kind":"robustness","sharpe_logged":0.58,"sharpe_weekly":0.5838,"skew":0.3461,"source":"curve","variant":"ppo-mlp-s1","weeks":1348}
 {"excess_kurtosis":5.4458,"id":"64c64df7fd685913-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.46,"sharpe_weekly":0.4632,"skew":-0.1079,"source":"curve","variant":"hold-late@F-Utils","weeks":1799}
 {"excess_kurtosis":7.505,"id":"64c69344b2bede52-1","idea":"eu-2","kind":"robustness","sharpe_logged":1.43,"sharpe_weekly":1.4197,"skew":0.1271,"source":"curve","variant":"tsmom12@eu6-h","weeks":722}
+{"excess_kurtosis":6.8495,"id":"65459625f0fa5b9b-1","idea":"eu-8","kind":"robustness","sharpe_logged":0.55,"sharpe_weekly":0.59,"skew":-0.5126,"source":"curve","variant":"mix60-irx@usw-2007","weeks":975}
 {"excess_kurtosis":10.8405,"id":"655c29710f238a91-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.98,"sharpe_weekly":0.9792,"skew":0.0727,"source":"curve","variant":"plant-lin-0.00-s5","weeks":1348}
 {"excess_kurtosis":5.8704,"id":"65be6e93e7a25a53-1","idea":"contagion-catchup","kind":"variant","sharpe_logged":0.5,"sharpe_weekly":0.4984,"skew":-1.0071,"source":"curve","variant":"catchup@etf21","weeks":1350}
 {"excess_kurtosis":10.2643,"id":"66396e05ff4d54b2-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.07,"sharpe_weekly":1.0818,"skew":0.1367,"source":"curve","variant":"L11-d","weeks":1657}
@@ -555,6 +560,7 @@
 {"excess_kurtosis":6.7655,"id":"76e4a63208dcccc5-1","idea":"rl-1","kind":"robustness","sharpe_logged":0.51,"sharpe_weekly":0.5017,"skew":0.3945,"source":"curve","variant":"es-lin-s0","weeks":1348}
 {"excess_kurtosis":10.4128,"id":"772267a601400263-1","idea":"rl-4-control","kind":"control","sharpe_logged":0.98,"sharpe_weekly":0.9964,"skew":-0.0301,"source":"curve","variant":"ols28-0.10","weeks":1348}
 {"excess_kurtosis":11.5841,"id":"7784897e2a5c8755-1","idea":"fng","kind":"variant","sharpe_logged":0.97,"sharpe_weekly":0.9802,"skew":-0.1002,"source":"curve","variant":"fng-sellgreed","weeks":1657}
+{"excess_kurtosis":5.0558,"id":"77c2d05ae734213c-1","idea":"eu-8","kind":"robustness","sharpe_logged":0.66,"sharpe_weekly":0.7067,"skew":-0.6567,"source":"curve","variant":"hold7cash-irx@usw-2007","weeks":975}
 {"excess_kurtosis":7.4184,"id":"780da367896e59cc-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":0.93,"sharpe_weekly":0.965,"skew":0.1404,"source":"curve","variant":"L20-w","weeks":1657}
 {"excess_kurtosis":9.0676,"id":"7813c886fd205067-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.91,"sharpe_weekly":0.9278,"skew":-0.3098,"source":"curve","variant":"diag-noes-0.05-s7","weeks":1348}
 {"excess_kurtosis":13.5835,"id":"781b3a97e41f0e04-1","idea":"gsy-runup","kind":"baseline","sharpe_logged":0.99,"sharpe_weekly":0.9739,"skew":-0.9251,"source":"curve","variant":"tsmom12@G10-disc","weeks":3834}
@@ -602,6 +608,7 @@
 {"excess_kurtosis":6.5881,"id":"8103117291c99abb-1","idea":"eu-1","kind":"robustness","sharpe_logged":0.63,"sharpe_weekly":0.6212,"skew":-0.9875,"source":"curve","variant":"tsmom12@usw","weeks":722}
 {"excess_kurtosis":39.5606,"id":"81096f5f87a57832-1","idea":"month-end-bonds","kind":"baseline","sharpe_logged":0.59,"sharpe_weekly":0.576,"skew":-0.1078,"source":"curve","variant":"hold@LQD","weeks":1214}
 {"excess_kurtosis":12.3024,"id":"8176ffbf60123ea0-1","idea":"cointop-1-fade","kind":"robustness","sharpe_logged":0.91,"sharpe_weekly":0.8788,"skew":1.4983,"source":"curve","variant":"fade-28@ETH","weeks":442}
+{"excess_kurtosis":6.2953,"id":"81af11f31a93a272-1","idea":"rp-1","kind":"robustness","sharpe_logged":0.68,"sharpe_weekly":0.673,"skew":-0.9036,"source":"curve","variant":"where-rp@etf","weeks":1275}
 {"excess_kurtosis":15.3152,"id":"81bd2bea78646856-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.98,"sharpe_weekly":0.9736,"skew":-0.0048,"source":"curve","variant":"ceiling-0.05-k4.0","weeks":1348}
 {"excess_kurtosis":29.9069,"id":"821684dcaaa906ec-1","idea":"cointop-1-stop","kind":"robustness","sharpe_logged":1.25,"sharpe_weekly":1.101,"skew":3.7982,"source":"curve","variant":"stop-0.25@BTC","weeks":670}
 {"excess_kurtosis":13.7963,"id":"822d5938e870c0f6-1","idea":"ts-carry","kind":"variant","sharpe_logged":1.02,"sharpe_weekly":1.0261,"skew":0.7801,"source":"curve","variant":"carry-mean","weeks":1657}
@@ -612,6 +619,7 @@
 {"excess_kurtosis":14.9332,"id":"82f897dadbfa34c6-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.84,"sharpe_weekly":0.8351,"skew":-0.4172,"source":"curve","variant":"ceiling-0.00-ksign","weeks":1348}
 {"excess_kurtosis":13.009,"id":"8356e916daec1348-1","idea":"rl-4-control","kind":"control","sharpe_logged":1.3,"sharpe_weekly":1.2941,"skew":0.2213,"source":"curve","variant":"ppo3-warm-0.20-s2","weeks":1348}
 {"excess_kurtosis":29.0059,"id":"835cf1ac1eff3e4d-1","idea":"baselines","kind":"baseline","sharpe_logged":0.72,"sharpe_weekly":0.671,"skew":3.3392,"source":"harness@512ae2ce13e2","variant":"vol-calm@coin","weeks":429}
+{"excess_kurtosis":10.2814,"id":"838e620f99c2168a-1","idea":"rp-1","kind":"variant","sharpe_logged":1.05,"sharpe_weekly":1.0899,"skew":-0.5442,"source":"curve","variant":"where-rp","weeks":1657}
 {"excess_kurtosis":11.18,"id":"83a240b9469a14d4-1","idea":"rl-1","kind":"robustness","sharpe_logged":0.59,"sharpe_weekly":0.6047,"skew":0.3453,"source":"curve","variant":"ppo-lin-s2","weeks":1348}
 {"excess_kurtosis":10.6465,"id":"83b40f43454bc5d1-1","idea":"extension-dose","kind":"variant","sharpe_logged":1.06,"sharpe_weekly":1.0757,"skew":0.0383,"source":"curve","variant":"ext-high","weeks":1657}
 {"excess_kurtosis":12.1978,"id":"84604033080d9954-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.15,"sharpe_weekly":1.1765,"skew":0.1216,"source":"curve","variant":"hindsight-asset","weeks":1657}
@@ -684,6 +692,7 @@
 {"excess_kurtosis":10.2868,"id":"913bb8fb3d9b5fab-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.99,"sharpe_weekly":0.9925,"skew":0.0511,"source":"curve","variant":"diag-long-0.05-s1","weeks":1348}
 {"excess_kurtosis":10.4279,"id":"914468a3f2ed9bc3-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.06,"sharpe_weekly":1.0767,"skew":0.1155,"source":"curve","variant":"or-03-06","weeks":1657}
 {"excess_kurtosis":10.2974,"id":"916523db660e2eb2-1","idea":"coin-cap","kind":"robustness","sharpe_logged":1.06,"sharpe_weekly":1.0812,"skew":0.1304,"source":"curve","variant":"cap25-cash-2xcost","weeks":1657}
+{"excess_kurtosis":17.322,"id":"916bad86577dee7a-1","idea":"stop-reentry","kind":"variant","sharpe_logged":1.04,"sharpe_weekly":1.0551,"skew":0.865,"source":"curve","variant":"stop-cool-13","weeks":1657}
 {"excess_kurtosis":11.0119,"id":"919a9fc197063762-1","idea":"rl-2","kind":"robustness","sharpe_logged":0.98,"sharpe_weekly":0.9787,"skew":0.0823,"source":"curve","variant":"res-pool-s3","weeks":1348}
 {"excess_kurtosis":6.8743,"id":"919f34c8bb08df77-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.01,"sharpe_weekly":1.0421,"skew":0.0734,"source":"curve","variant":"or-09-18","weeks":1657}
 {"excess_kurtosis":4.2481,"id":"91c481f2f541b15f-1","idea":"trend-tune-anatomy","kind":"baseline","sharpe_logged":0.58,"sharpe_weekly":0.5831,"skew":-0.1209,"source":"curve","variant":"tsmom12@GLD","weeks":1041}
@@ -763,6 +772,7 @@
 {"excess_kurtosis":10.3696,"id":"a45f92e9845fb2de-1","idea":"rl-2","kind":"robustness","sharpe_logged":0.99,"sharpe_weekly":0.9843,"skew":0.0759,"source":"curve","variant":"res-lin-s5","weeks":1348}
 {"excess_kurtosis":11.2121,"id":"a4add19174080887-1","idea":"coin-cap","kind":"robustness","sharpe_logged":1.05,"sharpe_weekly":1.0831,"skew":-0.2649,"source":"curve","variant":"cap15-rest-2xcost","weeks":1657}
 {"excess_kurtosis":3.413,"id":"a4d837b9f6943d7c-1","idea":"gsy-runup","kind":"variant","sharpe_logged":0.75,"sharpe_weekly":0.7546,"skew":-0.6701,"source":"curve","variant":"flag100-sma@G30-check","weeks":1244}
+{"excess_kurtosis":0.1327,"id":"a4f13adb0d3c4cdd-1","idea":"eu-8","kind":"robustness","sharpe_logged":0.77,"sharpe_weekly":0.846,"skew":-0.3376,"source":"curve","variant":"trendsl@usw-2007-2011","weeks":252}
 {"excess_kurtosis":14.0831,"id":"a5305ee1a15d401d-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":0.98,"sharpe_weekly":0.986,"skew":0.7269,"source":"curve","variant":"and-03-09","weeks":1657}
 {"excess_kurtosis":12.5863,"id":"a573272e35ca080a-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.81,"sharpe_weekly":0.7999,"skew":-0.5789,"source":"curve","variant":"tsmom12-late@F-Manuf","weeks":1799}
 {"excess_kurtosis":12.3491,"id":"a5916155f6911c62-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.95,"sharpe_weekly":0.9471,"skew":0.0766,"source":"curve","variant":"ceiling-0.00-k0.5","weeks":1348}
@@ -883,6 +893,7 @@
 {"excess_kurtosis":8.3718,"id":"bd2fd37ef264c069-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.72,"sharpe_weekly":0.682,"skew":-0.8526,"source":"curve","variant":"tsmom12-late@F62-Manuf","weeks":2086}
 {"excess_kurtosis":4.2415,"id":"bd4ce97ee15fff73-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.81,"sharpe_weekly":0.7632,"skew":-0.405,"source":"curve","variant":"hold-late@F62-Mkt","weeks":2086}
 {"excess_kurtosis":0.8766,"id":"bd6034816d47d19a-1","idea":"auction-concession","kind":"baseline","sharpe_logged":0.55,"sharpe_weekly":0.5756,"skew":-0.1575,"source":"curve","variant":"constant@IEF","weeks":1162}
+{"excess_kurtosis":17.2856,"id":"bd935b00fe61aa0b-1","idea":"stop-reentry","kind":"robustness","sharpe_logged":1.03,"sharpe_weekly":1.0416,"skew":0.8555,"source":"curve","variant":"stop-cool-13-2xcost","weeks":1657}
 {"excess_kurtosis":11.1569,"id":"bd9a263684854144-1","idea":"rl-1","kind":"robustness","sharpe_logged":0.26,"sharpe_weekly":0.2557,"skew":-0.8561,"source":"curve","variant":"es-lin@idx","weeks":1348}
 {"excess_kurtosis":4.9634,"id":"be1e7f670c9816bd-1","idea":"trend-tune","kind":"robustness","sharpe_logged":0.6,"sharpe_weekly":0.5922,"skew":-0.8734,"source":"curve","variant":"wf-shrunk@etf","weeks":1275}
 {"excess_kurtosis":37.0076,"id":"be6cc0fa2154ed23-1","idea":"deep-1-switch","kind":"robustness","sharpe_logged":0.54,"sharpe_weekly":0.5155,"skew":4.0523,"source":"curve","variant":"switch@coin","weeks":429}
@@ -1196,14 +1207,14 @@
 {"excess_kurtosis":6.2534,"id":"ff4bec21164119f9-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.59,"sharpe_weekly":0.5842,"skew":-0.263,"source":"curve","variant":"hold-50bps@F-Shops","weeks":1799}
 {"excess_kurtosis":10.7911,"id":"ff82e5b96199a06f-1","idea":"cointop-1","kind":"baseline","sharpe_logged":1.06,"sharpe_weekly":1.0725,"skew":0.0678,"source":"curve","variant":"tsmom12-daily","weeks":1657}
 {"excess_kurtosis":8.8637,"id":"ffa76fe38b370fdd-1","idea":"trend-tune-surface","kind":"variant","sharpe_logged":1.1,"sharpe_weekly":1.117,"skew":0.5953,"source":"curve","variant":"L08-d","weeks":1657}
-{"excess_kurtosis":26.5723,"id":"live:buy_hold_btc","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.8399,"skew":2.6179,"source":"live@15d2125df304","variant":"buy_hold_btc","weeks":1657}
-{"excess_kurtosis":6.4454,"id":"live:buy_hold_spy","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.5704,"skew":-0.5776,"source":"live@15d2125df304","variant":"buy_hold_spy","weeks":1657}
-{"excess_kurtosis":7.2013,"id":"live:sixty_forty","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.6132,"skew":-0.5331,"source":"live@15d2125df304","variant":"sixty_forty","weeks":1657}
-{"excess_kurtosis":5.1939,"id":"live:equal_weight","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.9812,"skew":0.0,"source":"live@15d2125df304","variant":"equal_weight","weeks":1657}
-{"excess_kurtosis":9.1899,"id":"live:ts_momentum","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.9656,"skew":-0.5527,"source":"live@15d2125df304","variant":"ts_momentum","weeks":1657}
-{"excess_kurtosis":14.0794,"id":"live:xs_momentum","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.8887,"skew":1.353,"source":"live@15d2125df304","variant":"xs_momentum","weeks":1657}
-{"excess_kurtosis":0.8391,"id":"live:vol_target_spy","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.6474,"skew":-0.4707,"source":"live@15d2125df304","variant":"vol_target_spy","weeks":1657}
-{"excess_kurtosis":6.5038,"id":"live:risk_parity","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.7697,"skew":-0.5389,"source":"live@15d2125df304","variant":"risk_parity","weeks":1657}
-{"excess_kurtosis":94.933,"id":"live:crypto_mean_reversion","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":-0.0672,"skew":0.053,"source":"live@15d2125df304","variant":"crypto_mean_reversion","weeks":1657}
-{"excess_kurtosis":4.6153,"id":"live:preset_careful","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.8114,"skew":-0.3762,"source":"live@15d2125df304","variant":"preset_careful","weeks":1657}
-{"excess_kurtosis":11.2028,"id":"live:preset_middle","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.9139,"skew":-0.5161,"source":"live@15d2125df304","variant":"preset_middle","weeks":1657}
+{"excess_kurtosis":26.5723,"id":"live:buy_hold_btc","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.8399,"skew":2.6179,"source":"live@82cee5870327","variant":"buy_hold_btc","weeks":1657}
+{"excess_kurtosis":6.4454,"id":"live:buy_hold_spy","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.5704,"skew":-0.5776,"source":"live@82cee5870327","variant":"buy_hold_spy","weeks":1657}
+{"excess_kurtosis":7.2013,"id":"live:sixty_forty","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.6132,"skew":-0.5331,"source":"live@82cee5870327","variant":"sixty_forty","weeks":1657}
+{"excess_kurtosis":5.1939,"id":"live:equal_weight","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.9812,"skew":0.0,"source":"live@82cee5870327","variant":"equal_weight","weeks":1657}
+{"excess_kurtosis":9.1899,"id":"live:ts_momentum","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.9656,"skew":-0.5527,"source":"live@82cee5870327","variant":"ts_momentum","weeks":1657}
+{"excess_kurtosis":14.0794,"id":"live:xs_momentum","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.8887,"skew":1.353,"source":"live@82cee5870327","variant":"xs_momentum","weeks":1657}
+{"excess_kurtosis":0.8391,"id":"live:vol_target_spy","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.6474,"skew":-0.4707,"source":"live@82cee5870327","variant":"vol_target_spy","weeks":1657}
+{"excess_kurtosis":6.5038,"id":"live:risk_parity","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.7697,"skew":-0.5389,"source":"live@82cee5870327","variant":"risk_parity","weeks":1657}
+{"excess_kurtosis":94.933,"id":"live:crypto_mean_reversion","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":-0.0672,"skew":0.053,"source":"live@82cee5870327","variant":"crypto_mean_reversion","weeks":1657}
+{"excess_kurtosis":4.6153,"id":"live:preset_careful","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.8114,"skew":-0.3762,"source":"live@82cee5870327","variant":"preset_careful","weeks":1657}
+{"excess_kurtosis":11.2028,"id":"live:preset_middle","idea":"live","kind":"live","sharpe_logged":null,"sharpe_weekly":0.9139,"skew":-0.5161,"source":"live@82cee5870327","variant":"preset_middle","weeks":1657}
