@@ -1,0 +1,117 @@
+# Wide 8: a forward test for the turn-of-year loser rebound, gates for W16 and W15
+
+Research run wide-8, 2026-11-18. Branch `wide-8` (from `wide-7`), draft PR into `wide-7`.
+Research only: fake money, public data, no change to the gym, the daily runner or the live
+strategies.
+
+**Family count carried in:** 70 mechanisms, 16 tested by a strategy, none passed (wide-7). A
+strategy test in this run would be read at **p < 0.10 / 70 = 0.00143** (family), and
+project-wide at the register's bar (`git show origin/register-1:research/register/BAR.md`, read
+2026-11-18: **2,904 tries, N 1,012 for a new pick, Bonferroni p <= 4.9e-5**).
+
+Method as in ann-1, wide-6 and wide-7: a gate is an event study whose rule, script and tests are
+pushed before any number; it is descriptive, gets no `tries.md` row and does not count as a
+tested mechanism. One dry run that prints counts only, then one real run.
+
+## Step 1. Pre-register the turn-of-year ETF loser rebound as a forward test
+
+### Where the lead came from, and why it cannot be tested on train
+
+wide-7's W14 gate showed, as a cell that did not gate, that ETFs with a larger loss for the year
+to the end of November rose more from the last close of December to 10 January: slope +0.089
+per unit of loss in tax years 2012-2024 (t 3.9, clustered by year), +0.043 (t 1.0) in 1994-2011.
+The same table's late placebo window (S+46..S+60, which no story predicts) gave t -4.1 and +2.5.
+The lead was found by looking at those years, so those years cannot judge it. Tax year 2025 (the
+turn of 2025/26) lies in the held-out year, which this lane does not read. **The first turn
+nobody has seen is 2026/27.**
+
+### The design issue, and the null distribution
+
+wide-7 read its t against a standard normal. That is the wrong null for this design: 13-18 year
+clusters, no small-sample correction, losers concentrated in a few years (2001, 2002, 2008,
+2022), and the ETFs' returns inside one window strongly correlated (an equity sell-off makes
+the equity funds losers together and their next ten days move together). The late placebo
+window hitting |t| 4 is what that looks like.
+
+The fix, for this forward test and for any later pooled reading of it: **the null distribution
+is empirical, not N(0, 1).** It is the distribution of the very same statistic computed on
+**placebo windows**: the same construction anchored at the end of each other calendar month,
+over train years only. Exactly:
+
+- For anchor month m (January to November) of year Y, let E = the last calendar day of month m
+  of year Y.
+- Dose: YTD-like return over the eleven months ending one month before the window, as in the
+  real design: P = log(close on the last bar on or before the last day of month m-1 of Y /
+  close on the last bar on or before E minus 12 months, i.e. the last day of month m of Y-1);
+  loss L = max(0, -P). (For m = December this is exactly wide-7's YTD to the end of November.)
+  The last bar of the dose must fall in month m-1.
+- Outcome: R = log return from the last close on or before E to the last close on or before
+  E + 10 calendar days (for m = December: 31 December to 10 January, wide-7's window).
+- Statistic per window: the OLS slope b of R on L across the eligible ETFs, with an intercept,
+  and its **plain OLS t** (residual variance with n - 2 degrees of freedom). One window = one
+  number t.
+- Eligible window: at least 15 of the 21 ETFs have the dose and the outcome, and at least 3 of
+  them have L > 0. Every bar read lies on or before 2025-11-10 (train).
+- The null = the list of t over all eligible placebo windows (Y, m), m = January .. November,
+  Y = 1994 .. 2025. December anchors are never in the null (they hold the turn of the year the
+  lead came from).
+
+What the null absorbs: the cross-sectional correlation of fund returns, the clustering of losers
+in crash years, any ordinary reversal or momentum of 11-month losers over ten days in other
+months. What it does not absorb: a seasonal that is special to the turn of the year, which is
+the hypothesis. So the forward question is: **is the 2026/27 turn-of-year slope's t extreme
+against what the same statistic does in ordinary months?**
+
+The null list is computed once from train, written into the proposed registry entry, and frozen
+with it. A scorer in January 2027 reads the list; it never recomputes it.
+
+### The forward test (fixed now, before any number of this step)
+
+- **Universe (21 ETFs, as wide-7):** SPY, QQQ, IWM, XLB, XLE, XLF, XLI, XLK, XLP, XLU, XLV,
+  XLY, EFA, EEM, VNQ, TLT, IEF, LQD, GLD, SLV, DBC. Dividend-adjusted daily closes (total
+  return: bond funds go ex-dividend on the first business days of January) from the keyless
+  Yahoo chart endpoint as `research/lib/fetch.py` downloads them. A fund that has no bar in the
+  dose or the window is left out; the turn is scored if at least 15 remain.
+- **Loser definition:** YTD = log(close on the last bar of November 2026 (2026-11-30) / close on
+  the last bar on or before 2025-12-31). L = max(0, -YTD). A loser is an ETF with L > 0.
+- **Entry / exit:** entry at the close of the last bar on or before 2026-12-31 (Thursday 31
+  December 2026), exit at the close of the last bar on or before 2027-01-10 (Friday 8 January
+  2027). R = log(exit / entry). Close to close: a descriptive forward test of the price effect,
+  not a gym trade (the gym fills at the next open).
+- **Metric:** the plain OLS t of the slope b of R on L across the eligible ETFs, with an
+  intercept (the same statistic as each null window's).
+- **p:** p = (1 + number of null t at or above the 2026/27 t) / (1 + number of null t).
+  One-sided: the lead predicts b > 0.
+- **Pass rule:** pass if the turn has at least 15 ETFs and at least 3 losers, b > 0 and
+  **p <= 0.02**. Fail otherwise.
+- **Too few losers:** if fewer than 3 of the ETFs have L > 0 at the end of November 2026, the
+  turn gives no verdict (the dose is known a month before the window, so this is not a choice
+  made after the outcome); the same rule, unchanged and under the same id, is scored on the next
+  turn that has at least 3 losers.
+- **When:** scoreable from 2027-01-12 (the first weekday after the window), once the cached
+  bars run past 2027-01-10. The scorer reads bars from 2025-12-31 on: the YTD dose uses bars of
+  the held-out year 2025-11-11..2026-11-09, as a dose only (no rule is evaluated on that year;
+  carry-3 already spent it, per the forward registry's note).
+- **Alpha 0.02**, not the registry's 0.025: the four candidates of `forward-1` already share
+  0.10 one-sided (0.025 each); with a fifth, an even split is 0.02. If the owner freezes a
+  different batch, alpha is the batch's split, fixed at freeze.
+- **One turn, one verdict.** The verdict uses the first eligible turn only. Later turns may be
+  shown, and could be combined (Fisher's method over the per-turn p, each from the same frozen
+  null) only under a new id (`@2`) frozen before its first turn.
+
+Power is computed from the placebo windows only (no turn-of-year window is read): add b* L to
+each placebo window's R and count how often its t clears the null's 98th percentile, for b* =
+0.089 (the lead's optimistic post-2012 slope) and half of it. Written before the run: **my guess
+is power 15-35% at b* = 0.089** (a ten-day cross-section of 21 correlated funds is noisy, and
+the effect is about 1.8% for a 20% loser); so a fail in January 2027 says little and a pass
+would be the first forward-confirmed lead of the project.
+
+The entry goes to `research/forward/proposed-wide8.jsonl` in the registry's field names, status
+"proposed, NOT frozen". This branch does not hold `src/grimstrade/forward.py` (it is on
+`forward-1`), so nothing is frozen and no hash is final: freezing needs an owner decision and
+the forward-1 code on one branch.
+
+### Gate-like disclosures
+
+Not a strategy and not a gate on train: no `tries.md` row. The null computation reads only
+placebo (non-December) windows of train years; no turn-of-year window is computed in this run.
