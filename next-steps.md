@@ -142,6 +142,12 @@
     (72) and eras (behind 2022-25); `blend-iv` 1.07. 8 rows. Closest miss in the repo so far.
   - 22:50 UTC `combo-2` started (D, <- combo-1): blends with T-bill interest (#61), one
     long-only partner for stock+bond co-falls (2022).
+  - DONE `survey-4` (draft #72 -> ann-1): post-publication-survival angle; `ts-carry` 0.97 vs
+    1.05 (p 0.78; carry sign has no timing info, the surviving premium is cross-country
+    long-short) and `halloween` 0.96 (ahead 0 of 5 eras) FAIL. Published effects 0 for 5 here.
+    Family 65 / 16 tested; bar p < 0.00154. 17 rows (3 from a disclosed gating bug, rerun).
+  - 22:55 UTC `survey-5` started (W, <- survey-4): live fund track records as post-sample
+    evidence; backtest-to-live haircut for `tsmom12`.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
