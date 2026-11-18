@@ -1,5 +1,31 @@
 # Next steps
 
+## Cointop 1 (done 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
+
+`tsmom12` is slow out of coin tops. Coin tops studied on breadth-1's top-100 coin book; one
+setting for each of three exit rules chosen there by a fixed procedure (BTC, ETH and the six
+other test coins left out), then carried unchanged to BTC/ETH through the gym. No rule passes.
+The coin book has 639 tops in about 19 separate months; the 12-month rule leaves a median 106
+days after a top, at -52%. Chosen: `stop-0.25`, `fade-28`, `breadth-28`; none meets the coin
+book's works-there bar (p 0.55, 0.103, 0.14) or beats its 26-weeks-late control. On the six
+assets: Sharpe 1.09, 1.09, 1.08 against 1.05 (p about 0.3), worst loss 29-30% against 36.5%,
+1 to 2 points less growth a year; nothing on the six other coins. A smaller coin position, not
+a better rule. Held-out year unspent. Write-up `research/cointop-1.md`; tables
+`research/results/cointop-1-coins.md` (Parts A, B), `research/results/cointop-1.md` (Part C).
+
+- Rebuild: `research/lib/cointop1.py` (coin book) and `research/lib/cointop1_carry.py` (gym).
+  **Both log tries rows on a plain run** (`cointop1.py` only with `--log`); do not rerun them
+  with logging. `DRY=1` on the carry script is a plumbing run that logs nothing.
+- Doing: nothing. No process running.
+- Next lanes (not started): none needed from this one. A card for windows shorter than 28 days
+  would be the only follow-up, and Part C says not to expect more than a risk choice from it.
+
+### For the owner
+
+- Nothing to decide. If a worst loss near 29% instead of 36.5% is wanted for 1 to 2 points less
+  growth a year, `fade-28` on the coin slots is one more way to buy it (next to `trend-vol`
+  and the presets in `research/risk-map.md`).
+
 ## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR #36 -> `carry-2`)
 
 Why does each tested model fail where it fails, and does a mix chosen from past data beat
