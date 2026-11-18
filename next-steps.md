@@ -1,5 +1,31 @@
 # Next steps
 
+## eu-3 (done 2026-11-18 night, branch `eu-3` from `eu-2`, draft PR #63 -> `eu-2`)
+
+DEEPER lane on eu-2: can a slower decision clock or fewer, larger slots cut the coin-free
+book's (`euw`) orders without changing the rule's character, so it is worth running at EUR
+5-10k with fixed per-order fees? Card `research/cards/eu-3.md` (pushed before any number;
+erratum at its end: the written fee-loss formula used min where its purpose needs max, the
+verdict uses the stricter max); write-up `research/eu-3.md`; table `research/results/eu-3.md`;
+code `research/lib/eu3.py`; 81 rows in `research/tries.md` (idea `eu-3`). Held-out year unspent.
+
+- Orders/yr at no fee: house rule 30 (10 entries, 10 exits, 10 top-ups); Friday-only trades 28;
+  monthly 15; monthly entries/weekly exits 22; 4-week hold 25; 4 class funds 20; class funds
+  monthly 11.
+- Character bar (Sharpe +-0.05, DD +-2 pts, crash signs 3/4 vs the weekly rule at no fee): only
+  Friday-only trades pass. The big cutters fail, mostly by doing *better* at no fee (monthly
+  +0.14, p=0.03 single, not significant after 6 tries; on the US six 1994-2025 monthly was worse,
+  trend-tune), class slots also by deeper DD (+3.5-4 pts).
+- Verdict: EUR 5k not worth it at any fee level; EUR 10k yes with EUR 1 orders, borderline with
+  EUR 2, no with EUR 3; EUR 25k yes everywhere. Fee loss is mechanical (fees/yr / vol). A monthly
+  clock would halve it (break-even ~5-8k even at EUR 3) but is a rule change.
+- Doing: nothing. No process running. Local `research/data/` copied from the eu-2 worktree
+  (git-ignored; holds eu-3's saved runs, so a rerun re-scores without new rows).
+- Next (not started): (1) if the owner wants monthly decisions for small books, a new card that
+  tests monthly vs weekly on eu6, usw and the US six with the held-out year as the only judge;
+  (2) check which lines are in DEGIRO's core selection (EUR 1 orders is the biggest lever);
+  (3) the owner's actual book size and broker pick the row.
+
 ## eu-2 (done 2026-11-18 night, branch `eu-2` from `eu-1`, draft PR #62 -> `eu-1`)
 
 DEEPER lane on eu-1: (1) real Dutch fixed per-order fees (DEGIRO EUR 1 / EUR 3 + EUR 2.50/yr
