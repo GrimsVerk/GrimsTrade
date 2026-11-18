@@ -115,3 +115,44 @@ the forward-1 code on one branch.
 
 Not a strategy and not a gate on train: no `tries.md` row. The null computation reads only
 placebo (non-December) windows of train years; no turn-of-year window is computed in this run.
+
+### What came out (one run, 2026-11-18; table `results/turn-of-year-null.md`)
+
+**The empirical null is more than twice as wide as the normal one wide-7 read its t against:
+over 153 placebo windows (anchors January-November, 2005-2025, train only) the cross-sectional
+t has standard deviation 2.18, and 35% of windows have |t| >= 2 (5% under N(0, 1)). A pass in
+January 2027 needs t >= 4.87. At the lead's own (optimistic) slope that happens in 8% of
+placebo windows: one turn is almost powerless.**
+
+| Null t | 2% | 5% | 50% | 95% | 98% |
+|---|---:|---:|---:|---:|---:|
+| 153 placebo windows | -4.26 | -3.34 | -0.06 | +3.33 | +4.55 |
+
+- Power (b* L added to each placebo window's return): 8% at b* = 0.089, 5% at half of it.
+  My guess before the run was 15-35%: too high. Ten days of 21 funds that move together give
+  a cross-section with only a few independent bets.
+- On the design issue: under a null that carries the design's own correlation, t values of
+  3 to 4 are common. A one-window cross-sectional t of 3.9 would rank 6th of 154 here (p
+  0.039; 9 of 153 placebo windows have |t| >= 3.9, the largest +8.9). wide-7's pooled
+  year-clustered t is not the same statistic, so this is an analogy, not a re-test (no
+  turn-of-year window was computed); it says the lead's t 3.9 is weaker evidence than it read.
+- **Proposed entry:** `research/forward/proposed-wide8.jsonl`, id `turn-of-year-losers@1`,
+  status proposed, NOT frozen; code hashed at commit 4dc070a; the null's 153 t values are in
+  the entry, so the January scorer only reads them. Metric `placebo_rank` is new to the
+  registry (forward.py on `forward-1` knows `sharpe`, `mean`, `win_rate`): freezing needs that
+  metric added, or the entry recast.
+- **What the registry should take from this:** a single turn is a weak test (8%), so the
+  2026/27 verdict will most likely be "fail" whatever the truth. A multi-turn version (Fisher
+  over turns, same frozen null) would need to be frozen as `@2` before its first turn; with 8%
+  power a turn, it needs on the order of ten or more turns: it falls in the registry's "decide
+  on other grounds" bin, like three of forward-1's four candidates.
+
+How a future lane scores it (from 2027-01-12): refresh `research/data/adj` with
+`research/lib/fetch.py`, then `SCORE=1 uv run python -I research/lib/wide8_turn.py`. The
+scorer refuses tax years before 2026, reads the frozen null from the entry and prints funds,
+losers, b, t, p and the verdict. If the 2026 dose has fewer than 3 losers it says so and the
+next turn is scored instead.
+
+Disclosures: one dry run (`DRY=1`) printed only the count of eligible placebo windows per
+month (153 in 21 years), then one run. Rule pushed at ae4f76c, code and tests at 4dc070a, both
+before either run. No `tries.md` row (not a strategy, not a test on train).
