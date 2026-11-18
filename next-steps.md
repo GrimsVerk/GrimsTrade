@@ -190,6 +190,13 @@
     yrs). 4 `live-check` rows (not selectable).
   - 22:33 UTC `ls-trend-1` started (W, <- survey-5): is the missing crisis alpha the missing short
     side and narrow universe? (research harness only).
+  - DONE `eu-7` (draft #80 -> eu-6): trend in fewer places loses the insurance. A (trend on
+    stock funds only) 0.60 vs 0.62 on half the orders but -3.8% in 2022 (trend +1.7%; the 2022
+    protection came from the bond slots). B (hold seven at 67% + 33% cash at 0) 0.79, worst
+    loss 13.8% vs 13.6%, 31 vs 58 months under water, but -15.7% in 2008 (US proxy worst 22%
+    vs 11%). Gaps noise (B-T +0.17, SE 0.13). 24 rows; eu family 12.
+  - 22:37 UTC `eu-8` started (D, <- eu-7): T/B with euro cash interest; idea C (trend on stocks +
+    long bonds) judged first on US proxies 1994-2011.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
