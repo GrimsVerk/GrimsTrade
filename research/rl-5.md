@@ -102,3 +102,62 @@ strategy tries: the net pooled weeks are a small backtest, so they are counted i
 `ls-ml5`, if run: one `variant` row per set (idea `rl-5-perp-<set>`). Code
 `research/lib/rl5_screen.py` (reuses `rl4_perp`), test `tests/test_rl5.py` on made-up data,
 table `results/rl-5-screen.md`.
+
+## Results (written 2026-11-18 ~11:12 UTC, after the one screen run; nothing else run)
+
+**In one line:** no input clears the return-spread screen, so by the card no lasso was trained;
+the fixed learner has nothing on this book that is distinguishable from luck, and nothing here
+beats `ls-funding`.
+
+The card was committed and pushed (11:06 UTC) before `rl5_screen.py` existed. The screen ran
+once, with `--log` (`results/rl-5-screen.md`, nine `screen` rows in `tries.md`).
+
+| Input | Long side | Net per week (t) | p | Holm p | Net Sharpe | Venues > 0 |
+|---|---|---:|---:|---:|---:|---:|
+| `log_qv` | low volume | +0.22% (+1.7) | 0.087 | 0.78 | 0.79 | 1 of 3 |
+| `funding` | low | +0.18% (+1.6) | 0.113 | 0.91 | 0.73 | 2 of 3 |
+| `fund_30` | low | +0.16% (+1.4) | 0.161 | 1.00 | 0.64 | 2 of 3 |
+| `premium` | low | +0.14% (+1.1) | 0.287 | 1.00 | 0.49 | 3 of 3 |
+| `max_30`, `mom_12_1`, `vol`, `rev_1w`, `mom_1m` | | -0.07% .. +0.06% (t below 0.5) | 0.69-1.00 | 1.00 | -0.20 .. 0.18 | |
+
+What it says:
+
+- **Nothing passes.** The best unadjusted p is 0.087 (`log_qv`); Holm over nine needs 0.011. Even
+  without any correction no input reaches t 2 after costs.
+- **Costs take a third of the carry.** `funding` earns +0.27% a week gross (t 2.3) and +0.18%
+  net (t 1.6) at 39x turnover a year. The slower `fund_30` keeps almost as much (+0.16%) at half
+  the turnover (21x): the one useful hint, and it is the same carry, not a new input.
+- **`vol` is confirmed dead in return terms** (net 0.00%, Sharpe -0.01), as rl-4's post-hoc table
+  said. Its rank IC of 0.10 is not money.
+- **`log_qv` is one venue.** Small-volume coins earn +0.41% a week (t 3.1) on Binance-outside-30
+  and lose on Bybit and Hyperliquid, so it fails the two-venue rule as well as Holm. It is the
+  breadth-1 low-volume effect, again not carrying over.
+- **The bar was 0.57.** Three single-input books have a net Sharpe near or above it here (0.79,
+  0.73, 0.64), but these are weekly numbers with the sign picked in sample and they are not
+  comparable to the daily, replayed 0.57; none is significant; and the two carry ones *are*
+  `ls-funding`. Nothing in this table is a reason to think a combination beats the carry book.
+
+**How sure.** Fairly: 246 pooled weeks, one pre-registered run, a correction fixed in advance.
+The weak point is power: with weekly spreads of about 1.8% standard deviation, 246 weeks can only
+detect about 0.3% a week at t 2.5, which is more than any input here pays after costs. The
+screen cannot tell "small real edge" from "nothing"; it can only say that five years of this
+book are not enough to license fitting a learner on these inputs.
+
+**Disclosures.** `ls-ml5` was not run (card: only if an input passes). The gross numbers differ
+from rl-4's why-table (+0.40% spread = +0.20% per unit of this book; here +0.27%) because the
+pooling differs: rl-4 averaged all venue-weeks, the card here averages venues inside each week.
+Plain t-statistics, no autocorrelation correction. Held-out year not loaded.
+
+### What rl-6 should do
+
+Stop screening weekly cross-sectional inputs on this perp book: nine inputs, two screens (rank
+IC, return spread), one learner, and the only thing that pays is the funding carry already known
+from carry-2, which carry-3's band then failed on the held-out year. If the lane continues, the
+one lead with a mechanism is cost, not forecast: `fund_30` keeps the carry at half the turnover.
+That is a carry question (a slower-rebalanced carry book on train years, against `ls-funding` at
+10 and 30 bps), not an RL or ML one, and it has no clean held-out year left. Otherwise close the
+RL lane: no learner here is limited by the optimizer; all are limited by ~250 independent weeks.
+
+### Status
+
+Done 2026-11-18. Nothing running. Draft PR to `rl-4`, not merged.

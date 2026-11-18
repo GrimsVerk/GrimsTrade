@@ -12,6 +12,9 @@ Never edit or delete a row.
   selectable and not counted as a strategy try (`protocol.md`, "Planted-signal controls").
 - `screen` (added 2026-11-13, info-1): a descriptive weekly IC row for one candidate input, no
   backtest, not selectable and not counted as a strategy try; numbers in `results/info-1.md`.
+  From rl-5 (2026-11-18) a `screen` row of idea `rl-5-screen` is one input's pooled
+  third-against-third book after 10 bps (weekly, Sharpe with sqrt(52), turnover = weight changes
+  a year), sign picked in sample; numbers in `results/rl-5-screen.md`.
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
@@ -1084,3 +1087,12 @@ Never edit or delete a row.
 | 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s8 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15857.8% | 37.8% | 16.88 |
 | 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s9 | control | train | 2000-01-07 | 2025-11-09 | 1.29 | +15737.8% | 37.9% | 16.86 |
 | 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15834.8% | 37.7% | 16.87 |
+| 2026-11-18 11:08 | rl-5-screen | funding | screen | train | 2021-02-19 | 2025-10-31 | 0.73 | +51.0% | 20.3% | 39.24 |
+| 2026-11-18 11:08 | rl-5-screen | premium | screen | train | 2021-02-19 | 2025-10-31 | 0.49 | +32.9% | 23.9% | 38.04 |
+| 2026-11-18 11:08 | rl-5-screen | mom_12_1 | screen | train | 2021-02-19 | 2025-10-31 | 0.10 | -0.3% | 23.3% | 14.93 |
+| 2026-11-18 11:08 | rl-5-screen | vol | screen | train | 2021-02-19 | 2025-10-31 | -0.01 | -9.7% | 38.8% | 20.61 |
+| 2026-11-18 11:08 | rl-5-screen | rev_1w | screen | train | 2021-02-19 | 2025-10-31 | -0.17 | -17.9% | 41.7% | 62.19 |
+| 2026-11-18 11:08 | rl-5-screen | mom_1m | screen | train | 2021-02-19 | 2025-10-31 | -0.20 | -21.8% | 41.7% | 32.38 |
+| 2026-11-18 11:08 | rl-5-screen | fund_30 | screen | train | 2021-02-19 | 2025-10-31 | 0.64 | +43.4% | 13.3% | 20.95 |
+| 2026-11-18 11:08 | rl-5-screen | max_30 | screen | train | 2021-02-19 | 2025-10-31 | 0.18 | +8.2% | 35.8% | 24.65 |
+| 2026-11-18 11:08 | rl-5-screen | log_qv | screen | train | 2021-02-19 | 2025-10-31 | 0.79 | +63.9% | 24.5% | 15.67 |
