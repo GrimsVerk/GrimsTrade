@@ -1,5 +1,17 @@
 # Next steps
 
+## eu-3 (started 2026-11-18 night, branch `eu-3` from `eu-2`, draft PR -> `eu-2`)
+
+DEEPER lane on eu-2: can a slower decision clock or fewer, larger slots cut the coin-free
+book's (`euw`) orders without changing the rule's character, so it is worth running at EUR
+5-10k with fixed per-order fees? Card `research/cards/eu-3.md` (pushed before any number):
+reference + six variants (weekly trades on Fridays only, monthly, monthly entries with weekly
+exits, 4-week hold after entry, 4 class slots IWDA/IBGM/4GLD/EXXY, class slots monthly) at
+`slip` and DEGIRO EUR 1/3, Trade Republic EUR 2 at EUR 5k/10k/25k. 81 rows planned.
+
+- Doing: writing `research/lib/eu3.py`, then the run. Local `research/data/` copied from the
+  eu-2 worktree (git-ignored).
+
 ## eu-2 (done 2026-11-18 night, branch `eu-2` from `eu-1`, draft PR #62 -> `eu-1`)
 
 DEEPER lane on eu-1: (1) real Dutch fixed per-order fees (DEGIRO EUR 1 / EUR 3 + EUR 2.50/yr
