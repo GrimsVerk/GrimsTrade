@@ -1,6 +1,6 @@
 # Next steps
 
-## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR -> `carry-2`)
+## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR #36 -> `carry-2`)
 
 Why does each tested model fail where it fails, and does a mix chosen from past data beat
 `tsmom12`? No mix passes: `stack` 1.01, `switch` 1.02, `meta` 1.08 against 1.05 (1994-2025); the

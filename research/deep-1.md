@@ -1,6 +1,6 @@
 # deep-1: a failure atlas of the tested models, then one honest combination test
 
-Status: **done** (2026-11-18). Branch `deep-1`. The card further down is as it was committed
+Status: **done** (2026-11-18). Branch `deep-1`, draft PR #36. The card further down is as it was committed
 before any number; what changed afterwards is listed under "Changes after the card".
 
 ## In plain words
