@@ -136,3 +136,11 @@ Chance any variant passes: 3%. Primary against the twin: -0.05 to +0.03 Sharpe o
 in 2000-01, costs in 1995, 2023-24). Since 2017: -0.02 to -0.10. SPY up-trend days after 2016:
 bond-down days earn about as much as bond-up days or more (2023-24). `xtsmom-full` worse than
 the primary (it drops TLT through most bond rallies while stocks also rose).
+
+## Result
+
+Tested 2026-11-18: **fails train, all three variants** (primary: bars 1, 2, 6, 7). `xtsmom`
+1.05 against 1.05 (+0.002, p 0.49), ahead in 1 of 5 eras; since 2017 -0.06. SPY up-trend days,
+bond-up minus bond-down: -0.2 bps a day in 1994-2015, +0.4 (t 0.1) after 2016; the effect
+shows only on the S&P 500 index in 1980-1993 (+21.5, t 2.2). Table `results/xtsmom.md`;
+verdict `survey-3.md`. Held-out year unspent.

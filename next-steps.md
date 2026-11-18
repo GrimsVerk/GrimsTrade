@@ -1,12 +1,30 @@
 # Next steps
 
-## Survey 3 (in progress 2026-11-18, branch `survey-3`, draft PR -> `survey-2`)
+## Survey 3 (done 2026-11-18, branch `survey-3`, draft PR #64 -> `survey-2`)
 
-Task: card and train test of survey-2's rank 2, `xtsmom` (Pitkäjärvi, Suominen, Vaittinen,
-JFE 2020: stock slots only while bonds also trend up), in-paper vs after-publication years;
-if it fails, a short ranked note on survey-2's remaining 5 candidates (no new tests).
+Card and train test of survey-2's rank 2, `xtsmom` (Pitkäjärvi, Suominen, Vaittinen, JFE
+136(1) 2020, pp. 63-85: citation confirmed; sample 1980-2015, 20 countries, long-short).
+Card and code pushed before any number. **Fails train, all three variants; held-out year
+unspent.** Write-up `research/survey-3.md`; table `research/results/xtsmom.md`; 9 rows in
+`tries.md`.
 
-- Doing: card `research/cards/xtsmom.md` pushed before any number; code next.
+- `xtsmom` (stock slots only while the 10-year bond's 12-month return is positive): 1.05 vs
+  1.05 (+0.00, p 0.49), 1 of 5 eras; it only lowers exposure. Paper's years in our data
+  (1994-2015): SPY bond-up minus bond-down -0.2 bps a day; after (2017-2025): +0.4 (t 0.1),
+  Sharpe -0.06 vs the twin. The effect exists only on the S&P 500 index in 1980-1993 (+21.5
+  bps, t 2.2). 6-month bond (`xtsmom-b6`) and the paper's bond leg (`xtsmom-full`) worse.
+- Ranked note on survey-2's other five: `announcement-premium` the only one left (1%; event
+  study on FOMC days first); `fomc-bond-drift` forward-only (its sample covers our train);
+  `turning-points`, `nonlinear-tsmom`, `crypto-corr` dead. `ideas.md` updated.
+
+Count: 61 mechanisms, 14 tested, none passed. Next test at p < 0.10 / 61 = 0.00164.
+
+- Doing: nothing. No process running.
+- Next: survey-2's list is spent. If anything, an `announcement-premium` event study on FOMC
+  days (no new data) before any card. Published effects whose sample covers our train get no
+  honest train test: prefer ones with years after their sample.
+- Data: none added. A fresh worktree needs `research/macro.local.json` (copy the `.example`;
+  the FRED `DGS10` snapshot in the cache) and the price cache in `research/data/`.
 
 ## Survey 2 (done 2026-11-18, branch `survey-2`, draft PR #60 -> `wide-4`)
 
