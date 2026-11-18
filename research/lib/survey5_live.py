@@ -250,7 +250,7 @@ def sharpe_gap_power(runs: dict[str, harness.Run], h: float) -> list[str]:
         rho = float(np.corrcoef(x, y)[0, 1])
         rows.append((label, s1, s2, rho, s1 - s2))
     lab, s1, s2, rho, g = rows[0]
-    for name, hh in (("backtest gap x (1 - h), measured h", h), ("same, h = 25% (H2)", 0.25)):
+    for name, hh in (("backtest gap x (1 - h), measured h", h), ("same, H2", 0.25)):
         rows.append((f"{name} {hh:.0%}", s1, s1 - g * (1 - hh), rho, g * (1 - hh)))
     for label, s1, s2, rho, g in rows:
         yrs = [weeks_for_gap(s1, s2, rho, g, a) / 52 for a in (0.025, 0.10)]

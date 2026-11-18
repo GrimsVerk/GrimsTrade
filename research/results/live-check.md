@@ -105,7 +105,18 @@ Weeks needed (forward-1's `sharpe` formula, power 0.8, one-sided), in years of 5
 
 | Haircut h | Expected live Sharpe | Years, Sharpe > 0, a 0.025 | a 0.10 | Expected lead over holding (Sharpe of difference) | Years, lead > 0, a 0.025 | a 0.10 |
 |---|---:|---:|---:|---:|---:|---:|
-| none (the backtest) | 1.05 | 7.3 | 4.2 | -0.10 | 19230769 | 19230769 |
-| measured (c), 80% | 0.21 | 170.2 | 97.8 | -0.02 | 19230769 | 19230769 |
-| Harvey-Liu ceiling (H2), 25% | 0.79 | 12.7 | 7.3 | -0.07 | 19230769 | 19230769 |
-| bank-strategy median (H1), 73% | 0.28 | 97.2 | 55.8 | -0.03 | 19230769 | 19230769 |
+| none (the backtest) | 1.05 | 7.3 | 4.2 | -0.10 | never (mean below 0) | never (mean below 0) |
+| measured (c), 80% | 0.21 | 170.2 | 97.8 | -0.02 | never (mean below 0) | never (mean below 0) |
+| Harvey-Liu ceiling (H2), 25% | 0.79 | 12.7 | 7.3 | -0.07 | never (mean below 0) | never (mean below 0) |
+| bank-strategy median (H1), 73% | 0.28 | 97.2 | 55.8 | -0.03 | never (mean below 0) | never (mean below 0) |
+
+### Added after the first run: the Sharpe gap to holding everything
+
+Not on the card. The card's lead measure (mean weekly `tsmom12` minus `hold-c17`) is below 0: `tsmom12` earns a little less than holding, at lower risk. Its case is the higher Sharpe, so: weeks for a one-sided test of Sharpe(`tsmom12`) > Sharpe(`hold-c17`) (Jobson-Korkie with Memmel's correction; normal returns, so if anything too few), power 0.8, in years.
+
+| Window or haircut | Sharpe `tsmom12` | Sharpe `hold-c17` | Weekly correlation | Gap | Years, a 0.025 | a 0.10 |
+|---|---:|---:|---:|---:|---:|---:|
+| backtest 1994-2025 | 1.03 | 0.86 | 0.80 | +0.17 | 107 | 62 |
+| live window L (2010-02..2025-10) | 1.31 | 1.27 | 0.89 | +0.04 | 1089 | 626 |
+| backtest gap x (1 - h), measured h 80% | 1.03 | 1.00 | 0.80 | +0.04 | 2580 | 1482 |
+| same, H2 25% | 1.03 | 0.91 | 0.80 | +0.13 | 191 | 110 |
