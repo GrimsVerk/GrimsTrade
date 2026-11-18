@@ -1,5 +1,12 @@
 # Next steps
 
+## Wide 7 (in progress 2026-11-18, branch `wide-7`, draft PR -> `wide-6`)
+
+Gates for W14 `wash-sale-echo` and W13 `festival-gold`, then W12 `rmd-december` if time
+allows; write-up `research/wide-7.md`. Count carried in: 68 mechanisms, 16 tested.
+
+- Doing: W14 gate (rule pushed in `research/wide-7.md`; script next, then one run).
+
 ## Wide 6 (done 2026-11-18, branch `wide-6`, draft PR #76 -> `wide-5`)
 
 Two event-study gates (ann-1's method: rule pushed before any number, no card unless the raw
