@@ -308,3 +308,13 @@ loss 32% against 48%. Ten-industry book +0.05 (p 0.29); 6 of 10 industries ahead
   one day, 0.027 total log growth over 40 years). Era 1's gaps were holiday-Friday weeks; that
   explanation is not verified for this era. Era 1's table was rebuilt after the code change
   and came out identical.
+- **Replay gaps explained (trend-1926-fix, 2026-11-18, re-scoring only, no number changed).**
+  Every gap above 0.0001 in both eras is the Monday (or Saturday) after a Friday holiday, and
+  the Tuesday after it: `common.weekly` takes the week's Friday from the latest visible close,
+  so in a holiday-Friday week the gym fills the new signal one session later than the paper
+  series. Conservative, no look-ahead, the house convention for every lane. With the paper's
+  returns on those sessions: market +0.070 (was +0.071), `x1` -0.032 (was -0.031), `x3` -0.020
+  (was -0.019); "crashes only" stands. In era 1 only energy's whole-period sign is on the
+  knife-edge (-0.002 published, +0.007 re-scored: "9 of 10 industries" would read 10 of 10).
+  Evidence and tables: top of `results/trend-1926-era2.md`; script
+  `lib/trend_1926_gaps.py`.

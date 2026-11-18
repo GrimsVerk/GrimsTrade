@@ -6,7 +6,13 @@ Three loose ends of trend-1926: (1) explain the era-2 replay-check gaps (utiliti
 day) and fix anything that changes a number; (2) offline tests for the `TREND_ERA=1962` path;
 (3) `research/ideas.md` and the README describe both eras.
 
-- Doing: step 1 (diagnosis).
+- Step 1 done: the era-2 gaps (and era 1's) are holiday-Friday weeks. `common.weekly` takes the
+  week's Friday from the latest visible close, so the gym fills that week's new signal one
+  session after the paper series does (conservative, no look-ahead). Re-scored with the paper's
+  returns on the 23 gap Mondays: no deciding sign moves (market +0.071 -> +0.070, `x1` -0.031
+  -> -0.032); verdict "crashes only" stands. No rerun, no `tries.md` row. Evidence at the top of
+  `research/results/trend-1926-era2.md`; `research/lib/trend_1926_gaps.py` rebuilds it.
+- Doing: step 2 (tests for `TREND_ERA=1962`).
 
 ## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 

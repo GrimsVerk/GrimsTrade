@@ -2,6 +2,54 @@
 
 Card: `trend-1926.md`.
 
+## The replay-check gaps, explained (2026-11-18, after the run; no rerun, no number changed)
+
+Section 0 below shows the gym and the gym-free paper series apart by up to 1.7% on one day
+(utilities) and 0.027 in total log growth over 40 years. Cause: **the week's decision day when
+that Friday is an exchange holiday**. Not a data, dividend, holiday-gap or fill error, and not a
+look-ahead. Rebuild the evidence with
+`TREND_ERA=1962 uv run python -I research/lib/trend_1926_gaps.py` (re-scores the saved runs).
+
+- **Where.** On 23 Mondays (and the Tuesday after each), and nowhere else, do the two differ by
+  more than 0.0001 on any of the 11 series; every other session agrees within 0.00001
+  (2 bps cost booked as a price markup in the gym, as a subtraction in the paper). All 23 are
+  the first session after a Friday with no session: Good Friday (1962, 1969, 1973, 1977, 1980,
+  1984, 1993, 1994, 1995, 1997, 2000, 2001), New Year's Day (1971, 1999), July 4 (1980),
+  Christmas (1981, 1999), Memorial Day 1969. There were 77 such Fridays after the first
+  decision; a gap shows only when the 12-month signal flipped that week.
+- **Why.** `common.weekly` finds the week's Friday from `view.today`, which is the date of the
+  latest close the decision can see. On a holiday Friday (and the weekend after) the latest
+  close is Thursday's, so the decision maps back to the previous Friday and repeats it. The new
+  signal (computed, correctly, from Thursday's close) is first taken by Monday's decision and
+  filled at Tuesday's open. The paper series (`trend_tune.paper`) uses the calendar Friday and
+  applies the same signal from Monday. Same information, one session apart: the gym is the
+  later of the two. Example, utilities, Good Friday 2000-04-21: the gym's decisions read weight
+  1.0 on 04-21, 04-22, 04-23 (`view.today` = 04-20) and 0 from Monday 04-24, so it held through
+  Monday (+1.65%) and sold at Tuesday's open; the paper series sold at Monday's open (-0.02%,
+  the cost). 1980-04-07, Monday after Good Friday: the gym bought a session late and missed
+  -1.12%. Those two days are the whole 0.027 of utilities' total gap.
+- **Not a bug of this run.** The gym is the reference engine and `common.weekly` is the wrapper
+  every lane's twins use (the protocol's SPY and QQQ runs meet a Good Friday every year), so the
+  published numbers follow the house convention. It is conservative: in those weeks the rule
+  trades one session later than the card's "decided on Friday's close" would allow, never
+  earlier. Changing it would move every lane's numbers a little and is not done here.
+- **It cannot change the verdict.** Re-scoring with the paper's return on the gap sessions
+  (Sharpe difference, published / re-scored): market whole +0.071 / +0.070, 1962-81 +0.131 /
+  +0.126, 1982-01 +0.030 / +0.033, `x1` -0.031 / -0.032, `x3` -0.019 / -0.020; book (approximate:
+  a tenth of each industry's gap) whole +0.054 / +0.055, `x3` -0.021 / -0.020. The largest move
+  on any series and window is 0.012 (manufacturing 1962-81, +0.050 / +0.038); no sign of a
+  deciding number changes, the count of industries ahead stays 6 of 10 over the whole period, and
+  "crashes only" stands. The in/out sessions behind section 2 move by one session in at most four
+  weeks per series out of about 2,090.
+- **Era 1 has the same cause** (`uv run python -I research/lib/trend_1926_gaps.py`): 29
+  series-weeks in 18 holiday-Friday weeks (before 1952 the session after the holiday was
+  usually a Saturday), every other session within 0.00001. Market whole +0.329 /
+  +0.329, `d1` +0.109 / +0.108, `d3` +0.094 / +0.094; book +0.452 / +0.455. One published
+  description sits on the knife-edge: energy's whole-period difference is -0.002 as published
+  and +0.007 re-scored (the 1953-04-06 Monday after Good Friday, -2.96% in the gym), so "9 of 10
+  industries ahead" would read 10 of 10 under the paper's convention. The verdict there
+  ("something remains, short of a property") does not move.
+
 <!-- tables below this line are written by lib/trend_1926.py -->
 
 ## 0. Data and checks
