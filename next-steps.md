@@ -1,5 +1,14 @@
 # Next steps
 
+## Stop re-entry (doing 2026-11-18, branch `stop-reentry`, draft PR -> `coin-cap-4`)
+
+One pre-committed re-entry rule for the weekly coin stop, `stop-cool-13` (13-week cool-off
+after a stop-out, then the stop's reference high reset to the stop-out). Card "Sixth reading"
+in `research/cards/coin-cap.md` (pushed before any number). Pick 16 of the coin-cap family:
+needs 17 of 21 episodes (p < 0.00625).
+
+- Doing: code and tests, then one run (4 tries rows), then `research/coin-cap-verdict.md`.
+
 ## Coin cap 4 (done 2026-11-18, branch `coin-cap-4`, draft PR #69 -> `coin-cap-3`)
 
 **One-screen verdict for a human: `research/coin-cap-verdict.md`.** If a coin risk control is

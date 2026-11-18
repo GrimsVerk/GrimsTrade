@@ -388,3 +388,109 @@ random prices / the last 120 days checks the plumbing and logs nothing. Look-ahe
 that `pstop`'s hold at a decision does not change when later prices are scrambled and is never
 on where the twin is off; `harness.check_against_gym` on both six-asset rules before any
 number. Held-out year unspent.
+
+## Sixth reading, lane `stop-reentry`: one re-entry rule for the weekly stop (added 2026-11-18 22:36 UTC, before any of its numbers)
+
+Branch `stop-reentry` (from `coin-cap-4`). The weekly `stop-0.25` loses in two ways that are
+both about **re-entry**, not exit:
+
+- **Bounce buying** (coin-cap-4 step 1): after a crash its volatility band widens (the band is
+  0.25 x the coin's own 60-day EWMA vol, which the crash itself raises), so a bounce brings the
+  coin back inside the band and the stop buys it before a second leg down. Falls with two or
+  more re-entries: mean edge M -3% (no re-entry: +25%).
+- **Late re-entry** (combo-1, PR #70): the stop measures the distance to the one-year high, so
+  after a deep fall the coin stays out until the price is back within the band of the *old*
+  top or the top is a year old, long after the twin's 12-month trend has turned. On the six
+  assets: -21% a year against `tsmom12` in the six months after its ten deepest lows.
+
+Seen when this was written: everything on `coin-cap` .. `coin-cap-4` and combo-1's map. No
+series with a cool-off or a reset reference high has been computed on any data.
+
+### The rule (one, fixed here, no grid): `stop-cool-13`
+
+Same book, universe, coins, prices, costs, twin `TS` and Friday timing (inputs stamped the day
+before, the book's as-of shift) as the third to fifth readings. Per coin, on each Friday
+decision:
+
+1. **Stop-out.** The coin was held at the previous decision, the twin holds it now, and the
+   stop condition (below) is known and fails: out, and a **cool-off of 13 Friday decisions**
+   starts (91 days).
+2. **Cool-off.** During it the coin is out, whatever the twin or the price do.
+3. **Reference high reset.** The stop condition is cointop-1's, `log(close / H) / vol >= -0.25`
+   (60-day EWMA vol), but `H` is the highest close of the last 365 days **not before the latest
+   stop-out decision** (its own close counts). Without a stop-out yet, `H` is the plain one-year
+   high (then the rule equals the weekly stop).
+4. Otherwise: hold iff the twin holds and the stop condition holds (an unknown vol is not held
+   and starts no cool-off).
+
+**Why this targets both failures (mechanism, not outcomes).** The cool-off blocks re-entry in
+the acute phase, when the crash's own volatility has widened the band (bounce buying). The
+reset high drops the old top from the stop's reference, so after the cool-off the coin comes
+back when it is near the highs it has made *since* the exit (not in a second leg down: then the
+stop condition fails against the bounce high), without waiting to be near the old top (late
+re-entry). After 365 days the rule is the plain weekly stop again.
+
+**Why 13 weeks (set from earlier descriptive numbers, stated before results).** The cool-off
+should last until the slow twin has had its usual time to decide on the fall, then hand the
+re-entry back to it: the 12-month rule leaves a coin top after a median **106 days**
+(cointop-1), and the weekly stop exits on average on **day 15** after the top in the episodes
+it leads (coin-cap-4 step 1). 106 - 15 = 91 days = 13 weeks. If the fall is real, the twin is
+off by then and the coin stays out on the twin; if the twin still holds, the fall has not
+turned the trend and the coin goes back in at the post-exit highs. No other `N` is run.
+
+**Six assets.** The same rule, unchanged, on `tsmom12`'s coin slots through the gym (Friday
+decisions, the gym's own as-of rule, `c.weekly`): the state is replayed from past Fridays'
+views only (`view.at`), memoised per panel; `harness.check_against_gym` on it before any
+number.
+
+### Measures (all reported for the twin, every cap where it applies, the weekly stop and `stop-cool-13`)
+
+- Coin book: edge M against its own matched cap `f*` (the third reading's definition) per
+  episode; raw M against the weekly stop; **time under water** per fall (coin-cap-4's TUW);
+  **six months after the low**: the slot's summed daily return over the 182 days after each
+  fall's low (rows `low + 1 .. low + 182`, clipped at the data's end), per episode the mean;
+  re-entries per fall; pooled Sharpe; all at normal and double costs.
+- Six assets (full train 1994-2025 and coin years 2013-25): worst loss, CAGR, Sharpe, longest
+  stretch under water, share of days 10%+ under water, and combo-1's **turn** measure: excess
+  return over `tsmom12`, % a year (mean daily excess x 365), in the 182 days after each of
+  `tsmom12`'s ten deepest lows (`deep1_atlas.episodes` on this lane's `tsmom12` gym run).
+
+### Family bar
+
+coin-cap picks so far m = 15; this reading adds one: **m = 16**. The sign test needs
+p < 0.10 / 16 = 0.00625; on 21 episodes that is at least **17 of 21** (p 0.0036; 16 of 21 is
+0.013).
+
+### One decision rule (fixed here)
+
+"**`stop-cool-13` meets the family bar and replaces the weekly stop**" only if all hold:
+
+1. Edge M against its own matched cap positive in at least 17 of the 21 episodes.
+2. Late re-entry fixed: mean (over episodes) six-months-after-low return on the coin book at
+   least the weekly stop's, and the six-asset turn excess (full train) above the weekly stop's.
+3. Bounce buying fixed: on the weekly stop's falls with two or more re-entries (fixed by the
+   weekly stop's positions, 25 falls), mean edge M of `stop-cool-13` above the weekly stop's.
+4. Fall protection kept: six assets, coin years, worst loss at most 1.0 point above the weekly
+   stop's (17.7% in coin-cap-4), and mean episode edge M at double costs at least the weekly
+   stop's at double costs.
+5. The eight held-aside coins (BTC, ETH, LTC, XRP, BCH, ETC, XLM, DASH): summed edge M > 0.
+
+Readings (exactly one):
+
+- All hold: as above.
+- 1 fails, 2 to 5 hold: "**fixes the re-entry costs without proof: if a coin stop is wanted,
+  `stop-cool-13` is the better risk preference, still not a proven rule**".
+- Otherwise: "**the re-entry rule does not fix the stop: the weekly stop stays the (unproven)
+  risk preference**".
+
+Independent of the reading: unless bar 1 holds, the coin line stays parked (no rule PR from
+this lane; the held-out year stays unspent).
+
+### Tries
+
+Idea `stop-reentry`, train only: `stop-cool-13` on the coin book's equal-slot portfolio
+(`variant`) and at double costs (`robustness`); on the six assets through the gym (`variant`)
+and at double costs (`robustness`): 4 rows. A `DRY=1` run on random prices / the last 120
+days checks the plumbing and logs nothing. Look-ahead: unit tests that the hold at a decision
+does not change when later prices are scrambled, is never on where the twin is off, and equals
+the weekly stop while no stop-out has happened; `check_against_gym` on the six-asset rule.
