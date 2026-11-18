@@ -69,7 +69,8 @@ What the evidence says, in short:
   from negative rates); every other candidate lost far more in some crash. Gold fell 22% (in
   dollars) within the Lehman weeks of 2008; Berkshire fell 54% in 2007-09 (in dollars); long euro
   bonds lost 32% in 2022; Oslo's OBX lost 62% in 2007-09, more than the S&P's 52% (both in
-  euros; but OBX lost less in 2022 and 2025).
+  euros; but OBX lost less in 2025, and in 2022 over the S&P's crash window, though not by each
+  index's own worst fall that year).
 - **No re-entry rule beat buying back at once** over 10 years. Waiting won when the sale was near
   the real top and lost when it was 2-3 years early. A plan can cap regret, not add return; the
   deadline is its most important part.
@@ -156,7 +157,7 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 
 **Lessons** (inv, cross-investor lessons):
 
-1. **Nobody with a documented record timed a top to the month.** Buffett was more than a year early, Grantham 2-3 years, Shiller 3+ years. Robertson quit 20 days before he would have been proved right. Those who were right say they cannot time it (Buffett, Marks, Klarman).
+1. **Nobody with a documented record timed a top to the month.** Buffett was more than a year early, Grantham 2-3 years, Shiller 3+ years. Robertson quit 20 days after the top, just before the fall proved him right. Those who were right say they cannot time it (Buffett, Marks, Klarman).
 2. **Being early is expensive and can end you first.** Tiger closed; GMO lost about a third of its assets; Hussman's fund shrank by more than 90%. A plan must survive the pop coming late.
 3. **The winners scale; they do not flip.** Buffett built cash over years, Marks turns a "risk dial", Klarman's cash is a residual, and hedge funds cut tech stock by stock (section 2.2).
 4. **Re-entry is where the money was made**, with rules set in advance. They were early there too: Buffett's op-ed came 28.5% before the low, and Oaktree started buying in September 2008. Several who called the top missed the re-entry (Grantham, Hussman).
@@ -268,7 +269,8 @@ little every day, so the levels above are from 18 Nov.
   krone (NOK) lost about 20% against the euro in late 2008 and 18.5% in one month in 2020
   (Norges Bank fixings, park section 5). In euros, Oslo's OBX fell more than the S&P in the deep crashes (2007-09: -62% against -52%, own
   maximum drawdown -70%; Lehman leg -54% against -32%; 2020 -42% against -34%) and less in the
-  smaller ones (2022: -9.0% against -13.1%; Aug 2024 -6.6% against -9.1%; 2025 -8.5% against
+  smaller ones (2022: -9.0% against -13.1% over the S&P's crash window, though by each index's
+  own worst fall in 2022 OBX lost more, -22.0% against -18.0%; Aug 2024 -6.6% against -9.1%; 2025 -8.5% against
   -22.7%) (haven, corrected in review round 1). In the deep crashes, stock falls and krone falls
   came together.
 
@@ -551,7 +553,7 @@ where no euro data exist (`lanes/haven-table.md`). Yields read 2026-11-15/18 (pa
 
 | Option | Yield now | Worst in past crashes | Main risks | Cost | Minimum | Back into stocks |
 |---|---|---|---|---|---|---|
-| **Dutch instant-access savings** (ING / Rabo / ABN / ASN / Triodos) | 1.10 / 1.52 / 1.25 / 1.30 / 1.16% (Keuze.nl, 15 Nov) | Never down in any crash (3-month Euribor cash: at worst -0.1% over 2022 from negative rates) | Bank failure: covered to EUR 100k, but up to 7 working days without access; inflation | 0 | 0 | SEPA to the broker: same day to 1 bank day |
+| **Dutch instant-access savings** (ING / Rabo / ABN / ASN / Triodos) | 1.10 / 1.52 / 1.25 / 1.30 / 1.16% (Keuze.nl, 15 Nov) | Never down in any crash (3-month Euribor cash: -0.2% at worst in 2022, from negative rates) | Bank failure: covered to EUR 100k, but up to 7 working days without access; inflation | 0 | 0 | SEPA to the broker: same day to 1 bank day |
 | bunq savings | 3.11% promo for 6 months, then 1.55% (Keuze.nl) | Same | Same; promo ends | 0 | 0 | Same |
 | **Broker cash at the ECB rate** (e.g. Trade Republic) | 2.50%; 4% promo for new customers on the first EUR 20k until 1 Mar 2027 | Cash: never down | Held at partner banks; which guarantee covers which part is unverified | 0 | 0 | Instant inside the broker |
 | **EUR overnight-rate ETF** (Xtrackers XEON, Amundi CSH) | Tracks the overnight rate; XEON 1-year +2.11% | XEON: -0.5% at worst (2020, negative rates) | Synthetic: swap banks (loss capped at 10% of value by UCITS, DWS aims under 5%); not a deposit; broker failure (securities held apart; EUR 20k scheme) | TER 0.10%/yr + broker fee | 1 share (about EUR 150, unverified) | Sell in seconds; cash usable at once at most brokers; settles T+2 |
