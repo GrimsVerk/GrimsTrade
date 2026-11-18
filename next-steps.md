@@ -148,6 +148,12 @@
     Family 65 / 16 tested; bar p < 0.00154. 17 rows (3 from a disclosed gating bug, rerun).
   - 22:55 UTC `survey-5` started (W, <- survey-4): live fund track records as post-sample
     evidence; backtest-to-live haircut for `tsmom12`.
+  - DONE `eu-5` (draft #73 -> eu-4): 5/25 rebalance band (D2: top up only when >25% off
+    target) cuts `euw` orders 30.1 -> 21.1/yr (drift 10.0 -> 1.1) at the same rule (Sharpe
+    +0.01, max DD +0.6 pts, crashes within 0.5); holds on `eu6`/`usw`. Min book EUR 1/2/3:
+    ~4k/7k/11k (was 6k/10k/16k). D1 (flip-day rebalance only) unsafe with coins (eu6 DD 31 ->
+    65%). Rule still trails holding the 7 funds (0.62 vs 0.77). 24 rows.
+  - 23:00 UTC `eu-6` started (D, <- eu-5): trend vs buy-and-hold for a small coin-free EUR book.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
@@ -247,6 +253,8 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, eu-5 (#73): a 5/25 rebalance band cuts the coin-free EUR book's orders by
+  a third without changing the rule. Use it in the paper runner (changes the runner's band)?
 - Night 2026-11-18, forward-1 (#67, to main): adopt the forward registry and freeze
   `carry-3-band@1` (the only candidate judgeable in ~7-13 years)? Then a lane writes the
   forward adapter, and you decide whether to schedule a weekly scorer job.
