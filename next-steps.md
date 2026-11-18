@@ -259,6 +259,13 @@
     (vol timing, not a pick; check overlap with `trend-vol` before any card). 1/3/12-month
     signal: Sharpe -0.09 at 29x turnover. 10 rows.
   - 22:59 UTC: usage data stale since 22:39 (endpoint rate-limited); holding new lanes.
+  - DONE `wide-8` (draft #88 -> wide-7): year-clustered gate t-values are ~2x overdispersed
+    (153 placebo windows: SD 2.18, 35% |t| >= 2), so wide-7's t 3-4 lead is ordinary. Proposed
+    (not frozen) forward entry `turn-of-year-losers@1` for 2026/27 (`research/forward/
+    proposed-wide8.jsonl`; pass t >= 4.87 vs stored placebos; power 8%). W16 geomagnetic
+    (wrong sign, rank 29/31) and W15 hurricane claims (t 0.09) dead. New W18, W19. List 72 / 16.
+  - 23:00 UTC 5h 0.63 (fresh), weekly 0.90. `wide-9` started (W, <- wide-8): W19, W17 gates,
+    placebo-null method note. Reserve mode: no new lanes from 5h 0.80 until 02:15 UTC.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -359,6 +366,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, wide-8 (#88): freeze the forward entry `turn-of-year-losers@1` (needs a
+  `placebo_rank` metric in forward.py and changes how the registry splits its 0.10 alpha)? And
+  W18 `elimination-mood` would use the 2026 World Cup, inside the held-out year: allow or not?
 - Night 2026-11-18, rp-1 (#86) + eu-6..8: a smaller worst loss is available simply by holding
   `tsmom12` at a smaller size (e.g. ~70% invested); no new rule is needed. Want that?
 - Night 2026-11-18, ls-trend-1 (#83): the crash gains of real trend funds need short positions
