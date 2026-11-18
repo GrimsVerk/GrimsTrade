@@ -154,6 +154,14 @@
     ~4k/7k/11k (was 6k/10k/16k). D1 (flip-day rebalance only) unsafe with coins (eu6 DD 31 ->
     65%). Rule still trails holding the 7 funds (0.62 vs 0.77). 24 rows.
   - 23:00 UTC `eu-6` started (D, <- eu-5): trend vs buy-and-hold for a small coin-free EUR book.
+  - DONE `dsr-1` (draft #74 -> main): census 2,811 distinct tries / 124 families (947
+    selectable). `tsmom12` beats zero (Sharpe 1.05, DSR >= 0.95 up to ~59k trials) but so does
+    equal weight; its lead over equal weight (+0.17, p 0.08) fails even uncorrected; DSR 0.48
+    counting the 8 baselines it was picked from, 0.03 at 947. Top-5 near-misses: none worth a
+    held-out year. Live scoreboard counts only 307 tries (`_RESEARCH_REFS` reads `research-*`
+    only). 0 rows (no backtest).
+  - 22:27 UTC `register-1` started (D, <- dsr-1): fix scoreboard refs, project-wide register +
+    generated BAR.md, convention PROPOSED.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -254,6 +262,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, dsr-1 (#74): counting the whole project's search, `tsmom12` has no proven
+  edge over simply holding the same assets equally (it makes money, but so does holding). The
+  live scoreboard undercounts tries (307 vs ~2,811); `register-1` fixes that in a draft PR.
 - Night 2026-11-18, eu-5 (#73): a 5/25 rebalance band cuts the coin-free EUR book's orders by
   a third without changing the rule. Use it in the paper runner (changes the runner's band)?
 - Night 2026-11-18, forward-1 (#67, to main): adopt the forward registry and freeze
