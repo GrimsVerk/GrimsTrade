@@ -1,5 +1,25 @@
 # Next steps
 
+## Cash interest (branch `cash-interest`, draft PR, not merged)
+
+Idle cash earns the 13-week T-bill rate (Yahoo `^IRX`), accrued daily, in the live record from
+the first run with this code and in backtests over all stored rates; Sharpe is measured above
+that rate. Rule and why: `docs/DECISIONS.md` (2026-11-18, cash interest). Code: `rates.py` (store,
+knowledge times), `gym.simulate(rates=...)`, `report.py` plumbing, `run_daily._rates`. Tests:
+`tests/test_cash_interest.py` (offline, fixture rates).
+
+- [ ] After merging: the first daily run creates `data/rates.csv` on `paper-trail` with `^IRX`
+      closes since the first stored bar. Check the log shows `rates: +N (yahoo ^IRX)` and no
+      "rates not fetched".
+- [ ] Rebase notes: PRs #29 (G2), #30 (G4) and #32 (fee tiers) touch the same `simulate`
+      signature and `report.py` lines; conflicts are mechanical (keep both parameters). G4's
+      `weekly.md` sentence "cash earns no interest" must then say cash earns the T-bill rate.
+
+### For the owner
+
+- Merging is your call: it changes every score once (interest on cash, Sharpe above the cash
+  rate). Open questions in the PR: broker spread below the T-bill rate, a second rate source.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings

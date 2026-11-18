@@ -21,6 +21,7 @@ keeps score per strategy against the benchmarks.
   fractional units, 10,000 USD start. `backtest()` makes historical decisions with the same rules.
 - `strategies/`: one file per strategy, `decide(history) -> (weights, reason)`. `LIVE` lists the ones
   the runner calls.
+- `rates.py`: the cash rate (13-week T-bill, Yahoo `^IRX`), `data/rates.csv`, append-only.
 - `ledger.py`: `ledger/decisions.jsonl` (one line per decision) and `ledger/tries.jsonl` (one line
   per strategy ever tried, for the deflated Sharpe).
 - `report.py`: scoreboard (return, Sharpe, max drawdown, turnover) per strategy.
@@ -50,7 +51,8 @@ daily job checks it out into `trail/`, runs, and pushes it. Code changes go to `
 ## Costs (defaults in `gym.py`)
 
 Crypto: 60 bps fee (taker) + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A trade smaller than 1% of
-equity is skipped (rebalance band), except full exits.
+equity is skipped (rebalance band), except full exits. Cash earns the 13-week T-bill rate, accrued
+daily; Sharpe is measured above it (DECISIONS, 2026-11-18, cash interest).
 
 ## Benchmarks (what "making money" must beat)
 
