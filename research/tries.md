@@ -936,3 +936,129 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-18 01:32 | carry-3-B-out | tsmom12 twin | baseline | train | 2021-02-20 | 2025-11-09 | 0.07 | -48.3% | 76.1% | 5.38 |
+| 2026-11-18 01:32 | carry-3-B-out | w1 | variant | train | 2021-02-20 | 2025-11-09 | 0.72 | +58.6% | 22.6% | 43.72 |
+| 2026-11-18 01:32 | carry-3-B-out | w2 | variant | train | 2021-02-20 | 2025-11-09 | 0.97 | +80.8% | 15.0% | 25.60 |
+| 2026-11-18 01:32 | carry-3-B-out | w4 | variant | train | 2021-02-20 | 2025-11-09 | 0.58 | +36.3% | 11.8% | 11.74 |
+| 2026-11-18 01:32 | carry-3-B-out | band | variant | train | 2021-02-20 | 2025-11-09 | 0.72 | +54.8% | 17.2% | 29.33 |
+| 2026-11-18 01:32 | carry-3-B-out | f30 | variant | train | 2021-02-20 | 2025-11-09 | 0.10 | +1.9% | 23.7% | 21.73 |
+| 2026-11-18 01:32 | carry-3-B-out | w1 nocost | robustness | train | 2021-02-20 | 2025-11-09 | 0.87 | +77.0% | 21.0% | 45.06 |
+| 2026-11-18 01:32 | carry-3-B-out | w2 nocost | robustness | train | 2021-02-20 | 2025-11-09 | 1.00 | +84.0% | 14.9% | 26.83 |
+| 2026-11-18 01:32 | carry-3-B-out | w4 nocost | robustness | train | 2021-02-20 | 2025-11-09 | 0.54 | +33.7% | 13.1% | 15.66 |
+| 2026-11-18 01:32 | carry-3-B-out | band nocost | robustness | train | 2021-02-20 | 2025-11-09 | 0.85 | +68.3% | 17.1% | 29.54 |
+| 2026-11-18 01:32 | carry-3-B-out | f30 nocost | robustness | train | 2021-02-20 | 2025-11-09 | 0.16 | +6.5% | 22.4% | 23.39 |
+| 2026-11-18 01:32 | carry-3-B-out | w1 flat10 | robustness | train | 2021-02-20 | 2025-11-09 | 0.57 | +43.0% | 24.2% | 45.06 |
+| 2026-11-18 01:32 | carry-3-B-out | w2 phase 1 | robustness | train | 2021-02-20 | 2025-11-09 | 0.55 | +43.3% | 22.8% | 25.77 |
+| 2026-11-18 01:32 | carry-3-B-out | w2 phase 2 | robustness | train | 2021-02-20 | 2025-11-09 | 1.13 | +121.3% | 11.8% | 25.43 |
+| 2026-11-18 01:32 | carry-3-B-out | w4 phase 1 | robustness | train | 2021-02-20 | 2025-11-09 | 0.20 | +9.6% | 32.5% | 11.85 |
+| 2026-11-18 01:32 | carry-3-B-out | w4 phase 2 | robustness | train | 2021-02-20 | 2025-11-09 | 1.00 | +107.7% | 18.4% | 12.33 |
+| 2026-11-18 01:32 | carry-3-B-out | w4 phase 3 | robustness | train | 2021-02-20 | 2025-11-09 | 0.27 | +16.9% | 32.1% | 11.36 |
+| 2026-11-18 01:32 | carry-3-B-out | w4 phase 4 | robustness | train | 2021-02-20 | 2025-11-09 | 0.22 | +11.4% | 21.2% | 11.41 |
+| 2026-11-18 01:32 | carry-3-B-out | band flat10 | robustness | train | 2021-02-20 | 2025-11-09 | 0.64 | +46.4% | 17.2% | 29.54 |
+| 2026-11-18 01:32 | carry-3-B-out | band flat30 | robustness | train | 2021-02-20 | 2025-11-09 | 0.22 | +10.7% | 22.8% | 29.54 |
+| 2026-11-18 01:32 | carry-3-B-out | band x2 | robustness | train | 2021-02-20 | 2025-11-09 | 0.67 | +49.9% | 17.2% | 29.33 |
+| 2026-11-18 01:32 | carry-3-B-out | band A100k | robustness | train | 2021-02-20 | 2025-11-09 | 0.64 | +46.4% | 17.3% | 29.54 |
+| 2026-11-18 01:32 | carry-3-B-out | band A1M | robustness | train | 2021-02-20 | 2025-11-09 | 0.47 | +30.2% | 17.5% | 29.54 |
+| 2026-11-18 01:32 | carry-3-B-out | band maker | robustness | train | 2021-02-20 | 2025-11-09 | 0.79 | +61.8% | 17.2% | 29.33 |
+| 2026-11-18 01:32 | carry-3-B-out | band top50 | robustness | train | 2021-02-20 | 2025-11-09 | 0.68 | +58.4% | 21.9% | 30.79 |
+| 2026-11-18 01:32 | carry-3-B-out | band long leg | robustness | train | 2021-02-20 | 2025-11-09 | 0.13 | -18.2% | 55.8% | 14.04 |
+| 2026-11-18 01:32 | carry-3-B-out | band short leg | robustness | train | 2021-02-20 | 2025-11-09 | 0.16 | -12.3% | 56.0% | 15.64 |
+| 2026-11-18 01:32 | carry-3-Bybit | tsmom12 twin | baseline | train | 2022-05-14 | 2025-11-09 | 0.20 | +1.3% | 51.3% | 6.20 |
+| 2026-11-18 01:32 | carry-3-Bybit | w1 | variant | train | 2022-05-14 | 2025-11-09 | 0.39 | +17.3% | 19.3% | 47.65 |
+| 2026-11-18 01:32 | carry-3-Bybit | w2 | variant | train | 2022-05-14 | 2025-11-09 | 0.39 | +15.7% | 15.8% | 27.98 |
+| 2026-11-18 01:32 | carry-3-Bybit | w4 | variant | train | 2022-05-14 | 2025-11-09 | -0.07 | -4.9% | 18.4% | 16.35 |
+| 2026-11-18 01:32 | carry-3-Bybit | band | variant | train | 2022-05-14 | 2025-11-09 | 0.45 | +19.3% | 17.0% | 33.32 |
+| 2026-11-18 01:32 | carry-3-Bybit | f30 | variant | train | 2022-05-14 | 2025-11-09 | 0.37 | +16.4% | 26.3% | 26.45 |
+| 2026-11-18 01:32 | carry-3-Bybit | w1 nocost | robustness | train | 2022-05-14 | 2025-11-09 | 0.64 | +33.8% | 18.0% | 48.45 |
+| 2026-11-18 01:32 | carry-3-Bybit | w2 nocost | robustness | train | 2022-05-14 | 2025-11-09 | 0.60 | +27.3% | 14.7% | 28.82 |
+| 2026-11-18 01:32 | carry-3-Bybit | w4 nocost | robustness | train | 2022-05-14 | 2025-11-09 | 0.07 | +0.7% | 18.0% | 17.28 |
+| 2026-11-18 01:32 | carry-3-Bybit | band nocost | robustness | train | 2022-05-14 | 2025-11-09 | 0.63 | +30.0% | 15.2% | 33.34 |
+| 2026-11-18 01:32 | carry-3-Bybit | f30 nocost | robustness | train | 2022-05-14 | 2025-11-09 | 0.47 | +22.3% | 24.3% | 27.42 |
+| 2026-11-18 01:32 | carry-3-Bybit | w1 flat10 | robustness | train | 2022-05-14 | 2025-11-09 | 0.31 | +12.9% | 19.5% | 48.45 |
+| 2026-11-18 01:32 | carry-3-Bybit | w2 phase 1 | robustness | train | 2022-05-14 | 2025-11-09 | 0.47 | +22.2% | 23.4% | 27.86 |
+| 2026-11-18 01:32 | carry-3-Bybit | w2 phase 2 | robustness | train | 2022-05-14 | 2025-11-09 | 0.21 | +7.6% | 19.7% | 28.11 |
+| 2026-11-18 01:32 | carry-3-Bybit | w4 phase 1 | robustness | train | 2022-05-14 | 2025-11-09 | 0.18 | +5.4% | 18.3% | 16.54 |
+| 2026-11-18 01:32 | carry-3-Bybit | w4 phase 2 | robustness | train | 2022-05-14 | 2025-11-09 | 0.38 | +17.7% | 20.5% | 16.38 |
+| 2026-11-18 01:32 | carry-3-Bybit | w4 phase 3 | robustness | train | 2022-05-14 | 2025-11-09 | -0.34 | -20.4% | 30.9% | 16.10 |
+| 2026-11-18 01:32 | carry-3-Bybit | w4 phase 4 | robustness | train | 2022-05-14 | 2025-11-09 | -0.39 | -22.7% | 39.4% | 16.40 |
+| 2026-11-18 01:32 | carry-3-Bybit | band flat10 | robustness | train | 2022-05-14 | 2025-11-09 | 0.38 | +15.7% | 17.6% | 33.34 |
+| 2026-11-18 01:32 | carry-3-Bybit | band flat30 | robustness | train | 2022-05-14 | 2025-11-09 | -0.12 | -8.4% | 25.0% | 33.34 |
+| 2026-11-18 01:32 | carry-3-Bybit | band x2 | robustness | train | 2022-05-14 | 2025-11-09 | 0.38 | +15.7% | 18.0% | 33.32 |
+| 2026-11-18 01:32 | carry-3-Bybit | band A100k | robustness | train | 2022-05-14 | 2025-11-09 | 0.35 | +14.1% | 18.2% | 33.34 |
+| 2026-11-18 01:32 | carry-3-Bybit | band A1M | robustness | train | 2022-05-14 | 2025-11-09 | 0.11 | +1.9% | 22.1% | 33.34 |
+| 2026-11-18 01:32 | carry-3-Bybit | band maker | robustness | train | 2022-05-14 | 2025-11-09 | 0.54 | +24.5% | 15.7% | 33.32 |
+| 2026-11-18 01:32 | carry-3-Bybit | band top50 | robustness | train | 2022-05-14 | 2025-11-09 | 0.29 | +11.7% | 17.1% | 34.36 |
+| 2026-11-18 01:32 | carry-3-Bybit | band long leg | robustness | train | 2022-05-14 | 2025-11-09 | 0.19 | +0.1% | 41.4% | 15.89 |
+| 2026-11-18 01:32 | carry-3-Bybit | band short leg | robustness | train | 2022-05-14 | 2025-11-09 | 0.01 | -22.2% | 55.9% | 17.71 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | tsmom12 twin | baseline | train | 2023-06-10 | 2025-11-09 | 0.52 | +37.6% | 51.3% | 11.91 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w1 | variant | train | 2023-06-10 | 2025-11-09 | 0.50 | +25.7% | 27.1% | 46.53 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w2 | variant | train | 2023-06-10 | 2025-11-09 | 0.66 | +34.2% | 33.0% | 27.88 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w4 | variant | train | 2023-06-10 | 2025-11-09 | 0.51 | +24.1% | 37.3% | 16.56 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band | variant | train | 2023-06-10 | 2025-11-09 | 0.61 | +31.9% | 26.9% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | f30 | variant | train | 2023-06-10 | 2025-11-09 | 0.30 | +10.9% | 34.8% | 29.24 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w1 nocost | robustness | train | 2023-06-10 | 2025-11-09 | 0.66 | +38.4% | 26.9% | 46.61 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w2 nocost | robustness | train | 2023-06-10 | 2025-11-09 | 0.75 | +41.3% | 33.0% | 27.96 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w4 nocost | robustness | train | 2023-06-10 | 2025-11-09 | 0.58 | +28.7% | 37.2% | 16.64 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band nocost | robustness | train | 2023-06-10 | 2025-11-09 | 0.74 | +42.1% | 26.7% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | f30 nocost | robustness | train | 2023-06-10 | 2025-11-09 | 0.39 | +17.5% | 33.9% | 29.34 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w1 flat10 | robustness | train | 2023-06-10 | 2025-11-09 | 0.47 | +23.6% | 27.1% | 46.61 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w2 phase 1 | robustness | train | 2023-06-10 | 2025-11-09 | -0.02 | -8.5% | 31.1% | 27.63 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w2 phase 2 | robustness | train | 2023-06-10 | 2025-11-09 | 1.10 | +88.3% | 38.6% | 28.13 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w4 phase 1 | robustness | train | 2023-06-10 | 2025-11-09 | 0.15 | +0.2% | 39.1% | 16.46 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w4 phase 2 | robustness | train | 2023-06-10 | 2025-11-09 | 1.01 | +88.5% | 46.7% | 17.36 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w4 phase 3 | robustness | train | 2023-06-10 | 2025-11-09 | 0.13 | -1.3% | 35.9% | 16.84 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | w4 phase 4 | robustness | train | 2023-06-10 | 2025-11-09 | 0.25 | +7.6% | 38.6% | 15.59 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band flat10 | robustness | train | 2023-06-10 | 2025-11-09 | 0.58 | +30.1% | 26.9% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band flat30 | robustness | train | 2023-06-10 | 2025-11-09 | 0.27 | +9.2% | 27.1% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band x2 | robustness | train | 2023-06-10 | 2025-11-09 | 0.55 | +27.4% | 27.0% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band A100k | robustness | train | 2023-06-10 | 2025-11-09 | 0.50 | +23.9% | 27.0% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band A1M | robustness | train | 2023-06-10 | 2025-11-09 | 0.15 | +1.7% | 27.5% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band maker | robustness | train | 2023-06-10 | 2025-11-09 | 0.67 | +36.8% | 26.8% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band top50 | robustness | train | 2023-06-10 | 2025-11-09 | 0.61 | +31.9% | 26.9% | 36.12 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band long leg | robustness | train | 2023-06-10 | 2025-11-09 | 0.57 | +40.9% | 34.1% | 18.26 |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | band short leg | robustness | train | 2023-06-10 | 2025-11-09 | -0.13 | -29.0% | 52.5% | 18.58 |
+| 2026-11-18 01:32 | carry-3-pooled | tsmom12 twin, equal capital per venue | baseline | train | 2021-02-20 | 2025-11-09 | 0.20 | -29.6% | 71.6% | 6.82 |
+| 2026-11-18 01:32 | carry-3-pooled | w1, equal capital per venue | variant | train | 2021-02-20 | 2025-11-09 | 0.78 | +65.9% | 18.0% | 45.32 |
+| 2026-11-18 01:32 | carry-3-pooled | w2, equal capital per venue | variant | train | 2021-02-20 | 2025-11-09 | 1.01 | +86.1% | 15.0% | 26.87 |
+| 2026-11-18 01:32 | carry-3-pooled | w4, equal capital per venue | variant | train | 2021-02-20 | 2025-11-09 | 0.69 | +44.7% | 16.3% | 14.73 |
+| 2026-11-18 01:32 | carry-3-pooled | band, equal capital per venue | variant | train | 2021-02-20 | 2025-11-09 | 0.79 | +62.4% | 17.2% | 31.69 |
+| 2026-11-18 01:32 | carry-3-pooled | f30, equal capital per venue | variant | train | 2021-02-20 | 2025-11-09 | 0.29 | +15.8% | 18.7% | 24.88 |
+| 2026-11-18 01:32 | carry-3-pooled | w1 nocost, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.99 | +93.7% | 17.5% | 46.04 |
+| 2026-11-18 01:32 | carry-3-pooled | w2 nocost, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 1.13 | +101.0% | 14.9% | 27.57 |
+| 2026-11-18 01:32 | carry-3-pooled | w4 nocost, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.75 | +50.1% | 14.5% | 16.34 |
+| 2026-11-18 01:32 | carry-3-pooled | band nocost, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.96 | +81.1% | 17.1% | 31.77 |
+| 2026-11-18 01:32 | carry-3-pooled | f30 nocost, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.39 | +24.3% | 16.7% | 25.77 |
+| 2026-11-18 01:32 | carry-3-pooled | w1 flat10, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.69 | +55.8% | 19.1% | 46.04 |
+| 2026-11-18 01:32 | carry-3-pooled | w2 phase 1, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.56 | +42.8% | 23.4% | 27.07 |
+| 2026-11-18 01:32 | carry-3-pooled | w2 phase 2, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 1.22 | +136.6% | 14.6% | 26.67 |
+| 2026-11-18 01:32 | carry-3-pooled | w4 phase 1, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.45 | +34.8% | 23.6% | 15.02 |
+| 2026-11-18 01:32 | carry-3-pooled | w4 phase 2, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 1.29 | +156.7% | 21.5% | 14.92 |
+| 2026-11-18 01:32 | carry-3-pooled | w4 phase 3, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.19 | +8.8% | 32.1% | 14.61 |
+| 2026-11-18 01:32 | carry-3-pooled | w4 phase 4, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.11 | +2.4% | 27.0% | 14.37 |
+| 2026-11-18 01:32 | carry-3-pooled | band flat10, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.73 | +55.8% | 17.2% | 31.77 |
+| 2026-11-18 01:32 | carry-3-pooled | band flat30, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.28 | +15.4% | 21.8% | 31.77 |
+| 2026-11-18 01:32 | carry-3-pooled | band x2, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.73 | +55.6% | 17.2% | 31.69 |
+| 2026-11-18 01:32 | carry-3-pooled | band A100k, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.69 | +51.6% | 17.3% | 31.77 |
+| 2026-11-18 01:32 | carry-3-pooled | band A1M, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.41 | +25.5% | 19.9% | 31.77 |
+| 2026-11-18 01:32 | carry-3-pooled | band maker, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.87 | +71.4% | 17.2% | 31.69 |
+| 2026-11-18 01:32 | carry-3-pooled | band top50, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.75 | +60.7% | 17.2% | 32.66 |
+| 2026-11-18 01:32 | carry-3-pooled | band long leg, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.14 | -13.4% | 58.0% | 15.41 |
+| 2026-11-18 01:32 | carry-3-pooled | band short leg, equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 0.16 | -11.1% | 55.9% | 16.82 |
+| 2026-11-18 01:32 | carry-3-pooled | band (B-all for B-out), equal capital per venue | robustness | train | 2021-02-20 | 2025-11-09 | 1.07 | +107.7% | 15.9% | 31.32 |
+| 2026-11-18 01:32 | carry-3-B-all | band (robustness set) | robustness | train | 2021-01-23 | 2025-11-09 | 1.15 | +120.7% | 15.9% | 28.18 |
+| 2026-11-18 01:32 | carry-3-B-out | weekly cross-sectional IC, 7-day funding vs next week's price: -0.011 (t -1.1, 245 weeks) | robustness | train | 2021-02-20 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-B-out | weekly cross-sectional IC, 7-day funding vs next week's price + funding: +0.009 (t +0.9, 245 weeks) | robustness | train | 2021-02-20 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-B-out | weekly cross-sectional IC, 30-day funding vs next week's price: -0.018 (t -1.9, 245 weeks) | robustness | train | 2021-02-20 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-B-out | weekly cross-sectional IC, 30-day funding vs next week's price + funding: +0.000 (t +0.0, 245 weeks) | robustness | train | 2021-02-20 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Bybit | weekly cross-sectional IC, 7-day funding vs next week's price: +0.007 (t +0.5, 181 weeks) | robustness | train | 2022-05-14 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Bybit | weekly cross-sectional IC, 7-day funding vs next week's price + funding: +0.027 (t +1.8, 181 weeks) | robustness | train | 2022-05-14 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Bybit | weekly cross-sectional IC, 30-day funding vs next week's price: -0.002 (t -0.1, 181 weeks) | robustness | train | 2022-05-14 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Bybit | weekly cross-sectional IC, 30-day funding vs next week's price + funding: +0.017 (t +1.1, 181 weeks) | robustness | train | 2022-05-14 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | weekly cross-sectional IC, 7-day funding vs next week's price: +0.024 (t +0.7, 73 weeks) | robustness | train | 2023-06-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | weekly cross-sectional IC, 7-day funding vs next week's price + funding: +0.045 (t +1.4, 73 weeks) | robustness | train | 2023-06-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | weekly cross-sectional IC, 30-day funding vs next week's price: +0.022 (t +0.7, 73 weeks) | robustness | train | 2023-06-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-Hyperliquid | weekly cross-sectional IC, 30-day funding vs next week's price + funding: +0.041 (t +1.3, 73 weeks) | robustness | train | 2023-06-10 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-B-all | weekly cross-sectional IC, 7-day funding vs next week's price: +0.003 (t +0.3, 249 weeks) | robustness | train | 2021-01-23 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-B-all | weekly cross-sectional IC, 7-day funding vs next week's price + funding: +0.023 (t +2.5, 249 weeks) | robustness | train | 2021-01-23 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-B-all | weekly cross-sectional IC, 30-day funding vs next week's price: -0.004 (t -0.5, 249 weeks) | robustness | train | 2021-01-23 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 01:32 | carry-3-B-all | weekly cross-sectional IC, 30-day funding vs next week's price + funding: +0.014 (t +1.5, 249 weeks) | robustness | train | 2021-01-23 | 2025-11-09 | - | - | - | - |
