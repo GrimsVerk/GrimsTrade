@@ -301,6 +301,55 @@ may re-enter bounces just the same (mode 3). A cap on top of the stop shrinks ev
 proportion, including the first leg, and changes no timing. Time under water is the measure
 that shows mode 3 (a stop that waits out a fall flat is under water as long as it is out).
 
+## Fifth reading, lane `coin-cap-4`, step 2: the last candidates as one set (2026-11-18)
+
+Card section "Fifth reading" (22:10 UTC, pushed before any number). Code `lib/coin_cap4.py`,
+`lib/coin_cap4_core.py` (test `tests/test_coin_cap4.py`: no look-ahead in the price band,
+band matched on time held only, time under water scale-free); `harness.check_against_gym`
+passed on both six-asset rules; run once, 6 tries rows (idea `coin-cap-4`). Tables:
+`results/coin-cap-4.md`. Family bar: m = 15 coin-cap picks, at least 17 of 21 episodes.
+
+**Verdict by the card. A: no candidate meets the family bar; the weekly stop stays a risk
+preference. B: a 25% cap adds nothing worth its cost to the stop.**
+
+| | Weekly `stop-0.25` | `pstop` (price band 25%) | `cap25+stop` |
+|---|---:|---:|---:|
+| Band (frozen on time held: 0.315 against 0.311) | 0.25 vol units | 25% below the 1-year high | as the stop |
+| Coin book: edge M > 0 (sign p) | 15 of 21 (0.039) | 16 of 21 (0.013) | 15 of 21 by construction |
+| Mean episode edge M (2x cost) | +16.2% (+15.4%) | +18.5% (+17.6%) | scaled stop |
+| Of the 6 the weekly trailed | 0 | 2 (2017 summer) | 0 |
+| BTC's five falls ahead | 1 | 0 | - |
+| Mean episode time under water, days (twin and any cap 267) | 221 | 207 | - |
+| Six assets, coin years: worst loss | 17.7% | 25.2% | 17.9% |
+| ... CAGR (vs stop) | +25.4% | +27.9% (+2.6) | +22.8% (-2.6) |
+| ... Sharpe | 1.57 | 1.60 | 1.57 |
+| ... days 10%+ under water (`tsmom12` 39%, `cap25` 35%) | 22% | 24% | 21% |
+
+- **`pstop` fixes failure mode 2 and nothing else.** As step 1 predicted, a band that does not
+  widen at hot tops turns the 2017 summer episodes around (own-0 -7% -> +15%, own-1 -8% ->
+  +35%). The fast first legs (BTC 2013-04, 2013-12, XRP 2020-11) stay lost, a bit worse, and
+  2021-05 stays slightly behind. 16 of 21 is short of the 17 the family bar needs; raw M is
+  smaller than the weekly stop's in only 11 of 21 episodes (mean +5.6% of a slot).
+- **On the live book it is a looser stop.** BTC and ETH are calmer than the book's average
+  coin, so 25% in price is wider than 0.25 of their volatility: on the six assets `pstop`
+  gives back most of the stop's cut in worst loss (25.2% against 17.7%) for 2.6 points more
+  growth. Matched on time held across the coin book is not matched on BTC.
+- **The cap on top of the stop does nothing useful.** It binds only while both coins pass the
+  stop; worst loss 17.9% against 17.7%, 2.6 points less growth a year. All four B bars fail.
+- **Time under water.** A cap never shortens it (it scales the P&L path). The stops shorten
+  the coin-fall mean from 267 to 207-222 days, but in only 8-9 of 21 episodes; in the rest they
+  wait out the fall flat and are under water as long as the twin. On the six assets the
+  longest stretch under water is about 1,000 days for every series: for `tsmom12` the 2018-20
+  coin fall (2018-01 .. 2020-11), for the stop 2021-05 .. 2024-02 (its worst loss, 17.7%, is
+  also there, not in 2018-20; checked after the run, unlogged). The stop moves the long
+  stretch, it does not shorten it; what it changes is depth: 22% of coin-year days 10% or
+  more under water against 39% for `tsmom12`.
+
+Limits: one book, one history; the band was matched on pooled time held, so on any single
+coin it can be tighter or looser; the six episodes are the third reading's losers (regression
+to the mean flatters any change there); on the six assets each worst loss and long stretch
+under water is one event, so the book-level numbers are close to single observations.
+
 ## Changes after the card
 
 None to the rule, grid, selection or bar. One reading note: bar 1 is reported as a tie (above).

@@ -12,7 +12,11 @@ time under water reported for all, same 21 episodes, every pick counted (m = 13 
   "Fifth reading, step 1" in `research/coin-cap.md`. Three failure modes: fast first leg with
   the stop still in (main), a wide volatility band at the top, re-entry into bounces (BTC).
 - Card "Fifth reading" in `research/cards/coin-cap.md` pushed before any number (m = 15).
-- Doing: step 2 code (`lib/coin_cap4.py`), then run once.
+- Done step 2: `lib/coin_cap4.py` run once (**a plain run logs 6 tries rows**; `DRY=1` logs
+  nothing), `results/coin-cap-4.md`, write-up "Fifth reading, step 2" in `research/coin-cap.md`.
+  By the card: no candidate meets the family bar (`pstop` 16 of 21, p 0.013, needs 17); a 25%
+  cap adds nothing to the stop (worst loss 17.9% against 17.7%, -2.6 points CAGR).
+- Doing: step 3 (one-screen verdict).
 
 ## Coin cap 3 (done 2026-11-18, branch `coin-cap-3`, draft PR #56 -> `coin-cap-2`)
 

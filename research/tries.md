@@ -1031,3 +1031,9 @@ Never edit or delete a row.
 | 2026-11-18 19:19 | coin-cap-3 | stop-0.25-dx, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.41 | +96112.4% | 70.0% | 6.08 |
 | 2026-11-18 19:19 | coin-cap-3 | stop-0.25 weekly, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.32 | +90470.3% | 68.6% | 4.16 |
 | 2026-11-18 19:19 | coin-cap-3 | TS twin, extended coin book, 2x cost | baseline | train | 2013-02-10 | 2025-11-09 | 1.21 | +258381.9% | 83.8% | 3.48 |
+| 2026-11-18 22:11 | coin-cap-4 | cap25+stop | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +7620.3% | 28.9% | 3.60 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25 | variant | train | 1994-02-01 | 2025-11-09 | 1.12 | +12968.8% | 28.9% | 3.18 |
+| 2026-11-18 22:11 | coin-cap-4 | cap25+stop-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +6960.5% | 29.0% | 3.58 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.10 | +12082.3% | 29.0% | 3.19 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.49 | +190837.6% | 64.1% | 3.55 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.46 | +163343.9% | 64.1% | 3.55 |
