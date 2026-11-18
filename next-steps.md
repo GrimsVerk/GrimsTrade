@@ -1,6 +1,6 @@
 # Next steps
 
-## insure-2 (in progress 2026-11-18 night, branch `insure-2` -> `insure-1`)
+## insure-2 (done 2026-11-18 night, branch `insure-2` -> `insure-1`)
 
 Deeper check of insure-1's "trend = cheapest crash insurance". Chain: (1) `insure-era`: card 2's
 controls (rotations, fixed exposure) per era, card `research/cards/insure-era.md`; (2) the same
@@ -18,7 +18,12 @@ episode count and metrics on non-US stock indices (keyless long history), its ow
   share 0.49, net -0.9; premium 1.11 vs 1.33 fixed, 1.52 random (p 0.009): "handed back" and
   "timing, not just exposure". Total-return regions 1.23 (in between), wider 10: 1.18 (in
   between). 27 `insure-check` rows.
-- Step 3 (one-screen verdict at the top of `research/insure-2.md`): next.
+- Step 3 done: one-screen verdict at the top of `research/insure-2.md`; ideas row added.
+- Doing: nothing. No process running. Draft PR #90 -> `insure-1`. Held-out year unspent.
+- Next lanes (not started): (1) `fast-reentry` on the US 50 + non-US 19 effective falls, judged
+  on net N (the cost is the late buy-back); (2) post-2002 controls on total-return non-US data
+  (French regional 30 years is short; country total-return series would add falls); (3) a
+  dividend-adjusted reading of the Yahoo price indices (needs a keyless dividend-yield source).
 
 ## insure-1 (done 2026-11-18 night, branch `insure-1`, draft PR #87 -> `trend-1926-fix`)
 

@@ -5,6 +5,59 @@ only: fake money, keyless public data, no change to the gym, the daily runner or
 strategies. Held-out year untouched (nothing after 2025-10-31 parsed). Tables:
 `results/insure-2.md`. Code: `lib/insure2.py` (reuses `lib/insure1.py`; nothing replayed).
 
+## The answer on one screen
+
+**Trend's crash insurance is a robust property: across 98 years of US stocks and about 35 years
+of 23 other markets it avoids about half of each 25%+ fall, and it buys that loss avoided more
+cheaply than simply holding less. But it is not free and not an edge: the year after the low
+hands most of it back, and since 2002 it has cost about 1.3-1.5 log points of growth per log
+point of loss avoided, roughly 2 log points a year behind holding.**
+
+| Where | Effective falls | Lost less than holding | Share of fall avoided | Premium: trend / hold less (fixed) / random timing | Verdict (cheaper than holding less?) |
+|---|---:|---|---:|---|---|
+| US 1927-1961 | 22 | 21 of 22 | 0.55 | 0.85 / 1.38 / 1.63 | yes (p 0.000) |
+| US 1962-2001 | 15 | 15 of 15 | 0.47 | 1.38 / 2.15 / 2.60 | yes (p 0.013) |
+| US 2002-2025 | 13 | 12 of 13 | 0.45 | 1.34 / 1.53 / 1.91 | in between (p 0.19) |
+| 13 developed markets, 1966-2025 (price) | 19 | 17 of 18 | 0.49 | 1.11 / 1.33 / 1.52 | yes (p 0.009) |
+| 3 regions, 1991-2025 (total return, USD) | 13 | 12 of 13 | 0.53 | 1.23 / 1.40 / 1.60 | in between (p 0.24) |
+| 10 more markets, 1991-2025 (price) | 17 | 15 of 17 | 0.47 | 1.18 / 1.34 / 1.49 | in between (p 0.08) |
+
+(p: share of 1,000 random-timing rotations whose premium is at least as low as trend's.)
+
+- **Robust: the insurance itself.** In every era and every set trend lost less than holding in
+  nearly every effective fall (92 of 98 counted above with a sign) and avoided 0.45-0.55 of the
+  fall, against 0.26-0.36 for the same average exposure held fixed or at random dates. That
+  "timing" part beats random timing in every era and set (share p 0.000-0.035).
+- **Robust in direction, not always in strength: cheaper than holding less.** Trend's premium
+  is below a fixed lower exposure and below random timing in all six rows. The rotation test
+  passes in three (US 1927-61, US 1962-2001, 13 developed markets) and is "in between" in the
+  three shortest or smallest (US since 2002, the total-return regions, the wider set). Nowhere
+  is holding less the cheaper insurance.
+- **Not robust: keeping it.** Net of the year after the low the insurance is a coin flip
+  everywhere (US 16 of 50, non-US 7 of 19 effective falls positive): the rule buys back late.
+  It pays only in long, deep bear markets (1929-32, 1973-74, Japan 1990-92, 2000-03, 2008) and
+  loses in fast falls of three months or less (1987, 2020, August 2024: share avoided about a
+  third, net about -15 log points, outside the US positive in 3 of 23).
+- **What an investor should expect today.** Use the post-2002 numbers, total return: a premium
+  of about **1.3-1.5** (US 1.34, non-US regions 1.49, wider set 1.37), i.e. for every 10 log
+  points of a crash avoided, about 13-15 given up in rebounds and calm markets; in growth
+  terms about **2 log points a year behind holding** (US 2.2, regions 2.7, wider 2.1), for a
+  worst loss of about 35-55% instead of 50-85%. Holding less to get the same loss avoided would
+  cost more (fixed 1.3-1.5, random 1.5-1.9: US 2002-2025, and the non-US sets over their whole
+  spans; no post-2002 control split was computed outside the US). Whether that price is
+  worth paying is a preference about drawdowns, not a test result.
+- **For the live rule.** Nothing changes. The stock slots' trend filter is now a counted claim
+  outside the US too: real insurance, cheaper than holding less, about 1.3-1.5 times as costly
+  as it saves. Not a reason to expect higher growth than holding.
+- **How sure.** Cards pushed before their numbers (`cards/insure-era.md`,
+  `cards/insure-geo.md`). Not picks: no rule selected, nothing tuned; the project-wide bar
+  (2,904 tries, N 1,012, Bonferroni p <= 4.9e-5) is quoted for scale only. The non-US
+  insurance sign test (7.2e-5) narrowly misses it; with 1,000 rotations no control test can
+  reach it. Per era and per set the effective counts are small (13-22). Price indices miss
+  dividends, which flatters the level of the premium (not the comparison with the controls).
+  The non-US sets overlap in time and share global falls (anchored on US falls), so they are
+  not independent of each other or of the US after 1966.
+
 ## Step 1, insure-era: card 2's controls per era
 
 Card `cards/insure-era.md` (pushed before its numbers). Same 11 US series, insure-1's 25%
