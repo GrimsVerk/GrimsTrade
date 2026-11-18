@@ -1,30 +1,16 @@
 # Next steps
 
-## RL 4 (research run, branch `rl-4`, started 2026-11-17 ~22:50 UTC)
+## RL 4 (done 2026-11-18, branch `rl-4`, draft PR -> `carry-2`)
 
-Question: which of rl-3's cheap fixes (few inputs, shrinkage, more rows) makes a learner find a
-planted weekly IC of 0.10, and does the passing learner find anything real on carry-2's
-perpetual-futures cross-section? Card and results: `research/rl-4.md`.
-
-- Done (pushed): card parts 1 and 2 and the addendum before their numbers; forecaster grid
-  (`results/rl-4.md`: `lasso28` passes the gate, +0.071 at IC 0.10, 45% of the ceiling; `ols3`,
-  `ridge28`, `ols28-pool`, `ols28` fail; post-hoc `ols1` 93%); perp part 2
-  (`results/rl-4-perp-ic.md`: screen passed, `vol` rank IC 0.10; `results/rl-4-perp.md`: `ls-ml`
-  fails every bar, pooled Sharpe 0.03 against `ls-funding` 0.57; `results/rl-4-perp-why.md`: rank
-  IC is not return; `results/rl-4-perp-ret.md`: `ls-ml-ret` keeps no input, flat book).
-  Held-out year untouched.
-- Also done (pushed): `ppo3` evaluated, fails the gate (-0.011 at IC 0.10, 1 of 10 seeds ahead;
-  +0.160 = 36% of the ceiling at 0.20; -0.032 on noise). The card's follow-up `ppo3-warm` was
-  trained (520 models) and its 44 control rows are in `tries.md`: +0.049 at 0.10 (p 0.17, 10 of
-  10 seeds ahead), -0.051 on noise, so it fails the gate too (bars 1, 2 and 4). **No RL variant
-  passes, so by the card `ls-ppo` is NOT run on real data** (`lib/rl4_perp_rl.py` stays unused,
-  checked on made-up data only).
-- Paused 2026-11-18 ~02:00 UTC (usage window). Nothing is running; `results/rl-4.md` holds
-  every learner, `ppo3-warm` included.
-- Next, in order: (1) write-up on top of `research/rl-4.md` (plain words, table,
-  how sure, where PPO fails and why, 2-3 next lanes), an "After the results" disclosure section
-  and a Status section; (2) rewrite this section as "done"; (3) draft PR to `carry-2` titled
-  "rl-4: a learner that passes the planted-signal gate (research only)".
+Which of rl-3's cheap fixes makes a learner find a planted weekly IC of 0.10, and does it find
+anything real on carry-2's perp cross-section? Answer: `lasso28` (shrinkage) passes the planted
+gate (+0.071 at 0.10, p 0.04, 45% of the ceiling); no RL variant does (`ppo3` -0.011,
+`ppo3-warm` +0.049, p 0.17), so `ls-ppo` was never run on real data. On the perps the lasso book
+`ls-ml` fails every bar (pooled Sharpe 0.03 against `ls-funding` 0.57): its best input `vol` wins
+in rank but not in return; the post-hoc return-target `ls-ml-ret` keeps no input. Held-out year
+untouched. Write-up and rl-5 recommendation: `research/rl-4.md` "Results". Nothing running.
+Owner option (rl-5): drop RL as the learner; screen perp inputs by return spread, not rank IC,
+feed survivors to the fixed lasso, and beat `ls-funding`, not zero.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

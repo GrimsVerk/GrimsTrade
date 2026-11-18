@@ -255,3 +255,53 @@ coin that triples counts for what it costs a short. It is a post-hoc variant: ch
 `ls-ml` fail and after the table above, which already shows `funding` and `premium` earning in
 return terms. A pass would be weak evidence and would say so; it is logged as a `variant`
 (`ls-ml-ret`), with the baselines not logged again.
+
+## Results (written 2026-11-18, after every number above; nothing new run)
+
+**In one line:** a lasso on the 28 inputs passes the planted-signal gate; no RL variant does; the
+lasso then finds nothing usable on the perpetual-futures book.
+
+| Part | What | Result | Table |
+|---|---|---|---|
+| 1, gate | `lasso28` (shrinkage) | **passes**: +0.071 at IC 0.10 (p 0.04, 45% of the ceiling), 81% at 0.20, -0.002 on noise | `results/rl-4.md` |
+| 1, gate | `ols28`, `ols3`, `ridge28`, `ols28-pool` | fail (bar 1: gain at 0.10 is -0.008 to +0.048, p 0.18-0.53) | `results/rl-4.md` |
+| 1, gate | `ppo3` (PPO, three inputs) | fails: -0.011 at 0.10, 1 of 10 seeds ahead; 36% of the ceiling at 0.20 | `results/rl-4.md` |
+| 1, gate | `ppo3-warm` (PPO started from `ols3`) | fails: +0.049 at 0.10 (p 0.17), -0.051 on noise | `results/rl-4.md` |
+| 1, post-hoc | `ols1` (told which input is planted) | 93% of the ceiling: the cost is the other inputs, not the fitting | `results/rl-4.md` |
+| 2, screen | four ranked inputs on ~550 perps | passes (`vol` rank IC 0.10) | `results/rl-4-perp-ic.md` |
+| 2, book | `ls-ml` (lasso, rank target) | **fails every bar**: pooled Sharpe 0.03 against `ls-funding` 0.57 | `results/rl-4-perp.md` |
+| 2, why | rank IC against return spread | low-vol coins win in rank, not in return (spread +0.05% a week, t 0.2) | `results/rl-4-perp-why.md` |
+| 2, post-hoc | `ls-ml-ret` (lasso, return target) | keeps no input in any year; flat book, Sharpe 0.00 | `results/rl-4-perp-ret.md` |
+
+**How sure.** Part 1 is solid as a control: 10 seeds x 13 folds per row, the ceiling is known,
+and the noise row keeps every passing learner honest. The lasso's pass is narrow (p 0.04 against
+a 0.10 bar, 45% captured). Part 2 is a clean fail; the one post-hoc rescue (`ls-ml-ret`) was
+fixed before its run and also fails. The held-out year is untouched.
+
+**Where PPO fails and why.** On the same three inputs, plain least squares (`ols3`) captures 28%
+at 0.10 and PPO captures -7%; started from `ols3`'s weights, PPO ends at 31%, about where it
+started (fine-tuning added nothing measurable and made the noise row worse, -0.051 against
+-0.040). On a few thousand weekly rows, a policy-gradient estimate of a 0.10 IC is noisier than the
+signal; early stopping then often keeps update 0 (12-43% of fold models, `results/rl-4.md`).
+RL here adds variance, not skill. The binding limit is the number of independent weekly bets.
+
+**Disclosures after the results.** `ols1` and `ls-ml-ret` are post-hoc and labelled so in
+`tries.md`. `ppo3-warm` was pre-registered as the only RL follow-up. `ls-ppo` was pre-registered
+to run only if an RL variant passed; none did, so it was not run (`lib/rl4_perp_rl.py` is
+checked on made-up data only).
+
+### What rl-5 should do
+
+rl-5 should drop RL as the learner and spend its card on inputs, not optimizers: take the lasso
+that passed the gate as the fixed learner, and screen candidate inputs on the perp book by their
+**return spread** (the coming week's top-minus-bottom third return, with t-stat), not by rank IC,
+because part 2 showed a rank IC of 0.10 (`vol`) that pays nothing in return while `funding` and
+`premium` pay +0.40% a week at rank IC 0.02-0.03. Only an input set whose return spread clears a
+pre-registered bar (for example t > 2 after 10 bps and funding, positive on two venues) should
+reach the lasso, and the bar to beat is `ls-funding` (pooled Sharpe 0.57), not zero. RL should
+come back only on a problem where the action matters more than the forecast (execution, sizing
+under costs), and only after passing this same planted gate.
+
+### Status
+
+Done 2026-11-18. Nothing running. Draft PR to `carry-2`, not merged.
