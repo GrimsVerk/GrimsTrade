@@ -12,6 +12,9 @@ Never edit or delete a row.
   selectable and not counted as a strategy try (`protocol.md`, "Planted-signal controls").
 - `screen` (added 2026-11-13, info-1): a descriptive weekly IC row for one candidate input, no
   backtest, not selectable and not counted as a strategy try; numbers in `results/info-1.md`.
+- `search` (added 2026-11-18, evo-1): one row for a whole automated rule search; the Variant
+  cell states how many rules it evaluated (they are not logged one by one). Counts as that many
+  tries for any deflation (`protocol.md`, "Evolved-rule search tests").
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |

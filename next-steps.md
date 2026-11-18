@@ -1,5 +1,35 @@
 # Next steps
 
+## Evo 1 (PAUSED 2026-11-18 ~01:55 UTC, branch `evo-1` from `carry-2`, no PR yet)
+
+Question: can a genetic-programming search over trading rules find anything that beats `tsmom12`
+once it is charged for its luck (walk-forward selection, Reality Check / SPA over every rule
+tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protocol.md`
+"Evolved-rule search tests".
+
+- Done: card and protocol section, pushed before any code or number. `search` kind explained in
+  the header of `research/tries.md`. Worktree `~/code/GrimsVerk/grimstrade-evo1` has the
+  git-ignored price cache (`research/data/bars`, `research/data/adj`, copied from deep1) and
+  `research/macro.local.json`.
+- Doing: nothing. No code written, no number seen, no process running. Held-out year untouched.
+- Next, in this order (all specified on the card):
+  1. `research/lib/evo_feat.py`: the 72 inputs per Friday from `harness.Panel.view` (causal),
+     and the fast scorer (sparse matrix from Friday weights to daily returns, costs on the fill
+     day). `tests/test_evo.py`: grammar `mom(365) > 0` equals the harness `tsmom12` weights
+     exactly; scorer within tolerance of `gym.simulate` on fixed rules; inputs unchanged when
+     later bars are scrambled; a fit unchanged when bars after its date are scrambled.
+  2. `evo_gp.py` (grammar, GP), `evo_wf.py` (15 fits, three selection rules), `evo_stats.py`
+     (Reality Check, SPA, deflated Sharpe, online over chunks of rules), `evo_world.py`
+     (shuffled zero-drift worlds, planted rule `H`). Timing test, then commit and push.
+  3. Controls first (3 noise worlds, 3 planted strengths; ceiling before search results), then
+     the real walk-forward through the gym, transfer to the three out-of-universe sets, static
+     twins, re-evolved runs. Rows in `research/tries.md` as the card says.
+  4. Tables `research/results/evo-1.md`, write-up at the top of `research/evo-1.md`, this
+     section, draft PR "evo-1: evolved rule search under a data-snooping correction (research
+     only)" with base `carry-2`. Never merge.
+- Compute: CPU only, at most 2 heavy processes, `free -g` first; scratch under
+  `<cache_root>/derived/evo-1/`.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
