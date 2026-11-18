@@ -3,6 +3,66 @@
 Lane `dsr-1` (night 2026-11-18), branch `dsr-1` from `main`. Reads every branch's tries, runs no
 backtest. Script: `research/dsr1.py` (stdlib, reads git objects only).
 
+## Verdict in plain words (one screen)
+
+**Is `tsmom12`'s edge credible after everything the project tried? Its profit is; its edge is
+not.**
+
+- The trend rule makes money: Sharpe 1.05 over 32 years is far beyond luck, however many of the
+  project's 2,811 tries are counted. But holding all six assets passes the same test. That part
+  is the market's return, not the rule's skill.
+- The edge over simply holding (+0.17 Sharpe, p 0.08) was not proven even before the search
+  began: it fails at N = 1 and comes from 2000-2002 alone (review-1). Corrected for the eight
+  baselines it was ranked against, the luck-adjusted edge is -0.01; for the 89 trials before
+  it went live, -0.13; for today's 947 selectable tries, -0.22. Since 2003 it is zero.
+- So `tsmom12` stays what review-1 called it: insurance (a 37% worst loss instead of 47-69%,
+  for about 4 points of growth a year). Keep it live as the bar and as a risk choice; do not
+  read its scoreboard rank as skill.
+
+**Which near-misses are worth a held-out year? None, by the rule fixed before the numbers.**
+The five best across the project (`gsy-runup`, `halving-and`, quiet coins, funding carry,
+coin `stop-0.25`) all fall below 0.95 even at their own family's size, and to 0.07-0.44 at the
+project's size. Two had their year spent already (quiet coins passed it, carry failed it). The
+closest unspent ones are `gsy-runup` (+0.03 Sharpe, gone after 2002) and `halving-and` (three
+crypto winters, a folklore window). One year is about a third of a Sharpe standard error: it
+cannot lift any of them over the bar, so spending it would only use up clean data. If the
+owner wants the coin stop as a risk preference (coin-cap's advice), that is a choice of risk,
+not a finding, and needs no held-out year.
+
+**What a new idea now has to clear.** On the primary test, against `tsmom12`, with today's
+947 selectable tries counted as 96 independent ones (rho 0.9): z >= 4.2, about **+0.27 Sharpe**
+for a rule close to `tsmom12` (SE 0.065) and +0.50 for a far one (SE 0.12). With all 947 as
+independent: +0.32 / +0.59. Nothing the project has seen comes near; the largest edge on a
+like-for-like test was +0.15 (`halving-and`).
+
+**Found on the way: the live scoreboard undercounts N.** `grimstrade.ledger` reads tries from
+`main` and `research-*` branches only (`_RESEARCH_REFS`). Lanes since 2026-11-13 are named
+otherwise (`carry-2`, `wide-1`, `eu-4`, ...), so `ledger/research_tries.jsonl` on `paper-trail`
+stopped at 307 entries; the project has 2,811 rows, 947 of them selectable. The scoreboard's
+deflated Sharpe is too kind by that much. Undercounting is the direction DECISIONS calls
+dishonest.
+
+### Proposal: one project-wide tries register
+
+- **Where:** `research/register/` on `main`. `tries.jsonl`: one line per try, the union of
+  every branch, keyed by a hash of the tries.md line plus its occurrence number (the dedupe
+  this lane used), with branch, family, kind, period, test (from, to, universe), Sharpe and,
+  new, the record length T, skew, kurtosis, the comparator and the one-sided p against it.
+  `BAR.md`: generated, the global N (raw and at rho 0.9), the Sharpe spread per test, and the
+  edge a new idea must clear on each test (the table above).
+- **How it grows without lanes merging each other:** lanes keep appending to their own
+  `research/tries.md` as now. Each card quotes the global N from
+  `python research/dsr1.py census` run over all remote branches at card time (seconds, no
+  data). The night lead regenerates `research/register/` in one PR per night;
+  `.gitattributes` marks `tries.jsonl` `merge=union`, so the PRs never conflict.
+- **Tamper evidence:** widen `_RESEARCH_REFS` in `grimstrade/ledger.py` to every remote branch
+  (`refs/remotes/*/*`, minus `paper-trail`), so the daily runner again appends every try it
+  sees to `ledger/research_tries.jsonl` on `paper-trail` and the live scoreboard's N is the
+  project's N. A deleted branch then cannot hide a try, as DECISIONS 2026-11-12 intended.
+- **Bars become global:** a card's family bar stays (it is the lane's own question), and every
+  result also reports its DSR at the global N. "Passed its family bar" without the global
+  number is not a lead.
+
 ## 1. Census of every try on every branch (snapshot 2026-11-18 22:17 UTC)
 
 How: `git fetch origin`, then `python research/dsr1.py census`. Every remote branch's
