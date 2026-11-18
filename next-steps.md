@@ -1,10 +1,22 @@
 # Next steps
 
-## Coin cap (in progress 2026-11-18, branch `coin-cap`, draft PR -> `cointop-1`)
+## Coin cap (done 2026-11-18, branch `coin-cap`, draft PR -> `cointop-1`)
 
 Is a plain cap on the combined coin weight inside `tsmom12` as good as cointop-1's `stop-0.25`
 at cutting the worst loss, at less cost in growth? Card `research/cards/coin-cap.md` (written
-before any number). Doing: card pushed; next `research/lib/coin_cap.py`, run once, write-up.
+before any number); write-up `research/coin-cap.md`; tables `research/results/coin-cap.md`.
+Every cap from 10% to 25%, the walk-forward stitch and the stop all have the same worst loss,
+28.9%: the 2000-02 dot-com fall, not a coin number. On that number `cap25` is cheaper (1.0 to
+1.1 points of CAGR a year against the stop's 2.2). Inside deep-1's coin-crash windows the stop
+is better than any cap of the same cost (-72% summed against -110% for `cap20`). Sharpe is
+inside noise everywhere. The card's bar is not met (Sharpe bar fails; worst loss is a tie).
+Held-out year unspent.
+
+- Rebuild: `research/lib/coin_cap.py`. **A plain run logs 18 tries rows**; do not rerun it with
+  logging. `DRY=1` is a plumbing run that logs nothing.
+- Doing: nothing. No process running.
+- Next (not started, card first): worst loss from 2013 on and time under water as the yardstick
+  for cap against stop; cap 25% together with `stop-0.25`.
 
 ## Cointop 1 (done 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
 
