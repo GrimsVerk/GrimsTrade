@@ -48,7 +48,13 @@
     worlds: plant never found (best 0.20 vs ceiling ~0.22-0.24), noise 0/3; confirmation of the
     pre-picked setting FAILS. No replays, no real search, held-out untouched (154 control rows).
     Plant strength was not calibrated across worlds (0.72 vs 0.22). Lead: redesign as evo-2.
-  - RUNNING: `wide-4` (`grimstrade-wide4`: tax-drain + 5 new cross-field mechanisms), `evo-2`
+  - DONE `wide-4` (draft #57 -> wide-3): `tax-drain` (TT&L -> TGA shift late 2008, Santoro
+    2012; drain real, +88 $bn on tax dates, t 13.7) fails: 1.03 vs 1.05 (p 0.88); new W4-W8
+    from pharmacokinetics, seismology, actuarial, materials fatigue, metrology; W4
+    `coupon-dose` fails (1.04, p 0.71). List 54 mechanisms, 12 tested, 0 passed: next needs
+    p < 0.00185. FRED blocked here: DTS used instead.
+  - RUNNING: `eu-1` (`grimstrade-eu1`: `tsmom12` on EUR UCITS ETF universe, robustness, card
+    first), `evo-2`
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
     must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
     run-up exit on French industries 1928-), `coin-cap-3` (daily-checked stop vs weekly).
