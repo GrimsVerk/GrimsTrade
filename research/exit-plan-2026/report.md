@@ -1,6 +1,6 @@
 # Selling a stock portfolio by a fixed date: exit plan, parking and re-entry
 
-Report of the exit-plan-2026 research run, written 2026-11-18 and revised after review round 1
+Report of the exit-plan-2026 research run, written 2026-11-18 and revised after review rounds 1 and 2
 (`review-log.md`).
 
 The scenario: a euro-based retail investor living in the Netherlands, with a small stock
