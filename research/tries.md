@@ -1032,3 +1032,9 @@ Never edit or delete a row.
 | 2026-11-18 22:14 | ts-carry | carry-mean | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +7824.5% | 39.8% | 2.19 |
 | 2026-11-18 22:14 | ts-carry | carry-mean@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.48 | +113.9% | 13.9% | 2.65 |
 | 2026-11-18 22:14 | ts-carry | carry-mean@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.46 | +102.3% | 15.8% | 1.75 |
+| 2026-11-18 22:15 | halloween | halloween | variant | train | 1994-02-01 | 2025-11-09 | 0.96 | +6878.8% | 38.8% | 3.16 |
+| 2026-11-18 22:15 | halloween | halloween-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.88 | +7159.9% | 49.4% | 3.01 |
+| 2026-11-18 22:15 | halloween | halloween@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.69 | +198.8% | 16.5% | 2.74 |
+| 2026-11-18 22:15 | halloween | halloween-alone@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.68 | +300.4% | 22.5% | 2.56 |
+| 2026-11-18 22:15 | halloween | halloween@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.85 | +2137.7% | 22.9% | 2.51 |
+| 2026-11-18 22:15 | halloween | halloween-alone@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.85 | +9224.4% | 33.1% | 2.11 |
