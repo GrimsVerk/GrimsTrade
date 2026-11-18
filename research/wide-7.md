@@ -135,3 +135,79 @@ Disclosures: one dry run (`DRY=1`) printed only asset-year counts per sample (ab
 run. The script and its tests were pushed before both (commit 6e0d283). The first tax year
 with data is 1994 (SPY starts 1993-01-29), not 1993 as the rule's label says; nothing else
 differs from the rule.
+
+## Step 2. W13 `festival-gold` (anthropology of calendars)
+
+### The idea
+
+Households and jewellers in India buy gold before Dhanteras (two days before Diwali; the day
+on which buying gold or metal is customary) and in China before the Lunar New Year. Both
+festivals sit on a lunisolar calendar, so their Gregorian dates walk by about 11 days a year
+and jump back by a month every two or three years: Diwali falls between 17 October and 14
+November, the Lunar New Year between 21 January and 20 February. If festival buying moves the
+gold price, the move must follow **event time** (the weeks before the festival, wherever it
+falls), not **calendar time** (a fixed month). A plain monthly seasonal cannot tell the two
+apart; the drift can.
+
+### Literature check
+
+- **Baur (2013)**, "The autumn effect of gold", Research in International Business and
+  Finance 27(1), pp. 1-11, DOI 10.1016/j.ribaf.2012.05.001. `[search summary]` Daily gold
+  spot and futures, January 1981 to December 2010: September and November are the only months
+  with significantly positive returns (about +2.2% and +1.8% on average, as a secondary source
+  quotes; not checked in the paper). Explanations offered: Indian wedding-season jewellery
+  demand, hedging before the "Halloween" stock season, lower sentiment with shorter days. A
+  calendar-month study: it did not separate festival dates from months.
+- **Potrykus and Augustynowicz (2024)**, International Journal of Management and Economics
+  60(3), pp. 157-172. `[search summary]` A later replication: the autumn effect in gold has
+  reversed and been replaced by a winter effect.
+
+So the calendar-month version held in its paper's years and, by one replication, not after.
+The event-time cut is our own and no run here has computed it. GLD starts 2004-11-18 (the
+monthly gold series in the cache is monthly only, useless for event time), so **in-sample =
+GLD's days to 2010-12-31 (inside Baur's sample), post-sample = 2011-01-01 to 2025-11-10**.
+The years that can judge it fully are 2026 on.
+
+### Festival dates
+
+Lakshmi Puja (Diwali) and Lunar New Year dates 2004-2025 written from memory into the script
+(`research/lib/wide7_festival.py`), then checked against wide-6's mean new moons before any
+price was read: all 21 Lunar New Year dates fall 0 or 1 day after a mean new moon (UTC; China
+keeps UTC+8), and all 22 Diwali dates 1 or 2 days before one (one at 2), as the calendars
+require (Diwali is the new moon of Ashvin/Kartika in Indian time). The 2025 Dhanteras (18
+October) and Diwali (20 October) were confirmed in news reports; no full published table was
+fetched (Wikipedia's pages list only recent years). Dhanteras = Diwali minus 2 days. A date
+off by one day moves one session at each end of a 15-session window.
+
+### Decision rule (fixed and pushed before any number)
+
+**Series.** GLD dividend-adjusted closes, train bars only; daily log returns, 2004-11-19 to
+2025-11-10.
+
+**Event days.** E(t) = 1 if day t is one of the 15 trading sessions strictly before a festival
+day F (Dhanteras for Diwali; the Lunar New Year day itself), else 0. Both festivals in one
+indicator. (Gold buying is done before the day; the price on the day itself is not counted.)
+
+**Regression.** r(t) = sum over the 12 calendar months of c(m) Month(m, t) + b E(t) + e;
+Newey-West t with 10 lags. b is the extra daily return on festival-run days over the same
+calendar month's mean: event time against calendar time.
+
+**Gate.** Pass only if all three hold: (1) b > 0 with t >= 2 over the whole GLD sample;
+(2) b > 0 in both the in-sample (to 2010) and the post-sample (2011 on) periods;
+(3) the true dates rank in the top 3 of 15 shifts of all festival dates by k weeks,
+k = -7 .. +7 (same regression for each). On a pass: a card for an overlay (idle cash into GLD
+for the 15 sessions before each festival), a train test with rows in `tries.md`, read at
+p < 0.00147. On a fail: W13 dead by the gate, no card, no row.
+
+**Power, written before any number.** GLD's daily standard deviation is about 1.1%; about 600
+of about 5,250 days are festival-run days, so the standard error of b is about 5 bps a day and
+t >= 2 needs about 10 bps a day, 1.5% over a 15-session run. Baur's September mean is about
+10 bps a day over a whole month, so the gate can see a festival effect only if it carries most
+of the autumn effect.
+
+**Shown, not gating.** b for each festival alone; b without the month terms (the raw festival
+run); a 5-session run; mean GLD return by calendar month in each period (Baur's September and
+November, out of his sample from 2011); the 15 shifted b values.
+
+**My guess before any number.** b between -3 and +6 bps a day, t below 1.5; September and
+November not special after 2010 (the replication). Chance of a pass: 3%.
