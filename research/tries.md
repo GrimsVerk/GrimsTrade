@@ -998,3 +998,7 @@ Never edit or delete a row.
 | 2026-11-18 19:16 | opex-pin | pin-after | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +21200.1% | 35.3% | 9.37 |
 | 2026-11-18 19:16 | opex-pin | pin@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.46 | +207.5% | 28.8% | 10.53 |
 | 2026-11-18 19:16 | opex-pin | pin@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.64 | +4060.7% | 36.3% | 8.66 |
+| 2026-11-18 19:28 | tax-drain | drain | variant | train | 1994-02-01 | 2025-11-09 | 1.03 | +16594.3% | 37.9% | 5.74 |
+| 2026-11-18 19:28 | tax-drain | drain-ttl | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +16177.2% | 36.5% | 3.02 |
+| 2026-11-18 19:28 | tax-drain | drain@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +212.7% | 17.0% | 5.52 |
+| 2026-11-18 19:28 | tax-drain | drain@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4188.6% | 26.7% | 3.41 |

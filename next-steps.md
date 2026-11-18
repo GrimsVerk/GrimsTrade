@@ -7,7 +7,9 @@ switch from bank TT&L accounts to the Fed's TGA was late 2008), card pushed befo
 event study and rule on train only. (2) Five new mechanisms from fields the list has not used,
 a written choice note, a card and a train test of the best one. Write-up `research/wide-4.md`.
 
-- Doing: `tax-drain` card pushed; next the data download (FRED keyless CSV) and the test.
+- Done: `tax-drain` fails train (1.03 vs 1.05, p 0.88); drain real (TGA +88 $bn on tax dates
+  since 2008), price trace has the predicted sign and regime order but SPY t only -1.3.
+- Doing: step 2, five new mechanisms from unused fields.
 
 ## Wide 3 (done 2026-11-18, branch `wide-3`, draft PR #54 -> `wide-2`)
 
