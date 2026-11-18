@@ -1,5 +1,15 @@
 # Next steps
 
+## In progress: register-2 (branch `register-2`, draft PR into `register-1`)
+
+Measured inputs for the bar instead of assumed ones. Card: `research/register-2.md`.
+
+1. Optional `weeks`, `skew`, `excess_kurtosis` on `ledger.register_try` (backward compatible).
+2. Backfill record length and shape for re-simulated tries in a generated file under
+   `research/register/`; estimate the effective number of independent trials from their
+   return correlations (average rho, eigenvalues, ONC clustering).
+3. BAR.md (generated) shows the estimate, its method and a per-record-length bar table.
+
 ## Waiting for review: register-1 (branch `register-1`, draft PR #79 into `dsr-1`, not merged)
 
 From dsr-1's findings; no backtests, no tries. Done:
