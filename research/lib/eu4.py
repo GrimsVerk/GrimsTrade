@@ -3,7 +3,7 @@
     uv run --with numpy python research/lib/eu4.py diag    # step 1: descriptive note, no row
 
 Needs the CSVs from `eu1_data.py build`. Train period only. Fees are described as generic
-tiers: EUR 1, 2 or 3 per ETF order on a constant book (eu-2's schedules `dg1`, `tr2`, `dg3`,
+tiers: EUR 1, 2 or 3 per ETF order on a constant book (eu-2's three schedules,
 reused unchanged so numbers compare with eu-2 and eu-3).
 
 `diag` replays the house rule `tsmom12` on `euw` at no fixed fee (the configuration eu-3 logged

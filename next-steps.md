@@ -1,16 +1,27 @@
 # Next steps
 
-## eu-4 (in progress 2026-11-18 night, branch `eu-4` from `eu-3`, draft PR -> `eu-3`)
+## eu-4 (done 2026-11-18 night, branch `eu-4` from `eu-3`, draft PR #68 -> `eu-3`)
 
-DEEPER lane on eu-3: fewer *signal flips* for the small coin-free book `euw`. Chain: (1)
-diagnose on train where `euw`'s orders go (entries, exits, drift top-ups; whipsaw round trips
-that reverse within N weeks; their fee cost per tier EUR 1/2/3 per order; which assets whipsaw
-most), a note, no new rule; (2) a card with one or two whipsaw reducers that keep the signal's
-character (confirmation over two Fridays, a dead zone around zero on the 12-month return), with
-an explicit character test and the family bar, then train runs, every try logged; (3) minimum
-book per fee tier and whether the eu-3 verdict changes. Fees described as generic tiers only.
+DEEPER lane on eu-3: fewer signal flips for the small coin-free book `euw`. Step 1 diagnosis
+(`results/eu-4-diag.md`, no row), card `research/cards/eu-4.md` (pushed before any number),
+write-up `research/eu-4.md`, table `results/eu-4.md`, code `research/lib/eu4.py` (diag) and
+`research/lib/eu4_run.py` (check/run); 24 rows in `research/tries.md` (idea `eu-4`). Fees are
+described as generic tiers (EUR 1/2/3 per order). Held-out year unspent.
 
-- Done: step 1 (diagnosis, `eu-4.md` section 1, `results/eu-4-diag.md`). Done: step 2 card `research/cards/eu-4.md` (pushed before any reducer number). Doing: step 2 runs.
+- Diagnosis: 30 orders/yr in thirds (entries, exits, drift). 83% of flip orders sit in spells
+  reversed within 4 weeks (half the fee drag); 88 of 267 spells last one Friday; whipsaws are
+  shallow (|z| < 0.25), weekly z noise sd 0.21 on every asset; EXXY, IBGL, EXSA, IQQE most.
+- Reducers: C1 confirm over two Fridays (orders 30 -> 20, flips 19.8 -> 9.8) and C2 dead zone
+  +-0.25 z (orders -> 16.6, flips -> 6.9) keep Sharpe (0.62 / 0.64 vs 0.62) and positions
+  (corr 0.91 / 0.89) but deepen max DD by 3.3 / 2.4 pts (slower exit in covid): both fail the
+  2-pt bar, i.e. change the rule. eu-3 verdict unchanged (5k no; 10k at EUR 1, borderline EUR
+  2; 25k all). Descriptively C2 would cut the minimum book ~40% (EUR 3 tier 16k -> 9k).
+- Doing: nothing. No process running. Local `research/data/` copied from the eu-3 worktree
+  (git-ignored; holds eu-4's saved runs, so a rerun re-scores without new rows).
+- Next (not started): (1) a card that treats the dead zone as a rule change, judged on other
+  books (US six 1994-2025, `usw`, `eu6`) with a drawdown-aware bar and the held-out year;
+  (2) attack drift instead (a third of orders: top up only at signal flips, or a wider band on
+  `euw` only); (3) the actual book size and fee tier pick the row.
 
 ## eu-3 (done 2026-11-18 night, branch `eu-3` from `eu-2`, draft PR #63 -> `eu-2`)
 
