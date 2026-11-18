@@ -8,11 +8,40 @@ cross-asset; `rl-3.md`, `info-1.md`) stays under a weekly IC of ~0.05. The six a
 trading volume, which sits in the bar cache already, has never been screened. Does any volume
 feature reach the level where it is worth anything on this book (weekly IC ~0.10)?
 
-## In plain words (results)
+## In plain words (results, 2026-11-18)
 
-Not run yet. This section is filled in after the one logged run.
+**No. None of the six volume features forecasts the coming week. The largest in-sample IC is
+-0.021, under half the family chance level (0.048) and under every single-test chance level
+(0.034-0.040). The best walk-forward IC is +0.017 and the best gain over the trend inputs is
++0.002, against bars of 0.10 and +0.05. All six verdicts are "no", so by the card the lane is
+closed: no re-run with other windows.** Descriptive only: no backtest, held-out year not
+loaded. Table: `results/volume-1.md`.
 
-## Card (written 2026-11-18 ~11:07 UTC, before any volume number was computed or printed)
+- **What was measured.** 4- and 13-week volume change, a 52-week abnormal-volume z-score, a
+  13-week volume-weighted trend, up-day against down-day volume, and price-volume divergence,
+  each on the asset's own bars, used from the day after the bar. 1,348 Fridays 2000-2025,
+  about 5,850 asset-weeks, the same target as info-1 (the coming week's risk-adjusted return).
+- **Honest reading of the numbers.**
+  - The three pure volume features (`vol_chg4`, `vol_chg13`, `vol_z52`) are new information
+    (overlap with the trend inputs 0.08-0.14) with no forecasting power: |IC| 0.009-0.012,
+    walk-forward -0.02 to 0.00. Adding them to the trend inputs makes the forecast slightly
+    worse (gain -0.006 to -0.022).
+  - The volume-weighted trend is the trend again (overlap 0.82) and adds +0.002.
+  - Price-volume divergence has the same sign for all six assets (-0.014 to -0.032: a move on
+    rising volume is followed by a slightly weaker week), which is the only pattern in the
+    table. Pooled it is -0.021, half the family level, walk-forward +0.017, gain +0.001. Too
+    small to matter even if real: rl-3's ceiling gives nothing below 0.05.
+  - Per asset, the coins show the largest numbers (`vol_z52` +0.078 for ETH, `vw_trend13`
+    +0.071 for BTC). With 36 asset-candidate pairs and under 500 weeks per coin, that is chance-sized,
+    and it does not carry into the walk-forward numbers. Shown, not judged (card).
+- **How sure.** Sure. 1,348 weeks and a family chance level of 0.048: a real 0.10 would stand
+  two chance levels clear, and nothing reaches a quarter of it. The one thing this cannot
+  rule out is a coin-only volume effect, which needs more coins than two (the wide coin book;
+  breadth-1 found a volume-to-market-cap tilt there, across coins, not through time).
+- **What it means.** Own volume joins prices, macro, on-chain, positioning and options: no
+  weekly input within reach of free data lifts this six-asset book above the 12-month trend.
+
+## Card (written 2026-11-18 ~11:03 UTC, before any volume number was computed or printed)
 
 Seen before: every earlier result in this repo (the info-1 table included: no candidate
 useful, best walk-forward gain +0.025). Not seen: any statistic of the volume columns.
@@ -89,3 +118,29 @@ gain over them. All exactly as info-1's card, "Measures".
 One logged run. Every candidate gets one `screen` row in `tries.md` (descriptive, not
 selectable). Table in `results/volume-1.md`. Nothing is downloaded: the bar cache is the one
 `lib/fetch.py` built (git-ignored, copied read-only from another worktree, never committed).
+
+### Disclosures (2026-11-18)
+
+- The card's heading first said "~11:07 UTC", a guess; the card commit (`8aaf620`) is stamped
+  11:03 UTC, and the heading now says so. Nothing else on the card changed after the run.
+- Order, by commit: card (`8aaf620`), then code and tests (`4a4be0d`, pushed before the run),
+  then the one run with `--log` (six `screen` rows in `tries.md`). No dry run and no coverage
+  print before it; the first volume numbers seen were the result table.
+- The bar and RL table caches (git-ignored) were copied read-only from the `slow-1` worktree.
+  Nothing was downloaded.
+- Not on the card, so not shown: info-1's "IC held" column.
+- `ledger/tries.jsonl` has no rows: a screen is not a strategy (as info-1).
+
+## Status (2026-11-18 ~11:10 UTC)
+
+**Done:** card; `lib/volume1_ic.py` (features, family chance level, table; reuses
+`info1_ic.py` and `info1_features.asof`); `tests/test_volume1_asof.py`; table
+`results/volume-1.md`; six `screen` rows in `tries.md`; this write-up. Held-out year untouched.
+
+**Doing:** nothing half-finished. No process left running.
+
+**Next:** nothing in this lane (closed by its own card). If volume is tried again it should be
+across many coins (the wide coin book), as its own card, not through time on six assets.
+
+Reproduce: `uv run python research/lib/volume1_ic.py` (dry; `--log` writes tries rows: run
+once). Needs the bar cache (`research/lib/fetch.py`) and RL 2's `tables2.pkl` (`rl2_data.py`).

@@ -1,10 +1,14 @@
 # Next steps
 
-## Volume 1 (research run, branch `volume-1`, started 2026-11-18 ~11:03 UTC)
+## Volume 1 (done 2026-11-18, branch `volume-1`, draft PR -> `carry-2`)
 
-Question: does the six assets' own trading volume (never screened) forecast the coming week?
-Card: `research/volume-1.md` (6 volume features, weekly IC screen on train only, info-1's bar,
-maxT correction over the six). Doing: implement `research/lib/volume1_ic.py`, run once, log.
+The six assets' own trading volume as a weekly input (4/13-week volume change, abnormal-volume
+z-score, volume-weighted trend, up/down volume, price-volume divergence), screened for weekly
+IC on train only: none useful. Largest |IC| 0.021 against a family chance level of 0.048 (maxT
+over the six); best walk-forward IC +0.017, best gain over the trend inputs +0.002 (bars 0.10
+and +0.05). Lane closed by its card: no re-run with other windows. Held-out year untouched.
+Write-up `research/volume-1.md`. Only open variant: volume across many coins (wide coin book),
+as its own card.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

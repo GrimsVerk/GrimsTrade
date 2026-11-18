@@ -936,3 +936,9 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-18 11:05 | volume-1-screen | vol_chg4 (IC +0.011, chance 0.036, family 0.048, WF -0.010, gain -0.022) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:05 | volume-1-screen | vol_chg13 (IC -0.009, chance 0.034, family 0.048, WF +0.002, gain -0.006) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:05 | volume-1-screen | vol_z52 (IC +0.012, chance 0.037, family 0.048, WF +0.001, gain -0.007) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:05 | volume-1-screen | vw_trend13 (IC +0.003, chance 0.038, family 0.048, WF +0.012, gain +0.002) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:05 | volume-1-screen | updown13 (IC -0.003, chance 0.037, family 0.048, WF +0.001, gain -0.017) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:05 | volume-1-screen | pv_div13 (IC -0.021, chance 0.040, family 0.048, WF +0.017, gain +0.001) | screen | train | 2000-01-07 | 2025-11-09 | - | - | - | - |
