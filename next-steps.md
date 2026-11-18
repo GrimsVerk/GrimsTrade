@@ -16,12 +16,12 @@ number; write-up at the top of `research/trend-1926.md`; tables `research/result
 - Replay check: the gym and the gym-free paper series agree except on 2 days (market) and 6
   days (durables) of 9,731, all in weeks whose Friday was a holiday with a Saturday session;
   they pick a different decision day there. Explained, not a fill error.
-- **Era 2 (1962-2001) paused 2026-11-18 11:19 UTC, before any number.** Card 2 is fixed at the
-  end of `research/trend-1926.md` (same rule, same bar, cuts without 1973-74 and 1987). No code
-  changed, no run made, no `tries.md` row. Next, in this order: (1) make
-  `research/lib/trend_1926.py` era-aware as listed under "Code changes this needs" on card 2
-  and extend the tests; (2) one run, 96 rows; (3) write-up above card 2, this section, the PR
-  body.
+- **Era 2 (1962-2001, card 2 at the end of `research/trend-1926.md`, fixed before its run):**
+  crashes only. Market 0.88 against 0.80 (+0.07, p 0.26), worst loss 32% against 48%; without
+  1973-1974 the difference is -0.03. Tables `research/results/trend-1926-era2.md`; 96 more rows.
+  Rerun with `TREND_ERA=1962 uv run python -I research/lib/trend_1926.py`. Open: the era-2
+  replay-check gaps (utilities 1.7% on one day) are not yet explained; no test covers the
+  `TREND_ERA=1962` path.
 - Doing: nothing. No process running.
 - Next lanes (not started): `trend-where-it-pays` with 1946-1961 as its hard case;
   `fast-reentry` with this period as an out-of-universe set; French daily data 1962-1993 on its

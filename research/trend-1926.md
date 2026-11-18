@@ -279,9 +279,32 @@ between era 1 and the book's own data. **Not run yet when this was written; no c
 No outcome changes the live rule. Together with era 1: "a property" here would lift the stock
 slots back toward "pays on stocks"; "crashes only" or "no" confirms "crash insurance".
 
-### Code changes this needs (none made yet)
+### Result of card 2 (2026-11-18, one run, after the card above was pushed)
 
-`lib/trend_1926.py` is written for one era: `LAST` is bound as a default argument in the
-parsers, `Window.drop` holds one range (`x3` needs two), `section_data` and `section_outcome`
-name era-1 years and window keys, and the result path is fixed. These must be made
-era-aware (and the tests extended) before the run.
+**Crashes only, and barely that.** 1962-01 to 2001-12, market: Sharpe 0.88 against 0.80 for
+holding, +0.07 (p 0.26, 90% range -0.12 to +0.26); growth 9.7% a year against 10.8%; worst
+loss 32% against 48%. Ten-industry book +0.05 (p 0.29); 6 of 10 industries ahead. Tables:
+`results/trend-1926-era2.md`; 96 more rows in `tries.md` (24 baseline, 72 robustness).
+
+| Window | Market difference (p) | Book difference (p) |
+|---|---:|---:|
+| whole, 1962-2001 | +0.07 (0.26) | +0.05 (0.29) |
+| 1962-1981 | +0.13 (0.25) | +0.19 (0.17) |
+| 1982-2001 | +0.03 (0.37) | -0.04 (0.65) |
+| `x1`, without 1973-1974 | -0.03 (0.64) | -0.06 (0.75) |
+| `x2`, without 1987 | +0.09 (0.23) | +0.10 (0.17) |
+| `x3`, without both | -0.02 (0.59) | -0.02 (0.61) |
+| `to1993` | +0.06 (0.36) | +0.06 (0.32) |
+
+- By the card: market ahead over the whole period and in both halves, not in `x1` or `x3`:
+  **crashes only**. Take out 1973-74 and the small lead is gone; nothing here is clear of zero.
+- Days out were rougher than days in on the market (ratio 1.31, p 0.08), present on 10 of 10
+  industries in 1962-1981 and on 1 of 10 in 1982-2001: again the bear-market half only.
+- Later fill +0.05, 10 bps +0.06, 50 bps +0.02, cash at the T-bill rate (6.0% a year here)
+  +0.10 (p 0.17). The sign holds on the market; the book turns negative at 50 bps.
+- Together with era 1: over 75 years of US stocks the rule's lead is 1929-1932 and 1973-1974.
+  Outside the collapses it ties or trails. Crash insurance, confirmed; not an edge.
+- Not checked in this burst: the replay check shows larger one-day gaps here (utilities 1.7% on
+  one day, 0.027 total log growth over 40 years). Era 1's gaps were holiday-Friday weeks; that
+  explanation is not verified for this era. Era 1's table was rebuilt after the code change
+  and came out identical.
