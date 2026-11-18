@@ -245,3 +245,164 @@ libraries are rebuilt; French's Mom is value-weighted, not Jegadeesh-Titman's de
   its return against its matched holding, not its own Sharpe; the card fixes that measure.
 - **Index changes.** Several ETFs changed index or method during their lives (table notes);
   they are kept as one series, since an investor holding them lived through the change.
+
+## Step 2: the live check by family (card dda9386, script db6eba0, run 2026-11-19)
+
+Card: [`cards/live-families.md`](cards/live-families.md), pushed before any number. Tables:
+[`results/live-families.md`](results/live-families.md). Monthly returns above the 13-week
+T-bill, each family over its own live months to 2025-10 (held-out year unread), every fund
+after its fees. **Logged as:** 15 `live-check` rows in `tries.md` (`<family>@live-fund`, header
+extended): descriptive, not selectable, not strategy tries. No `ledger/tries.jsonl` row.
+
+**One slip in the card, declared:** it gives the Bonferroni level for 15 composites as
+t >= 2.94; the right number for one-sided 0.05/15 is **2.71** (the code's). No family reaches
+either, so no reading changes.
+
+### What the numbers say (card's reading rules applied)
+
+| Family | Live years | Sharpe | Plain holding, same months | Gap | Alpha t | Reading | Worst crash vs VFINX |
+|---|---:|---:|---:|---:|---:|---|---|
+| value | 33 | 0.53 | 0.55 | -0.02 | 0.1 | matched its holding | GFC -57% (-51%) |
+| momentum | 18.6 | 0.58 | 0.64 | -0.06 | -0.1 | matched | GFC -56% (-51%) |
+| quality | 15.3 | 1.00 | 0.97 | +0.03 | 0.9 | matched | 2022 -18% (-18%) |
+| low-vol | 14.4 | 0.70 | 0.69 | +0.01 | 0.7 | matched (max DD 18% vs 25%) | 2020 -18% (-20%) |
+| multi-factor | 20 | 0.59 | 0.65 | -0.05 | -1.6 | matched | GFC -52% (-51%) |
+| dividend | 22.8 | 0.67 | 0.71 | -0.04 | 0.2 | matched | GFC -46% (-51%) |
+| defensive sectors | 26.8 | 0.57 | 0.48 | +0.08 | 1.5 | matched (max DD 34% vs 51%) | GFC -33% (-51%) |
+| option writing | 37.8 | 0.43 | 0.63 | -0.20 | -1.0 | **lagged** | GFC -31% (-51%) |
+| gold miners (vs gold) | 20.8 | 0.32 | 0.59 | -0.27 | -1.2 | **lagged** | GFC -41% (-51%) |
+| risk parity (vs 60/40) | 16.3 | 0.63 | 0.92 | -0.30 | -1.0 | **lagged** | 2022 -16% (-18%) |
+| merger arb (vs bonds) | 36.8 | 0.40 | 0.55 | -0.15 | 2.2 | lagged bonds on Sharpe; alpha t 2.2 | 2000-02 **+14%**, GFC -3% |
+| tail hedge | 14.7 | -0.54 | - | - | -1.6 | **cost** (TAIL -0.77, VIXY -0.74, BTAL -0.24) | 2020 **+46%** (-20%) |
+| style premia, long-short (bills) | 12 | 0.50 | 0 | +0.50 | 1.7 | paid little; **risk tool** | 2022 **+28%** (-18%) |
+| trend (bills) | 18.7 | 0.17 | 0 | +0.17 | 0.7 | paid little; **risk tool** | GFC **+13%**, 2022 **+20%** |
+| FX carry (CEW, bills) | 16.3 | -0.03 | 0 | -0.03 | -0.1 | did not pay | 2020 -9% |
+
+1. **No long-only equity factor family beat its plain index after fees.** Value, momentum,
+   quality, low-vol, multi-factor, dividend: gaps -0.06 to +0.03, alpha t -1.6 to 0.9, over
+   14-33 live years. Of their 26 member funds, none has alpha t above 1.5. The long-only factor
+   fund **is the index**: correlation 0.86-0.99, beta 0.65-1.04. Low-vol and dividend bought
+   shallower drawdowns at the same Sharpe, not a higher one.
+2. **Strategies that sell insurance lagged their holding live.** Option writing lagged the
+   S&P 500 by 0.20 Sharpe over 38 years (PBP, XYLD, QYLD -0.31 to -0.42); the paper indexes
+   themselves (no fees) lagged too: BXM -0.17 since 2002, PUT -0.10 since 2007. The PUT
+   study's in-sample gap was +0.33. So the loss is the effect, not the fees.
+3. **Strategies that buy insurance cost a lot live.** The tail-hedge funds lost 0.5-0.8
+   Sharpe a year (VIXY a mean of -47% a year, a 100% drawdown) and paid off in one window (2020, +46%).
+   An 80/20 mix with the market lost 0.13 Sharpe for a 5-point shallower drawdown. Not a risk
+   tool by the card's rule.
+4. **The only families with a positive live Sharpe and low correlation to stocks:** AQR's
+   long-short style premia (0.50, t 1.7, 12 years; corr -0.01; +28% in 2022), merger
+   arbitrage (0.40 over 37 years, t about 2.4 against bills; corr 0.39; +14% in 2000-02, -3%
+   in 2008-09) and trend (0.17, corr -0.13, gained in all three crashes it lived through).
+   Style premia and trend pass the card's risk-tool rule; merger arb misses only on
+   correlation (0.39 > 0.3), and its 80/20 mix cut the market's drawdown by 8 points at +0.01
+   Sharpe.
+5. **Nothing reaches t 2.71** (Bonferroni over 15 families), let alone the project-wide bar
+   (z 3.89). Merger arb's alpha t 2.2 against bonds is the highest.
+
+### Paper to live: how much of each published backtest is left
+
+Printed in-sample Sharpe (card) against the live counterpart fixed by the card. The code's
+version from today's data is in brackets where it has one.
+
+| Family | Paper Sharpe | Paper factor after publication (today's data) | Live counterpart | Kept | Reading |
+|---|---:|---:|---:|---:|---|
+| value | HML 0.55 (0.52) | 0.12 (1994-2025) | IR 0.02 | **4%** | decayed to nothing |
+| momentum | PR1YR 0.81 (UMD 0.80) | 0.26 (1994-2025) | IR -0.03 | **<0** | decayed to nothing |
+| quality | QMJ 0.58 (0.56) / RMW 0.40 (0.41) | QMJ -0.03 (2020-25), RMW 0.45 (2016-25) | IR 0.25 | **43% / 63%** | kept part / most (t 0.9: not shown to be real) |
+| low-vol | BAB 0.78 (0.70) | 0.42 (2015-2025) | IR 0.20 | **26%** | kept part |
+| multi-factor | 1.59 (value + momentum everywhere) | - | style premia Sharpe 0.50; long-only IR -0.37 | **31% / <0** | kept part (long-short) / nothing (long-only) |
+| dividend | (D/P carry 0.36) | - | IR 0.03 | 8% | decayed to nothing |
+| FX carry | 0.68 | - | -0.03 (CEW, long-only EM basket) | <0 | nothing (weak proxy: no G10 long-short fund survives) |
+| merger arb | 0.57 (after costs) | - | 0.40 | **70%** | kept most |
+| option writing | PUT gap +0.33 | BXM gap -0.17, PUT gap -0.10 (indexes) | gap -0.20 | <0 | reversed |
+| risk parity | gap to 60/40 +0.13 | - | gap -0.30 | <0 | reversed |
+| trend | 1.41 | 0.35 (survey-5) | 0.17 (composite; AQMIX 0.29) | **12% (21%)** | decayed to nothing (nearly) |
+
+The pattern: **the more a premium was a famous stock-selection anomaly, the less is left**
+(value, momentum, dividend: 0-8%); the ones that kept most are premia for bearing a real,
+ugly risk that few want (merger arb's deal-break risk, 70%; low beta's leverage constraint,
+26%) or long-short multi-asset books (style premia, 31%). Of the 11 families with a number, the
+median kept 8%, and 4 of 11 went below zero; McLean-Pontiff's 58% decay for stock anomalies looks optimistic for
+what an investor in a fund actually got.
+
+## Step 3: plain ranking for a human (one screen)
+
+**Paid live, net of fees, more than the plain thing you would otherwise hold: none.** No
+family beat its matched holding with t >= 2 over its live life.
+
+**Paid something, and low correlation with stocks (worth knowing as diversifiers):**
+1. Long-short multi-asset style premia (value, momentum, carry, defensive): Sharpe 0.50, 12
+   years, +28% in 2022. Kept about a third of the paper. Only one manager's two funds.
+2. Merger arbitrage: Sharpe 0.40 for 37 years, small drawdowns (11%), gained in 2000-02,
+   flat in 2008-09. Kept 70% of the paper, the best of any family. Not more Sharpe than a
+   bond index over the same years, but a different risk.
+3. Trend following: Sharpe 0.17, gained in every crash it lived through. Insurance that
+   roughly pays for itself.
+
+**Paid exactly like their index (a holding, not an edge):** value, momentum, quality,
+low-vol, multi-factor, dividend, defensive sectors. Low-vol, dividend and defensive sectors
+bought shallower drawdowns (low-vol 18% vs 25%, dividend 47% vs 51%, defensive sectors 34%
+vs 51%) at about the same Sharpe: risk choices.
+
+**Lagged or cost money:** option writing (-0.20 vs the S&P 500), risk parity (-0.30 vs a
+60/40 index fund), gold miners (-0.27 vs gold), FX carry (0), tail hedges (-0.54 a year).
+
+**Decayed to nothing:** value, momentum, dividend, trend (kept 0-12% of the paper Sharpe);
+option writing and risk parity reversed sign.
+
+### What this means for our six-asset weekly book (SPY, QQQ, TLT, GLD, BTC, ETH)
+
+Most families do not map onto six assets at all (stock selection, deals, options). What does
+map, and what the live record says about it:
+
+- **Holding the six is the bar, and the live record says it is hard to beat:** every
+  long-only tilt matched its index. Survey-5 found the same for `tsmom12` (Sharpe 1.11 =
+  holding 1.11 in 2010-2025).
+- **What paid live with low correlation is long-short and multi-asset** (style premia,
+  trend), and it paid mainly in crashes. Our long-only trend rule cannot gain from a fall;
+  short-1 found shorting coins on perps lost.
+
+**Directions to study next (2-3), judged on crash behaviour, not Sharpe:**
+
+1. **A trend-as-insurance sleeve, judged as insurance** (the risk-tool measures of this
+   card: crash windows, the 80/20 mix's drawdown and Sharpe change). Question: does a
+   small sleeve that is short SPY/QQQ in a 12-month downtrend (ETFs, not perps; no coins
+   short) do for the six what the live trend funds did for a stock book (2008 +13%, 2022
+   +20%) at a cost we can afford? Prior: low (short-1, survey-5), but it is the only
+   family whose live record is "gains in crashes, roughly free".
+2. **Cross-asset "defensive" weights within the six**, as a risk choice, not an edge:
+   low-vol, dividend and defensive sectors all bought 4-17 points shallower drawdowns at
+   about the same Sharpe live. The six-asset analogue is inverse-volatility or capped-coin
+   weights; `risk-map.md` already maps the drawdown choices, so this is a write-up for the
+   owner rather than a new test.
+3. **A multi-asset style-premia check on the six (value = 5-year reversal, carry = TLT
+   term spread and coin funding, momentum = 12-month, defensive = low vol), long-short
+   across the six, descriptive first** (an information-coefficient screen like info-1, not a
+   strategy). The only family with a positive, uncorrelated live record that our data can
+   express. Prior very low: six assets is a tiny cross-section, and anything built must meet
+   the project-wide bar (N 1,012, z 3.89).
+
+**Not worth our time, on the live record:** long-only factor tilts of any kind, option
+writing / covered calls, tail-risk ETFs and long volatility, gold miners instead of gold,
+FX carry, more published return effects tested for a Sharpe edge.
+
+## Caveats
+
+- **Survivors only** (AQR's momentum funds were merged away in 2026, DBV liquidated in
+  2023): the live record is, if anything, better than the families'.
+- **Different windows.** Each family is measured over its own live years, so families are
+  not compared over the same markets (value from 1992, style premia from 2013). The gap to
+  the matched holding is over the same months, which is the fair comparison.
+- **Matched holdings are a choice.** Merger arb against a bond index (similar volatility);
+  gold miners against gold; risk parity against a 60/40 index fund; style premia, trend,
+  carry and tail hedges against bills. Another choice moves the gaps, not the "matched its
+  holding" readings of the equity families, whose correlations with their index are 0.86+.
+- **Tail-hedge composite mixes** three bills-matched funds and SWAN (matched to a 60/40
+  fund); its composite "gap" is not meaningful, its members are.
+- **Fees are today's.** NAVs net whatever was paid; A-share sales loads (MERFX, GATEX,
+  INIVX) are not in NAV, so an investor who paid them got less.
+- **Paper numbers**: Whaley's BXM figures come from a search snippet (unverified); the
+  card's option-writing paper number is the PUT study's (read), whose window includes 16
+  months after launch.

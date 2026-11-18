@@ -1,17 +1,35 @@
 # Next steps
 
-## Survey 6 (doing 2026-11-18, branch `survey-6`, draft PR -> `survey-5`)
+## Survey 6 (done 2026-11-19, branch `survey-6`, draft PR #91 -> `survey-5`)
 
-Which strategy FAMILIES paid investors live, net of fees, since their funds launched? Value,
-momentum, quality, low-vol, multi-factor, dividend, FX carry, merger arbitrage, option writing,
-tail hedges, gold miners, defensive sectors (trend and risk parity reused from survey-5).
-Chain: (1) keyless live fund list `research/survey-6.md`; (2) card, then a descriptive
-`live-check` per family (not selectable); (3) a one-screen ranking and the 2-3 directions next.
+Which strategy families paid investors live, net of fees? 15 families, 60 live funds against
+matched plain index funds (`research/survey-6.md`: list with inception, fees and mandate
+changes verified; printed paper Sharpes with citations). Card before any number
+(`cards/live-families.md`, dda9386), script before its run (db6eba0). Descriptive only: 15
+`live-check` rows (`<family>@live-fund`) in `tries.md`; tables `results/live-families.md`.
 
-- Doing: step 2: card pushed; script next, then its run.
-- Data (git-ignored): `python -I research/lib/survey6_fetch.py <cache_root>` writes
-  `<cache_root>/downloads/survey-6/` (Yahoo JSON, Ken French zips, AQR BAB/QMJ xlsx, CBOE
-  BXM/PUT csv) and `<cache_root>/derived/survey-6/<TICKER>.csv`.
+- **No family beat its plain holding after fees** (none with gap >= +0.10 and t >= 2). The
+  six long-only equity factor families (value, momentum, quality, low-vol, multi-factor,
+  dividend) matched their index: gaps -0.06..+0.03, alpha t -1.6..0.9, over 14-33 years.
+- Lagged: option writing -0.20 (paper indexes too: BXM -0.17, PUT -0.10), risk parity -0.30
+  vs a 60/40 fund, gold miners -0.27 vs gold; tail hedges -0.54 a year; FX carry 0.
+- Positive and uncorrelated: style premia long-short 0.50 (t 1.7, +28% in 2022), merger arb
+  0.40 for 37 years (+14% in 2000-02, -3% in 2008-09), trend 0.17 (gained in every crash).
+- Paper to live, kept: value 4%, momentum <0, dividend 8%, trend 12%, low-vol (BAB) 26%,
+  style premia 31%, quality 43-63% (t 0.9), merger arb 70%; option writing and risk parity
+  reversed. Median 8%.
+- Card slip declared: Bonferroni for 15 is t 2.71, not 2.94; nothing reaches either.
+
+- Doing: nothing. No process running.
+- Next (judged on crash behaviour, not Sharpe): (1) a small short-SPY/QQQ trend sleeve
+  (ETFs, no coin shorts) judged as insurance with this card's crash and 80/20-mix measures;
+  (2) a write-up of defensive weights within the six as a drawdown choice (`risk-map.md`),
+  no new test; (3) a descriptive IC screen of multi-asset style premia across the six
+  (5-year reversal, carry, 12-month momentum, low vol), very low prior, project bar N 1,012.
+- Data (git-ignored): `python -I research/lib/survey6_fetch.py <cache_root>` (Yahoo, French,
+  AQR BAB/QMJ, CBOE BXM/PUT) into `<cache_root>/downloads/survey-6/` and
+  `derived/survey-6/`. Rerun: `uv run --with openpyxl python -I research/lib/survey6_live.py
+  <cache_root>` (no new rows; needs survey-5's `derived/survey-5/` too).
 
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 
