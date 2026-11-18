@@ -85,7 +85,12 @@
     significant after 6; monthly lost on the US six 1994-2025). Verdict: euw not worth it at
     EUR 5k; at 10k only with EUR 1 orders; at 25k any fee. Next (owner): monthly-vs-weekly
     card on held-out year if wanted; DEGIRO core selection check.
-  - RUNNING: `survey-3` (`grimstrade-survey3`: `xtsmom`, in-paper vs after-publication bars) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
+  - DONE `survey-3` (draft #64 -> survey-2): `xtsmom` (Pitkajarvi-Suominen-Vaittinen JFE
+    2020, citation checked) fails: primary Sharpe 1.05 vs 1.05 (p 0.49); paper's years in our
+    data -0.2 bps/day, after sample +0.4 (t 0.1); b6 -0.03, full -0.04. Family 61, 14 tested,
+    0 passed. Survey-2 list used up: only `announcement-premium` live (event study first).
+  - RUNNING: `ann-1` (`grimstrade-ann1`: FOMC announcement-premium event study), `trend-1926-fix`
+    (`grimstrade-trend1926b`: era-2 replay gaps, TREND_ERA=1962 test, docs) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
     must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
