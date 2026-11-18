@@ -10,9 +10,90 @@ designed on at 10 bps a side (pooled Sharpe 0.69, p 0.04), but it trades ~42 tim
 year and is about zero at 30 bps. **Does it survive the costs a small fake-money account would
 really pay, and does it hold in the held-out year?**
 
-## In plain words
+## In plain words (train results, 2026-11-18; held-out line to follow)
 
-Not run yet. The card below was committed and pushed before any new number.
+HELDOUT-PLACEHOLDER
+
+**On the train years: yes, for a small account. The costs a 10,000 USD account would really pay
+are lower than carry-2 assumed, and the book survives them.** Tables: `results/carry-3.md`;
+126 rows in `tries.md`.
+
+- **What trading really costs.** About **8 bps a side** (0.08% of each trade): 5 bps is the
+  venue's fee at the lowest tier, ~1.5 bps is half the bid-ask gap, ~1.5 bps is the price moving
+  against the order (a deliberately pessimistic formula: orders walked through today's real
+  order books cost about half of what the model charges). Carry-2 guessed 10 bps; the gym's
+  crypto setting is 30 bps.
+- **The rule fixed in advance (`band`)**: once a week, long the third of perps with the lowest
+  7-day funding, short the third with the highest, but a coin already held stays until it
+  leaves its half of the ranking, and small weight changes are not traded. On ~550 coins on
+  three venues, 2021-2025, after those costs and every funding payment it made **10.8% a year
+  with a 17% worst loss, Sharpe 0.79** (p 0.025; Sharpe = return per unit of risk, 1 is good).
+  It passes all four bars of the card, positive on every venue and in both eras.
+- **Where the money comes from.** It collects 7.7% of the account a year in funding and pays
+  2.5% in costs (1.6% fees, 0.3% spread, 0.6% impact). The fee is two thirds of the cost.
+- **Next to the paper system's own rule.** BTC/ETH `tsmom12` on spot made Sharpe 0.70 over the
+  same 4.7 years with a 52% worst loss. Half in each: **0.91, worst loss 27%** (p 0.037). The
+  two are unrelated day to day (correlation -0.09). That is the case for it: not a better
+  rule, a different one.
+- **It is small-money only.** With 100,000 USD: 0.69. With 1,000,000 USD: 0.41 (no longer
+  distinguishable from luck), because the orders start to move thin coins. At the gym's 30 bps:
+  0.28. It lives on the perp venues' low fees.
+- **Trading slower did not help much.** The band cut trading from 45x to 32x the account a year
+  and ended where the plain weekly book did (0.78). Rebalancing every 2 weeks scored best
+  (1.01), every 4 weeks worse (0.69, negative on Bybit), a 30-day funding average much worse
+  (0.29). So the information is in *recent* funding and fades within a month; and since costs
+  are only ~2.5% a year, turnover was not the real problem once fees were right.
+
+| Pooled, 2021-02 .. 2025-11, realistic cost (10,000 USD) | Sharpe (p>0) | Per year | Worst loss | Traded/yr | Funding/yr | Costs/yr | B-out / Bybit / Hyperliquid | Blend with BTC/ETH `tsmom12` (0.70 alone) |
+|---|---:|---:|---:|---:|---:|---:|---|---:|
+| `w1`: carry-2's weekly book | 0.78 (0.025) | +11.3% | 18% | 45x | +8.9% | -3.5% | 0.72 / 0.39 / 0.50 | 0.92 |
+| `w2`: every 2 weeks, two halves | 1.01 (0.003) | +14.0% | 15% | 27x | +8.0% | -2.0% | 0.97 / 0.39 / 0.66 | 0.96 |
+| `w4`: every 4 weeks, four quarters | 0.69 (0.035) | +8.1% | 16% | 15x | +5.9% | -1.0% | 0.58 / -0.07 / 0.51 | 0.85 |
+| **`band`: weekly with a no-trade band (primary)** | **0.79 (0.025)** | **+10.8%** | **17%** | **32x** | **+7.7%** | **-2.5%** | **0.72 / 0.45 / 0.61** | **0.91** |
+| `f30`: 30-day funding signal | 0.29 (0.22) | +3.2% | 19% | 25x | +8.4% | -2.0% | 0.10 / 0.37 / 0.30 | 0.77 |
+| `band`, no costs at all | 0.96 | +13.4% | 17% | 32x | | 0 | 0.85 / 0.63 / 0.74 | 0.95 |
+| `band`, spread and impact doubled | 0.73 (0.036) | +9.8% | 17% | | | | 0.67 / 0.38 / 0.55 | 0.89 |
+| `band`, 100,000 USD | 0.69 (0.043) | +9.2% | 17% | | | | 0.64 / 0.35 / 0.50 | 0.88 |
+| `band`, 1,000,000 USD | 0.41 (0.14) | +4.9% | 20% | | | | 0.47 / 0.11 / 0.15 | 0.80 |
+| `band`, flat 30 bps (the gym's crypto cost) | 0.28 (0.24) | +3.1% | 22% | | | | 0.22 / -0.12 / 0.27 | 0.77 |
+| `band`, 60% of fills as maker (assumed) | 0.87 (0.014) | +12.1% | 17% | | | | 0.79 / 0.54 / 0.67 | 0.93 |
+| `band`, all Binance perps instead of B-out | 1.07 | +16.4% | 16% | | | | 1.15 / 0.45 / 0.61 | |
+
+### How sure (train)
+
+- **Probably real, not proven.** The primary was named before any number, so its own p (0.025)
+  is the test. Counting the five shapes scored here it is 0.12, and with carry-2's two signals
+  0.17; the deflated Sharpe probability is 0.84 (0.95 would be convincing). 4.7 years give a
+  Sharpe an error bar of about +-0.45.
+- **Luck in the calendar is large.** The two halves of `w2` differ only in which week they
+  rebalance: one scored 0.56, the other 1.22. So `w2`'s lead over `band` (1.01 against 0.79) is
+  well inside the noise, and by the card `w2` is a lead (its p x 5 is 0.015), not a result. The
+  four phase books of `w4` range from 0.11 to 1.29.
+- **Venues are not independent**, and only Binance is clear on its own (0.72, p 0.035); Bybit
+  (0.45, 3.5 years, survivors only) and Hyperliquid (0.61, 2.4 years, ~13 coins) are positive
+  but each could be luck. 2023 was flat (-0.08).
+- **The cost of the past is partly assumed.** Fees are published facts. The spread curve is
+  today's order book applied to past volume. The check that was meant to show whether spreads
+  drifted (a spread estimate from daily highs and lows) came out as pure noise, as the card
+  warned it might, so it says nothing. The guard is the doubled row (0.73): spread and impact
+  could have been twice as large and the result stands, because the fee dominates.
+- **The model errs on the dear side** for the small account: measured cost of a 300 USD market
+  order in today's books was 0.3-0.5 of the model's on every venue.
+
+### Where the carry fails (what the tables show)
+
+- **By holding period:** fine at 1-2 weeks, fading at 4. A 30-day signal still collects the
+  funding (8.4% a year) but gives about half of it back on price, where the 7-day signal gains
+  on price too. Likely reading, not tested: a coin whose funding has been high for a month is
+  one that keeps rising against its shorts.
+- **By venue:** weakest on Bybit (0.45 with costs, 0.63 without), where the set is survivors
+  only and the short leg lost most.
+- **By year:** 2023 (flat) and, on Binance's smaller coins, 2025 (+0.26); best in 2024 (+1.74).
+- **By size of the account:** impact takes over between 100,000 and 1,000,000 USD; Hyperliquid's
+  13-coin book breaks first (38 bps a side at 1,000,000).
+- **By leg:** neither leg earns alone (0.14 and 0.16); the short leg collects the funding
+  (+8.2% a year) and gives it back on price in rallies, the long leg hedges it. It only works
+  as a pair.
 
 ## What going live in paper would need (described, not built)
 
