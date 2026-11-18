@@ -424,7 +424,7 @@ above T-bills, against a same-size T-bill slot (diversifier-1 lesson).
 
 1. DONE `vol-timing` (#98): covered by `trend-vol`; no card. Optional: own-vol targeting of
    `tsmom12` on the risk map next to ls-trend-2's fixed-split menu (descriptive).
-2. D `short-sleeve`: small SPY/QQQ downtrend short sleeve (ETFs only), judged as insurance above
+2. RUNNING (23:56 UTC) D `short-sleeve`: small SPY/QQQ downtrend short sleeve (ETFs only), judged as insurance above
    T-bills vs a T-bill slot (survey-6 next 1; ls-trend-1 narrow LS as prior).
 3. W gates: W18 `elimination-mood` (needs keyless match list; 2026 World Cup is held-out:
    owner), new mechanisms from unused fields, each with the placebo null.
