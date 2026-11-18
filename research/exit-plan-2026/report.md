@@ -28,17 +28,18 @@ script and logged test behind it.
 > 2. **The rest:** sell on the trading day after the index first closes below its 200-day
 >    average, or on the fallback day, whichever comes first. Shares: fallback
 >    **Fri 18 Dec**, last safe day **Mon 21 Dec**. Funds: fallback **Fri 11 Dec**, order in
->    before the fund's cut-off; last safe Tue 15 or Wed 16 Dec for a fund whose cash reaches
->    your broker within 2-6 business days of the order. A slow fund (cash at the broker within
->    5-10 business days): fallback **Fri 4 Dec**, last safe Wed 9 Dec (section 6.2, step 3).
+>    before the fund's cut-off; last safe Wed 16 Dec for a fund whose cash reaches your broker
+>    within 2-5 business days of the order (e.g. Nordic funds), Tue 15 Dec within 2-6 days (e.g.
+>    global funds). A slow fund (cash at the broker within 5-10 business days): fallback
+>    **Fri 4 Dec**, last safe Wed 9 Dec (section 6.2, step 3).
 > 3. **Each time cash lands:** if it settled in another currency, convert it to euros the same
 >    day and move it to your Dutch account. Do not hold the other currency while you wait.
 > 4. **Park it in euro cash:** a Dutch savings account under the deposit guarantee, or a euro
 >    overnight-rate or 0-1 year government-bond ETF at the Dutch broker you will buy back with.
 >    Not gold, Berkshire, long bonds or anything in dollars.
 > 5. **Buy back** in 12 equal monthly buys, January to December 2027. In the past high-valuation
->    months that fit today this had a better typical result and a milder bad tail than waiting
->    for falls. Only as a bet that a real bust comes: a third each time a month-end close of the
+>    months that fit today this had a better typical result and a milder bad tail than buying
+>    in thirds on falls. Only as a bet that a real bust comes: a third each time a month-end close of the
 >    S&P 500 is 20%, 30% and 40% below its high (about 6,255, 5,473 and 4,691), the rest by
 >    **Fri 29 Dec 2028**; it paid 1.4-1.6 times in real busts and cost more otherwise (section 8.2).
 
@@ -168,7 +169,7 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 |---|---|---|---|---|
 | **1. On your start day, sell half of each holding; sell all of a holding whose index already closed below its 200-day average** | Six-week returns are mostly noise (2.1). Staging costs little and caps regret (Vanguard, 2.2) | Scale, don't flip (lesson 3) | "Half now, half at the fallback" passed the six-week bar (bt Part A). Per holding: Oslo fits the card's `late` sample; US and tech holdings fit only the post-hoc `now-like` sample, where staging also held up (section 6.1) | Bar fixed before any number. But `late` was defined to fit Nov 2026, its windows come from only about 20 separate spells, and the US/tech evidence is post hoc |
 | **2. Sell the rest on the trading day after the first close below the 200-day average, else at the fallback** | Trend is the only reaction rule with a long out-of-sample record (Faber, Moskowitz-Ooi-Pedersen, Hurst-Ooi-Pedersen). Its whipsaw cost (Zakamulin) does not matter for a forced sale. The 200-day daily line is a heuristic (2.3) | React, don't predict (lessons 1, 6). Pre-commit, because exits are a race (Abreu-Brunnermeier) | Avoided a third or more of the fall in 8 of 8 crashes (bt Part B). Added to staging, it cut the mean loss when a 10% fall came in the window from -5.0% to -1.4% (S&P, all start days with a 10%+ fall in the window, `crash-window`) | **Post hoc:** the combination was added after the first results (bt amendment). 8 crashes are 8 observations |
-| **Fallback 18 Dec for shares, 11 Dec for funds (4 Dec for slow funds); last safe 21 Dec (shares), 15-16 Dec (funds with cash at the broker within 2-6 business days), 9 Dec (within 5-10)** | None: this is the calendar | A plan must work if the pop comes late (lesson 2) | Settlement, fund cut-offs and the holiday calendar (park sections 4 and 7). The fallback day is the forced sale in the test | A fact, not a market signal. Fund dates rest on a platform's "normally" figures |
+| **Fallback 18 Dec for shares, 11 Dec for funds (4 Dec for slow funds); last safe 21 Dec (shares), 16 Dec (funds with cash at the broker within 2-5 business days), 15 Dec (within 2-6), 9 Dec (within 5-10)** | None: this is the calendar | A plan must work if the pop comes late (lesson 2) | Settlement, fund cut-offs and the holiday calendar (park sections 4 and 7). The fallback day is the forced sale in the test | A fact, not a market signal. Fund dates rest on a platform's "normally" figures |
 | **3. Move the money to euros the same day** | None | None | Currency risk of a smaller non-euro market: the krone (NOK) fell about 20% against the euro in late 2008 and 18.5% in one month in 2020. OBX lost 62% in 2007-09, more than the S&P's 52% (both in euros; haven, park) | Descriptive |
 | **4. Park in euro cash** | Havens are conditional on the kind of crash; money funds can break (2.4) | Crash safety from the asset (lesson 6). Berkshire fell 54% in 2007-09 | In our table of 10 crashes, euro cash lost at most about 0.5% (negative-rate years); every other candidate lost more in some crash (haven) | Descriptive, nothing fitted |
 | **5. Buy back in 12 monthly buys through 2027; as a bet on a real bust only, in thirds at -20%, -30% and -40%, all in by 29 Dec 2028** | A lump sum usually wins; spreading lowers regret (Vanguard). The literature gives no threshold | Re-enter with rules set in advance, and expect to be early (lesson 4). A fixed end date avoids the Grantham/Hussman failure | No re-entry rule beat buying back at once. In the high-valuation months that fit today, 12 monthly buys had the better median (0.97 vs 0.92 times buying at once) and the milder worst tenth (0.90 vs 0.72); the thirds won only in real busts (1.4-1.6 times) (section 8.2) | Both rules and levels fixed on the reentry card before any number; which one is the default was chosen after seeing them (review round 2). 8 high-valuation episodes, only 3 since 1972 |
@@ -619,13 +620,17 @@ where no euro data exist (`lanes/haven-table.md`). Yields read 2026-11-15/18 (pa
 - **Waiting for "cheap" means waiting a decade.** Lagged CAPE was last at or below its long-run
   median (now 18.1) in Nov 2008 - Jun 2009.
 - **No re-entry rule beat buying back at once** (card `research/cards/reentry.md`, fixed
-  before any number; 7 rules, S&P 500 total return, 10-year horizon, sales in high-CAPE months
+  before any number: none passed the card's bar, which asks among other things for a median above 1 with at least
+  55% of months above 1 in both halves of the high-valuation sample; the -30% rule's median there
+  was 1.009, with 51% above 1;
+  7 rules, S&P 500 total return, 10-year horizon, sales in high-CAPE months
   1928-2016: 390 months but only 8 separate episodes). Sold exactly at the named tops (1929,
   1937, 1968, 1972, 1987, 2000, 2007), no waiting rule lost: 1.0-3.3 times the wealth of buying
   back at once (in Feb 1937 most rules tied at 1.0, because the market was still far below its
   1929 high and they bought back at once). Sold 2-3 years early (Dec 1996, Dec 1997), they mostly
-  lost (0.64-0.97 times). Waiting with no deadline had a worst tenth of 0.33-0.52 times; a
-  24-month deadline lifted it to 0.72.
+  lost (0.64-0.97 times). Waiting for a fall with no deadline had a median of about 1.0 but a
+  worst tenth of 0.35-0.52 times in the high-valuation months (the -30% rule was never back in
+  for 22% of them); a 24-month deadline lifted the worst tenth to 0.72.
 - **Lump sum versus spreading:** a lump sum beat spreading over time about two times in three
   (Vanguard 2012 and 2023: 68%, 1976-2022). Spreading still beat staying in cash, and staying in
   cash hurt most in our test.
@@ -787,7 +792,7 @@ above, against the same literature and data.
 | Gold in the Lehman weeks | -22% (haven, dollars, gold futures own fall) | -16% (haven, euros) | Currency. |
 | Short euro govt bonds | -3.1% / -4.6% (haven: DBXP, 2020/2022 own falls) | -4.29% (2022) and -6.10% since launch (park: IBGS) | Different products and windows. Both say: a few percent at worst. |
 | Trend following in big drawdowns | Positive in 8 of 10 (lit, full text of Hurst-Ooi-Pedersen) | "8 or 9" (haven, summary) | Use 8 of 10. |
-| Spare day | bt: 30 Dec as a spare day | park: a 30 Dec sale settles Mon 4 Jan 2027 | 30 Dec is not a spare day for cash in 2026; Mon 21 Dec is the spare for shares, Tue 15 / Wed 16 Dec for funds with cash at the broker within 2-6 business days, Wed 9 Dec within 5-10. |
+| Spare day | bt: 30 Dec as a spare day | park: a 30 Dec sale settles Mon 4 Jan 2027 | 30 Dec is not a spare day for cash in 2026; Mon 21 Dec is the spare for shares, Wed 16 Dec for funds with cash at the broker within 2-5 business days, Tue 15 Dec within 2-6, Wed 9 Dec within 5-10. |
 | Drawdown and volatility exits | lit ranks a drawdown stop 2nd and VIX/credit as confirmers | bt: trailing stops and the VIX trigger failed the six-week bar (they rarely fire in time) | Not used for the sale. Over years, drawdown stops do protect (bt Part B). VIX/credit are kept only to bring a re-entry tranche forward. |
 | S&P distance from its high | -2.9% on 12 Nov (reentry) | -6.1% on 17 Nov (bt) | Different dates. inv's "-9.1% in 2026" is another measure: the deepest fall within calendar 2026 (its script). |
 | Berkshire chair | Buffett stays chairman, Abel CEO from 1 Jan 2026 (inv: AP via NY1, 28 Feb 2026; also the reviewer) | Howard Buffett now chair (park: one TIKR blog post) | **Resolved for the sourced date:** Buffett was chairman at 28 Feb 2026 (AP). The TIKR claim has no second source (unverified). It does not change the verdict. |
