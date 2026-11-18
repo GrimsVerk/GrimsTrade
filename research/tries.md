@@ -936,3 +936,21 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-18 18:58 | trend-where | where-vol@bond-m | robustness | train | 1954-06-01 | 2001-12-31 | 0.82 | +678.9% | 25.6% | 1.01 |
+| 2026-11-18 18:58 | trend-where | tsmom12@bond-m | baseline | train | 1954-06-01 | 2001-12-31 | 0.82 | +678.9% | 25.6% | 1.01 |
+| 2026-11-18 18:58 | trend-where | hold@bond-m | baseline | train | 1954-06-01 | 2001-12-31 | 0.99 | +1845.6% | 15.2% | 0.00 |
+| 2026-11-18 18:58 | trend-where | where-vol-min12@bond-m | robustness | train | 1954-06-01 | 2001-12-31 | 0.82 | +678.9% | 25.6% | 1.01 |
+| 2026-11-18 18:58 | trend-where | where-vol-lag0@bond-m | robustness | train | 1954-06-01 | 2001-12-31 | 0.97 | +1032.7% | 20.5% | 1.01 |
+| 2026-11-18 18:58 | trend-where | tsmom12-lag0@bond-m | robustness | train | 1954-06-01 | 2001-12-31 | 0.97 | +1032.7% | 20.5% | 1.01 |
+| 2026-11-18 18:58 | trend-where | where-vol@gold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.47 | +718.1% | 51.7% | 0.27 |
+| 2026-11-18 18:58 | trend-where | tsmom12@gold-m | baseline | train | 1972-02-01 | 2001-12-31 | 0.51 | +800.3% | 42.6% | 1.20 |
+| 2026-11-18 18:58 | trend-where | hold@gold-m | baseline | train | 1972-02-01 | 2001-12-31 | 0.39 | +499.9% | 62.1% | 0.00 |
+| 2026-11-18 18:58 | trend-where | where-vol-min12@gold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.41 | +541.8% | 62.1% | 0.13 |
+| 2026-11-18 18:58 | trend-where | where-vol-lag0@gold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.53 | +1042.5% | 47.3% | 0.27 |
+| 2026-11-18 18:58 | trend-where | tsmom12-lag0@gold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.59 | +1257.7% | 32.5% | 1.20 |
+| 2026-11-18 18:58 | trend-where | where-vol@bondgold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.79 | +718.2% | 21.6% | 0.60 |
+| 2026-11-18 18:58 | trend-where | tsmom12@bondgold-m | baseline | train | 1972-02-01 | 2001-12-31 | 0.85 | +745.7% | 21.6% | 1.07 |
+| 2026-11-18 18:58 | trend-where | hold@bondgold-m | baseline | train | 1972-02-01 | 2001-12-31 | 0.79 | +891.2% | 28.1% | 0.00 |
+| 2026-11-18 18:58 | trend-where | where-vol-min12@bondgold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.71 | +636.1% | 34.9% | 0.53 |
+| 2026-11-18 18:58 | trend-where | where-vol-lag0@bondgold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.90 | +985.3% | 14.6% | 0.60 |
+| 2026-11-18 18:58 | trend-where | tsmom12-lag0@bondgold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.97 | +1067.7% | 14.6% | 1.07 |

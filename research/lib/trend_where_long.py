@@ -337,7 +337,7 @@ def main() -> None:
                 if yr <= 2000:
                     n_tot_pre += 1
                     n_no_pre += not e.keep
-                if e.keep != prev:
+                if e.keep != prev or yr in (1981, 2000, 2024):  # changes, plus three snapshots
                     changes.append(
                         f"| {asset} | Dec {yr} | {'yes' if e.keep else 'no'} | {e.n_out} | "
                         f"{e.n_in} | {e.out * math.sqrt(12):.1%} | {e.inn * math.sqrt(12):.1%} |"
