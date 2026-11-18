@@ -95,3 +95,84 @@ is a cell the text does not use: `tsmom12` sits in cash there and now earns on i
 blends only through the half that holds no cash (`inverse-vol`), which falls further behind.
 The 2022 gap is still there with cash: in 2022-25 `blend-ws` trails `tsmom12` with or without
 interest, because its sleeves lost in assets (bonds, coins), not in cash.
+
+## Step 2 card: `cofall-dbc`, one partner for the years stocks and bonds fall together (fixed 2026-11-18, before any number)
+
+**What had been seen.** Step 1 above and everything combo-1 saw. No DBC series has been
+computed on the six-asset book or in any gate in this lane; DBC has been in the protocol's
+8-ETF out-of-universe set since run 1 (seen there only as one of eight assets). General market
+history is known to the author (commodities rose in 2022 and in the 1970s, fell in 2008 and
+2014-15): that is the hypothesis, not a result.
+
+**The gap.** combo-1 and step 1: in the stock-bond-together regime (13% of days) every gym
+model loses or ties, and in 2022-25 `tsmom12` and both blends lose to their own past; `tsmom12`
+sits in cash there. The question is whether a long-only, gym-tradable partner earns in exactly
+those weeks.
+
+**Selection rule between the two named candidates (written before results).** Pick the one
+whose return in the gate is not mechanically equal to what `tsmom12` already holds there. With
+step 1's cash accounting, a T-bill slot the rule moves to when the stock and bond trends are
+negative *is* the cash `tsmom12` already holds in those weeks (the gym now pays the bill rate
+on it), so it cannot change a single return: it is degenerate, not a test. That leaves **DBC**
+(a broad commodity futures ETF, research cache from 2006-02-06, total-return adjusted). The
+T-bill stays in the rule as the fallback: when the gate is open and DBC is not trending, the
+slot stays in cash at the bill rate.
+
+**The rule (`cofall-dbc`).** Weekly, Friday, like `tsmom12`; only bars closed before the
+decision.
+
+1. On the six live assets: exactly `tsmom12` (each eligible asset an equal slot of 1/n, held
+   when its 365-day return is positive). n counts only the six live assets; DBC never changes
+   their slots.
+2. Gate: SPY and TLT both eligible and both with a 365-day return of zero or below (both out
+   of `tsmom12`).
+3. When the gate is open, DBC is eligible (a year of bars, so from about 2007-02) and DBC's own
+   365-day return is positive: hold DBC at one slot, 1/n (the size of the SPY or TLT slot it
+   stands in for). It is paid from cash, which the gate guarantees (at least two slots empty),
+   so no leverage. Otherwise no DBC.
+
+No parameter exists to tune: the gate, the trend window and the slot size are `tsmom12`'s.
+Gym: six assets plus DBC, protocol costs (DBC is an ETF: 2 bps), T-bill interest on cash for
+both books (step 1's accounting). Twin: `tsmom12` with cash on the six assets. Look-ahead and
+identity check: on every day the gate is closed, the book's targets equal the twin's.
+
+**Pass bar (all must hold).** Family: combo-1's 72 plus this pick = **73, p < 0.10 / 73 =
+0.00137** (stricter if another lane has added picks to the family by the verdict).
+
+1. Full-train Sharpe beats the twin, paired stationary bootstrap (block 20, 2,000 draws),
+   one-sided p < 0.00137, **both** against 0 and above T-bills.
+2. Eras: ahead of the twin in 2022-25 and not behind it (by more than 0.01) in any other era.
+   (Changed from combo-1's "4 of 5": the rule equals the twin until DBC is eligible in 2007, so
+   1994-99 and most of 2000-09 are ties by construction.)
+3. Worst loss not more than 5 points deeper than the twin's.
+4. Mechanism: excess over the twin positive in the gate's own weeks and in the map's
+   "stock-bond corr > 0" regime.
+5. Beats equal weight (six assets, with cash) on Sharpe.
+6. Since 2003 not behind the twin and not behind equal weight.
+
+No out-of-universe set has a stock, a bond and a commodity partner that is not DBC itself, so
+combo-1's bar 4 has no honest version here; the long-history evidence below replaces it as a
+description, not a bar.
+
+**Also reported, not bars.** Weeks the gate was open and DBC held; 2022 (the calendar year and
+the 2022 rate-shock window) for the book and the twin; the map's regimes (fast fall, turn,
+chop, stock-bond +).
+
+**1970s-style co-falls (description only, if the data reach).** DBC starts in 2006. For
+1962-2005 the cache has US stocks (Fama-French market and T-bill, monthly) and the 10-year
+Treasury yield (FRED DGS10, daily from 1962); a 10-year bond's monthly return is approximated
+from the yield (carry plus duration times the yield change, duration from the yield, par
+bond). The commodity side needs a long series: the S&P GSCI is not free, so the proxy is
+FRED's producer price index for all commodities (PPIACO, keyless graph CSV), a spot price
+index without roll yield or collateral (it is not what DBC earns). Gold (monthly, cache) as a
+second proxy. Same gate monthly (12-month stock and bond returns both at or below zero), same
+DBC trend condition on the proxy. Reported: months open, the proxy's mean return in them
+(plain and trend-gated) against the T-bill. Nothing here can pass or fail the card.
+
+**How the bar reads.** The gate is open rarely (a few episodes since 2007), so bar 1 is almost
+out of reach by construction: a pass would need a large effect in few weeks. The honest
+evidence is bar 4 and the 2022 rows. A pass makes a candidate for a separate held-out card,
+nothing more.
+
+**Tries.** One `variant` row (idea `combo-2`, `cofall-dbc`), counted in the family (73). The
+twin with cash is already logged in step 1 (`tsmom12 cash`), not again.
