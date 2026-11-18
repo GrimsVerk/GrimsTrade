@@ -582,3 +582,31 @@ W15 `cat-claims` stays in the queue. Two new entries from fields the list has no
 
 **Family count: 70 mechanisms (68 + W16, W17), 16 tested by a strategy, none passed. The next
 strategy test is read at p < 0.10 / 70 = 0.00143.**
+
+## Added by wide-8 (2026-11-18): W16 and W15 closed by gates, two new mechanisms
+
+Both gates had their rule, script and tests pushed before any number (see `wide-8.md`); both
+fail and are dead by the gate, with no card:
+
+- **W16 `geomagnetic-storm`**: SPY 2003-2025, six sessions after a severe storm (daily Ap >=
+  100, GFZ Potsdam, keyless, CC BY 4.0): +18.2 bps a day over calm sessions (t +2.46, the wrong
+  sign), minor storms +0.8; rank 29 of 31 shifted Ap calendars. In the paper's years (GSPC
+  1950-2002) -4.4 bps a day (t -1.05).
+- **W15 `cat-claims`**: 104 US landfalls 2002-2025 (NOAA HURDAT2, keyless), LQD minus half of
+  TLT over 20 sessions on the Saffir-Simpson category: +0.01 points per category (t 0.09);
+  halves -0.44 and +0.13; rank 8 of 23 year-shifted calendars.
+
+Also: the turn-of-year ETF loser rebound (a seen cell of W14's gate) is pre-registered as a
+forward test for the 2026/27 turn (`research/forward/proposed-wide8.jsonl`, proposed, not
+frozen), with an empirical null from 153 placebo windows (sd of t 2.18).
+
+Two new entries from fields the list has not used (sport sociology, oceanography), each
+needing a gate first:
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W18 `elimination-mood` | sport sociology x national mood shocks from knockout matches | Next-day index fall in a country whose team is knocked out of the World Cup (Edmans, Garcia, Norli 2007, from memory) | Round of the elimination x the country's football weight; wins as the placebo | DAX, FTSE 100, Nikkei next day after World Cup and Euro eliminations, against the same weekday without a match; post-sample 2006-2024 (about 25 events, weak); unseen: 2026 World Cup (held-out year) and 2028 on | 2% |
+| W19 `enso-commodity` | oceanography x the Oceanic Nino Index | El Nino raises non-fuel commodity prices over the next year through crop yields (Cashin, Mohaddes, Raissi 2017, from memory) | ONI level (strong events more than weak; La Nina the mirror) | DBC and commodity ETFs' 6-month return on lagged ONI, placebo ONI shifted by whole years; post-sample 2014-2025 (three or four episodes, weak); unseen: 2026-27 on | 2% |
+
+**Family count: 72 mechanisms (70 + W18, W19), 16 tested by a strategy, none passed. The next
+strategy test is read at p < 0.10 / 72 = 0.00139.**

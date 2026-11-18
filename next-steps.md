@@ -1,11 +1,40 @@
 # Next steps
 
-## Wide 8 (in progress 2026-11-18, branch `wide-8`, draft PR -> `wide-7`)
+## Wide 8 (done 2026-11-18, branch `wide-8`, draft PR #88 -> `wide-7`)
 
-- Doing: (1) forward pre-registration of the turn-of-year ETF loser rebound for the 2026/27
-  turn (`research/wide-8.md` step 1; proposed entry `research/forward/proposed-wide8.jsonl`);
-  (2) W16 `geomagnetic-storm` gate (GFZ Kp/Ap keyless check first); (3) W15 `cat-claims` gate
-  (HURDAT2); then two new mechanisms.
+A forward pre-registration and two event-study gates (rule, script and tests pushed before
+any number; one dry run with counts only, then one run each), then two new mechanisms. **Both
+gates fail; no card, no strategy, no `tries.md` row; held-out year untouched.** Write-up
+`research/wide-8.md`; tables `research/results/turn-of-year-null.md`, `geomagnetic-storm.md`,
+`cat-claims.md`.
+
+- Turn-of-year ETF loser rebound (W14's seen cell): pre-registered for the 2026/27 turn as
+  `turn-of-year-losers@1` in `research/forward/proposed-wide8.jsonl` (proposed, NOT frozen).
+  Null = the same cross-sectional t on 153 placebo windows (anchors Jan-Nov, train): sd 2.18,
+  35% with |t| >= 2. Pass needs t >= 4.87 (p <= 0.02); power 8% at the lead's slope. **Score
+  from 2027-01-12:** refresh `research/data/adj` with `research/lib/fetch.py`, then
+  `SCORE=1 uv run python -I research/lib/wide8_turn.py`. Freezing needs the owner and
+  forward-1's `forward.py` (new metric `placebo_rank`).
+- W16 `geomagnetic-storm` (GFZ Ap, keyless, CC BY 4.0): SPY 2003-2025 +18.2 bps a day after
+  severe storms (t +2.46, wrong sign), rank 29/31 shifted calendars; GSPC 1950-2002 -4.4.
+  Dead.
+- W15 `cat-claims` (HURDAT2, keyless): LQD - 0.5 TLT over 20 sessions after 104 US landfalls,
+  +0.01 points per category (t 0.09), rank 8/23. Dead.
+- New W18 `elimination-mood` (sport sociology), W19 `enso-commodity` (oceanography) in
+  `research/wide-1.md`, last section.
+
+Count: 72 mechanisms, 16 tested by a strategy, none passed. The next strategy test is read at
+p < 0.10 / 72 = 0.00139 (family) and the register's Bonferroni p <= 4.9e-5. Gates so far: 8,
+all failed.
+
+- Doing: nothing. No process running.
+- Next: (1) W19 `enso-commodity` gate (check NOAA CPC's ONI file; DBC is cached). (2) W17
+  `fork-premium` gate (Ethereum upgrade dates; ETH and BTC cached). (3) W18 needs a keyless
+  match-results list first. Every gate: an empirical null (shifted calendars or placebo
+  windows), not N(0, 1).
+- Data: GFZ Kp file and HURDAT2 go in `research/data/kp/` and `research/data/hurdat/`
+  (gitignored; URLs in `research/wide-8.md`). A fresh worktree needs the price cache in
+  `research/data/` and `research/macro.local.json`.
 
 ## Wide 7 (done 2026-11-18, branch `wide-7`, draft PR #81 -> `wide-6`)
 

@@ -365,3 +365,52 @@ no strategy, no `tries.md` row.**
 Disclosures: one dry run (`DRY=1`) printed only event counts (104 events in 24 seasons; by
 category 58, 20, 9, 9, 7, 1; halves 53 and 51), then one run. Rule pushed at 261b47a, script and
 tests at 4ead496, both before either run.
+
+## Step 4. Two new mechanisms for the queue (not tested)
+
+Written after the gates, before any number on these two. Fields already used: those listed in
+wide-7 step 4 plus heliophysics and software release engineering. Two fields not yet used:
+**sport sociology** and **oceanography (climate dynamics)**.
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate (event study first) and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W18 `elimination-mood` | sport sociology x national mood shocks with a known date and an exogenous outcome (a knockout match is a coin flip with stakes, set by a draw months ahead) | Edmans, Garcia and Norli (2007), "Sports sentiment and stock returns", Journal of Finance 62(4) (from memory: a loss in a World Cup elimination match is followed by a next-day index fall of tens of bps in the losing country, larger for big football nations and later rounds; no matching gain after wins). Mood again, but the event is a draw and the outcome is random, which a calendar effect is not | Stage of the elimination (round of 16 < quarter-final < semi-final/final) times the country's football weight (an ex-ante rank, e.g. bookmakers' pre-tournament odds or FIFA rank); a group-stage exit as a smaller dose; wins as a placebo (the paper finds no win effect) | Next-day return of the losing country's cached index (DAX `GDAXI`, FTSE 100 `FTSE`, Nikkei `N225`; EFA/EEM for a broad check) after World Cup and European Championship eliminations, against the same weekday in weeks without a match. Results from a keyless list (e.g. the openfootball project's public match files; licence to check). The paper's sample ends about 2004; **post-sample train tournaments 2006-2024** (about 25 eliminations of these three countries: weak); unseen: the 2026 World Cup (June-July 2026, inside the held-out year: needs an owner decision) and 2028 on | 2% |
+| W19 `enso-commodity` | oceanography x the El Nino-Southern Oscillation (a slow ocean-atmosphere oscillation measured by the Oceanic Nino Index, ONI: three-month mean sea-surface temperature anomaly in the Nino 3.4 box, published monthly by NOAA's Climate Prediction Center) | Cashin, Mohaddes and Raissi (2017), "Fair weather or foul? The macroeconomic effects of El Nino", Journal of International Economics 106 (from memory: an El Nino shock raises non-fuel commodity prices and inflation over the following year, through crop yields in exposed regions). The ocean's state is known months before harvests and is not set by any trader; forecasts are public, but futures may still under-price the yield hit | ONI level at the decision month (+0.5 = weak El Nino, +1.5 = strong; negative = La Nina), lagged by the CPC's publication delay; the dose must scale: strong events matter more than weak ones; La Nina the mirror with the opposite sign | DBC (2006-02 on) and the commodity sector ETFs' 6-month return on the lagged ONI, Newey-West t; placebo: the ONI series shifted by whole years. The paper's sample ends about 2013; **post-sample train years 2014-2025** (the 2015-16 strong El Nino, the 2020-23 triple La Nina, the 2023-24 El Nino: three or four episodes, weak); unseen: the 2026-27 state on | 2% |
+
+Neither is carded; each needs its gate first. W18's data access (a keyless results list) and
+W19's (`https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt`, from memory) are not checked
+yet.
+
+## Family count
+
+70 carried in; W16 and W15 closed by gates (gates do not raise the tested count); W18 and W19
+added. **72 mechanisms, 16 tested by a strategy, none passed. The next strategy test is read
+at p < 0.10 / 72 = 0.00139** (family), and project-wide at the register's bar (2,904 tries, N
+1,012, Bonferroni p <= 4.9e-5 as read on 2026-11-18). Gates run so far: ann-1 (1), wide-6 (2),
+wide-7 (3), wide-8 (2), all failed. The turn-of-year lead is not a mechanism of the list (it
+is a seen cell of W14's gate); its forward entry adds no try.
+
+## What wide-8 adds
+
+- **The design lesson, in numbers.** On 153 placebo windows the cross-sectional t of a
+  ten-day return on an 11-month loss has standard deviation 2.18, and 35% of windows have
+  |t| >= 2. W16's wrong-sign t +2.46 ranks third of 31 shifted calendars (ordinary), and W15's TLT
+  cell (t -3.0, no null computed) should be read the same way.
+  Reading a t from few clustered events against N(0, 1) overstates evidence by about two;
+  every gate here now uses an empirical null (shifted calendars or placebo windows), and later
+  gates should too.
+- **A forward test, honestly sized.** The turn-of-year loser rebound is pre-registered for the
+  2026/27 turn (entry proposed, not frozen); a pass needs t >= 4.87 and has 8% power at the
+  lead's own slope. It is cheap to keep and unlikely to say much from one turn.
+- **Two more ideas closed by gates without spending the bar:** geomagnetic storms (wrong sign
+  after 2003, small in the paper's years) and hurricane claims (no credit leg in bonds).
+
+## Status (2026-11-18)
+
+**Done:** step 1 (rule, null, power, proposed forward entry, scorer), W16 and W15 gates (rule,
+script and tests pushed before a dry run with counts and one real run each), two new mechanisms
+(W18, W19), the list, `ideas.md`, `next-steps.md`. No card, no strategy, no `tries.md` row
+(gates get none). Held-out year untouched (the forward scorer will read its bars as the 2026
+dose only, from January 2027). Draft PR #88 (`wide-8` -> `wide-7`).
+
+**Doing:** nothing half-finished. No process running.
