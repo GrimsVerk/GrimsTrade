@@ -1,5 +1,21 @@
 # Next steps
 
+## USD 1 (done 2026-11-18, branch `usd-1`, draft PR -> `slow-1`)
+
+slow-1's closest input, the dollar index's 13-week change (`usd_13w`), tested again as a
+pre-registered replication (sign fixed in advance: a rising dollar, a worse quarter) on data the
+screen never used. **Echo only: it does not replicate.** Stock indexes 1971-1999 (the only set
+sharing no date with the screen): S +0.013, p 0.44. Other risk markets 2000-2025: +0.070, p 0.12,
+zero beyond SPY. Other coins 2017-2025: +0.267, p 0.004, but nothing beyond BTC and ETH (-0.087):
+the same 33 crypto quarters seen again. 26 rows in `research/tries.md`; table
+`research/results/usd-1.md`; write-up `research/usd-1.md`. No trading card, no backtest; held-out
+year unspent. Nothing running. Post-hoc reading dropped (cannot change the verdict).
+Next lanes in the write-up: `slow-2`, a crypto-only dollar card on future quarters, `chain-1`.
+
+For the owner: one robustness check was dropped because FRED would not serve the Fed's old
+major-currencies dollar index (`DTWEXM`, 1973-2019) to a keyless script. If you want it, the
+file can be fetched with your FRED API key into the data cache; it cannot change the verdict.
+
 ## Slow 1 (done 2026-11-18, branch `slow-1`, draft PR #35 -> `carry-2`)
 
 Do info-1's 23 inputs and rl-3's real inputs (49 in all) forecast 4-week and 13-week returns of
