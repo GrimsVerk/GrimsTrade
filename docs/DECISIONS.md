@@ -2,6 +2,20 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-18 (PROPOSED by lane forward-1, not yet decided by the owner): a forward-only shadow
+  registry (`docs/forward-registry.md`, `src/grimstrade/forward.py`). A candidate rule is frozen
+  as an append-only line in `research/forward/registry.jsonl`: sha256 of its code files,
+  parameters and data source, one-sided metric, alpha, power, the effect assumed, and the minimum
+  sample and years that effect needs. It counts as frozen from the commit that holds the line;
+  it is scored only on bars that start after that; the verdict is read once, on exactly the
+  first `min_sample` observations; a changed rule is a new id. Alpha is shared across a batch
+  (four rules at 0.025 = 0.10 one-sided). Freezing a rule already counted in `research/tries.md`
+  is not a new try. It runs as a separate offline command, never in the daily runner. Why:
+  published effects vanished after publication three times in one night, held-out years are
+  spent, and several candidates can only be judged on the future. Proposed first batch (not
+  frozen): `carry-3-band@1` (~13 years needed), `fomc-bond-drift@1` (~78), `coin-stop-0.25@1`
+  (~26), `eu-monthly-vs-weekly@1` (~32). Owner: adopt, and freeze which?
+
 - 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
   refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
   before the one under it or in the future; no record file or folder that is a symbolic link;
