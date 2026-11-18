@@ -388,3 +388,24 @@ merged.
 **Doing:** nothing half-finished. No process running.
 
 **Next (not started):** the three lanes listed at the top; `month-end-bonds` first.
+
+## Added by wide-3 (2026-11-18): three new mechanisms, not in the list above
+
+Written after wide-3's two picks (F2 `hedge-regime`, P2 `attention-peak`) had failed, before
+any number on these three. Numbered W1-W3 so they extend the list; the multiple-testing
+family is now 49 (46 + 3), and any test of one of them is read at p < 0.10 / 49 = 0.0020.
+All three follow wide-1's sorting rule (hundreds of dated events, ETFs, a cause that is not
+the price trend) and each has a built-in placebo period, because the mechanism did not exist
+before a known date.
+
+| # | Field x tool | Mechanism | Where the money would come from | Test plan | Built-in placebo | Prior |
+|---|---|---|---|---|---|---|
+| W1 `opex-pin` | physics (pinning in a potential well) x control (a damper that is removed on a known date) | Option dealers who are net long options hedge against moves (buy dips, sell rallies) and hold prices near large strikes into expiry; the hedging flow and the expiry itself fall on the third Friday of each month, known years ahead. Published for single stocks (Stivers and Sun 2013, as I remember: high returns in expiry week for stocks with much option activity) | Hold stocks in the expiry week, when the dampened, hedged market drifts up, with cash the trend rule leaves idle | Weekly harness, no new data: on the Friday before the third Friday, idle cash goes to the eligible stock ETFs for one week (Monday open to Monday open). Twin `tsmom12`. Event study of the expiry week's excess return by era. Other ETFs and indexes as out-of-universe sets | S&P 500 index 1962 to 1983-03 (no listed index options before the OEX began in March 1983) and the weak option volume of the 1980s-90s against the 2010s | 2% (the overlay only moves idle cash: even a real 20 bps a week adds about +0.02 Sharpe) |
+| W2 `tax-drain` | hydraulics (a reservoir drained into another on known dates) | On federal tax dates (15 April, 15 June, 15 September, 15 December, 15 January) money moves from bank deposits into the Treasury's account at the Fed, draining bank reserves for days. Dealers' balance sheets tighten; repo rates spike (September 2019 is the famous case: a tax date plus coupon settlement) | Avoid stocks and long bonds for the three sessions after a tax date, or use idle cash after the drain has refilled | Dates are fixed by law (shifted for weekends): about 5 a year, ~160 since 1994. Event study on SPY, TLT, IEF, LQD returns over sessions D-1 .. D+3 against all other 5-session windows; the Treasury account level from FRED (`WTREGEN`) to size each drain. A rule only if the event study shows the sign in both halves | Before 2008 the Treasury kept most tax receipts in commercial-bank accounts (TT&L), so a tax date did not drain reserves: 1994-2007 should show nothing, 2008-2025 the effect | 2% |
+| W3 `lunar` | astronomy x chronobiology (mood follows the lunar cycle) | Published in finance (Dichev and Janes 2003; Yuan, Zheng and Zhu 2006, 48 countries): returns in the 15 days around new moons beat those around full moons by a few percent a year. The proposed cause is mood and sleep, which is the weakest link | Hold stocks around new moons, with idle cash | Dates are astronomical and fixed. Event study on SPY, QQQ and the four indexes (1962+); the weekly harness with the overlay on Fridays within 7 days of a new moon | Every shift of the phase is a placebo: the new-moon window must beat the 28 other phase shifts, not just zero | 1% (no forced flow; most likely a data-mined anomaly) |
+
+Which first: **W1 `opex-pin`**. It needs no new data, fits the weekly harness exactly (the
+overlay starts and ends on Friday decisions), has ~380 events since 1994, and its placebo
+(1962-1983) is already in the cache. W2 needs a careful reading of when the Treasury's account
+moved to the Fed (2008 is my memory, to be checked) and is an event study first. W3 is written
+down for completeness: it is the cleanest test of the "mood" class and the least likely to pay.
