@@ -1,5 +1,17 @@
 # Next steps
 
+## RL 4 (done 2026-11-18, branch `rl-4`, draft PR -> `carry-2`)
+
+Which of rl-3's cheap fixes makes a learner find a planted weekly IC of 0.10, and does it find
+anything real on carry-2's perp cross-section? Answer: `lasso28` (shrinkage) passes the planted
+gate (+0.071 at 0.10, p 0.04, 45% of the ceiling); no RL variant does (`ppo3` -0.011,
+`ppo3-warm` +0.049, p 0.17), so `ls-ppo` was never run on real data. On the perps the lasso book
+`ls-ml` fails every bar (pooled Sharpe 0.03 against `ls-funding` 0.57): its best input `vol` wins
+in rank but not in return; the post-hoc return-target `ls-ml-ret` keeps no input. Held-out year
+untouched. Write-up and rl-5 recommendation: `research/rl-4.md` "Results". Nothing running.
+Owner option (rl-5): drop RL as the learner; screen perp inputs by return spread, not rank IC,
+feed survivors to the fixed lasso, and beat `ls-funding`, not zero.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
