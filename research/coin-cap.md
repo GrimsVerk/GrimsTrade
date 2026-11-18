@@ -164,6 +164,93 @@ simple returns treat each slot as a constant stake; the episode rule's 60-day le
 gap were fixed on the card, not tested for sensitivity; the year table and the BTC/ETH splits
 were written after the run.
 
+## Fourth reading, lane `coin-cap-3`: the same stop checked daily (2026-11-18)
+
+Card section "Fourth reading" (19:15 UTC, pushed before any number). Code `lib/coin_cap3.py`,
+`lib/coin_cap3_core.py` (test `tests/test_coin_cap3.py`: Fridays equal the weekly stop, no
+look-ahead when later prices are scrambled); run once, 6 tries rows (idea `coin-cap-3`).
+Tables: `results/coin-cap-3.md`.
+
+**Setup.** The third reading's book, twin, coin falls and 21 episodes, unchanged. The trend part
+stays weekly; only the stop condition (`dd_1y >= -0.25`) is read every day, with the book's own
+timing (inputs stamped the day before, position earns from the day after: one day later than
+DESIGN.md's next open would allow, the same as the weekly stop). `stop-0.25-d` exits and
+re-enters on any day; `stop-0.25-dx` exits on any day and re-enters only at the next Friday.
+Each gets its own matched cap `f*_v`. Bar corrected for all 13 coin-cap picks: sign test
+p < 0.0077, at least 17 of 21 episodes.
+
+| | Weekly `stop-0.25` | `stop-0.25-d` | `stop-0.25-dx` |
+|---|---:|---:|---:|
+| Matched cap `f*` (2x cost) | 0.663 (0.656) | 0.708 (0.668) | 0.646 (0.629) |
+| Switches per coin-year | 3.5 | 8.5 | 5.1 |
+| Fee drag, bp per coin-day | 0.29 | 0.70 | 0.42 |
+| Out and back within 7 days, per coin-year | 0.47 | 2.58 | 0.91 |
+| ... bought back vs sold at | +14.2% | +3.5% | +6.5% |
+| Pooled single-coin Sharpe (twin 0.47) | 0.46 | 0.49 | 0.48 |
+| Episodes with edge M > 0 (sign p) | 15 of 21 (0.039) | **18 of 21 (0.0007)** | 16 of 21 (0.013) |
+| Of the 6 the weekly trailed | 0 | 3 | 2 |
+| Mean episode edge M (without the largest) | +16.2% (+14.9%) | +20.5% (+19.2%) | +17.2% (+15.9%) |
+| Mean episode edge M at 2x cost | +15.4% | +15.9% | +15.1% |
+| Raw M, daily lost less than weekly | - | 10 of 21, mean 0.0 | 12 of 21, +2.6% |
+| Fast coin falls (low within 60 days, 74): mean edge | +15.9% | +23.8% | +20.2% |
+
+**Verdict by the card: the daily check does not fix the fast crashes; the weekly stop stays the
+recommendation.** Bar 2 (at least 4 of the 6 episodes the weekly stop trailed) fails for both:
+`-d` turns the 2017 summer falls (own-0, own-1) and 2021-05 (market-6) around, but not BTC
+2013-04, BTC 2013-14 or XRP 2020-11 (worse there: -29% against -15%); `-dx` fixes only the 2017
+summer. `-d` holds every other bar (corrected sign test, mean edge, double costs, held-aside
+coins +852%); `-dx` also fails the corrected sign test and double costs.
+
+What the daily check does and does not do:
+
+- **It does not make the stop's deepest losses smaller.** Raw M, daily against weekly: `-d`
+  loses less in 10 of 21 episodes, the same on average. The fastest falls are faster than any
+  rule that reads yesterday's close and fills a day later (BTC 2013-04: -64% in the two days
+  after the top; every stop is out only on day 3 or 4, at -52 to -58%).
+- **It keeps more of the return.** 2.4 times the switches and 2.4 times the fee drag, but its
+  re-entries are cheap (bought back 3.5% above the exit, against 14% for the weekly stop, which
+  must wait for Friday), so its mean return is 0.708 of the twin's against 0.663. Its edge over
+  a cap grows because the matched cap grows, not because its falls are shallower.
+- **That gain is mostly fees away at double costs:** +15.9% against +15.4% (`f*` 0.668 against
+  0.656). Whipsaw does not eat the gain at 30 bps; at 60 bps it nearly does.
+- **Multiple testing.** With all 13 coin-cap picks counted, the weekly stop's own 15 of 21
+  (p 0.039) no longer meets the bar; `-d`'s 18 of 21 (p 0.0007) does, the only series that does.
+  The card named `-d` the replacement only if all five bars held, so this is reported, not
+  acted on.
+
+**BTC mechanism note (post-hoc, descriptive; `results/coin-cap-3.md`, last section).** The
+weekly stop trails a cap on BTC in four falls, for three different reasons:
+
+1. **Too fast (2013-04).** The deepest loss is taken in two days from the top; the stop sells
+   after it. A cap wins only by being two thirds the size. No daily close can help here.
+2. **Stop hit, sharp rebound, re-entry, second leg down (2013-12, 2017-12).** Weekly: out
+   2013-12-21 at -47%, back in 12-28 at -37%, out again 2014-02-08 at -40%; out 2017-12-30 at
+   -34%, back in 2018-01-06 at -13%, out 01-13 at -28%. Yes: this is the "hit, then rebound"
+   pattern. The daily check does not cure it: it trades the same bounce more often (12 position
+   changes in the 2013-14 window, 10 in 2017-18) and its M is 2 to 3 points deeper. A plausible
+   cause, not checked: the band is in volatility units, so after a crash raises volatility a
+   rebound to -37% already counts as inside it.
+3. **The twin does the job itself (2021-11).** The twin is out at -39% by 2022-02-05 and stays
+   out through 2022; a cap of that twin is a small, already-good rule. The stop's M here
+   includes its 2023 re-entry loss.
+
+On BTC alone, against each variant's matched cap (pooled `f*`): weekly ahead in 1 of 5 falls,
+`-d` 1 of 5, `-dx` 3 of 5 (+3%, +2%, +12%; behind by 21% and 13% in the 2013 falls). Five falls
+are too few to read; nothing here says a daily check rescues BTC.
+
+**Reading.** The daily check is not the fix for fast crashes: the losses that matter come
+before any close-based rule can act, or from re-entering a bounce, which daily reading does more
+of. It is a slightly better-paid stop (more return for the same exits) whose advantage over the
+weekly stop is about fees, and it is sensitive to them. For the rule-PR question it changes
+nothing by the card. It does weaken the case for the weekly stop: counted against everything
+coin-cap has tried, the weekly stop's episode edge is not significant.
+
+Limits: one book, one history; `f*` uses the whole sample; the six fast-crash episodes were
+picked from the third reading's result (so "fixed" partly measures regression to the mean); the
+2x-cost reading uses the same paper fills; the BTC note was read after the numbers; tries rows
+are the equal-slot books (worst loss 66 to 70%, set by BTC's 2013-14 fall while it is the only
+coin).
+
 ## Changes after the card
 
 None to the rule, grid, selection or bar. One reading note: bar 1 is reported as a tie (above).
@@ -172,6 +259,12 @@ Third reading: none to its definitions, measures or bar. Added after its numbers
 and kept out of the verdict: `lib/coin_cap2_posthoc.py` (by year of the top, before/after the
 book start, fast/slow falls, BTC and ETH alone with their own `f*`); it reuses the run's
 series and logs nothing.
+
+Fourth reading: none to its variants, measures or bar. Found while running it: in
+`lib/coin_cap2.py` the book series were sliced twice (`portfolio`), so coin-cap-2's 4 tries rows
+cover 2015-09-23 .. 2025-11-09, not the 2013-02-10 their "From" column says (rows not edited;
+the third reading's bar never used them). Fixed in the code for any rerun; coin-cap-3's rows
+start on 2013-02-10 as stated.
 
 ## Next steps
 

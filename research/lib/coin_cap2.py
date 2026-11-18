@@ -87,7 +87,10 @@ def portfolio(bk: Book2, hold: np.ndarray, scale: float) -> tuple[np.ndarray, fl
     with np.errstate(invalid="ignore", divide="ignore"):
         targets = np.where(n_univ[:, None] >= 1, hold / np.maximum(n_univ, 1)[:, None], 0.0)
     targets = targets * scale
-    r = xs.simulate(bk.book.px, targets, bk.b, bk.book.cost, int(bk.b[0]))[int(bk.b[0]) + 1 :]
+    # `simulate` already starts the day after the first set day. Until 2026-11-18 (coin-cap-3)
+    # this line sliced it a second time, so coin-cap-2's 4 tries rows cover 2015-09-23 ..
+    # 2025-11-09, not the 2013-02-10 their "From" column says. The card's bar never used them.
+    r = xs.simulate(bk.book.px, targets, bk.b, bk.book.cost, int(bk.b[0]))
     turn = float(np.abs(np.diff(targets, axis=0)).sum() / (len(r) / 365))
     return r, turn
 
