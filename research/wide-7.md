@@ -213,3 +213,34 @@ November, out of his sample from 2011); the 15 shifted b values.
 
 **My guess before any number.** b between -3 and +6 bps a day, t below 1.5; September and
 November not special after 2010 (the replication). Chance of a pass: 3%.
+
+### What came out (one run, 2026-11-18; table `results/festival-gold.md`)
+
+**The gate fails on all three counts: festival-run days minus their month's mean -1.9 bps a
+day (t -0.30) over 2004-2025, -8.6 to 2010 and +1.1 from 2011, rank 10 of 15 weekly shifts.
+W13 `festival-gold` is dead by the gate: no card, no strategy, no `tries.md` row.**
+
+| GLD, bps a day (t) | All 2004-11..2025-11 | To 2010 | 2011 on |
+|---|---:|---:|---:|
+| Both festivals, 15 sessions, month terms (gate) | -1.9 (-0.30) | -8.6 (-0.64) | +1.1 (0.16) |
+| Dhanteras only | +0.9 (0.09) | -8.2 (-0.37) | +5.3 (0.49) |
+| Lunar New Year only | -4.4 (-0.58) | -9.0 (-0.55) | -2.8 (-0.34) |
+| Both, no month terms (raw run) | +2.9 (0.57) | -3.3 (-0.25) | +5.4 (1.13) |
+
+- **No festival run in gold.** Neither festival shows one alone, before or after 2010; the
+  true dates sit mid-pack among dates moved by up to seven weeks (shifted values from -4.9 to
+  +6.9 bps a day; the true -1.9 ranks 10 of 15).
+- **Baur's autumn effect is gone out of his sample, and reversed.** In GLD's years inside his
+  sample (2004-11 to 2010), September and November are the two best months (+22 and +29 bps a
+  day, about +4.6% and +6.2% a month). From 2011 they are among the worst (-8.6 and -6.6).
+  January is the one month that stays strong in both (+19, +14), in line with the 2024
+  replication's "winter effect"; that is a seen calendar mean, not a lead (a fifth published
+  calendar effect gone after publication: `fomc-cycle`, `xtsmom`, pre-FOMC drift, lunar,
+  autumn gold).
+- **Compared with my guess:** b between -3 and +6 with t below 1.5: yes (-1.9, -0.30).
+  September and November not special after 2010: yes, they turned negative. 3% chance of a
+  pass: no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only day counts (5,277 days, 630 festival-run
+days; 180 to 2010, 450 from 2011), then one run. Script and tests pushed before both (commit
+ce01544).
