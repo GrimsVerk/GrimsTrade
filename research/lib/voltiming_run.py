@@ -35,7 +35,9 @@ P, LD, LAST_DAY = l2.P, l2.LD, l2.LAST_DAY
 def tv40_series() -> tuple[dict[date, float], float]:
     """`trend-vol` (tv40) daily excess over bills (bill interest on cash), and turnover/yr."""
     six = c.ctx("six")
-    run = c.go(IDEA, "tv40", c.weekly(rules.trend_vol(0.40)), six, "replication", log=False)
+    run = c.go(
+        IDEA, "tv40", c.weekly(rules.trend_vol(0.40)), six, "baseline", log=False
+    )  # re-score only
     days, ylds = ci.bill_yield()
     r, rf = ci.rescored(run, days, ylds)
     dd = run.days[1:]
