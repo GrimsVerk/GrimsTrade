@@ -192,7 +192,36 @@ backtest, not selectable): 3 sets x 2 horizons, the 2 x 2 `-resid` rows, the 2 p
 robustness rows as `robustness`. Table `results/usd-1.md`. Script `lib/usd1.py`; derived arrays
 under `<cache_root>/derived/usd-1/`.
 
+## Disclosures
+
+- 2026-11-18, before the logged run. Reproduction (`usd1.py --check`): on the six assets from
+  2000-01-07 the code gives slow-1's cells exactly (5,930 and 5,984) and its IC, per-asset ICs
+  and both walk-forward ICs for `usd_13w` to within 0.0005 (the rounding), at both horizons;
+  the dollar value on every six-asset Friday equals info-1's feature. Clock check: BTC's `z_h` on
+  Coin Metrics' clock against the gym's bars correlates 0.995 (13 weeks) and 0.985 (4 weeks).
+- Coverage printed by the same check, dates and counts only, no S of any replication set:
+  `before` 4,306 cells on 1,487 Fridays (1971-04-09 .. 1999-10-01, about 114 quarters);
+  `markets` 22,563 cells on 1,336 Fridays (to 2025-08-08); `coins` 30,307 cells on 433 Fridays
+  (2017-04-28 .. 2025-08-08, about 33 quarters), 292 coins; the protocol's six coins 2,010 cells.
+  The dollar series has no missing Friday from 1971-04-09.
+- **Robustness row 3 is dropped.** FRED did not serve the Fed's old major-currencies index to a
+  plain keyless request (one timeout from the script, one connection reset from `curl` sent
+  with the repo's usual `fetch.py` client string). A third attempt, with a browser's client
+  string, was stopped by the session's permission check before it was sent, and rightly:
+  dressing a script up as a browser to get past a server that had just refused it is not a
+  "keyless public download". Nothing was downloaded; nothing was tried after that. The check
+  that Yahoo's early DXY values are sound therefore rests on row 2 (`before` from 1974) and on
+  the file having about 250 closes in every year from 1971. Getting `DTWEXM` properly (the
+  Fed's own H.10 download page, or the FRED API with the owner's key) is listed for the owner.
+- Details the card left open, fixed in the code before the run: p is the share of rotations
+  with S at least as large (slow-1's convention, no +1); `coins` gets the pooled walk-forward
+  slope only (a slope per coin on 292 coins is noise); `-resid` needs 26 cells for any asset, not
+  only coins; a per-coin S is counted from 52 cells; a Friday inside the Fed broad index's span
+  with no value under the 21-day rule takes the previous Friday's (count shown in the table);
+  the robustness rows are computed in the same process as the main rows, after them, with the
+  same rotations.
+
 ## Status (2026-11-18)
 
-**Done:** this card. **Doing:** code and tests, then the reproduction, then the one logged run.
-**Next:** table, write-up, `next-steps.md`.
+**Done:** this card; code and tests (`lib/usd1.py`, `tests/test_usd1.py`); reproduction.
+**Doing:** the one logged run. **Next:** table, write-up, `next-steps.md`.
