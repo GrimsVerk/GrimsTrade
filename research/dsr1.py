@@ -2,24 +2,33 @@
 
     git fetch origin
     python research/dsr1.py census      # markdown tables for research/dsr-1.md
+    python research/dsr1.py dsr         # deflated Sharpe and Holm tables (card in dsr-1.md)
 
 Each research lane appends rows to `research/tries.md` on its own branch, and branches share
 rows through their ancestry. A row is the same try on two branches when its line is identical.
 A line that appears k times on one branch (a re-run logged twice) counts k times; across
 branches the count is the largest k seen on any branch, so shared history is not double counted.
 
-Stdlib only; reads git objects, runs no backtest, writes nothing.
+Stdlib plus the repo's own `grimstrade.stats` (eq. 2 of Bailey and Lopez de Prado 2014); reads
+git objects, runs no backtest, writes nothing.
 """
 
 from __future__ import annotations
 
+import datetime as dt
 import json
 import math
 import statistics
 import subprocess
 import sys
 from collections import Counter, defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
+from statistics import NormalDist
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from grimstrade import stats  # noqa: E402
 
 TRIES = "research/tries.md"
 RESEARCH_TRIES = "ledger/research_tries.jsonl"  # the daily runner's copy, on paper-trail
@@ -215,10 +224,312 @@ def census() -> None:
     print("\n".join(out))
 
 
+# ---------------------------------------------------------------------------------------------
+# Step 2: deflated Sharpe and Bonferroni/Holm (card: research/dsr-1.md, section 2)
+
+CUTOFF = "2026-11-18 22:17"  # the census snapshot; later rows are left out so the numbers repeat
+LIVE = 11  # strategies in ledger/tries.jsonl on paper-trail (M0/M1): tried, so counted in N
+RISK_MAP_CARD = "2026-11-12 07:15"  # UTC; research-3's risk-map card picked the presets
+STRESS = (-1.0, 30.0)  # skew, raw kurtosis of the stress case (not logged anywhere)
+PASS = 0.95
+_Z = NormalDist()
+
+
+def calendar_days(start: str, end: str) -> int:
+    def d(x: str) -> dt.date:
+        return dt.date.fromisoformat(x if len(x) == 10 else x + "-01")
+
+    return (d(end) - d(start)).days + 1
+
+
+def max_z(n: float) -> float:
+    """Expected maximum of n independent standard normals (the paper's eq. 1, unit variance).
+    Takes a fractional n, for the effective number of trials of appendix A.3."""
+    if n <= 1:
+        return 0.0
+    g = stats.EULER_GAMMA
+    return (1 - g) * _Z.inv_cdf(1 - 1 / n) + g * _Z.inv_cdf(1 - 1 / (n * math.e))
+
+
+def effective(m: int, rho: float) -> float:
+    """Appendix A.3, eq. 9: M trials with average correlation rho count as this many."""
+    return rho + (1 - rho) * m
+
+
+def dsr_abs(
+    sr: float, t: int, n: float, v_ann: float, mean: float = 0.0, moments: tuple = (0.0, 3.0)
+) -> tuple[float, float]:
+    """(DSR, SR0 annualised) for an annualised Sharpe over t calendar days (eq. 2). `mean` = 0 is
+    the paper's null; a positive mean is test 2 (the trials' own average, eq. 1)."""
+    v = max(v_ann / DAYS_PER_YEAR, stats.null_sharpe_variance(t))
+    sr0 = mean / math.sqrt(DAYS_PER_YEAR) + math.sqrt(v) * max_z(n)
+    m = stats.Moments(t, sr / math.sqrt(DAYS_PER_YEAR), moments[0], moments[1])
+    return stats.probabilistic_sharpe(m, sr0), sr0 * math.sqrt(DAYS_PER_YEAR)
+
+
+def dsr_diff(z: float, n: float) -> float:
+    """Edge in difference form: Z((d - SE maxZ(N)) / SE) = Z(z - maxZ(N)), z = d / SE."""
+    return _Z.cdf(z - max_z(n))
+
+
+def break_even(f: Callable[[float], float]) -> float:
+    """Largest number of independent trials at which f(N) is still >= 0.95."""
+    if f(1) < PASS:
+        return 0
+    hi = 2.0
+    while f(hi) >= PASS:
+        hi *= 2
+        if hi > 1e15:
+            return math.inf
+    lo = hi / 2
+    while hi - lo > max(1.0, lo * 1e-4):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if f(mid) >= PASS else (lo, mid)
+    return lo
+
+
+@dataclass(frozen=True)
+class Candidate:
+    name: str
+    lane: str
+    comparator: str
+    d: float  # edge as the lane reported it
+    p: float  # one-sided, as the lane reported it
+    se: float | None  # from the lane's 90% range when it gave one, else d / z(p)
+    n_family: int  # the family bar's size: max(variant rows of the family, the lane's own count)
+    heldout: str
+    sharpe: float | None  # its own Sharpe, for the absolute DSR
+    start: str
+    end: str
+    source: str
+
+    @property
+    def z(self) -> float:
+        if self.se:
+            return self.d / self.se
+        return _Z.inv_cdf(1 - self.p)
+
+
+TSMOM_EDGE = Candidate(
+    "`tsmom12` vs equal weight", "research-1", "equal weight", 0.17, 0.08, None, 0, "-",
+    1.05, *PRIMARY, "results/baselines.md; review-1 (SE 0.12)",
+)  # fmt: skip
+TSMOM_2003 = Candidate(
+    "`tsmom12` vs equal weight, 2003-2025", "review-1", "equal weight", 0.00, 0.49, None, 0, "-",
+    1.20, "2003-01-01", PRIMARY[1], "review-1 finding 1",
+)  # fmt: skip
+# The five near-misses by the card's rule (section 2b of dsr-1.md; how each was found is there).
+NEAR = [
+    Candidate(
+        "`gsy-runup` flag100-sma", "gsy-1", "`tsmom12`, 30 French industries 1928-2001",
+        0.027, 0.001, None, 12, "unspent", 1.01, "1928-07-02", "2001-12-30",
+        "gsy-1: results/gsy-1.md (G30 disc)",
+    ),
+    Candidate(
+        "`halving-and`", "macro-1", "`tsmom12`, six assets", 0.15, 0.005, (0.25 - 0.06) / 3.29,
+        13, "unspent", 1.20, *PRIMARY, "macro-1: results/halving.md",
+    ),
+    Candidate(
+        "quiet coins (`turnover` TOP-TS)", "breadth-1", "`tsmom12` on the same coin book",
+        0.34, 0.005, None, 61, "spent (passed: 0.61 vs 0.31)", 1.06, "2019-03-01", PRIMARY[1],
+        "breadth-1: results/breadth-1.md (p printed 0.00; 0.005 used)",
+    ),
+    Candidate(
+        "funding carry `band`", "carry-3", "zero (pooled Sharpe > 0)", 0.79, 0.025, None, 25,
+        "spent (failed: -0.65)", 0.79, "2021-02-20", PRIMARY[1],
+        "carry-3: results/carry-3.md, carry-3.md",
+    ),
+    Candidate(
+        "coin `stop-0.25`", "coin-cap 1-4", "a coin cap of the same cost (sign test, 21 episodes)",
+        15 / 21, 0.0392, None, 16, "unspent", 1.09, *PRIMARY,
+        "coin-cap-4: coin-cap-verdict.md",
+    ),
+]  # fmt: skip
+
+
+def holm(ps: list[float], m: int) -> list[float]:
+    """Holm-adjusted p-values for the smallest len(ps) of m tests (the rest assumed larger)."""
+    order = sorted(range(len(ps)), key=lambda i: ps[i])
+    out = [1.0] * len(ps)
+    run = 0.0
+    for k, i in enumerate(order):
+        run = max(run, min(1.0, (m - k) * ps[i]))
+        out[i] = run
+    return out
+
+
+def fmt_n(x: float) -> str:
+    if x == math.inf:
+        return "> 1e15"
+    return f"{x:,.0f}" if x >= 10 else f"{x:.1f}"
+
+
+def deflate_all() -> None:
+    c = collect()
+    rows = [r for r, _ in c.rows if r.time <= CUTOFF]
+    selectable = [r for r in rows if r.kind in ("variant", "baseline") and r.period == "train"]
+    prim = [r for r in selectable if r.primary and r.sharpe is not None]
+    first = min(r.time for r in rows)
+    n1 = sum(r.primary and r.kind == "baseline" and r.time == first for r in rows)
+    n2 = sum(r.time < RISK_MAP_CARD for r in prim) + sum(r.idea == "risk-map" for r in rows) + LIVE
+    n3 = len(selectable) + LIVE
+    m4 = sum(r.sharpe is not None for r in rows) + LIVE
+    v_prim = var([r.sharpe for r in prim if r.sharpe is not None])
+    mean_prim = statistics.mean(r.sharpe for r in prim if r.sharpe is not None)
+    sel_sh = [r.sharpe for r in selectable if r.kind == "variant" and r.sharpe is not None]
+    v_proj, mean_proj = var(sel_sh), statistics.mean(sel_sh)
+    t = calendar_days(*PRIMARY)
+    # The repo's stats.expected_max_sharpe and max_z must agree (same equation).
+    assert abs(stats.expected_max_sharpe(100, 1.0) - max_z(100)) < 1e-12
+
+    ns = [
+        ("N1 bar (first harness run)", n1),
+        ("N2 live preset (risk map)", n2),
+        ("N3 if chosen today", n3),
+        ("M4 every row with a Sharpe", m4),
+    ]
+    out = [
+        f"Rows up to {CUTOFF} UTC: {len(rows)}. T for the primary test = {t:,} calendar days. "
+        f"Luck floor 1/T = {365 / t:.4f} a year (variance of an annual Sharpe).",
+        "",
+        "| Trial count | N | at rho 0.5 | at rho 0.9 |",
+        "|---|---:|---:|---:|",
+    ]
+    out += [
+        f"| {lab} | {n:,} | {fmt_n(effective(n, 0.5))} | {fmt_n(effective(n, 0.9))} |"
+        for lab, n in ns
+    ]
+    out += [
+        "",
+        f"Variance of trial Sharpes (annual): primary test {v_prim:.4f} (mean {mean_prim:.2f}, "
+        f"{len(prim)} rows); project-wide selectable variants {v_proj:.4f} (mean "
+        f"{mean_proj:.2f}). The primary-test spread is below the luck floor "
+        f"{365 / t:.4f}, so the floor is used there.",
+        "",
+        "#### (a1) `tsmom12`, absolute (paper's null: no trial has skill)",
+        "",
+        "| N | V | SR0 (annual) | DSR normal | DSR stress (skew -1, kurt 30) |",
+        "|---|---|---:|---:|---:|",
+    ]
+    vs = [("primary", v_prim), ("project", v_proj)]
+    for lab, n in ns:
+        for rho in (0.0, 0.9):
+            ne = effective(n, rho)
+            for vlab, v in vs:
+                d0, sr0 = dsr_abs(1.05, t, ne, v)
+                ds, _ = dsr_abs(1.05, t, ne, v, moments=STRESS)
+                rl = f" (rho {rho})" if rho else ""
+                out.append(f"| {lab}{rl}: {fmt_n(ne)} | {vlab} | {sr0:.2f} | {d0:.4f} | {ds:.4f} |")
+    out += [
+        "",
+        "Break-even N (largest number of independent trials with DSR >= 0.95): "
+        + "; ".join(
+            f"V {vlab}: {fmt_n(break_even(lambda n, v=v: dsr_abs(1.05, t, n, v)[0]))}"
+            for vlab, v in vs
+        )
+        + ".",
+        "",
+        "#### (a2) `tsmom12` against the project's own trials (eq. 1 with their mean)",
+        "",
+        "| N | Mean and V of the trials | SR0 (annual) | DSR normal | DSR stress |",
+        "|---|---|---:|---:|---:|",
+    ]
+    mv = [(f"primary ({mean_prim:.2f})", mean_prim, v_prim), (f"project ({mean_proj:.2f})",
+          mean_proj, v_proj)]  # fmt: skip
+    for lab, n in ns:
+        for rho in (0.0, 0.9):
+            ne = effective(n, rho)
+            for mlab, mu, v in mv:
+                d0, sr0 = dsr_abs(1.05, t, ne, v, mean=mu)
+                ds, _ = dsr_abs(1.05, t, ne, v, mean=mu, moments=STRESS)
+                rl = f" (rho {rho})" if rho else ""
+                out.append(f"| {lab}{rl}: {fmt_n(ne)} | {mlab} | {sr0:.2f} | {d0:.3f} | {ds:.3f} |")
+    out += [
+        "",
+        "Break-even N: "
+        + "; ".join(
+            f"{mlab}: {fmt_n(break_even(lambda n, mu=mu, v=v: dsr_abs(1.05, t, n, v, mean=mu)[0]))}"
+            for mlab, mu, v in mv
+        )
+        + ".",
+        "",
+        "#### (a3) `tsmom12`'s edge over equal weight (difference form)",
+        "",
+        "| Window | d | z | N | DSR | Edge left after luck (d - SE maxZ) |",
+        "|---|---:|---:|---|---:|---:|",
+    ]
+    for cand in (TSMOM_EDGE, TSMOM_2003):
+        se = cand.se or (cand.d / cand.z if cand.z else 0.12)
+        for lab, n in ns:
+            out.append(
+                f"| {cand.name} | {cand.d:+.2f} | {cand.z:.2f} | {lab}: {n:,} | "
+                f"{dsr_diff(cand.z, n):.3f} | {cand.d - se * max_z(n):+.2f} |"
+            )
+    out.append(
+        f"| | | | break-even N (1994-2025) | "
+        f"{fmt_n(break_even(lambda n: dsr_diff(TSMOM_EDGE.z, n)))} | |"
+    )
+
+    out += [
+        "",
+        "#### (b) The five near-misses",
+        "",
+        "| Near-miss | Lane | Against | d | p | z | N_family | DSR at N_family | "
+        f"DSR at N3 = {n3:,} | at N3, rho 0.9 | Absolute DSR at N3 (V project) | Held-out year |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+    ]
+    for cand in NEAR:
+        a = ""
+        if cand.sharpe is not None:
+            a = f"{dsr_abs(cand.sharpe, calendar_days(cand.start, cand.end), n3, v_proj)[0]:.3f}"
+        out.append(
+            f"| {cand.name} | {cand.lane} | {cand.comparator} | {cand.d:+.3g} | {cand.p:.4f} | "
+            f"{cand.z:.2f} | {cand.n_family} | {dsr_diff(cand.z, cand.n_family):.3f} | "
+            f"{dsr_diff(cand.z, n3):.3f} | {dsr_diff(cand.z, effective(n3, 0.9)):.3f} | {a} | "
+            f"{cand.heldout} |"
+        )
+    out += [
+        "",
+        "#### Bonferroni and Holm (one-sided p, alpha 0.05)",
+        "",
+        "| Hypothesis | p | Survives Bonferroni up to m = | Holm-adjusted, m = 6 | "
+        f"Bonferroni at N_family | Holm-adjusted at m = N3 = {n3:,} |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+    hyps = [TSMOM_EDGE, *NEAR]
+    ps = [h.p for h in hyps]
+    h6, hn = holm(ps, len(hyps)), holm(ps, n3)
+    for h, a6, an in zip(hyps, h6, hn, strict=True):
+        nf = h.n_family or n1
+        out.append(
+            f"| {h.name} | {h.p:.4f} | {fmt_n(0.05 / h.p)} | {a6:.3f} | "
+            f"{min(1.0, h.p * nf):.3f} (m = {nf}) | {an:.3f} |"
+        )
+    abs_p = 1 - dsr_abs(1.05, t, 1, 0.0)[0]
+    out += [
+        "",
+        f"`tsmom12` absolute (Sharpe > 0): p = {abs_p:.1e}, survives Bonferroni up to "
+        f"m = {fmt_n(0.05 / abs_p) if abs_p > 0 else '> 1e15'}.",
+        "",
+        "Card's held-out rule (unspent, DSR >= 0.95 at N_family and >= 0.50 at N3):",
+        "",
+    ]
+    for cand in NEAR:
+        ok = (
+            cand.heldout == "unspent"
+            and dsr_diff(cand.z, cand.n_family) >= PASS
+            and dsr_diff(cand.z, n3) >= 0.5
+        )
+        out.append(f"- {cand.name}: {'worth a held-out year' if ok else 'no'}")
+    print("\n".join(out))
+
+
 def main() -> None:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "census"
     if cmd == "census":
         census()
+    elif cmd == "dsr":
+        deflate_all()
     else:
         sys.exit(f"unknown command {cmd!r}")
 

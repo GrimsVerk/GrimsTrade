@@ -365,3 +365,36 @@ inputs quoted above from review-1 and `results/deflation.md` (research-2: 52 var
 alone gives +0.24 over equal weight against +0.22 seen), and the lane's own rough mental guess
 while planning that the absolute DSR could land near 0.5 under the widest spread. Every
 scenario on this card is reported whatever it shows.
+
+### Card note, 2026-11-18 ~23:05 UTC: the five near-misses found by the rule (inputs only, before any DSR is computed)
+
+Searched every branch's `research/*.md` (315 distinct files) for "lead", "near miss",
+"parked", "passes" and reported p-values. Candidates and the p each lane reported against its
+own card's comparator (one-sided):
+
+| Candidate | Lane | Status in the write-ups | p | In the five? |
+|---|---|---|---:|---|
+| `gsy-runup` flag100-sma (run-up exit on `tsmom12`, 30 French industries 1928-2001) | gsy-1 | "weak pass on the letter; not a candidate" | 0.001 | yes |
+| `halving-and` (coins out 18-30 months after a halving) | macro-1 | parked, "not believed" | ~0.005 (90% range +0.06..+0.25) | yes |
+| quiet coins: `turnover` TOP-TS on a 100-coin book | breadth-1 | passed its bar, lead; held-out year spent | printed 0.00 (< 0.005) | yes |
+| funding carry `band` | carry-3 (short-1, carry-2) | passed train, failed held-out | 0.025 | yes |
+| coin `stop-0.25` | coin-cap 1-4 | "a risk preference, not a proven rule" | 0.039 (sign test) | yes |
+| `blend-ws` (`where-vol` + `stop-0.25`) | combo-1 | "closest miss the repo has had" | 0.059 | no (6th) |
+| Fed-hiking gate on the S&P 500 1962-93 | macro-1 | "keep watching" | 0.06 (out of universe; primary lost) | no |
+| `ath` | ideas-1 | nearest miss | 0.18 | no |
+| `auction-concession` (book) | wide-1 | faint lead on TLT alone | 0.14 (TLT alone 0.05, a side test) | no |
+| `where-vol` | trend-where | small gain, could be luck | 0.27 | no |
+
+Left out by the rule: `fomc-cycle` (p 0.03, but dead: reversed after publication), `usd-1`
+(a forecast replication that failed, no backtest), the evo-1/2 planted worlds (controls),
+`fm-1` (memorised prices). The carry idea counts once, at carry-3's primary `band` (short-1's
+`ls-premium`, p 0.096, is the same idea).
+
+Clarifications (method, not results): (1) where a lane printed a 90% range, SE = width / 3.29
+(as research-2's `lib/deflation.py` does); else SE = d / z(p). (2) A printed "0.00" is taken
+as 0.005, the largest value it can mean (cautious). (3) The difference-form DSR is
+`Z(z - maxZ(N))` with z = d / SE, so a sign test (coin-cap) enters through its p alone.
+(4) N_family = the larger of the family's `variant` rows in the census and the lane's own
+family count: gsy-1 12, macro-1 13 (six macro cards), breadth-1 61, carry-3 25, coin-cap 16
+(the lane counts 15 rules). (5) Rows logged after the census snapshot (22:17 UTC) are left out
+so the numbers reproduce. Script: `python research/dsr1.py dsr`.
