@@ -16,6 +16,11 @@ Never edit or delete a row.
   configuration over a live-fund window (variant tagged `@live-L`, 2010-02 to 2025-10), set
   against live funds; not selectable, not a strategy try, not counted in the family
   (`cards/live-check.md`, numbers in `results/live-check.md`).
+- `replication` (added 2026-11-18, ls-trend-1): a descriptive replication of a published effect
+  built outside the live book's constraints (here shorts and leverage the paper broker cannot
+  hold), tagged `@live-L` (2010-02 to 2025-10, Sharpe on excess returns); not selectable, not a
+  strategy try, not counted in the family (`cards/ls-trend.md`, numbers in
+  `results/ls-trend.md`).
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
@@ -1046,3 +1051,7 @@ Never edit or delete a row.
 | 2026-11-18 22:28 | survey-5 | tsmom12-c00@live-L | live-check | train | 2010-02-01 | 2025-10-31 | 1.07 | +294.4% | 15.8% | 2.16 |
 | 2026-11-18 22:28 | survey-5 | where-vol@live-L | live-check | train | 2010-02-01 | 2025-10-31 | 1.40 | +6314.8% | 35.3% | 1.71 |
 | 2026-11-18 22:28 | survey-5 | sixty-forty@live-L | live-check | train | 2010-02-01 | 2025-10-31 | 1.01 | +375.4% | 27.3% | 0.47 |
+| 2026-11-18 22:45 | ls-trend-1 | wide-LS@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.15 | +20.6% | 30.1% | 11.96 |
+| 2026-11-18 22:45 | ls-trend-1 | wide-LO@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.24 | +42.4% | 27.7% | 6.57 |
+| 2026-11-18 22:45 | ls-trend-1 | narrow-LS@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.58 | +500.2% | 47.9% | 8.85 |
+| 2026-11-18 22:45 | ls-trend-1 | narrow-LO@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.93 | +1618.7% | 38.1% | 5.24 |

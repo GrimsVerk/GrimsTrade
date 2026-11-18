@@ -7,7 +7,7 @@ Chain: (1) literature, `research/ls-trend-1.md` (done); (2) card, then a researc
 long-short vol-scaled TSMOM on a wider keyless ETF universe vs live trend funds and `tsmom12`
 (descriptive replication, not a pick); (3) plain answer and a forward-test proposal.
 
-- Doing: step 2 (card first).
+- Doing: step 3 (plain answer, forward proposal). Step 2 done: `results/ls-trend.md`, 4 `replication` rows.
 
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 

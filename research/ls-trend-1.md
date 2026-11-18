@@ -140,3 +140,74 @@ Not read, would sharpen the answer: the Hamill et al. paper itself (its tables o
 non-positive restrictions), Greyserman and Kaminski, *Trend Following with Managed Futures: The
 Search for Crisis Alpha* (Wiley 2014), and the SG Trend Indicator's sector attribution files
 (the SG site sits behind a bot wall, `survey-5.md`).
+
+## Step 2: the replication (card 9722e86, script f1e8931, run 2026-11-18)
+
+Card: [`cards/ls-trend.md`](cards/ls-trend.md), pushed before any number. Tables:
+[`results/ls-trend.md`](results/ls-trend.md). Moskowitz-Ooi-Pedersen's rule unchanged (sign of
+the 12-month excess return, 40% / ex ante vol per asset, equal weight across the assets
+alive, monthly), one day later than the paper, 5 bps a side, 1% a year borrow on shorts,
+leverage financed at the bill. Wide = 34 ETFs (9 country equity, 4 Treasury, 15 commodity,
+6 currency); narrow = SPY, QQQ, GLD, TLT. Nothing after 2025-10 read.
+
+One disclosure: the script was first run once with logging switched off (a plumbing check),
+then run again to log; both runs printed identical tables (the code did not change between
+them).
+
+**Logged as:** 4 rows of the new kind `replication` in `tries.md` (`<cell>@live-L`, defined
+in its header: descriptive, not selectable, not counted). No `ledger/tries.jsonl` row. Family
+unchanged: **68 mechanisms, 16 tested** (wide-6's reconciled count), next strategy test at
+**p < 0.10 / 68 = 0.00147**. Long-short TSMOM is the same mechanism as `tsmom12`
+(time-series momentum), so it adds no family member.
+
+### What the numbers say (card's reading rules applied)
+
+| Cell | 2008 | 2020-02..03 | 2022 | Corr. with TC (L) | Corr. with AQR factor | Corr. with SPY | Sharpe L | Reading |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| **wide-LS** | **+34.9%** | **+24.6%** | **+12.8%** | **0.61** | 0.81 | -0.17 | 0.15 | **reproduces** |
+| wide-LO | +1.1% | -4.7% | -2.8% | 0.35 | 0.38 | 0.46 | 0.24 | does not |
+| narrow-LS | +23.7% | -10.9% | -4.1% | 0.39 | 0.39 | 0.38 | 0.63 | does not |
+| narrow-LO | +7.2% | -10.9% | -20.8% | 0.26 | 0.27 | 0.60 | 1.03 | does not |
+| TC (live funds) | +7.1% | +3.6% | +17.6% | - | 0.71 | -0.06 | 0.19 | |
+| AQR factor (paper) | +24.6% | +10.5% | +24.7% | 0.71 | - | - | 0.35 | |
+| `tsmom12` | -1.6% | -14.1% | -12.9% | 0.17 | 0.09 | 0.40 | 1.11 | |
+
+(Raw returns above the bill; wide-LS runs at 16.5% volatility, TC at 8.4%. At 10% volatility
+wide-LS is +21% / +15% / +8% against TC's +8% / +4% / +21%.)
+
+1. **Yes: long-short on the wide set looks like the live funds.** It gained in all three crash
+   windows, correlates 0.61 with the nine-fund composite, 0.81 with AQR's paper factor, 0.64
+   with AQMIX, and -0.17 with SPY. `tsmom12` correlates 0.08 with it. That is a faithful
+   enough replication of the family from 34 keyless ETFs.
+2. **Both missing pieces matter, and neither is enough alone.** By the card's rule the short
+   side is a missing piece (wide-LO fails) and so is the universe (narrow-LS fails). The 2 x 2,
+   crash returns at 10% volatility: adding shorts to the wide set adds +20% / +19% / +10%
+   (2008 / 2020 / 2022) and +0.26 correlation with TC; on the narrow set only +7% / +1% / +9%
+   and +0.13. Widening adds +10% / +20% / +10% when short is allowed, but almost nothing
+   long-only (-3% / +2% / +9%). Shorts need many markets to short; many markets need shorts to
+   pay in a crash.
+3. **The crash gains are mostly short legs** (wide-LS, additive daily P&L): 2008 +34.6% total,
+   **93% from shorts** (equity shorts +22.2%, currency shorts i.e. long USD +5.8%, commodity
+   shorts +4.2%; long bonds +10.9% was the one big long). 2020-02..03 +23.7%: commodity shorts
+   +16.4% (oil, gas), equity shorts +7.7%, long bonds +6.0%, equity longs -8.2%. 2022 +14.3%:
+   **bond shorts +11.0%**, currency shorts (long USD) +6.8%, commodity longs +6.0%, equity
+   longs -6.5%. Short legs gave 93%, 118% and 115% of the three crash gains (above 100% where
+   the long legs lost). The literature's picture (step 1) holds: 2008 short equities plus long
+   bonds and long USD, 2022 short bonds plus long commodities and long USD. 2020 differs from
+   my expectation (I expected flat; L2 said too fast): the ETF book was already short oil and
+   gas from 2019's downtrend, and after February's fall it shorted the European indexes.
+4. **The narrow set cannot do it.** narrow-LS made 2008 (+23.7%: short SPY/QQQ +21.8%, long
+   TLT +18.4%) but lost in 2022: its one bond short (TLT +20.3%) was eaten by its equity longs
+   early in the year and the GLD position (-9.8%). With four assets, two of them equity, there
+   is no USD leg, no energy, and no second bond.
+5. **The price of the crisis alpha is the Sharpe.** In L wide-LS has Sharpe 0.15 (TC 0.19,
+   AQR factor 0.35), against 1.03 for narrow-LO and 1.11 for `tsmom12`; worst calendar year
+   -18.5% (2016). It needs 3.7x gross leverage on average (SHY at 40% / ~2% vol), turns over
+   12x a year, and pays 0.60% a year in costs plus 1.40% in borrow. The funds' crisis alpha is
+   real and reproducible, and so is their decade of near-zero returns: the long bull market
+   that made `tsmom12` look good is exactly what long-short trend gives away.
+
+Caveats: the ETF set has no non-US bonds and few currencies; several commodity ETFs only
+exist from 2010-11; leverage above 1x is financed at the bill in the model; SHY's tiny
+volatility makes it the largest position by notional; one day of delay against the paper.
+The narrow-LS 2022 leg shares in the results table are meaningless (total +0.9%, near zero).
