@@ -1,5 +1,14 @@
 # Next steps
 
+## eu-5 (in progress 2026-11-18 night, branch `eu-5` from `eu-4`, draft PR -> `eu-4`)
+
+DEEPER lane on eu-4: cut only the drift third of `euw`'s orders, leaving the signal untouched.
+Card `research/cards/eu-5.md` (before any number): D1 `flipreb` (top up/trim only on days a
+signal flips somewhere in the book), D2 `band25r` (trade drift only when a slot is off by more
+than 25% of its target, the 5/25 rule of thumb), eu-4's character test, family 8 + 2 = 10.
+Then: run on `euw` (+ `eu6`/`usw` robustness), minimum book per fee tier, a plain-language note
+on what eu-1..eu-5 concluded.
+
 ## eu-4 (done 2026-11-18 night, branch `eu-4` from `eu-3`, draft PR #68 -> `eu-3`)
 
 DEEPER lane on eu-3: fewer signal flips for the small coin-free book `euw`. Step 1 diagnosis
