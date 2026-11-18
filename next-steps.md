@@ -315,6 +315,11 @@
     slots above T-bills against a same-size T-bill slot.
   - 23:21 UTC 5h 0.74: `survey-7` started (W, small, <- wide-9): `seasonal-20y` event gate with
     the placebo null. Running with fast-reentry-2. Then nothing new until 02:15.
+  - DONE `fast-reentry-2` (draft #96 -> fast-reentry): `arm3-12` (exit as `tsmom12`, re-enter
+    on 3-month > 0) "in between": net +1.8/fall (28/50, p 0.11-0.24), share avoided 0.50 ->
+    0.37 (guard fails); the leak is the re-entry (1929-33 rallies). `or3-12`'s lower premium is
+    timing, not exposure (0.97 vs 1.61 fixed-83%). 27 rows. Insure/re-entry line CLOSED: the
+    late buy-back is part of the insurance's price.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
