@@ -69,8 +69,8 @@ def run(
 ) -> list[str]:
     """One daily run. Returns the list of data problems (empty if all went well).
 
-    `repo` is the code checkout, whose `research/` files (and research-* branches) count towards
-    the number of strategies tried."""
+    `repo` is the code checkout, whose `research/` files (on every branch but the record's) count
+    towards the number of strategies tried."""
     check_record(root, now)
 
     problems = []

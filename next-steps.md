@@ -1,5 +1,23 @@
 # Next steps
 
+## Waiting for review: register-1 (branch `register-1`, draft PR #79 into `dsr-1`, not merged)
+
+From dsr-1's findings; no backtests, no tries. Done:
+
+1. The scoreboard's N reads every local and remote branch except `paper-trail` (was: `main` and
+   `research-*` only) plus the committed register: 2,830 research tries, 534 train Sharpes (was
+   285 and 78). DECISIONS 2026-11-18 entry. Tests in `tests/test_stats.py` fail on the old code.
+2. `research/register/tries.jsonl` (every distinct try on every pushed branch, only grows) and
+   `research/register/BAR.md` (counts and the bar for a new pick). Regenerate:
+   `git fetch origin && uv run python -m grimstrade.register`. Reproduces dsr-1's census exactly
+   (2,811 / 947 / 124 at its snapshot). At generation: 2,904 tries, N for a new pick 1,012,
+   edge needed over `tsmom12` +0.27 (close rule, rho 0.9) to +0.59 (far rule, independent).
+3. PROPOSED convention in `docs/DESIGN.md` (Idea lab): every card quotes BAR.md's count and bar.
+
+- [ ] Owner/lead: settle or reject the convention; then move it to DECISIONS.
+- [ ] After merging to `main`: the night lead regenerates the register in one PR per night.
+- [ ] Possible next: lanes log T, skew and kurtosis so BAR.md can give the bar per record length.
+
 ## Waiting for review: dsr-1 (branch `dsr-1`, draft PR #74 into `main`, not merged)
 
 Project-wide multiple-testing check, no backtests. Write-up with verdict: `research/dsr-1.md`;
@@ -7,11 +25,10 @@ script: `research/dsr1.py` (`census`, `dsr`). Result: `tsmom12`'s profit survive
 edge over equal weight fails at N = 1; no near-miss survives the project's search; none is worth
 a held-out year.
 
-- [ ] Fix found: `ledger._RESEARCH_REFS` reads only `main` and `research-*` branches, so the live
-      scoreboard's N stopped at 307 tries (project: 2,811 rows, 947 selectable). Widen it to all
-      remote branches except `paper-trail` (proposal in `research/dsr-1.md`).
-- [ ] Owner/lead: decide on the project-wide register (`research/register/` on `main`, proposal
-      in `research/dsr-1.md`) and have every card quote the global N.
+- [x] Fix found: `ledger._RESEARCH_REFS` read only `main` and `research-*` branches (live N
+      stopped at 307). Fixed in register-1 (PR #79).
+- [ ] Owner/lead: decide on the project-wide register (built in register-1, PR #79, convention
+      PROPOSED in `docs/DESIGN.md`) and have every card quote the global N.
 
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
