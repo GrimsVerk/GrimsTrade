@@ -176,3 +176,45 @@ nothing more.
 
 **Tries.** One `variant` row (idea `combo-2`, `cofall-dbc`), counted in the family (73). The
 twin with cash is already logged in step 1 (`tsmom12 cash`), not again.
+
+## Step 2 result: `cofall-dbc` fails (2026-11-18)
+
+Tables: [`results/combo-2-cofall.md`](results/combo-2-cofall.md) (`lib/combo2_cofall.py`, one
+logged run, 22:27 UTC, 1 `variant` row) and
+[`results/combo-2-longrun.md`](results/combo-2-longrun.md) (`lib/combo2_longrun.py`,
+description, no row). Checks passed: the fast path equals `gym.backtest` on four gate days, and
+on every day the gate is closed the book's targets equal the twin's.
+
+**The partner arrived late and stayed too long. `cofall-dbc` 1.07 against `tsmom12` 1.08
+(-0.006, p 0.85; above T-bills the same), behind in 2022-25 (0.92 against 0.97), negative in its
+own weeks (-2.3% a year). It fails bars 1, 2, 4 and 6.**
+
+| Gate spell (SPY and TLT both out of trend) | Days | DBC weeks | Book minus twin | DBC in the spell |
+|---|---:|---:|---:|---:|
+| 2016-01-08 .. 2016-02-11 | 35 | 0 | 0.0 pts | -3.7% |
+| 2018-12-14 .. 2019-01-31 | 49 | 0 | 0.0 pts | +1.8% |
+| 2022-04-29 .. 2022-05-26 | 28 | 4 | +1.0 pts | +4.1% |
+| 2022-06-03 .. 2023-05-04 | 336 | 38 | -4.0 pts | -23.8% |
+
+Calendar 2022: twin -11.2%, book -12.9%. 2022-25: -4.5 points.
+
+**Why.** The gate needs two 12-month trends to turn, and the stock trend turned last (end of
+April 2022). By then commodities had run for two years; DBC peaked in June 2022 and fell 24%
+over the rest of the spell while its own 12-month trend, also slow, stayed positive into late
+2022. Three slow signals in a row: the co-fall is visible only after most of it, and the partner
+that won it is past its peak. In 2008 the gate never opened (Treasuries rose), so the case it
+was built for is one episode in the gym's history, and it went the wrong way.
+
+**1970s-style evidence (description, 1962-2025, monthly).** The monthly gate (US stocks and a
+10-year Treasury both down over 12 months) was open in only 35 of 767 months, in 12 short
+spells; in the 1970s only 15 months (1966, 1969-70, 1973-08, 1974-11): high coupons kept the
+bond's 12-month return positive through most of the inflation. In those months: T-bills +5.4%
+a year, the S&P GSCI price index -24.9% (from 1985; with collateral and its own trend, -17.9%),
+gold -2.7% (pegged until 1971, so the 1960s rows say nothing). No proxy earned in the gate
+months; the bill did. The data do not reach a broad commodity return for the 1970s (the GSCI
+history in the cache starts in 1985; FRED's commodity price index could not be fetched).
+
+**Reading.** By the trend gate, "stocks and bonds fall together" is rare and is seen late;
+the partner that would have helped (commodities, 2021-22) did its work before the gate opened.
+The T-bill, which `tsmom12` already holds there and which now earns interest (step 1), is the
+best of the long-only options measured. Family count: 73 picks, none passes.

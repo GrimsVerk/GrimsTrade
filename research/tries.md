@@ -3174,3 +3174,4 @@ Never edit or delete a row.
 | 2026-11-18 22:23 | combo-2 | blend-ws cash@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +345.9% | 75.2% | 4.57 |
 | 2026-11-18 22:23 | combo-2 | blend-iv cash@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.76 | +8241.7% | 32.5% | 1.50 |
 | 2026-11-18 22:23 | combo-2 | blend-ws cash@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.85 | +9251.6% | 25.6% | 2.28 |
+| 2026-11-18 22:27 | combo-2 | cofall-dbc | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +20836.7% | 35.6% | 2.83 |
