@@ -13,6 +13,9 @@ whose edge would come from somewhere other than trend?
 **None of the four new ideas beats the trend rule. All four fail the pass mark that was written
 down before testing, so the held-out year was not looked at.** Two are plainly dead. Two leave a
 faint trace in the raw prices that is real enough to describe and too small to trade in our book.
+**Looking at why they failed turned up one pattern that is stronger than anything carded: long
+bonds earned almost all of their return in the last four trading days of each month.** It was
+found after the tests, on the same data, so it is a hypothesis for a new card, not a result.
 
 What was done: 46 mechanisms from ten fields were written down and sorted before any number
 (step 1 below). Most turned out to be an idea we had already killed, in different words. Four
@@ -30,18 +33,37 @@ volatility formula, and prices that have not yet caught up with their relatives.
 (Sharpe = return per unit of risk. IC = correlation between a signal and what happened next. p =
 chance of a gap this large by luck; the bar is below 0.10. bps = hundredths of a percent.)
 
+**The pattern worth carrying forward (post hoc; `results/wide-1-yields.md`).**
+
+- 2003-2025, last four sessions of the month: TLT +39 bps (t 4.3), IEF +24 bps (t 5.4), the
+  same in both halves of the period. At the gym's next-open fills: +32 and +21 bps (t 3.3 and
+  4.5). For TLT that is about 4.7% a year, as much as its whole average return: the other 80%
+  of days together earned nothing.
+- Before TLT existed (bond yields, data no rule here has used): nothing in 1962-1989; +13 bps
+  (10-year) and +23 bps (30-year) in 1990-2003, t about 2. By the reading fixed before looking
+  (pooled 1962-2003, |t| >= 2) that is **not confirmed**: pooled t is 0.8 and 1.2. But it is
+  what one would expect from the usual explanation, bond index funds that must buy longer
+  bonds when their index is rebuilt at month end: such funds hardly existed before 1990.
+- Our own `month-end-liquidity` test missed it because its window ran three sessions into the
+  next month, where TLT gave part back until 2013 (-39 bps then, -6 since).
+- A paper on this exists as far as I remember (Hartley and Schwarz, "Predictable end-of-month
+  Treasury returns"; not opened in this run).
+
 **How sure.**
 
 - Sure about the two dead ones: the gaps are large, every era and every other market agree, and
   the built-in controls (plain reversal for contagion, the placebo era for the echo) explain why.
-- Sure that neither flow idea helps the six-asset book. The tests had the power to see the
-  published sizes: a 40 bps dip before long-bond auctions would have shown at about t = 3; we
-  measured 15 bps (t 1.1) around 30-year auctions. Whatever is there is a third of what the
-  2013 paper found on older data, or less.
-- Not sure the two traces are real. TLT's "p 0.05" is one of about ten side comparisons in this
-  run, it rests mostly on 2020-25 (the bond bear market, when auction sizes exploded), and its
-  out-of-universe check (IEF) went the other way. The month-end spread is right in both halves
-  and on a second set of ETFs (+46 bps, t 1.9), but fades like every month-end effect we tested.
+- Sure that neither flow idea helps the six-asset book as carded.
+- The auction dip is in the closing prices and half of it is lost to our fills. Close to close,
+  TLT fell 34 bps over the five sessions ending with a 30-year auction (t 2.5; both halves),
+  near the size the 2013 paper reported. Filled at the next open, as the gym does, it is 15 bps
+  (t 1.1). Before 2003 the yield data shows no dip, but with 72 auctions it could not have shown
+  one of this size either. Not confirmed, not refuted.
+- TLT alone beating its twin ("p 0.05") is one of about ten side comparisons in this run, and its
+  out-of-universe check (IEF) went the other way: taken alone it is not evidence.
+- The month-end "loser rises" effect is **not confirmed** on unseen data: +13 bps pooled over
+  1962-2003 (t 0.9), wrong sign in 1962-1979, right sign after. Since 2003 it is large at closing
+  prices (+86 bps, t 3.9), mostly stocks rising after a month in which they trailed bonds.
 - 8 variants, 10 variant rows, 39 rows in `tries.md`. The best gain over a twin in the main book
   is +0.01; luck alone gives far more across this many tries. Nothing came near a pass.
 
@@ -59,41 +81,40 @@ chance of a gap this large by luck; the bar is below 0.10. bps = hundredths of a
    part of their edge by sitting in cash: the month-end rule gives up the leader's own rise,
    the auction rule gives up the bond's drift.
 4. **Calendars collide.** The auction calendar and the month-end calendar overlap (7-year notes
-   are sold in the last week of the month), so a rule built on one is hit by the other. A bond
-   rule has to model both at once.
-5. **Liquid ETFs do not lag each other by a week.** If anything they overshoot together and come
+   are sold in the last week of the month), so a rule built on one is hit by the other. That
+   collision is how the month-end bond pattern was found.
+5. **Fills at the next open cost up to half of a short-lived effect.** The auction dip keeps 45%
+   of its closing-price size at our fills, the month-end bond rally 83%.
+6. **Liquid ETFs do not lag each other by a week.** If anything they overshoot together and come
    back: the network term was negative.
-
-**Seen along the way (post hoc; hypotheses, not results; `results/wide-1-posthoc.md`).**
-
-- Bonds rose in the last sessions of the month: around 7-year auctions (which sit there) TLT made
-  about +29 bps and IEF +13 bps over five sessions (t 2.4 both), on days where the card's rule
-  was out. `month-end-liquidity` missed it because its window ran three days into the next month.
-- After a month in which stocks trailed bonds by 2% or more, SPY rose about 1-1.5% in the last
-  five sessions (t 2.2 before 2014, 2.7 since; 65 months). This is most of the "rebalancing"
-  effect, and it is the leg the carded rule could not hold when stocks were out of trend.
 
 **Next lanes this opens** (each needs its own card; none changes the paper system today).
 
-1. **A bond calendar card, tested on data nothing here has seen.** One rule for the long-bond
-   slot that knows both calendars (out before 20/30-year auctions, in for the month's last
-   sessions), judged first on Treasury yields 1990-2002 (before TLT existed) and only then on
-   TLT. If it holds, it improves one slot of six: worth roughly +0.02 Sharpe on the book, more
-   if the owner ever wants a separate bond sleeve.
-2. **The month-end loser bounce on stocks, 1962-2002.** The stock/bond gap can be rebuilt from
-   bond yields back to 1962, about 480 months no rule has touched. A card that fixes "after a
-   month in which stocks trail bonds by 2% at T-5, hold stocks for the last five sessions even
-   if the trend rule is out" and tests it there first would settle whether the trace is real.
-3. **A volume screen.** No test in 15 runs has used the six assets' own trading volume. One cheap
+1. **A `month-end-bonds` card.** Rule from the mechanism, fixed before any run: hold the long
+   bond for the last four sessions of each month (bought at the open of T-3, sold at the open of
+   T+1), using the cash the trend rule leaves idle. It was found on TLT and IEF 2003-2025, so
+   passing there proves nothing. Clean tests left: LQD (not looked at in this run), TLT's first
+   year (2002-07 to 2003-07), the held-out year once, then forward paper. If real, it is worth
+   roughly +0.5 to +1% a year on the six-asset book (idle cash averages a quarter of it), about
+   +0.04 Sharpe, from a source that has nothing to do with trend.
+2. **A volume screen.** No test in 15 runs has used the six assets' own trading volume. One cheap
    IC table by info-1's method (abnormal volume, price move per dollar traded, weekly and 4-week
    horizons) either closes that class of input or opens it.
+3. **The month-end stock bounce, with a placebo first.** Since 1990 stocks rose in the last five
+   sessions after a month in which they trailed bonds (unseen 1990-2003: +71 bps, t 1.5; since:
+   +182 bps, t 4.0). Before a card, one table must show whether the same condition measured in
+   mid-month does the same; if it does, this is plain dip buying (`dip-rsi2`: real and small),
+   not rebalancing.
 
-A fourth, for the owner rather than a research lane: flow effects of this size only matter with
-futures and modest leverage. That is the same broker gap the carry lead ran into.
+For the owner rather than a research lane: flow effects of this size only matter with futures
+and modest leverage (the broker gap the carry lead ran into), and two of them are worth more at
+the close than at the next open. Whether the paper broker should fill at the close is a design
+question, not a research one.
 
 **Compared with my guess before any number** (below): I gave the four ideas a 20%, 15%, 10% and
 5-10% chance of passing. None did. The sizes came out at the low end of what I expected for the
-two flow ideas and below it for the other two.
+two flow ideas and below it for the other two. What I did not expect is that the most solid
+pattern of the run would be one no card asked about.
 
 ### Disclosures
 
@@ -115,6 +136,11 @@ two flow ideas and below it for the other two.
   `echo63` have different exposures (14% and 7%) and share a name.
 - **Post-hoc tables** (`results/wide-1-posthoc.md`, script `lib/wide1_posthoc.py`) were made after
   the verdicts and are not strategies; they have no rows in `tries.md`.
+- **Step 4** (`results/wide-1-yields.md`, script `lib/wide1_yields.py`) is descriptive. Its three
+  questions and its reading rule were pushed (commit d6582da) before the yield data was read.
+  One section, the cross-check on ETF closes, was added after the first output, to explain why
+  the yield series and the ETF table disagreed on the auction dip; it says so in its title.
+  Carry is booked per calendar day, not per session as the definition said (same average).
 - **Not run:** the held-out year, for any of the four.
 
 ## Step 1. Ideation (written 2026-11-17/18, before any number of this run)
@@ -340,11 +366,25 @@ this data was read:
   period with |t| >= 2. Anything less is "not confirmed". Either way it is evidence for or
   against writing a card, not a result.
 
+### Step 4, what came out (tables in `results/wide-1-yields.md`)
+
+| Question | Unseen data (to 2003-07) | Seen data (2003-08 to 2025) | Reading |
+|---|---|---|---|
+| Q1, dip before 30-year auctions | +3 bps (t 0.1; 72 auctions): no dip, but too few auctions to tell | -54 bps from yields (t -3.6), -34 bps on TLT's closes (t -2.5), -15 bps at next-open fills (t -1.1) | not confirmed; half of it is lost to our fills |
+| Q1, dip before 10-year auctions | +17 bps (t 1.1; 97): none | -11 bps from yields (t -1.6), -5 bps on IEF's closes | not confirmed |
+| Q2, month-end bond rally (last four sessions, excess) | 10-year +3 bps (t 0.8; 499 months); 30-year +10 (t 1.2; 318). By era: about zero in 1962-1989, +13 and +23 in 1990-2003 (t 1.9 and 2.2) | 10-year +20 (t 3.9); 30-year +39 (t 3.8); TLT +39 at closes, +32 at fills; IEF +24, +21 | not confirmed by the pooled rule; present since 1990 and strong since 2003 |
+| Q3, month-end loser bounce (signed spread) | +13 bps (t 0.9; 261 months); 1962-79 -20, 1980-89 +20, 1990-2003 +46 | +86 bps (t 3.9; 172 months) | not confirmed |
+
+The yield series overstates the auction dip (-54 against -34 bps on TLT itself): at an auction
+the newly sold bond replaces the old one in the constant-maturity series, which moves the yield
+for a reason no holder earns. The ETF's own closes are the number to trust.
+
 ## Status (2026-11-18)
 
-**Done:** ideation, four cards, train tests, post-hoc tables, write-up, `ideas.md`,
-`next-steps.md`. Held-out year unspent. Draft PR #33 (`wide-1` -> `carry-2`), not merged.
+**Done:** ideation, four cards, train tests, post-hoc tables, the step 4 check, write-up,
+`ideas.md`, `next-steps.md`. Held-out year unspent. Draft PR #33 (`wide-1` -> `carry-2`), not
+merged.
 
-**Doing:** step 4 (the descriptive check above), then its numbers into the write-up.
+**Doing:** nothing half-finished. No process running.
 
-**Next (not started):** the three lanes listed at the top.
+**Next (not started):** the three lanes listed at the top; `month-end-bonds` first.
