@@ -72,7 +72,38 @@ larger slots; neither was tested here (a new card).
 
 ## 2. Currency hedge (amendment 2)
 
-Pending: runs after amendment 2 (pushed before any number).
+IUSE (iShares S&P 500 EUR Hedged) in place of SXR8, window W, Dutch percentage costs as in
+eu-1 so eu-1's rows compare directly; 10 new rows. Full tables: `results/eu-2-hedge.md`.
+
+| Book (EUR, `nl`) | `tsmom12` Sharpe | EW Sharpe | Gap | `tsmom12` max DD | EW max DD |
+|---|---:|---:|---:|---:|---:|
+| euw (SXR8, unhedged; eu-1) | 0.56 | 0.77 | -0.21 | 14.3% | 19.8% |
+| **euw-h** (IUSE, hedged) | 0.53 | 0.75 | **-0.21** | 14.3% | 19.8% |
+| euw-hh (IUSE + hedged gold XAD1) | 0.43 | 0.70 | -0.27 | 16.5% | 19.8% |
+| usw (US funds in USD; eu-1) | 0.63 | 0.67 | -0.04 | 11.1% | 18.7% |
+| eu6 (eu-1) | 1.44 | 1.38 | +0.06 | 31.0% | 43.0% |
+| eu6-h (IUSE) | 1.43 | 1.36 | +0.07 | 32.1% | 44.0% |
+
+- **Hedging does not remove the drag**: the coin-free book's gap to equal weight is -0.21 with
+  or without the hedge (card: **no**). Hedging the gold slot too makes it worse (-0.27): hedged
+  gold earned 4.5% a year against 8.0% unhedged, because gold's rise in euros came partly from
+  the dollar. The six keeps its character with the hedged slot (all four eu-1 tests pass).
+- **Why.** eu-1's "half currency" came from converting the US asset-class book to euros
+  (`usw-eur`), where the dollar sits in every slot, including US Treasuries (IEF, TLT). The UCITS
+  book already holds euro bonds, so its remaining dollar is mostly in one equity slot of seven;
+  hedging that slot moves the gap by -0.01. The rest of euw's gap is costs (section 1) and the
+  instruments themselves; with SE ~0.27 on every Sharpe, none of it is distinguishable from noise.
+- **The single US slot.** The filter against holding: IUSE -0.20, SXR8 (unhedged) -0.27, SPY in
+  USD -0.12 (card: "as in USD" needs within 0.05: **no**). But the crash pattern does come back:
+  in 2022 the hedged S&P fell 25.7% held and 15.0% filtered (SPY 24.5% / 13.3%), where the
+  unhedged SXR8 fell 11.4% / 10.9% (the dollar was the cushion and the filter added nothing);
+  2018-Q4 likewise (IUSE -18.4% / -10.8%, SXR8 -12.5% / -12.5%). Hedging gives the trend filter
+  the US index's own trend back; it does not make the filter pay over the whole window.
+- **What it costs.** Held alone, IUSE returned 12.3% a year (Sharpe 0.82, max DD 34.8%) against
+  SXR8's 15.4% (0.97, 33.8%) and SPY's 14.8% in USD (0.91). The hedge cost about 2.5% a year
+  against SPY in USD (the rate gap plus fund costs, section 3), and in this window the dollar
+  also rose (SXR8 beat IUSE by 3.1% a year). Hedging removed the dollar's cushion in sell-offs
+  and its long-run tailwind together.
 
 ## 3. Hedged lines: data
 
@@ -113,6 +144,25 @@ Disclosure: before the full amendment-1 run, one plumbing run with logging off o
 
 ## Verdict
 
-Pending section 2.
+1. **Fixed fees: run the coin book at any size from EUR 5k; the coin-free book only from about
+   EUR 10-16k.** With the coins the rule's turnover is cheap relative to its 20% vol; at EUR 5k
+   even EUR 3 orders cost 0.12 Sharpe (break-even ~EUR 6k), EUR 1 orders 0.04. Without coins
+   (6% vol), EUR 3 orders on EUR 5k cost 0.32 Sharpe and turn a 13% worst loss into 21.5%:
+   break-even about EUR 16k with the house band, EUR 10k with a 5% band (EUR 1 orders: ~6k /
+   under 5k; EUR 2: ~10k / ~6k). At EUR 25k and up the fixed fee does not matter (<= 0.07).
+2. **The 5% band helps but fails the card's test.** On the coin book it cuts ETF orders 42 -> 11
+   a year and halves the fee loss, but it also changes the rule (Sharpe +0.06, drawdown -3.1
+   points at no fee, beyond the 0.05 / 2-point limit). On the coin-free book it cuts orders only
+   30 -> 21, because most orders are the signal's own entries and exits; fee loss falls ~40%.
+   Cheapest fix for a small account: a broker/fund with EUR 1 orders (DEGIRO core selection,
+   Trade Republic Best Price), then the band.
+3. **Hedging the US equity slot does not remove eu-1's currency drag** on the coin-free book
+   (gap -0.21 either way) and costs about 2.5% a year against SPY in USD. It does restore the
+   US crash pattern of the filter on that slot (2022: out, -15% vs -26% held). Not worth it for
+   the house rule; an unhedged SXR8/CSPX is fine.
+
+Nothing here argues for changing the rule. All differences are well inside the Sharpe standard
+error (~0.27); the fee results are mostly mechanical (orders a year x fee / book size), so they depend far less
+on this sample's luck than the Sharpe ratios themselves.
 
 Held-out year: unspent (nothing was selected).
