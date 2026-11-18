@@ -94,7 +94,12 @@
     2 pm window +8.9, t 0.8). Dead by the pre-set rule; no card, no tries. Published calendar
     effects 0 for 3 after publication: new lists should favour mechanisms with post-sample
     years or forward-only checks. Family stays 61 / 14 tested / 0 passed.
-  - RUNNING: `trend-1926-fix`
+  - DONE `trend-1926-fix` (draft #66 -> trend-1926): replay gaps = Friday-holiday weeks
+    (`common.weekly` fills one session later than the paper series; no look-ahead; shared
+    convention). No numbers changed beyond 0.012; era-1 energy flips sign (9 -> 10 of 10
+    industries), verdict unchanged. 7 tests for era 2; docs cover both eras. Owner: move
+    `common.weekly` to the calendar Friday (needs its own card; shifts every lane a little)?
+  - RUNNING: `forward-1` (`grimstrade-forward1`: forward-only shadow registry, draft -> main)
     (`grimstrade-trend1926b`: era-2 replay gaps, TREND_ERA=1962 test, docs) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
