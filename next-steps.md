@@ -1,5 +1,15 @@
 # Next steps
 
+## eu-1 (WIDER; started 2026-11-18 night, branch `eu-1` from `trend-tune`)
+
+Does `tsmom12` keep its character on European-listed UCITS ETFs/ETCs, in euros (a retail investor
+in the Netherlands cannot buy US-domiciled ETFs)? Robustness check of a fixed rule, no
+tuning, train period only. Write-up `research/eu-1.md`, card `research/cards/eu-1.md`.
+
+- Done: data note (UCITS tickers, ECB USD/EUR rate, US twins in EUR, splices; `lib/eu1_data.py`,
+  `lib/eu1_check.py`, `results/eu-1-data.md`).
+- Doing: card, then the runs.
+
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
 What earns `tsmom12` its money, where it bleeds, and whether walk-forward tuning of its lookback
