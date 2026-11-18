@@ -78,3 +78,24 @@ def test_months_rank_bins_and_spread() -> None:
     ]
     sd, share = ev.null_spread([-3.0, -1.0, 1.0, 3.0])
     assert abs(sd - np.std([-3, -1, 1, 3], ddof=1)) < 1e-12 and share == 0.5
+
+
+def test_fork_list_and_legs() -> None:
+    ev = _ev()
+    assert len(ev.FORKS) == 15 and sum(s for _, _, s in ev.FORKS) == 5
+    assert all(d <= date(2025, 11, 10) for _, d, _ in ev.FORKS)
+    d0 = date(2022, 9, 15)
+    e = {d0 + timedelta(days=k): 0.01 * k for k in range(-30, 30)}
+    pre, post = ev.legs(e, d0)
+    assert abs(pre - 0.10) < 1e-12 and abs(post - 0.10) < 1e-12  # E(d-1)-E(d-11), E(d+9)-E(d-1)
+    del e[d0 + timedelta(days=9)]
+    assert ev.legs(e, d0) is None
+
+
+def test_one_sample_t_and_slope() -> None:
+    ev = _ev()
+    m, t = ev.one_sample_t([1.0, 2.0, 3.0])
+    assert m == 2.0 and abs(t - 2.0 / (1.0 / math.sqrt(3))) < 1e-12
+    assert math.isnan(ev.one_sample_t([1.0])[1])
+    assert abs(ev.ols_slope([0, 0, 1, 1], [1.0, 3.0, 5.0, 7.0]) - 4.0) < 1e-12
+    assert math.isnan(ev.ols_slope([1, 1], [1.0, 2.0]))

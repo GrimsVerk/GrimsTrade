@@ -6,7 +6,7 @@ import bisect
 import calendar
 import math
 from collections.abc import Mapping, Sequence
-from datetime import date
+from datetime import date, timedelta
 
 import numpy as np
 
@@ -103,3 +103,48 @@ def null_spread(ts: Sequence[float]) -> tuple[float, float]:
     """(standard deviation, share with |t| >= 2) of a list of placebo t values."""
     a = np.asarray(ts, dtype=float)
     return float(a.std(ddof=1)), float(np.mean(np.abs(a) >= 2))
+
+
+# --- Step 2: W17 Ethereum upgrades ---
+
+# (name, mainnet activation UTC day, scope: 1 = changes issuance or consensus), [memory]
+FORKS: list[tuple[str, date, int]] = [
+    ("DAO fork", date(2016, 7, 20), 0),
+    ("Tangerine Whistle", date(2016, 10, 18), 0),
+    ("Spurious Dragon", date(2016, 11, 22), 0),
+    ("Byzantium", date(2017, 10, 16), 1),
+    ("Constantinople/Petersburg", date(2019, 2, 28), 1),
+    ("Istanbul", date(2019, 12, 8), 0),
+    ("Muir Glacier", date(2020, 1, 2), 0),
+    ("Berlin", date(2021, 4, 15), 0),
+    ("London", date(2021, 8, 5), 1),
+    ("Arrow Glacier", date(2021, 12, 9), 0),
+    ("Gray Glacier", date(2022, 6, 30), 0),
+    ("The Merge (Paris)", date(2022, 9, 15), 1),
+    ("Shapella", date(2023, 4, 12), 1),
+    ("Dencun", date(2024, 3, 13), 0),
+    ("Pectra", date(2025, 5, 7), 0),
+]
+
+
+def legs(e: Mapping[date, float], d: date, n: int = 10) -> tuple[float, float] | None:
+    """(Pre, Post) of research/wide-9.md step 2: Pre = E(d-1) - E(d-1-n), Post = E(d-1+n) -
+    E(d-1); None if any of the three days is missing from `e`."""
+    a, b, c = (d + timedelta(days=k) for k in (-1 - n, -1, n - 1))
+    if a not in e or b not in e or c not in e:
+        return None
+    return e[b] - e[a], e[c] - e[b]
+
+
+def one_sample_t(y: Sequence[float]) -> tuple[float, float]:
+    """(mean, plain t with n - 1 degrees of freedom)."""
+    a = np.asarray(y, dtype=float)
+    if len(a) < 2:
+        return math.nan, math.nan
+    return float(a.mean()), float(a.mean() / (a.std(ddof=1) / math.sqrt(len(a))))
+
+
+def ols_slope(x: Sequence[float], y: Sequence[float]) -> float:
+    xa, ya = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
+    dx = xa - xa.mean()
+    return float(dx @ (ya - ya.mean()) / (dx @ dx)) if dx @ dx > 0 else math.nan
