@@ -313,6 +313,8 @@
     +0.041 (z 4.86) only because the gym pays cash 0; with T-bill cash (post-hoc) +0.018 (z 2.23)
     fails the project bar. MNA ETF z 0.65 above T-bills. 2 rows (1 pick). Lesson: score held
     slots above T-bills against a same-size T-bill slot.
+  - 23:21 UTC 5h 0.74: `survey-7` started (W, small, <- wide-9): `seasonal-20y` event gate with
+    the placebo null. Running with fast-reentry-2. Then nothing new until 02:15.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
