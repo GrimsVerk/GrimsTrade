@@ -130,3 +130,23 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
 | ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
 | ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
+
+### Run wide-1: hypotheses from other fields (2026-11-17)
+
+Ideation, field by field, in [wide-1.md](wide-1.md) (46 mechanisms; the 33 killed there collapse
+into ideas already in this file and are not repeated here). Four got a card; all four failed
+their pre-set bar; none used the held-out year. Sharpe on the six assets: `tsmom12` 1.05.
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| auction-concession | Queueing / inventory theory | failed bar; faint lead on TLT alone | [card](cards/auction-concession.md) | TLT out for the five sessions ending with a 20/30-year Treasury auction: book +0.01 (p = 0.14); TLT alone 0.50 vs 0.33 (p = 0.05), mostly 2020-25; IEF with 7/10-year auctions 0.26 vs 0.55 (7-year auctions sit in the month-end bond rally). [result](results/auction-concession.md) |
+| rebalance-pressure | Control theory | dead (tested) | [card](cards/rebalance-pressure.md) | Halve the month's stock/bond leader in the last five sessions: book -0.005 (p = 0.67). The raw spread has the predicted sign (+38 bps a month, t = 1.7; +56 before 2014, +21 since): it is the loser rising, which a long-only trend book mostly cannot hold. [result](results/rebalance-pressure.md) |
+| contagion-catchup | Epidemiology / graph diffusion | dead (tested) | [card](cards/contagion-catchup.md) | 21 ETFs, hold those whose relatives moved and which did not: 0.50 vs 0.60 for the trend rule (coins 0.38 vs 0.74). Relatives' moves do not spill over (IC -0.015); what remains is plain one-week reversal (IC +0.03, t = 2.9), which does not pay. [result](results/contagion-catchup.md) |
+| vol-echo | Signal processing / control theory | dead (tested) | [card](cards/vol-echo.md) | Hold stocks when a shock leaves the 21-day volatility window: SPY 0.25 vs 0.63 at equal exposure; the 1962-1993 placebo shows the same small excess return. [result](results/vol-echo.md) |
+| stablecoin-resource | Ecology (consumer-resource) | parked | - | Two cycles, two coins: cannot be validated (wide-1, E1) |
+| attention-sir | Epidemiology | parked | - | Three manias; Wikipedia page views are free from 2015-07 (wide-1, P2) |
+| validator-queue | Queueing theory | parked | - | Ethereum exit queue; data from 2023-04, one coin (wide-1, Q4) |
+| token-unlocks | Ecology (supply pulse) | parked | - | Needs paid data (price not checked, nothing bought); small coins only (wide-1, Q6) |
+| month-end-bonds | Calendar / index flows | new | - | Found post hoc in wide-1, not tested: TLT +39 bps and IEF +24 bps in the last four sessions of the month, 2003-2025 (t 4.3, 5.4; +32 and +21 at next-open fills), both halves alike; yields before 2003: nothing to 1989, +13 to +23 bps in 1990-2003 (t ~2). Needs its own card; clean data left: LQD, TLT's first year, the held-out year. [tables](results/wide-1-yields.md) |
+| month-end-stock-bounce | Calendar / rebalancing | new | - | Found post hoc in wide-1: stocks rose in the last five sessions after trailing bonds by 2% in the month (+182 bps, t 4.0, 2003-2025; unseen 1962-2003 +43 bps, t 1.7). Not confirmed on unseen data; needs a mid-month placebo before a card (it may be plain dip buying). [tables](results/wide-1-yields.md) |
+| volume-screen | Inputs | new | - | The six assets' own volume has never been screened (all 15 ML features are from closes, info-1's 23 inputs are outside data). One IC table by info-1's method |

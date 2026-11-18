@@ -1,5 +1,47 @@
 # Next steps
 
+## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
+
+New hypotheses from ten other fields (ecology, epidemiology, signal processing, control,
+information theory, game theory, physics, queueing, neuroscience, immunology). 46 mechanisms
+sorted before any number; 33 collapse into ideas already killed; four got a card, each a bet on
+someone else's mechanical trading. **All four fail their pre-set bar on train; held-out year
+unspent.** Write-up `research/wide-1.md`; tables `research/results/`; 39 rows in `tries.md`.
+
+- `auction-concession` (TLT out before 20/30-year Treasury auctions): book +0.01 over `tsmom12`
+  (p 0.14). The dip is in TLT's closes (-34 bps, t 2.5) but half is lost at next-open fills;
+  IEF goes the other way. Faint lead.
+- `rebalance-pressure` (halve the month's stock/bond leader in the last five sessions): book
+  -0.005. The raw spread has the predicted sign; not confirmed on 1962-2003 data.
+- `contagion-catchup` (21 ETFs, hold those whose relatives moved and which did not): dead, 0.50
+  vs 0.60. Relatives' moves do not spill over; plain one-week reversal is all there is.
+- `vol-echo` (hold stocks when a shock leaves the 21-day volatility window): dead, SPY 0.25 vs
+  0.63; the pre-2010 placebo looks the same.
+
+Found after the tests (a hypothesis, not a result; `research/results/wide-1-yields.md`): long
+bonds earned almost all their return in the last four sessions of each month (TLT +39 bps,
+t 4.3, 2003-2025, both halves; +32 at next-open fills; from yields: nothing before 1990, +13
+to +23 bps in 1990-2003).
+
+Next lanes (each needs its own card; details at the top of `research/wide-1.md`):
+
+1. `month-end-bonds`: idle cash into the long bond for the last four sessions of each month.
+   Clean tests left: LQD (not looked at), TLT's first year, the held-out year once, forward paper.
+2. A volume screen: the six assets' own trading volume has never been screened.
+3. The month-end stock bounce after a bad month, with a mid-month placebo first.
+
+### For the owner
+
+- Nothing to change in the paper system.
+- `month-end-bonds` would spend the held-out year on a pattern found by looking, not by a card.
+  That is allowed only through a new card; whether to spend the year on it is your call.
+- Flow effects of this size (15-40 bps per event) only pay with futures and modest leverage:
+  the same broker gap the carry lead ran into.
+- Two effects here are worth more at the close than at the next open (the auction dip keeps 45%
+  at our fills, the month-end bond rally 83%). Whether the paper broker should be able to fill
+  at the close is a design question.
+- Paid data noted, nothing bought: token unlock schedules (price not checked).
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
