@@ -169,6 +169,13 @@
     2022 +1.7% vs -7%) but 58 vs 31 months under water and 21 vs ~2 orders/yr. Trend = crash
     insurance only (book >= EUR 5k at EUR 1/order, >= 10k at EUR 2-3). 26 rows.
   - 22:29 UTC `eu-7` started (D, <- eu-6): trend on stock funds only; hold-seven + fixed cash.
+  - DONE `wide-6` (draft #76 -> wide-5): critical-slowing-down gate fails (rising AC1 t 1.4
+    to 2015, 0.1 after; rising variance adds nothing once recent vol is held fixed; last
+    month's vol t 3.8 is the only predictor); `lunar` gate fails (1.6 bps/day, t 0.43). 0 rows
+    (gates). Family reconciled: 68 mechanisms / 16 tested (wide and survey lists had split);
+    next bar p < 0.00147. New W12-W15 queued.
+  - 22:31 UTC `wide-7` started (W, <- wide-6): gates for W14 `wash-sale-echo`, W13
+    `festival-gold`, W12 `rmd-december`.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
