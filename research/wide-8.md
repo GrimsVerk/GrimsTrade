@@ -243,8 +243,9 @@ day). Only the in-sample sign holds, weakly: GSPC 1950-2002 -4.4 bps a day (t -1
 | SPY 1993-2002 (shown) | -28.7 (-1.77) | +6.6 (+1.38) | 11 | -1.62% |
 
 - **Post-sample the sign is wrong, and a t of +2.5 is ordinary here:** 19 severe days (84
-  flagged sessions) is a handful of episodes (the 2003 Halloween storms, 2004-2005, 2015,
-  2024); the shifted calendars throw up values from -16 to +23 bps a day, and the true one sits
+  flagged sessions) is about a dozen episodes, 13 of the 19 days in 2003-2005 (the
+  2003 Halloween storms, July and November 2004), the rest in 2015, 2017 and 2024 (May,
+  August, October); the shifted calendars throw up values from -16 to +23 bps a day, and the true one sits
   third from the top. The step-1 lesson again: with few clustered events, |t| 2.5 is noise.
 - **In the paper's years the effect is small:** GSPC 1950-2002 shows -4.4 bps a day after
   severe storms (t -1.05, 108 severe days) and the continuous dose nothing (+0.5, t 0.39).
