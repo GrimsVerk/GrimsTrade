@@ -1,5 +1,13 @@
 # Next steps
 
+## eu-2 (running 2026-11-18 night, branch `eu-2` from `eu-1`, draft PR -> `eu-1`)
+
+DEEPER lane on eu-1: (1) real Dutch fixed per-order fees (DEGIRO EUR 1 / EUR 3, Trade Republic
+EUR 2) at constant books of EUR 5k/25k/100k, with a 5% rebalance band as the mitigation; (2) an
+EUR-hedged S&P 500 line in place of SXR8. Card `research/cards/eu-2.md` (amendments before
+numbers); write-up `research/eu-2.md`; tables `research/results/eu-2.md`; rows in
+`research/tries.md` (idea `eu-2`). Train only. Doing: card amendment 1 pushed, runs next.
+
 ## eu-1 (done 2026-11-18 night, branch `eu-1` from `trend-tune`, draft PR #59 -> `trend-tune`)
 
 Does `tsmom12` keep its character on European-listed UCITS ETFs/ETCs, in euros (the owner lives
