@@ -1,5 +1,14 @@
 # Next steps
 
+## Survey 2 (started 2026-11-18, branch `survey-2`, draft PR -> `wide-4`)
+
+Task: survey 2023-2026 research for ideas not yet in the repo's lists, rank them by prior in a
+note pushed before any number, card the top pick and test it on train only. Write-up
+`research/survey-2.md`.
+
+- Doing: reading sources.
+- Next: ranking note, card, test.
+
 ## Wide 4 (done 2026-11-18, branch `wide-4`, draft PR #57 -> `wide-3`)
 
 W2 `tax-drain` from the list, then five new mechanisms from unused fields and a test of the
