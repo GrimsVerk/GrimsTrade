@@ -403,20 +403,26 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   Staff); always WIDER and DEEPER lanes. 2026-11-18: bursts use only the last 30 min of each
   5-hour window (`chief-of-staff/briefs/grimstrade-burst.md`), weekly stop 0.84.
 
-### Lane queue (W = wider, D = deeper)
+### Lane queue (W = wider, D = deeper; rewritten by night-2 lead 2026-11-18 23:25 UTC)
 
-1. D `evo-1` next step: fast scorer vs `gym.simulate`, `evo_wf.py`/`evo_world.py`, timing test,
-   noise/planted controls, then the 20 replay worlds; no real search before those.
-2. W `data-long-1` -> gold (datahub monthly) and Damodaran cross-check next to the Shiller bond, then
-   D `trend-where-long`: `where-vol` unchanged on bond/gold before 2002 (the worst-loss question
-   now rests on 2022 alone).
-3. D `coin-cap` follow-up: `stop-0.25` beats plain caps on coin years but on ~one episode; find
-   more coin falls (the 100-coin book) before any rule PR.
-4. W `wide-3`: next uncarded wide-1 mechanism; the bar counts every pick so far (4 of 42).
-5. D `rl`: rl-5 says stop screening weekly perp inputs; close the RL lane or try slower carry
-   (cost), both on train only (carry-3's held-out year is spent).
-6. W long-horizon / other assets: trend-1926 shows trend is crash insurance on stocks; test the
-   same on the long bond/gold histories once wired (needs item 2).
+Old items 1-6 are all done or closed (evo, data-long, coin-cap, wide-3, rl, long-horizon).
+Closed lines tonight: combo, eu, coin, insure/re-entry, evo, rl, forced Treasury flows, published
+calendar effects. Every new card quotes `research/register/BAR.md` (register-2: ~433 effective
+trials; a new pick needs +0.30..+0.56 Sharpe over `tsmom12`) and gates use
+`research/gate-null.md` (40 fixed placebos, rank decides). Score anything that holds less money
+above T-bills, against a same-size T-bill slot (diversifier-1 lesson).
+
+1. D `vol-timing`: ls-trend-2's `tsmom12`+bills control (Sharpe 1.26, max DD 5.6%): first check
+   overlap with `trend-vol` (combo-1 map: failed as "hold less when it hurts"); card only if new.
+2. D `short-sleeve`: small SPY/QQQ downtrend short sleeve (ETFs only), judged as insurance above
+   T-bills vs a T-bill slot (survey-6 next 1; ls-trend-1 narrow LS as prior).
+3. W gates: W18 `elimination-mood` (needs keyless match list; 2026 World Cup is held-out:
+   owner), new mechanisms from unused fields, each with the placebo null.
+4. W `multi-signal`: descriptive screen of value/carry/momentum/low-vol signals across the six
+   assets (survey-6 next 3; low prior, no pick).
+5. D `register-3`: lanes log weeks/skew/kurtosis in `register_try`; widen the correlation sample
+   across families (register-2 next).
+6. D descriptive: why 3-month re-entries fail in multi-leg bears (1929-33), no pick.
 
 ### For the owner
 
