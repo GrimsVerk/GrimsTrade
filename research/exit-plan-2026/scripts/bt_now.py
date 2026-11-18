@@ -11,8 +11,10 @@ Description only, no backtest. Rerun for the final refresh with ONE command from
 - The cache root (CBOE VIX file, FRED Baa spread, Shiller CAPE) comes from BT_CACHE or
   GRIMSTRADE_DATA, else `cache_root` in the gitignored research/macro.local.json (copy the
   .example next to it).
-- A US bar dated today (New York date) is dropped until 16:10 New York time, an Oslo bar dated
-  today until 16:30 Oslo time: before then it is intraday, not a close. `--us-last YYYY-MM-DD`
+- A US bar dated today (New York date) is dropped until 16:20 New York time, an Oslo bar dated
+  today until 16:30 Oslo time: before then it is intraday, not a close. 16:20, not 16:10,
+  because VIX and VIX3M close at 16:15 (review round 2); VIX is cut at the S&P's last bar.
+  `--us-last YYYY-MM-DD`
   overrides the US cut (bars after that date are dropped).
 - Without --fetch it reads BT_FRESH (an earlier download) or the 2026-11-12 cache.
 
@@ -40,7 +42,7 @@ import bt_window as bw  # noqa: E402
 import bt_window_now as bwn  # noqa: E402
 
 FETCH = ["^GSPC", "^IXIC", "^VIX", "^VIX3M", "HYG", "LQD", "OSEBX.OL", "OBX.OL", "URTH"]
-US_CLOSE = ("America/New_York", (16, 10))
+US_CLOSE = ("America/New_York", (16, 20))
 OSLO_CLOSE = ("Europe/Oslo", (16, 30))
 MONTHLY = ("sma10m", "tsmom12")
 

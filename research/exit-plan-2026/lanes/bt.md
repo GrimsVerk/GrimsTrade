@@ -680,7 +680,8 @@ uv run --with xlrd --with pandas python -I research/exit-plan-2026/scripts/bt_no
 
 It refetches the public Yahoo series (S&P, Nasdaq, VIX, VIX3M, HYG, LQD, OSEBX, OBX, URTH) into
 the scratch dir, which must be outside the repo and is never committed. It drops any US bar of
-today's New York date before 16:10 New York time, and Oslo likewise before 16:30. It prints:
+today's New York date before 16:20 New York time (16:10 until review round 2, which cut the
+16:15 VIX close), and Oslo likewise before 16:30. It prints:
 
 - the Part C table;
 - for each holding type, the 200-day state, the date of the last cross and which sample fits;
@@ -689,6 +690,20 @@ today's New York date before 16:10 New York time, and Oslo likewise before 16:30
 
 The cache root comes from `GRIMSTRADE_DATA` / `BT_CACHE` or the gitignored
 `research/macro.local.json`. The Baa spread is not refetched (FRED was unreachable).
+
+## Review round 2 fixes (2026-11-18, readings only, no new test)
+
+- **VIX cut-off.** The first 18 Nov refresh ran at 21:12 UTC, before the 16:15 New York
+  (21:15 UTC) VIX and VIX3M close, and `bt_now.py` let US bars through from 16:10 New York. The
+  US cut is now 16:20 New York (VIX is cut at the S&P's last bar). Rerun with `--fetch` at
+  22:12 UTC on 18 Nov: VIX 24.56 (was 24.3), 1.378 times its 50-day mean (was 1.36), 92nd
+  percentile of the past year, VIX/VIX3M 1.011 (was 1.007), HYG/LQD +0.50% vs its 200-day
+  average (was +0.53%). Every index reading, sample match and rule state is unchanged
+  (S&P -0.31%, Nasdaq -2.87%, OSEBX +3.15%, OBX +1.92%, URTH -0.99%; from highs -6.33 /
+  -11.49 / -3.32 / -3.83 / -6.52).
+- **Nasdaq and the `now-like` band.** At the 18 Nov close the Nasdaq is 11.49% below its high,
+  not 11.85% (17 Nov). It leaves the 4-12% band only after a further fall of about 0.6%
+  (0.88 / 0.8851 = 0.9942), not 0.2%. The point 1 note above is the 17 Nov state.
 
 ## Honesty notes
 

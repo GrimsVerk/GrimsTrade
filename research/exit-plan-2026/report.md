@@ -12,7 +12,7 @@ Børs is the tested example), and single shares.
 
 This is research help, not financial advice. It lays out evidence, options and rules you can
 choose to follow. You place every order yourself. The market readings are an example from the
-Wed 18 Nov 2026 US and Oslo closes (refreshed 21:12 UTC that day); every rule is written so that you
+Wed 18 Nov 2026 US and Oslo closes (refreshed 22:12 UTC that day, after the VIX close); every rule is written so that you
 apply it to the readings on the day you act (section 5 says how to refresh them). "(unverified)"
 marks anything no source in this run confirmed. Section 11 maps every part to the lane note,
 script and logged test behind it.
@@ -57,7 +57,7 @@ What the evidence says, in short:
   times in three, but when a fall comes it ends up selling low (-8 to -9% on average).
 - **Where things stood at the 18 Nov closes (refresh before acting):** S&P 500 0.31% below its
   200-day average (second close below; 6.3% below its 6 Oct high), Nasdaq 2.9% below (11.5% off
-  its high), MSCI World ETF 1.0% below, Oslo's OSEBX 3.2% above. VIX 24.3 with a slightly
+  its high), MSCI World ETF 1.0% below, Oslo's OSEBX 3.2% above. VIX 24.6 with a slightly
   inverted VIX curve; credit calm; CAPE 39.4, near its record.
 - **Only euro cash never lost value** in any crash measured. Gold fell 22% (in dollars) within
   the Lehman weeks of 2008; Berkshire fell 54% in 2007-09; long euro bonds lost 32% in 2022;
@@ -85,7 +85,7 @@ One finding runs through all of it. The indicators that predict anything do so o
 | **Breadth and concentration** | Across 49 US industries 1926-2025, concentration explains "virtually none" of future returns. A rule that held less when concentration was high lowered returns and raised risk ([Kritzman-Turkington 2025](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5436695), read via a [summary](https://quantpedia.com/the-fallacy-of-concentration-risk/), unverified at source). Practitioner studies find that high top-10 concentration preceded equal-weight beating cap-weight over 5 years (unverified). Advance/decline divergences, "% above the 200-day" and the Hindenburg Omen: no peer-reviewed support found (a short search; absence, not proof) (lit §5) | 5 years, and only for which stocks do better | Weak as a timer | Acting on concentration lost in their test. Not tested by us | **No.** At most a reason to buy back broad or equal-weight |
 | **Sentiment indices** | When the Baker-Wurgler index is high, speculative stocks later do worse than safe ones. That is a cross-section result at about 1 year ([BW 2006](https://doi.org/10.1111/j.1540-6261.2006.00885.x); [BW 2007](https://doi.org/10.1257/jep.21.2.129)). A cleaned version predicts the monthly market return in and out of sample, 1965-2010 ([Huang-Jiang-Tu-Zhou 2015](https://doi.org/10.1093/rfs/hhu080); out-of-sample R² unverified). The AAII bull-bear survey is a modest, noisy contrarian signal ([Fisher-Statman 2000](https://doi.org/10.2469/faj.v56.n2.2340), unverified). For put/call, the robust result is for single stocks using non-public volume ([Pan-Poteshman 2006](https://doi.org/10.1093/rfs/hhj024)); for the index put/call ratio no solid evidence was found (lit §7) | Months to 1 year | Medium (Baker-Wurgler) to weak (AAII, put/call) | Even a few percent of monthly R² moves the expected six-week return by only a small fraction of a percent (lit §4). Not tested by us | **No.** No defensible threshold |
 | **Credit spreads** | The excess bond premium leads recessions ([Gilchrist-Zakrajšek 2012](https://doi.org/10.1257/aer.102.4.1692)). Very tight spreads two years earlier predict widening and weaker activity ([López-Salido-Stein-Zakrajšek 2017](https://doi.org/10.1093/qje/qjx014)). Tight spreads are the warning; widening is the event. The literature gives no stock-sell threshold (lit §6) | 1-2 years (for the economy) | Medium for recessions; none for stock timing | **Ours:** the Baa-spread rule caught 2000 and 2007 but was late in 1987 and 2020. 87-95% of the credit rules' exits were false alarms (bt Part B) | **Only as a confirmer.** Calm on 10 Nov: Baa spread 1.51 |
-| **Volatility, VIX** | Cutting exposure when recent variance is high raised Sharpe ratios in sample ([Moreira-Muir 2017](https://doi.org/10.1111/jofi.12513)). Across 103 strategies, real-time versions mostly did not beat the unmanaged ones ([Cederburg et al. 2020](https://doi.org/10.1016/j.jfineco.2020.04.015)). The VIX curve's slope predicts returns on volatility products, not on the S&P ([Johnson 2017](https://doi.org/10.1017/S0022109017000825)). An inverted curve marks stress already under way, and high VIX was often followed by above-average returns (lit §9) | Weeks to months | Medium in sample, weak out of sample | **Ours:** VIX above 30 caught 2007-09, 2020 and 2022 (data from 1990). A volatility spike alone protected poorly. The VIX trigger failed the six-week bar (bt Parts A, B, amendment) | **Only as a confirmer.** On 17 Nov: VIX 25.5, curve inverted |
+| **Volatility, VIX** | Cutting exposure when recent variance is high raised Sharpe ratios in sample ([Moreira-Muir 2017](https://doi.org/10.1111/jofi.12513)). Across 103 strategies, real-time versions mostly did not beat the unmanaged ones ([Cederburg et al. 2020](https://doi.org/10.1016/j.jfineco.2020.04.015)). The VIX curve's slope predicts returns on volatility products, not on the S&P ([Johnson 2017](https://doi.org/10.1017/S0022109017000825)). An inverted curve marks stress already under way, and high VIX was often followed by above-average returns (lit §9) | Weeks to months | Medium in sample, weak out of sample | **Ours:** VIX above 30 caught 2007-09, 2020 and 2022 (data from 1990). A volatility spike alone protected poorly. The VIX trigger failed the six-week bar (bt Parts A, B, amendment) | **Only as a confirmer.** On 18 Nov: VIX 24.6, curve just inverted (section 5.1) |
 | **Trend and momentum** | 12-month time-series momentum works in each of 58 futures; it persists 1-12 months and then partly reverses ([Moskowitz-Ooi-Pedersen 2012](https://doi.org/10.1016/j.jfineco.2011.11.003)). Trend following was positive in 8 of the 10 worst 60/40 drawdowns since 1880 ([Hurst-Ooi-Pedersen 2017](https://doi.org/10.3905/jpm.2017.44.1.015)). It fails in sudden crashes like 1987 (lit §8) | Reacts after the turn | Strong over the long run: the data before 1985 are out of sample relative to the 2012 paper | The honest out-of-sample gain is small, and most exits are whipsaws (section 2.2). **Ours:** the 200-day rule avoided at least a third of the fall in all 8 big crashes; 89% of its exits were false alarms (bt Part B) | **Yes.** It is the one reaction rule (sections 2.2, 2.3) |
 | **LPPL (Sornette)** | Fits a "critical time" to super-exponential price growth ([Johansen-Ledoit-Sornette 2000](https://doi.org/10.1142/S0219024900000115)) | Weeks to months (claimed) | Weak | On 11 Hang Seng crashes, only 7 fits had parameters in the ranges proposed after the fact ([Bree-Joseph](https://arxiv.org/abs/1002.1010)). No public record of live hits and false alarms was found (lit §10). Not tested by us | **No.** The fits are unstable |
 | **PSY / GSADF** | A real-time test of whether prices are explosive. It dates the start of the 1990s Nasdaq episode years before 2000 ([Phillips-Shi-Yu 2015](https://doi.org/10.1111/iere.12132); [Phillips-Wu-Yu 2011](https://doi.org/10.1111/j.1468-2354.2010.00625.x)) | Dates the start; dates the end only after prices turn | Medium as a bubble detector | Used as an exit it behaves like a trend rule (lit §11). Not tested by us (no tool) | **No** as a top timer |
@@ -174,8 +174,8 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 
 ### 5.1 The readings (bt lane, Part C): an example to refresh
 
-US and Oslo data to the close of Wed 18 Nov 2026 (refetched 21:12 UTC; the US close is 16:00
-New York, 22:00 CET), Baa spread to 10 Nov (cached; FRED not reachable from this machine), Shiller CAPE for Nov 2026 (price = 12 Nov close). Source:
+US and Oslo data to the close of Wed 18 Nov 2026 (refetched 22:12 UTC, after the 16:15 New York VIX close; the stock close is
+16:00 New York, 22:00 CET), Baa spread to 10 Nov (cached; FRED not reachable from this machine), Shiller CAPE for Nov 2026 (price = 12 Nov close). Source:
 `lanes/bt.md` Part C and "Review round 1 fixes", script `bt_now.py`. These numbers move every
 day; the rules in section 6 use the reading on your own start day, and these are the example.
 
@@ -201,11 +201,11 @@ below its line; Nasdaq 3.3% below; VIX 25.46, VIX/VIX3M 1.019. States did not ch
 
 Other readings (same dates):
 
-- **Volatility:** VIX 24.3 on 18 Nov, 1.36 times its 50-day mean, 92nd percentile of the past
-  year. VIX/VIX3M = 1.007, so the VIX curve is just inverted (1.10 on 5 Nov, 0.91-0.94 on
+- **Volatility:** VIX 24.56 on 18 Nov, 1.38 times its 50-day mean, 92nd percentile of the past
+  year. VIX/VIX3M = 1.011, so the VIX curve is just inverted (1.10 on 5 Nov, 0.91-0.94 on
   11-13 Nov, 1.02 on 17 Nov). The S&P fell 4.36% on Thu 5 Nov (bt, Yahoo `^GSPC`); AP reported the Nasdaq -5.5%
   that day ([AP via Boston.com](https://www.boston.com/news/national-news/2026/11/05/a-brutal-sell-off-for-ai-stocks-sends-wall-street-reeling-and-the-sp-500-tumbles-4-4/)).
-- **Credit:** calm. HYG/LQD is 0.53% above its 200-day average (18 Nov). The Baa minus 10-year spread was
+- **Credit:** calm. HYG/LQD is 0.50% above its 200-day average (18 Nov). The Baa minus 10-year spread was
   1.51 on 10 Nov; the tested credit rule would turn hostile only above about 1.95.
 - **Valuation:** Shiller CAPE 39.37 for Nov 2026, the 98.3rd percentile of all months since
   1881; only 1999-2000 was higher (peak 44.2 in Dec 1999). On how this differs from the 39.7 and
@@ -313,8 +313,8 @@ every column); train period, windows ending by Nov 2025:
 | | | hold to the fallback | +2.04 | +2.81 | -10.00 | 15.7% |
 
 Notes: OBX (2004-2025) gives the same picture as OSEBX (staged 5th percentile -3.5, hold -6.9).
-The Nasdaq at -11.85% sits at the edge of the `now-like` band; a further 0.2% fall puts it
-outside every tested sample. The sub-samples that start below the 200-day line, as the US did on
+The Nasdaq at -11.5% (18 Nov close) sits near the edge of the `now-like` band; a further fall
+of about 0.6% puts it outside every tested sample. The sub-samples that start below the 200-day line, as the US did on
 17 Nov, have only 14 (S&P) and 7 (Nasdaq) separate spells: too few to read. So the evidence for
 Oslo holdings is the card's own sample; for US and tech holdings it is post hoc, and on the
 Nasdaq staging only just meets the -5% line.
