@@ -7,3 +7,7 @@ __pycache__/
 .ruff_cache/
 dist/
 /trail/
+
+# Research price caches and run curves (research/lib/fetch.py, register-2). Never commit raw data.
+research/data/
+research/register2.local.json
