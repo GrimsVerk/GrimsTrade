@@ -302,77 +302,102 @@ def report_all() -> None:
         else:
             row += " - | - | - | - |" if n != "tsmom12" else " - | - | - | (reference) |"
         out.append(row)
-    out += ["", c.table([r[(n, "slip", 0)].run for n in [*names, "equal-weight", "ew-c4"]]), ""]
+    slip_runs = [r[(n, "slip", 0)].run for n in [*names, "equal-weight", "ew-c4"]]
+    out += ["", c.table(slip_runs, versus=ref.run), ""]
     out += ["Crash windows (total return inside each, `slip`):", ""]
     out += [eu1.crash_table([r[(n, "slip", 0)].run for n in [*names, "equal-weight"]]), ""]
 
     out += [
         "## 2. Fixed fees by book size",
         "",
-        "Fee loss = min(own Sharpe at `slip`, R's at `slip` "
-        f"{s_ref:.2f}) minus Sharpe under the schedule (card). Predicted = fixed fees per year / "
-        "the rule's vol at `slip` (the mechanical part). Gap = Sharpe minus house equal weight's "
-        f"under the same schedule and size; R's gap at `slip` is {gap0:+.2f}. Worth it = same "
-        "character, fee loss <= 0.10 and gap within 0.15 of R's.",
+        f"R's Sharpe at `slip` is {s_ref:.3f}. Two fee losses (Sharpe lost to the fixed fees): "
+        "**card** = min(own Sharpe at `slip`, R's) minus Sharpe under the schedule, the card's "
+        "formula as written; **strict** = max(own, R's) minus Sharpe under the schedule. The "
+        "card's stated intent ('no credit for being luckier than R at no fee') is the strict "
+        "one; the written min does the opposite (erratum in `eu-3.md`). Both are shown; the "
+        "verdict uses strict. Predicted = fixed fees per year / the rule's vol at `slip` (the "
+        "mechanical part). Gap = Sharpe minus house equal weight's under the same schedule and "
+        f"size; R's gap at `slip` is {gap0:+.2f}. Worth it = same character, loss <= 0.10 and gap "
+        "within 0.15 of R's.",
         "",
-        "| Rule | Schedule | Book | Sharpe | Fee loss | Predicted | Gap (EW Sharpe) | Max DD | "
-        "Orders/yr | Fixed fees/yr | Worth it |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+        "| Rule | Schedule | Book | Sharpe | Loss (card) | Loss (strict) | Predicted | "
+        "Gap (EW Sharpe) | Max DD | Orders/yr | Fixed fees/yr | Worth it (card / strict) |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
-    worth: dict[Key, bool] = {}
+    worth: dict[tuple[str, str, int, str], bool] = {}
     be_lines = []
     for n in names:
-        base = min(sh(r[(n, "slip", 0)]), s_ref)
+        own = sh(r[(n, "slip", 0)])
         vol = c.describe(r[(n, "slip", 0)].run)["vol"]
         for sch in SCHEDULES[1:]:
-            losses = []
+            losses: dict[str, list[float]] = {"card": [], "strict": []}
             for size in SIZES:
                 o, e = r[(n, sch.name, size)], r[("equal-weight", sch.name, size)]
-                loss = base - sh(o)
-                losses.append(loss)
                 g = sh(o) - sh(e)
-                ok = same[n] and loss <= LOSS_MAX and abs(g - gap0) <= GAP_TOL
-                worth[(n, sch.name, size)] = ok
+                yn = []
+                for how, base in (("card", min(own, s_ref)), ("strict", max(own, s_ref))):
+                    loss = base - sh(o)
+                    losses[how].append(loss)
+                    gap_ok = abs(g - gap0) <= GAP_TOL
+                    worth[(n, sch.name, size, how)] = same[n] and loss <= LOSS_MAX and gap_ok
+                    worth[(n, sch.name, size, how + "-any")] = loss <= LOSS_MAX and gap_ok
+                    yn.append("yes" if worth[(n, sch.name, size, how)] else "**no**")
                 d = c.describe(o.run)
                 out.append(
-                    f"| {n} | {sch.name} | {size // 1000}k | {sh(o):.2f} | {loss:.2f} | "
+                    f"| {n} | {sch.name} | {size // 1000}k | {sh(o):.3f} | "
+                    f"{losses['card'][-1]:.3f} | {losses['strict'][-1]:.3f} | "
                     f"{o.fees_yr / vol:.2f} | {g:+.2f} ({sh(e):.2f}) | {d['mdd']:.1%} | "
-                    f"{o.orders_yr:.1f} | {o.fees_yr:.2%} | {'yes' if ok else '**no**'} |"
+                    f"{o.orders_yr:.1f} | {o.fees_yr:.2%} | {' / '.join(yn)} |"
                 )
             be_lines.append(
-                f"| {n} | {sch.name} | {break_even(losses)} | "
-                + " | ".join(f"{x:.2f}" for x in losses)
+                f"| {n} | {sch.name} | {break_even(losses['card'])} | "
+                f"{break_even(losses['strict'])} | "
+                + " | ".join(f"{x:.3f}" for x in losses["strict"])
                 + f" | {'yes' if same[n] else 'no'} |"
             )
-    out += ["", "## 3. Break-even book (fee loss <= 0.10)", ""]
-    out += ["| Rule | Schedule | Break-even | Loss 5k | Loss 10k | Loss 25k | Same character |"]
-    out += ["|---|---|---|---:|---:|---:|---|", *be_lines, ""]
+    out += ["", "## 3. Break-even book (loss <= 0.10)", ""]
+    out += [
+        "| Rule | Schedule | Break-even (card) | Break-even (strict) | Strict loss 5k | 10k | 25k "
+        "| Same character |"
+    ]
+    out += ["|---|---|---|---|---:|---:|---:|---|", *be_lines, ""]
+
+    def grid(how: str, title: str) -> list[str]:
+        lines = [title, ""]
+        lines += ["| Schedule | " + " | ".join(f"EUR {s // 1000}k" for s in SIZES) + " |"]
+        lines += ["|---|" + "---|" * len(SIZES)]
+        for sch in SCHEDULES[1:]:
+            cells = []
+            for size in SIZES:
+                ok = [n for n in names if worth[(n, sch.name, size, how)]]
+                if "tsmom12" in ok:
+                    cells.append("yes (R)")
+                else:
+                    cells.append(f"yes ({', '.join(ok)}; R no)" if ok else "**no**")
+            lines.append(f"| {sch.name} | " + " | ".join(cells) + " |")
+        rescued = [
+            f"{sch.name} {size // 1000}k"
+            for sch in SCHEDULES[1:]
+            for size in SIZES[:2]
+            if not worth[("tsmom12", sch.name, size, how)]
+            and any(worth[(n, sch.name, size, how)] for n in names[1:])
+        ]
+        lines += [
+            "",
+            f"Rescued at EUR 5-10k where R is not: **{'yes' if rescued else 'no'}**"
+            + (f" ({', '.join(rescued)})" if rescued else "")
+            + ".",
+            "",
+        ]
+        return lines
 
     out += ["## 4. Verdict grid: is `euw` worth running?", ""]
-    out += ["| Schedule | " + " | ".join(f"EUR {s // 1000}k" for s in SIZES) + " |"]
-    out += ["|---|" + "---|" * len(SIZES)]
-    for sch in SCHEDULES[1:]:
-        cells = []
-        for size in SIZES:
-            if worth[("tsmom12", sch.name, size)]:
-                cells.append("yes (R)")
-                continue
-            ok = [n for n in names[1:] if worth[(n, sch.name, size)]]
-            cells.append(f"yes ({', '.join(ok)}; R no)" if ok else "**no**")
-        out.append(f"| {sch.name} | " + " | ".join(cells) + " |")
-    out.append("")
-    rescued = [
-        (sch.name, size)
-        for sch in SCHEDULES[1:]
-        for size in SIZES[:2]
-        if not worth[("tsmom12", sch.name, size)]
-        and any(worth[(n, sch.name, size)] for n in names[1:])
-    ]
-    out.append(
-        "Lane test (a same-character variant makes `euw` worth running at EUR 5-10k on a "
-        f"schedule where R is not): **{'yes' if rescued else 'no'}**"
-        + (f" ({', '.join(f'{a} {b // 1000}k' for a, b in rescued)})" if rescued else "")
-        + "."
+    out += grid("strict", "Strict loss (the verdict):")
+    out += grid("card", "Card's literal formula (for the record):")
+    out += grid(
+        "strict-any",
+        "Descriptive only, character bar waived (strict loss; a variant here is a different "
+        "rule by the card):",
     )
     c.write_result(IDEA, "\n".join(out))
 
