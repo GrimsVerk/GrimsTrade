@@ -145,3 +145,37 @@ across many coins (the wide coin book), as its own card, not through time on six
 
 Reproduce: `uv run python research/lib/volume1_ic.py` (dry; `--log` writes tries rows: run
 once). Needs the bar cache (`research/lib/fetch.py`) and RL 2's `tables2.pkl` (`rl2_data.py`).
+
+## Card 2: volume across many coins (written 2026-11-18 ~11:16 UTC, before any number; NOT RUN)
+
+Asked for by the coordinator at ~11:15 UTC as a continuation of this lane, with a final push
+at 11:22 UTC. Seven minutes do not fit a tested implementation and a single clean run, so
+this burst commits the card only. **No code for it exists and no number has been computed.**
+The six-asset result above is unchanged.
+
+Seen before: the six-asset table above (all "no"); breadth-1's summary that a tilt toward low
+volume-to-market-cap coins helped the trend rule in this same book, and that the book already
+carries a `vol_growth` signal (7-day over 91-day volume). So volume in this book is not a
+fully fresh look; that counts against any pass here. Not seen: any IC of the features below.
+
+- **Book.** The Coin Metrics top-100 coin book, dead coins included
+  (`breadth_books.cm_book(top_n=100)`, train cut, eligibility and all inputs lagged one day).
+  To check before the run, not yet checked: that this is the panel cointop-1 cached; if
+  cointop-1 uses another loader, use that one and say so here before running.
+- **Volume** = `volume_reported_spot_usd_1d` (USD, reported by exchanges: inflated on some
+  venues, which is one reason for ranks below). Price = `PriceUSD`.
+- **Features.** The same six, same formulas, `W` = 7 (`volume1_ic.daily_features`).
+- **Target.** The coming week's log return (decision Friday's usable price to the next
+  Friday's) over the coin's 90-day vol x sqrt(7/365), clipped to +-5.
+- **IC.** Cross-sectional: per Friday, the Spearman rank correlation across eligible coins
+  with a finite feature and target (at least 20 coins); the IC is its mean over Fridays
+  2019-01-04 .. 2025-11-09. Also shown: t-statistic of the weekly ICs, share of weeks
+  positive, eras 2019-21 and 2022-25.
+- **Chance and correction.** The feature panel circularly shifted in time by >= 52 weeks, 500
+  shifts (seed 0), the same shifts for all six; family level = 95th percentile of the largest
+  |mean IC| among the six (maxT), as above.
+- **What counts.** Useful: |mean IC| above the family level, at least 0.03, and the same sign
+  in both eras. Second look: above the family level only. Otherwise no, and the lane closes.
+- **Logging.** One run; six `screen` rows in `tries.md` (idea `volume-1-coins-screen`); table
+  `results/volume-1-coins.md`. A test first: the cross-sectional IC finds a planted rank
+  signal and gives ~0 on noise; features unchanged when future rows are scrambled.
