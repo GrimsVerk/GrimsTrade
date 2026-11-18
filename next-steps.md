@@ -229,6 +229,13 @@
     Cost: Sharpe above T-bills 0.15 (2010-25), 3.7x gross, ~2%/yr costs+borrow. 4 rows
     (`replication`, not counted).
   - 22:48 UTC `ls-trend-2` started (D, <- ls-trend-1): `tsmom12` + wide long-short at <= 1x gross.
+  - DONE `eu-8` (draft #85 -> eu-7): euro cash at EONIA/ESTR (ECB portal, keyless; avg +0.5%/yr
+    2012-25) changes none of eu-6/eu-7's 8 conclusions (above-cash Sharpe T 0.57, B 0.73, hold
+    0.72, 60/40 0.71). US proxy 1972-2025 with T-bill interest: T 0.78 vs 0.62. Idea C (trend on
+    stocks + long bonds) fails both stages (US 1994-2011: 1 of 3 measures; EUR worst loss 15.9%
+    vs 13.6%). 29 rows; eu family 13. eu line CLOSED; row choice in `research/eu-8.md` s.3 is
+    a preference call.
+  - 22:50 UTC `survey-6` started (W, <- survey-5): which strategy families paid LIVE since launch.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
