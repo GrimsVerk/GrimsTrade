@@ -148,10 +148,18 @@ def wk_mask(m: np.ndarray) -> np.ndarray:
     return m[: k * WEEK].reshape(k, WEEK).sum(axis=1) >= 4
 
 
+NOTE = (
+    "Plan and reading: `combo-1.md`. Six live assets, train period (decisions 1994-02-01 .. "
+    "2025-11-09), total-return prices, protocol costs (30 bps crypto, 2 bps ETFs). Sharpe on "
+    "calendar days. Excess = model's daily return minus `tsmom12`'s on the same day, "
+    "annualised (x 365), in percent a year. Nothing here was run anew or selected: every "
+    "series is a logged configuration read from saved output."
+)
+
+
 def main() -> None:
     a = da.load()
     days = a.days
-    n = len(days) - 1
     r: dict[str, np.ndarray] = {
         "tsmom12": a.rets["tsmom12"],
         "trend-vol": a.rets["trend-vol"],
@@ -161,11 +169,23 @@ def main() -> None:
         "sixty-forty": a.rets["sixty-forty"],
         "band": carry_rets(days),
     }
+    out, extra = tables(a, r, masks(a), "# combo-1, step 1: the failure map", NOTE)
+    RESULT.write_text("\n".join(out))
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "map.json").write_text(json.dumps(extra, indent=1))
+    print("\n".join(out))
+
+
+def tables(
+    a: da.Atlas, r: dict[str, np.ndarray], M: dict[str, np.ndarray], title: str, note: str
+) -> tuple[list[str], dict[str, object]]:
+    """The map's five tables for the series `r` (atlas calendar) under the regime masks `M`."""
+    days = a.days
+    n = len(days) - 1
     ts = r["tsmom12"]
     ex = {m: r[m] - ts for m in MODELS}
     last = date.fromordinal(int(days[-1]))
     assert last <= TRAIN_END + timedelta(days=1)
-    M = masks(a)
 
     def idx(d: date) -> int:
         return int(np.clip(d.toordinal() - int(days[0]) - 1, 0, n - 1))
@@ -173,14 +193,10 @@ def main() -> None:
     def span(m: str) -> np.ndarray:
         return np.isfinite(r[m])
 
-    out = ["# combo-1, step 1: the failure map", ""]
+    out = [title, ""]
     out += [
-        "Plan and reading: `combo-1.md`. Six live assets, train period (decisions 1994-02-01 .. "
-        "2025-11-09), total-return prices, protocol costs (30 bps crypto, 2 bps ETFs). Sharpe on "
-        "calendar days. Excess = model's daily return minus `tsmom12`'s on the same day, "
-        "annualised (x 365), in percent a year. Nothing here was run anew or selected: every "
-        "series is a logged configuration read from saved output. `band` (perp funding carry) "
-        f"exists only from {date.fromordinal(int(days[0]) + 1 + int(np.argmax(span('band'))))}; "
+        f"{note} `band` (perp funding carry) exists only from "
+        f"{date.fromordinal(int(days[0]) + 1 + int(np.argmax(span('band'))))}; "
         "its cells cover its own span.",
         "",
         "| Model | Why it is on the map |",
@@ -337,12 +353,7 @@ def main() -> None:
         "",
     ]
 
-    RESULT.write_text("\n".join(out))
-    OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "map.json").write_text(
-        json.dumps({"cover": cover, "pairs": pair_corr, "share": share}, indent=1)
-    )
-    print("\n".join(out))
+    return out, {"cover": cover, "pairs": pair_corr, "share": share}
 
 
 if __name__ == "__main__":
