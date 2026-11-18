@@ -178,7 +178,8 @@ is shown without it.
 
 **Outcome.** E(t) = log(ETH close / BTC close) on UTC day t (daily closes at 00:00 UTC of the
 next day, as cached). Pre = E(d - 1) - E(d - 11), the ten days into the activation day; Post
-= E(d + 10) - E(d - 1), the activation day and the nine after. Y = Pre - Post (the premium:
+= E(d + 9) - E(d - 1), the activation day and the nine after (ten days each; corrected
+before any code or number: the first push wrote d + 10, which disagreed with its own words). Y = Pre - Post (the premium:
 positive if ETH ran up relative to BTC and then gave it back).
 
 **Statistic.** The plain one-sample t of mean Y over the events (n - 1 degrees of freedom;
