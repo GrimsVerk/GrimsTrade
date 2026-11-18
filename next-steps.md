@@ -1,12 +1,25 @@
 # Next steps
 
-## Evo 2 (IN PROGRESS 2026-11-18 from ~19:40 UTC, branch `evo-2` from `evo-1`)
+## Evo 2 (STOPPED 2026-11-18 ~19:50 UTC: gate failed; recommend closing the evo line, branch `evo-2`, draft PR -> `evo-1`)
 
 Redesign of evo-1 after its planted control failed. Card: `research/cards/evo-2.md` (committed
-before any evo-2 number): 8 inputs, fitness on six-asset days only, 12 nodes, one fixed greed
-(500 x 10, penalty 0.02), plant calibrated per world to ceilings 0.8 (gate) and 0.5. Chain:
-controls (noise 31-33 must be 0 of 3; plant 0.8 on 34-36 found in >= 2 of 3) -> 40 replays
-(201-240) -> one real search on train -> verdict. Doing: implementing the card.
+before any evo-2 number); reading and verdict: `research/evo-2.md`; tables:
+`research/results/evo-2.md`; code: `research/lib/evo2.py` (tests in `tests/test_evo_wf.py`).
+
+- Design: 8 inputs (`mom` 30/91/182/365, `gap(290)`, `dd(365)`, `lvol` 30/365), at most 12 nodes,
+  fitness on six-asset days only (no index warm-up), one fixed greed (500 x 10, penalty 0.02),
+  the plant `H` calibrated per world to ceilings 0.8 (gate) and 0.5 (card note: `k` scanned
+  then bisected, because `H`'s Sharpe is not monotone in `k`).
+- Result: noise found in 0 of 3 (worlds 31-33); **0.8 plant found in 1 of 3** (36 found; 34
+  missed by 0.001, 35 by 0.03); 0.5 plant 1 of 3. **Gate FAIL**: no replay, no real search, no
+  real-data number. Held-out year untouched. 39 `control` rows in `research/tries.md`.
+- **Proposal: close the evo line** (two designs could not reliably recover a planted rule of
+  Sharpe 0.8 inside their own grammar; a real edge over `tsmom12` would be far smaller). Keep
+  `evo_score.py`, `evo_world.py` and `evo2.calibrate` for power checks in other lanes. A third
+  try would be a new card and pick (ideas in `research/evo-2.md`).
+- Doing: nothing. No process running. Scratch JSON under `<cache_root>/derived/evo-2/`.
+- To run elsewhere: copy a price cache into `research/data/` and `research/macro.local.json`
+  (both git-ignored), then `uv run python research/lib/evo2.py ceilings|controls`.
 
 ## Evo 1 (STOPPED 2026-11-18 ~19:35 UTC: the search fails its planted control; close or redesign, branch `evo-1`, draft PR #44 -> `carry-2`)
 
