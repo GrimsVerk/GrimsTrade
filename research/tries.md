@@ -936,3 +936,197 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-18 18:52 | exit-window | now@GSPC (mean R-1 all starts; MaxDD col = worst R) | baseline | train | 1929-01-03 | 2025-09-30 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:52 | exit-window | fallback@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.66% | 42.7% | n/a |
+| 2026-11-18 18:52 | exit-window | staged5@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.30% | 21.9% | n/a |
+| 2026-11-18 18:52 | exit-window | staged-half@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.33% | 21.3% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma200@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.54% | 28.4% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma50@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.33% | 20.5% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail5@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.60% | 26.3% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail8@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.65% | 29.6% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-vix@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1990-03-13 | 2025-09-30 | n/a | +0.57% | 19.8% | n/a |
+| 2026-11-18 18:52 | exit-window | limit3@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.18% | 42.7% | n/a |
+| 2026-11-18 18:52 | exit-window | limit5@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.40% | 42.7% | n/a |
+| 2026-11-18 18:52 | exit-window | bracket@GSPC (mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.17% | 26.3% | n/a |
+| 2026-11-18 18:52 | exit-window | now@IXIC (mean R-1 all starts; MaxDD col = worst R) | baseline | train | 1972-02-03 | 2025-09-30 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:52 | exit-window | fallback@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +1.05% | 34.0% | n/a |
+| 2026-11-18 18:52 | exit-window | staged5@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.47% | 22.0% | n/a |
+| 2026-11-18 18:52 | exit-window | staged-half@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.53% | 17.0% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma200@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.85% | 28.7% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma50@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.75% | 12.3% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail5@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.97% | 22.4% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail8@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +1.08% | 25.5% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-vix@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1990-03-13 | 2025-09-30 | n/a | +0.90% | 28.7% | n/a |
+| 2026-11-18 18:52 | exit-window | limit3@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.19% | 34.0% | n/a |
+| 2026-11-18 18:52 | exit-window | limit5@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.55% | 34.0% | n/a |
+| 2026-11-18 18:52 | exit-window | bracket@IXIC (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.17% | 22.4% | n/a |
+| 2026-11-18 18:52 | exit-window | now@OSEBX (mean R-1 all starts; MaxDD col = worst R) | baseline | train | 2014-03-17 | 2025-09-29 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:52 | exit-window | fallback@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.94% | 32.6% | n/a |
+| 2026-11-18 18:52 | exit-window | staged5@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.43% | 16.7% | n/a |
+| 2026-11-18 18:52 | exit-window | staged-half@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.47% | 16.3% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma200@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.29% | 10.6% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma50@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.03% | 8.8% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail5@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.84% | 14.3% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail8@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.83% | 18.1% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-vix@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.23% | 13.1% | n/a |
+| 2026-11-18 18:52 | exit-window | limit3@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.50% | 32.6% | n/a |
+| 2026-11-18 18:52 | exit-window | limit5@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.73% | 32.6% | n/a |
+| 2026-11-18 18:52 | exit-window | bracket@OSEBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.41% | 14.3% | n/a |
+| 2026-11-18 18:52 | exit-window | now@OBX (mean R-1 all starts; MaxDD col = worst R) | baseline | train | 2005-09-26 | 2025-09-29 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:52 | exit-window | fallback@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.99% | 40.1% | n/a |
+| 2026-11-18 18:52 | exit-window | staged5@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.45% | 21.9% | n/a |
+| 2026-11-18 18:52 | exit-window | staged-half@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.49% | 20.0% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma200@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.55% | 20.0% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-sma50@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.19% | 13.1% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail5@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.82% | 17.2% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-trail8@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.91% | 18.3% | n/a |
+| 2026-11-18 18:52 | exit-window | trig-vix@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.60% | 22.5% | n/a |
+| 2026-11-18 18:52 | exit-window | limit3@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.41% | 40.1% | n/a |
+| 2026-11-18 18:52 | exit-window | limit5@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.72% | 40.1% | n/a |
+| 2026-11-18 18:52 | exit-window | bracket@OBX (mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.26% | 17.2% | n/a |
+| 2026-11-18 18:54 | exit-rules | buyhold@GSPC (index, cash 0, trade next close) | baseline | train | 1927-12-30 | 2025-11-07 | 0.42 | +38001.9% | 86.2% | 0.00 |
+| 2026-11-18 18:54 | exit-rules | sma10m@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.54 | +41544.1% | 53.8% | 1.47 |
+| 2026-11-18 18:54 | exit-rules | sma200d@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.62 | +80543.8% | 53.7% | 5.99 |
+| 2026-11-18 18:54 | exit-rules | tsmom12@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.51 | +32338.2% | 54.2% | 0.96 |
+| 2026-11-18 18:54 | exit-rules | dd8@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.52 | +39043.3% | 56.3% | 3.15 |
+| 2026-11-18 18:54 | exit-rules | dd10@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.52 | +48087.4% | 57.0% | 2.29 |
+| 2026-11-18 18:54 | exit-rules | vix30@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.35 | +7801.9% | 86.2% | 0.49 |
+| 2026-11-18 18:54 | exit-rules | vixts@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.38 | +15243.1% | 86.2% | 1.10 |
+| 2026-11-18 18:54 | exit-rules | baa@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.37 | +11354.4% | 86.2% | 0.61 |
+| 2026-11-18 18:54 | exit-rules | hyglqd@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.36 | +10407.3% | 86.2% | 2.06 |
+| 2026-11-18 18:54 | exit-rules | cape30@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.44 | +39187.8% | 83.0% | 0.27 |
+| 2026-11-18 18:54 | exit-rules | capepct@GSPC (index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.38 | +14059.1% | 79.9% | 0.31 |
+| 2026-11-18 18:54 | exit-rules | buyhold@IXIC (index, cash 0, trade next close) | baseline | train | 1971-02-05 | 2025-11-07 | 0.59 | +22904.5% | 77.9% | 0.00 |
+| 2026-11-18 18:54 | exit-rules | sma10m@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.68 | +12545.6% | 52.1% | 1.53 |
+| 2026-11-18 18:54 | exit-rules | sma200d@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.78 | +18209.2% | 56.7% | 5.52 |
+| 2026-11-18 18:54 | exit-rules | tsmom12@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.67 | +16421.7% | 53.4% | 0.80 |
+| 2026-11-18 18:54 | exit-rules | dd8@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.87 | +46265.3% | 39.0% | 3.58 |
+| 2026-11-18 18:54 | exit-rules | dd10@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.80 | +34778.1% | 50.3% | 2.78 |
+| 2026-11-18 18:54 | exit-rules | vix30@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.50 | +2924.2% | 68.6% | 0.88 |
+| 2026-11-18 18:54 | exit-rules | vixts@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.51 | +5511.5% | 77.9% | 1.97 |
+| 2026-11-18 18:54 | exit-rules | baa@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.53 | +4437.9% | 67.2% | 1.10 |
+| 2026-11-18 18:54 | exit-rules | hyglqd@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.47 | +3669.7% | 77.9% | 3.69 |
+| 2026-11-18 18:54 | exit-rules | cape30@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.71 | +20221.6% | 59.9% | 0.44 |
+| 2026-11-18 18:54 | exit-rules | capepct@IXIC (index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.61 | +7621.4% | 59.9% | 0.33 |
+| 2026-11-18 18:56 | exit-window | now@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:56 | exit-window | fallback@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +1.43% | 23.3% | n/a |
+| 2026-11-18 18:56 | exit-window | staged5@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.63% | 15.6% | n/a |
+| 2026-11-18 18:56 | exit-window | staged-half@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.71% | 11.6% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma200@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.77% | 8.7% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma50@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.13% | 6.9% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail5@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.90% | 12.4% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail8@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +1.10% | 14.6% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-vix@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-23 | 2025-05-14 | n/a | +0.64% | 13.4% | n/a |
+| 2026-11-18 18:56 | exit-window | limit3@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.75% | 23.3% | n/a |
+| 2026-11-18 18:56 | exit-window | limit5@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +1.09% | 23.3% | n/a |
+| 2026-11-18 18:56 | exit-window | bracket@GSPC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.39% | 12.4% | n/a |
+| 2026-11-18 18:56 | exit-window | now@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:56 | exit-window | fallback@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +1.68% | 23.3% | n/a |
+| 2026-11-18 18:56 | exit-window | staged5@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.77% | 15.6% | n/a |
+| 2026-11-18 18:56 | exit-window | staged-half@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.84% | 11.6% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma200@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.71% | 8.7% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma50@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.16% | 6.9% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail5@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.97% | 12.4% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail8@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +1.27% | 14.6% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-vix@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.91% | 10.6% | n/a |
+| 2026-11-18 18:56 | exit-window | limit3@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.92% | 23.3% | n/a |
+| 2026-11-18 18:56 | exit-window | limit5@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +1.33% | 23.3% | n/a |
+| 2026-11-18 18:56 | exit-window | bracket@GSPC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1996-03-08 | 2025-05-09 | n/a | +0.46% | 12.4% | n/a |
+| 2026-11-18 18:56 | exit-window | now@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:56 | exit-window | fallback@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +2.04% | 27.5% | n/a |
+| 2026-11-18 18:56 | exit-window | staged5@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +0.68% | 15.3% | n/a |
+| 2026-11-18 18:56 | exit-window | staged-half@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +1.02% | 13.8% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma200@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +1.85% | 27.5% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma50@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +0.18% | 9.3% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail5@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +1.31% | 11.6% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail8@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +1.89% | 18.2% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-vix@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +1.77% | 27.5% | n/a |
+| 2026-11-18 18:56 | exit-window | limit3@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +0.64% | 23.9% | n/a |
+| 2026-11-18 18:56 | exit-window | limit5@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +1.15% | 23.9% | n/a |
+| 2026-11-18 18:56 | exit-window | bracket@IXIC now-like (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-17 | n/a | +0.19% | 11.6% | n/a |
+| 2026-11-18 18:56 | exit-window | now@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +0.00% | -0.0% | n/a |
+| 2026-11-18 18:56 | exit-window | fallback@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +1.89% | 27.5% | n/a |
+| 2026-11-18 18:56 | exit-window | staged5@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +0.68% | 15.3% | n/a |
+| 2026-11-18 18:56 | exit-window | staged-half@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +0.95% | 13.8% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma200@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +1.93% | 27.5% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-sma50@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +0.04% | 9.3% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail5@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +1.10% | 11.6% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-trail8@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +1.87% | 18.2% | n/a |
+| 2026-11-18 18:56 | exit-window | trig-vix@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +1.94% | 27.5% | n/a |
+| 2026-11-18 18:56 | exit-window | limit3@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +0.45% | 23.9% | n/a |
+| 2026-11-18 18:56 | exit-window | limit5@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +0.84% | 23.9% | n/a |
+| 2026-11-18 18:56 | exit-window | bracket@IXIC now-like-vix (post hoc sample; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-31 | 2025-03-17 | n/a | +0.13% | 11.6% | n/a |
+| 2026-11-18 19:02 | exit-window | staged3@GSPC (amendment; mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.33% | 22.2% | n/a |
+| 2026-11-18 19:02 | exit-window | staged5-sma200@GSPC (amendment; mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.26% | 16.4% | n/a |
+| 2026-11-18 19:02 | exit-window | staged-half-sma200@GSPC (amendment; mean R-1 all starts; MaxDD col = worst R) | variant | train | 1929-01-03 | 2025-09-30 | n/a | +0.27% | 14.2% | n/a |
+| 2026-11-18 19:02 | exit-window | staged3@IXIC (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.52% | 20.0% | n/a |
+| 2026-11-18 19:02 | exit-window | staged5-sma200@IXIC (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.40% | 17.5% | n/a |
+| 2026-11-18 19:02 | exit-window | staged-half-sma200@IXIC (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 1972-02-03 | 2025-09-30 | n/a | +0.42% | 14.3% | n/a |
+| 2026-11-18 19:02 | exit-window | staged3@OBX (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.49% | 23.8% | n/a |
+| 2026-11-18 19:02 | exit-window | staged5-sma200@OBX (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.27% | 10.6% | n/a |
+| 2026-11-18 19:02 | exit-window | staged-half-sma200@OBX (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2005-09-26 | 2025-09-29 | n/a | +0.27% | 10.0% | n/a |
+| 2026-11-18 19:02 | exit-window | staged3@OSEBX (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.47% | 17.1% | n/a |
+| 2026-11-18 19:02 | exit-window | staged5-sma200@OSEBX (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.15% | 8.5% | n/a |
+| 2026-11-18 19:02 | exit-window | staged-half-sma200@OSEBX (amendment; mean R-1 all starts; MaxDD col = worst R) | robustness | train | 2014-03-17 | 2025-09-29 | n/a | +0.15% | 5.3% | n/a |
+| 2026-11-18 19:02 | exit-rules | sma200d-b2@GSPC (amendment; index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.59 | +68497.71% | 52.8% | 2.55 |
+| 2026-11-18 19:02 | exit-rules | sma200d-c2@GSPC (amendment; index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.59 | +64027.32% | 52.0% | 3.35 |
+| 2026-11-18 19:02 | exit-rules | kl3m10@GSPC (amendment; index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.46 | +22306.81% | 67.8% | 1.31 |
+| 2026-11-18 19:02 | exit-rules | rv2@GSPC (amendment; index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.42 | +22426.68% | 85.4% | 1.14 |
+| 2026-11-18 19:02 | exit-rules | sma200d-rv@GSPC (amendment; index, cash 0, trade next close) | variant | train | 1927-12-30 | 2025-11-07 | 0.55 | +65637.17% | 52.0% | 1.90 |
+| 2026-11-18 19:02 | exit-rules | sma200d-b2@IXIC (amendment; index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.75 | +16507.88% | 55.9% | 2.70 |
+| 2026-11-18 19:02 | exit-rules | sma200d-c2@IXIC (amendment; index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.75 | +15932.71% | 49.2% | 3.58 |
+| 2026-11-18 19:02 | exit-rules | kl3m10@IXIC (amendment; index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.65 | +11168.67% | 55.2% | 1.57 |
+| 2026-11-18 19:02 | exit-rules | rv2@IXIC (amendment; index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.62 | +15711.17% | 79.7% | 1.17 |
+| 2026-11-18 19:02 | exit-rules | sma200d-rv@IXIC (amendment; index, cash 0, trade next close) | robustness | train | 1971-02-05 | 2025-11-07 | 0.73 | +19444.86% | 70.4% | 2.16 |
+| 2026-11-18 19:02 | exit-rules | buyhold@OBX (amendment; index, cash 0, trade next close) | baseline | train | 2004-09-27 | 2025-11-07 | 0.55 | +723.02% | 64.8% | 0.00 |
+| 2026-11-18 19:02 | exit-rules | sma10m@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.49 | +300.47% | 43.2% | 1.80 |
+| 2026-11-18 19:02 | exit-rules | sma200d@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.49 | +277.81% | 31.0% | 9.19 |
+| 2026-11-18 19:02 | exit-rules | tsmom12@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.56 | +399.02% | 28.1% | 0.95 |
+| 2026-11-18 19:02 | exit-rules | dd8@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.51 | +334.12% | 32.8% | 3.79 |
+| 2026-11-18 19:02 | exit-rules | dd10@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.56 | +447.07% | 36.9% | 2.56 |
+| 2026-11-18 19:02 | exit-rules | vix30@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.31 | +115.17% | 62.1% | 1.61 |
+| 2026-11-18 19:02 | exit-rules | vixts@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.51 | +289.87% | 36.0% | 5.12 |
+| 2026-11-18 19:02 | exit-rules | baa@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.65 | +524.32% | 37.9% | 1.33 |
+| 2026-11-18 19:02 | exit-rules | hyglqd@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.48 | +241.91% | 46.6% | 13.93 |
+| 2026-11-18 19:02 | exit-rules | cape30@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.48 | +426.27% | 64.8% | 0.85 |
+| 2026-11-18 19:02 | exit-rules | capepct@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.43 | +312.60% | 64.8% | 0.66 |
+| 2026-11-18 19:02 | exit-rules | sma200d-b2@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.50 | +301.10% | 34.5% | 4.26 |
+| 2026-11-18 19:02 | exit-rules | sma200d-c2@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.51 | +308.42% | 28.8% | 4.83 |
+| 2026-11-18 19:02 | exit-rules | kl3m10@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.69 | +835.43% | 31.6% | 1.23 |
+| 2026-11-18 19:02 | exit-rules | rv2@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.62 | +667.02% | 39.3% | 0.95 |
+| 2026-11-18 19:02 | exit-rules | sma200d-rv@OBX (amendment; index, cash 0, trade next close) | robustness | train | 2004-09-27 | 2025-11-07 | 0.51 | +350.11% | 46.2% | 2.65 |
+| 2026-11-18 19:02 | exit-rules | buyhold@OSEBX (amendment; index, cash 0, trade next close) | baseline | train | 2013-03-05 | 2025-11-07 | 0.67 | +233.84% | 32.8% | 0.00 |
+| 2026-11-18 19:02 | exit-rules | sma10m@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.52 | +108.58% | 25.9% | 1.89 |
+| 2026-11-18 19:02 | exit-rules | sma200d@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.39 | +65.58% | 31.0% | 9.47 |
+| 2026-11-18 19:02 | exit-rules | tsmom12@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.51 | +106.96% | 26.1% | 1.42 |
+| 2026-11-18 19:02 | exit-rules | dd8@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.53 | +118.92% | 22.3% | 2.21 |
+| 2026-11-18 19:02 | exit-rules | dd10@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.55 | +133.44% | 31.7% | 1.42 |
+| 2026-11-18 19:02 | exit-rules | vix30@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.39 | +72.28% | 27.4% | 1.74 |
+| 2026-11-18 19:02 | exit-rules | vixts@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.35 | +55.64% | 33.8% | 6.00 |
+| 2026-11-18 19:02 | exit-rules | baa@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.52 | +115.39% | 38.1% | 1.42 |
+| 2026-11-18 19:02 | exit-rules | hyglqd@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.48 | +73.84% | 19.0% | 15.46 |
+| 2026-11-18 19:02 | exit-rules | cape30@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.66 | +138.84% | 22.1% | 1.42 |
+| 2026-11-18 19:02 | exit-rules | capepct@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.50 | +91.08% | 22.1% | 0.95 |
+| 2026-11-18 19:02 | exit-rules | sma200d-b2@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.42 | +76.37% | 29.0% | 3.63 |
+| 2026-11-18 19:02 | exit-rules | sma200d-c2@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.45 | +82.29% | 27.6% | 4.10 |
+| 2026-11-18 19:02 | exit-rules | kl3m10@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.53 | +127.60% | 31.5% | 0.79 |
+| 2026-11-18 19:02 | exit-rules | rv2@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.57 | +143.64% | 31.5% | 1.10 |
+| 2026-11-18 19:02 | exit-rules | sma200d-rv@OSEBX (amendment; index, cash 0, trade next close) | robustness | train | 2013-03-05 | 2025-11-07 | 0.48 | +98.70% | 28.1% | 2.84 |
+| 2026-11-18 19:31 | exit-window | fallback@GSPC now-like-below200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1965-06-09 | 2025-05-09 | n/a | +1.30% | 11.0% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half@GSPC now-like-below200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1965-06-09 | 2025-05-09 | n/a | +0.65% | 5.5% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half-sma200@GSPC now-like-below200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1965-06-09 | 2025-05-09 | n/a | +0.06% | 2.4% | n/a |
+| 2026-11-18 19:31 | exit-window | fallback@GSPC now-like-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +1.48% | 23.3% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half@GSPC now-like-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.74% | 11.6% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half-sma200@GSPC now-like-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1961-06-15 | 2025-05-14 | n/a | +0.53% | 4.4% | n/a |
+| 2026-11-18 19:31 | exit-window | fallback@IXIC now-like-below200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-29 | 2025-03-17 | n/a | -1.89% | 16.1% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half@IXIC now-like-below200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-29 | 2025-03-17 | n/a | -0.94% | 8.0% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half-sma200@IXIC now-like-below200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1994-03-29 | 2025-03-17 | n/a | -0.26% | 2.2% | n/a |
+| 2026-11-18 19:31 | exit-window | fallback@IXIC now-like-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-05 | n/a | +2.51% | 27.5% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half@IXIC now-like-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-05 | n/a | +1.25% | 13.8% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half-sma200@IXIC now-like-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 1993-04-02 | 2025-03-05 | n/a | +1.06% | 13.8% | n/a |
+| 2026-11-18 19:31 | exit-window | fallback@OSEBX late-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 2015-03-19 | 2025-09-29 | n/a | +0.16% | 14.0% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half@OSEBX late-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 2015-03-19 | 2025-09-29 | n/a | +0.08% | 7.0% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half-sma200@OSEBX late-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 2015-03-19 | 2025-09-29 | n/a | +0.01% | 5.0% | n/a |
+| 2026-11-18 19:31 | exit-window | fallback@OBX late-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 2006-10-26 | 2025-09-29 | n/a | +0.37% | 20.5% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half@OBX late-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 2006-10-26 | 2025-09-29 | n/a | +0.18% | 10.3% | n/a |
+| 2026-11-18 19:31 | exit-window | staged-half-sma200@OBX late-above200 (post hoc review-1 cut; mean R-1; MaxDD col = worst R) | robustness | train | 2006-10-26 | 2025-09-29 | n/a | +0.18% | 5.7% | n/a |
