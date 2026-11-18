@@ -1,5 +1,62 @@
 # Next steps
 
+## Evo 1 (STOPPED 2026-11-18 ~19:35 UTC: the search fails its planted control; close or redesign, branch `evo-1`, draft PR #44 -> `carry-2`)
+
+Question: can a genetic-programming search over trading rules find anything that beats `tsmom12`
+once it is charged for its luck (walk-forward selection, a full-search replay test, out-of-universe
+sets)? Card: `research/evo-1.md`; rules: `research/protocol.md` "Evolved-rule search tests".
+
+- Done, burst 1: card, protocol section, `evo_stats.py` (Reality Check, SPA), `evo_gp.py`
+  (grammar, GP), `evo_smoke.py` (toy world), `evo_feat.py` (the 72 inputs). Toy finding: an SPA
+  over the rules a GP visited passes pure noise (p <= 0.006 in 4 of 4), so bar 3 became the
+  **full-search replay test** (lead, 2026-11-18 ~11:15 UTC, on the card before any real number):
+  pass only if none of 20 replay worlds is at or above the real score, or 40 worlds with at
+  most one, chosen at the timing test.
+- Done, burst 2 (2026-11-18 ~18:30-19:30 UTC), all in `research/lib/`, tests in `tests/`:
+  - `evo_score.py`, the fast scorer (`test_evo_score.py`): within 0.04 Sharpe of `gym.simulate`
+    on 16 fixed rules (measured 0.028), growth within 0.4 points, daily correlation > 0.995;
+    models cash-limited weekend coin buys.
+  - `evo_world.py` (shuffle / block-bootstrap worlds, zero log or zero mean simple return, the
+    plant `H`) and `evo_wf.py` (walk-forward driver: 14 fits x 5 GP runs, candidates,
+    `evo-top1` / `evo-ens10` / `evo-val`, gym replay; commands `timing`, `ceilings`, `control`,
+    `baselines`, `replay`); `test_evo_wf.py`.
+  - Timing (card, "Bar 3, replaced"): one walk-forward search ~0.04 CPU-hours; the whole plan
+    ~2.1 CPU-hours with 40 replays. No halving.
+  - Lead's decisions (card note, "Lead's decisions", committed before any replay): control
+    worlds with zero mean simple return; 40 replays (seeds 101-140, at most one at or above);
+    then the real search if the controls pass. Replay worlds stay zero log return (the note
+    says why).
+  - Controls, first run (zero log drift, superseded): planted found, noise 1 of 3, but equal
+    weight earned 0.32-0.47 in noise (the holding premium).
+  - **Controls after the fix** (27 rows, `research/results/evo-1.md`): **noise found in 0 of
+    3; planted not found at any strength** (k=0.04: 0.10 / 0.19 / 0.27 against a ceiling of
+    0.72). Diagnostic: at 12 of 14 fits the search's best in-sample fitness beats `H`'s own,
+    i.e. it overfits past the true rule. By the card a real fail would read "too weak to
+    tell".
+- Lead's decision 2 (card note, before any tuning number): tune the greed on fresh synthetic
+  worlds (grid A-F: node penalty 0.01/0.03/0.06 x 30/10/5 generations), pick by a rule written
+  in advance, confirm on fresh worlds. Done 2026-11-18 ~19:22-19:29 UTC (94 `control` rows):
+  no setting found the plant on tuning world 11; the rule picked D (0.01, 5 generations);
+  **confirmation on worlds 21-23 failed** (noise 0 of 3, plant not found: -0.10 / -0.11 / 0.11
+  against a ceiling of 0.24). So by the note: **no replay, no real search.** Tables in
+  `research/results/evo-1.md`; reading at the top of `research/evo-1.md`.
+- **Verdict: the search cannot find a planted rule at any tested greed** (ceiling 0.72 in world
+  1, 0.22-0.24 in worlds 11 and 21). Doing: nothing. No process running. Held-out year
+  untouched. No replay world, real-data search or real-data number of evo-1 exists.
+- **Proposal for the lead: close the lane** (recommended), or redesign as a new card:
+  - Close: on this data a free rule search over 72 inputs cannot tell even a planted 0.2-0.7
+    Sharpe rule from its own luck; a real edge over `tsmom12` would be smaller still. Same
+    lesson as rl-3 (too many noisy inputs for the data). Keep `evo_score.py` (a gym-exact
+    weekly scorer, ~0.4 ms a rule) and `evo_world.py` for other lanes.
+  - Redesign (only with a new card, the gate first): far fewer inputs (e.g. the 8 trend
+    lookbacks and 2 volatility ones), fitness on the six-asset days only (now half the window
+    is the index alone, where cross-asset inputs carry nothing), a plant calibrated per world
+    to a fixed ceiling (the same k gave 0.22-0.72), and the planted world must be found before
+    any replay. The replay and real-search code is ready: `evo_wf.py replays S 101 140`, then
+    `evo_real.py S` (built and unit-tested, never run).
+- Compute: CPU only; `evo_wf.py` uses 8 worker processes (a few hundred MB in all); run with
+  `OMP_NUM_THREADS=1`. Scratch (JSON per world) under `<cache_root>/derived/evo-1/`.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
