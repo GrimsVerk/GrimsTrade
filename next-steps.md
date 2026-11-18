@@ -1,12 +1,25 @@
 # Next steps
 
-## eu-8 (in progress 2026-11-18 night, branch `eu-8` from `eu-7`)
+## eu-8 (done 2026-11-18 night, branch `eu-8` from `eu-7`, draft PR #85 -> `eu-7`)
 
-DEEPER lane on eu-7. Card `research/cards/eu-8.md`. Chain: (1) re-score T, B, H, M with idle
-cash earning a euro money-market rate (ECB EONIA monthly before 2019-10, EUR STR daily after;
-keyless; USD proxies with IRX), report which of eu-6/7's conclusions change; (2) card and test
-idea C (trend on stock and long-bond funds, short bonds/gold/commodities held), US proxies
-1994-2011 first, then EUR; (3) one-screen preference table in `research/eu-8.md`.
+DEEPER lane on eu-7. Card `research/cards/eu-8.md` (step 1 and step 2 each pushed before their
+numbers), write-up `research/eu-8.md` (section 3 = one-screen preference table, section 4 = stop
+the eu line), tables `research/results/eu-8-cash.md`, `research/results/eu-8-c.md`; code
+`research/lib/eu8.py` (`fetch` the ECB rates into the cache root, `check`, `cash`) and
+`research/lib/eu8c.py` (`check`, `run`); both need `--with numpy --with xlrd`. 29 rows in
+`research/tries.md` (idea `eu-8`). eu family now 13 (bar p < 0.0077). Held-out year unspent.
+
+- Step 1: idle cash at the euro money-market rate (ECB EONIA monthly before 2019-10, EUR STR
+  after; averaged +0.5%/yr over 2012-2025) changes none of eu-6/7's eight conclusions (B - T
+  Sharpe +0.17 either way). Only the long US proxy 1972-2025 moves: with T-bill interest T's
+  excess Sharpe 0.78 vs H/B 0.62.
+- Step 2: idea C (trend on stocks + long bonds, rest held) fails both stages: US 1994-2011 keeps
+  the insurance but gains 1 of 3; EUR worst loss 15.9% vs T 13.6% (+2.2 > 2 pts), Sharpe = T,
+  37% fewer orders.
+- Doing: nothing. No process running. Local `research/data/` copied from the eu-7 worktree; the
+  ECB files sit in the cache root under `ecb-2026-11-18/`.
+- Next: stop adding eu variants. If anything: a longer euro-proxy history to sharpen T vs H, or a
+  forward paper-trade of the rule the investor picks (an owner choice, section 3 of eu-8.md).
 
 ## eu-7 (done 2026-11-18 night, branch `eu-7` from `eu-6`, draft PR #80 -> `eu-6`)
 
