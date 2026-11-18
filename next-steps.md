@@ -1,5 +1,13 @@
 # Next steps
 
+## Month-end bonds (lane `month-end-bonds`, started 2026-11-18 11:06 UTC, from `wide-1`)
+
+Clean test of wide-1's post-hoc pattern (bonds earn their return in the last four sessions of
+the month). Card `research/cards/month-end-bonds.md`, written before any number.
+
+- Doing: card pushed; next the two runs on the card (`last4@LQD`, `last4@TLT-y1`), one each.
+- The held-out year is not touched in this lane (owner's call).
+
 ## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
 
 New hypotheses from ten other fields (ecology, epidemiology, signal processing, control,
