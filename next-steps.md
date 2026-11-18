@@ -19,30 +19,77 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
     of their return in the last 4 sessions of each month (needs its own card).
   - #34 `trend-tune`: walk-forward lookback tuning does not beat 12 months; the rule pays only on
     stocks (sits out rough stretches), re-enters ~23% above the low, 7 months late.
-- Running (2026-11-18 ~03:00 UTC): `carry-3` (funding carry with real costs), `rl-4` (lasso
-  passes the planted gate; PPO being evaluated; perp book failed), `usd-1` (dollar effect,
-  pre-registered replication), `cointop-1` (coin-top exits learned on 100 coins, carried back
-  to BTC/ETH), `evo-1` (genetic programming under a data-snooping correction), `trend-1926`
-  (does trend pay on stocks 1926-1961?).
+- Done in burst 1 (2026-11-18 11:00-11:30 UTC, the last 30 min of a 5-hour window):
+  - #31 `carry-3`: the one held-out run: `band` FAILS the held-out year (pooled Sharpe -0.65,
+    -8.1%, worst loss 18%); not costs, not funding (16% collected): ~22% lost on price. Held-out
+    year now spent; carry-3 parked (so queue item `trend-carry` is dropped).
+  - #38 `rl-4`: lasso passes the planted gate (+0.071 at IC 0.10, p 0.04); no RL variant
+    passes; perp book fails (Sharpe 0.03 vs carry's 0.57).
+  - #42 `rl-5` (-> rl-4): perp inputs screened by weekly return spread: none passes Holm (best
+    p 0.087); lasso not run. 246 weeks detect only ~0.3%/week. Next: slower carry (cost) or
+    close the RL lane.
+  - #39 `usd-1` (-> slow-1): the dollar's 13-week change does not replicate (1971-1999 stock
+    indexes S +0.013, p 0.44; the coin signal is an echo of BTC/ETH's 33 quarters).
+  - #40 `cointop-1` (-> deep-1): coin-top exits (stop, fade, breadth) pass nowhere (BTC/ETH
+    Sharpe 1.09 vs 1.05, p ~0.3; other coins ~0); they cut worst loss 36.5% -> 29-30% for 1-2
+    points less growth a year: a smaller coin position, not a better rule.
+  - #37 `trend-1926` (-> trend-tune): `tsmom12` beats holding on US stocks 1927-1961 (Sharpe
+    0.88 vs 0.55, p 0.02; worst loss 38% vs 84%) but two thirds is 1929-1932: crash insurance,
+    not an edge.
+  - #41 `volume-1`: own trading volume does not forecast (max |IC| 0.021 vs chance 0.048).
+  - #43 `trend-where` (-> trend-tune): per-asset walk-forward trend filter (`where-vol`) ties
+    always-on `tsmom12` (1.07 vs 1.05, p 0.27); fails the bar; live rule unchanged.
+    Follow-up on 1927-1961 industries: the switch kept the filter on for every industry-year
+    (0 of 340 off; days out 1.3-1.8x as volatile): mechanism confirmed on stocks; the bond/gold/
+    coin worst-loss question rests on 2022 alone and needs long pre-2002 bond/gold histories.
+  - #44 `evo-1`: GP + Reality Check/SPA + 72 causal inputs built and tested (no real bars
+    read). Toy finding: SPA over the rules a GP visited passes pure noise (p <= 0.006 in 4/4), so
+    bar 3 is now a full-search replay on 20 bootstrap worlds (dated card note, before any real
+    number). Lead's call: pass only if none of the 20 replays is at or above the real score
+    (p < 0.05; or 40 worlds with at most one). Budget ~24 CPU-hours. Next: fast scorer vs
+    `gym.simulate`, `evo_wf.py`/`evo_world.py`, controls, then the 20 replays before any search.
+  - #45 `month-end-bonds` (-> wide-1): not replicated on clean data: LQD's last 4 sessions
+    +10.5 bps/month after cost and drift (t 1.93, bar 2.0), Sharpe 0.52 vs 0.60 twin; TLT's first
+    year -1.8 bps. Card's reading: do not spend the held-out year on it.
+  - #46 `micro-1`: minute-bar features (10 years cached) do not forecast weekly: max IC 0.030 vs
+    chance 0.064; best walk-forward 0.048 (bar 0.10). Can't tell 0.03-0.05 from zero.
+  - #47 `wide-2` (-> wide-1): wide-1's "trend age / hazard rate" (`age4`: hold a slot only after
+    4 Fridays on) fails train: Sharpe 0.99 vs 1.05, behind in 5 of 5 eras; skipping short spells
+    costs more than it saves.
+  - #48 `data-long-1`: free long histories verified: Shiller ie_data (monthly 1871-, 10y yield
+    + bond total return; current file on shillerdata.com), Damodaran histretSP (annual 1928-2025,
+    10y TR, Baa, gold), datahub gold monthly 1833-2026, JST R6 (annual, CC BY-NC-SA). Wire
+    Shiller first (loader started in burst 1); FRED timed out from this machine.
+- Running at the end of burst 1 (results land in their PRs): `coin-cap` (cap the coin weight
+  inside `tsmom12` vs cointop-1's exits), `data-long-1` (Shiller long-bond loader),
+  `wide-2` second mechanism, `volume-1` across 100 coins, `trend-1926` on 1962-2001.
 - Owner direction 2026-11-17: never stop early (only weekly 0.74, the reset or the Chief of
-  Staff); always WIDER and DEEPER lanes. 2026-11-18: no auto-resume at the 06:30 reset (owner's
-  window); restart when the Chief of Staff says.
+  Staff); always WIDER and DEEPER lanes. 2026-11-18: bursts use only the last 30 min of each
+  5-hour window (`chief-of-staff/briefs/grimstrade-burst.md`), weekly stop 0.84.
 
 ### Lane queue (W = wider, D = deeper)
 
-1. D `trend-carry`: after carry-3, deep-1's `stack` rule unchanged on `tsmom12` + the
-   cost-realistic carry book (the first real complement).
-2. W `month-end-bonds`: idle cash into the long bond for the last 4 sessions of each month; clean
-   tests left: LQD, TLT's first year, held-out once (owner's call: pattern found by looking).
-3. W `micro-1`: minute-bar features (realised vol, jumps, overnight vs intraday) as weekly
-   inputs, cheap IC screen first.
-4. D `trend-where-it-pays`: keep the trend filter only where past days out were rougher than
-   days in (walk-forward yes/no), worst loss in the bar.
-5. D `rl-5`: whatever rl-4's write-up says next.
-6. W `volume-1`: the six assets' own trading volume has never been screened.
+1. D `evo-1` next step: fast scorer vs `gym.simulate`, `evo_wf.py`/`evo_world.py`, timing test,
+   noise/planted controls, then the 20 replay worlds; no real search before those.
+2. W `data-long-1` -> wire the recommended long bond/gold histories into the cache, then
+   D `trend-where-long`: `where-vol` unchanged on bond/gold before 2002 (the worst-loss question
+   now rests on 2022 alone).
+3. D `coin-cap` follow-up: whatever its write-up says (if a plain cap matches the learned exits,
+   a draft rule PR for the owner).
+4. W `wide-3`: next uncarded wide-1 mechanism; the bar counts every pick so far (k of 42).
+5. D `rl`: rl-5 says stop screening weekly perp inputs; close the RL lane or try slower carry
+   (cost), both on train only (carry-3's held-out year is spent).
+6. W long-horizon / other assets: trend-1926 shows trend is crash insurance on stocks; test the
+   same on the long bond/gold histories once wired (needs item 2).
 
 ### For the owner
 
+- Burst 1 (2026-11-18): the carry book (`band`) failed its one held-out year (#31); the
+  held-out year is spent there. month-end-bonds (#45) says not to spend a held-out year on it:
+  that answers the earlier "owner's call". evo-1 (#44) will need ~24 CPU-hours for its replay
+  worlds; say if that is too much for this machine.
+- usd-1 (#39): one robustness check (the Fed's old dollar index) needs a FRED API key; it cannot
+  change the verdict, so optional.
 - Daily runs fire at 02:00-04:40 UTC, not 22:30 (GitHub delays scheduled jobs). No look-ahead,
   but crypto orders now fill ~22 h after the decision while backtests assume ~1.5 h. Accept, or
   move the schedule? (details: `health-1` next-steps, PR #27).
