@@ -1,5 +1,29 @@
 # Next steps
 
+## Coin cap (done 2026-11-18, branch `coin-cap`, draft PR #49 -> `cointop-1`)
+
+Is a plain cap on the combined coin weight inside `tsmom12` as good as cointop-1's `stop-0.25`
+at cutting the worst loss, at less cost in growth? Card `research/cards/coin-cap.md` (written
+before any number); write-up `research/coin-cap.md`; tables `research/results/coin-cap.md`.
+Every cap from 10% to 25%, the walk-forward stitch and the stop all have the same worst loss,
+28.9%: the 2000-02 dot-com fall, not a coin number. On that number `cap25` is cheaper (1.0 to
+1.1 points of CAGR a year against the stop's 2.2). Inside deep-1's coin-crash windows the stop
+is better than any cap of the same cost (-72% summed against -110% for `cap20`). Sharpe is
+inside noise everywhere. The card's bar is not met (Sharpe bar fails; worst loss is a tie).
+Held-out year unspent.
+
+Second reading (card section dated 11:18 UTC, `research/results/coin-cap-years.md`): on the coin
+years only (2013-25) the tie breaks and the stop wins. Worst loss: stop 17.7%, `cap20` 21 to
+23%, `cap25` and `cap-wf` 27.2%, `tsmom12` 36.5%. No cap with at least the stop's growth
+matches it; a 15% cap to cash does (17.2%) for 3.8 points of CAGR a year more than the stop.
+The gap is mostly the long 2018-20 fall, so it is close to one observation.
+
+- Rebuild: `research/lib/coin_cap.py` (**a plain run logs 18 tries rows**) and
+  `research/lib/coin_cap_years.py` (**logs 1 row**); do not rerun them with logging. `DRY=1`
+  is a plumbing run that logs nothing.
+- Doing: nothing. No process running.
+- Next (not started, card first): cap 25% together with `stop-0.25`; time under water.
+
 ## Cointop 1 (done 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
 
 `tsmom12` is slow out of coin tops. Coin tops studied on breadth-1's top-100 coin book; one
