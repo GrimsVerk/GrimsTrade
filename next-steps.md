@@ -1,31 +1,35 @@
 # Next steps
 
-## Wide 1 (in progress, started 2026-11-17, branch `wide-1`, base `carry-2`)
+## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
 
-New trading hypotheses from other fields (ecology, epidemiology, signal processing, control,
-information theory, game theory, physics, queueing, neuroscience, immunology), each tested by the
-protocol. Research only. Plan and results: `research/wide-1.md`.
+New hypotheses from ten other fields (ecology, epidemiology, signal processing, control,
+information theory, game theory, physics, queueing, neuroscience, immunology). 46 mechanisms
+sorted before any number; 33 collapse into ideas already killed; four got a card, each a bet on
+someone else's mechanical trading. **All four fail their pre-set bar on train; held-out year
+unspent.** Write-up `research/wide-1.md`; tables `research/results/`; 39 rows in `tries.md`.
 
-- Done: ideation (`research/wide-1.md`), four cards (`research/cards/auction-concession.md`,
-  `rebalance-pressure.md`, `contagion-catchup.md`, `vol-echo.md`), pushed before any test.
-- Done: step 3, train tests (scripts `research/lib/idea_wide1_*.py`, tables
-  `research/results/{auction-concession,rebalance-pressure,contagion-catchup,vol-echo}.md`,
-  rows in `research/tries.md`). **All four fail their bar; held-out year unspent.** Post-hoc
-  tables in `research/results/wide-1-posthoc.md`. Draft PR #33 (base `carry-2`), not merged.
-  - `auction-concession`: fails (six-asset book +0.01, p 0.14; nothing in IEF). TLT alone 0.50 vs
-    0.33 (p 0.05), right sign in every period, mostly 2020-25. A lead, not a result.
-  - `rebalance-pressure`: fails (book -0.005). The month-end spread has the predicted sign
-    (+38 bps a month, t 1.7), halved since 2014; it is the month's loser rising, not the leader falling.
-  - `contagion-catchup`: dead. Relatives' moves do not spill over (IC -0.015); plain one-week
-    reversal is the whole signal (IC +0.03, t 2.9) and does not pay.
-  - `vol-echo`: dead. Worse than constant exposure everywhere; the placebo era shows the same.
-- Paused 2026-11-18 ~00:00 UTC (usage window). Not yet done: the write-up at the top of
-  `research/wide-1.md` (plain words, table, how sure, next lanes), `ideas.md` statuses
-  (still `testing`), the PR body, disclosures (dry runs printed last-120-day numbers and the
-  rebalance event study before the logged run; cards were already pushed).
-- Idea in progress when paused (not started): check the two bond patterns on data never used,
-  Treasury par yields 1990-2002 (`<cache_root>/treasury/`): the dip before long-bond auctions and
-  the month-end bond rally. Descriptive only.
+- `auction-concession` (TLT out before 20/30-year Treasury auctions): book +0.01 over `tsmom12`
+  (p 0.14). TLT alone 0.50 vs 0.33 (p 0.05), mostly 2020-25; IEF goes the other way. Faint lead.
+- `rebalance-pressure` (halve the month's stock/bond leader in the last five sessions): book
+  -0.005. The raw spread has the predicted sign (+38 bps a month, t 1.7), halved since 2014.
+- `contagion-catchup` (21 ETFs, hold those whose relatives moved and which did not): dead, 0.50
+  vs 0.60. Relatives' moves do not spill over; plain one-week reversal is all there is.
+- `vol-echo` (hold stocks when a shock leaves the 21-day volatility window): dead, SPY 0.25 vs
+  0.63; the pre-2010 placebo looks the same.
+
+Next lanes (each needs its own card; details at the top of `research/wide-1.md`):
+
+1. A bond calendar card (auctions and month end together), judged first on Treasury yields
+   1990-2002, data no rule has seen.
+2. The month-end "loser bounce" on stocks, tested on 1962-2002 first.
+3. A volume screen: the six assets' own trading volume has never been screened.
+
+### For the owner
+
+- Nothing to change in the paper system.
+- Flow effects of this size (15-40 bps per event) only pay with futures and modest leverage:
+  the same broker gap the carry lead ran into. No decision needed unless futures are added.
+- Paid data noted, nothing bought: token unlock schedules (price not checked).
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
