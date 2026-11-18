@@ -1,5 +1,16 @@
 # Next steps
 
+## fast-reentry (in progress 2026-11-18 night, branch `fast-reentry` -> `insure-2`)
+
+One pre-registered faster re-entry rule for `tsmom12`, judged on net-of-rebound over insure-1/2's
+effective falls (US 50, non-US 19) and on the full-period premium. Card
+`research/cards/fast-reentry.md` (rule `or3-12`: hold if 12-month OR 3-month return > 0).
+Chain: (1) card, pushed before any number; (2) run once, `tries.md` rows, one-screen verdict in
+`research/fast-reentry.md`. Rerun needs insure-2's setup (saved trend-1926 runs in
+`research/data/runs/trend-1926/`, `research/macro.local.json`, insure-2's data cache).
+
+- Step 1 done: card pushed.
+
 ## insure-2 (done 2026-11-18 night, branch `insure-2` -> `insure-1`)
 
 Deeper check of insure-1's "trend = cheapest crash insurance". Chain: (1) `insure-era`: card 2's
