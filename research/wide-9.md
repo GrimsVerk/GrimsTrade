@@ -97,3 +97,38 @@ over six months). Only a very large effect can pass.
 
 **My guess before any number.** b between -8 and +8 points per degree, |t| < 1.5 post-sample;
 the placebo t spread wider than N(0, 1) (standard deviation 1.3-2). Chance of a pass: 2%.
+
+### What came out (one run, 2026-11-19; table `results/enso-commodity.md`)
+
+**The gate fails on two of four counts, the two that matter. After 2013, DBC's six-month return
+fell slightly with the ONI: -2.5 points per degree (t -0.92); the true calendar ranks 32 of 41
+(empirical one-sided p 0.78). W19 `enso-commodity` is dead by the gate: no card, no strategy,
+no `tries.md` row.**
+
+| DBC, six-month log return per degree of ONI | b, points (NW t) |
+|---|---:|
+| 2014-01..2025-04 (gate), 136 months | -2.47 (-0.92) |
+| 2006-02..2013-12 (paper's years), 95 months | +1.83 (+0.44) |
+| 2014-2025, three months (shown) | -1.95 (-1.15) |
+
+- **No ENSO premium in DBC:** the mean six-month return is highest after La Nina months
+  (+2.8 points after -1.0 < x <= -0.5, 28 months; +21.9 after x <= -1.0, only 3 months, the
+  2020-21 low before the 2021-22 commodity run) and lowest after weak El Nino (-4.6, 24
+  months). Strong El Nino (-0.4) beat weak, so the dose test is met, but around a negative
+  slope. DBC is mostly energy, so this does not refute the paper's non-fuel channel; it says
+  the broad fund held in the cache carries none of it.
+- **The placebo null is again wider than N(0, 1):** 40 year-shifted ONI calendars give t with
+  standard deviation 1.74, 20% with |t| >= 2, quantiles 5% -2.56 and 95% +2.35, extremes -5.93
+  and +2.84. A one-series monthly regression on an autocorrelated dose (ENSO episodes last a
+  year or more) has few independent observations, and Newey-West with 6 lags does not see that.
+- **Shown cells read after the run, not a lead:** GLD +3.9 points per degree (t 2.61) and SLV
+  +6.7 (t 3.25). Against this design's own null (DBC's placebo 95% at +2.35, largest +2.84),
+  GLD's t is ordinary and SLV's is at the edge; no placebo was computed for them, they were not
+  in the rule, and two precious-metal funds moving together in 2014-2025 (the 2023-24 El Nino
+  and the 2024-25 gold run coincide) is one episode. Noted only.
+- **Compared with my guess:** b between -8 and +8 with |t| < 1.5: yes (-2.5, t -0.92). Placebo
+  t spread 1.3-2: yes (1.74). 2% chance of a pass: no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only month counts (136 gate months, 95 in the paper's
+years, 40 placebos with at least 136 months each), then one run. Rule pushed at aa78d95, script
+and tests at a24686b, both before either run.
