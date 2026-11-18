@@ -233,3 +233,15 @@ def test_greed_grid_and_pick_rule(lib: dict[str, ModuleType]) -> None:
         assert (wf.PENALTY, wf.GENERATIONS) == (0.03, 10)
     finally:
         wf.use("A")
+
+
+def test_transfer_weights_match_the_walk_forward(lib: dict[str, ModuleType], small: Any) -> None:
+    import numpy as np
+
+    wf, gp = small, lib["evo_gp"]
+    real = importlib.import_module("evo_real")
+    p = wf.prepare(_world(lib))
+    rng = np.random.default_rng(5)
+    chosen = {y: [gp.random_rule(rng, 3, False)] for y in wf.FIT_YEARS}
+    got = real.chosen_weights(chosen, p.six_fridays, p.six_feats, p.six_elig)
+    assert np.array_equal(got, wf.oos_weights(p, chosen))

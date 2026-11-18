@@ -101,6 +101,11 @@ def first_friday(year: int) -> date:
 
 
 FIT_DATES = tuple(first_friday(y) for y in FIT_YEARS)
+FINAL_YEAR, FINAL_DATE = 2025, date(2025, 11, 10)  # the final fit: every train day
+
+
+def fit_date(year: int) -> date:
+    return FINAL_DATE if year == FINAL_YEAR else first_friday(year)
 
 
 @dataclass
@@ -189,7 +194,7 @@ def run_one(task: tuple[int, int]) -> dict[str, Any]:
     year, k = task
     assert _P is not None
     t0 = time.process_time()
-    fit = Fitness(_P, first_friday(year))
+    fit = Fitness(_P, fit_date(year))
     scored = gp.evolve(fit, 1000 * year + k, POPULATION, GENERATIONS)
     cands: list[tuple[gp.Rule, float]] = []
     seen: set[bytes] = set()
@@ -211,11 +216,13 @@ def run_one(task: tuple[int, int]) -> dict[str, Any]:
     }
 
 
-def search(p: Prepared, workers: int = WORKERS) -> list[dict[str, Any]]:
-    """All GP runs of the walk-forward on one world (largest windows first)."""
+def search(p: Prepared, workers: int = WORKERS, final: bool = False) -> list[dict[str, Any]]:
+    """All GP runs of the walk-forward on one world (largest windows first); `final` adds the
+    final fit on every train day (the real search only)."""
     global _P
     _P = p
-    tasks = [(y, k) for y in reversed(FIT_YEARS) for k in range(SEEDS)]
+    years = ((FINAL_YEAR,) if final else ()) + tuple(reversed(FIT_YEARS))
+    tasks = [(y, k) for y in years for k in range(SEEDS)]
     if workers <= 1:
         return [run_one(t) for t in tasks]
     with mp.get_context("fork").Pool(workers) as pool:
@@ -234,7 +241,7 @@ class Procedure:
 
 def _candidates(p: Prepared, runs: Sequence[dict[str, Any]], year: int) -> list[gp.Rule]:
     """The fit's candidates over its five runs, behaviourally different, best first."""
-    fit = Fitness(p, first_friday(year))
+    fit = Fitness(p, fit_date(year))
     merged: dict[gp.Rule, float] = {}
     for r in runs:
         if r["year"] == year:
