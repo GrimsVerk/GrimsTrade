@@ -36,9 +36,11 @@ script and logged test behind it.
 > 4. **Park it in euro cash:** a Dutch savings account under the deposit guarantee, or a euro
 >    overnight-rate or 0-1 year government-bond ETF at the Dutch broker you will buy back with.
 >    Not gold, Berkshire, long bonds or anything in dollars.
-> 5. **Buy back** a third each time a month-end close of the S&P 500 is 20%, 30% and 40% below
->    its high (from the 6 Oct high: about 6,255, 5,473 and 4,691). Whatever is left goes in by
->    **Fri 29 Dec 2028**. Simpler: 12 equal monthly buys from January 2027.
+> 5. **Buy back** in 12 equal monthly buys, January to December 2027. In the past high-valuation
+>    months that fit today this had a better typical result and a milder bad tail than waiting
+>    for falls. Only as a bet that a real bust comes: a third each time a month-end close of the
+>    S&P 500 is 20%, 30% and 40% below its high (about 6,255, 5,473 and 4,691), the rest by
+>    **Fri 29 Dec 2028**; it paid 1.4-1.6 times in real busts and cost more otherwise (section 8.2).
 
 What the evidence says, in short:
 
@@ -165,11 +167,11 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 | **Fallback 18 Dec for shares, 11 Dec for funds (4 Dec for slow funds); last safe 21 Dec (shares), 15-16 Dec (funds with cash at the broker within 2-6 business days), 9 Dec (within 5-10)** | None: this is the calendar | A plan must work if the pop comes late (lesson 2) | Settlement, fund cut-offs and the holiday calendar (park sections 4 and 7). The fallback day is the forced sale in the test | A fact, not a market signal. Fund dates rest on a platform's "normally" figures |
 | **3. Move the money to euros the same day** | None | None | Currency risk of a smaller non-euro market: the krone (NOK) fell about 20% against the euro in late 2008 and 18.5% in one month in 2020. OBX lost 62% in euros in 2007-09, more than the S&P's 52% (haven, park) | Descriptive |
 | **4. Park in euro cash** | Havens are conditional on the kind of crash; money funds can break (2.4) | Crash safety from the asset (lesson 6). Berkshire fell 54% in 2007-09 | In our table of 10 crashes, only euro cash never lost value (haven) | Descriptive, nothing fitted |
-| **5. Buy back in thirds at -20%, -30% and -40%, all in by 29 Dec 2028** | A lump sum usually wins (Vanguard). The literature gives no threshold | Re-enter with rules set in advance, and expect to be early (lesson 4). The deadline avoids the Grantham/Hussman failure | No re-entry rule beat buying back at once. The levels are ours (reentry card, fixed before any number) | 8 high-valuation episodes, only 3 since 1972 |
+| **5. Buy back in 12 monthly buys through 2027; as a bet on a real bust only, in thirds at -20%, -30% and -40%, all in by 29 Dec 2028** | A lump sum usually wins; spreading lowers regret (Vanguard). The literature gives no threshold | Re-enter with rules set in advance, and expect to be early (lesson 4). A fixed end date avoids the Grantham/Hussman failure | No re-entry rule beat buying back at once. In the high-valuation months that fit today, 12 monthly buys had the better median (0.97 vs 0.92 times buying at once) and the milder worst tenth (0.90 vs 0.72); the thirds won only in real busts (1.4-1.6 times) (section 8.2) | Both rules and levels fixed on the reentry card before any number; which one is the default was chosen after seeing them (review round 2). 8 high-valuation episodes, only 3 since 1972 |
 
 **Left out on purpose:** CAPE, breadth and concentration, sentiment indices, LPPL, GSADF and IPO counts as sell triggers. The literature gives them no date (sections 2.1, 2.3), and our tests agree for CAPE, VIX and credit. VIX and credit appear only as a way to bring a re-entry tranche forward.
 
-**Ours, not the literature's:** the choice of two tranches, the 200-day daily form, the fallback mechanics and the re-entry levels all come from our own backtests. Fixed in advance: the six-week bar, the 8-crash rule test and the re-entry card. Chosen after seeing results: the "half now plus 200-day" combination, the `now-like` sample, the 300-IPO threshold and the 10-firm filter in the GSY replication (section 10.2). Commonly heard ideas (an IPO wave as a top signal, Berkshire, a savings account, bonds) are assessed after this evidence, in section 9.
+**Ours, not the literature's:** the choice of two tranches, the 200-day daily form, the fallback mechanics and the re-entry levels all come from our own backtests. Fixed in advance: the six-week bar, the 8-crash rule test and the re-entry card. Chosen after seeing results: the "half now plus 200-day" combination, the `now-like` sample, the choice of 12 monthly buys over the thirds as the default re-entry, the 300-IPO threshold and the 10-firm filter in the GSY replication (section 10.2). Commonly heard ideas (an IPO wave as a top signal, Berkshire, a savings account, bonds) are assessed after this evidence, in section 9.
 
 ## 5. Where the indicators stand now
 
@@ -623,22 +625,46 @@ where no euro data exist (`lanes/haven-table.md`). Yields read 2026-11-15/18 (pa
 No rule adds return. A plan can only limit two regrets: buying back just before the crash, and
 never buying back.
 
-1. **Deadline:** fully back in stocks by the end of 2028, 24 months after the sale. 31 Dec 2028
-   is a Sunday, so the last weekday is **Fri 29 Dec 2028** (2028 exchange holidays not checked).
-2. **Before the deadline, buy in thirds:** one third at the first month-end close of the S&P 500
-   20% below its all-time high, one third at 30%, one third at 40% (rule `staged-24`, decided at
-   month-end closes as tested). From the 6 Oct 2026 closing high of about 7,819 that is about
+Both rules below come from the reentry card (fixed before any number) and were tested the same
+way: sale in a month, cash earns T-bills, decisions at month-end closes, wealth after 10 years
+against buying back at once (R; above 1 = better than buying back at once). Side by side, in the
+same samples (`lanes/reentry-rules.txt`, S&P 500 total return, 1928-2016 starts):
+
+| R after 10 years vs buying back at once | `dca12`: 12 equal monthly buys | `staged-24`: thirds at -20/-30/-40%, rest at 24 months |
+|---|---:|---:|
+| High-valuation months (sample B, the one that fits Nov 2026; 390 months, 8 episodes): median | **0.97** | 0.92 |
+| same: worst tenth (the regret measure) | **0.90** | 0.72 |
+| same: share of months with R above 1 | 31% | 35% |
+| same: mean | 0.99 | 0.97 |
+| Sample B from 1972 (249 months, 3 episodes): median / worst tenth | 0.97 / 0.90 | 0.90 / 0.68 |
+| Sold at a top before a real bust (Aug 1929, Nov 1968, Dec 1972, Mar 2000, Oct 2007) | 1.09-1.34 | **1.40-1.61** |
+| Sold 2-3 years early (Dec 1996, Dec 1997) | 0.88-0.93 | 0.64-0.71 |
+| All months (sample A, 1,066 months): mean | 0.98 | 0.96 |
+| Nasdaq, high-valuation months (robustness, 3 episodes): median / worst tenth / share above 1 | 0.96 / 0.86 / 35% | 0.89 / 0.69 / 5% |
+
+So in the sample that fits today, the 12 monthly buys did better on the median and clearly
+better in the bad tail. The thirds won only when a real bust followed the sale, and by a lot.
+Neither rule beat buying back at once; both are ways to limit regret.
+
+1. **Default: 12 equal monthly buys** (`dca12`), the first in January 2027 and the last in
+   December 2027, whatever the market does. In the test the first twelfth was bought at the
+   close of the sale month; starting one month later is a small shift that was not tested.
+   Its own end date is the deadline: fully back in stocks after 12 months.
+2. **Alternative, a bet that a real bust comes:** buy in thirds (`staged-24`): one third at the
+   first month-end close of the S&P 500 20% below its all-time high, one third at 30%, one third
+   at 40%, decided at month-end closes as tested; whatever is left goes in by the deadline, 24
+   months after the sale: 31 Dec 2028 is a Sunday, so **Fri 29 Dec 2028** (2028 exchange
+   holidays not checked). From the 6 Oct 2026 closing high of about 7,819 the levels are about
    **6,255 / 5,473 / 4,691** (`report_checks.py`); if the index makes a new high first, the
-   levels move up. On 18 Nov it was 6.3% below its high.
-   - Cost against buying at once: about 3-4% of 10-year wealth on average; median about 8% in high-valuation months; worst tenth 0.72 times. In a real
-     1968-, 1973-, 2000- or 2008-style bust it gave 1.4-1.6 times.
-3. **Simpler alternative:** 12 equal monthly buys from January 2027 (`dca12`): median cost about
-   3%, worst tenth 0.90 times. Better if missing a rally would bother you more than missing a
-   crash.
-4. **Signals only bring a tranche forward, never delay one:** VIX above about 45, a peak in
-   credit spreads, or a close above the 200-day average after a 30% fall. The Fed's first cut and
-   "CAPE back to its median" are not buy signals.
-5. **Write the rule down now** and follow it mechanically. A -20% fall can become -50% to -80%
+   levels move up. On 18 Nov it was 6.3% below its high. Choose this only if you accept the bet:
+   a belief that the AI boom is a bubble that will burst within two years is such a bet. In the
+   test it cost more than the monthly buys in the typical high-valuation month and in the worst
+   tenth, and it paid off only in the five real busts.
+3. **Signals may only bring purchases forward, never delay them:** VIX above about 45, a peak in
+   credit spreads, or a close above the 200-day average after a 30% fall can bring forward a
+   third that is due or the remaining monthly buys (an add-on that was not tested). The Fed's
+   first cut and "CAPE back to its median" are not buy signals.
+4. **Write the rule down now** and follow it mechanically. A -20% fall can become -50% to -80%
    (1929, 2000), and a fall can arrive only after the market has doubled (1996).
 
 Notes: the thresholds were tested on the S&P 500 in dollars. If you buy a global or European
@@ -759,7 +785,9 @@ above, against the same literature and data.
   fallback or a 200-day break" (bt amendment); the `now-like` sample, the only one that fits US
   and tech holdings now, and its below-the-200-day split (card amendment 2); the 300-IPO
   threshold; the 10-firm filter in the GSY replication. The `late` sample was itself defined to
-  fit November 2026 (stated on the card).
+  fit November 2026 (stated on the card). The re-entry default (12 monthly buys rather than the
+  thirds) was picked from the card's results in review round 2: both rules were on the card,
+  the choice between them was made after seeing the table.
 - **Card timestamps:** the exit-rules card's stated times ("~19:30" and "~20:30 UTC") were wrong;
   the commits are 18:50 and 19:01 UTC. A dated correction is on the card (amendment 2), with the
   old text left as it was. The order card-before-numbers holds in git.
