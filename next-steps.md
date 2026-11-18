@@ -73,7 +73,13 @@
     fails card (changes the rule). EUR-hedged S&P (IUSE) does not remove the drag (-0.21
     unchanged; hedge ~2.5%/yr): keep unhedged. 96 rows. Next: fewer signal flips for small
     coin-free books (new card); check DEGIRO core selection.
-  - RUNNING: `survey-2` (`grimstrade-survey2`: 2023-2026 papers, rank, card and test top pick) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
+  - DONE `survey-2` (draft #60 -> wide-4): 19 sources 2023-2026, 7 new candidates (in
+    `research/survey-2.md`). Top pick `fomc-cycle` (Cieslak-Morse-Vissing-Jorgensen 2019):
+    replicates in-sample (SPY even-odd +11 bps/day 1994-2013, t 3.1) but reverses after
+    publication (2017-2025 -5.7, t -1.2); stock slots in even weeks only: Sharpe 1.22 vs 1.05
+    (p 0.03) but all from 1994-2016; FAILS (family 13 of 61 tested, bar p < 0.00164).
+    Next: `xtsmom` (stocks only while bonds trend up, JFE 2020), no more Fed-calendar tests.
+  - RUNNING: `eu-3` (`grimstrade-eu3`: fewer signal flips for small coin-free EUR books) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
     must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
