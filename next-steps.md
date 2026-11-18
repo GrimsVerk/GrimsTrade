@@ -1,5 +1,12 @@
 # Next steps
 
+## eu-6 (in progress 2026-11-18 night, branch `eu-6` from `eu-5`)
+
+DEEPER lane on eu-5: should a small coin-free euro book run trend at all, versus holding the
+seven funds (equal weight, 5/25 band) or a plain 60/40 mix of the funds? Card
+`research/cards/eu-6.md` (pushed before any number). Next: `research/lib/eu6.py` (check, run),
+26 rows (idea `eu-6`), then write-up `research/eu-6.md` with a one-screen plain answer.
+
 ## eu-5 (done 2026-11-18 night, branch `eu-5` from `eu-4`, draft PR #73 -> `eu-4`)
 
 DEEPER lane on eu-4: cut only the drift third of `euw`'s orders, signal untouched. Card
