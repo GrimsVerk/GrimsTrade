@@ -990,3 +990,11 @@ Never edit or delete a row.
 | 2026-11-18 11:19 | crowded-trend | crowd@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.47 | +122.0% | 16.2% | 3.85 |
 | 2026-11-18 11:19 | crowded-trend | crowd@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +349.3% | 91.5% | 4.95 |
 | 2026-11-18 11:19 | crowded-trend | crowd@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +1932.4% | 24.6% | 2.88 |
+| 2026-11-18 19:08 | hedge-regime | hedge | variant | train | 1994-02-01 | 2025-11-09 | 1.05 | +18562.6% | 35.8% | 2.57 |
+| 2026-11-18 19:08 | hedge-regime | hedge@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +223.1% | 16.5% | 2.85 |
+| 2026-11-18 19:11 | attention-peak | peak | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +12638.8% | 37.6% | 2.91 |
+| 2026-11-18 19:11 | attention-peak | peak@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.33 | +21.8% | 86.9% | 6.77 |
+| 2026-11-18 19:16 | opex-pin | pin | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +19229.9% | 40.6% | 9.41 |
+| 2026-11-18 19:16 | opex-pin | pin-after | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +21200.1% | 35.3% | 9.37 |
+| 2026-11-18 19:16 | opex-pin | pin@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.46 | +207.5% | 28.8% | 10.53 |
+| 2026-11-18 19:16 | opex-pin | pin@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.64 | +4060.7% | 36.3% | 8.66 |
