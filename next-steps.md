@@ -1,24 +1,16 @@
 # Next steps
 
-## USD 1 (started 2026-11-18, branch `usd-1`, from `slow-1`)
+## USD 1 (done 2026-11-18, branch `usd-1`, draft PR -> `slow-1`)
 
-Task: slow-1's closest input, the dollar index's 13-week change (`usd_13w`), tested again with
-its sign fixed in advance (a rising dollar is followed by a worse quarter) on data the screen
-never used: stock indexes 1971-1999, the rest of the 33-market pool from 2000, the other coins
-(Coin Metrics wide book without BTC and ETH). Card with the bar: `research/usd-1.md` (committed
-before any number). Trading card only if it replicates.
-
-- Done: card; code and tests; reproduction of slow-1's public numbers; the one logged run (26
-  rows in `research/tries.md`); table `research/results/usd-1.md`. **Result: echo only, it does
-  not replicate.** Stock indexes 1971-1999 (the only set sharing no date with the screen): S
-  +0.013, p 0.44. Other risk markets 2000-2025: +0.070, p 0.12, zero beyond SPY. Other coins
-  2017-2025: +0.267, p 0.004, but nothing beyond BTC and ETH (-0.087). No trading card, no
-  backtest; held-out year unspent.
-- Paused 2026-11-18 for the usage window. No process running.
-- Next (not started; exact list in `research/usd-1.md`, "Status"): (1) post-hoc reading
-  (`usd1.py --posthoc`: leave-one-year-out, dollar-up spells, the dollar's own persistence),
-  one `robustness` row; (2) full write-up with 2-3 next lanes; (3) this section's final text;
-  (4) draft PR `usd-1` -> `slow-1` (not opened yet), never merged. Do not rerun `--run --log`.
+slow-1's closest input, the dollar index's 13-week change (`usd_13w`), tested again as a
+pre-registered replication (sign fixed in advance: a rising dollar, a worse quarter) on data the
+screen never used. **Echo only: it does not replicate.** Stock indexes 1971-1999 (the only set
+sharing no date with the screen): S +0.013, p 0.44. Other risk markets 2000-2025: +0.070, p 0.12,
+zero beyond SPY. Other coins 2017-2025: +0.267, p 0.004, but nothing beyond BTC and ETH (-0.087):
+the same 33 crypto quarters seen again. 26 rows in `research/tries.md`; table
+`research/results/usd-1.md`; write-up `research/usd-1.md`. No trading card, no backtest; held-out
+year unspent. Nothing running. Post-hoc reading dropped (cannot change the verdict).
+Next lanes in the write-up: `slow-2`, a crypto-only dollar card on future quarters, `chain-1`.
 
 For the owner: one robustness check was dropped because FRED would not serve the Fed's old
 major-currencies dollar index (`DTWEXM`, 1973-2019) to a keyless script. If you want it, the

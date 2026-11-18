@@ -12,9 +12,9 @@ search never touched, before anyone trades it. This card is that second look.
 
 ## In plain words (results)
 
-**Short version, 2026-11-18 (the run is done; the full write-up is not yet written, paused for
-the usage window): echo only. It does not replicate. No trading card, no backtest, held-out
-year untouched.** Table: `results/usd-1.md`. S > 0 means "same sign as the screen".
+**2026-11-18: a pre-registered replication (sign, sets and bar fixed in the card below before any
+number). Echo only: it does not replicate. No trading card, no backtest, held-out year
+untouched.** Table: `results/usd-1.md`. S > 0 means "same sign as the screen".
 
 | Set (13 weeks) | S | p | Reading |
 |---|---:|---:|---|
@@ -28,6 +28,33 @@ of 0.16 would have been caught four times in five, one of 0.10 only about half t
 other coins repeat the sign in the same 33 crypto quarters the screen already counted, and
 carry nothing beyond what BTC and ETH showed. So the dollar effect is still one observation
 from one crypto era, neither confirmed nor refuted.
+
+**The echo caveat.** The `coins` set looks like a pass (p 0.004) but is not independent evidence.
+Crypto returns move together: the other coins share BTC and ETH's 33 quarters, so a "dollar up,
+crypto down" pattern in those quarters is seen again in every coin. The card said in advance
+that this set could only echo the screen; the residual rows (`coins-resid`, S -0.087, p 0.83;
+`markets-resid`, S -0.001) confirm that nothing is left once BTC, ETH and SPY are taken out. The
+pooled P (+1.16, p 0.025) meets bars (a) and (b) only because the echo is counted as a set.
+
+**How sure.** Sure that there is no general dollar effect on risk assets at 13 weeks: 29 years of
+independent stock-index data show S +0.013, and an effect of slow-1's size (0.16) would have been
+caught four times in five. Not sure about a crypto-only effect: 33 quarters, a handful of
+dollar-up spells, all in one era. A small true effect of 0.10 could still hide in the 1971-1999
+set about half the time. The 4-week rows say the same (`before` -0.013; `markets` +0.036, p
+0.17). One robustness check (the Fed's `DTWEXM` index) was dropped, see Disclosures; it could
+not change the verdict.
+
+**Not done.** The post-hoc reading listed in Status (leave-one-year-out, dollar-up spells) was
+not run; it could only describe the crypto echo, not rescue the replication.
+
+**Next lanes (not started):**
+- `slow-2`: slow-1's macro near-misses (`cpi_yoy`, `real_ff`, `dff30`, `usd_13w`) at 4 and 13
+  weeks on the long index pool from 1962, as one small family; `usd_13w` enters there as a
+  failed replication, not a lead.
+- A crypto-only dollar card is worth writing only after the 2026 quarters exist as new data: fix
+  the sign now, wait for at least 8 new quarters, test once.
+- `chain-1` (from slow-1): on-chain activity growth as a 4-week cross-sectional rank across many
+  coins, a question with many more independent bets than a macro series.
 
 ## Card (written 2026-11-18, before any usd-1 number was computed)
 
@@ -240,19 +267,9 @@ under `<cache_root>/derived/usd-1/`.
 
 **Done:** this card; code and tests (`lib/usd1.py`, `tests/test_usd1.py`); reproduction; the
 one logged run (`usd1.py --run --log`, 26 rows in `tries.md`: 12 `screen`, 14 `robustness`);
-table `results/usd-1.md`. Verdict: echo only. Held-out year not loaded, not spent.
+table `results/usd-1.md`; write-up above. Verdict: echo only, does not replicate. Held-out year
+not loaded, not spent. No process running. Draft PR `usd-1` -> `slow-1`, never merged.
 
-**Paused 2026-11-18 (usage window). No process running.**
-
-**Next, in this order (nothing below is started):**
-1. Post-hoc reading, labelled as such and logged as one `robustness` row: S for `coins` and for
-   BTC and ETH with each calendar year left out (does it rest on 2018 and 2022?), the number of
-   separate dollar-up spells in 2017-2025, the mean return after dollar-up against dollar-down
-   Fridays per set, and how far the dollar's own 13-week change repeats (to read DBC's +0.255).
-   Add it as `usd1.py --posthoc` and append its output to `results/usd-1.md`.
-2. The full write-up at the top of this file (plain words, table, how sure, 2-3 next lanes).
-3. `next-steps.md` "USD 1" final text, with "For the owner": the Fed's `DTWEXM` file.
-4. Draft PR `usd-1` -> `slow-1`, never merged.
-
+Dropped, not started: the post-hoc reading (`usd1.py --posthoc`); it cannot change the verdict.
 Do not rerun `--run --log` (the rows are in `tries.md`). `--report` rebuilds the table from the
 saved json under `<cache_root>/derived/usd-1/`.
