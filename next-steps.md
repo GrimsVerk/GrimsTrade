@@ -7,7 +7,7 @@ Live track records as post-sample evidence. Chain: (1) list of keyless live fund
 `sixty-forty` against live funds of their family, and the backtest-to-live haircut; (3) plain
 statement: Sharpe to expect live from `tsmom12` and the forward-test length it implies.
 
-- Doing: step 2 card.
+- Doing: step 2, card pushed (`research/cards/live-check.md`); script and run next.
 
 ## Survey 4 (done 2026-11-18, branch `survey-4`, draft PR #72 -> `ann-1`)
 
