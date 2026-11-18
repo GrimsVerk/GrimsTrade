@@ -251,6 +251,56 @@ picked from the third reading's result (so "fixed" partly measures regression to
 are the equal-slot books (worst loss 66 to 70%, set by BTC's 2013-14 fall while it is the only
 coin).
 
+## Fifth reading, lane `coin-cap-4`, step 1: why the weekly stop fails (2026-11-18, descriptive)
+
+Post-hoc by nature, no bar, nothing logged. Code `lib/coin_cap4_modes.py` (rebuilds the
+third reading's series, falls and 21 episodes in memory); tables `results/coin-cap-4-modes.md`.
+For each coin fall: speed (worst price in the first 7 days, days to -50%), gap (worst single
+day in the first 30), the weekly stop's first exit (day, price), its band in price terms
+(`exp(-0.25 x vol) - 1`), re-entries after the first exit, and where its deepest P&L fall (M)
+ends.
+
+| Episodes (each once) | Worst 7 days | Days to -50% | Worst day | Stop's exit price | Leg-1 return | Band at top | After exit (re-entries) | M ends in first leg |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Weekly stop trails (6) | -38% | 19 | -30% | -44% | -49% | -34% | -2% | 60% of falls |
+| Weekly stop leads (15) | -23% | 82 | -17% | -21% | -23% | -29% | -5% | 37% of falls |
+
+**Failure mode 1, the first leg (the main one).** In the six lost episodes the coin falls
+-38% in its first week on average and reaches -50% in 19 days, with single days of -20% to
+-49%. The weekly stop is still in at the top in 5 of the 6 and gets out only at -44% (leg-1
+loss -49% of a slot, twice the leading episodes'). The loss is taken before a Friday close can
+see it, and in 2013-04 before any close can (two days to -50%). Re-entry losses are small
+there (-2% after the exit).
+
+**Failure mode 2, a wide band at the top.** The band is in volatility units, so a coin that
+was rising wildly is allowed a wide fall before the stop fires: the 2017 summer coins (own-0)
+had a band of -44% in price at their tops, and exited at -55%. Across the six the band at the
+top is -34% against -29%. This is the case a price-drawdown band is meant for.
+
+**Failure mode 3, re-entry into a bounce (BTC's).** Over all 445 falls: no re-entry after the
+first exit, mean edge +25% (257 of 310 positive); one re-entry +11% (71 of 110); two or more
+-3% (11 of 25); each re-entry costs about 20% of a slot on average. On BTC this is the 2017-12
+fall (back in at -13%, -18% after the exit) and 2021-11 (back in 2023 at -55% with a band
+of only -10%). The band at re-entry is not wider than at the top on average (-30% against
+-29%), so "the band loosens after a crash" is not the general cause; the re-entries are bounces
+the rule reads as new uptrends.
+
+**Speed alone does not sink the stop.** By the first week: falls of -40% or worse (31) still
+have a mean edge of +6% (18 positive); -10% to -40% about +20%. The stop loses when a fast
+first leg meets a wide band or a coin it is still fully in.
+
+**BTC's five falls:** 2013-04, two days to -50%, worst day -49%: nothing close-based helps.
+2013-12, -38% in a week, out at -47% (band -29%). 2017-12, re-entry. 2019-06, ahead (+11%).
+2021-11, a slow fall (-6% in the first week) where the twin itself is out at day 89, so the
+cap of the twin is hard to beat, plus a 2023 re-entry. Three different reasons in four
+losses; five falls cannot tell which matters.
+
+**What this says for the remaining candidates.** A price-drawdown band addresses mode 2 and,
+for high-volatility coins, part of mode 1 (an earlier exit); it does nothing for 2013-04 and
+may re-enter bounces just the same (mode 3). A cap on top of the stop shrinks every loss in
+proportion, including the first leg, and changes no timing. Time under water is the measure
+that shows mode 3 (a stop that waits out a fall flat is under water as long as it is out).
+
 ## Changes after the card
 
 None to the rule, grid, selection or bar. One reading note: bar 1 is reported as a tie (above).
