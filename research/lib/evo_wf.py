@@ -23,6 +23,7 @@ Commands (run from the repo root, `uv run python research/lib/evo_wf.py ...`):
 
 - `timing`: the timing test of the card (no fitness or result is printed), on control world 1.
 - `ceilings`: the planted controls' ceilings (`H` through the gym), logged first.
+- `baselines noise|plant`: equal weight and `tsmom12` (no search) in the control worlds.
 - `control noise SEED` / `control plant K`: one control world through the whole pipeline
   (14 fits; the final fit enters no out-of-sample number), logged as `control` rows
   (`evo-1-control`) in `research/tries.md`.
@@ -456,11 +457,33 @@ def ceilings() -> None:
         _log_control(run, f"{w.label}: ceiling, H itself through the gym, no search")
 
 
+EQUAL: gp.Rule = ("slot", ("const", 1.0))  # every eligible asset's equal slot: equal weight
+
+
+def world_baselines(which: str) -> None:
+    """Context for the controls (added after the first control runs, 2026-11-18): plain rules
+    with no search in the three noise worlds and the three planted ones. A zero log-drift
+    world still pays a long holder about half the variance a day in simple returns, so
+    holding is not exactly cash there."""
+    real = ew.load_real()
+    noise = [ew.world(real, "shuffle", seed) for seed in (1, 2, 3)]
+    worlds = noise if which == "noise" else [ew.plant(noise[0], k) for k in PLANTS]
+    for w in worlds:
+        p = prepare(w)
+        for name, rule in (("equal weight", EQUAL), ("tsmom12", gp.TSMOM12)):
+            run = gym_run(p, "evo-1-control", name, gp.weights(rule, p.six_feats, p.six_elig))
+            pv = stats.sharpe_diff_boot(run.rets, np.zeros_like(run.rets), seed=0)[1]
+            print(f"{p.label}: {name} Sharpe {stats.sharpe(run.rets):.2f}, p {pv:.3f}")
+            _log_control(run, f"{p.label}: {name}, no search (world context; p vs cash {pv:.3f})")
+
+
 def main(argv: Sequence[str]) -> None:
     if argv[:1] == ["timing"]:
         timing()
     elif argv[:1] == ["ceilings"]:
         ceilings()
+    elif argv[:1] == ["baselines"] and argv[1:] in (["noise"], ["plant"]):
+        world_baselines(argv[1])
     elif argv[:1] == ["control"] and len(argv) == 3 and argv[1] in ("noise", "plant"):
         control(argv[1], argv[2])
     else:
