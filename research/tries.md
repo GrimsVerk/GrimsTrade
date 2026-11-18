@@ -1400,3 +1400,16 @@ Never edit or delete a row.
 | 2026-11-18 22:44 | eu-8 | hold7cash-irx-proxy@long-monthly | robustness | train | 1972-02-01 | 2025-09-01 | 1.48 | +5249.6% | 11.6% | 0.19 |
 | 2026-11-18 22:44 | eu-8 | hold7-irx-proxy@long-monthly | robustness | train | 1972-02-01 | 2025-09-01 | 1.20 | +11192.4% | 20.8% | 0.27 |
 | 2026-11-18 22:44 | eu-8 | mix60-irx-proxy@long-monthly | robustness | train | 1972-02-01 | 2025-09-01 | 1.14 | +12155.1% | 27.0% | 0.19 |
+| 2026-11-18 22:48 | eu-8 | trendsl@usw-2007-2011 | robustness | train | 2007-03-01 | 2011-12-31 | 0.77 | +40.4% | 10.8% | 1.22 |
+| 2026-11-18 22:48 | eu-8 | trendsl-proxy@long-monthly-1994-2011 | robustness | train | 1994-01-01 | 2011-12-01 | 1.46 | +316.5% | 6.7% | 0.52 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/slip | variant | train | 2012-01-02 | 2025-11-09 | 0.63 | +73.7% | 15.9% | 1.68 |
+| 2026-11-18 22:48 | eu-8 | trendsl-estr@euw/slip | robustness | train | 2012-01-02 | 2025-11-09 | 0.64 | +75.7% | 15.9% | 1.68 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur1-5k | variant | train | 2012-01-02 | 2025-11-09 | 0.58 | +65.6% | 16.1% | 1.69 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur1-10k | variant | train | 2012-01-02 | 2025-11-09 | 0.60 | +69.9% | 15.9% | 1.69 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur1-25k | variant | train | 2012-01-02 | 2025-11-09 | 0.62 | +71.9% | 15.9% | 1.70 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur2-5k | variant | train | 2012-01-02 | 2025-11-09 | 0.54 | +61.1% | 16.4% | 1.70 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur2-10k | variant | train | 2012-01-02 | 2025-11-09 | 0.58 | +67.5% | 15.9% | 1.68 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur2-25k | variant | train | 2012-01-02 | 2025-11-09 | 0.61 | +71.1% | 15.9% | 1.69 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur3-5k | variant | train | 2012-01-02 | 2025-11-09 | 0.48 | +52.5% | 17.0% | 1.70 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur3-10k | variant | train | 2012-01-02 | 2025-11-09 | 0.56 | +63.7% | 16.4% | 1.70 |
+| 2026-11-18 22:48 | eu-8 | trendsl@euw/eur3-25k | variant | train | 2012-01-02 | 2025-11-09 | 0.60 | +69.8% | 15.9% | 1.69 |

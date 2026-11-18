@@ -347,7 +347,7 @@ def report_all() -> None:
         f"| **Loses less of the rest** (2 of 3) | {gains2} | {yn(gains2 >= eu7.GAINS_NEED)} |",
         f"| **Stage 2** | | {yn(pass2)} |",
         "",
-        f"**Worth a held-out-year card: {yn(pass1 and pass2)}** (needs stage 1 and stage 2).",
+        f"Worth a held-out-year card: {yn(pass1 and pass2)} (needs stage 1 and stage 2).",
     ]
 
     # with the euro rate (a): robustness row
@@ -415,7 +415,9 @@ def report_all() -> None:
     why = {
         "P2": "max DD " + ", ".join(f"{k} {crit[k]['mdd']:.1%}" for k in KEYS),
         "P3": "under water " + ", ".join(f"{k} {crit[k]['uw']:.0f} mo" for k in KEYS),
-        "P4": "windows best " + ", ".join(f"{k} {wins[k]}" for k in KEYS),
+        "P4": "windows best "
+        + ", ".join(f"{k} {wins[k]}" for k in KEYS)
+        + " (a tie goes to fewer orders, eu-7's rule)",
         "P5": "orders/yr " + ", ".join(f"{k} {crit[k]['orders']:.1f}" for k in KEYS),
     }
     labels = {"P2": "P2 worst loss", "P3": "P3 waiting", "P4": "P4 crash insurance",
