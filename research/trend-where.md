@@ -4,6 +4,74 @@ Research run trend-where, started 2026-11-18. Branch `trend-where` (from `trend-
 only: fake money, the price cache already on disk, no change to the gym, the daily runner or the
 live strategies. This is next lane 2 of `trend-tune.md`.
 
+## In plain words (results, 2026-11-18)
+
+**Dropping the trend filter where it buys no calm is a tie with keeping it everywhere: slightly
+ahead, not provably so, and the worst loss over the whole period did not get deeper. Both
+variants fail the bar; the live rule stays.** Held-out year not looked at. Tables:
+`results/trend-where.md`; 8 rows in `tries.md`; one run.
+
+Sharpe is return per unit of risk (higher is better). Six live assets, 1994-2025:
+
+| | Sharpe | Growth a year | Worst loss | Loss in 2022 rate shock | Trades a year |
+|---|---:|---:|---:|---:|---:|
+| `where-vol` (filter kept where days out were more volatile) | 1.07 | +18.9% | 35.3% | -26% | 1.7 |
+| `where-dd` (kept where days out fell deeper) | 1.05 | +18.4% | 35.7% | -27% | 2.4 |
+| `tsmom12` (filter always on) | 1.05 | +17.8% | 36.5% | -13% | 2.7 |
+| Equal weight (buy and hold) | 0.88 | +18.2% | 68.8% | -37% | 1.3 |
+
+- **The yes/no finds the stocks by itself.** Looking only at the past each January,
+  `where-vol` kept the filter on SPY and QQQ in every year and dropped it on bonds from 2009,
+  gold from 2015, Bitcoin from 2019 and Ether from 2023. That is the full-sample answer of
+  `trend-tune.md`, reached without hindsight.
+- **On Sharpe it is a small gain that could be luck.** +0.03 against `tsmom12` (p = 0.27; the
+  bar asked for p < 0.05), +0.03 since 2003. Out of universe: +0.05 on the 8 other ETFs
+  (p = 0.08), +0.07 on the 6 other coins (p = 0.01), 0.00 on the 4 indexes (all stocks: every
+  answer is yes at the last refit, so the rule is close to `tsmom12` there).
+- **Worst loss: no deeper over the whole period, but twice as deep in 2022.** The book's worst
+  loss is 35.3% against 36.5%, and the out-of-universe worst losses are within 2 points. But
+  the answers only turned to no late (each asset keeps the filter for its first five years, and
+  Bitcoin kept it through the 2014 and 2018 winters). The one bad stretch after bonds, gold and
+  Bitcoin had all lost their filter is 2022: -26% against -13% in the rate shock, -33% against
+  -20% in the crypto winter. So "same worst loss" rests on one episode, and in that episode the
+  rule lost twice as much.
+- **Reading "rougher" by depth of fall is worse than by volatility.** `where-dd` flips its
+  answers (gold no in 2011, yes in 2016; bonds yes again in 2023), gains nothing on the six
+  (+0.01) and is behind on the other ETFs (-0.07) and the indexes (-0.03).
+
+### Pass bar
+
+| Bar | `where-vol` | `where-dd` |
+|---|---|---|
+| 1. Sharpe beats `tsmom12`, p < 0.05 | FAIL (+0.03, p 0.27) | FAIL (+0.01, p 0.45) |
+| 2. Worst loss within 5 points | pass (35.3% vs 36.5%) | pass (35.7% vs 36.5%) |
+| 3. Since 2003: not behind, worst loss within 5 points | pass | pass |
+| 4. Out of universe: Sharpe up and worst loss within 5 points, 2 of 3 sets | pass | FAIL |
+| 5. Beats equal weight | pass | pass |
+
+### What this means
+
+1. **No change to the live rule.** Neither variant clears the bar.
+2. **The filter on the bond, gold and coin slots is cheap insurance, not a drag worth
+   removing.** Dropping it there was worth about +1 point of growth a year and a third less
+   trading, with a Sharpe gain that cannot be told from zero, and it cost 13 points in 2022.
+3. **The risk choice of `trend-tune.md` stands as it was put**, now with one table behind it.
+
+### How sure
+
+- The gap to `tsmom12` is measured with a standard error of about 0.04: +0.03 is inside the
+  noise, and +0.10 would have been seen. Two tries, no selection between them.
+- The worst-loss result is the weak part: the coin answers have been no only since 2019 (BTC)
+  and 2023 (ETH), so the rule has held coins unfiltered through one winter.
+- Card pushed before any number (commit `04c613a`). The no-look-ahead test removes every later
+  bar and gets the same answers. Held-out year unspent.
+
+### Next step
+
+Run `where-vol`, unchanged, on the 1926-1961 US industries of lane `trend-1926` (data no run
+here has tuned on, with 1929-32 and 1937 in it). It is the only place left where the worst-loss
+question can be asked on more than one episode. No held-out look is earned.
+
 ## Card (fixed 2026-11-18, before any number of this run)
 
 ### What had been seen when this was written

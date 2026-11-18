@@ -1,5 +1,21 @@
 # Next steps
 
+## Trend where (done 2026-11-18, branch `trend-where`, draft PR -> `trend-tune`)
+
+Keep the `tsmom12` filter only on assets whose past days out were rougher than days in
+(walk-forward yes/no each January). Card fixed before any number; write-up
+`research/trend-where.md`; tables `research/results/trend-where.md`; 8 rows in
+`research/tries.md`.
+
+- Result: a tie. `where-vol` 1.07 Sharpe against 1.05 for `tsmom12` (p 0.27), worst loss 35.3%
+  against 36.5%, +1 point of growth a year, a third less trading; but twice the loss in 2022
+  (-26% against -13%), the one bad stretch after bonds, gold and Bitcoin had lost their filter.
+  `where-dd` is worse. Both fail the bar; the live rule stays. Held-out year unspent.
+- Doing: nothing. No process running.
+- Next: run `where-vol` unchanged on the 1926-1961 industries of lane `trend-1926`.
+- Rerun: `uv run python research/lib/trend_where_run.py` (needs the git-ignored
+  `research/data/` price cache; saved runs are re-scored without new `tries.md` rows).
+
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
 What earns `tsmom12` its money, where it bleeds, and whether walk-forward tuning of its lookback
