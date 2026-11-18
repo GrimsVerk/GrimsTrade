@@ -1008,3 +1008,6 @@ Never edit or delete a row.
 | 2026-11-18 22:12 | dealer-backlog | backlog | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +16070.0% | 35.0% | 6.12 |
 | 2026-11-18 22:12 | dealer-backlog | backlog-neg | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +17264.7% | 37.0% | 8.59 |
 | 2026-11-18 22:12 | dealer-backlog | backlog@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +226.2% | 19.2% | 5.95 |
+| 2026-11-18 22:12 | extension-dose | ext-high | variant | train | 1994-02-01 | 2025-11-09 | 1.06 | +19956.0% | 35.8% | 5.96 |
+| 2026-11-18 22:12 | extension-dose | ext-low | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +19461.1% | 36.1% | 6.01 |
+| 2026-11-18 22:12 | extension-dose | ext-high@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.62 | +244.1% | 16.4% | 6.88 |
