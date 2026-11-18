@@ -72,6 +72,34 @@ Run `where-vol`, unchanged, on the 1926-1961 US industries of lane `trend-1926` 
 here has tuned on, with 1929-32 and 1937 in it). It is the only place left where the worst-loss
 question can be asked on more than one episode. No held-out look is earned.
 
+## Follow-up card: `where-vol` on US industries 1926-1961 (fixed 2026-11-18, before any number)
+
+**Seen when this was written:** everything above; the loader code of lane `trend-1926` (branch
+`trend-1926`, draft PR #37), but not its write-up, tables or `tries.md` rows. No number of this
+follow-up exists yet.
+
+- **Data.** Ken French's 10 value-weighted industry portfolios, daily, 1926-07-01 to
+  1961-12-31, as total-return bars built by `lib/trend_1926.py` (copied unchanged from
+  `origin/trend-1926`; fills at the close the signal saw, 2 bps a side, cash earns 0: that
+  lane's primary configuration). First decision 1927-07-02.
+- **Rule.** `where-vol` exactly as on the card below: same code, same 5-year and 60-bar
+  minimums, refit the first Friday of each year. Nothing is changed for this data (so "a year"
+  of bars is 252 sessions although the exchange also traded on Saturdays until 1952).
+- **Runs.** The ten industries as one equal-slot book: `where-vol`, with always-on `tsmom12`
+  as twin and equal weight as benchmark (both are `trend-1926`'s own baselines, re-scored here
+  without new rows). One new `robustness` row, idea `trend-where`, `where-vol@F-ind10`. Run once.
+- **What is read off (a robustness check of a rule that already failed; it cannot rescue it).**
+  1. Sharpe difference to `tsmom12` with the bootstrap p.
+  2. Worst loss against `tsmom12`'s, whole period and inside 1929-09-03 to 1932-07-08 and
+     1937-03-10 to 1938-03-31; "no deeper" means within 5 points.
+  3. The yes/no per industry by year, and how many industry-years are no.
+- **Expected before looking:** all ten are stocks, so the answers should be mostly yes and the
+  book close to `tsmom12`. If so, the check says only that the switch does no harm on stocks,
+  and the worst-loss question for non-stock slots stays open (no old bond, gold or coin data
+  here). If many answers are no and the worst loss is deeper by more than 5 points, the switch
+  is unsafe even on stocks.
+- Held-out year not touched.
+
 ## Card (fixed 2026-11-18, before any number of this run)
 
 ### What had been seen when this was written
