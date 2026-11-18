@@ -69,7 +69,8 @@ def vt_own(s1: l2.Sleeve, start: date, mean_share: float) -> tuple[dict, dict]:
     lo, hi = 0.0, 1.0
     for _ in range(60):
         k = (lo + hi) / 2
-        m = float(np.mean([run(k)[1][d] for d in l2.cal_days(*P)]))
+        shk = run(k)[1]
+        m = float(np.mean([shk[d] for d in l2.cal_days(*P)]))
         lo, hi = (k, hi) if m < mean_share else (lo, k)
     return run((lo + hi) / 2)
 
