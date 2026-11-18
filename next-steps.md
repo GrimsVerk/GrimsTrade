@@ -1,5 +1,18 @@
 # Next steps
 
+## Waiting for review: dsr-1 (branch `dsr-1`, draft PR #74 into `main`, not merged)
+
+Project-wide multiple-testing check, no backtests. Write-up with verdict: `research/dsr-1.md`;
+script: `research/dsr1.py` (`census`, `dsr`). Result: `tsmom12`'s profit survives any N, its
+edge over equal weight fails at N = 1; no near-miss survives the project's search; none is worth
+a held-out year.
+
+- [ ] Fix found: `ledger._RESEARCH_REFS` reads only `main` and `research-*` branches, so the live
+      scoreboard's N stopped at 307 tries (project: 2,811 rows, 947 selectable). Widen it to all
+      remote branches except `paper-trail` (proposal in `research/dsr-1.md`).
+- [ ] Owner/lead: decide on the project-wide register (`research/register/` on `main`, proposal
+      in `research/dsr-1.md`) and have every card quote the global N.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
