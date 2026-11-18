@@ -118,7 +118,7 @@ judged on 10 years needs +0.54 (close) to +1.00 (far) over `tsmom12`, on 5 years
 tail), a 32-year one 1.23 to 1.28. Fat tails add 0.02-0.25 Sharpe; halving the record adds
 far more.
 
-Caveats: the sample is the 41% of selectable rows whose returns could be rebuilt (saved
+Caveats: the sample is the 40% of selectable rows whose returns could be rebuilt (saved
 curves exist only on one machine; regeneration elsewhere needs those caches or a fresh run of
 each lane's scripts). Live strategies' weeks count the whole train period, including years
 before an asset existed (held as cash). Tries rows added by this lane: none (only

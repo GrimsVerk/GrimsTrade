@@ -14,7 +14,7 @@ Measured inputs for the bar (card and results: `research/register-2.md`). Done:
 - [ ] Owner/lead: accept the measured bar (N 433: +0.30 close / +0.56 far over `tsmom12`).
 - [ ] Next: lanes pass `weeks`/`skew`/`excess_kurtosis` when logging (a column in
       `research/tries.md` or the harness's `_log`), so the backfill stops depending on caches.
-- [ ] Next: a correlation sample that covers more families (only 41% of selectable rows have
+- [ ] Next: a correlation sample that covers more families (only 40% of selectable rows have
       returns; one family is a third of the sample).
 
 ## Waiting for review: register-1 (branch `register-1`, draft PR #79 into `dsr-1`, not merged)
