@@ -1,5 +1,13 @@
 # Next steps
 
+## Trend 1926 fix (in progress 2026-11-18, branch `trend-1926-fix` -> `trend-1926`)
+
+Three loose ends of trend-1926: (1) explain the era-2 replay-check gaps (utilities 1.7% on one
+day) and fix anything that changes a number; (2) offline tests for the `TREND_ERA=1962` path;
+(3) `research/ideas.md` and the README describe both eras.
+
+- Doing: step 1 (diagnosis).
+
 ## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 
 Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 industries, cache
