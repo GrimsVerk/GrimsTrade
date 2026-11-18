@@ -176,6 +176,12 @@
     next bar p < 0.00147. New W12-W15 queued.
   - 22:31 UTC `wide-7` started (W, <- wide-6): gates for W14 `wash-sale-echo`, W13
     `festival-gold`, W12 `rmd-december`.
+  - DONE `combo-2` (draft #75 -> combo-1; merges #61 via merge commit 957fdd1): with T-bill
+    interest no verdict changes (`blend-ws` 1.16 vs 1.08, p 0.051; above cash +0.06, p 0.108;
+    bar p < 0.0014). `cofall-dbc` (DBC when SPY and TLT trends both down) 1.07 vs 1.08 (p 0.85),
+    2022 worse (signal opened Apr 2022, DBC fell 24% after June). 1962-2025: in co-fall months
+    T-bills +5.4%/yr, commodities lost. 15 rows; family 73. Combo line CLOSED.
+  - 22:32 UTC `stop-reentry` started (D, <- coin-cap-4): one pre-committed coin re-entry rule.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -276,6 +282,8 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, combo-2 (#75): it merged cash-interest (#61) into its branch to test with
+  T-bill interest; no verdict changed. Merging #61 into main stays your call.
 - Night 2026-11-18, dsr-1 (#74): counting the whole project's search, `tsmom12` has no proven
   edge over simply holding the same assets equally (it makes money, but so does holding). The
   live scoreboard undercounts tries (307 vs ~2,811); `register-1` fixes that in a draft PR.
