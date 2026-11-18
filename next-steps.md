@@ -15,9 +15,17 @@
     honest monthly signal earlier). `trend-where-long`: `where-vol` keeps the filter on 10y bonds
     (71/71 refits); on gold it drops it from 1986 and deepens worst loss (51.7% vs 42.6% to 2001;
     39.3% vs 21.7% 2002-25). Close trend-where; live rule unchanged. Next: FRED PPIACO retry.
+  - DONE `rl-6` (draft #52 -> rl-5): RL/perp line CLOSED. Power: 246 train weeks detect only
+    Sharpe >= 0.98 (p<0.10; 1.42 with 8 carry shapes counted), best seen 0.79; carry-3's held-out
+    failure was price, not cost. 0 tries (no slow-carry card by the pre-set rule). Reopen only on
+    the 4 triggers in `research/rl-6.md`.
+  - DONE `coin-cap-2` (draft #53 -> coin-cap): 445 coin falls >= 60% on 197 coins = 21
+    episodes (effective ~7.6). `stop-0.25` beats a matched-cost cap (f 0.663) on deepest loss in
+    15/21 (sign p 0.039), 9/10 years; loses in fast crashes (weekly stop); Sharpe unchanged. Rule
+    PR candidate: owner's call (see For the owner).
   - RUNNING: `evo-1` (fast scorer, wf/world drivers, timing, controls; no real search),
-    `wide-3` (worktree `grimstrade-wide3`), `coin-cap-2` (`grimstrade-coincap2`, more coin
-    falls), `rl-6` (`grimstrade-rl6`, power analysis, slower carry or close).
+    `wide-3` (worktree `grimstrade-wide3`), `gsy-1` (`grimstrade-gsy1`, Greenwood-Shleifer-You
+    run-up exit on French industries 1928-), `coin-cap-3` (daily-checked stop vs weekly).
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
@@ -117,6 +125,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, coin-cap-2 (#53): `stop-0.25` on the coin slots of `tsmom12` passes its
+  card (shallower worst loss in 15 of 21 coin-crash episodes, same Sharpe; weak on BTC alone).
+  Open a rule PR? Spend the held-out year on it? Your call.
 - Burst 1 (2026-11-18): the carry book (`band`) failed its one held-out year (#31); the
   held-out year is spent there. month-end-bonds (#45) says not to spend a held-out year on it:
   that answers the earlier "owner's call". evo-1 (#44) will need ~24 CPU-hours for its replay
