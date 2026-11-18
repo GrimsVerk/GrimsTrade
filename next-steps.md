@@ -1,6 +1,6 @@
 # Next steps
 
-## Evo 1 (PAUSED 2026-11-18 ~11:15 UTC after burst 1, branch `evo-1` from `carry-2`, draft PR open)
+## Evo 1 (PAUSED 2026-11-18 ~11:15 UTC after burst 1, branch `evo-1`, draft PR #44 -> `carry-2`)
 
 Question: can a genetic-programming search over trading rules find anything that beats `tsmom12`
 once it is charged for its luck (walk-forward selection, Reality Check / SPA over every rule
