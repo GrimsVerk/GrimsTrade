@@ -237,3 +237,38 @@ QQQ, N225, FTSE, GDAXI and BTC in the gate window; the 7-day window (N = 3) for 
 **My guess before any number.** SPY gate difference between -3 and +4 bps, |t| < 1.2; the
 paper's own years on GSPC positive at about t 1 to 2 (the US is a G-7 market). Chance of a
 pass: 2%.
+
+### What came out (one run, 2026-11-18; table `results/lunar.md`)
+
+**The gate fails: SPY new-moon minus full-moon days +1.6 bps a day (t 0.43) over 2007-2025,
+rank 12 of 29 phase shifts. W3 `lunar` is dead by the gate: no card, no strategy, no
+`tries.md` row.**
+
+| Series, years | New minus full, bps a day (t) | Rank of 29 |
+|---|---:|---:|
+| SPY 2007-01..2025-11 (gate) | +1.6 (0.43) | 12 |
+| S&P 500 index 1973..2001-07 (paper's years) | +3.1 (1.28) | 5 |
+| SPY 1993..2001-07 (paper's years) | +7.3 (1.54) | 3 |
+| S&P 500 index 1962-1972 (before) | +0.7 (0.28) | 9 |
+| S&P 500 index 2001-08..2006 (after sample, before journal) | -2.4 (-0.43) | 22 |
+| S&P 500 index 2007-2016 / 2017-2025 | +2.5 (0.46) / +0.4 (0.07) | 11 / 14 |
+| QQQ, N225, FTSE, GDAXI 2007-2025 | +0.5 to +2.5 (0.1 to 0.6) | 10 to 14 |
+| BTC 2014-2025 | +10.3 (0.92) | 1 |
+
+- In the paper's own years the US shows the paper's sign at the paper's size for a G-7
+  market (+3 bps, t 1.3) and SPY a larger one (+7 bps, t 1.5, rank 3). After publication
+  every stock series stays positive but small (+0.4 to +2.7 bps, all t below 0.6, ranks in
+  the middle of the 29 shifts). The true phase is not special among the shifts: the largest
+  shifted differences are 6 to 8 bps, at event dates moved by 19 to 25 days.
+- BTC ranks first of 29 with +10 bps a day, t 0.9: one coin, one series, not the gate, and
+  a coin's daily noise makes 10 bps a coin toss.
+- Read as power, not proof of absence: the gate could only see about 7 bps a day. What it
+  rules out is an effect large enough to pay in this book; a 1-2 bps a day mood tilt may be
+  there and would be worth a few hundredths of Sharpe as an idle-cash overlay.
+- **Compared with my guess:** SPY between -3 and +4 bps with |t| < 1.2: yes (+1.6, 0.43).
+  Paper's years on GSPC positive at t 1 to 2: yes (1.28). 2% chance of a pass: no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only the gate's day counts (4,745 days: 2,342 new,
+2,328 full, 75 in neither); a second check printed only each shown series' first and last
+day and day count. Then one run. Index series carry no dividends (immaterial for a
+difference of two daily means).
