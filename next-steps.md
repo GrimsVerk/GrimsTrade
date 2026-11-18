@@ -9,8 +9,16 @@ five eras; held-out year unspent.** Short spells are common (50 of 111 end withi
 but cheap; the three missed weeks of lasting trends cost more. Write-up `research/wide-2.md`;
 table `research/results/trend-age.md`; 7 rows in `tries.md`.
 
+Second pick, same day: E6, patch-leaving (marginal value theorem). Rule `mvt`: the twin's
+exposure, held only in the in-trend assets whose risk-scaled 12-month return is at least the
+average. **Fails all five bars: 0.85 against 1.05 (difference -0.19, 90% range -0.36 to
+-0.02), drawdown 53% against 37%, turnover 9.7 against 2.7; held-out year unspent.** Table
+`research/results/patch-leaving.md`; 4 rows in `tries.md`. Both picks were read at
+p < 0.10 / 42.
+
 - Doing: nothing. No process running.
-- Next: nothing from this card. wide-1's three lanes below stand as written.
+- Next: nothing from either card. 40 of wide-1's mechanisms stay uncarded; neither test gives a
+  reason to card a third price-only one. wide-1's three lanes below stand as written.
 
 ## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
 

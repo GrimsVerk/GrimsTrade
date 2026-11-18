@@ -982,3 +982,7 @@ Never edit or delete a row.
 | 2026-11-18 11:13 | trend-age | age4@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.53 | +3554.2% | 45.0% | 1.46 |
 | 2026-11-18 11:13 | trend-age | age4@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.28 | +179.5% | 40.4% | 1.50 |
 | 2026-11-18 11:13 | trend-age | age4@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.47 | +773.7% | 55.2% | 0.97 |
+| 2026-11-18 11:16 | patch-leaving | mvt | variant | train | 1994-02-01 | 2025-11-09 | 0.85 | +22498.4% | 53.2% | 9.69 |
+| 2026-11-18 11:16 | patch-leaving | mvt@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.54 | +218.3% | 20.1% | 8.70 |
+| 2026-11-18 11:17 | patch-leaving | mvt@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.14 | -78.6% | 97.4% | 9.95 |
+| 2026-11-18 11:17 | patch-leaving | mvt@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.66 | +5694.5% | 33.3% | 9.16 |

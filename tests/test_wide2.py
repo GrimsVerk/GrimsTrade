@@ -76,3 +76,45 @@ def test_uses_no_later_data() -> None:
     same = [d for d in a if d <= last_seen]
     assert len(same) > 20 and any(a[d] for d in same)
     assert all(a[d] == b[d] for d in same)
+
+
+def _mvt_weights(hist: dict[str, list[Bar]]) -> tuple[dict[date, Any], dict[date, Any]]:
+    """Friday weights of `mvt` and of its twin on the same bars."""
+    sys.path.insert(0, str(LIB))
+    try:
+        idea = importlib.import_module("idea_wide2_patch_leaving")
+        c = importlib.import_module("common")
+        h = importlib.import_module("harness")
+    finally:
+        sys.path.remove(str(LIB))
+    first, last = hist["SPY"][260].date, hist["SPY"][-1].date
+    out = []
+    for rule in (c.weekly(idea.mvt), c.weekly(c.slots(c.tsmom_signal))):
+        ds = h.decisions(rule, h.Panel(hist), first, last)
+        out.append({d.time.date(): d.weights for d in ds if d.time.date().weekday() == 4})
+    return out[0], out[1]
+
+
+def _two(closes: list[float]) -> dict[str, list[Bar]]:
+    wavy = [80.0 + 0.05 * k + 3.0 * ((k // 9) % 2) for k in range(len(closes))]
+    return {"SPY": _bars(closes), "QQQ": _bars(wavy)}
+
+
+def test_patch_leaving_keeps_the_twins_exposure_and_assets() -> None:
+    mine, twin = _mvt_weights(_two(_path()))
+    assert any(len(w) < len(twin[d]) for d, w in mine.items())  # it does leave a patch
+    for d, w in mine.items():
+        assert set(w) <= set(twin[d])  # never holds what the twin does not
+        assert abs(sum(w.values()) - sum(twin[d].values())) < 1e-9  # same total exposure
+
+
+def test_patch_leaving_uses_no_later_data() -> None:
+    closes = _path()
+    cut = 500
+    other = closes[:cut] + [5.0 + (k % 7) for k in range(len(closes) - cut)]  # scrambled future
+    a, _ = _mvt_weights(_two(closes))
+    b, _ = _mvt_weights(_two(other))
+    last_seen = _bars(closes)[cut - 1].date
+    same = [d for d in a if d <= last_seen]
+    assert len(same) > 20 and any(a[d] for d in same)
+    assert all(a[d] == b[d] for d in same)
