@@ -62,7 +62,12 @@
     set: drawdown role holds, but trails equal weight by 0.21 Sharpe in EUR (currency + costs).
     SE of each Sharpe ~0.27. Follow-ups (not started): eu6 paper book (owner), fixed per-order
     fees, EUR-hedged vs unhedged US equity card.
-  - RUNNING: `cash-interest` (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
+  - DONE `cash-interest` (draft #61 -> main, never merged by agents): idle cash earns `^IRX`
+    (13-week T-bill, keyless; negative -> 0), daily act/365 on end-of-UTC-day cash, newest rate
+    known at d 00:00, append-only `data/rates.csv`; same `gym.simulate(rates=...)` for live and
+    backtests; Sharpe now above cash. 24 tests; 235 pass. Train effect: `tsmom12` CAGR 17.64% ->
+    18.19%, `sixty_forty` 8.09% -> 8.63%. Mechanical conflicts with #29/#30/#32.
+  - RUNNING: `survey-2` (`grimstrade-survey2`: 2023-2026 papers, rank, card and test top pick) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
     must pass before replays/real search) (`grimstrade-gsy1`, Greenwood-Shleifer-You
@@ -166,6 +171,10 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, cash-interest (#61, to main): (a) pay idle cash the full T-bill rate (as
+  if in a T-bill fund) or a spread below it (IBKR: benchmark -0.5%, none on first USD 10k;
+  Kraken: none on USD)? (b) switch the research harness's Sharpe to "above cash" too? (c) add
+  the US Treasury daily bill-rate CSV as a second keyless source?
 - Night 2026-11-18, eu-1 (#59): the live rule can be copied in the Netherlands with UCITS
   ETFs (US ETFs are not buyable for EU retail) and keeps its character in EUR. Want an "eu6"
   paper book in the live runner alongside the US one?
