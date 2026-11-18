@@ -1,5 +1,32 @@
 # Next steps
 
+## Wide 9 (done 2026-11-19, branch `wide-9`, draft PR #93 -> `wide-8`)
+
+Two event-study gates judged by rank among 40 placebo calendars (rule, script and tests pushed
+before any number; one dry run with counts only, then one run each), then a method note.
+**Both gates fail; no card, no strategy, no `tries.md` row; held-out year untouched.** Write-up
+`research/wide-9.md`; tables `research/results/enso-commodity.md`, `fork-premium.md`; method
+`research/gate-null.md`.
+
+- W19 `enso-commodity` (NOAA CPC ONI, keyless): DBC 2014-2025 six-month return -2.5 points
+  per degree of lagged ONI (t -0.92), rank 32/41 year-shifted calendars; placebo t sd 1.74.
+  Dead.
+- W17 `fork-premium` (ETH, BTC cached): ETH minus BTC premium into and after 15 upgrades
+  +0.70% (t 0.23), rank 19/41; placebo t sd 1.05. Dead.
+- `research/gate-null.md`: the placebo-rank procedure every gate follows from now on; measured
+  null widths 0.6-2.2 by design; earlier gates re-read: no verdict changes.
+
+Count: 72 mechanisms, 16 tested by a strategy, none passed. Next strategy test at p < 0.00139
+(family) and the register's p <= 4.9e-5. Gates so far: 10, all failed.
+
+- Doing: nothing. No process running.
+- Next: (1) W18 `elimination-mood` gate: first find a keyless match-results list (openfootball;
+  check its licence). (2) New mechanisms from unused fields, each gated by `gate-null.md`.
+  (3) Optional: placebo t for W14/W15 and the shown cells (one cheap rerun each with a
+  `shift` argument). A DBA (non-fuel) version of W19 would be a new rule on a dead mechanism:
+  only with its own card and count.
+- Data: the ONI file goes in `research/data/oni/` (gitignored; URL in `research/wide-9.md`).
+
 ## Wide 8 (done 2026-11-18, branch `wide-8`, draft PR #88 -> `wide-7`)
 
 A forward pre-registration and two event-study gates (rule, script and tests pushed before

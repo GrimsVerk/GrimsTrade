@@ -241,3 +241,42 @@ p 0.46). W17 `fork-premium` is dead by the gate: no card, no strategy, no `tries
 Disclosures: one dry run (`DRY=1`) printed only counts (15 events, 5 with scope 1; 40 of 40
 placebos kept, 11-15 events each), then one run. Rule pushed at 1b9452d (post window fixed to
 ten days at d0d35a9, before any code), script and tests at 3501d26, all before either run.
+
+## Step 3. The gate null, as a method (`research/gate-null.md`)
+
+The note writes down the procedure every gate now follows (placebo family fixed in the rule,
+40 placebos by default, same code path, the rank decides with t >= 2 kept as a necessary
+extra, the null's width reported every time, shown cells read against it, and for a card a
+placebo-scaled z or a cluster bootstrap to reach the family and register bars).
+
+**The width of the null depends on the design, and it was measured six times:** placebo t
+standard deviation 2.18 (wide-8, 21-ETF cross-section in one window, 35% with |t| >= 2), 1.74
+(W19, monthly regression on an autocorrelated dose, 20%), about 1.5 (W16, clustered storm
+days, from stored effects), 1.3 (W3 lunar), 0.6 (W13, 14 placebos) and 1.05 (W17, 15
+independent events, 2%). Clustered events and autocorrelated doses overstate t by up to 2x;
+independent events do not.
+
+**Earlier verdicts re-read (stored outputs, nothing rerun): none changes.** All ten gates
+(ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2) failed with the main statistic of the
+wrong sign or |t| < 1.5; a null at least as wide as N(0, 1) only raises the bar. What changes
+is the weight of shown cells with |t| 2-3.5 in clustered designs (ann-1's TLT FOMC t 2.3,
+wide-6's raw variance t 2.6, W15's TLT t -3.0, W19's SLV t 3.25 and GLD t 2.61): all ordinary
+under the measured nulls, noted only, none a lead.
+
+## Family count
+
+72 carried in; W19 and W17 closed by gates (gates do not raise the tested count); no new
+mechanism. **72 mechanisms, 16 tested by a strategy, none passed. The next strategy test is
+read at p < 0.10 / 72 = 0.00139** (family), and project-wide at the register's bar (2,904
+tries, N 1,012, Bonferroni p <= 4.9e-5 as read on 2026-11-19). Gates run so far: 10, all
+failed. No `tries.md` row in this run.
+
+## Status (2026-11-19)
+
+**Done:** W19 and W17 gates (rule, script and tests pushed before a dry run with counts and
+one real run each), `gate-null.md`, `ideas.md`, `wide-1.md`, `next-steps.md`. No card, no
+strategy, no `tries.md` row. Held-out year untouched (the ONI file's 2026 seasons were seen
+when its format was checked: a dose, not a return; Fusaka, 2025-12, not read). Draft PR #93
+(`wide-9` -> `wide-8`).
+
+**Doing:** nothing half-finished. No process running.

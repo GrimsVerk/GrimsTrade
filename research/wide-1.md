@@ -610,3 +610,19 @@ needing a gate first:
 
 **Family count: 72 mechanisms (70 + W18, W19), 16 tested by a strategy, none passed. The next
 strategy test is read at p < 0.10 / 72 = 0.00139.**
+
+## Added by wide-9 (2026-11-19): W19 and W17 closed by gates, a gate-null method
+
+Both gates had their rule, script and tests pushed before any number (see `wide-9.md`) and
+were judged by rank among 40 placebo calendars (`gate-null.md`); both fail and are dead by the
+gate, with no card:
+
+- **W19 `enso-commodity`**: DBC's six-month return on the lagged ONI (NOAA CPC, keyless),
+  2014-2025: -2.5 points per degree (t -0.92), rank 32 of 41 year-shifted ONI calendars; in
+  the paper's years +1.8 (t 0.44). DBC is mostly energy; the non-fuel channel is untested.
+- **W17 `fork-premium`**: ETH minus BTC into and after 15 mainnet upgrades 2016-2025: premium
+  +0.70% (t 0.23), rank 19 of 41; no run-up (-0.06%), no sell-off (-0.76%).
+
+No new mechanisms in this run. **Family count: 72 mechanisms, 16 tested by a strategy, none
+passed. The next strategy test is read at p < 0.10 / 72 = 0.00139.** Gates so far: 10, all
+failed.
