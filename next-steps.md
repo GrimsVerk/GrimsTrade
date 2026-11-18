@@ -10,7 +10,7 @@ character (confirmation over two Fridays, a dead zone around zero on the 12-mont
 an explicit character test and the family bar, then train runs, every try logged; (3) minimum
 book per fee tier and whether the eu-3 verdict changes. Fees described as generic tiers only.
 
-- Doing: step 1.
+- Done: step 1 (diagnosis, `eu-4.md` section 1, `results/eu-4-diag.md`). Doing: step 2 card.
 
 ## eu-3 (done 2026-11-18 night, branch `eu-3` from `eu-2`, draft PR #63 -> `eu-2`)
 
