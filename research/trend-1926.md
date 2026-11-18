@@ -11,6 +11,11 @@ of US stocks from 1926 to 1961, on the rule exactly as it is, with nothing tuned
 
 ## In plain words (results, 2026-11-18)
 
+**Both eras in one line:** over 1927-2001 the rule's lead over holding US stocks is the
+collapses of 1929-1932 and 1973-1974 only; outside them it ties or trails. Era 2 (1962-2001,
+card 2 and its result at the end of this file) came out "crashes only": market +0.07 (p 0.26),
+-0.03 without 1973-1974. Era 1 follows.
+
 **Yes over the whole period, but not as a property. `tsmom12` beat holding on US stocks
 1927-1961 (Sharpe 0.88 against 0.55 on the market, worst loss 38% against 84%), and about two
 thirds of that lead is the crash of 1929-1932. After the war (1946-1961) it trailed holding on

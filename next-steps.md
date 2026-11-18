@@ -16,7 +16,14 @@ day) and fix anything that changes a number; (2) offline tests for the `TREND_ER
   loader cut 1961-2001, card-2 windows, gym against a hand replay on five-session weeks with
   Friday holidays (both fills), the replay check sees only holiday-Friday weeks, and the card-2
   outcome labels.
-- Doing: step 3 (`research/ideas.md` and README for both eras).
+- Step 3 done: the `trend-1926` row in `research/ideas.md`, its paragraph in
+  `research/README.md` and the top of `research/trend-1926.md` describe both eras and the
+  verdict (the lead on US stocks is 1929-32 and 1973-74 only).
+- Doing: nothing. No process running. Draft PR #66 -> `trend-1926`.
+- Open (owner's call, not a bug of this run): `common.weekly` repeats last week's decision
+  when a week's Friday is a holiday, so the new signal fills a session late (Tuesday, not
+  Monday). Every lane shares it; aligning it with the calendar Friday would move all lanes'
+  numbers a little and needs its own card.
 
 ## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 
@@ -37,9 +44,8 @@ number; write-up at the top of `research/trend-1926.md`; tables `research/result
 - **Era 2 (1962-2001, card 2 at the end of `research/trend-1926.md`, fixed before its run):**
   crashes only. Market 0.88 against 0.80 (+0.07, p 0.26), worst loss 32% against 48%; without
   1973-1974 the difference is -0.03. Tables `research/results/trend-1926-era2.md`; 96 more rows.
-  Rerun with `TREND_ERA=1962 uv run python -I research/lib/trend_1926.py`. Open: the era-2
-  replay-check gaps (utilities 1.7% on one day) are not yet explained; no test covers the
-  `TREND_ERA=1962` path.
+  Rerun with `TREND_ERA=1962 uv run python -I research/lib/trend_1926.py`. The era-2
+  replay-check gaps and the missing `TREND_ERA=1962` tests: closed by trend-1926-fix (above).
 - Doing: nothing. No process running.
 - Next lanes (not started): `trend-where-it-pays` with 1946-1961 as its hard case;
   `fast-reentry` with this period as an out-of-universe set; French daily data 1962-1993 on its
