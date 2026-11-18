@@ -1,5 +1,14 @@
 # Next steps
 
+## fast-reentry-2 (doing 2026-11-18 night, branch `fast-reentry-2` -> `fast-reentry`)
+
+Card `research/cards/fast-reentry-2.md` (pushed before any number): (a) `or3-12` against
+insure-1's card 2 controls (fixed 83%, rotations), description; (b) one rule `arm3-12` (exit as
+`tsmom12`, re-enter when the 3-month return turns positive), second pick in the insure line,
+family bar p < 0.025. Code `research/lib/fastreentry2.py` (reuses `fastreentry.py`).
+
+- Doing: card pushed; next the script, one run, verdict section in `research/fast-reentry.md`.
+
 ## fast-reentry (done 2026-11-18 night, branch `fast-reentry` -> `insure-2`, draft PR #94)
 
 One pre-registered faster re-entry rule for `tsmom12`, judged on net-of-rebound over insure-1/2's
