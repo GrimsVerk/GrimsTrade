@@ -1,10 +1,36 @@
 # Next steps
 
-## Wide 6 (in progress 2026-11-18, branch `wide-6`, draft PR -> `wide-5`)
+## Wide 6 (done 2026-11-18, branch `wide-6`, draft PR #76 -> `wide-5`)
 
-- Doing: step 1, event-study gate for W11 `critical-slowing` (rule in `research/wide-6.md`).
-  Then step 2, the same gate for W3 `lunar`; step 3, four new mechanisms for the queue.
-- Family count corrected to the union of the wide and survey lines: 63 mechanisms, 16 tested.
+Two event-study gates (ann-1's method: rule pushed before any number, no card unless the raw
+effect exists in- and post-sample), then four new mechanisms for the queue. **Both gates fail;
+no card, no strategy, no `tries.md` row; held-out year untouched.** Write-up
+`research/wide-6.md`; tables `research/results/critical-slowing.md`, `research/results/lunar.md`.
+
+- W11 `critical-slowing` (ecology/physics; Scheffer et al. 2009, Guttal et al. 2016, Diks,
+  Hommes, Wang 2019): chance of a top-decile quarterly drawdown on a year's Kendall trend of
+  rolling AC1 and variance, six assets pooled, volatility level controlled, Driscoll-Kraay t.
+  AC1 t 1.4 (to 2015) and 0.1 (2016 on); variance -0.5 and 1.8 (raw, without the control,
+  1.2 and 2.1). Only last month's volatility predicts (t 3.8). Dead by the gate.
+- W3 `lunar` (Yuan, Zheng, Zhu 2006): SPY 2007-2025 new-moon minus full-moon days +1.6 bps a
+  day (t 0.43), rank 12 of 29 phase shifts; the paper's years +3.1 (t 1.3) on the S&P 500.
+  Dead by the gate (which could only see about 7 bps a day).
+- New W12-W15 in `research/wide-1.md` (last section): `rmd-december` (demography),
+  `festival-gold` (anthropology of lunisolar calendars), `wash-sale-echo` (tax law),
+  `cat-claims` (catastrophe meteorology), each with a dose and the unseen years that can
+  judge it.
+
+Count (union of the wide and survey lines, which forked at wide-4 and each missed the other):
+68 mechanisms, 16 tested, none passed. The next strategy test is read at p < 0.10 / 68 =
+0.00147.
+
+- Doing: nothing. No process running.
+- Next: (1) W14 `wash-sale-echo` as an event-study gate (cached prices only; coins are the
+  placebo). (2) W13 `festival-gold` gate on GLD (dates from `research/lib/wide6_rules.py`'s
+  moon code, checked against a published table). (3) Merge the count: any lane branching from
+  `wide-6` or `ann-1` should carry 68 / 16 forward.
+- Data: none added. A fresh worktree needs the price cache in `research/data/` (copy from
+  another worktree or `research/lib/fetch.py`) and `research/macro.local.json`.
 
 ## Wide 5 (done 2026-11-18, branch `wide-5`, draft PR #71 -> `wide-4`)
 

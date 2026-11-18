@@ -517,3 +517,42 @@ Against W10, written now: its calendar (the last four sessions) is the one where
 the bond rally by looking, so its rule's Sharpe against `tsmom12` is biased upward by a seen
 mean. Its card therefore makes the high-against-low comparison (rule against its placebo) and
 the dose slope the readings that matter.
+
+## Added by wide-6 (2026-11-18): W11 closed by a gate, four new mechanisms for the queue
+
+**W11 `critical-slowing`** (ecology/physics: rising lag-1 autocorrelation and variance before a
+critical transition, Scheffer et al. 2009). Listed in `ideas.md` since run 1 as dead by
+literature; wide-6 gave it an event-study gate on our six assets (rule pushed first) and it
+fails: a year of rising AC1 adds nothing to the chance of a top-decile drawdown (t 1.4 to
+2015, 0.1 after), and rising variance adds nothing once the level of volatility is known
+(t -0.5, 1.8). Dead by the gate, no card. W3 `lunar` likewise failed its gate (SPY 2007-2025
++1.6 bps a day, t 0.4, rank 12 of 29 phase shifts). See `wide-6.md`.
+
+**Family count, union of the wide and survey lines:** 63 before wide-6, 64 with W11, **68 with
+W12-W15 below; 16 tested by a strategy, none passed. The next strategy test is read at
+p < 0.10 / 68 = 0.00147.** (wide-5 said 56 and ann-1 said 61: each missed the other branch.)
+
+The fields the run was pointed at are taken: SIR contagion between assets is P1
+(`contagion-catchup`, tested dead) and P2 (`attention-peak`, tested dead); entropy of returns
+before breaks is I1/F4 (gate family; `hurst-entropy-gate` parked); Hurst long memory is the
+same parked gate, and hydraulics is W2. Four fields this list has not used instead:
+**demography, anthropology of calendars, tax law, and catastrophe meteorology.** Each is
+written as wide-5's choice rule wants it: a structural cause, a dose that should scale, and
+years that could judge it which no run here has seen. None is tested; none has a number.
+Each should go through an event-study gate first (ann-1, wide-6), and only a pass gets a
+card.
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate (event study first) and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W12 `rmd-december` | demography x cohort flows on a Lexis diagram (a cohort crossing an age line on a known date) | US retirees must take required minimum distributions (RMDs) from IRAs and 401(k)s once past a legal age, and many take them in December. That is a sale of fund shares (stocks and bonds) of roughly the account divided by the life-expectancy divisor (about 4% at the starting age), every year, by law | The year's RMD total: IRA assets held by people past the RMD age (published yearly by the Investment Company Institute) times 1 / divisor. It grows with the baby-boom cohort. **Two zero-dose years by law**: RMDs were waived for 2009 and for 2020 (from memory: WRERA 2008, CARES Act 2020; check). The start age moved from 70.5 to 72 (2020) and 73 (2023) and moves to 75 in 2033, which thins the cohort entering in those years | SPY and TLT excess return over the last ten sessions of December (or the December sessions after the 15th), regressed on the dose with the two waiver years as zero; known collision: the turn-of-year and "Santa" calendar, so the decisive cut is waiver years against the rest, not the December mean. The waiver years are only two (weak); the start-age steps of 2033-2034 are the unseen years that can judge it | 1% |
+| W13 `festival-gold` | anthropology of calendars x lunisolar date drift (a festival fixed in the lunar calendar walks through the solar months, about 11 days a year, then jumps back) | Physical gold buying in India peaks before Dhanteras/Diwali (new moon of the month Kartika, mid-October to mid-November) and in China before the Lunar New Year (21 January to 20 February). Jewellers and households buy weeks ahead; the buying is set by the festival, not by the price | Event time against calendar time: because the festival moves by up to a month from year to year, the same calendar window is sometimes 0 and sometimes 4 weeks before it. A festival effect must follow event time; a seasonal or tax effect follows calendar time. A second dose: India's monthly gold imports (Ministry of Commerce; keyless access not checked) | GLD (2004-11 on) and the gold price before it (`datahub-gold` in the cache; check its frequency) over the 15 sessions before each festival, regressed on event-time and calendar-month terms together. Festival dates are computable from the moon code wide-6 wrote (Diwali: the new moon near the October-November boundary; Lunar New Year: the second new moon after the winter solstice, with known exceptions; check against a published table). No run has cut gold by these dates; the unseen years are 2026 on | 2% |
+| W14 `wash-sale-echo` | tax law x a refractory period (US wash-sale rule, IRC section 1091: a loss is disallowed if a substantially identical security is bought within 30 days before or after the sale) | Year-end tax-loss sellers of an ETF that is down for the year who want the exposure back must wait 31 days or hold a near-substitute. So the rebound of December's losers should come about a month after the selling peak (mid-January to early February), not on 2 January | The asset's loss for the year at the end of November (bigger loss, more harvesting) times how much of it sits in taxable accounts. **Built-in placebo across assets:** the rule covers securities, not spot coins (the IRS treats crypto as property; the extension proposed for digital assets was not law as of late 2025), so BTC and ETH can be sold and bought back at once and should show no delayed rebound, while spot-bitcoin ETF shares (2024 on) are securities and should | Excess return from the 31st to the 45th day after the third Friday of December, regressed on the November year-to-date loss, for the six assets plus the eight other ETFs of the protocol (about 30 years x 14 ETFs, of which perhaps 80 asset-years with a loss: weak). The unseen years: any year after crypto is brought under the rule (then the coin placebo must turn), and 2026 on for ETFs | 1% |
+| W15 `cat-claims` | catastrophe meteorology x a loss-to-liquidation chain (a landfall's insured loss must be paid in cash within months, and property insurers hold mostly bonds) | After a major US hurricane landfall, property and casualty insurers and reinsurers sell liquid bonds to pay claims; the selling is forced and sized by the loss, not by a view on rates | The insured-loss estimate of the event (published by catastrophe modelers within days; the National Hurricane Center's best-track file, HURDAT2, gives date, place and intensity keyless; NOAA's billion-dollar disaster list was discontinued in 2025, check) | TLT and LQD excess return over the 20 sessions after landfall, regressed on the landfall's intensity or loss estimate; the zero-dose placebo is landfalls of weak storms and the same calendar weeks in years without one. About 2-5 major landfalls a year since 2002, so the gate is weak; the unseen years are the 2026 season on. Against it: insurers' bond sales are small next to the Treasury market, so LQD (corporate bonds, thinner) should show it more than TLT | 1% |
+
+Ranking for the next lane, by wide-5's six points (cause, unseen cut, dose, power,
+post-sample, not killed): W12, W14, W15 score 4 (law or contract, unseen, dose, not killed;
+none has 200 events or post-sample train years); W13 scores 3 (festival buying is custom, not
+law). Tie broken by data already cached: **W14 `wash-sale-echo` first**, as a gate: it needs
+only the cached ETF and coin prices, and its coin placebo is built in. W13 next if a gold
+question is wanted: its event-time against calendar-time cut separates a festival from a
+season, which a plain calendar mean cannot.

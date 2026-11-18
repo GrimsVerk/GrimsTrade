@@ -272,3 +272,47 @@ Disclosures: one dry run (`DRY=1`) printed only the gate's day counts (4,745 day
 2,328 full, 75 in neither); a second check printed only each shown series' first and last
 day and day count. Then one run. Index series carry no dividends (immaterial for a
 difference of two daily means).
+
+## Step 3. Four new mechanisms for the queue (not tested)
+
+Written after both gates, before any number on them; in `wide-1.md`, last section, and in
+`ideas.md`. The fields the run was pointed at are already used here (SIR contagion: P1/P2,
+both tested dead; entropy and Hurst: I1/F4 and the parked `hurst-entropy-gate`; hydraulics:
+W2), so four unused fields instead:
+
+| # | Field | In one line | Dose | Years that can judge it |
+|---|---|---|---|---|
+| W12 `rmd-december` | demography | Retirees' legally required December withdrawals sell stocks and bonds | RMD-age IRA assets / divisor; zero in the waiver years 2009 and 2020 | the start-age step of 2033 on |
+| W13 `festival-gold` | anthropology of calendars | Gold buying before Diwali and the Lunar New Year, whose dates drift a month through the solar year | weeks to the festival (event time against calendar time); India's imports | 2026 on |
+| W14 `wash-sale-echo` | tax law | Tax-loss losers rebound 31+ days after the December selling, because of the 30-day wash-sale bar | November's year-to-date loss; coins (not covered) as placebo | 2026 on; any year after coins are brought under the rule |
+| W15 `cat-claims` | catastrophe meteorology | Insurers sell bonds to pay claims after major hurricane landfalls | landfall intensity or insured loss | the 2026 season on |
+
+Next in the queue: **W14**, as a gate (law-based, cached prices only, coin placebo built in).
+
+## Family count
+
+Union of the wide and survey lines: 63 before this run; W11 added and closed by its gate;
+W12-W15 added. **68 mechanisms, 16 tested by a strategy, none passed. The next strategy test
+is read at p < 0.10 / 68 = 0.00147.** Gates (ann-1, wide-6 x 2) do not raise the tested count.
+
+## What wide-6 adds
+
+- **Two more ideas closed for the price of an event study, without spending the bar.** Both
+  gates' rules were pushed before any number; both failed clearly.
+- **Critical slowing down is volatility clustering under another name in our data.** The
+  ecology signal that exists in markets (rising variance) carries no information about the
+  next quarter's drawdown once last month's volatility is known; AC1 carries none at all. The
+  repo's volatility-scaled siblings of `tsmom12` already use everything there is.
+- **The lunar effect is small or gone after publication**: positive in every stock series
+  since 2007 but at 0.4 to 2.7 bps a day, never t above 0.6, and the true phase is mid-pack
+  among 29 shifted phases. Published calendar effects are now 0 for 4 after publication here
+  (`fomc-cycle`, `xtsmom`, the pre-FOMC drift, lunar).
+- **The family count was short in both lines**; the union (68) is the one to carry forward.
+
+## Status (2026-11-18)
+
+**Done:** family count reconciled; two gates (rules, scripts, one run each, write-ups); four
+new mechanisms; `ideas.md`; `next-steps.md`. No card, no strategy, no `tries.md` row (gates
+get none, as in ann-1). Held-out year untouched. Draft PR #76 (`wide-6` -> `wide-5`).
+
+**Doing:** nothing half-finished. No process running.
