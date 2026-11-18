@@ -12,11 +12,17 @@ is better than any cap of the same cost (-72% summed against -110% for `cap20`).
 inside noise everywhere. The card's bar is not met (Sharpe bar fails; worst loss is a tie).
 Held-out year unspent.
 
-- Rebuild: `research/lib/coin_cap.py`. **A plain run logs 18 tries rows**; do not rerun it with
-  logging. `DRY=1` is a plumbing run that logs nothing.
+Second reading (card section dated 11:18 UTC, `research/results/coin-cap-years.md`): on the coin
+years only (2013-25) the tie breaks and the stop wins. Worst loss: stop 17.7%, `cap20` 21 to
+23%, `cap25` and `cap-wf` 27.2%, `tsmom12` 36.5%. No cap with at least the stop's growth
+matches it; a 15% cap to cash does (17.2%) for 3.8 points of CAGR a year more than the stop.
+The gap is mostly the long 2018-20 fall, so it is close to one observation.
+
+- Rebuild: `research/lib/coin_cap.py` (**a plain run logs 18 tries rows**) and
+  `research/lib/coin_cap_years.py` (**logs 1 row**); do not rerun them with logging. `DRY=1`
+  is a plumbing run that logs nothing.
 - Doing: nothing. No process running.
-- Next (not started, card first): worst loss from 2013 on and time under water as the yardstick
-  for cap against stop; cap 25% together with `stop-0.25`.
+- Next (not started, card first): cap 25% together with `stop-0.25`; time under water.
 
 ## Cointop 1 (done 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
 

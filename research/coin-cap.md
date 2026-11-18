@@ -71,14 +71,44 @@ Limits: one run on one history with two coins; the crash windows were drawn in h
 deep-1; `stop-0.25` was chosen on the coin book, the cap grid here; the stitch leaves out one
 switch trade a year; nine series were looked at.
 
+## Second reading: the coin years only (2026-11-18, card section dated 11:18 UTC, pushed first)
+
+Same 8 cells, `cap-wf`, `stop-0.25` and `tsmom12`, rerun unlogged; equity re-based at
+2013-01-01. One more tries row. Tables: `results/coin-cap-years.md`; code
+`lib/coin_cap_years.py`.
+
+| | A: worst loss 2013-25 | CAGR 2013-25 | Sharpe 2013-25 | B: worst fall inside a window |
+|---|---:|---:|---:|---:|
+| `tsmom12` | 36.5% | +31.4% | 1.40 | 36.5% |
+| `stop-0.25` | 17.7% | +25.4% | 1.57 | 14.6% |
+| `cap-wf` | 27.2% | +25.6% | 1.44 | 27.2% |
+| `cap25-rest` | 27.2% | +28.7% | 1.47 | 27.2% |
+| `cap20-cash` | 21.1% | +26.5% | 1.52 | 21.1% |
+| `cap15-cash` | 17.2% | +21.6% | 1.54 | 17.1% |
+| `cap10-cash` | 15.2% | +16.5% | 1.57 | 14.2% |
+
+- **The tie was the dot-com floor; without it the stop wins.** In the coin years the stop's
+  worst loss is 17.7%. No series with at least the stop's growth gets there: `cap20` has
+  21.1 to 22.6%, `cap25` and `cap-wf` 27.2%. The card's bar for `cap-wf` does not hold, and its
+  second branch does: "the stop does more than a cap of the same cost".
+- **To match the stop's worst loss a cap must go to 15% to cash** (17.2%), which costs 3.8
+  points of coin-years CAGR more than the stop; 10% to cash (15.2%) costs 8.9 points more.
+- **Where the gap comes from:** the long 2018-20 window. The stop's largest fall inside it is
+  12.0%; `cap25` 27.2%, `cap20` 21 to 22%, `cap10` 14 to 17%. In the short windows (2013,
+  2017-09) the stop is no better than a 20% cap, in 2017-09 no better than `tsmom12`.
+- Excess to cash beats excess to the rest on worst loss at every cap (the rest fell with the
+  coins in 2020 and 2022) and costs 0.3 to 1.6 points of growth.
+
+This replaces point 2 of the first reading: "the cap is cheaper" was true only of a number
+that had stopped measuring coins. Same limits as above, plus: one long window (2018-20) drives
+A, so this is close to one observation; the windows and the 2013 start are hindsight choices.
+
 ## Changes after the card
 
 None to the rule, grid, selection or bar. One reading note: bar 1 is reported as a tie (above).
 
 ## Next steps
 
-- The right yardstick is missing: worst loss from 2013 on (coin years only) and time under
-  water would rank cap against stop where the dot-com floor cannot hide the difference. One
-  card, no new runs needed beyond rereading the saved equity curves in `research/data/runs/`.
+- Done in the second reading above: worst loss from 2013 on. Time under water is still unread.
 - A cap and the stop together (cap 25% + `stop-0.25`) is the obvious combination; card first.
 - Nothing here argues for spending the held-out year.

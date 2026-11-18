@@ -1020,3 +1020,4 @@ Never edit or delete a row.
 | 2026-11-18 11:15 | coin-cap | cap25-cash-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +12774.3% | 29.0% | 2.61 |
 | 2026-11-18 11:15 | coin-cap | cap25-rest-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +13342.9% | 29.0% | 2.83 |
 | 2026-11-18 11:15 | coin-cap | cap-wf-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +9867.8% | 29.0% | 2.30 |
+| 2026-11-18 11:19 | coin-cap | cap-wf coin years reread | robustness | train | 2013-01-01 | 2025-11-09 | 1.44 | +1796.6% | 27.2% | 2.30 |
