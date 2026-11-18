@@ -7,7 +7,12 @@ of market) as an exit overlay improve `tsmom12` on French industry books? Card
 `research/cards/gsy-runup.md` (fixed before any number). Steps: (1) card, (2) replicate GSY's
 crash probability, (3) 6 variants, write-up `research/gsy-1.md`.
 
-- Doing: step 1 done (card committed).
+- Done: step 1 (card), step 2 (replication, `research/results/gsy-1-replication.md`: 49
+  industries 1928-2014, 104 episodes at 100% with 38% crashing within 2 years against a 15%
+  base rate; 51 at 150%, 51%; direction holds, level below GSY's 53% / ~80%).
+- Doing: step 3, `uv run python -I research/lib/gsy.py runs` (writes `research/results/gsy-1.md`
+  and 32 `tries.md` rows). Disclosure: a `DRY=1` plumbing run printed numbers for the last 500
+  days of each period (2000-2001, 2024-2025) before the full run; nothing was changed after.
 
 ## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 
