@@ -2,13 +2,15 @@
 
 An order decided at time T fills at the open of each asset's first bar that opens after T, at
 open * (1 +/- slippage), plus a fee on the traded value. Long-only, no leverage, fractional units.
+Cash earns the rate passed in `rates`, accrued daily (DECISIONS, 2026-11-18, cash interest).
 The same replay serves the live ledger and backtests, so they can't disagree on the rules.
 """
 
 from __future__ import annotations
 
+import bisect
 import math
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime, time, timedelta
 
@@ -16,6 +18,8 @@ from grimstrade.data import CRYPTO, ETF, UNIVERSE, History, close_time, open_tim
 
 Weights = dict[str, float]
 Strategy = Callable[[History], tuple[Weights, str]]
+# (known from, annual rate as a fraction), oldest first: the cash rate as it became known.
+Rates = Sequence[tuple[datetime, float]]
 
 START_CASH = 10_000.0
 # Skip a trade smaller than this share of equity (rebalance band), except a full exit.
@@ -57,6 +61,9 @@ class Result:
     fills: list[Fill] = field(default_factory=list)
     equity: list[tuple[date, float]] = field(default_factory=list)  # end of each UTC day
     start_cash: float = START_CASH  # what the first day's return is measured from
+    # What one dollar of cash earned over each step of `equity` (the risk-free return): 0 when no
+    # rates are passed. Sharpe is measured above it.
+    cash_growth: list[float] = field(default_factory=list)
 
 
 def validate(weights: Mapping[str, float]) -> None:
@@ -73,6 +80,23 @@ def validate(weights: Mapping[str, float]) -> None:
 
 _CLOSE, _OPEN, _DECIDE = 0, 1, 2  # order of events that share a timestamp
 
+DAYS_PER_YEAR = 365  # interest accrues rate / 365 per calendar day
+
+
+def cash_rate(rates: Rates, day: date, known: Sequence[datetime] | None = None) -> float:
+    """The annual rate cash earns on UTC day `day`: the newest rate known at the day's start
+    (carried forward over holidays and gaps), 0 before any is known, never below 0. `known` is
+    `[t for t, _ in rates]`, precomputed for speed."""
+    start = datetime.combine(day, time(0, 0), tzinfo=UTC)
+    i = bisect.bisect_right(known if known is not None else [t for t, _ in rates], start)
+    return max(rates[i - 1][1], 0.0) if i else 0.0
+
+
+def interest(cash: float, rate: float) -> float:
+    """One day's interest on a cash balance. Negative cash (float dust; the gym never borrows) is
+    charged at the same rate."""
+    return cash * rate / DAYS_PER_YEAR
+
 
 def simulate(
     decisions: Iterable[Decision],
@@ -80,6 +104,7 @@ def simulate(
     start_cash: float = START_CASH,
     costs: Mapping[str, Costs] = COSTS,
     band: float = BAND,
+    rates: Rates = (),
 ) -> Result:
     events: list[tuple[datetime, int, str, float, int]] = []
     for sym, bars in history.items():
@@ -98,9 +123,18 @@ def simulate(
     pending: dict[str, float] = {}  # symbol -> target weight not yet executed
     started = False
     day: date | None = None
+    growth = 1.0  # of one dollar of cash since the last equity point
+    rates = sorted(rates, key=lambda r: r[0])
+    known = [t for t, _ in rates]
 
     def equity() -> float:
         return res.cash + sum(q * price.get(s, 0.0) for s, q in res.positions.items())
+
+    def accrue(d: date) -> None:  # day d is over: credit its interest on the closing cash
+        nonlocal growth
+        r = cash_rate(rates, d, known)
+        res.cash += interest(res.cash, r)
+        growth *= 1 + r / DAYS_PER_YEAR
 
     i = 0
     while i < len(events):
@@ -112,7 +146,12 @@ def simulate(
         # A close at midnight ends the previous day; everything else belongs to its own date.
         ev_day = (t - timedelta(microseconds=1)).date() if kind == _CLOSE else t.date()
         if started and day is not None and ev_day > day:
+            accrue(day)
             res.equity.append((day, equity()))
+            res.cash_growth.append(growth - 1)
+            growth = 1.0
+            for k in range(1, (ev_day - day).days):  # days with no event (weekends) earn too
+                accrue(day + timedelta(days=k))
         day = ev_day
 
         if kind == _DECIDE:
@@ -124,8 +163,9 @@ def simulate(
             price[sym] = px
         if kind == _OPEN:
             _execute(t, [g[2] for g in group if g[2] in pending], pending, res, price, costs, band)
-    if started and day is not None:
+    if started and day is not None:  # the last day's interest comes once the day is over
         res.equity.append((day, equity()))
+        res.cash_growth.append(growth - 1)
     return res
 
 

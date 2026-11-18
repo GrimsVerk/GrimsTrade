@@ -1039,3 +1039,18 @@ Never edit or delete a row.
 | 2026-11-18 22:15 | combo-1 | blend-ws@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.56 | +287.6% | 76.0% | 4.56 |
 | 2026-11-18 22:15 | combo-1 | blend-iv@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.69 | +5371.8% | 33.0% | 1.49 |
 | 2026-11-18 22:15 | combo-1 | blend-ws@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4483.0% | 25.7% | 2.27 |
+| 2026-11-18 22:23 | combo-2 | tsmom12 cash | robustness | train | 1994-02-01 | 2025-11-09 | 1.08 | +21395.9% | 35.6% | 2.74 |
+| 2026-11-18 22:23 | combo-2 | trend-vol cash | robustness | train | 1994-02-01 | 2025-11-09 | 1.08 | +6086.1% | 22.2% | 2.94 |
+| 2026-11-18 22:23 | combo-2 | where-vol cash | robustness | train | 1994-02-01 | 2025-11-09 | 1.09 | +26783.0% | 34.9% | 1.71 |
+| 2026-11-18 22:23 | combo-2 | stop-0.25 cash | robustness | train | 1994-02-01 | 2025-11-09 | 1.13 | +11897.6% | 25.7% | 3.85 |
+| 2026-11-18 22:23 | combo-2 | inverse-vol cash | robustness | train | 1994-02-01 | 2025-11-09 | 0.85 | +4071.6% | 61.1% | 0.73 |
+| 2026-11-18 22:23 | combo-2 | sixty-forty cash | robustness | train | 1994-02-01 | 2025-11-09 | 0.80 | +1295.3% | 30.2% | 0.47 |
+| 2026-11-18 22:23 | combo-2 | blend-iv cash | robustness | train | 1994-02-01 | 2025-11-09 | 1.09 | +9252.5% | 42.8% | 1.43 |
+| 2026-11-18 22:23 | combo-2 | blend-ws cash | robustness | train | 1994-02-01 | 2025-11-09 | 1.16 | +17676.0% | 25.7% | 3.01 |
+| 2026-11-18 22:23 | combo-2 | blend-iv cash@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.65 | +261.7% | 21.8% | 1.73 |
+| 2026-11-18 22:23 | combo-2 | blend-ws cash@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.67 | +288.2% | 16.7% | 2.65 |
+| 2026-11-18 22:23 | combo-2 | blend-iv cash@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.66 | +487.0% | 90.8% | 4.05 |
+| 2026-11-18 22:23 | combo-2 | blend-ws cash@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +345.9% | 75.2% | 4.57 |
+| 2026-11-18 22:23 | combo-2 | blend-iv cash@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.76 | +8241.7% | 32.5% | 1.50 |
+| 2026-11-18 22:23 | combo-2 | blend-ws cash@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.85 | +9251.6% | 25.6% | 2.28 |
+| 2026-11-18 22:27 | combo-2 | cofall-dbc | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +20836.7% | 35.6% | 2.83 |
