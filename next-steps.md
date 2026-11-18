@@ -9,7 +9,10 @@ episode count and metrics on non-US stock indices (keyless long history), its ow
 `research/results/insure-2.md`. Rerun needs insure-1's setup (saved trend-1926 runs in
 `research/data/runs/trend-1926/`, `research/macro.local.json`).
 
-- Step 1: card pushed before numbers.
+- Step 1 done: after 1962 trend is still cheaper than holding less ("Timing, not just
+  exposure" on 1962-2025: premium 1.36 vs 1.88 fixed, 2.20 random, p 0.020; share avoided 0.46
+  vs 0.28 / 0.26, p 0.000). 2002-2025 alone only "In between" (premium p 0.19).
+- Step 2 (geography): next, card first.
 
 ## insure-1 (done 2026-11-18 night, branch `insure-1`, draft PR #87 -> `trend-1926-fix`)
 
