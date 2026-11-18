@@ -12,12 +12,13 @@ whose equity file exists under the git-ignored research/data/runs/ is re-scored 
 
 from __future__ import annotations
 
+import json
 import math
 import sys
 import zipfile
 from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -294,14 +295,26 @@ def build(dl: Daily, label: str, period: tuple[str, date, date]) -> Book:
     m = g.index_of(dl.mkt[keep][:, None])[:, 0]
     m_ords = np.array([d.toordinal() for d in days], dtype=np.int64)
     hist: dict[str, list[Bar]] = {}
-    ords: dict[str, np.ndarray] = {}
-    close: dict[str, np.ndarray] = {}
-    exits: dict[str, dict[str, np.ndarray]] = {v: {} for v in VARIANTS}
-    runup: dict[float, dict[str, np.ndarray]] = {t: {} for t in THRESHOLDS}
     for j, name in enumerate(dl.names):
         s = f"{label}-{name}"
         UNIVERSE[s] = ETF  # research process only; src/ is untouched
         hist[s] = to_bars(days, dl.ret[keep, j])
+    return make_book(label, key, start, hist, m_ords, m)
+
+
+def make_book(
+    label: str,
+    key: str,
+    start: date,
+    hist: dict[str, list[Bar]],
+    m_ords: np.ndarray,
+    m: np.ndarray,
+) -> Book:
+    ords: dict[str, np.ndarray] = {}
+    close: dict[str, np.ndarray] = {}
+    exits: dict[str, dict[str, np.ndarray]] = {v: {} for v in VARIANTS}
+    runup: dict[float, dict[str, np.ndarray]] = {t: {} for t in THRESHOLDS}
+    for s in hist:
         o = np.array([b.date.toordinal() for b in hist[s]], dtype=np.int64)
         cl = np.array([b.close for b in hist[s]])
         ords[s], close[s] = o, cl
@@ -319,6 +332,77 @@ def build(dl: Daily, label: str, period: tuple[str, date, date]) -> Book:
     if c.DRY:  # plumbing check: the last 500 days only, nothing logged
         start = end - timedelta(days=500)
     return Book(label, key, start, end, hist, harness.Panel(hist), ords, close, exits, runup)
+
+
+ETF_SECTORS = ["XLK", "XLE", "XLF", "XLV"]
+YAHOO = "yahoo-1d/2026-11-12"
+
+
+def yahoo_bars(sym: str) -> list[Bar]:
+    """Dividend-adjusted daily bars from the cached Yahoo chart file (open, high and low scaled
+    by adjclose / close); nothing after the train cut."""
+    raw = json.loads((cache_root() / YAHOO / f"{sym}.json").read_text())
+    r = raw["chart"]["result"][0]
+    off = int(r["meta"].get("gmtoffset", 0))
+    q, adj = r["indicators"]["quote"][0], r["indicators"]["adjclose"][0]["adjclose"]
+    out: list[Bar] = []
+    for k, ts in enumerate(r["timestamp"]):
+        o, h, lo, cl, a = q["open"][k], q["high"][k], q["low"][k], q["close"][k], adj[k]
+        if None in (o, h, lo, cl, a) or cl <= 0:
+            continue
+        d = datetime.fromtimestamp(ts + off, UTC).date()
+        if d > harness.TRAIN_LAST_BAR:
+            break
+        f = a / cl
+        out.append(Bar(d, o * f, h * f, lo * f, a, 0.0))
+    return out
+
+
+def etf_book() -> Book:
+    hist = {s: yahoo_bars(s) for s in ETF_SECTORS}  # already ETF-class in the harness
+    spy = yahoo_bars("SPY")
+    m_ords = np.array([b.date.toordinal() for b in spy], dtype=np.int64)
+    first = max(b[0].date for b in hist.values())
+    return make_book("ETF4", "train", first + timedelta(days=366), hist, m_ords,
+                     np.array([b.close for b in spy]))  # fmt: skip
+
+
+def etf_runs(passing: Sequence[str]) -> str:
+    """The card's second robustness: only for variants that passed."""
+    bk = etf_book()
+    twin = run_once("tsmom12", c.weekly(c.slots(c.tsmom_signal)), bk, "baseline")
+    hold = run_once("equal-weight", c.weekly(c.equal_weight), bk, "baseline")
+    h = compare(hold.rets, twin.rets, hold.exposure)
+    full = {s: g.crashes(bk.ords[s], bk.close[s]) for s in bk.hist}
+    rows = [evaluate(bk, twin, twin, full)]
+    rows += [
+        evaluate(bk, run_once(v, overlay(bk.exits[v]), bk, "robustness"), twin, full)
+        for v in passing
+    ]
+    out = [
+        "### ETF sector set (XLK, XLE, XLF, XLV; market SPY), train only",
+        "",
+        f"Decisions {bk.start} to {bk.end}; dividend-adjusted Yahoo bars, next-open fills, 2 bps. "
+        f"Flag episodes 100% / 150%: {flag_episodes(bk, 1.0)} / {flag_episodes(bk, 1.5)}. "
+        f"Equal weight {h.sharpe:.2f} against `tsmom12` {h.twin:.2f}.",
+        "",
+        "| Variant | Sharpe | dSharpe (p; p125) | 2015-25 | Worst loss (tsmom12) | Growth/yr "
+        "| Time in | Crashes out / n | by overlay | Alarms: spells, false | given up |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for r in rows:
+        m = r.cmp
+        tw = r.variant == "tsmom12"
+        sub = r.sub.get("2015-25", math.nan)
+        out.append(
+            f"| {r.variant} | {m.sharpe:.2f} | "
+            + ("- | - | " if tw else f"{m.diff:+.2f} ({m.p:.2f}; {m.p125:.2f}) | {sub:+.2f} | ")
+            + f"{_pc(m.mdd)} ({_pc(m.mdd_twin)}) | {m.cagr * 100:.1f}% | {_pc(m.time_in)} | "
+            f"{r.cr.out} / {r.cr.n} | {'-' if tw else r.cr.by_overlay} | "
+            + ("- | -" if r.al is None else f"{r.al.spells}, {r.al.false} | {r.al.move * 100:+.0f}")
+            + " |"
+        )
+    return "\n".join(out) + "\n"
 
 
 def overlay(exits: dict[str, np.ndarray]) -> c.ResearchStrategy:
@@ -515,7 +599,11 @@ def runs() -> str:
                 run = run_once(v, overlay(bk.exits[v]), bk, kind)
                 rows.append(evaluate(bk, run, twin, crashes))
                 print(f"{label} {bk.period} {v}: {rows[-1].cmp.diff:+.3f}", flush=True)
-    return report(rows, holds, episodes)
+    text = report(rows, holds, episodes)
+    passing = [v for v, (s, w) in verdicts(rows).items() if s or w]
+    if passing:
+        text += "\n" + etf_runs(passing)
+    return text
 
 
 # --- report ---
@@ -592,7 +680,7 @@ def report(
             for r in sub:
                 m = r.cmp
                 twin_row = r.variant == "tsmom12"
-                d = "-" if twin_row else f"{m.diff:+.2f} ({m.p:.2f}; {m.p125:.2f})"
+                d = "-" if twin_row else f"{m.diff:+.3f} ({m.p:.3f}; {m.p125:.3f})"
                 sd = "".join(("- | " if twin_row else f"{r.sub[k]:+.2f} | ") for k in keys)
                 al = (
                     "- | -"

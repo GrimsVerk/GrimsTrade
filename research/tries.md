@@ -1289,3 +1289,7 @@ Never edit or delete a row.
 | 2026-11-18 19:18 | gsy-runup | flag150-sma@G10-check | robustness | train | 2002-01-02 | 2025-11-09 | 0.75 | +537.7% | 23.6% | 2.76 |
 | 2026-11-18 19:18 | gsy-runup | flag100-vol@G10-check | robustness | train | 2002-01-02 | 2025-11-09 | 0.74 | +513.7% | 23.6% | 2.71 |
 | 2026-11-18 19:18 | gsy-runup | flag150-vol@G10-check | robustness | train | 2002-01-02 | 2025-11-09 | 0.75 | +539.7% | 23.6% | 2.71 |
+| 2026-11-18 19:21 | gsy-runup | tsmom12@ETF4-train | baseline | train | 1999-12-23 | 2025-11-09 | 0.50 | +300.5% | 24.9% | 3.01 |
+| 2026-11-18 19:21 | gsy-runup | equal-weight@ETF4-train | baseline | train | 1999-12-23 | 2025-11-09 | 0.50 | +738.2% | 56.7% | 0.39 |
+| 2026-11-18 19:21 | gsy-runup | flag100-sma@ETF4-train | robustness | train | 1999-12-23 | 2025-11-09 | 0.45 | +247.8% | 24.9% | 3.20 |
+| 2026-11-18 19:21 | gsy-runup | flag100-vol@ETF4-train | robustness | train | 1999-12-23 | 2025-11-09 | 0.48 | +270.0% | 24.9% | 2.95 |
