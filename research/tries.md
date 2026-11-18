@@ -1029,3 +1029,6 @@ Never edit or delete a row.
 | 2026-11-18 22:13 | ts-carry | carry-mean@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.60 | +227.0% | 16.5% | 2.93 |
 | 2026-11-18 22:13 | ts-carry | carry@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | -0.10 | -3.9% | 9.9% | 0.26 |
 | 2026-11-18 22:13 | ts-carry | carry-mean@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.45 | +277.9% | 34.8% | 1.69 |
+| 2026-11-18 22:14 | ts-carry | carry-mean | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +7824.5% | 39.8% | 2.19 |
+| 2026-11-18 22:14 | ts-carry | carry-mean@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.48 | +113.9% | 13.9% | 2.65 |
+| 2026-11-18 22:14 | ts-carry | carry-mean@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.46 | +102.3% | 15.8% | 1.75 |
