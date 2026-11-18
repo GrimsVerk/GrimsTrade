@@ -472,3 +472,15 @@ Checked and correct (do not redo):
 ### After round 3
 
 Review loop ends: FINAL at 3529214. Optional items are polished by the lead where cheap and logged here; they do not reopen the review.
+
+Round 3 optional items applied (each checked against the repo files first; no new backtests):
+
+1. d0ffee7: summary step 5 now compares with "buying in thirds on falls"; 8.1 states the card's pass bar (the -30% rule's sample-B median 1.009, 51% above 1, still fails it) and gives the no-deadline waiting rules a median of about 1.0 and a sample-B worst tenth of 0.35-0.52 (was 0.33-0.52), with the -30% rule never back in for 22% of months.
+2. d0ffee7: summary step 2, section 4 row and 10.1 "spare day" row now give Wed 16 Dec for 2-5-day funds and Tue 15 Dec for 2-6-day funds, matching the step 3 table and `report_checks.py`.
+3. 00702f8: 8.2 item 2: a level already reached at the Dec 2026 month-end close is bought on the first trading day of January 2027 (the test's `rule_staged24` counts the sale month).
+4. 3541869: 7.1 savings row now says 3-month Euribor cash -0.2% at worst in 2022 (own max drawdown cell in `lanes/haven-table.md`), as in 7.3.
+5. 3541869: lesson 1 now says Robertson quit 20 days after the top, just before the fall proved him right.
+6. edf29b4: 5.1 refresh note: the script needs the cache root via the git-ignored `research/macro.local.json` (copied from the committed `.example`) or `BT_CACHE`; otherwise it prints only the index table and stops; the 200-day chart fallback stays.
+7. 00702f8: 8.2 caveat now reads: Fri 29 Dec 2028 is not an NYSE holiday on its 2026-2028 calendar (11.2); Euronext's 2028 calendar not checked.
+8. edf29b4: 8.2 names the lump sum (first trading day of January 2027) as the plain option: higher mean than both rules (1 vs 0.99/0.97 sample B, 0.98/0.96 sample A), largest regret if a crash follows.
+9. 3541869: summary and 5.3 say OBX lost less in 2022 only over the S&P's crash window (-9.0% vs -13.1%); by each index's own worst fall in 2022 OBX lost more (-22.0% vs -18.0%). 2025 holds either way (-15.1% vs -22.7% own drawdown).
