@@ -1,5 +1,14 @@
 # Next steps
 
+## Coin cap 3 (in progress 2026-11-18, branch `coin-cap-3` -> `coin-cap-2`)
+
+Does checking `stop-0.25` daily (fill rule unchanged, no look-ahead) fix the fast-crash losses
+of the third reading without whipsaw cost eating the gain? Card section "Fourth reading" in
+`research/cards/coin-cap.md` (written and pushed before any number).
+
+- Doing: card pushed; next code + test, then one run, then write-up "Fourth reading" in
+  `research/coin-cap.md`.
+
 ## Coin cap 2 (done 2026-11-18, branch `coin-cap-2`, draft PR #53 -> `coin-cap`)
 
 Does the stop's edge over a cap of the same cost hold across many independent coin falls, or is
