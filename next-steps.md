@@ -1,6 +1,6 @@
 # Next steps
 
-## Cointop 1 (in progress, started 2026-11-18, branch `cointop-1` from `deep-1`)
+## Cointop 1 (in progress, started 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
 
 Task: `tsmom12` is slow out of coin tops. Study coin tops on breadth-1's top-100 coin book
 (hundreds of tops), choose one setting for each of three exit rules there by a fixed procedure,
@@ -11,7 +11,7 @@ Card: `research/cointop-1.md` (pushed before any number). Tables: `research/resu
   (`tests/test_cointop1.py`, 12 tests). Plumbing run on random prices, then the real run ONCE
   (`uv run python -I research/lib/cointop1.py --log`): Parts A and B on the coin book, tables
   `research/results/cointop-1-coins.md`, 16 rows in `research/tries.md` (idea `cointop-1-cm`),
-  interim write-up at the top of `research/cointop-1.md`. Draft PR -> `deep-1` (number below).
+  interim write-up at the top of `research/cointop-1.md`. Draft PR #40 -> `deep-1`.
 - Result so far: 639 tops but only about 19 separate top months. The twin leaves a median 106
   days after a top, at -52%. Chosen settings `stop-0.25`, `fade-28`, `breadth-28` (the fastest
   on each grid). None is labelled *works there*: pooled single-coin Sharpe against the twin's
