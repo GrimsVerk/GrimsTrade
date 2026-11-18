@@ -67,6 +67,12 @@
     known at d 00:00, append-only `data/rates.csv`; same `gym.simulate(rates=...)` for live and
     backtests; Sharpe now above cash. 24 tests; 235 pass. Train effect: `tsmom12` CAGR 17.64% ->
     18.19%, `sixty_forty` 8.09% -> 8.63%. Mechanical conflicts with #29/#30/#32.
+  - DONE `eu-2` (draft #62 -> eu-1): fixed per-order fees (DEGIRO EUR 1/3, Trade Republic
+    EUR 2): coin book eu6 worth it from EUR 5k (EUR 3 orders + band: ~6k); coin-free euw needs
+    ~16k at EUR 3, ~10k at EUR 2, ~6k at EUR 1. >= EUR 25k fees cost <= 0.07 Sharpe. 5% band
+    fails card (changes the rule). EUR-hedged S&P (IUSE) does not remove the drag (-0.21
+    unchanged; hedge ~2.5%/yr): keep unhedged. 96 rows. Next: fewer signal flips for small
+    coin-free books (new card); check DEGIRO core selection.
   - RUNNING: `survey-2` (`grimstrade-survey2`: 2023-2026 papers, rank, card and test top pick) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
