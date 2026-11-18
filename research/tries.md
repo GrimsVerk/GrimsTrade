@@ -1012,3 +1012,12 @@ Never edit or delete a row.
 | 2026-11-18 20:12 | fomc-cycle | even-overlay@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.58 | +458.1% | 25.9% | 20.38 |
 | 2026-11-18 20:12 | fomc-cycle | even-gate@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.75 | +2625.4% | 25.7% | 30.43 |
 | 2026-11-18 20:12 | fomc-cycle | even-overlay@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +8053.7% | 42.7% | 15.17 |
+| 2026-11-18 20:21 | xtsmom | xtsmom | variant | train | 1994-02-01 | 2025-11-09 | 1.05 | +13381.0% | 35.3% | 3.47 |
+| 2026-11-18 20:21 | xtsmom | xtsmom-b6 | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +12010.0% | 34.5% | 3.86 |
+| 2026-11-18 20:21 | xtsmom | xtsmom-full | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +11269.4% | 39.0% | 3.08 |
+| 2026-11-18 20:21 | xtsmom | xtsmom-tlt | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +15980.7% | 34.5% | 3.57 |
+| 2026-11-18 20:21 | xtsmom | xtsmom@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.66 | +225.0% | 16.5% | 3.39 |
+| 2026-11-18 20:21 | xtsmom | xtsmom-b6@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.51 | +135.3% | 15.5% | 3.78 |
+| 2026-11-18 20:21 | xtsmom | xtsmom-full@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +185.2% | 18.2% | 3.46 |
+| 2026-11-18 20:21 | xtsmom | xtsmom@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.86 | +4363.4% | 23.9% | 3.06 |
+| 2026-11-18 20:21 | xtsmom | xtsmom-b6@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.83 | +3224.1% | 22.0% | 4.17 |
