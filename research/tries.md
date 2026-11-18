@@ -936,3 +936,34 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-17 23:26 | deep-1 | liquidity/walcl-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.51 | +150.4% | 17.0% | 2.55 |
+| 2026-11-17 23:26 | deep-1 | absorption-ratio/six@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.64 | +379.4% | 90.0% | 3.88 |
+| 2026-11-17 23:26 | deep-1 | trend-to-safe/safe@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.54 | +179.5% | 92.4% | 4.62 |
+| 2026-11-17 23:26 | deep-1 | liquidity/walcl-and@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.53 | +216.5% | 69.5% | 1.92 |
+| 2026-11-17 23:26 | deep-1 | hmm-regime/hard@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.57 | +1585.4% | 37.8% | 7.82 |
+| 2026-11-17 23:26 | deep-1 | fracdiff-momentum/d0.4@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.67 | +2829.0% | 34.6% | 8.23 |
+| 2026-11-17 23:26 | deep-1 | drawdown-control/d1.0@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +1840.1% | 21.9% | 3.42 |
+| 2026-11-17 23:26 | deep-1 | absorption-ratio/six@idx | robustness | train | 2002-01-01 | 2025-11-09 | 0.40 | +138.7% | 34.5% | 1.38 |
+| 2026-11-17 23:26 | deep-1 | hawkes-clustering/down2@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.60 | +2955.0% | 57.7% | 6.68 |
+| 2026-11-17 23:26 | deep-1 | ensemble-tsmom/e4@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.77 | +2977.8% | 23.4% | 5.43 |
+| 2026-11-17 23:26 | deep-1 | trend-vol/tv40@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4379.0% | 25.3% | 2.30 |
+| 2026-11-17 23:26 | deep-1 | trend-to-safe/safe@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4377.3% | 25.7% | 2.28 |
+| 2026-11-17 23:27 | deep-1 | fed-hiking/hike-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.65 | +1425.0% | 23.9% | 2.08 |
+| 2026-11-17 23:27 | deep-1 | real-rate/real-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.63 | +1690.9% | 26.0% | 2.47 |
+| 2026-11-17 23:27 | deep-1 | yield-curve/curve-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.69 | +2040.2% | 25.7% | 1.64 |
+| 2026-11-17 23:27 | deep-1 | liquidity/m2-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.59 | +1638.0% | 28.5% | 2.08 |
+| 2026-11-17 23:27 | deep-1 | liquidity/walcl-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.66 | +2602.2% | 25.7% | 2.12 |
+| 2026-11-17 23:27 | deep-1 | credit-spread/spread-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.70 | +3161.0% | 27.2% | 2.14 |
+| 2026-11-18 01:34 | deep-1-stack | stack | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +4061.1% | 30.9% | 1.21 |
+| 2026-11-18 01:34 | deep-1-switch | switch | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +8204.3% | 34.7% | 3.15 |
+| 2026-11-18 01:34 | deep-1-meta | meta | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +7647.5% | 32.3% | 2.26 |
+| 2026-11-18 01:34 | deep-1-stack | stack@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.52 | +180.5% | 17.3% | 3.91 |
+| 2026-11-18 01:34 | deep-1-switch | switch@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.56 | +154.8% | 16.8% | 6.00 |
+| 2026-11-18 01:34 | deep-1-meta | meta@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +189.8% | 16.7% | 2.13 |
+| 2026-11-18 01:34 | deep-1-stack | stack@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.44 | +67.1% | 92.4% | 7.49 |
+| 2026-11-18 01:34 | deep-1-switch | switch@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.54 | +192.1% | 92.4% | 5.57 |
+| 2026-11-18 01:34 | deep-1-meta | meta@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +310.5% | 91.9% | 3.89 |
+| 2026-11-18 01:34 | deep-1-stack | stack@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.73 | +2099.3% | 24.0% | 2.17 |
+| 2026-11-18 01:34 | deep-1-switch | switch@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.63 | +1617.6% | 22.9% | 3.73 |
+| 2026-11-18 01:34 | deep-1-meta | meta@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.75 | +2859.9% | 23.3% | 2.98 |
+| 2026-11-18 01:35 | deep-1-meta | naive-1n | baseline | train | 1994-02-01 | 2025-11-09 | 1.06 | +7367.4% | 39.7% | 2.49 |

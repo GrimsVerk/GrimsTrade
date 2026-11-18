@@ -89,6 +89,14 @@ stopped on a purged validation slice) no longer loses badly, but adds nothing.**
 Sharpe 0.96-0.98 against `tsmom12`'s 0.99, weights 1.8-2.7% away from `tsmom12`'s, all fail.
 Next: a planted-signal control of this pipeline (is it the inputs or the learner?).
 
+Deep run (deep-1, 2026-11-18; [`deep-1.md`](deep-1.md)): **no combination of the tested models
+beats the trend rule, because they are the same six assets held at different sizes.** A failure
+atlas of 52 return series ([`results/deep-1-atlas.md`](results/deep-1-atlas.md)) names six
+failure modes; three walk-forward mixes of `tsmom12` with 29 tested models score 1.01, 1.02 and
+1.08 against 1.05, the best no better than a plain average, and the best mix with hindsight only
+1.22. Next: a breadth gate and coin tops as their own cards, and carry as the first complement
+from a different source of return.
+
 ## Ranking after run 2
 
 For forward paper trading (M3), best first. Run 2 changed nothing here: no ML model comes

@@ -130,3 +130,23 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
 | ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
 | ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
+
+### Combinations of the tested models (deep-1, 2026-11-18)
+
+Card and bar in [deep-1.md](deep-1.md), fixed before any number. Sharpe on the six assets,
+1994-2025 / since 2003: `tsmom12` 1.05 / 1.20. Sleeves: `tsmom12` and 29 tested models; every
+choice walk-forward, refitted each January. Held-out year unspent.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| deep-1-stack | `tsmom12` plus the model least like it in its losing weeks, inverse-variance shares | dead (tested) | [deep-1.md](deep-1.md) | 1.01 / 1.22; picked the Fed-hike gate, then 60/40 just before 2022. Behind on 2 of 3 other sets. [result](results/deep-1.md) |
+| deep-1-switch | Per trend state, the model with the best past Sharpe in that state | dead (tested) | [deep-1.md](deep-1.md) | 1.02 / 1.05; chose gates that had dodged the last crash and sat out 2023-24 (2022-25: -0.32). [result](results/deep-1.md) |
+| deep-1-meta | Ridge meta-learner on the sleeves' weekly returns | dead (tested; nearest miss) | [deep-1.md](deep-1.md) | 1.08 / 1.27 (p = 0.27), ahead on 2 of 3 other sets, but equal to the plain average of all sleeves (1.06 / 1.29). A smoother ride for less growth, not skill. [result](results/deep-1.md) |
+
+New, not yet carded (from the failure atlas, [results/deep-1-atlas.md](results/deep-1-atlas.md)):
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| breadth-gate | Trend / cross-asset | new | - | Drop an out-of-trend asset only while at most a third of the book is in trend. Seen after looking (atlas table 2b: empty slots -4% a year when the book is broadly out of trend, +16 to +23% otherwise); three "off" episodes on the six assets, so it must be judged on other universes. Borders the `trend-tune` lane |
+| coin-top-exit | Trend / crypto | new | - | Eight of `tsmom12`'s ten deepest drawdowns are coin tops. Test a volatility-capped coin slot or a faster coin-only exit on the top-100 coin book (hundreds of tops), then carry one setting back to BTC and ETH |
+| carry-complement | Carry + trend | new | - | The long-only pool has no complement (hindsight ceiling 1.22). Run deep-1's `stack` unchanged on `tsmom12` and the funding-carry book once carry-3 has its cost answer |

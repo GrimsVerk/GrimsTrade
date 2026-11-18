@@ -1,5 +1,29 @@
 # Next steps
 
+## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR -> `carry-2`)
+
+Why does each tested model fail where it fails, and does a mix chosen from past data beat
+`tsmom12`? No mix passes: `stack` 1.01, `switch` 1.02, `meta` 1.08 against 1.05 (1994-2025); the
+best equals a plain average of all models (1.06), and even the best fixed mix with hindsight
+reaches only 1.22. The models are the same six assets held at different sizes; they lose in the
+same weeks. Failure atlas: 52 series, six failure modes (slow out of coin tops; missing the
+rebound; one long bear market for always-invested rules; boosting models short of Bitcoin; RL as
+a geared coin position; early-exit gates paying for 2023-24). Held-out year unspent. Write-up
+`research/deep-1.md`; tables `research/results/deep-1-atlas.md`, `research/results/deep-1.md`.
+
+- Rebuild: `research/lib/deep1_models.py <universe>` (series into `<cache_root>/derived/deep-1/`),
+  `deep1_atlas.py`, `deep1_combo.py` (`check` = look-ahead check; a plain run reuses the cached
+  replays and logs nothing twice).
+- Next lanes (not started; detail in `research/deep-1.md`): a breadth-gate card judged on other
+  universes (agree the split with `trend-tune` first); coin tops on the top-100 coin book; carry
+  as the first real complement, with deep-1's `stack` rule unchanged, after carry-3.
+
+### For the owner
+
+- Nothing to decide. If you want a smoother ride, the plain average of all rules and `trend-vol`
+  both give a worst loss near 30% instead of 36.5%, for about 3 points less growth a year. That
+  is a choice of risk, like the presets in `research/risk-map.md`, not a better rule.
+
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
 Short-1's carry book, copied unchanged, on data it never saw: Binance perps outside the 30
