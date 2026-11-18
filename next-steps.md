@@ -1,5 +1,41 @@
 # Next steps
 
+## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
+
+Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 industries, cache
+snapshot 2026-11-12), and were its days out rougher than its days in? Card fixed before any
+number; write-up at the top of `research/trend-1926.md`; tables `research/results/trend-1926.md`;
+96 rows in `research/tries.md` (24 baseline, 72 robustness). One run, nothing rerun.
+
+- Result: ahead over 1927-07 to 1961-12 (market Sharpe 0.88 against 0.55, +0.33, p 0.02; book
+  +0.45; 9 of 10 industries; worst loss 38% against 84%), but short of the card's "a property":
+  about two thirds of the lead is 1929-1932 (without it +0.11, p 0.18; from 1933 +0.09, p 0.22),
+  and in 1946-1961 the market trails (-0.09). Days out were rougher than days in on 10 of 10
+  industries in 1927-1945 and on 1 of 10 in 1946-1961. Crash insurance, not an edge.
+- Live rule: no change (fixed on the card). Held-out year not involved.
+- Replay check: the gym and the gym-free paper series agree except on 2 days (market) and 6
+  days (durables) of 9,731, all in weeks whose Friday was a holiday with a Saturday session;
+  they pick a different decision day there. Explained, not a fill error.
+- **Era 2 (1962-2001, card 2 at the end of `research/trend-1926.md`, fixed before its run):**
+  crashes only. Market 0.88 against 0.80 (+0.07, p 0.26), worst loss 32% against 48%; without
+  1973-1974 the difference is -0.03. Tables `research/results/trend-1926-era2.md`; 96 more rows.
+  Rerun with `TREND_ERA=1962 uv run python -I research/lib/trend_1926.py`. Open: the era-2
+  replay-check gaps (utilities 1.7% on one day) are not yet explained; no test covers the
+  `TREND_ERA=1962` path.
+- Doing: nothing. No process running.
+- Next lanes (not started): `trend-where-it-pays` with 1946-1961 as its hard case;
+  `fast-reentry` with this period as an out-of-universe set; French daily data 1962-1993 on its
+  own card.
+- Rerun: `uv run python -I research/lib/trend_1926.py` rebuilds the tables (needs
+  `research/macro.local.json`); runs saved under the git-ignored `research/data/runs/trend-1926/`
+  are re-scored without new `tries.md` rows (on a fresh machine they would be logged again).
+
+For the owner:
+
+- A risk choice, not a decision forced by this run: the trend filter on the stock slots is
+  insurance against a multi-year collapse (worst loss halved in 1929-1932) that costs a little
+  in calm bull markets.
+
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
 What earns `tsmom12` its money, where it bleeds, and whether walk-forward tuning of its lookback
