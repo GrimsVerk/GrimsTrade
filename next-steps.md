@@ -99,7 +99,12 @@
     convention). No numbers changed beyond 0.012; era-1 energy flips sign (9 -> 10 of 10
     industries), verdict unchanged. 7 tests for era 2; docs cover both eras. Owner: move
     `common.weekly` to the calendar Friday (needs its own card; shifts every lane a little)?
-  - RUNNING: `forward-1` (`grimstrade-forward1`: forward-only shadow registry, draft -> main)
+  - DONE `forward-1` (draft #67 -> main): forward registry (`docs/forward-registry.md`,
+    DECISIONS entry PROPOSED; `src/grimstrade/forward.py`, 18 tests; offline command only).
+    Years needed at 80% power (alpha 0.025 each): carry-3 `band` 12.7 (7.3 alone), FOMC bond
+    drift 78, coin stop 26 (~55 independent), monthly-vs-weekly 32. Only carry is judgeable
+    forward; the rest are decided on other grounds. Candidates proposed, NOT frozen.
+  - Nothing running at 20:45 UTC (5h 0.77 at 20:37: no new lanes until the 21:30 reset).
     (`grimstrade-trend1926b`: era-2 replay gaps, TREND_ERA=1962 test, docs) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
@@ -204,6 +209,11 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, forward-1 (#67, to main): adopt the forward registry and freeze
+  `carry-3-band@1` (the only candidate judgeable in ~7-13 years)? Then a lane writes the
+  forward adapter, and you decide whether to schedule a weekly scorer job.
+- Night 2026-11-18, trend-1926-fix (#66): move `common.weekly` to the calendar Friday (own card;
+  shifts every lane's numbers slightly)?
 - Night 2026-11-18, cash-interest (#61, to main): (a) pay idle cash the full T-bill rate (as
   if in a T-bill fund) or a spread below it (IBKR: benchmark -0.5%, none on first USD 10k;
   Kraken: none on USD)? (b) switch the research harness's Sharpe to "above cash" too? (c) add
