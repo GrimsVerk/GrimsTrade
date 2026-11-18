@@ -244,3 +244,60 @@ W13 `festival-gold` is dead by the gate: no card, no strategy, no `tries.md` row
 Disclosures: one dry run (`DRY=1`) printed only day counts (5,277 days, 630 festival-run
 days; 180 to 2010, 450 from 2011), then one run. Script and tests pushed before both (commit
 ce01544).
+
+## Step 3. W12 `rmd-december` (demography)
+
+### The idea
+
+US owners of traditional IRAs and 401(k)s must withdraw a required minimum distribution
+(RMD) each year once past a legal age: the account at the end of the previous year divided by
+a life-expectancy divisor (about 27 at the starting age, so about 4%). Many take it late in the
+year, and an RMD from a fund account is a sale of fund shares. A cohort crossing an age line
+on a fixed date is a demographer's flow (a Lexis diagram); here the flow is a forced sale with
+a deadline of 31 December.
+
+The decisive cut is not the December mean (the turn of the year and the "Santa" rally sit
+there) but **the two years in which the law waived RMDs: 2009 (Worker, Retiree, and Employer
+Recovery Act of 2008) and 2020 (CARES Act)** (from memory; both well documented). If RMD
+selling depresses late December, late December should be stronger in those two years than in
+the others.
+
+### Literature check
+
+None found in this run on RMD flows and December returns; not searched beyond the tax-loss
+literature of step 1. The idea is our own (wide-6) and no run here has cut returns by waiver
+years. The years that can judge it fully are those after the next start-age step (73 to 75
+in 2033).
+
+### Decision rule (fixed and pushed before any number)
+
+**Series.** SPY (dividend-adjusted, Decembers 1993-2024) primary; TLT (Decembers 2002-2024)
+second. Train bars only (December 2025 is not in train).
+
+**Statistic per year y.** Window = the last ten trading sessions of December y: log return
+from the close of the eleventh-last December session to the last December close. **Excess**
+X(y) = window return minus 10 times the asset's mean daily log return over the other sessions
+of year y (so a strong year, as 2009 and 2020 both were, does not count as a strong window).
+
+**Gate statistic.** D = mean X over the waiver years {2009, 2020} minus mean X over the other
+years. Exact permutation p = share of all pairs of years whose mean X is at or above the
+waiver pair's (one-sided: RMD selling predicts D > 0).
+
+**Gate.** Pass only if, for SPY, D > 0 with p <= 0.05 (the waiver pair in the top 5% of the
+496 pairs), **and** TLT's D > 0. On a pass: a card for an overlay (late-December exposure
+scaled by an RMD dose) with rows in `tries.md`, read at p < 0.00147; with two waiver years in
+train, a pass would mostly say "watch the next waiver or start-age step". On a fail: W12 dead
+by the gate, no card, no row.
+
+**Shown, not gating.** The same for the S&P 500 index (GSPC, no dividends) over Decembers
+1975-2024 (IRAs from 1975 under ERISA); X for SPY and TLT in each waiver year and its rank;
+the first ten December sessions as a within-month placebo; the raw (not excess) window.
+
+**Power, written before any number.** SPY's ten-session standard deviation is about 3.5%; with
+two waiver years the standard error of D is about 2.5%, so p <= 0.05 needs D of about 4 to 5%
+in ten sessions: far larger than any plausible RMD effect (US RMDs are of the order of a few
+hundred billion dollars a year, spread over months, against tens of trillions of US
+equities). The gate can only find a very large effect.
+
+**My guess before any number.** D for SPY between -1.5% and +1.5%, p between 0.2 and 0.8; TLT
+either sign. Chance of a pass: 2%.
