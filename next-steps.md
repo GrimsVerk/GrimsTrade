@@ -1,5 +1,13 @@
 # Next steps
 
+## Survey 3 (in progress 2026-11-18, branch `survey-3`, draft PR -> `survey-2`)
+
+Task: card and train test of survey-2's rank 2, `xtsmom` (Pitkäjärvi, Suominen, Vaittinen,
+JFE 2020: stock slots only while bonds also trend up), in-paper vs after-publication years;
+if it fails, a short ranked note on survey-2's remaining 5 candidates (no new tests).
+
+- Doing: card `research/cards/xtsmom.md` pushed before any number; code next.
+
 ## Survey 2 (done 2026-11-18, branch `survey-2`, draft PR #60 -> `wide-4`)
 
 2023-2026 research read for ideas this book could use that the repo had not listed; 19 sources
