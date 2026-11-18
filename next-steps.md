@@ -1,5 +1,14 @@
 # Next steps
 
+## Wide 4 (started 2026-11-18, branch `wide-4`, from `wide-3`)
+
+Task: (1) W2 `tax-drain`, institutional fact checked first (done: NY Fed, Santoro 2012; the
+switch from bank TT&L accounts to the Fed's TGA was late 2008), card pushed before any number,
+event study and rule on train only. (2) Five new mechanisms from fields the list has not used,
+a written choice note, a card and a train test of the best one. Write-up `research/wide-4.md`.
+
+- Doing: `tax-drain` card pushed; next the data download (FRED keyless CSV) and the test.
+
 ## Wide 3 (done 2026-11-18, branch `wide-3`, draft PR #54 -> `wide-2`)
 
 Two more picks from wide-1's list, then three new mechanisms and a test of the best one. Choice
