@@ -150,3 +150,38 @@ No outcome changes the live rule tonight. "Real and kept" would make crash insur
 counted reason for the stock slots' filter, with a price per unit. "Handed back" says the filter
 changes the path (smaller worst loss, a preference) but not the wealth. "Not shown" says even the
 insurance story rests on too few independent falls to call.
+
+## Card 2: is the insurance timing, or just lower exposure? (fixed 2026-11-18 ~23:00 UTC, after card 1's result, before any number below)
+
+**Why added.** Card 1's insurance test is weak by construction: any rule that is out of the
+market part of the time loses less in a fall than holding, timing or not. A rule that is in
+cash a third of the time at random would also show `I > 0` in most episodes. The question that
+matters is whether `tsmom12` buys more loss avoided per unit of cost than simply holding less.
+Seen when this was written: all of `results/insure-1.md` (card 1). Not computed: anything below.
+
+**Controls (same 11 series, same 25% episodes, same windows, cash at 0):**
+
+- **Fixed exposure:** per series, hold a constant share `x` (the rule's average position over
+  1927-2025, from the paper series), rebalanced daily, return `x * r`. No costs. Its premium
+  `P_fix` is the price of insurance bought by holding less.
+- **Random timing (rotations):** the rule's own paper positions, the whole 11-series block of
+  positions rotated together by one random offset (circular, at least 365 sessions away from 0),
+  returns `pos * r - 0.0002 * flips`: the same exposure, spells and cross-series links, timing
+  broken. 1,000 rotations, seed 0. The rule's own number here is its paper series (same
+  return formula), not the gym splice, so both sides are built alike.
+
+**Statistics, per control:** mean over market-anchored clusters of the share avoided `S` and of
+`N`; the pooled premium `P` (11 series).
+
+**Pass rule (fixed now):**
+
+| Outcome | When |
+|---|---|
+| **Timing, not just exposure** | The rule's mean cluster `S` is above the rotations' with p < 0.05 (share of rotations at least as large) **and** its pooled `P` is below the rotations' with p < 0.05 (share at or below), and its `P` is below `P_fix` |
+| **Exposure, not timing** | Neither p below 0.10 |
+| **In between** | Otherwise |
+
+Rotation p-values of 0.001 or lower mean "none of the 1,000"; the project-wide bar (Bonferroni
+p <= 4.9e-5) cannot be reached with 1,000 rotations and is not the bar here (not a pick).
+No new `tries.md` rows: the controls are re-scorings of positions already logged (card 1),
+not strategies.
