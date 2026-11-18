@@ -123,3 +123,31 @@ def test_attention_rule_only_drops_coin_slots() -> None:
     twin = _friday_weights(_mods("common")[0].slots(_mods("common")[0].tsmom_signal), hist)
     assert any("BTC" not in w[d] and "BTC" in twin[d] for d in w)
     assert all("SPY" in w[d] for d in w if "SPY" in twin[d])
+
+
+def test_opex_pin_adds_idle_cash_only_in_the_expiry_week() -> None:
+    idea, c = _mods("idea_wide3_opex_pin", "common")
+    up = [50.0 + 0.1 * k for k in range(700)]
+    down = [100.0 - 0.05 * k for k in range(700)]
+    hist = {"SPY": _bars(down), "QQQ": _bars(up), "TLT": _bars(down)}
+    mine = _friday_weights(idea.pin, hist)
+    twin = _friday_weights(c.slots(c.tsmom_signal), hist)
+    pre = [d for d in mine if idea.is_third_friday(d + timedelta(days=7))]
+    other = [d for d in mine if d not in pre]
+    assert pre and other
+    for d in pre:  # QQQ in trend (1/3), the idle 2/3 split over SPY and QQQ
+        assert abs(mine[d]["QQQ"] - (1 / 3 + 1 / 3)) < 1e-9
+        assert abs(mine[d]["SPY"] - 1 / 3) < 1e-9 and "TLT" not in mine[d]
+    assert all(mine[d] == twin[d] for d in other)
+
+
+def test_opex_pin_uses_no_later_data() -> None:
+    (idea,) = _mods("idea_wide3_opex_pin")
+    up = [50.0 + 0.1 * k for k in range(700)]
+    cut = 500
+    other = up[:cut] + [5.0 + (k % 7) for k in range(len(up) - cut)]
+    a = _friday_weights(idea.pin, {"SPY": _bars(up), "QQQ": _bars(_walk(-0.001, 1.0))})
+    b = _friday_weights(idea.pin, {"SPY": _bars(other), "QQQ": _bars(_walk(-0.001, 1.0))})
+    last_seen = _bars(up)[cut - 1].date
+    same = [d for d in a if d <= last_seen]
+    assert len(same) > 20 and all(a[d] == b[d] for d in same)
