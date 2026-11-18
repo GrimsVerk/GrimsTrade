@@ -1,5 +1,30 @@
 # Next steps
 
+## Wide 2 (done 2026-11-18, branch `wide-2`, draft PR #47 -> `wide-1`)
+
+One mechanism picked from the 42 that wide-1 listed and did not card: Q5, trend age (hazard
+rate). Rule `age4`: hold a `tsmom12` slot only once the signal has been on for four Fridays.
+**Fails train: 0.99 against 1.05 (difference -0.06, 90% range -0.11 to -0.01), behind in all
+five eras; held-out year unspent.** Short spells are common (50 of 111 end within four weeks)
+but cheap; the three missed weeks of lasting trends cost more. Write-up `research/wide-2.md`;
+table `research/results/trend-age.md`; 7 rows in `tries.md`.
+
+Second pick, same day: E6, patch-leaving (marginal value theorem). Rule `mvt`: the twin's
+exposure, held only in the in-trend assets whose risk-scaled 12-month return is at least the
+average. **Fails all five bars: 0.85 against 1.05 (difference -0.19, 90% range -0.36 to
+-0.02), drawdown 53% against 37%, turnover 9.7 against 2.7; held-out year unspent.** Table
+`research/results/patch-leaving.md`; 4 rows in `tries.md`. Both picks were read at
+p < 0.10 / 42.
+
+Third pick, same day: G2, crowded-trend (halve the book when at least three assets are eligible
+and all are in trend). **Fails: 0.98 against 1.05 (difference -0.07, 90% range -0.16 to
++0.03), ahead in 1 of 5 eras; held-out year unspent.** Drawdown 29% against 37%, but 3 points
+less return a year. Table `research/results/crowded-trend.md`; 4 rows in `tries.md`.
+
+- Doing: nothing. No process running.
+- Next: nothing from the three cards. 39 of wide-1's mechanisms stay uncarded; three price-only
+  changes to the trend rule have now failed. wide-1's three lanes below stand as written.
+
 ## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
 
 New hypotheses from ten other fields (ecology, epidemiology, signal processing, control,
