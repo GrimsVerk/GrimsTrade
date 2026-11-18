@@ -1,12 +1,21 @@
 # Next steps
 
-## combo-2 (DEEPER lane, night 2026-11-18, branch `combo-2`, draft PR -> `combo-1`, never merged by agents)
+## combo-2 (DEEPER lane, night 2026-11-18, branch `combo-2`, draft PR #75 -> `combo-1`, never merged by agents)
 
-Task: (1) `combo-cash`: merge #61's cash interest (`origin/cash-interest`, merged into this
-branch, not cherry-picked) and rerun combo-1's failure map and both blends exactly as carded,
-robustness rows only; (2) card one long-only partner for the years stocks and bonds fall
-together, test on train, count it in the family bar; (3) a 5-line verdict on the combo line.
-Write-up `research/combo-2.md`. Costs: protocol 25 + 5 bps crypto, 2 bps ETFs, as combo-1.
+Write-up `research/combo-2.md`. `origin/cash-interest` (#61) is merged into this branch (merge
+commit 957fdd1, not cherry-picked); `harness.run(rates=...)` and `harness.bill_rates()` added
+(default unchanged). Costs: protocol 25 + 5 bps crypto, 2 bps ETFs.
+
+- DONE 2026-11-18. Step 1 `combo-cash`: combo-1's map and blends rerun with T-bill cash, 14
+  `robustness` rows. No verdict changes: `blend-ws` 1.16 vs `tsmom12` 1.08 (p 0.051; above
+  T-bills +0.06, p 0.108), still behind 2022-25; `blend-iv` now fails 4 bars. Map signs and pair
+  correlations unchanged; `trend-vol` ties `tsmom12` against 0 (behind above T-bills).
+- Step 2 `cofall-dbc` (DBC slot when SPY and TLT trends are both down; T-bill slot rejected as
+  identical to cash with interest): 1.07 vs 1.08 (p 0.85), 2022 -1.7 points, fails; 1 `variant`
+  row, family now 73. Long-run description 1962-2025: 35 co-fall months, T-bills beat every
+  commodity proxy.
+- Step 3 verdict: close the combo line; nothing worth a held-out year. Next: `stop-reentry`
+  (combo-1's lane 1); owner decides #61.
 
 ## combo-1 (DEEPER lane, night 2026-11-18, branch `combo-1`, draft PR -> `main`, never merged by agents)
 

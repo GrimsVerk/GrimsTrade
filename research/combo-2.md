@@ -206,7 +206,7 @@ that won it is past its peak. In 2008 the gate never opened (Treasuries rose), s
 was built for is one episode in the gym's history, and it went the wrong way.
 
 **1970s-style evidence (description, 1962-2025, monthly).** The monthly gate (US stocks and a
-10-year Treasury both down over 12 months) was open in only 35 of 767 months, in 12 short
+10-year Treasury both down over 12 months) was open in only 35 of 752 months (to 2025-10, train only), in 12 short
 spells; in the 1970s only 15 months (1966, 1969-70, 1973-08, 1974-11): high coupons kept the
 bond's 12-month return positive through most of the inflation. In those months: T-bills +5.4%
 a year, the S&P GSCI price index -24.9% (from 1985; with collateral and its own trend, -17.9%),
@@ -218,3 +218,30 @@ history in the cache starts in 1985; FRED's commodity price index could not be f
 the partner that would have helped (commodities, 2021-22) did its work before the gate opened.
 The T-bill, which `tsmom12` already holds there and which now earns interest (step 1), is the
 best of the long-only options measured. Family count: 73 picks, none passes.
+
+Data note: the first run of `combo2_longrun.py` read the Fama-French file to its end
+(2026-09), past the train period; no gate month fell after 2025-10 and the table is identical
+after the cut to train months (now in the script). No held-out gym data was touched anywhere in
+this lane.
+
+## Step 3: verdict for a human (2026-11-18)
+
+1. **The combo line has shown complementarity, not an edge.** Across deep-1, combo-1 and this
+   lane (73 picks in the family), the one pair whose failures are uncorrelated (`where-vol` +
+   `stop-0.25`) blends to Sharpe 1.16 against `tsmom12`'s 1.08 with T-bill cash (p 0.051;
+   above T-bills +0.06, p 0.108). The bar is p < 0.0014, and the blend is behind in 2022-25.
+2. **Paying interest on cash (#61) changes no verdict.** It lifts every book that holds cash by
+   about the same amount, and it only hurts blends with an always-invested half (`blend-iv`
+   now fails 4 of 6 bars). Merge #61 for honest accounting, not for a ranking change.
+3. **The 2022 gap cannot be closed with a trend-gated, long-only partner.** Both trends turn
+   only after most of the co-fall: DBC came in at the end of April 2022, a month before the
+   commodity peak, and lost 24% while held (2022: -1.7 points against `tsmom12`). Over
+   1962-2025, in the 35 co-fall months T-bills earned +5.4% a year and every commodity proxy
+   lost.
+4. **Nothing here is worth a held-out year.** `blend-ws` is the only candidate. Its excess has an
+   information ratio of about 0.28 a year, and one year of data cannot tell that from zero (the
+   standard error of a one-year Sharpe is about 1). A held-out year would be spent on noise.
+5. **Recommendation: close the combo line.** Keep `tsmom12`, which now also earns T-bill
+   interest on its cash. Put further effort only where a failure is attacked directly (the coin
+   stop's late re-entry, `stop-reentry`) or where a genuinely new source of return appears, not
+   into more blends of the same six assets.

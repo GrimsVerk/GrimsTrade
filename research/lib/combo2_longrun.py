@@ -32,6 +32,7 @@ import numpy as np
 ROOT = macro.cache_root()
 RESULT = macro.RESEARCH / "results" / "combo-2-longrun.md"
 Month = tuple[int, int]
+LAST: Month = (2025, 10)  # last whole month before the train period ends (2025-11-09)
 
 
 def french() -> tuple[dict[Month, float], dict[Month, float]]:
@@ -110,7 +111,7 @@ def main() -> None:
     mkt, rf = french()
     bond = bond_returns(dgs10())
     au, gs = gold(), gsci()
-    months = sorted(set(mkt) & set(bond))
+    months = sorted(m for m in set(mkt) & set(bond) if m <= LAST)  # train only
     # cumulative levels for 12-month returns
     lv_s: dict[Month, float] = {}
     lv_b: dict[Month, float] = {}
@@ -131,6 +132,8 @@ def main() -> None:
         g_gs = chg(gs, n1, 1)
         au_on = (chg(au, m, 12) or 0) > 0
         gs_on = (chg(gs, m, 12) or 0) > 0
+        if n1 > LAST:
+            continue
         rows.append((n1, s12 <= 0 and b12 <= 0, mkt[n1], rf[n1], g_au, g_gs, au_on, gs_on))
 
     def spans(sel: list[Month]) -> str:
@@ -180,7 +183,11 @@ def main() -> None:
     ]
     for lo, hi in [(1962, 1979), (1980, 1993), (1994, 2005), (2006, 2025), (1962, 2025)]:
         out += stats_for(lo, hi)
-    out.append("")
+    out += [
+        "",
+        f"Months with a 12-month history and a next month: {len(rows)}"
+        f" (to {LAST[0]}-{LAST[1]:02d}).",
+    ]
     text = "\n".join(out)
     print(text)
     RESULT.write_text(text + "\n")
