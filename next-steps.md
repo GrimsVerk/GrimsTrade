@@ -1,5 +1,15 @@
 # Next steps
 
+## forward-1 (in progress 2026-11-18 night, branch `forward-1` from `main`)
+
+WIDER lane (new method): a forward-only shadow registry. Each candidate rule is frozen (hash of
+code + parameters + data source) with its metric, bar and minimum sample written at freeze, and
+scored only on bars that start after the freeze. Research only; no change to the daily runner,
+its schedule or workflows.
+
+- Doing: design note `docs/forward-registry.md`, code `src/grimstrade/forward.py`, tests
+  `tests/test_forward.py`, proposals `research/forward/candidates.jsonl` (not frozen).
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
