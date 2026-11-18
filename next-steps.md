@@ -31,7 +31,14 @@
     CPU-min, 40 replays ~2 CPU-h). Noise control flaw: zero log drift pays holders sigma^2/2, so
     lead chose (dated card note): zero-mean-simple-return worlds, rerun controls, 40 replays
     (<=1 at/above), then the one real search, train only.
-  - RUNNING: `evo-1` (controls fix -> replays -> real search), `wide-4` (`grimstrade-wide4`:
+  - DONE `coin-cap-3` (draft #56 -> coin-cap-2): daily-checked stop fixes 3 of the 6 episodes
+    the weekly stop lost; gains return via cheaper re-entries, not shallower losses. Bug fixed:
+    coin-cap-2's 4 tries rows really start 2015-09-23 (rows not edited). Next cards (not
+    started): price-drawdown stop, 25% cap + stop, time under water.
+  - evo-1 controls after fix: noise 0/3 found, but planted k=0.04 NOT found (search overfits
+    past the true rule). Lead (card note): tune greed on fresh synthetic worlds only, confirm on
+    new controls, then replays + real search; else close-or-redesign.
+  - RUNNING: `evo-1` (greed tuning on synthetic worlds), `wide-4` (`grimstrade-wide4`:
     tax-drain + 5 new cross-field mechanisms), `gsy-1` (`grimstrade-gsy1`, Greenwood-Shleifer-You
     run-up exit on French industries 1928-), `coin-cap-3` (daily-checked stop vs weekly).
 - 3. Then the Lead 1 lane queue below.
@@ -133,9 +140,11 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
-- Night 2026-11-18, coin-cap-2 (#53): `stop-0.25` on the coin slots of `tsmom12` passes its
-  card (shallower worst loss in 15 of 21 coin-crash episodes, same Sharpe; weak on BTC alone).
-  Open a rule PR? Spend the held-out year on it? Your call.
+- Night 2026-11-18, coin-cap-2 (#53) + coin-cap-3 (#56): weekly `stop-0.25` on the coin slots
+  of `tsmom12` gives a shallower worst loss in 15 of 21 coin-crash episodes at the same Sharpe,
+  but with all 13 coin-cap picks counted the bar is p < 0.0077 and 15/21 (p 0.039) does not meet
+  it; weak on BTC. A daily-checked stop (18/21, p 0.0007) adds return, not shallower losses, and
+  most of it goes at double costs. So: a risk preference, not a proven rule. Rule PR? Your call.
 - Burst 1 (2026-11-18): the carry book (`band`) failed its one held-out year (#31); the
   held-out year is spent there. month-end-bonds (#45) says not to spend a held-out year on it:
   that answers the earlier "owner's call". evo-1 (#44) will need ~24 CPU-hours for its replay
