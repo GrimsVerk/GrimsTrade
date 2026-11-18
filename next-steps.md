@@ -1,6 +1,6 @@
 # Next steps
 
-## RL 4 (done 2026-11-18, branch `rl-4`, draft PR -> `carry-2`)
+## RL 4 (done 2026-11-18, branch `rl-4`, draft PR #38 -> `carry-2`)
 
 Which of rl-3's cheap fixes makes a learner find a planted weekly IC of 0.10, and does it find
 anything real on carry-2's perp cross-section? Answer: `lasso28` (shrinkage) passes the planted
