@@ -350,6 +350,41 @@ coin it can be tighter or looser; the six episodes are the third reading's loser
 to the mean flatters any change there); on the six assets each worst loss and long stretch
 under water is one event, so the book-level numbers are close to single observations.
 
+## Sixth reading, lane `stop-reentry`: one re-entry rule (2026-11-18)
+
+Card "Sixth reading" in `cards/coin-cap.md` (pushed before any number); tables
+`results/stop-reentry.md` from `lib/stop_reentry.py` (one run, 4 tries rows). Rule
+`stop-cool-13`: after a stop-out the coin is out for 13 weeks (91 days = the twin's median lag
+after a coin top, 106 days, minus the stop's mean exit day, 15), then the stop's band is read
+against the highest close since the stop-out, not the old one-year high. Pick 16 of the family
+(bar: 17 of 21 episodes, p < 0.00625).
+
+**Verdict (by the card): the re-entry rule does not fix the stop; the weekly stop stays the
+(unproven) risk preference, and the coin line stays parked.**
+
+- It fixes the bounce buying: on the weekly stop's 25 falls with two or more re-entries, edge M
+  +5.3% against -3.1%, re-entries per fall 0.52 against 2.16 (bar 3 holds).
+- It makes the late re-entry worse, not better: six months after the low on the coin book
+  +11.2% of a slot against the weekly stop's +16.8% (better in 7 of 21 episodes); on the six
+  assets combo-1's turn excess -24.5% a year against -21.0% (bars 2a, 2b fail). The cool-offs
+  sit on the rebound: 662 stop-outs start one, and the median fall's low comes 122 days after
+  the weekly stop's first exit (38% within 91 days; checked after the run, unlogged), so a
+  cool-off from a later stop-out likely covers the low and the first months after it (the
+  likely mechanism, not measured).
+- Episodes: 13 of 21 against its own matched cap (p 0.19), mean edge +3.0% (+2.5% at double
+  costs) against the weekly stop's +16.2% (+15.4%); 0 of the 6 episodes the weekly stop
+  trailed. It holds 24% of the twin's coin-days against 31%, and its matched cap is smaller
+  (`f*` 0.51 against 0.66): a tighter risk dial, not a better re-entry.
+- Six assets, coin years: worst loss 16.2% against 17.7%, days 10%+ under water 13% against
+  22%, longest stretch 974 against 1,011 days, but CAGR 20.6% against 25.4% (Sharpe 1.54
+  against 1.57). Full train: Sharpe 1.04 against 1.09, CAGR 13.8% against 15.6%, worst loss
+  28.9% for both (the 2000-02 fall).
+
+Limits: one rule, one `N`, chosen by an argument that turned out wrong for the turn (falls
+keep going after the first exit for months, so a cool-off counted from an exit lands on the
+low); the bounce falls are the weekly stop's own losers (regression to the mean flatters any
+change there).
+
 ## Changes after the card
 
 None to the rule, grid, selection or bar. One reading note: bar 1 is reported as a tie (above).
@@ -364,6 +399,9 @@ Fourth reading: none to its variants, measures or bar. Found while running it: i
 cover 2015-09-23 .. 2025-11-09, not the 2013-02-10 their "From" column says (rows not edited;
 the third reading's bar never used them). Fixed in the code for any rerun; coin-cap-3's rows
 start on 2013-02-10 as stated.
+
+Sixth reading: none to its rule, measures or bar. Added after the run, unlogged: the days from
+the weekly stop's first exit to each fall's low (one line in the reading above).
 
 ## Next steps
 

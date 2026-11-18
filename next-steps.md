@@ -1,13 +1,24 @@
 # Next steps
 
-## Stop re-entry (doing 2026-11-18, branch `stop-reentry`, draft PR -> `coin-cap-4`)
+## Stop re-entry (done 2026-11-18, branch `stop-reentry`, draft PR #82 -> `coin-cap-4`)
 
-One pre-committed re-entry rule for the weekly coin stop, `stop-cool-13` (13-week cool-off
-after a stop-out, then the stop's reference high reset to the stop-out). Card "Sixth reading"
-in `research/cards/coin-cap.md` (pushed before any number). Pick 16 of the coin-cap family:
-needs 17 of 21 episodes (p < 0.00625).
+**One-screen verdict for a human (updated): `research/coin-cap-verdict.md`. The coin line stays
+parked.** One carded re-entry rule for the weekly coin stop, `stop-cool-13` (out 13 weeks after
+a stop-out, then the band read against the highest close since the stop-out). Card "Sixth
+reading" in `research/cards/coin-cap.md`; write-up "Sixth reading" in `research/coin-cap.md`;
+tables `research/results/stop-reentry.md`. Pick 16 of the family (needs 17 of 21, p < 0.00625).
 
-- Doing: code and tests, then one run (4 tries rows), then `research/coin-cap-verdict.md`.
+- By the card: **the re-entry rule does not fix the stop.** 13 of 21 (p 0.19), mean edge +3.0%
+  against the weekly stop's +16.2%. It fixes the bounce buying (falls with 2+ weekly
+  re-entries: +5.3% against -3.1%) but re-enters later after lows (coin book six months after
+  the low +11.2% against +16.8%; six assets turn -24.5% a year against -21.0%). Coin years:
+  worst loss 16.2% against 17.7%, 4.8 points a year less growth: a tighter risk dial.
+- Rebuild: `research/lib/stop_reentry.py` (**a plain run logs 4 tries rows**; `DRY=1` logs
+  nothing). Data as coin-cap-4 below.
+- Doing: nothing. No process running. Held-out year unspent.
+- Next (not started, card first; none needed for the owner's decision): a coin-size choice
+  framed as a risk budget (worst-loss target), not a tested edge. No more coin stop rules:
+  every variant that loses less in a fall pays it back after the low.
 
 ## Coin cap 4 (done 2026-11-18, branch `coin-cap-4`, draft PR #69 -> `coin-cap-3`)
 
