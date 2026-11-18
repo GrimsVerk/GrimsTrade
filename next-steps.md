@@ -13,15 +13,18 @@ perpetual-futures cross-section? Card and results: `research/rl-4.md`.
   fails every bar, pooled Sharpe 0.03 against `ls-funding` 0.57; `results/rl-4-perp-why.md`: rank
   IC is not return; `results/rl-4-perp-ret.md`: `ls-ml-ret` keeps no input, flat book).
   Held-out year untouched.
-- Paused 2026-11-17 ~23:30 UTC (usage window). `ppo3` training (520 fold models,
-  `research/data/rl/models4/`, launcher log `research/data/rl/rl4-launch.log`) was finishing.
-- Next, in order: (1) `uv run --with torch python research/lib/rl4_train.py --eval ppo3-0.00
-  ppo3-0.05 ppo3-0.10 ppo3-0.20` (logs 44 control rows), then `rl4_sup.py --report`; (2) if
-  `ppo3` fails the gate: train and evaluate `ppo3-warm-<rho>` (card follow-up; same launcher with
-  `RL_VARIANTS=ppo3-warm-0.00,...`); (3) only if an RL variant passes: `ls-ppo` on the perp book
-  (`lib/rl4_perp_rl.py --train [--warm]`, then `--books --log`; written, checked on made-up data
-  only, never run on real data); (4) write-up on top of `research/rl-4.md` ending with 2-3 next
-  lanes, this section, draft PR to `carry-2`.
+- Also done (pushed): `ppo3` evaluated, fails the gate (-0.011 at IC 0.10, 1 of 10 seeds ahead;
+  +0.160 = 36% of the ceiling at 0.20; -0.032 on noise). The card's follow-up `ppo3-warm` was
+  trained (520 models) and its 44 control rows are in `tries.md`: +0.049 at 0.10 (p 0.17, 10 of
+  10 seeds ahead), -0.051 on noise, so it fails the gate too (bars 1, 2 and 4). **No RL variant
+  passes, so by the card `ls-ppo` is NOT run on real data** (`lib/rl4_perp_rl.py` stays unused,
+  checked on made-up data only).
+- Paused 2026-11-18 ~02:00 UTC (usage window). Nothing is running; `results/rl-4.md` holds
+  every learner, `ppo3-warm` included.
+- Next, in order: (1) write-up on top of `research/rl-4.md` (plain words, table,
+  how sure, where PPO fails and why, 2-3 next lanes), an "After the results" disclosure section
+  and a Status section; (2) rewrite this section as "done"; (3) draft PR to `carry-2` titled
+  "rl-4: a learner that passes the planted-signal gate (research only)".
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
