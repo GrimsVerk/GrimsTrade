@@ -7,9 +7,26 @@ Task: `tsmom12` is slow out of coin tops. Study coin tops on breadth-1's top-100
 then carry the settings unchanged to BTC/ETH in the six-asset book and to the six other coins.
 Card: `research/cointop-1.md` (pushed before any number). Tables: `research/results/cointop-1.md`.
 
-- Done: card.
-- Doing: event study and the choice of settings on the coin book.
-- Next: carry-back test through the gym, write-up, draft PR (base `deep-1`).
+- Done: card (commit `4fcdccb`, pushed before any number). Worktree set up
+  (`research/macro.local.json` and `research/data/` copied, both git-ignored).
+- **Paused 2026-11-18 (usage window) with no number computed yet.** Written but NOT yet run or
+  tested: `research/lib/cointop1_core.py` (tops, signals, paper series, pooled score) and
+  `research/lib/cointop1.py` (Parts A and B on the coin book). Only a coverage print of the
+  panel was made (disclosed on the card).
+- Next, in this order:
+  1. `tests/test_cointop1.py`: the card's look-ahead checks for the core (a position does not
+     change when later prices are scrambled; `find_tops` on a hand-made series; the pooled
+     score; breadth as-of).
+  2. `uv run python -I research/lib/cointop1.py --synthetic` (random prices: plumbing only) until
+     it runs clean. Then the real run ONCE: `uv run python -I research/lib/cointop1.py --log`
+     (writes `research/results/cointop-1-coins.md`, 12 `variant` + 1 `baseline` + 3 `control`
+     rows in `research/tries.md`, and `<cache_root>/derived/cointop-1/chosen.json`). Commit, push.
+  3. `research/lib/cointop1_carry.py` (not written): the three chosen settings, hard-coded from
+     step 2, through the gym: six assets (coin slots only), the six other coins, BTC alone, ETH
+     alone, double costs, daily decisions; the card's seven bars; `research/results/cointop-1.md`.
+     Held-out year only for a rule that passes all seven.
+  4. Write-up at the top of `research/cointop-1.md`, this section, draft PR
+     "cointop-1: learning coin-top exits on 100 coins (research only)" with base `deep-1`.
 
 ## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR #36 -> `carry-2`)
 
