@@ -138,11 +138,11 @@ _RESEARCH_REFS = ("refs/heads", "refs/remotes")
 RECORD_BRANCH = "paper-trail"  # the record itself, never a research branch
 
 
-def research_refs(repo: Path) -> list[str]:
-    """Every local and remote branch of `repo` except the record branch and symbolic refs
-    (`origin/HEAD`). [] outside git."""
+def research_refs(repo: Path, prefixes: Iterable[str] = _RESEARCH_REFS) -> list[str]:
+    """Every local and remote branch of `repo` (or those under `prefixes`) except the record
+    branch and symbolic refs (`origin/HEAD`). [] outside git."""
     try:
-        out = _git(repo, "for-each-ref", "--format=%(refname) %(symref)", *_RESEARCH_REFS)
+        out = _git(repo, "for-each-ref", "--format=%(refname) %(symref)", *prefixes)
     except (subprocess.CalledProcessError, FileNotFoundError):
         return []
     refs = []
@@ -158,12 +158,14 @@ def _research_texts(repo: Path, rel: str) -> list[str]:
     texts = []
     if (repo / rel).exists():
         texts.append((repo / rel).read_text())
-    for ref in research_refs(repo):
-        try:
-            texts.append(_git(repo, "show", f"{ref}:{rel}").decode())
-        except subprocess.CalledProcessError:
-            continue  # branch without the file
-    return list(dict.fromkeys(texts))  # branches share files through their history
+    refs = research_refs(repo)
+    try:
+        # Branches share files through their history: read each distinct version once.
+        blobs = {b for b, _ in _blobs(repo, refs, rel).values() if b} if refs else set()
+        texts += [_git(repo, "cat-file", "blob", b).decode() for b in sorted(blobs)]
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+    return list(dict.fromkeys(texts))
 
 
 def _register_rows(repo: Path) -> list[dict[str, str]]:
