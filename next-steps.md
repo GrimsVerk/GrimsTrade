@@ -1,5 +1,11 @@
 # Next steps
 
+## Wide 6 (in progress 2026-11-18, branch `wide-6`, draft PR -> `wide-5`)
+
+- Doing: step 1, event-study gate for W11 `critical-slowing` (rule in `research/wide-6.md`).
+  Then step 2, the same gate for W3 `lunar`; step 3, four new mechanisms for the queue.
+- Family count corrected to the union of the wide and survey lines: 63 mechanisms, 16 tested.
+
 ## Wide 5 (done 2026-11-18, branch `wide-5`, draft PR #71 -> `wide-4`)
 
 Two new mechanisms from queueing and control theory, picked by a written six-point choice
