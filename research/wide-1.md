@@ -454,3 +454,66 @@ which is why the card uses the **net** dose; 30-year bonds were not issued 2001-
 gain on the book is capped by the idle cash (about a quarter of the book) times four sessions
 a month. W5 is the most interesting but is built on calendars this repo has already looked
 at; W6, W7, W8 have lower priors as written.
+
+## Added by wide-5 (2026-11-18): two new mechanisms and a written choice rule
+
+Written after `coupon-dose` (W4) failed, before any number on anything below. The W entries
+left (W3, W5-W8) all carry priors of 1-2%, so two new ones were invented first, by
+cross-pollinating queueing theory and control theory with the dose-response method wide-4
+used. Numbered W9-W10 so they extend the list; **the family is now 56 (46 + W1-W10) and any
+test of one of them is read at p < 0.10 / 56 = 0.00179.**
+
+A lesson from another lane (ann-1, survey-2/3) shapes the rule: three published calendar
+effects (`fomc-cycle`, `xtsmom`, the pre-FOMC drift) held in their papers' years and were zero
+after publication. So a new pick should either be judged on years after its idea was formed,
+or rest on a structural cause (a law, a contract, an index rule, a regulator's obligation)
+rather than a habit or a mood.
+
+Seen before writing this: the field list of the Treasury's auction file (fiscaldata
+`auctions_query`, keyless), and for the new download (`<cache_root>/downloads/wide-5/`) only
+its row count and, per year, how many rows have `primary_dealer_accepted` filled in (none
+before 2008, all from 2009; 39 of 50 in 2008). No dealer share, amount, yield or price.
+
+| # | Field x tool | Mechanism in markets | Why it might survive costs on this book | Test plan and data | Prior |
+|---|---|---|---|---|---|
+| W9 `dealer-backlog` | queueing theory x a server of last resort with a measured backlog (Grossman-Miller: a liquidity provider who absorbs an order imbalance is paid by the reversal that follows, and more the larger the imbalance) | Primary dealers are obliged by their agreement with the New York Fed to bid in every Treasury auction. When end investors stay away, dealers are left with a large share of the issue (published at 1 pm on auction day). They carry it at a concession and are paid by the price recovery as they distribute it over the next days. The larger the unexpected dealer share, the larger the recovery | The dose (dealer share minus its own recent norm) varies auction to auction and is public before the close, so the rule needs no forecast; ~270 auctions of 20- and 30-year bonds since 2008 for TLT, ~210 of 10-year notes for IEF; ETF fills at 4 bps; idle cash goes to TLT. wide-1 saw the average dip before auctions and the average path after; the dealer-share cut has never been computed | Event study: TLT open-to-open over the 5 sessions after each 20/30-year auction, regressed on the dealer-share surprise; IEF on 10-year auctions as a second calendar. Rule: idle cash into TLT for those 5 sessions when the surprise is positive; placebo on non-positive surprises. Data: the auction file with `primary_dealer_accepted` and `comp_accepted` (2008-07 on) | 3% |
+| W10 `extension-dose` | control theory x feedforward on a known setpoint step (an index fund is a tracking controller; at each month end its setpoint, the index's maturity, steps up by an amount fixed by the index rules and known days ahead) | Bond index funds and benchmarked managers must match their index's duration at the month-end rebalance. The step ("index extension") is set by the issues that settled during the month and the bonds that age out of the maturity bucket. If the month-end bond rally (found post hoc by wide-1) is index buying, it must be larger in months with a larger extension | A structural cause written in index rules, with a dose computed from public auction data before the window opens; ~280 month ends since TLT began. The month-end mean was seen (wide-1, `month-end-bonds`); the extension cut has never been computed. The decisive comparison is high-extension months against low-extension months (each other's placebo), which the seen mean does not bias | Event study: TLT open-to-open over the last four sessions of the month (wide-1's window), regressed on the extension of a 20+ year bucket built from the auction file; IEF against a 7-10 year bucket. Rule: idle cash into TLT for those four sessions in months whose extension is above the median of the previous 24 months; placebo the months below | 3% |
+
+### Choice rule (fixed before any number on W3, W5-W10)
+
+Each untested W entry gets one point for each of:
+
+1. **Structural cause**: the flow or constraint is fixed by a law, regulation, contract,
+   index rule or obligation, not by a habit or mood.
+2. **Unseen cut**: the statistic that decides the test has not been computed by any run in
+   this repo.
+3. **Dose**: the event's size varies and is known from public data at the decision, so a
+   dose-response slope (and a free placebo) can be tested, not only a calendar mean.
+4. **Power**: at least 200 events in the train period on ETFs at 4 bps.
+5. **Post-sample**: at least 8 train years after the idea was first published or formed.
+6. **Not a killed idea in other words** (wide-1's sorting rule).
+
+The two highest scores are picked; ties are broken by the data already cached, then by the
+prior.
+
+| # | 1 cause | 2 unseen | 3 dose | 4 power | 5 post-sample | 6 not killed | Score |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|---:|
+| W3 `lunar` (published 2003, 2006) | 0 | 1 | 0 | 1 | 1 | 1 | 4 |
+| W5 `tidal-trigger` | 1 | 1 | 0 | 1 | 0 | 1 | 4 |
+| W6 `payday-inflow` | 1 | 1 | 0 | 1 | 0 | 1 | 4 |
+| W7 `fatigue-damage` | 0 | 1 | 1 | 0 | 0 | 0 | 2 |
+| W8 `snapshot-shrink` | 1 | 1 | 0 | 0 | 0 | 1 | 3 |
+| W9 `dealer-backlog` | 1 | 1 | 1 | 1 | 0 | 1 | 5 |
+| W10 `extension-dose` | 1 | 1 | 1 | 1 | 0 | 1 | 5 |
+
+**Picked: W9 `dealer-backlog` and W10 `extension-dose`** (5 each). Neither can be judged on
+years after the idea was formed (both are formed today); both qualify through a structural
+cause, as the lesson allows. W3 is the only entry with post-sample years, but its cause is
+mood; it stays the cleanest cheap check of a published calendar effect if one is wanted. The
+first test of the two is read at p < 0.00179, and so is the second (Bonferroni over the
+family of 56, as wide-4 did).
+
+Against W10, written now: its calendar (the last four sessions) is the one where wide-1 found
+the bond rally by looking, so its rule's Sharpe against `tsmom12` is biased upward by a seen
+mean. Its card therefore makes the high-against-low comparison (rule against its placebo) and
+the dose slope the readings that matter.
