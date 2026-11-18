@@ -1,15 +1,31 @@
 # Next steps
 
-## eu-1 (WIDER; started 2026-11-18 night, branch `eu-1` from `trend-tune`)
+## eu-1 (done 2026-11-18 night, branch `eu-1` from `trend-tune`, draft PR #59 -> `trend-tune`)
 
 Does `tsmom12` keep its character on European-listed UCITS ETFs/ETCs, in euros (the owner lives
 in the Netherlands and cannot buy US-domiciled ETFs)? Robustness check of a fixed rule, no
-tuning, train period only. Write-up `research/eu-1.md`, card `research/cards/eu-1.md`.
+tuning, train period only. Card `research/cards/eu-1.md` (before any number); write-up
+`research/eu-1.md`; tables `research/results/eu-1.md`, data sanity `research/results/eu-1-data.md`;
+44 rows in `research/tries.md` (idea `eu-1`). Held-out year unspent.
 
-- Done: data note (UCITS tickers, ECB USD/EUR rate, US twins in EUR, splices; `lib/eu1_data.py`,
-  `lib/eu1_check.py`, `results/eu-1-data.md`).
-- Done: card `research/cards/eu-1.md` (before any strategy number). Draft PR #59 -> `trend-tune`.
-- Doing: the runs (`research/lib/eu1.py`).
+- Verdict: character holds. The six as UCITS in EUR (SXR8, SXRV, Xetra-Gold 4GLD, IBGL euro
+  govts 15-30y, BTC/ETH in EUR) at Dutch broker costs, 2012-2025: Sharpe 1.44 vs 1.37 for the US
+  six in USD, max DD 31% vs 36.5%, turnover 3.1 vs 2.8, same crash pattern (out of 2018-Q4 and
+  2022, caught by covid). Coin-free asset-class book: drawdown and crash role hold, but the rule
+  trails equal weight by 0.21 Sharpe in EUR vs 0.04 in USD (half currency, most of the rest
+  Dutch costs on a 6%-vol book): "holds in part" by the card.
+- In EUR the filter on US stocks earned less (2022: the dollar cushioned the fall); on euro long
+  bonds it did its job (2022: out, 0% vs -34%).
+- Data: Yahoo UCITS lines (history from 2008-2010, SXR8/SXRV trimmed to 2010-11-01), ECB USD/EUR
+  rate (FRED timed out), US twins in EUR, `-S` splices. Rerun: see `research/eu-1.md` section 1,
+  then `uv run --with numpy python research/lib/eu1.py` (re-scores saved runs without new rows).
+- Doing: nothing. No process running.
+- Next (not started): (1) a paper "eu6" book in the live runner (needs UCITS/EUR sources in
+  `src/`, an owner decision); (2) the same check with real Dutch per-order fees (EUR 1-4 fixed)
+  at the owner's actual book size; (3) EUR-hedged vs unhedged US equity slot as a card.
+
+For the owner: the live rule can be copied in the Netherlands with UCITS funds; nothing in this
+lane argues for changing the rule.
 
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
