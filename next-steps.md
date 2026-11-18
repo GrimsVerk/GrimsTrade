@@ -1,10 +1,22 @@
 # Next steps
 
-## vol-timing (in progress 2026-11-19, branch `vol-timing`, draft PR -> `ls-trend-2`)
+## vol-timing (done 2026-11-19, branch `vol-timing`, draft PR #98 -> `ls-trend-2`)
 
-Is ls-trend-2's control b1 (`tsmom12` + bills, equal-risk split, Sharpe 1.26) just volatility
-timing of `tsmom12`, and is it already covered by `trend-vol`? Card `research/cards/vol-timing.md`
-(descriptive, no pick). Doing: step 1 script `research/lib/voltiming_run.py`.
+Card before numbers (`research/cards/vol-timing.md`, d1854ec), script before its run (3234309,
+two pre-number fixes). Write-up `research/vol-timing.md`; tables `research/results/vol-timing.md`.
+3 replication rows in `tries.md`. Descriptive, no pick.
+
+- ls-trend-2's control b1 (Sharpe 1.26 vs `tsmom12` 1.21, P) is volatility timing: 0% of its
+  gain from constant scaling (0.26 x `tsmom12` + bills has Sharpe 1.21, max DD 8.0%), 100%
+  time-varying. Own-vol targeting of `tsmom12` at the same mean share: Sharpe 1.34 (L 1.51),
+  max DD 6.3%; the wide book's vol in b1's split costs 0.05-0.08 of that.
+- `trend-vol` gives +0.00 here; overlay correlation with b1 0.54 (P) / 0.49 (L). Card rule:
+  covered by trend-vol, no card (borderline). Any form would need +0.30 over `tsmom12`.
+
+- Doing: nothing. No process running.
+- Next: own-vol targeting as a risk choice on the risk map (with ls-trend-2's split menu).
+- Rerun: `uv run --with openpyxl python -I research/lib/voltiming_run.py <cache_root>` (no new
+  rows); needs the same caches as ls-trend-2 Part A.
 
 ## ls-trend-2 (done 2026-11-18, branch `ls-trend-2`, draft PR #89 -> `ls-trend-1`)
 

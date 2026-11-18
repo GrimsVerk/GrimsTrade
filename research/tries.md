@@ -1065,3 +1065,6 @@ Never edit or delete a row.
 | 2026-11-18 22:57 | ls-trend-2 | hop-wide-LS-g1@live-L | replication | train | 2010-02-01 | 2025-10-31 | -0.04 | -4.6% | 17.9% | 10.05 |
 | 2026-11-18 22:57 | ls-trend-2 | gspc-12m@1961 | replication | train | 1961-01-01 | 2025-10-31 | 0.22 | +6.6% | 95.0% | 9.24 |
 | 2026-11-18 22:57 | ls-trend-2 | gspc-hop@1961 | replication | train | 1961-01-01 | 2025-10-31 | 0.21 | +180.6% | 86.9% | 20.20 |
+| 2026-11-18 23:54 | vol-timing | const-tsmom12@L07 | replication | train | 2007-04-01 | 2025-10-31 | 1.21 | +186.1% | 10.8% | 0.71 |
+| 2026-11-18 23:54 | vol-timing | vt-own-tsmom12@L07 | replication | train | 2007-04-01 | 2025-10-31 | 1.34 | +159.9% | 6.4% | 0.71 |
+| 2026-11-18 23:54 | vol-timing | tv40-ex@L07 | replication | train | 2007-04-01 | 2025-10-31 | 1.21 | +1121.0% | 24.0% | 2.91 |
