@@ -27,7 +27,10 @@ tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protoc
 - Bar 3 tightened by the lead (2026-11-18 ~11:15 UTC, on the card): pass only if none of the 20
   replays is at or above the real score (p = 1/21); if the budget allows, 40 worlds with at most
   one above, chosen at the timing test. Seeds, bootstrap and the 24 CPU-hour budget confirmed.
-- Doing: nothing. No process running. No real price read by any evo-1 code. Held-out year
+- Doing (burst 2, 2026-11-18 evening, lead's chain): (1) fast scorer `research/lib/evo_score.py`
+  + `tests/test_evo_score.py`: DONE (Sharpe within 0.04 of the gym on fixed rules, measured
+  0.028 max); (2) `evo_wf.py`, `evo_world.py`, timing test; (3) noise and planted controls
+  through the full pipeline. Not tonight: the real search and the replay worlds. Held-out year
   untouched.
 - Next, in this order (all specified on the card):
   1. The fast scorer, in `research/lib/evo_feat.py` (sparse matrix from Friday weights to daily
