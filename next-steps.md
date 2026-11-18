@@ -1,13 +1,35 @@
 # Next steps
 
-## ls-trend-1 (in progress 2026-11-18, branch `ls-trend-1`, draft PR -> `survey-5`)
+## ls-trend-1 (done 2026-11-18, branch `ls-trend-1`, draft PR #83 -> `survey-5`)
 
-Question: is `tsmom12`'s missing crisis alpha the missing short side and the narrow universe?
-Chain: (1) literature, `research/ls-trend-1.md` (done); (2) card, then a research-harness
-long-short vol-scaled TSMOM on a wider keyless ETF universe vs live trend funds and `tsmom12`
-(descriptive replication, not a pick); (3) plain answer and a forward-test proposal.
+Is `tsmom12`'s missing crisis alpha the missing short side and the narrow universe? Literature
+pushed first (`research/ls-trend-1.md` step 1: MOP 2012 and Hurst et al. 2017 read as text;
+no source gives a numeric long/short split for a crash year), card before any number
+(`research/cards/ls-trend.md`, 9722e86), script before its run (f1e8931). Descriptive
+replication, not a pick: 4 `replication` rows in `tries.md` (new kind, defined in its header).
 
-- Doing: step 3 (plain answer, forward proposal). Step 2 done: `results/ls-trend.md`, 4 `replication` rows.
+- **Long-short on 34 ETFs reproduces the funds:** 2008 +35%, 2020-02..03 +25%, 2022 +13%;
+  correlation 0.61 with nine live trend funds, 0.81 with AQR's factor, -0.17 with SPY, 0.08
+  with `tsmom12`. Long-only on the same ETFs fails (+1% / -5% / -3%, 0.35); long-short on
+  SPY/QQQ/GLD/TLT fails (+24% / -11% / -4%, 0.39). Both pieces are needed.
+- Crash gains are 93-118% short legs: equities 2008, oil and gas 2020, bonds 2022, the dollar
+  in all three; long bonds helped in 2008 and 2020.
+- Price: Sharpe above bills 0.15 in 2010-2025 (funds 0.19, `tsmom12` 1.11); 3.7x gross,
+  12x turnover, 0.6% costs + 1.4% borrow a year. A diversifier at most, not a replacement.
+- Forward needs (proposal only): ~30 more ETF series, shorts with borrow and interest on
+  proceeds in the gym, leverage or a gross <= 1 rescale; judged on correlation with live funds
+  and the next bear market, not Sharpe (350 years).
+
+Count unchanged: 68 mechanisms, 16 tested, none passed (p < 0.00147).
+
+- Doing: nothing. No process running.
+- Next: (1) blend `tsmom12` + wide-LS at gross 1 (card first, family bar); (2) wide-LS at gross
+  <= 1 on a 16-ETF first cut (descriptive); (3) HOP 1/3/12 blend for fast crashes.
+- Data added (git-ignored): `<cache_root>/downloads/ls-trend-1/` (Yahoo JSON, paper PDFs and
+  text) and `<cache_root>/derived/ls-trend-1/<TICKER>.csv`, made by
+  `python -I research/lib/lstrend1_fetch.py <cache_root>`. Rerun:
+  `uv run --with openpyxl python -I research/lib/lstrend1_run.py <cache_root>` (no new rows).
+  Needs survey-5's cache too (`survey5_fetch.py`, the AQR xlsx) and `research/data/`.
 
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 

@@ -211,3 +211,69 @@ Caveats: the ETF set has no non-US bonds and few currencies; several commodity E
 exist from 2010-11; leverage above 1x is financed at the bill in the model; SHY's tiny
 volatility makes it the largest position by notional; one day of delay against the paper.
 The narrow-LS 2022 leg shares in the results table are meaningless (total +0.9%, near zero).
+
+## Step 3: the plain answer, and what a forward test would take (proposal only)
+
+**Does long-short reproduce the live funds' crash behaviour? Yes, and only when it is also
+wide.** The same 12-month rule that `tsmom12` uses, run long-short and volatility-scaled over
+34 ETFs in four asset classes, gained +35% in 2008, +25% in 2020-02..03 and +13% in 2022 and
+moved with the live trend funds (correlation 0.61; 0.81 with AQR's paper factor). Long-only on
+the same 34 ETFs did not (+1%, -5%, -3%; correlation 0.35), and long-short on `tsmom12`'s four
+non-coin assets did not either (+24%, -11%, -4%; 0.39). So the missing crisis alpha is the
+missing short side **and** the narrow universe together: in the crash windows 93-118% of the
+gain came from short legs (equities in 2008, oil and gas in 2020, bonds in 2022, the dollar in
+all three), and those shorts need markets `tsmom12` does not hold.
+
+**What it costs.** The funds' other half came with it: Sharpe above bills 0.15 in 2010-2025
+(funds 0.19), against 1.11 for `tsmom12` and 1.03 for the same rule long-only on four assets.
+Long-short trend gives away the long bull market in exchange for gains in long bear markets.
+Its monthly correlation with `tsmom12` is 0.08. That makes it a possible **diversifier** next
+to `tsmom12`, not a replacement. Whether a blend helps is a new question with its own card. A
+forward test would not settle "Sharpe above 0" within a lifetime: at 0.15 it takes about 350
+years by forward-1's formula (normal returns, weekly, alpha 0.025, power 0.8); at the AQR
+factor's 0.35, 64 years. Crash behaviour can only be judged when crashes come, about three in
+18 years.
+
+### Proposal (not built; nothing here changes the live runner or the paper broker)
+
+What the paper broker would need before this could be tested forward, in order of size:
+
+1. **Instruments.** About 30 more daily ETF series in `grimstrade.data` (the card's list,
+   keyless Yahoo like the six already there): 8 country equity, 3 more Treasury, about 14
+   commodity, 6 currency. The ingest is the existing code path. Smaller first cut: one ETF per
+   sub-market, about 16 (SPY, EWJ, EWG, EWU; SHY, IEF, TLT; GLD, SLV, USO, UNG, DBB, DBA; FXE,
+   FXY, FXA).
+2. **Shorts in the gym** (`gym.py` rejects weights below 0 today): negative weights; short
+   proceeds earn the bill (the gym pays 0 on cash today; `cash_interest.py` is the research
+   what-if); a borrow fee accrued daily per symbol (start at the card's 1% a year flat, with a
+   table for hard-to-borrow funds such as UNG and USO); dividends debited to the short side
+   (the gym uses adjusted prices, so this is a check, not new code).
+3. **Leverage, or a rescaled version.** The paper's sizing needs 3.7x gross on average (SHY
+   alone is the largest notional). Either (a) allow gross above 1 with financing at bill plus a
+   spread and a margin rule that forces a cut, or (b) **scale the whole book to gross <= 1**,
+   which keeps every correlation and Sharpe the same before costs and divides the returns by
+   about 3.7 (2008 about +9%, 2022 about +3.5%). (b) is much less work and stays inside "no
+   leverage". A third route, **inverse ETFs** for the short side inside today's long-only gym,
+   exists only for a few markets (SPY, TLT, the dollar) and loses to daily reset in choppy
+   markets; not recommended as the main route.
+4. **Costs to state before any forward run:** 5 bps a side, 1% borrow, about 12x turnover a
+   year (0.6% + 1.4% a year at full leverage; a quarter of that at gross 1).
+5. **How it would be judged.** Not on Sharpe (350 years). Two descriptive checks that can be
+   read in a few years: monthly correlation with a live trend-fund composite (expected 0.5-0.7;
+   SE about 0.1 after three years), and the sign of its return in the next equity or bond bear
+   market. Logged in the forward registry as a **descriptive shadow**, not as a book rule,
+   unless a separate card (the blend question) first passes the family bar
+   (p < 0.10 / 68 = 0.00147).
+
+## Count and next
+
+Family unchanged: 68 mechanisms, 16 tested, none passed; long-short TSMOM is the same
+mechanism as `tsmom12`. Four `replication` rows in `tries.md`; held-out year unspent.
+
+Next, each a card before numbers:
+1. **Blend:** `tsmom12` plus wide-LS at gross 1 (correlation 0.08), judged on worst year and
+   on the Sharpe gap to `tsmom12` at the family bar. The best-founded use of this lane's result.
+2. **Unlevered and smaller:** wide-LS scaled to gross <= 1 on the 16-ETF first cut, to see how
+   much of the crash behaviour survives the paper broker's limits (descriptive).
+3. **Signal speed for fast crashes:** Hurst-Ooi-Pedersen's 1/3/12-month blend on the same
+   ETFs, the paper's own specification (no tuning), to check 2020-type crashes.
