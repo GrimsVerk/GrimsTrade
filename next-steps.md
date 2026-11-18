@@ -1,11 +1,32 @@
 # Next steps
 
-## eu-6 (in progress 2026-11-18 night, branch `eu-6` from `eu-5`)
+## eu-6 (done 2026-11-18 night, branch `eu-6` from `eu-5`, draft PR #77 -> `eu-5`)
 
-DEEPER lane on eu-5: should a small coin-free euro book run trend at all, versus holding the
-seven funds (equal weight, 5/25 band) or a plain 60/40 mix of the funds? Card
-`research/cards/eu-6.md` (pushed before any number). Next: `research/lib/eu6.py` (check, run),
-26 rows (idea `eu-6`), then write-up `research/eu-6.md` with a one-screen plain answer.
+DEEPER lane on eu-5: should a small coin-free euro book run trend at all? Card
+`research/cards/eu-6.md` (pushed before any number), write-up `research/eu-6.md` (section 4 is
+the one-screen plain answer), table `research/results/eu-6.md`, code `research/lib/eu6.py`
+(`check`, `run`; needs `--with xlrd` and `research/macro.local.json` for the long proxy;
+`long_bond.py`/`long_gold.py` copied unchanged from data-long-2); 26 rows in
+`research/tries.md` (idea `eu-6`, all `baseline`/`robustness`; eu family stays 10). Held-out
+year unspent.
+
+- T trend (`tsmom12` + 5/25 band) vs H hold7 (equal weight + 5/25) vs M 60/40 of the funds, on
+  `euw` 2012-2025: Sharpe 0.62 / 0.78 / 0.75 (gap SE 0.14-0.17, none significant); worst loss
+  13.6 / 19.8 / 22.3%; longest under water 58 / 31 / 31 months; orders 21 / 1.9 / 1.2 a year.
+- Crash windows: T best in 6 of 6 (2000-02 monthly US proxy +8.8% vs -1 / -14%; 2008 `usw`
+  proxy -0.7% vs -23 / -30%; 2022 +1.7% vs -7 / -17%). On the 2007-2025 US proxy T's Sharpe is
+  level with holding (0.64 vs 0.63).
+- Holding the seven with ~27% cash (descriptive) matches T's worst loss within ~1 pt at Sharpe
+  0.78: most of the max-DD gain is lower exposure; trend's own value is in sharp falls.
+- Answer: trend is worth it only for a worst-loss-averse / crash-insurance investor with a
+  book >= EUR 5k at EUR 1 orders or >= 10k at EUR 2-3; for a Sharpe, cost or waiting
+  preference, hold the seven funds (or 60/40).
+- Doing: nothing. No process running. Local `research/data/` copied from the eu-5 worktree.
+- Next (not started): (1) a card for "hold the seven with a fixed cash share" as a rule
+  (cash share fixed in advance, e.g. from trend's long-run exposure, judged on the US proxies
+  and the held-out year); (2) trend on stocks only, hold bonds/gold (trend-tune found the
+  filter pays only on stocks), as a card on `euw`; (3) the investor's actual preference and
+  book pick the row of `research/eu-6.md` section 3.
 
 ## eu-5 (done 2026-11-18 night, branch `eu-5` from `eu-4`, draft PR #73 -> `eu-4`)
 
