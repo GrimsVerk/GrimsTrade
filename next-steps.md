@@ -1,5 +1,13 @@
 # Next steps
 
+## eu-8 (in progress 2026-11-18 night, branch `eu-8` from `eu-7`)
+
+DEEPER lane on eu-7. Card `research/cards/eu-8.md`. Chain: (1) re-score T, B, H, M with idle
+cash earning a euro money-market rate (ECB EONIA monthly before 2019-10, EUR STR daily after;
+keyless; USD proxies with IRX), report which of eu-6/7's conclusions change; (2) card and test
+idea C (trend on stock and long-bond funds, short bonds/gold/commodities held), US proxies
+1994-2011 first, then EUR; (3) one-screen preference table in `research/eu-8.md`.
+
 ## eu-7 (done 2026-11-18 night, branch `eu-7` from `eu-6`, draft PR #80 -> `eu-6`)
 
 DEEPER lane on eu-6: keep trend's crash insurance, lose less of the rest? Card
