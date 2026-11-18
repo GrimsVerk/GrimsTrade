@@ -103,9 +103,75 @@ This replaces point 2 of the first reading: "the cap is cheaper" was true only o
 that had stopped measuring coins. Same limits as above, plus: one long window (2018-20) drives
 A, so this is close to one observation; the windows and the 2013 start are hindsight choices.
 
+## Third reading, lane `coin-cap-2`: independent coin falls on the coin book (2026-11-18)
+
+Card section "Third reading" (19:05 UTC, pushed before any number). Code
+`lib/coin_cap2.py`, `lib/coin_cap2_core.py` (test `tests/test_coin_cap2.py`); run once, 4 tries
+rows (idea `coin-cap-2`). Tables: `results/coin-cap-2.md` (the card's measures and bar) and
+`results/coin-cap-2-posthoc.md` (splits written after the numbers were seen; not in the bar).
+
+**Setup.** breadth-1's Coin Metrics book, every coin, from its first eligible day (2013; BTC
+alone until 2017). Per-coin slots run by the twin and by `stop-0.25`. A cap of matched cost is
+`f*` = 0.663 of the twin's slot: the stop keeps two thirds of the twin's mean return (pooled
+single-coin Sharpe 0.46 against 0.47, so it also has about two thirds of the volatility) while
+holding a coin only 31% as often. Coin fall = a top of a held coin with the low at least 60%
+below. Measure M = deepest fall of the slot's P&L from 91 days before the top to the settled
+day; edge = matched cap's M minus the stop's.
+
+**How many independent falls.** 445 coin falls on 197 coins; 10 falls of the equal-weight coin
+index. By the card's grouping: **21 episodes** (9 common to an index fall, 12 coin-own runs);
+effective number by fall shares 7.6 (two index falls, 2021-22 and 2024-25, hold most coins).
+The card's episodes overlap in time (coins that topped between two index falls are their own
+runs), so 21 is an upper count; one unit per calendar year of the top gives 10.
+
+**Result: the card's bar holds; verdict by the card "rule PR candidate, for the owner".**
+
+| Bar | Needed | Got |
+|---|---|---|
+| 1. Episodes | at least 8 | 21 |
+| 2. Stop ahead | 2/3 of episodes, sign p < 0.10 | 15 of 21, p 0.039 |
+| 3. Not one episode | mean edge > 0 without the largest | +16.2% of a slot, +14.9% without `own-5` |
+| 4. Eight held-aside coins | summed edge > 0 | +713% of a slot over 39 falls |
+
+- **Not one episode.** The stop beats the matched cap in the 2018-20 fall (+38% of a slot),
+  and also in 2020-03 (+35%), 2021-22 (+34%, +42%) and 2024-25 (+17%, +23%). Per year of the top
+  (post-hoc): ahead in 9 of 10 years, behind only in 2013. Per coin fall: 339 of 445.
+- **Where it loses: fast crashes and BTC.** Behind in 6 of 21 episodes: BTC's 2013-04 one-week
+  crash (-19%) and 2013-14 (-8%), the 2017 summer falls (-7%, -8%), XRP 2020-11 (-15%) and the
+  big 2021-05 crash (88 falls, -4%). A stop read once a week cannot act inside a fall of days.
+  **BTC alone: 1 of 5 falls** (with BTC's own `f*` 0.657: -19%, -8%, -2%, +10%, -6%); ETH alone
+  6 of 6 (+3% to +63%). BTC has five falls; that is too few to tell, but nothing says the stop
+  beats a cap on BTC.
+- **Out of time for the stop's choice** (`stop-0.25` was picked on this book's 2019-25
+  selection coins, on Sharpe): coin falls with a top before 2019-03-31 are ahead (41 falls,
+  +28% mean, 32 positive), carried by 2018 (25 of 27); the early episodes alone are 1 of 5
+  (2013 BTC twice and the 2017 summer behind, 2018-20 ahead).
+- **A tail choice, not more return.** Book of the series (tries rows): stop Sharpe 1.34, worst
+  loss 37%; twin 1.14, 83%; matched cap 1.15, 66%; time-matched cap (`f_time` 0.311) 1.17,
+  37.5% at a tenth of the stop's growth. Against the time-matched cap the stop's edge M is
+  negative (5 of 21): the stop is a smaller position on average, placed where falls are not.
+
+**Reading.** The second reading's doubt was that the stop's edge over a cap was one fall
+(2018-20). On 445 coin falls it is not: across separate falls, at the same mean return and
+about the same volatility, the stop's deepest losses are smaller than a cap's in most
+episodes and most years. Two limits stay: it loses in fast crashes, and on BTC itself (five
+falls) it does not show the edge; the live coin slots are BTC and ETH. And Sharpe per coin is
+unchanged (0.46 against 0.47); what the stop buys is a shallower worst loss for the same
+growth, the owner's choice of risk.
+
+Limits: tops, lows and windows are hindsight descriptions; `f*` uses the whole sample; summed
+simple returns treat each slot as a constant stake; the episode rule's 60-day lead and 30-day
+gap were fixed on the card, not tested for sensitivity; the year table and the BTC/ETH splits
+were written after the run.
+
 ## Changes after the card
 
 None to the rule, grid, selection or bar. One reading note: bar 1 is reported as a tie (above).
+
+Third reading: none to its definitions, measures or bar. Added after its numbers were seen
+and kept out of the verdict: `lib/coin_cap2_posthoc.py` (by year of the top, before/after the
+book start, fast/slow falls, BTC and ETH alone with their own `f*`); it reuses the run's
+series and logs nothing.
 
 ## Next steps
 
