@@ -308,6 +308,11 @@
     +4.7 (bootstrap p 0.002). Premium 1.07 -> 0.97 but exposure 73% -> 83%, worst loss 38% ->
     51%: a bigger position, not cheaper insurance. 27 rows. Queue for next window: `or3-12` vs
     fixed-83% controls; "armed" re-entry keeping `tsmom12`'s exits; then close the insure line.
+  - DONE `diversifier-1` (draft #95 -> survey-6): held 1/7 MERFX slot: max DD 36.5% -> 30.8%,
+    but `tsmom12` at 6/7 + empty slot gives ~31.3%; crash windows no better than cash. Sharpe
+    +0.041 (z 4.86) only because the gym pays cash 0; with T-bill cash (post-hoc) +0.018 (z 2.23)
+    fails the project bar. MNA ETF z 0.65 above T-bills. 2 rows (1 pick). Lesson: score held
+    slots above T-bills against a same-size T-bill slot.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -426,6 +431,9 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   "rule vs holding" in useful time. Treat it as a drawdown/risk choice, not an edge?
 - Night 2026-11-18, combo-2 (#75): it merged cash-interest (#61) into its branch to test with
   T-bill interest; no verdict changed. Merging #61 into main stays your call.
+  diversifier-1 (#95) shows why it matters: with cash at 0, any rule that holds less looks
+  better on Sharpe (a merger-arb slot passed at z 4.86 and failed at z 2.23 once cash earns
+  T-bills).
 - Night 2026-11-18, dsr-1 (#74): counting the whole project's search, `tsmom12` has no proven
   edge over simply holding the same assets equally (it makes money, but so does holding). The
   live scoreboard undercounts tries (307 vs ~2,811); `register-1` fixes that in a draft PR.
