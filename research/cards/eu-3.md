@@ -109,3 +109,17 @@ this is a robustness/implementation choice, not a pass for a new idea.
 ## Result
 
 `eu-3.md` and `results/eu-3.md` once run.
+
+## Erratum and notes (added after the run, 2026-11-18 ~23:40 UTC)
+
+- **Fee-loss formula.** The card wrote fee loss = **min**(own Sharpe at `slip`, R's) minus the
+  Sharpe under the schedule, and said this gives a variant "no credit for being luckier than R".
+  The min does the opposite: a variant luckier than R at no fee is measured from R's lower
+  Sharpe, so its luck absorbs fees. The stated purpose needs the **max**. Seen only after the
+  run. The result shows both readings; the verdict uses the max ("strict"), which is the
+  stricter of the two and so cannot turn a fail into a pass. Under the card's literal min, one
+  extra cell passes (V0 at DEGIRO EUR 1, EUR 5k: 0.092 vs 0.105 strict).
+- **Holiday Fridays.** On a Friday with no bars (Good Friday), `common.weekly` keeps the
+  previous Friday's decision until the next trading day; the state machine reproduces this
+  exactly in daily mode (checked). In Friday-only mode the decision is made on the holiday
+  Friday itself from Thursday's closes (same information, no look-ahead).
