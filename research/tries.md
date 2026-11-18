@@ -12,6 +12,10 @@ Never edit or delete a row.
   selectable and not counted as a strategy try (`protocol.md`, "Planted-signal controls").
 - `screen` (added 2026-11-13, info-1): a descriptive weekly IC row for one candidate input, no
   backtest, not selectable and not counted as a strategy try; numbers in `results/info-1.md`.
+- `live-check` (added 2026-11-18, survey-5): a descriptive re-score of an already logged
+  configuration over a live-fund window (variant tagged `@live-L`, 2010-02 to 2025-10), set
+  against live funds; not selectable, not a strategy try, not counted in the family
+  (`cards/live-check.md`, numbers in `results/live-check.md`).
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
