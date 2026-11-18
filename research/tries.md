@@ -936,3 +936,35 @@ Never edit or delete a row.
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-premium @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.00 | +158.3% | 29.2% | 38.44 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 1.10 | +176.1% | 16.4% | 38.16 |
 | 2026-11-13 09:45 | carry-2-B-P30 | ls-funding @30 (robustness set) | robustness | train | 2021-02-06 | 2025-11-09 | 0.71 | +86.0% | 29.6% | 38.16 |
+| 2026-11-18 18:52 | reentry | now@^GSPC sample A 10y (R vs now; share>1 0.00, mean 1.000, 1 episodes) | baseline | train | 1928-01 | 2016-10 | n/a | +0.0% | +0.0% | n/a |
+| 2026-11-18 18:52 | reentry | dca12@^GSPC sample A 10y (R vs now; share>1 0.33, mean 0.983, 1 episodes) | variant | train | 1928-01 | 2016-10 | n/a | -3.4% | -13.0% | n/a |
+| 2026-11-18 18:52 | reentry | dd20@^GSPC sample A 10y (R vs now; share>1 0.30, mean 0.941, 1 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.0% | -43.5% | n/a |
+| 2026-11-18 18:52 | reentry | dd30@^GSPC sample A 10y (R vs now; share>1 0.29, mean 0.888, 1 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.0% | -66.7% | n/a |
+| 2026-11-18 18:52 | reentry | dd20-sma10@^GSPC sample A 10y (R vs now; share>1 0.33, mean 0.987, 1 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.0% | -48.1% | n/a |
+| 2026-11-18 18:52 | reentry | cape-median@^GSPC sample A 10y (R vs now; share>1 0.28, mean 0.906, 1 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.0% | -66.1% | n/a |
+| 2026-11-18 18:52 | reentry | staged-24@^GSPC sample A 10y (R vs now; share>1 0.25, mean 0.963, 1 episodes) | variant | train | 1928-01 | 2016-10 | n/a | -1.0% | -26.4% | n/a |
+| 2026-11-18 18:52 | reentry | dd30-24@^GSPC sample A 10y (R vs now; share>1 0.23, mean 0.962, 1 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.0% | -27.7% | n/a |
+| 2026-11-18 18:52 | reentry | now@^GSPC sample B 10y (R vs now; share>1 0.00, mean 1.000, 8 episodes) | baseline | train | 1928-01 | 2016-10 | n/a | +0.0% | +0.0% | n/a |
+| 2026-11-18 18:52 | reentry | dca12@^GSPC sample B 10y (R vs now; share>1 0.31, mean 0.988, 8 episodes) | variant | train | 1928-01 | 2016-10 | n/a | -2.8% | -10.1% | n/a |
+| 2026-11-18 18:52 | reentry | dd20@^GSPC sample B 10y (R vs now; share>1 0.43, mean 0.938, 8 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.0% | -48.0% | n/a |
+| 2026-11-18 18:52 | reentry | dd30@^GSPC sample B 10y (R vs now; share>1 0.51, mean 0.953, 8 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.9% | -65.3% | n/a |
+| 2026-11-18 18:52 | reentry | dd20-sma10@^GSPC sample B 10y (R vs now; share>1 0.43, mean 1.008, 8 episodes) | variant | train | 1928-01 | 2016-10 | n/a | +0.0% | -48.6% | n/a |
+| 2026-11-18 18:52 | reentry | cape-median@^GSPC sample B 10y (R vs now; share>1 0.48, mean 0.923, 8 episodes) | variant | train | 1928-01 | 2016-10 | n/a | -3.9% | -65.3% | n/a |
+| 2026-11-18 18:52 | reentry | staged-24@^GSPC sample B 10y (R vs now; share>1 0.35, mean 0.967, 8 episodes) | variant | train | 1928-01 | 2016-10 | n/a | -7.6% | -27.8% | n/a |
+| 2026-11-18 18:52 | reentry | dd30-24@^GSPC sample B 10y (R vs now; share>1 0.31, mean 0.968, 8 episodes) | variant | train | 1928-01 | 2016-10 | n/a | -9.2% | -27.8% | n/a |
+| 2026-11-18 18:52 | reentry | now@^IXIC sample A 10y (R vs now; share>1 0.00, mean 1.000, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | +0.0% | +0.0% | n/a |
+| 2026-11-18 18:52 | reentry | dca12@^IXIC sample A 10y (R vs now; share>1 0.35, mean 0.990, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | -4.5% | -14.3% | n/a |
+| 2026-11-18 18:52 | reentry | dd20@^IXIC sample A 10y (R vs now; share>1 0.26, mean 0.946, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | +0.0% | -40.1% | n/a |
+| 2026-11-18 18:52 | reentry | dd30@^IXIC sample A 10y (R vs now; share>1 0.26, mean 0.870, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | +0.0% | -69.9% | n/a |
+| 2026-11-18 18:52 | reentry | dd20-sma10@^IXIC sample A 10y (R vs now; share>1 0.28, mean 0.909, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | +0.0% | -48.3% | n/a |
+| 2026-11-18 18:52 | reentry | cape-median@^IXIC sample A 10y (R vs now; share>1 0.31, mean 0.886, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | -9.0% | -75.2% | n/a |
+| 2026-11-18 18:52 | reentry | staged-24@^IXIC sample A 10y (R vs now; share>1 0.21, mean 0.949, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | +0.0% | -27.6% | n/a |
+| 2026-11-18 18:52 | reentry | dd30-24@^IXIC sample A 10y (R vs now; share>1 0.20, mean 0.956, 1 episodes) | robustness | train | 1981-02 | 2016-10 | n/a | +0.0% | -31.5% | n/a |
+| 2026-11-18 18:52 | reentry | now@^IXIC sample B 10y (R vs now; share>1 0.00, mean 1.000, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | +0.0% | +0.0% | n/a |
+| 2026-11-18 18:52 | reentry | dca12@^IXIC sample B 10y (R vs now; share>1 0.35, mean 0.993, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | -4.1% | -14.1% | n/a |
+| 2026-11-18 18:52 | reentry | dd20@^IXIC sample B 10y (R vs now; share>1 0.08, mean 0.859, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | +0.0% | -41.1% | n/a |
+| 2026-11-18 18:52 | reentry | dd30@^IXIC sample B 10y (R vs now; share>1 0.04, mean 0.700, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | -31.0% | -70.9% | n/a |
+| 2026-11-18 18:52 | reentry | dd20-sma10@^IXIC sample B 10y (R vs now; share>1 0.13, mean 0.831, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | -9.4% | -49.4% | n/a |
+| 2026-11-18 18:52 | reentry | cape-median@^IXIC sample B 10y (R vs now; share>1 0.45, mean 1.021, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | -11.3% | -72.0% | n/a |
+| 2026-11-18 18:52 | reentry | staged-24@^IXIC sample B 10y (R vs now; share>1 0.05, mean 0.889, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | -10.9% | -31.5% | n/a |
+| 2026-11-18 18:52 | reentry | dd30-24@^IXIC sample B 10y (R vs now; share>1 0.04, mean 0.867, 3 episodes) | robustness | train | 1991-12 | 2016-10 | n/a | -11.0% | -35.7% | n/a |
