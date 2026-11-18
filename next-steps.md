@@ -113,7 +113,8 @@
 - 22:10 UTC night-2 lead took over. Exit research: review round 2 running on the merged
     report (2d7f134). Lanes started (Opus): W `wide-5` (<- wide-4), W `survey-4` (<- ann-1,
     effects with post-publication survival), D `eu-4` (<- eu-3, whipsaw in small books),
-    D `coin-cap-4` (<- coin-cap-3, BTC/fast-crash failure modes, last 3 cards as one set).
+    D `coin-cap-4` (<- coin-cap-3, BTC/fast-crash failure modes, last 3 cards as one set),
+    D `combo-1` (<- main: failure map of existing models, complementary blends).
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
