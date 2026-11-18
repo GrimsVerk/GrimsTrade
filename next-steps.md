@@ -1,5 +1,12 @@
 # Next steps
 
+## In progress: register-1 (branch `register-1`, draft PR into `dsr-1`, not merged)
+
+From dsr-1's findings. (1) The scoreboard's N reads every research branch, not only `main` and
+`research-*`. (2) `research/register/`: one generated register of every distinct try plus
+`BAR.md` (project-wide count, selectable count, the DSR/Bonferroni bar for a new pick), one
+command regenerates both. (3) PROPOSED convention in docs: every card quotes BAR.md.
+
 ## Waiting for review: dsr-1 (branch `dsr-1`, draft PR #74 into `main`, not merged)
 
 Project-wide multiple-testing check, no backtests. Write-up with verdict: `research/dsr-1.md`;
