@@ -1,35 +1,30 @@
 # Next steps
 
-## Cointop 1 (in progress, started 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
+## Cointop 1 (done 2026-11-18, branch `cointop-1`, draft PR #40 -> `deep-1`)
 
-Task: `tsmom12` is slow out of coin tops. Study coin tops on breadth-1's top-100 coin book
-(hundreds of tops), choose one setting for each of three exit rules there by a fixed procedure,
-then carry the settings unchanged to BTC/ETH in the six-asset book and to the six other coins.
-Card: `research/cointop-1.md` (pushed before any number). Tables: `research/results/cointop-1.md`.
+`tsmom12` is slow out of coin tops. Coin tops studied on breadth-1's top-100 coin book; one
+setting for each of three exit rules chosen there by a fixed procedure (BTC, ETH and the six
+other test coins left out), then carried unchanged to BTC/ETH through the gym. No rule passes.
+The coin book has 639 tops in about 19 separate months; the 12-month rule leaves a median 106
+days after a top, at -52%. Chosen: `stop-0.25`, `fade-28`, `breadth-28`; none meets the coin
+book's works-there bar (p 0.55, 0.103, 0.14) or beats its 26-weeks-late control. On the six
+assets: Sharpe 1.09, 1.09, 1.08 against 1.05 (p about 0.3), worst loss 29-30% against 36.5%,
+1 to 2 points less growth a year; nothing on the six other coins. A smaller coin position, not
+a better rule. Held-out year unspent. Write-up `research/cointop-1.md`; tables
+`research/results/cointop-1-coins.md` (Parts A, B), `research/results/cointop-1.md` (Part C).
 
-- Done: card (commit `4fcdccb`, pushed before any number). Look-ahead tests for the core
-  (`tests/test_cointop1.py`, 12 tests). Plumbing run on random prices, then the real run ONCE
-  (`uv run python -I research/lib/cointop1.py --log`): Parts A and B on the coin book, tables
-  `research/results/cointop-1-coins.md`, 16 rows in `research/tries.md` (idea `cointop-1-cm`),
-  interim write-up at the top of `research/cointop-1.md`. Draft PR #40 -> `deep-1`.
-- Result so far: 639 tops but only about 19 separate top months. The twin leaves a median 106
-  days after a top, at -52%. Chosen settings `stop-0.25`, `fade-28`, `breadth-28` (the fastest
-  on each grid). None is labelled *works there*: pooled single-coin Sharpe against the twin's
-  0.44 is 0.42 (p 0.55), 0.58 (p 0.103), 0.61 (p 0.14); none beats its 26-weeks-late control
-  (p 0.56, 0.17, 0.23). The book's worst loss does fall from 64% to 36-43%.
-- **Do not rerun `cointop1.py --log`**: it would log the 16 rows twice. Without `--log` it
-  rebuilds the table and `<cache_root>/derived/cointop-1/chosen.json` and logs nothing.
-- Doing: nothing. No process running. Held-out year unspent.
-- Next (Part C, not started; the card carries all three settings back whatever Part B says):
-  1. `research/lib/cointop1_carry.py` (not written): the three chosen settings, hard-coded
-     (`stop-0.25`, `fade-28`, `breadth-28`), through the gym: six assets (coin slots only), the
-     six other coins, BTC alone, ETH alone, double costs, daily decisions; the card's seven
-     bars and eight coin-crash windows; `research/results/cointop-1.md`. Tests first: a rule
-     whose extra condition is always true gives `tsmom12`'s weights exactly;
-     `harness.check_against_gym` on six days per rule. Held-out year only for a rule that
-     passes all seven.
-  2. Final write-up replacing the interim one in `research/cointop-1.md`, this section, and the
-     PR text.
+- Rebuild: `research/lib/cointop1.py` (coin book) and `research/lib/cointop1_carry.py` (gym).
+  **Both log tries rows on a plain run** (`cointop1.py` only with `--log`); do not rerun them
+  with logging. `DRY=1` on the carry script is a plumbing run that logs nothing.
+- Doing: nothing. No process running.
+- Next lanes (not started): none needed from this one. A card for windows shorter than 28 days
+  would be the only follow-up, and Part C says not to expect more than a risk choice from it.
+
+### For the owner
+
+- Nothing to decide. If a worst loss near 29% instead of 36.5% is wanted for 1 to 2 points less
+  growth a year, `fade-28` on the coin slots is one more way to buy it (next to `trend-vol`
+  and the presets in `research/risk-map.md`).
 
 ## Deep 1 (done 2026-11-18, branch `deep-1`, draft PR #36 -> `carry-2`)
 

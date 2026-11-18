@@ -1,20 +1,25 @@
 # cointop-1: learning coin-top exits on 100 coins, then carrying one setting back to BTC and ETH
 
-Status: **Parts A and B run (2026-11-18); Part C (the carry-back to BTC and ETH) not run yet.**
-Branch `cointop-1` (from `deep-1`). Research only: fake money, cached data, no change to the gym,
-the daily runner or the live strategies. Held-out year unspent. The card below the line is as it
-was committed before any number; what differs from it is listed under "Changes after the card".
+Status: **done on train (2026-11-18): Parts A, B and C run; no rule passes; held-out year
+unspent.** Branch `cointop-1` (from `deep-1`), draft PR #40. Research only: fake money, cached
+data, no change to the gym, the daily runner or the live strategies. The card below the line is
+as it was committed before any number; what differs from it is listed under "Changes after the
+card".
 
-## Interim write-up: the coin book (Parts A and B)
+## Write-up
 
-One run, `uv run python -I research/lib/cointop1.py --log`, after the look-ahead tests
-(`tests/test_cointop1.py`) and a plumbing run on random prices. Tables:
-`results/cointop-1-coins.md`. 16 rows in `tries.md` (12 `variant`, 1 `baseline`, 3 `control`,
-idea `cointop-1-cm`). Train only, 2019-04-05 to 2025-11-07, 30 bps a side.
+Two runs, each once. The coin book (Parts A and B): `uv run python -I research/lib/cointop1.py
+--log`, after the look-ahead tests (`tests/test_cointop1.py`) and a plumbing run on random
+prices; tables `results/cointop-1-coins.md`; 16 rows in `tries.md` (idea `cointop-1-cm`). The
+carry-back (Part C): `uv run python -I research/lib/cointop1_carry.py`, after its look-ahead
+checks; tables `results/cointop-1.md`; 19 rows (3 `variant`, 15 `robustness`, 1 `baseline`).
+Train only.
 
-**In one line.** The coin book has 639 tops, but they fall in about 19 separate months, and on
-them a fast exit points the right way without clearing the card's bar: no chosen setting is
-labelled *works there*, and none beats its own 26-weeks-late control.
+**In one line.** A fast exit learned on 100 coins does what it was built for (worst loss 36.5%
+to 29%, the losses in the eight coin crashes cut by a third to a half) and adds nothing to
+Sharpe: +0.03 to +0.04 over
+`tsmom12`'s 1.05, p about 0.3, less than luck alone gives the best of three tries. No rule
+passes on the coin book or on BTC and ETH. It is a smaller position, not a better rule.
 
 ### Part A: what coin tops look like
 
@@ -72,21 +77,57 @@ labelled *works there*, and none beats its own 26-weeks-late control.
 - **The second half is weak for everything.** The twin's pooled Sharpe is 0.72 before
   2022-07-01 and 0.09 after; the chosen `fade` and `breadth` reach 0.18 and 0.24.
 
-### What this means so far
+### Part C: the three settings, unchanged, on BTC and ETH
 
-By the card's reading the coin book gives "fails on the coin book", narrowly for two of three
-rules: a faster exit cuts the fall sat through by more than half and the book's worst loss from
-64% to 36-43%, but on the score the card chose (one coin slot, for the average coin) the gain is within
-noise once dates are resampled together, and the timing is not shown to beat lateness. The
-book-level gains (+0.3 to +0.5 Sharpe) are larger than the single-coin ones. The run does not
-say why (not tested; one guess: falls that hit every coin at once weigh more in a portfolio
-than in the average single coin). The card scores the single coin because BTC's and ETH's
-slots are single coins.
+Six assets, 1994-02-01 to 2025-11-09; only the BTC and ETH slots get the extra condition.
 
-The card carries all three settings back regardless (`stop-0.25`, `fade-28`, `breadth-28`,
-saved in `<cache_root>/derived/cointop-1/chosen.json`). Part C is the test that matters for the
-live rule and is not run. Known in advance from trend-tune: "fast AND slow" on the six assets
-pointed down in sample, so `fade-28` on BTC and ETH is expected to struggle.
+| Rule | Sharpe (`tsmom12` 1.05) | p | Growth a year (17.8%) | Worst loss (36.5%) | Eight coin crashes, summed (-156%) | Six other coins, Sharpe difference | Bars failed |
+|---|---|---:|---:|---:|---:|---:|---|
+| `stop-0.25` | 1.09, +0.04 | 0.33 | 15.6% | 28.9% | -72% (better in 7, worse in 1) | -0.03 | 1, 2, 4, 7 |
+| `fade-28` | 1.09, +0.04 | 0.30 | 16.4% | 28.9% | -104% (better in 7, worse in 0) | +0.01 | 1, 2, 7 |
+| `breadth-28` | 1.08, +0.03 | 0.34 | 16.9% | 29.9% | -97% (better in 4, worse in 0) | -0.02 | 1, 2, 4, 7 |
+
+- **All three fail, on the same bars.** The Sharpe gain has p about 0.3 against bar 1's
+  0.033, and is below the +0.06 to +0.07 that the best of three unskilled tries would
+  show (bar 7). None is ahead in all three coin eras: `stop` is behind in 2022-25 (0.70 against
+  0.88), `fade` in 2010-16 (1.54 against 1.55), and `breadth` equals its twin in 2010-16
+  because the coin book starts in 2019.
+- **They do cut the crashes (bar 3 passes for all).** Worst loss 29-30% instead of 36.5%. In
+  the long 2018-20 bear market `stop` made +1.5% where `tsmom12` lost 36.5%. The price is 1 to 2
+  points of growth a year and less time in coins (BTC alone is held 38-55% of the time
+  instead of 76%): volatility falls from 17.1% to 14-16% in step, which is why Sharpe does
+  not move.
+- **Nothing on the six other coins, mixed alone.** Other coins: -0.03, +0.01, -0.02. BTC alone:
+  all three behind (-0.02 to -0.07). ETH alone: all three ahead (+0.08 to +0.12, p about 0.35).
+- **Double costs change nothing** (+0.02 to +0.03). **Daily decisions do not rescue the stop**
+  (-0.01 against the daily twin; `fade` +0.05, p 0.25; `breadth` 0.00).
+- **Before and after the coin book starts.** `stop` and `fade` are ahead in both parts of the
+  coin years (2013 to March 2019: 1.86 and 1.70 against 1.61; after: 1.29 and 1.36 against
+  1.20), so the direction is not an artefact of choosing on 2019-25. The size is too small to
+  tell from luck in either part.
+
+### What this means
+
+By the card's readings this is "fails on the coin book", and the carry-back agrees with it: a
+faster exit does not pay as a better rule, even with hundreds of tops to learn from. The
+slowness of the 12-month rule is the price of staying in a coin that keeps rising: half to
+three quarters of what a fast exit saves in falls it gives back in rebounds (coin book), and on
+BTC and ETH what is left is a smaller, calmer coin position with the same Sharpe. That is the
+same trade `trend-vol` and the plain average of all rules already offer (`deep-1.md`): a choice
+of risk, not an edge.
+
+What the coin book added: the tops are about 19 separate episodes, not 639, so even the wide
+book cannot settle a difference of 0.04 Sharpe. Did the coin book predict BTC and ETH? Its
+label did (none works there, none passes here). Its ranking did not: `breadth` and `fade` led
+`stop` there by 0.16 to 0.19; here the three are within 0.01 of each other.
+
+For the owner: nothing to decide. If a worst loss near 29% instead of 36.5% is wanted for 1 to
+2 points less growth a year, `fade-28` on the coin slots is one more way to buy it, next to the
+presets in `risk-map.md`. The held-out year is unspent (the card spends it only on a rule that
+passes all seven bars).
+
+Not done, and not planned: windows shorter than 28 days (the chosen settings sit on the fast
+edge of their grids; that would be a new card), and any tuning on BTC or ETH.
 
 ---
 
@@ -359,3 +400,20 @@ after `d - 1`; a rule whose extra condition is always true gives `tsmom12`'s wei
   definition.
 - **One code fix between the plumbing run and the real run:** the AUC bootstrap crashed when
   asked for zero draws (the half-sample columns). No number existed yet.
+- **Part C's look-ahead checks ran in the script on the real bars, not as unit tests on
+  synthetic prices.** Before any Part C number: the rule with an always-true extra condition
+  gave `tsmom12`'s weights on every decision of the six-asset train run, and
+  `harness.check_against_gym` passed on six days for each weekly rule (two days for each daily
+  one). The scramble tests of Part B cover the core functions, not the gym versions of the
+  conditions.
+- **A plumbing run of Part C (`DRY=1`: the last 120 days of train, nothing logged) printed
+  numbers before the real run.** The settings were already fixed and nothing was changed after
+  it.
+- **Twins in Part C.** `tsmom12` on the six assets, the six other coins, BTC alone, ETH alone
+  and at double costs were already logged by earlier runs and are re-scored without a new row.
+  The daily twin on the six assets is new: one `baseline` row (`cointop-1`, `tsmom12-daily`).
+- **Bar 2 for `breadth`.** The card noted for bar 6 that `breadth` is its twin before
+  2019-03-31; the same holds for bar 2's 2010-16 era, which it therefore cannot be ahead in.
+  It fails bars 1, 4 and 7 regardless.
+- **Bar 7's standard error** is the bootstrap's 90% range of the Sharpe difference divided by
+  3.29 (as in `deflation.py`).
