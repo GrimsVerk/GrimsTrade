@@ -1,32 +1,33 @@
 # Next steps
 
-## Trend 1926 (started 2026-11-18, branch `trend-1926`, from `trend-tune`)
+## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 
-Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 industries,
-already in the cache), and were its days out rougher than its days in? Card:
-`research/trend-1926.md` (fixed before any number).
+Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 industries, cache
+snapshot 2026-11-12), and were its days out rougher than its days in? Card fixed before any
+number; write-up at the top of `research/trend-1926.md`; tables `research/results/trend-1926.md`;
+96 rows in `research/tries.md` (24 baseline, 72 robustness). One run, nothing rerun.
 
-- **Paused 2026-11-18 (usage window), before any number.** No run on the real data has been
-  made: `research/tries.md` has no `trend-1926` row and there is no result file yet.
-- Done and pushed: the card (commit `1465853`, before any code); the loader, runner and report
-  (`research/lib/trend_1926.py`); tests (`tests/test_trend_1926.py`, 9 pass: the loader, the
-  bars, and a hand replay of `tsmom12` that matches the gym's equity on every day for both
-  fill conventions, on made-up data). The script itself has only been exercised through those
-  tests, never end to end.
-- **Next, in this order:**
-  1. `research/macro.local.json` must exist (git-ignored; copy
-     `research/macro.local.json.example`).
-  2. `uv run python -I research/lib/trend_1926.py`: one run, a few minutes, light. It appends
-     96 rows to `research/tries.md` (24 `baseline`, 72 `robustness`) and writes
-     `research/results/trend-1926.md`. If it crashes part-way, fix and rerun: configurations
-     whose equity file exists under `research/data/runs/trend-1926/` are re-scored without a
-     second row. Do not use `DRY=1` on the real data (it would be an unlogged run).
-  3. Commit and push the rows and the table.
-  4. Write-up at the top of `research/trend-1926.md` (plain words, table, how sure, 2-3 next
-     lanes), the findings above the marker line in the result file, the `trend-1926` row in
-     `research/ideas.md`, this section, then the draft PR "trend-1926: does trend pay on
-     stocks before 1962? (research only)" with base `trend-tune`. No PR exists yet.
-- No process running.
+- Result: ahead over 1927-07 to 1961-12 (market Sharpe 0.88 against 0.55, +0.33, p 0.02; book
+  +0.45; 9 of 10 industries; worst loss 38% against 84%), but short of the card's "a property":
+  about two thirds of the lead is 1929-1932 (without it +0.11, p 0.18; from 1933 +0.09, p 0.22),
+  and in 1946-1961 the market trails (-0.09). Days out were rougher than days in on 10 of 10
+  industries in 1927-1945 and on 1 of 10 in 1946-1961. Crash insurance, not an edge.
+- Live rule: no change (fixed on the card). Held-out year not involved.
+- Open point: the replay check shows one day 1.5% apart between the gym and the paper series on
+  durables (0.011 log growth over 34 years). Small, not chased down.
+- Doing: nothing. No process running.
+- Next lanes (not started): `trend-where-it-pays` with 1946-1961 as its hard case;
+  `fast-reentry` with this period as an out-of-universe set; French daily data 1962-1993 on its
+  own card.
+- Rerun: `uv run python -I research/lib/trend_1926.py` rebuilds the tables (needs
+  `research/macro.local.json`); runs saved under the git-ignored `research/data/runs/trend-1926/`
+  are re-scored without new `tries.md` rows (on a fresh machine they would be logged again).
+
+For the owner:
+
+- A risk choice, not a decision forced by this run: the trend filter on the stock slots is
+  insurance against a multi-year collapse (worst loss halved in 1929-1932) that costs a little
+  in calm bull markets.
 
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 

@@ -9,7 +9,85 @@ beats plain holding only on stocks, and review 1 found that its lead comes from 
 rest on SPY and QQQ since 1993: two funds, three bear markets. This run asks the same question
 of US stocks from 1926 to 1961, on the rule exactly as it is, with nothing tuned.
 
-Results go at the top of this file when they exist. Below is the card.
+## In plain words (results, 2026-11-18)
+
+**Yes over the whole period, but not as a property. `tsmom12` beat holding on US stocks
+1927-1961 (Sharpe 0.88 against 0.55 on the market, worst loss 38% against 84%), and about two
+thirds of that lead is the crash of 1929-1932. After the war (1946-1961) it trailed holding on
+the market. By the card this is short of "a property": the stock slots have crash insurance,
+not an edge.** One run of the pre-registered evaluation, nothing tuned, nothing rerun. Tables:
+`results/trend-1926.md`; 96 rows in `tries.md` (24 baseline, 72 robustness). Held-out year not
+involved.
+
+Sharpe is return per unit of risk (higher is better). "Difference" is Sharpe of the rule minus
+Sharpe of holding; p is the one-sided bootstrap chance of seeing that lead by luck.
+
+| Question (card) | Answer | Number |
+|---|---|---|
+| (a) Ahead over 1927-07 to 1961-12, market? | Yes | 0.88 against 0.55: +0.33, p 0.02, 90% range +0.06 to +0.60 |
+| (a) Ahead on the ten-industry book? | Yes | 1.07 against 0.62: +0.45, p below 0.01 |
+| (a) On how many industries? | 9 of 10 | energy level (0.55 against 0.55); the eleven series are one bet |
+| (a) Worst loss | Halved or better | market 38% against 84%; book 33% against 82% |
+| (b) Were the days out rougher than the days in? | Yes, whole period | market 27% against 16% volatility, ratio 1.68, p 0.02; 10 of 10 industries |
+| (c) 1927-1945 | Ahead | market +0.44 (p 0.03); book +0.47 |
+| (c) 1946-1961 | Behind on the market | market -0.09 (1.11 against 1.20), same worst loss 28%; book +0.15 (p 0.09); days out rougher on 1 of 10 industries |
+| (d) Without 1929-1932 (`d1`) | Positive, not clear of zero | market +0.11 (p 0.18); book +0.21 (p 0.03) |
+| (d) From 1933 (`d3`) | Positive, not clear of zero | market +0.09 (p 0.22); book +0.19 (p 0.05) |
+| (d) Peak to trough removed (`d2`) | The same | market +0.09 (p 0.27); book +0.18 (p 0.10) |
+| Later fill, 10 and 50 bps, interest on cash | Holds | market +0.28, +0.32, +0.27, +0.32 (p 0.03 to 0.05) |
+
+**Against the card's bar.** The whole-period p-values pass (0.02 on the market, below 0.01 on
+the book; the same with a 125-day block). "A property" also needed the market ahead in both
+eras, and it is behind in 1946-1961, so the outcome is not "a property" and nothing is called
+an edge. It is not "one crash again" either, because the market's difference stays positive in
+`d1` and `d3`. The card's table has no row for exactly this case; the script prints "something
+remains, but short of the card's conditions for a property", and that is the honest label. The
+card decided `d1` and `d3` on sign alone, and on the market neither is clear of zero (p 0.18
+and 0.22), so "something remains" is weak. The mechanism read on its own gives the card's
+second reading: present on the market and 10 of 10 industries in 1927-1945, on 1 of 10 in
+1946-1961, which the card fixed in advance as "it was the 1930s".
+
+**Where the lead comes from.** The rule left the market 28 times and was bought back higher 22
+times. One spell did the work: out 1929-11-11, back 1933-04-08, bought back 67% lower. The
+other eight spells of 13 weeks or more came back between 7% lower and 11% higher and net to a
+small cost (about 9 log points); the 19 short spells cost 36 log points in price. Outside the great crash the rule
+gives up a little price and gains by being calmer (in `d3`: 21% volatility out, 15% in), which
+leaves a small positive Sharpe difference that the data cannot tell from zero.
+
+**What it means for the live rule.** Nothing changes (the card fixed that no outcome would).
+The reading of the stock slots moves from "pays on stocks" to "paid in the great collapses":
+1929-1932 here, 2000-2002 and 2008 on SPY and QQQ. In the calm bull market of 1946-1961 the
+filter cost a little Sharpe and did not shrink the worst loss. The case for the filter on
+stocks is the smaller worst loss in a collapse (38% against 84%), a risk choice for the owner.
+
+**How sure.**
+
+- This was not blind data. Invest-1 had already seen the market monthly (ahead in the 1930s,
+  level in the 1940s, behind in the 1950s); this run finds the same shape with the gym's own
+  rule on daily data. The direction is a confirmation, not a discovery.
+- One market, one collapse: the market, the book and the industries are one bet seen eleven
+  ways. The whole-period p of 0.02 is mostly one event.
+- The primary fill is slightly kind to the rule (it trades at the close it has just seen); the
+  later fill gives +0.28 (p 0.04).
+- Nobody could have bought these portfolios as one instrument then; the 50 bps row (+0.27) is
+  description.
+- Replay check (the gym against a paper series with no gym code): total log growth within
+  0.002 on the market, 0.011 on durables over 34 years, with one day 1.5% apart on durables.
+  Not chased down in this burst; small next to the differences above.
+- Only one rule was run, exactly as pre-registered, so nothing was selected and nothing needs
+  deflating.
+
+**Next lanes (not started).**
+
+1. `trend-where-it-pays`: the walk-forward switch must be tested on 1946-1961 as its hard case
+   (on 1927-1945 the days-out test says "stocks qualify", and the filter then trailed on the
+   market for 16 years).
+2. `fast-reentry`: the cost here is whipsaws and late returns (22 of 28 exits), the same as in
+   trend-tune; this period is now an out-of-universe set for it.
+3. French daily market and industries 1962-1993 as one more out-of-era set, on its own card
+   (the S&P 500 index there was 0.45 against 0.49).
+
+Below is the card, unchanged.
 
 ## Card (fixed 2026-11-18, before any new number)
 

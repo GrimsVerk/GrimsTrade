@@ -1,6 +1,20 @@
 # trend-1926: `tsmom12` on US stocks 1926-1961
 
-Card: `trend-1926.md`.
+Card and write-up: `trend-1926.md`. One run of the pre-registered evaluation, 2026-11-18.
+
+Findings:
+
+- Whole period: the rule is ahead on the market (0.88 against 0.55, +0.33, p 0.02), on the
+  ten-industry book (+0.45, p below 0.01) and on 9 of 10 industries; worst loss 38% against 84%.
+- The days out were rougher than the days in (market ratio 1.68, p 0.02; 10 of 10 industries).
+- 1927-1945 carries it (+0.44). In 1946-1961 the market is behind (-0.09) and the mechanism is
+  present on 1 of 10 industries.
+- Without 1929-1932 the market's difference is +0.11 (p 0.18); from 1933 it is +0.09 (p 0.22):
+  positive in sign, not clear of zero. The book keeps +0.21 and +0.19 (p 0.03 and 0.05).
+- One spell out (1929-11 to 1933-04, bought back 67% lower) is the whole price gain; the other
+  27 spells net to a loss in price.
+- Outcome by the card: not "a property" (the market trails after the war), not "one crash
+  again" (`d1` and `d3` stay positive). Crash insurance, not an edge.
 
 <!-- tables below this line are written by lib/trend_1926.py -->
 
