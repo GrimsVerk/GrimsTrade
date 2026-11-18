@@ -121,6 +121,14 @@
     (0.64, 16.6 orders) both FAIL the character card (max DD +3.3 / +2.4 pts, later 2020 exits).
     eu-3 verdict unchanged. 24 rows; family 8, none selected. Next: `eu-5` (drift third only).
   - 22:25 UTC `eu-5` started (D, <- eu-4): cut drift top-ups, signal untouched.
+  - DONE `coin-cap-4` (draft #69 -> coin-cap-3): no candidate meets the bar (m 15: needs >= 17
+    of 21 episodes, p < 0.0067). Price-drawdown stop 16/21 (p 0.013), looser on BTC/ETH (worst
+    25.2% vs 17.7%); 25% cap + stop fails all 4 checks. Weekly stop fails in fast falls (still
+    fully in after -38% first week, out at -44%), at hot tops (vol band loose) and on bounce
+    re-entries. Verdict `research/coin-cap-verdict.md`: weekly `stop-0.25` as risk preference
+    (coin-years worst loss 36.5% -> 17.7%; ~2 pts/yr growth cost). 6 rows. Coin line parked.
+  - 22:35 UTC `dsr-1` started (D, <- main): project-wide tries census + Deflated Sharpe on
+    `tsmom12` and the best near-misses.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
