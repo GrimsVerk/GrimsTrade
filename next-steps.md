@@ -236,6 +236,13 @@
     vs 13.6%). 29 rows; eu family 13. eu line CLOSED; row choice in `research/eu-8.md` s.3 is
     a preference call.
   - 22:50 UTC `survey-6` started (W, <- survey-5): which strategy families paid LIVE since launch.
+  - DONE `rp-1` (draft #86 -> survey-5): `where-vol` is not risk parity: equal-dollar slots,
+    two coin slots carried 89% of its risk into 2022 (vol 24% vs live RP funds ~7%); coins cost
+    17.3 pts in 2022. Carded fix `where-rp` (inverse-vol slots): Sharpe 1.05 = `tsmom12` (p 0.50),
+    worst loss 24.5% vs 36.5% (a risk dial ~ `tsmom12` at 70%), 2022 -19.7% vs -12.8%. 4 rows.
+    Do not revive `where-vol`/`blend-ws`.
+  - 22:53 UTC `register-2` started (D, <- register-1): record length/skew/kurtosis in the register,
+    estimated effective number of trials, per-length bar table.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -336,6 +343,8 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
 
 ### For the owner
 
+- Night 2026-11-18, rp-1 (#86) + eu-6..8: a smaller worst loss is available simply by holding
+  `tsmom12` at a smaller size (e.g. ~70% invested); no new rule is needed. Want that?
 - Night 2026-11-18, ls-trend-1 (#83): the crash gains of real trend funds need short positions
   and a wide set of assets. A forward test would need shorts in the paper broker (borrow fees,
   interest on short proceeds, leverage or rescale to 1x). Want that design change? (proposal only)
