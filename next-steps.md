@@ -12,7 +12,7 @@ verdict on reviving `where-vol` / `blend-ws`. Write-up `research/rp-1.md`.
 - DONE step 1 (diagnosis): the 2022 gap to the funds is the coin slot (-17.3 pts; coins 89% of
   ex-ante risk at equal-dollar slots); bonds, leverage, rebalance speed, stock-bond correlation
   do not explain it (`research/rp-1.md`, `results/rp-1-diag.md`).
-- Doing: step 2 (card one risk-sizing fix, then run on train).
+- Card `where-rp` pushed (research/rp-1.md, step 2). Doing: code and one run.
 
 ## Survey 5 (done 2026-11-18, branch `survey-5`, draft PR #78 -> `survey-4`)
 
