@@ -12,7 +12,11 @@ day) and fix anything that changes a number; (2) offline tests for the `TREND_ER
   returns on the 23 gap Mondays: no deciding sign moves (market +0.071 -> +0.070, `x1` -0.031
   -> -0.032); verdict "crashes only" stands. No rerun, no `tries.md` row. Evidence at the top of
   `research/results/trend-1926-era2.md`; `research/lib/trend_1926_gaps.py` rebuilds it.
-- Doing: step 2 (tests for `TREND_ERA=1962`).
+- Step 2 done: `tests/test_trend_1926_era2.py` (7 tests, offline, tiny fixtures): era switch,
+  loader cut 1961-2001, card-2 windows, gym against a hand replay on five-session weeks with
+  Friday holidays (both fills), the replay check sees only holiday-Friday weeks, and the card-2
+  outcome labels.
+- Doing: step 3 (`research/ideas.md` and README for both eras).
 
 ## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 
