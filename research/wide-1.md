@@ -409,3 +409,48 @@ overlay starts and ends on Friday decisions), has ~380 events since 1994, and it
 (1962-1983) is already in the cache. W2 needs a careful reading of when the Treasury's account
 moved to the Fed (2008 is my memory, to be checked) and is an event study first. W3 is written
 down for completeness: it is the cleanest test of the "mood" class and the least likely to pay.
+
+## Added by wide-4 (2026-11-18): five mechanisms from fields the list has not used
+
+Written after `tax-drain` (W2) failed, before any number on these five. Numbered W4-W8 so
+they extend the list; **the family is now 54 (46 + W1-W3 + W4-W8) and any test of one of them
+is read at p < 0.10 / 54 = 0.00185.**
+
+Fields already used, so excluded here: ecology, epidemiology, signal processing, control,
+information theory, evolutionary game theory, statistical physics, queueing/inventory and
+reliability, neuroscience, immunology (wide-1); physics of pinning, hydraulics, astronomy and
+chronobiology (W1-W3); Hawkes self-excitation (the seismologists' ETAS model, run 1's
+`hawkes-clustering`); Kelly and universal coding. New fields: **pharmacokinetics, seismology
+(tidal triggering, not self-excitation), actuarial science, materials fatigue, metrology of
+snapshot reporting.** Each entry passes wide-1's sorting rule (dated events, ETFs, a cause
+that is not the price trend) unless it says otherwise.
+
+| # | Field x tool | Mechanism in markets | Why it might survive costs on this book | Test plan and data | Prior |
+|---|---|---|---|---|---|
+| W4 `coupon-dose` | pharmacokinetics x scheduled dosing (a dose is absorbed into the compartment it came from within days; response rises with dose: dose-response curve) | Treasury coupons and maturing principal are paid on fixed days (the 15th and the month end). Holders of long bonds, index funds above all, must reinvest the cash in the same kind of bond, so a large net payment (coupons + principal minus new issues settling the same day) is a buy order of known size on a known date | ETF-tradable at 4 bps a round trip; ~270 mid-month payment days since TLT began (2002-07) with sizes that vary several-fold (the 10- and 30-year pay in Feb/May/Aug/Nov), so a dose-response slope has power that a pure calendar test lacks; idle cash goes to TLT, whose own drift is positive, not to stocks | Event study on payment days P on the 15th (month-end windows excluded: `month-end-bonds` was found there post hoc): TLT, IEF excess return over P .. P+3 regressed on the net dose. Dose from the Treasury's auction file (issue and maturity dates, amounts, coupon rates: fiscaldata `auctions_query`, keyless). Rule: idle cash into TLT for P .. P+3 when the net dose is positive; placebo the same on non-positive doses | 3% |
+| W5 `tidal-trigger` | seismology x tidal triggering (a small periodic stress triggers ruptures only on faults already near failure; Coulomb failure function = background + periodic load) | The small, known calendar flows (tax-date drain, auctions, month-end rebalancing) move prices only when dealers are already near their capacity, i.e. when stress is high; in calm markets the same flow is absorbed | It would concentrate the flow trades into the minority of events that pay: fewer trades, the same edge | Re-cut the seen calendars by a stress state fixed before the event (TLT's 21-day volatility above its trailing one-year median, VIX likewise for stocks): excess return high-stress minus low-stress, per calendar. The calendars are seen, the split is not; data cached. Partial post hoc support from `tax-drain` (regime C), so it must be confirmed on a calendar not used to suggest it | 2% |
+| W6 `payday-inflow` | actuarial science x a contribution annuity (defined-contribution plans invest a fixed share of each paycheck on the pay date) | 401(k) and IRA contributions arrive on paydays (semi-monthly: the 15th and the month end; bi-weekly Fridays) and are invested in target-date and index funds within a day or two: a forced buy of stocks mid-month | Hundreds of events, SPY at 4 bps; a placebo before auto-enrolment (the 2006 Pension Protection Act) and on the S&P 500 index 1962-1993 | Event study: SPY excess over sessions after the 15th in months without a tax date (Feb, Mar, May, Jul, Aug, Oct, Nov; the tax months collide with W2), before and after 2007. A rule only if the sign holds in both halves after 2007; idle cash into stocks has failed twice (`opex-pin`), so the prior is low | 1% |
+| W7 `fatigue-damage` | materials science x Basquin S-N curve and Palmgren-Miner cumulative damage (each load cycle of amplitude S uses 1/N(S) of a part's life, N ~ S^-b; failure at damage 1) | Leveraged coin longs are worn down by oscillations, not only by one crash: damage = sum of (drawdown cycle amplitude / reference)^b over recent cycles (rainflow counting). When damage passes 1 the leveraged population has been liquidated; the forced sellers are gone and an uptrend resumes | It acts only inside `tsmom12`'s coin slots (adds back a slot after failure): few trades | Rainflow-count BTC and ETH daily cycles, b = 3 fixed (steel's typical exponent, not fitted); event study of returns after damage crosses 1. **Mostly collapses** into dip buying (`dip-rsi2`: real, small) and P4 (liquidation cascades, killed): listed for completeness | 1% |
+| W8 `snapshot-shrink` | metrology x snapshot sampling (a quantity measured only at sample dates is managed at those dates: Goodhart's law as a sampling problem) | Non-US banks report Basel III leverage ratios on quarter-end snapshots (public disclosure from 2015), so they shrink repo and dealer balance sheets in the last days of each quarter; US repo rates spike at quarter ends; Treasury intermediation thins | Four dated events a year, a clean placebo (2003-2014, before disclosure, and the eight non-quarter month ends each year) | Event study: TLT's last four sessions of quarter-end months minus those of other months, 2015-2025 against 2003-2014. It sits on top of the month-end bond rally found post hoc on the same data, so it can only be a descriptive split | 1% |
+
+### Choice (written before any number on W4-W8)
+
+**W4 `coupon-dose` is picked.** Reasons, in order:
+
+1. It is the only one of the five with a **dose that varies in size**, known in advance. A
+   dose-response slope is a much stronger test than a calendar mean: an effect that rises with
+   the dose is hard to get from a seasonal accident, and a placebo (non-positive doses) comes
+   free.
+2. It is a **forced flow** (index funds must stay at their duration; coupons arrive whether or
+   not anyone wants them), which is the one class that left real traces in wide-1 (auction
+   dip, month-end bond rally).
+3. Its rule puts idle cash into **TLT**, the asset whose drift was positive in our period, not
+   into stocks in a downtrend, which is what sank `opex-pin`.
+4. It needs only public, keyless data (the Treasury's auction file, already used by wide-1 for
+   dates) and it excludes the month-end windows, where the post hoc pattern was found.
+
+Against it: refunding auctions settle on the same 15th (new supply, the opposite of a dose),
+which is why the card uses the **net** dose; 30-year bonds were not issued 2001-2006; and the
+gain on the book is capped by the idle cash (about a quarter of the book) times four sessions
+a month. W5 is the most interesting but is built on calendars this repo has already looked
+at; W6, W7, W8 have lower priors as written.
