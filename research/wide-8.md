@@ -227,3 +227,35 @@ a day, -1.5% over six sessions. The gate can only see a large mood effect.
 
 **My guess before any number.** b_sev between -15 and +15 bps a day, |t| < 1.5 post-sample;
 b_min near zero; GSPC in-sample slightly negative. Chance of a pass: 2%.
+
+### What came out (one run, 2026-11-18; table `results/geomagnetic-storm.md`)
+
+**The gate fails on three of four counts. After 2003, SPY rose more, not less, in the six
+sessions after a severe storm: +18.2 bps a day over calm sessions (t +2.46, wrong sign), minor
+storms +0.8; the true calendar ranks 29 of 31 shifted ones (shifted values -16 to +23 bps a
+day). Only the in-sample sign holds, weakly: GSPC 1950-2002 -4.4 bps a day (t -1.05). W16
+`geomagnetic-storm` is dead by the gate: no card, no strategy, no `tries.md` row.**
+
+| Sample, bps a day (NW t) | Severe (Ap >= 100) | Minor (30-99) | Severe days | Raw 6 sessions after a severe day |
+|---|---:|---:|---:|---:|
+| SPY 2003-2025 (gate) | +18.2 (+2.46) | +0.8 (+0.24) | 19 | +1.34% |
+| GSPC 1950-2002 (gate, in-sample) | -4.4 (-1.05) | +2.7 (+1.58) | 108 | -0.11% |
+| SPY 1993-2002 (shown) | -28.7 (-1.77) | +6.6 (+1.38) | 11 | -1.62% |
+
+- **Post-sample the sign is wrong, and a t of +2.5 is ordinary here:** 19 severe days (84
+  flagged sessions) is a handful of episodes (the 2003 Halloween storms, 2004-2005, 2015,
+  2024); the shifted calendars throw up values from -16 to +23 bps a day, and the true one sits
+  third from the top. The step-1 lesson again: with few clustered events, |t| 2.5 is noise.
+- **In the paper's years the effect is small:** GSPC 1950-2002 shows -4.4 bps a day after
+  severe storms (t -1.05, 108 severe days) and the continuous dose nothing (+0.5, t 0.39).
+  The largest negative cell is SPY 1993-2002 (-28.7, t -1.8, 11 days), inside the paper's
+  sample: an in-sample effect of a published paper, as for the other published calendar
+  effects here.
+- **No dose-response anywhere:** minor storms are slightly positive in every sample.
+- **Compared with my guess:** b_sev between -15 and +15 with |t| < 1.5 post-sample: no (+18.2,
+  t 2.46, the wrong side). b_min near zero: yes. GSPC in-sample slightly negative: yes. 2%
+  chance of a pass: no pass. Published calendar or mood effects out of their papers' years:
+  now 0 for 6 here.
+
+Disclosures: one dry run (`DRY=1`) printed only storm-day and session counts, then one run.
+Rule pushed at 070d5ab, script and tests at 84bde3e, both before either run.
