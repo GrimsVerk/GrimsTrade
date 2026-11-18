@@ -85,7 +85,8 @@ What changed, against "what would count" in the card:
    (`tsmom12` 0.72, `where-vol` 0.64, `stop-0.25` 0.50).
 
 Unchanged: every regime cell's sign that combo-1's text uses (de-risking group: turn -19 to
--32% a year, chop -7 to -21, fast falls +36 to +54; `where-vol`: fast falls -10.3, 2022 rate
+-32% a year, chop -7 to -21, fast falls +36 to +54 except `inverse-vol` at -41, as in combo-1's
+table; `where-vol`: fast falls -10.3, 2022 rate
 shock -13 points), every pair correlation within 0.02 (de-risking pairs +0.48..+0.94,
 `where-vol` + `stop-0.25` -0.02). The one sign flip, `inverse-vol` in trend-off (+1.6 -> -0.7),
 is a cell the text does not use: `tsmom12` sits in cash there and now earns on it.
