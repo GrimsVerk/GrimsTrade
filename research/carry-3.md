@@ -164,7 +164,31 @@ a Hyperliquid-only sleeve (smallest feed, no address block), 10,000 USD fake mon
 
 ## Funding as an input for the ML/RL work
 
-Numbers: not run yet (the table is the last section of `results/carry-3.md`).
+**Does the cross-sectional funding signal clear rl-3's bar (weekly IC of about 0.10)? No, by a
+factor of four or more, and that is not the right bar for it.** IC = the rank correlation,
+each Friday, between the signal and the coming week's return across a venue's tradable coins
+(train data, already seen; `robustness` rows; table at the end of `results/carry-3.md`).
+
+| Venue (coins per week) | 7-day funding vs price | vs price + funding | 30-day funding vs price + funding |
+|---|---:|---:|---:|
+| Binance outside the 30 (99) | -0.011 (t -1.1) | +0.009 (t +0.9) | +0.000 (t 0.0) |
+| Bybit (59) | +0.007 (t +0.5) | +0.027 (t +1.8) | +0.017 (t +1.1) |
+| Hyperliquid (21; only 73 weeks had 10 coins) | +0.024 (t +0.7) | +0.045 (t +1.4) | +0.041 (t +1.3) |
+| All Binance perps (121) | +0.003 (t +0.3) | +0.023 (t +2.5) | +0.014 (t +1.5) |
+
+- **Funding does not forecast prices** across coins: the IC against the price move is zero on
+  every venue. This agrees with info-1 (no IC on BTC/ETH through time).
+- **It forecasts the funding itself:** counting the funding a long position pays or receives,
+  the IC is +0.01 to +0.05, positive everywhere, significant only on all Binance perps. The
+  carry book is a harvest of a known cash flow with the market hedged out, not a forecast.
+- **Why 0.02 is enough for the book and not for rl-3's learner.** rl-3's 0.10 was for six
+  assets that move together, long-only, half-slot tilts. The carry book ranks ~100 coins and
+  trades both ends, every week: a small edge repeated over many bets. So the bar for a
+  cross-sectional learner should be set by a planted-signal control in *this* setting (gate 2
+  below), and the cheap test for a new input is "does it add IC against price + funding to the
+  funding rank", not "is its IC 0.10".
+- **For the six-asset RL work nothing changes:** funding is still not an input worth adding
+  there.
 
 ### What an ML/RL rung on the perp cross-section would look like (card sketch, not run)
 
