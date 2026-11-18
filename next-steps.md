@@ -1,5 +1,14 @@
 # Next steps
 
+## Wide 5 (doing 2026-11-18, branch `wide-5`, draft PR #71 -> `wide-4`)
+
+Two new mechanisms (W9 `dealer-backlog`, queueing; W10 `extension-dose`, control theory) added
+to `research/wide-1.md` with a written choice rule, cards pushed before any number; code and
+tests pushed before the logged runs. Doing: the two logged train runs. Write-up will be
+`research/wide-5.md`. Data (git-ignored): the auction file with dealer fields in
+`<cache_root>/downloads/wide-5/treasury-auctions/`, parsed to `derived/wide-5/auctions.csv` by
+`uv run python -I research/lib/wide5_auctions.py`.
+
 ## Wide 4 (done 2026-11-18, branch `wide-4`, draft PR #57 -> `wide-3`)
 
 W2 `tax-drain` from the list, then five new mechanisms from unused fields and a test of the
