@@ -243,6 +243,14 @@
     Do not revive `where-vol`/`blend-ws`.
   - 22:53 UTC `register-2` started (D, <- register-1): record length/skew/kurtosis in the register,
     estimated effective number of trials, per-length bar table.
+  - DONE `insure-1` (draft #87 -> trend-1926-fix): 270 falls >= 25% (US market + 10
+    industries, 1927-2025) = 50 independent falls. `tsmom12` lost less than holding in 48/50
+    (p 1e-12), avoiding ~half of each fall; timing, not just holding less (random dates 0.27,
+    fixed 73% 0.29, rule 0.50 > all 1,000 shifts). Net of the year-after-low rebound 16/50
+    positive; cost per unit of loss avoided 1.07 (0.97 with T-bill cash) vs 1.63 for holding
+    73%: the cheapest way to lose less. By era 0.86 / 1.38 / 1.34. Fails in fast falls
+    (<= 3 months: 15/63 positive); long falls 79/80. 41 `insure-check` rows (not selectable).
+  - 22:54 UTC `insure-2` started (D, <- insure-1): controls per era; same count on non-US indices.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
