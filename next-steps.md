@@ -1,11 +1,22 @@
 # Next steps
 
-## Diversifier 1 (doing, 2026-11-18, branch `diversifier-1`, draft PR -> `survey-6`)
+## Diversifier 1 (done 2026-11-18, branch `diversifier-1`, draft PR #95 -> `survey-6`)
 
-Does a held 1/7 merger-arbitrage slot (MERFX primary, MNA robustness) next to `tsmom12`
-improve the book as a risk choice; any Sharpe evidence? Card `research/cards/diversifier-1.md`
-(before numbers). Chain: card -> script -> one run (1 variant + 1 robustness row) -> verdict
-in `research/diversifier-1.md`.
+Does a held 1/7 merger-arb slot (MERFX primary, MNA robustness) next to `tsmom12` improve the
+book as a risk choice? Card `research/cards/diversifier-1.md` before numbers; one run; verdict
+`research/diversifier-1.md`. Tries: `merfx7` (variant, 1 pick), `mna7@mna` (robustness).
+
+- Risk: "preferred" by the card's rule (max DD 36.5% -> 30.8%, worst year -24% -> -19%), but
+  almost all of it is holding 1/7 less of the book: merger arb did no better than a cash slot
+  in 2008 / covid / 2022 (weekly corr with SPY about 0.5). A preference, not an edge.
+- Sharpe: +0.041, z 4.86 at the gym's cash-earns-0 convention; above T-bills (post-hoc,
+  `results/diversifier-1-posthoc.md`) +0.018, z 2.2 (MNA z 0.65). Fails the project bar.
+- Doing: nothing. No process running.
+- Next: (1) any always-held diversifier card scores above T-bills and against a same-size
+  T-bill slot from the card; (2) a smaller drawdown via a T-bill slot is an owner decision,
+  no test; (3) survey-6's other leads (short-SPY/QQQ trend sleeve as insurance).
+- Data (git-ignored): `uv run --with numpy python research/lib/diversifier1.py fetch` (MERFX,
+  MNA from Yahoo); six-asset bars and IRX from `research/lib/fetch.py`.
 
 ## Survey 6 (done 2026-11-19, branch `survey-6`, draft PR #91 -> `survey-5`)
 
