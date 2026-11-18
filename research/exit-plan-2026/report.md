@@ -192,8 +192,12 @@ day; the rules in section 6 use the reading on your own start day, and these are
 > `uv run --with xlrd --with pandas python -I research/exit-plan-2026/scripts/bt_now.py --fetch <dir>`
 > (see its header; `<dir>` is a scratch folder outside the repo). It prints this table, the
 > 200-day state of each holding type with the date of the last cross, and which tested sample
-> the state matches. Without the script, any charting site that draws a 200-day simple moving
-> average on the index shows the same state.
+> the state matches. It needs the local cache root (VIX, credit spread and CAPE files) set up
+> as in the script header: copy the committed `research/macro.local.json.example` to the
+> git-ignored `research/macro.local.json` and point it at your cache, or set `BT_CACHE`.
+> Without it the script prints only the index table and stops with an error. Without the
+> script, any charting site that draws a 200-day simple moving average on the index shows the
+> same state.
 
 | | S&P 500 | Nasdaq Composite | OSEBX | OBX |
 |---|---:|---:|---:|---:|
@@ -668,6 +672,13 @@ So in the sample that fits today, the 12 monthly buys did better on the median a
 better in the bad tail. The thirds won only when a real bust followed the sale, and by a lot.
 Neither rule beat buying back at once; both are ways to limit regret.
 
+**The plain option: a lump sum.** Buying everything back on the first trading day of January
+2027 had a higher mean than both rules in these samples (by definition R = 1, against 0.99 and
+0.97 in sample B, 0.98 and 0.96 in sample A), and in the literature a lump sum beat spreading
+about two times in three (Vanguard, section 8.1). It also carries the largest regret if a crash
+follows the buy. Choose it if that regret does not weigh on you; otherwise use one of the two
+rules below.
+
 1. **Default: 12 equal monthly buys** (`dca12`), the first in January 2027 and the last in
    December 2027, whatever the market does. In the test the first twelfth was bought at the
    close of the sale month; starting one month later is a small shift that was not tested.
@@ -679,8 +690,8 @@ Neither rule beat buying back at once; both are ways to limit regret.
    on its 2026-2028 calendar, section 11.2; Euronext's 2028 calendar not checked). The test
    counts the sale month's own month-end close; since you hold no stocks over 31 Dec 2026, a
    level already reached at the Dec 2026 month-end close is bought on the first trading day of
-   January 2027, just as the monthly buys start then. From the 6 Oct 2026 closing high of about 7,819 the levels are about
-   **6,255 / 5,473 / 4,691** (`report_checks.py`); if the index makes a new high first, the
+   January 2027, just as the monthly buys start then. From the 6 Oct 2026 closing high of about
+   7,819 the levels are about **6,255 / 5,473 / 4,691** (`report_checks.py`); if the index makes a new high first, the
    levels move up. On 18 Nov it was 6.3% below its high. Choose this only if you accept the bet:
    a belief that the AI boom is a bubble that will burst within two years is such a bet. In the
    test it cost more than the monthly buys in the typical high-valuation month and in the worst
