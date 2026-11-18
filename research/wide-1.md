@@ -309,11 +309,42 @@ terms, no prices).
 - To rerun: `uv run python -I research/lib/wide1_auctions.py`, then
   `uv run python research/lib/idea_wide1_<name>.py` (each appends its rows to `tries.md`).
 
+## Step 4. A descriptive check on data no rule has seen (defined 2026-11-18, before looking)
+
+Not a card and not a strategy: no rule is selected, nothing goes through the harness, no rows in
+`tries.md`. The post-hoc tables suggested three patterns on 2003-2025 ETF prices. The same
+patterns can be looked for in bond yields before TLT and IEF existed. Fixed here, before any of
+this data was read:
+
+- **Data.** FRED `DGS10` (10-year Treasury yield, daily from 1962) and `DGS30` (30-year, from
+  1977; not published 2002-02 to 2006-02), the cached snapshot, cut at 2025-11-10. Stocks: the
+  S&P 500 index (price only) to 1993-01, SPY (total return) after. The auction calendar (from
+  1979-10) as before.
+- **Bond return.** A par bond of maturity n (10 or 30 years) earns about `-D x (change in
+  yield) + yield / 252` a day, with D its duration at yesterday's yield,
+  `D = (1 - (1 + y/2)^(-2n)) / y`. An approximation; close to close, not gym fills.
+- **Periods.** Unseen: 1962-1979, 1980-1989, 1990 to 2003-07 (the day before our TLT and IEF
+  tests start). Seen: 2003-08 to 2025-11, by the same method, only to check that it agrees with
+  the ETF tables.
+- **Q1, the dip before auctions.** For every nominal auction of 30-year bonds and of 10-year
+  notes: the matching bond's return over sessions A-4 .. A and over A+1 .. A+5. Expected if the
+  effect is real: negative before, positive after.
+- **Q2, the month-end bond rally.** The 10- and 30-year bond's return over the last four
+  sessions of each month, minus four average days of the same period; and the first three
+  sessions of the next month. Expected: positive in the last four.
+- **Q3, the month-end loser bounce.** g = stocks minus the 10-year bond, month to date at the
+  close of T-5. For months with |g| >= 2%: the return of stocks and of the bond over sessions
+  T-4 .. T, each leg and the spread signed against g, split by who led. Expected: the signed
+  spread is positive, and stocks rise after trailing.
+- **Reading.** A pattern "holds on unseen data" if its sign is as expected in the pooled unseen
+  period with |t| >= 2. Anything less is "not confirmed". Either way it is evidence for or
+  against writing a card, not a result.
+
 ## Status (2026-11-18)
 
 **Done:** ideation, four cards, train tests, post-hoc tables, write-up, `ideas.md`,
 `next-steps.md`. Held-out year unspent. Draft PR #33 (`wide-1` -> `carry-2`), not merged.
 
-**Doing:** nothing half-finished.
+**Doing:** step 4 (the descriptive check above), then its numbers into the write-up.
 
 **Next (not started):** the three lanes listed at the top.
