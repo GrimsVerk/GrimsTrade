@@ -78,6 +78,16 @@ monotone at its ends, the world is reported and the lane stops). The **ceiling**
 traded through the gym in that world, logged as a `control` row before any search runs on it.
 Targets: **0.8** (the gate) and **0.5** (reported, not a gate).
 
+**Card note, 2026-11-18 ~19:55 UTC (before any evo-2 control, ceiling or real number; found by
+the unit test on the test suite's toy world):** `H`'s Sharpe is not monotone in `k`. The plant
+drives `H`'s own 91-day trend: when `H` is off, the asset loses `k s` a day, its trend stays
+negative and `H` may never turn on again; in the toy world `H` scores 0.00 at `k = 0.5`. A plain
+bisection on `[0, 0.5]` is therefore replaced by: raise `k` in steps of 0.005 from 0 until `H`'s
+fast-scorer Sharpe reaches the target (the **smallest** such `k`), then bisect inside that last
+step until within 0.01. If no step up to 0.5 reaches the target, the lane stops and reports the
+world. This may also explain part of evo-1's uncalibrated spread (0.72 against 0.22-0.24 at the
+same `k`); it is not checked here.
+
 ## Controls (kind `control`, idea `evo-2-control`), fresh seeds
 
 - **Noise:** shuffle worlds 31, 32, 33 (zero mean simple return). Found = some procedure's gym

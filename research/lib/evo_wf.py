@@ -76,6 +76,10 @@ SETTINGS = {
     "F": (0.06, 10),
 }
 SETTING = "A"
+IDEA = "evo-1"  # the run whose rows and scratch files these are (evo-2 reuses this driver)
+# evo-1: the fitness window starts with the S&P 500 index alone (1962-1993); evo-2's card drops
+# it: the six-asset book's days only.
+WARMUP = True
 
 
 def use(setting: str) -> None:
@@ -120,9 +124,9 @@ class Prepared:
     six_elig: np.ndarray
     six_book: es.Book
     oos_book: es.Book
-    gspc_feats: gp.Feats
-    gspc_elig: np.ndarray
-    gspc_book: es.Book
+    gspc_feats: gp.Feats | None  # None without the index warm-up
+    gspc_elig: np.ndarray | None
+    gspc_book: es.Book | None
     seconds: float = 0.0
 
 
@@ -131,9 +135,14 @@ def prepare(w: ew.World) -> Prepared:
     six = Panel(w.six)
     six_fr = es.fridays_between(SIX_START, SIX_END)
     f6, e6 = evo_feat.friday_feats(six, six_fr)
-    gspc = Panel(w.gspc)
-    g_fr = es.fridays_between(GSPC_START, GSPC_END)
-    fg, eg = evo_feat.friday_feats(gspc, g_fr)
+    fg: gp.Feats | None = None
+    eg: np.ndarray | None = None
+    gb: es.Book | None = None
+    if WARMUP:
+        gspc = Panel(w.gspc)
+        g_fr = es.fridays_between(GSPC_START, GSPC_END)
+        fg, eg = evo_feat.friday_feats(gspc, g_fr)
+        gb = es.Book(gspc, g_fr, GSPC_START, GSPC_END)
     return Prepared(
         w.label,
         w.six,
@@ -145,7 +154,7 @@ def prepare(w: ew.World) -> Prepared:
         es.Book(six, six_fr, OOS_START, SIX_END),
         fg,
         eg,
-        es.Book(gspc, g_fr, GSPC_START, GSPC_END),
+        gb,
         time.process_time() - t0,
     )
 
@@ -156,7 +165,8 @@ def _slice(feats: gp.Feats, t: int) -> gp.Feats:
 
 class Fitness:
     """The card's fitness at one fit date: Sharpe of the index days and the six-asset days
-    before `D` as one series, minus 0.01 per node; -inf if under 20% invested on average."""
+    before `D` as one series (the six-asset days only without `WARMUP`), minus the node
+    penalty; -inf if under 20% invested on average."""
 
     def __init__(self, p: Prepared, fit_date: date) -> None:
         self.p, self.fit_date = p, fit_date
@@ -165,25 +175,33 @@ class Fitness:
         self.evaluations = 0
         self.behaviours: set[int] = set()
 
-    def weights(self, rule: gp.Rule) -> tuple[np.ndarray, np.ndarray]:
-        return gp.weights(rule, self.p.gspc_feats, self.p.gspc_elig), gp.weights(
-            rule, self.f6, self.e6
-        )
+    def weights(self, rule: gp.Rule) -> tuple[np.ndarray | None, np.ndarray]:
+        w6 = gp.weights(rule, self.f6, self.e6)
+        p = self.p
+        if p.gspc_feats is None or p.gspc_elig is None:
+            return None, w6
+        return gp.weights(rule, p.gspc_feats, p.gspc_elig), w6
+
+    def _parts(self, wg: np.ndarray | None, w6: np.ndarray) -> list[np.ndarray]:
+        six = self.p.six_book.daily(w6, before=self.fit_date)
+        if wg is None or self.p.gspc_book is None:
+            return [six]
+        return [self.p.gspc_book.daily(wg), six]
 
     def daily(self, rule: gp.Rule) -> list[np.ndarray]:
-        wg, w6 = self.weights(rule)
-        return [self.p.gspc_book.daily(wg), self.p.six_book.daily(w6, before=self.fit_date)]
+        return self._parts(*self.weights(rule))
 
     def __call__(self, rule: gp.Rule) -> float:
         self.evaluations += 1
         wg, w6 = self.weights(rule)
-        sg, ng = self.p.gspc_book.invested(wg)
+        sg, ng = (0.0, 0)
+        if wg is not None and self.p.gspc_book is not None:
+            sg, ng = self.p.gspc_book.invested(wg)
         s6, n6 = self.p.six_book.invested(w6, before=self.fit_date)
-        self.behaviours.add(hash((wg.tobytes(), w6.tobytes())))
+        self.behaviours.add(hash((b"" if wg is None else wg.tobytes(), w6.tobytes())))
         if ng + n6 == 0 or (sg + s6) / (ng + n6) < MIN_INVESTED:
             return -math.inf
-        r = [self.p.gspc_book.daily(wg), self.p.six_book.daily(w6, before=self.fit_date)]
-        return es.sharpe_of(r) - PENALTY * gp.size(rule[1])
+        return es.sharpe_of(self._parts(wg, w6)) - PENALTY * gp.size(rule[1])
 
 
 _P: Prepared | None = None  # the world a worker process searches (set before forking)
@@ -352,7 +370,7 @@ def gym_run(p: Prepared, idea: str, variant: str, w: np.ndarray) -> harness.Run:
 def scratch() -> Any:
     import macro
 
-    d = macro.cache_root() / "derived" / "evo-1"
+    d = macro.cache_root() / "derived" / IDEA
     d.mkdir(parents=True, exist_ok=True)
     return d
 
@@ -408,7 +426,7 @@ def timing() -> None:
 
 
 def _log_control(run: harness.Run, variant: str) -> None:
-    run.idea, run.variant = "evo-1-control", variant
+    run.idea, run.variant = f"{IDEA}-control", variant
     harness._log(run, "control", OOS_START, SIX_END)
 
 
@@ -570,7 +588,7 @@ def replay(seed: int, real: ew.World | None = None) -> float:
     formulas = sum(r["formulas"] for r in runs)
     cells = ", ".join(f"{n} {st[n]:+.3f}" for n in PROCS)
     row = (
-        f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | evo-1-replay | {p.label} "
+        f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | {IDEA}-replay | {p.label} "
         f"[{setting_text()}]: best Sharpe difference to tsmom12 out of sample, fast scorer "
         f"({cells}; {formulas} formulas) | "
         f"control | train | {OOS_START} | {SIX_END} | {st['best']:.3f} | - | - | - |\n"
