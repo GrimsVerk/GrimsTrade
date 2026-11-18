@@ -8,7 +8,7 @@ tail hedges, gold miners, defensive sectors (trend and risk parity reused from s
 Chain: (1) keyless live fund list `research/survey-6.md`; (2) card, then a descriptive
 `live-check` per family (not selectable); (3) a one-screen ranking and the 2-3 directions next.
 
-- Doing: step 1 (fund list, inception dates and fees being verified).
+- Doing: step 1 done except the paper citations; then the card (step 2).
 - Data (git-ignored): `python -I research/lib/survey6_fetch.py <cache_root>` writes
   `<cache_root>/downloads/survey-6/` (Yahoo JSON, Ken French zips, AQR BAB/QMJ xlsx, CBOE
   BXM/PUT csv) and `<cache_root>/derived/survey-6/<TICKER>.csv`.

@@ -45,7 +45,7 @@ FAMILIES: dict[str, list[str]] = {
 }
 # Plain holdings to match the families against (and the market for context).
 HOLDINGS = ["SPY", "VFINX", "NAESX", "IWB", "IWM", "VTSMX", "EFA", "EEM", "ACWI", "VBMFX",
-            "AGG", "QQQ", "GLD", "VGTSX"]  # fmt: skip
+            "AGG", "QQQ", "GLD", "VGTSX", "VBINX"]  # fmt: skip
 
 FRENCH = {
     "ff3": "F-F_Research_Data_Factors_CSV.zip",
