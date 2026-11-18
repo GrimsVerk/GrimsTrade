@@ -210,6 +210,11 @@
     effects 0 for 5). Merge into summary-1 is the owner's.
   - 22:41 UTC `insure-1` started (D, <- trend-1926-fix): is "trend = crash insurance" solid over
     1926-2025 (effective episodes, premium per unit of loss avoided)?
+  - DONE `stop-reentry` (draft #82 -> coin-cap-4): `stop-cool-13` (13-week cool-off) wins 13
+    of 21 (needs 17; p 0.19). Fixes bounce-buying (re-entries per fall 2.16 -> 0.52) but late
+    re-entry gets worse (6 months after low +11.2% vs +16.8%). Coin years: worst loss 16.2% vs
+    17.7% for 4.8 pts/yr less growth. 4 rows. Coin line stays PARKED; coin size = risk budget.
+  - 22:43 UTC `rp-1` started (D, <- survey-5): `where-vol`'s 2022 loss vs live risk-parity funds.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
