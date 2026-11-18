@@ -49,9 +49,11 @@ What the evidence says, in short:
   the turn (section 2). No investor with a documented record timed a top to the month; those who
   did well scaled out (section 3). Over six weeks the expected gain is about 0.6-0.8% of the
   amount, against a typical swing of about 5.4-6.8%.
-- **Selling in two steps passed our pre-set test; how firm that is depends on the holding.**
+- **Selling in two steps passed our pre-set test (the 200-day speed-up added later is post
+  hoc); how firm that is depends on the holding.**
   Oslo holdings fit the test's own sample: half now and half later cut the chance of ending more
-  than 5% worse than "sell all now" from 9% (waiting to the fallback) to 1%. US and tech holdings
+  than 5% worse than "sell all now" from 9% (waiting to the fallback) to 1% (only 10 separate
+  spells, 2013-2025). US and tech holdings
   fit only a sample defined after seeing today's data: there staging cut it from 11% to 2%
   (S&P 500) and from 16% to 5% (Nasdaq). Selling a US/tech holding in full gives up about
   0.7-1.4% of expected drift against plain staging, a fraction of a percent against the tested
@@ -165,7 +167,7 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 | Playbook step (summary, section 1) | From the literature (section 2) | From the investors (section 3) | From our own backtests | How clean |
 |---|---|---|---|---|
 | **1. On your start day, sell half of each holding; sell all of a holding whose index already closed below its 200-day average** | Six-week returns are mostly noise (2.1). Staging costs little and caps regret (Vanguard, 2.2) | Scale, don't flip (lesson 3) | "Half now, half at the fallback" passed the six-week bar (bt Part A). Per holding: Oslo fits the card's `late` sample; US and tech holdings fit only the post-hoc `now-like` sample, where staging also held up (section 6.1) | Bar fixed before any number. But `late` was defined to fit Nov 2026, its windows come from only about 20 separate spells, and the US/tech evidence is post hoc |
-| **2. Sell the rest on the trading day after the first close below the 200-day average, else at the fallback** | Trend is the only reaction rule with a long out-of-sample record (Faber, Moskowitz-Ooi-Pedersen, Hurst-Ooi-Pedersen). Its whipsaw cost (Zakamulin) does not matter for a forced sale. The 200-day daily line is a heuristic (2.3) | React, don't predict (lessons 1, 6). Pre-commit, because exits are a race (Abreu-Brunnermeier) | Avoided a third or more of the fall in 8 of 8 crashes (bt Part B). Added to staging, it cut the mean loss when a 10% fall came in the window from -5.0% to -1.4% (S&P, `late`) | **Post hoc:** the combination was added after the first results (bt amendment). 8 crashes are 8 observations |
+| **2. Sell the rest on the trading day after the first close below the 200-day average, else at the fallback** | Trend is the only reaction rule with a long out-of-sample record (Faber, Moskowitz-Ooi-Pedersen, Hurst-Ooi-Pedersen). Its whipsaw cost (Zakamulin) does not matter for a forced sale. The 200-day daily line is a heuristic (2.3) | React, don't predict (lessons 1, 6). Pre-commit, because exits are a race (Abreu-Brunnermeier) | Avoided a third or more of the fall in 8 of 8 crashes (bt Part B). Added to staging, it cut the mean loss when a 10% fall came in the window from -5.0% to -1.4% (S&P, all start days with a 10%+ fall in the window, `crash-window`) | **Post hoc:** the combination was added after the first results (bt amendment). 8 crashes are 8 observations |
 | **Fallback 18 Dec for shares, 11 Dec for funds (4 Dec for slow funds); last safe 21 Dec (shares), 15-16 Dec (funds with cash at the broker within 2-6 business days), 9 Dec (within 5-10)** | None: this is the calendar | A plan must work if the pop comes late (lesson 2) | Settlement, fund cut-offs and the holiday calendar (park sections 4 and 7). The fallback day is the forced sale in the test | A fact, not a market signal. Fund dates rest on a platform's "normally" figures |
 | **3. Move the money to euros the same day** | None | None | Currency risk of a smaller non-euro market: the krone (NOK) fell about 20% against the euro in late 2008 and 18.5% in one month in 2020. OBX lost 62% in 2007-09, more than the S&P's 52% (both in euros; haven, park) | Descriptive |
 | **4. Park in euro cash** | Havens are conditional on the kind of crash; money funds can break (2.4) | Crash safety from the asset (lesson 6). Berkshire fell 54% in 2007-09 | In our table of 10 crashes, euro cash lost at most about 0.5% (negative-rate years); every other candidate lost more in some crash (haven) | Descriptive, nothing fitted |
@@ -244,7 +246,10 @@ your start day:
 | A single company share | The index of its home market, as above | A stock's own 200-day line was not tested |
 
 Caveats: global (MSCI World) funds were not tested; the S&P 500 (about 70% of MSCI World) is
-the nearest tested index, and `URTH` is shown for information only. The 200-day average moves a
+the nearest tested index, and `URTH` is shown for information only. If the two sit on different
+sides of their 200-day lines, the S&P 500 governs, because it is the index the rule was tested
+on; `URTH` matches no tested sample (its high, 13 Aug, is older than the 63 trading days
+`now-like` allows). At the 18 Nov closes both were below, so the question did not arise. The 200-day average moves a
 little every day, so the levels above are from 18 Nov.
 
 ### 5.3 What this means
@@ -339,7 +344,7 @@ How to read it:
   and tails are within 0.2 points).
 - **The 200-day speed-up keeps staging's typical result and cuts the crash case.** In `late`, it
   had the same median as plain staging and a mean 0.03 points lower; when a 10% fall came inside
-  the window, the loss fell from -5.0% to -1.4% (S&P), -4.9% to -1.9% (Nasdaq), -4.7% to -2.4%
+  the window (all start days, `crash-window`), the loss fell from -5.0% to -1.4% (S&P), -4.9% to -1.9% (Nasdaq), -4.7% to -2.4%
   (OSEBX). It was added after the first results were seen (bt amendment), so its numbers are
   less clean than the card's original variants.
 - **Why the 200-day line and not another trigger.** Over 1928-2025 the 200-day rule avoided at
@@ -366,6 +371,10 @@ How to read it:
 
 - List each holding, the index it follows (table 5.2), whether it is a share or a fund, and
   where it is held: the dates in step 3 differ by type and platform.
+- An exchange-traded fund (ETF) counts as a share here: it trades on the exchange, settles like
+  a share (T+2) and has no fund cut-off, so it follows the share rows in step 3, not the fund
+  rows. Only funds you buy and sell through the fund manager (no exchange price during the
+  day) take the slower fund path.
 - Funds: note each fund's order cut-off time (brokers usually show it in the order window;
   e.g. 09:00, 11:00 or 13:00). An order after the cut-off goes the next business day.
 - Broker: check where and how fast it pays out the proceeds, and whether any optional
@@ -497,7 +506,7 @@ conversion often costs more than a manual one; check yours (park section 7.4).
 ```
 PREP (this week)
 [ ] Each holding -> its index (Oslo = OSEBX | US/global = S&P 500 | tech = Nasdaq),
-    share or fund, and platform. Funds: note the order cut-off time
+    share/ETF or fund (an ETF follows the share dates), and platform. Funds: note the cut-off
 [ ] Broker: payout route and times known, any withdrawal delay off, commission noted
 [ ] Non-euro proceeds: conversion route to euros ready; Dutch account ready; optional test transfer
 
@@ -550,7 +559,7 @@ where no euro data exist (`lanes/haven-table.md`). Yields read 2026-11-15/18 (pa
 | Fixed-term deposit | ABN 1y 2.25%; Santander 1y up to 2.90% | Never down | Money locked: you cannot buy the dip | 0 | EUR 1,000 typical | Only at maturity |
 | Gold ETC (iShares Physical Gold, Xetra-Gold) | n/a | In euros: -16% (Lehman weeks), -12.6% (2020), -11.6% (2022); in dollars -22% (Sep-Nov 2008), -11.8% (9-18 Mar 2020) | Liquidity selling in the crash itself; dollar; 15-20% yearly swings | TER 0.12% (Xetra-Gold 0.36%/yr) + fee | 1 unit | T+2 |
 | CHF (Swiss franc) | about 0% interest | Ended up against the euro in all 7 euro-era crashes, but -9% along the way in 2007-09 | A currency bet; central-bank jumps | not researched | not researched | Must convert back |
-| Berkshire Hathaway B | n/a (stock, about USD 572 on 6 Nov) | In euros -43.6% (2007-09), -30% (2020) | A stock; dollar; succession | DEGIRO 0.58% round trip (incl. 0.25% FX each way) | 1 share | US T+1, then FX back |
+| Berkshire Hathaway B | n/a (stock, about USD 572 on 6 Nov) | In euros -43.6% (2007-09), -30% (2020) | A stock; dollar; succession | DEGIRO round trip: 0.5% plus EUR 4 (EUR 1 + 1 per trade, 0.25% FX each way) | 1 share | US T+1, then FX back |
 | Long euro govt bonds (10y+) | n/a | -32.6% (2022), -10.3% in March 2020 | Inflation, rising rates, dash for cash | ETF fee | 1 share | T+2 |
 | US T-bills / dollars | n/a | In euros -15.3% (2000-02), -13.3% (2007-09) | The dollar can fall with US stocks (2025) | FX each way | | |
 
@@ -688,8 +697,11 @@ above, against the same literature and data.
 
 - **Partly true, weak as a timer.** IPO waves come in late bull markets and IPOs almost vanish in
   busts. Of the 11 years since 1980 with at least 300 IPOs (Ritter's count), a bear market began
-  within two years after 4 (1986, 1999, 2000, 2021) and not after 7. The lead time ranged from 0
-  to 39 months (1996 to the 2000 peak), and 2007's top came with no wave. The 300 threshold was
+  within two years after 4 (1986, 1999, 2000, 2021) and not after 7. Measured from the end of
+  the year when deal counts peaked to the next market top, the lead time ranged from 0 (2000,
+  2021) to 39 months (the record count of 1996 to the March 2000 top); 1996 is not one of the
+  four years above, because the top came more than two years later. 2007's top came with no
+  wave. The 300 threshold was
   chosen after seeing the table: a description, not a tested rule (reentry Part 2).
 - **First-day returns did a little better:** every year with a mean first-day return of 30% or
   more (1999, 2000, 2020, 2021) came less than two years before or during a top; 2022 (48.9% on
@@ -722,7 +734,7 @@ above, against the same literature and data.
   (Feb-Mar 2020); -18.5% on Black Monday 1987; -10.9% on day one of the worst 2008 leg (inv,
   haven).
 - **For a euro holder it adds the dollar:** -43.6% at worst in euros in 2007-09. Costs at DEGIRO
-  about 0.58% round trip; one share about USD 572 (6 Nov 2026).
+  0.5% of the amount plus EUR 4 per round trip (EUR 1 + 1 per trade, 0.25% FX each way); one share about USD 572 (6 Nov 2026).
 - **Changes:** Buffett stepped down as CEO at the end of 2025; Greg Abel is CEO from 1 Jan 2026,
   and Buffett stays chairman (AP, 28 Feb 2026, in inv). Berkshire turned net buyer in Q2 2026.
   Cash about USD 357-377bn at end-Q3 2026, depending on the measure. A blog claim that Howard
@@ -797,7 +809,7 @@ above, against the same literature and data.
 - **Card timestamps:** the exit-rules card's stated times ("~19:30" and "~20:30 UTC") were wrong;
   the commits are 18:50 and 19:01 UTC. A dated correction is on the card (amendment 2), with the
   old text left as it was. The order card-before-numbers holds in git.
-- **Many comparisons:** six-week test, 15 strategies x up to 11 sample cuts (plus 18 post-hoc
+- **Many comparisons:** six-week test, 15 strategies x up to 14 sample cuts (plus 18 post-hoc
   robustness rows in review round 1); crash test, 16 rules x 9 episodes. Some favourable cells
   are luck.
 
@@ -809,6 +821,11 @@ above, against the same literature and data.
   OSEBX from 2013). Both lanes treat OBX/OSEBX as total-return indexes; that was not verified.
 - The intraday timing of a real sale: the test books the index close of the day after a signal,
   while an Oslo sale or a fund's cut-off prices earlier in the day.
+- Funds' shorter window. The test's forced sale is on trading day 22 (Fri 18 Dec). The fund
+  fallback, Fri 11 Dec, is trading day 17 from 18 Nov (16 from a 19 Nov start), and the slow-fund
+  fallback, Fri 4 Dec, is day 12. No window of those lengths was run, so for funds the six-week
+  statistics in section 6.1 apply only roughly (a shorter wait usually means a narrower spread
+  of outcomes and less of the small expected drift; not tested).
 - The VIX trigger's `late` statistics cover 1990 on only (VIX data); on the S&P that is 2,340 of
   2,739 `late` start days.
 - The high-yield credit spread and the GSADF bubble test (data or tools not available). The Oslo
