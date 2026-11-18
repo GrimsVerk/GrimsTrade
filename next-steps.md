@@ -8,7 +8,8 @@ tuning, train period only. Write-up `research/eu-1.md`, card `research/cards/eu-
 
 - Done: data note (UCITS tickers, ECB USD/EUR rate, US twins in EUR, splices; `lib/eu1_data.py`,
   `lib/eu1_check.py`, `results/eu-1-data.md`).
-- Doing: card, then the runs.
+- Done: card `research/cards/eu-1.md` (before any strategy number). Draft PR #59 -> `trend-tune`.
+- Doing: the runs (`research/lib/eu1.py`).
 
 ## Trend tune (done 2026-11-18, branch `trend-tune`, draft PR #34 -> `carry-2`)
 
