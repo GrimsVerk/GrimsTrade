@@ -205,6 +205,11 @@
     Convention PROPOSED in docs/DESIGN.md; DECISIONS 2026-11-12 rule revised (owner sign-off).
   - 22:39 UTC `summary-2` started (<- summary-1): rewrite `research/SUMMARY.md` for tonight's
     picture. Lane rules now require quoting BAR.md's project-wide bar.
+  - DONE `summary-2` (draft #84 -> summary-1): `research/SUMMARY.md` rewritten as one page
+    for tonight's picture (rule = holding + crash insurance; bar +0.27..+0.59 Sharpe; published
+    effects 0 for 5). Merge into summary-1 is the owner's.
+  - 22:41 UTC `insure-1` started (D, <- trend-1926-fix): is "trend = crash insurance" solid over
+    1926-2025 (effective episodes, premium per unit of loss avoided)?
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
