@@ -1,6 +1,7 @@
 """The project-wide tries register (`grimstrade.register`): every try on every pushed branch,
 counted once, kept when its branch goes, and the bar a new pick must clear."""
 
+import json
 import math
 import subprocess
 from pathlib import Path
@@ -148,4 +149,78 @@ def test_the_sharpe_needed_against_zero_passes_exactly() -> None:
     need = register.sharpe_needed(n, v, days) / math.sqrt(365)
     sr0 = math.sqrt(v / 365) * register.max_z(n)
     psr = stats.probabilistic_sharpe(stats.Moments(days, need, 0.0, 3.0), sr0)
+    assert psr == pytest.approx(0.95, abs=1e-6)
+
+
+TRIALS = {
+    "main_window": "2012-2025",
+    "shape": {
+        "skew_median": -0.1,
+        "skew_p10": -1.0,
+        "excess_kurtosis_median": 9.0,
+        "excess_kurtosis_p90": 17.0,
+    },
+    "windows": {
+        "1994-2025": {"series": 4, "rho_mean": 0.7, "onc_k": 2},
+        "2012-2025": {
+            "from": "2012-01-06",
+            "to": "2025-11-07",
+            "weeks": 722,
+            "series": 10,
+            "rho_mean": 0.5,
+            "rho_median": 0.6,
+            "participation_ratio": 2.3,
+            "onc_k": 4,
+            "onc_k_at_cap": False,
+            "cluster_sharpe_var": 0.04,
+        },
+    },
+}
+
+
+def measure(repo: Path, ids: list[str]) -> None:
+    lines = [{"id": i, "kind": "baseline", "weeks": 1657} for i in ids]
+    lines.append({"id": "live:x", "kind": "live", "weeks": 1657})
+    (repo / register.MOMENTS).write_text("".join(json.dumps(x) + "\n" for x in lines))
+    (repo / register.TRIALS).write_text(json.dumps(TRIALS))
+
+
+def test_the_measured_trial_count_sets_the_bar(repo: Path) -> None:
+    s = register.regenerate(repo)
+    assert s.measured is None  # without the generated files: assumed rhos, as before
+    assert [b.label for b in s.bar()] == ["independent", "rho 0.5", "rho 0.9"]
+    ids = [json.loads(ln)["id"] for ln in (repo / register.REGISTER).read_text().splitlines()]
+    measure(repo, ids[:2])
+    s = register.regenerate(repo)
+    assert s.measured is not None
+    assert (s.measured.rows, s.measured.live, s.measured.check) == (2, 1, ("1994-2025", 4, 0.7, 2))
+    by = {b.label: b.n for b in s.bar()}
+    assert by["independent"] == 7
+    assert by["measured rho 0.50 (A.3)"] == pytest.approx(0.5 + 0.5 * 7)
+    assert by["ONC 4 clusters in 10, scaled to N"] == pytest.approx(4 * 7 / 10)
+    assert by["ONC 4 clusters, sample only"] == 4
+    head = s.headline()  # the more cautious of A.3 and ONC scaled
+    assert head.n == pytest.approx(4.0) and head.label.startswith("measured rho")
+    bar = (repo / register.BAR).read_text()
+    assert "**The bar for a new pick: N = 4.0 effectively independent trials" in bar
+    assert "## The bar per record length" in bar
+    assert "| 32 | 1,670 |" in bar
+
+
+def test_a_moments_line_for_an_unknown_try_is_refused(repo: Path) -> None:
+    register.regenerate(repo)
+    measure(repo, ["0000000000000000-1"])
+    with pytest.raises(register.RegisterError, match="not in the register"):
+        register.regenerate(repo)
+
+
+def test_fat_tails_and_short_records_raise_the_sharpe_needed() -> None:
+    weeks, v, n, per_year = 522, 0.1, 400.0, 365.25 / 7
+    normal = register.sharpe_needed(n, v, weeks, per_year)
+    fat = register.sharpe_needed(n, v, weeks, per_year, skew=-1.0, excess_kurtosis=17.0)
+    assert fat > normal
+    assert register.sharpe_needed(n, v, 2 * weeks, per_year) < normal
+    sr = fat / math.sqrt(per_year)
+    sr0 = math.sqrt(max(v / per_year, 1 / weeks)) * register.max_z(n)
+    psr = stats.probabilistic_sharpe(stats.Moments(weeks, sr, -1.0, 20.0), sr0)
     assert psr == pytest.approx(0.95, abs=1e-6)
