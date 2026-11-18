@@ -983,3 +983,22 @@ Never edit or delete a row.
 | 2026-11-18 11:02 | cointop-1-cm | stop-0.25 control: condition read 26 weeks late (pooled 0.44) | control | train | 2019-04-07 | 2025-11-09 | 0.99 | +268.8% | 32.3% | 3.10 |
 | 2026-11-18 11:02 | cointop-1-cm | fade-28 control: condition read 26 weeks late (pooled 0.44) | control | train | 2019-04-07 | 2025-11-09 | 0.87 | +369.9% | 45.5% | 6.39 |
 | 2026-11-18 11:02 | cointop-1-cm | breadth-28 control: condition read 26 weeks late (pooled 0.46) | control | train | 2019-04-07 | 2025-11-09 | 0.74 | +294.2% | 53.7% | 5.77 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +9967.0% | 28.9% | 3.81 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +12344.2% | 28.9% | 4.76 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28 | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +14344.8% | 29.9% | 4.30 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.51 | +211.8% | 64.3% | 4.28 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.55 | +273.2% | 81.7% | 9.05 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.51 | +197.3% | 91.6% | 7.35 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.25 | +79142.5% | 67.6% | 6.20 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.28 | +150817.0% | 77.0% | 10.14 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.23 | +186942.5% | 78.1% | 8.37 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.95 | +2085.5% | 62.2% | 6.51 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.91 | +2159.3% | 76.9% | 9.58 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.94 | +2595.0% | 82.3% | 8.19 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.07 | +9061.6% | 29.0% | 3.79 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +10808.9% | 29.0% | 4.72 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +12994.4% | 30.2% | 4.26 |
+| 2026-11-18 11:08 | cointop-1 | tsmom12-daily | baseline | train | 1994-02-01 | 2025-11-09 | 1.06 | +19463.0% | 35.8% | 4.89 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25-daily | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +7587.0% | 30.9% | 7.96 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28-daily | robustness | train | 1994-02-01 | 2025-11-09 | 1.11 | +12690.9% | 30.9% | 10.52 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28-daily | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +12568.5% | 33.1% | 8.98 |
