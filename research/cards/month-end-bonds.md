@@ -110,4 +110,7 @@ Held-out year: not run in this lane, whatever the result.
 
 ## Result
 
-See `results/month-end-bonds.md` once tested.
+Run once, 2026-11-18 11:10 UTC: **not replicated.** `last4@LQD` fails bar 1 (net excess
++10.5 bps, t 1.93), passes bar 2, fails bars 3 and 4 (Sharpe 0.52 against 0.60 and 0.59).
+`last4@TLT-y1`: net excess -1.8 bps over 11 months (the card said 12; 11 full windows exist).
+Tables `results/month-end-bonds.md`, write-up `month-end-bonds.md`. Held-out year not touched.
