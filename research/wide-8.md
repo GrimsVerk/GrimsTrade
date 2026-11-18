@@ -329,3 +329,38 @@ error of b is about 0.15 points per category and t <= -2 needs about -0.3 points
 
 **My guess before any number.** b between -0.15 and +0.15 points per category, |t| < 1.5; the
 largest single cell Katrina-Rita-Wilma 2005 either way. Chance of a pass: 2%.
+
+### What came out (one run, 2026-11-18; table `results/cat-claims.md`)
+
+**The gate fails on all three counts. Over 104 US landfalls 2002-2025, the 20-session return of
+LQD minus half of TLT does not fall with the storm's category: +0.01 points per category (t
++0.09); -0.44 (t -0.63) in 2002-2013 and +0.13 (t +1.84) after; rank 8 of 23 year-shifted
+calendars. Corporates did not lag Treasuries after major landfalls; if anything they led (major
+minus tropical-storm landfalls +0.91 points). W15 `cat-claims` is dead by the gate: no card,
+no strategy, no `tries.md` row.**
+
+| 20 sessions after landfall, points per category (t by season) | Slope |
+|---|---:|
+| LQD - 0.5 TLT (gate), 104 events | +0.01 (+0.09) |
+| LQD - IEF (duration-matched) | +0.01 (+0.11) |
+| LQD alone | -0.38 (-1.97) |
+| TLT alone | -0.78 (-2.96) |
+
+- **No credit leg.** Of the 17 major landfalls, 14 saw the spread rise (Irma +2.1, Ian +1.9,
+  Zeta +2.8); only Laura (-1.3) and Rita (-0.4) fell noticeably. Massa and Zhang's Katrina
+  selling (a bond-level, cross-issuer effect) does not show at the index level: Katrina's
+  window is +0.38.
+- **What moves is duration, not credit:** both LQD and TLT fell after stronger landfalls (TLT
+  -0.78 points per category, t -3.0), and the duration-matched spread is flat. A shown cell,
+  read after the run: with 24 seasons and a t computed against the normal, this is no stronger
+  than the cells this night's nulls put at |t| 3 (steps 1 and 2), and the season-clustered
+  events sit in late summer, when the bond calendar has its own patterns. Not a lead; noted
+  only.
+- **The first half's negative slope is crisis timing:** 2008's Gustav and Ike (category 2)
+  landed in the September of the Lehman failure. The second half has the sign the other way.
+- **Compared with my guess:** b between -0.15 and +0.15 with |t| < 1.5: yes (+0.01, t 0.09).
+  Katrina-Rita-Wilma either way: +0.38, -0.42, -0.05. 2% chance of a pass: no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only event counts (104 events in 24 seasons; by
+category 58, 20, 9, 9, 7, 1; halves 53 and 51), then one run. Rule pushed at 261b47a, script and
+tests at 4ead496, both before either run.
