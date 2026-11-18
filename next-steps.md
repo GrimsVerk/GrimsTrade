@@ -1,5 +1,35 @@
 # Next steps
 
+## GSY 1 (done 2026-11-18, branch `gsy-1`, draft PR #55 -> `trend-1926`)
+
+Does a Greenwood-Shleifer-You run-up flag (industry 2-year return >= 100% / 150%, raw and net
+of market) as an exit overlay improve `tsmom12` on French industry books? Card
+`research/cards/gsy-runup.md` (fixed before any number); write-up `research/gsy-1.md`; tables
+`research/results/gsy-1-replication.md` and `research/results/gsy-1.md`; 36 rows in
+`research/tries.md` (idea `gsy-runup`). Held-out year untouched.
+
+- Replication: 49 industries 1928-2014, 104 episodes at 100% with 38% crashing (40% fall)
+  within 2 years against a 15% base rate; 51 at 150%, 51%. GSY's direction, below their
+  53% / ~80%. Since 2002: 27% / 35% against 12%.
+- Overlay (30 industries, 6 variants): `flag100-sma` (+0.027, p 0.001) and `flag100-vol`
+  (+0.030, p 0.007) pass the card's route S by its letter in 1928-2001; +0.02 after 2002 (p 0.2);
+  on XLK/XLE/XLF/XLV both behind (-0.04, -0.02; 2 flag episodes). No variant improves worst loss
+  by 5 points. `tsmom12` is already in cash on 88% of industry crash days. Verdict: weak pass,
+  not a candidate; no change to the live rule; no six-asset card recommended.
+- Disclosure: a `DRY=1` plumbing run printed numbers for the last 500 days of each period
+  (2000-2001, 2024-2025) before the full run; nothing was changed after.
+- Data: the 30/49/10-industry monthly and 30-industry daily files were downloaded to
+  `<cache root>/french-gsy/2026-11-18/<file>/` (logged in the cache's `manifest.jsonl`); the
+  10-industry daily and factor files are from `french/2026-11-12`. French files run to 2026-09,
+  so the code cuts at 2025-11-10 (monthly: 2025-10).
+- Rerun: `uv run python -I research/lib/gsy.py replicate` and `... gsy.py runs` (needs
+  `research/macro.local.json`); saved runs under the git-ignored `research/data/runs/gsy-runup/`
+  are re-scored without new rows.
+- Doing: nothing. No process running.
+- Possible next (not started): use the run-up crash rate as a risk description (risk map,
+  concentrated positions), not as a timing rule.
+
+
 ## Trend 1926 (done 2026-11-18, branch `trend-1926`, draft PR #37 -> `trend-tune`)
 
 Does `tsmom12` beat holding on US stocks 1926-1961 (French daily market and 10 industries, cache
