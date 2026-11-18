@@ -98,3 +98,40 @@ the count of asset-years with L > 0 per period.
 them is small next to their daily volume, and the January rebound of losers has faded since
 the 1990s. Echo-window slope between -0.05 and +0.10 (a 20% loss adds at most 2% over two
 weeks), |t| < 1.5 in each half; coins noisy in both directions. Chance the gate passes: 3%.
+
+### What came out (one run, 2026-11-18; table `results/wash-sale-echo.md`)
+
+**The gate fails. No echo on day 31: the ETF slope of the S+31..S+45 return on the November
+loss is -0.003 (t -0.07) in tax years 1993-2011 and +0.023 (t 0.43) in 2012-2024, and the coin
+placebo's slope (+0.049) is above the ETFs' (+0.006). W14 `wash-sale-echo` is dead by the gate:
+no card, no strategy, no `tries.md` row.**
+
+| Window (ETFs, slope on the loss, t by year) | Tax years 1993-2011 | 2012-2024 |
+|---|---:|---:|
+| Echo S+31..S+45 (gate) | -0.003 (-0.07) | +0.023 (0.43) |
+| Turn of year 31 Dec..10 Jan (shown) | +0.043 (0.98) | +0.089 (3.91) |
+| Late placebo S+46..S+60 (shown) | -0.154 (-4.09) | +0.112 (2.48) |
+
+500 ETF asset-years (139 with a loss, 31 tax years); 58 coin asset-years (18 with a loss).
+
+- **A 20% November loss adds nothing on days 31-45** (0.5% at most, in either half). If US
+  harvesters of ETFs buy back after the 30-day bar, their buying does not move these funds.
+- **Where a loser rebound does show, it is the classic turn of the year, not the echo:** a 20%
+  loss went with +1.8% over 31 Dec..10 Jan after 2012 (t 3.9), +0.9% before (t 1.0). That is
+  Reinganum's January effect on funds, in the window where the US rule says the sellers cannot
+  yet be the buyers. It is a shown cell, seen now, so it is a lead and not a result.
+- **The year-clustered t is fragile:** the late placebo window, which no story predicts,
+  gives t -4.1 before 2012 and +2.5 after, with opposite signs. With 13-18 year clusters and
+  half the losers concentrated in 2001, 2002, 2008 and 2022, a t of 3 to 4 in one cell is
+  within what this design throws up by chance. The turn-of-year +3.9 must be read with that.
+- **Coins:** too few asset-years for any test (12 before 2019, 46 after). The 2013-2018 cell's
+  t is meaningless (most years hold one or two coins, so year effects leave almost no residual).
+  Coins go the other way at the turn of the year (-0.086, t -3.2): coin losers keep falling
+  into January.
+- **Compared with my guess:** echo slope between -0.05 and +0.10 with |t| < 1.5 in each half:
+  yes (-0.003, +0.023). 3% chance of a pass: no pass.
+
+Disclosures: one dry run (`DRY=1`) printed only asset-year counts per sample (above), then one
+run. The script and its tests were pushed before both (commit 6e0d283). The first tax year
+with data is 1994 (SPY starts 1993-01-29), not 1993 as the rule's label says; nothing else
+differs from the rule.
