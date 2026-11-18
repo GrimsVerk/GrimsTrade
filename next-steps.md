@@ -1,5 +1,18 @@
 # Next steps
 
+## Coin cap 4 (in progress 2026-11-18, branch `coin-cap-4`, draft PR -> `coin-cap-3`)
+
+Chain: (1) why the weekly stop fails on BTC and in fast crashes, descriptive per episode from
+the existing series (no rerun of a finished analysis, nothing logged); (2) one card for the
+remaining candidates (price-drawdown stop, cap 25% + stop) with one combined decision rule,
+time under water reported for all, same 21 episodes, every pick counted (m = 13 + new);
+(3) a one-screen verdict for a human.
+
+- Done step 1: `lib/coin_cap4_modes.py` (logs nothing), `results/coin-cap-4-modes.md`, write-up
+  "Fifth reading, step 1" in `research/coin-cap.md`. Three failure modes: fast first leg with
+  the stop still in (main), a wide volatility band at the top, re-entry into bounces (BTC).
+- Doing: step 2 (card).
+
 ## Coin cap 3 (done 2026-11-18, branch `coin-cap-3`, draft PR #56 -> `coin-cap-2`)
 
 Does checking `stop-0.25` daily (same as-of timing, no look-ahead) fix the fast-crash losses of
