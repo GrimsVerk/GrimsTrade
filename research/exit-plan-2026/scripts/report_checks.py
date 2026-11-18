@@ -48,7 +48,7 @@ def oslo_trading_days() -> None:
             out[d] = i
             i += 1
         d += timedelta(days=1)
-    for k in (0, 5, 10, 11, 15, 20, 22, 28):
+    for k in (0, 5, 10, 11, 12, 15, 17, 20, 22, 28):
         day = next(x for x, j in out.items() if j == k)
         print(f"Oslo trading day {k:2d} = {day.isoformat()} {day.strftime('%a')}")
 
