@@ -1,5 +1,19 @@
 # Next steps
 
+## RL 5 (done 2026-11-18, branch `rl-5`, draft PR -> `rl-4`)
+
+Does any perp input clear a return-spread screen, and does rl-4's fixed lasso on the survivors
+beat `ls-funding` (pooled Sharpe 0.57)? Answer: no input passes. Nine inputs (rl-4's four plus
+1-week and 1-month return, 30-day funding, 30-day largest daily return, dollar volume), each as a
+third-against-third book after 10 bps, pooled over the three venues, train years only, Holm
+correction over the nine: best unadjusted p 0.087 (`log_qv`, one venue only), `funding` net
++0.18% a week (t 1.6), `vol` 0.00%. By the card no lasso was trained (`ls-ml5` not run). No RL
+trained. Held-out year untouched. Card and write-up `research/rl-5.md`, table
+`research/results/rl-5-screen.md`, code `research/lib/rl5_screen.py`. Nothing running.
+Owner option (rl-6): stop screening weekly inputs on this book; the only lead is cost (30-day
+funding keeps the carry at half the turnover), a carry question with no clean held-out year
+left. Otherwise close the RL lane.
+
 ## RL 4 (done 2026-11-18, branch `rl-4`, draft PR #38 -> `carry-2`)
 
 Which of rl-3's cheap fixes makes a learner find a planted weekly IC of 0.10, and does it find
