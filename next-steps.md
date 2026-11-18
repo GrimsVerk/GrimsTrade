@@ -215,6 +215,13 @@
     re-entry gets worse (6 months after low +11.2% vs +16.8%). Coin years: worst loss 16.2% vs
     17.7% for 4.8 pts/yr less growth. 4 rows. Coin line stays PARKED; coin size = risk budget.
   - 22:43 UTC `rp-1` started (D, <- survey-5): `where-vol`'s 2022 loss vs live risk-parity funds.
+  - DONE `wide-7` (draft #81 -> wide-6): gates W14 `wash-sale-echo` (slope t -0.07 / 0.43;
+    coin placebo higher), W13 `festival-gold` (t -0.30; Baur's autumn gold effect reversed
+    since 2010), W12 `rmd-december` (p 0.51) all fail. 0 rows. New W16 `geomagnetic-storm`,
+    W17 `fork-premium`. List 70 / 16 tested; bar p < 0.00143. Lead to pre-register: turn-of-year
+    ETF loser rebound after 2012 (t 3.9, placebos also high).
+  - 22:44 UTC `wide-8` started (W, <- wide-7): forward pre-registration of the turn-of-year lead
+    for 2026/27, W16 and W15 gates.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
