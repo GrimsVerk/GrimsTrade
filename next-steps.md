@@ -1,5 +1,12 @@
 # Next steps
 
+## RL 5 (doing, started 2026-11-18 ~11:05 UTC, branch `rl-5` from `rl-4`)
+
+Card `research/rl-5.md` (written before any number): nine perp inputs screened by their weekly
+net return spread (top third minus bottom third, 10 bps a side, Holm correction over the nine,
+train years only), then rl-4's fixed lasso on the survivors against `ls-funding` (Sharpe 0.57).
+No RL trained. Held-out year not touched. Doing: `research/lib/rl5_screen.py` + test, one run.
+
 ## RL 4 (done 2026-11-18, branch `rl-4`, draft PR #38 -> `carry-2`)
 
 Which of rl-3's cheap fixes makes a learner find a planted weekly IC of 0.10, and does it find
