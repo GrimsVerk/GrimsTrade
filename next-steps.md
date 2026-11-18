@@ -1,5 +1,11 @@
 # Next steps
 
+## vol-timing (in progress 2026-11-19, branch `vol-timing`, draft PR -> `ls-trend-2`)
+
+Is ls-trend-2's control b1 (`tsmom12` + bills, equal-risk split, Sharpe 1.26) just volatility
+timing of `tsmom12`, and is it already covered by `trend-vol`? Card `research/cards/vol-timing.md`
+(descriptive, no pick). Doing: step 1 script `research/lib/voltiming_run.py`.
+
 ## ls-trend-2 (done 2026-11-18, branch `ls-trend-2`, draft PR #89 -> `ls-trend-1`)
 
 Card before numbers (`research/cards/ls-trend-2.md`, 7bb600f), script before its run
