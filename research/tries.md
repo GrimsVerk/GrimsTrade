@@ -16,7 +16,8 @@ Never edit or delete a row.
   configuration (`tsmom12`) on a span or set it was not logged on (trend-1926's saved gym runs
   spliced with the gym-free paper series to 1927-2025; the 30 French industries, paper series);
   not selectable, not a strategy try, not counted in any family (`cards/crash-insurance.md`,
-  numbers in `results/insure-1.md`). Turnover/yr there = position flips a year.
+  numbers in `results/insure-1.md`). Turnover/yr there = position flips a year. insure-2 adds
+  27 such rows on non-US stock indices (paper series; `cards/insure-geo.md`, `results/insure-2.md`).
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 
 | UTC time | Idea | Variant | Kind | Period | From | To | Sharpe | Return | Max DD | Turnover/yr |
@@ -1303,3 +1304,30 @@ Never edit or delete a row.
 | 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Meals | insure-check | train | 1927-07-02 | 2025-10-31 | 0.71 | +1565555.2% | 48.1% | 1.78 |
 | 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Fin | insure-check | train | 1927-07-02 | 2025-10-31 | 0.72 | +744261.3% | 48.6% | 2.05 |
 | 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Other | insure-check | train | 1927-07-02 | 2025-10-31 | 0.57 | +128598.1% | 57.9% | 2.38 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Japan | insure-check | train | 1966-01-21 | 2025-10-31 | 0.57 | +5522.2% | 40.8% | 2.22 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Canada | insure-check | train | 1980-07-04 | 2025-10-31 | 0.43 | +521.5% | 34.2% | 2.05 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-UK | insure-check | train | 1984-12-28 | 2025-10-31 | 0.38 | +366.0% | 37.6% | 2.62 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Australia | insure-check | train | 1985-08-16 | 2025-10-31 | 0.37 | +323.6% | 54.0% | 2.56 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-HongKong | insure-check | train | 1988-01-08 | 2025-10-31 | 0.37 | +529.5% | 46.5% | 2.51 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Germany | insure-check | train | 1988-12-29 | 2025-10-31 | 0.42 | +563.2% | 51.9% | 1.82 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Singapore | insure-check | train | 1989-01-13 | 2025-10-31 | 0.33 | +206.3% | 47.0% | 2.63 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-France | insure-check | train | 1991-03-08 | 2025-10-31 | 0.38 | +345.6% | 39.8% | 2.11 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Switzerland | insure-check | train | 1991-11-15 | 2025-10-31 | 0.41 | +309.6% | 38.4% | 3.09 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Belgium | insure-check | train | 1992-04-16 | 2025-10-31 | 0.43 | +323.3% | 37.5% | 2.41 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Netherlands | insure-check | train | 1993-10-08 | 2025-10-31 | 0.50 | +559.1% | 36.3% | 2.21 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Austria | insure-check | train | 1993-11-19 | 2025-10-31 | 0.35 | +240.0% | 49.9% | 2.35 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Spain | insure-check | train | 1994-07-15 | 2025-10-31 | 0.47 | +454.9% | 53.7% | 1.95 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-Europe | insure-check | train | 1991-06-21 | 2025-10-31 | 0.50 | +553.7% | 39.0% | 2.30 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-Japan | insure-check | train | 1991-06-21 | 2025-10-31 | 0.31 | +224.2% | 38.6% | 3.11 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-AsiaPacExJapan | insure-check | train | 1991-06-21 | 2025-10-31 | 0.56 | +653.2% | 39.2% | 2.65 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Italy | insure-check | train | 1998-12-18 | 2025-10-31 | 0.14 | +28.5% | 62.3% | 2.05 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-NewZealand | insure-check | train | 2004-01-09 | 2025-10-31 | 0.95 | +485.9% | 25.1% | 1.05 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Israel | insure-check | train | 1993-10-01 | 2025-10-30 | 0.58 | +908.3% | 30.4% | 1.84 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Korea | insure-check | train | 1997-12-26 | 2025-10-31 | 0.48 | +586.6% | 41.8% | 2.98 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Taiwan | insure-check | train | 1998-07-17 | 2025-10-31 | 0.36 | +225.4% | 50.1% | 2.75 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-India | insure-check | train | 1998-07-17 | 2025-10-31 | 0.66 | +1229.8% | 40.7% | 2.23 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Brazil | insure-check | train | 1994-05-06 | 2025-10-31 | 0.57 | +2809.9% | 61.2% | 3.08 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Mexico | insure-check | train | 1992-11-27 | 2025-10-31 | 0.50 | +838.5% | 49.9% | 3.25 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Malaysia | insure-check | train | 1994-12-09 | 2025-10-31 | 0.24 | +76.0% | 45.7% | 2.85 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Indonesia | insure-check | train | 1991-04-26 | 2025-10-31 | 0.51 | +849.5% | 53.2% | 2.34 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-DevExUS | insure-check | train | 1991-06-21 | 2025-10-31 | 0.49 | +390.7% | 36.0% | 2.53 |

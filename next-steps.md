@@ -12,7 +12,13 @@ episode count and metrics on non-US stock indices (keyless long history), its ow
 - Step 1 done: after 1962 trend is still cheaper than holding less ("Timing, not just
   exposure" on 1962-2025: premium 1.36 vs 1.88 fixed, 2.20 random, p 0.020; share avoided 0.46
   vs 0.28 / 0.26, p 0.000). 2002-2025 alone only "In between" (premium p 0.19).
-- Step 2 (geography): card `research/cards/insure-geo.md` pushed before numbers; data fetched by `research/lib/fetch_insure2.py` into the cache (`insure-2/raw-2026-11-18/`).
+- Step 2 done (geography): card `research/cards/insure-geo.md`; data by
+  `research/lib/fetch_insure2.py` into the cache (`insure-2/raw-2026-11-18/`, rerun it on a new
+  machine first). 13 developed indices, 19 effective falls: rule lost less in 17 of 18 (p 7e-5),
+  share 0.49, net -0.9; premium 1.11 vs 1.33 fixed, 1.52 random (p 0.009): "handed back" and
+  "timing, not just exposure". Total-return regions 1.23 (in between), wider 10: 1.18 (in
+  between). 27 `insure-check` rows.
+- Step 3 (one-screen verdict at the top of `research/insure-2.md`): next.
 
 ## insure-1 (done 2026-11-18 night, branch `insure-1`, draft PR #87 -> `trend-1926-fix`)
 

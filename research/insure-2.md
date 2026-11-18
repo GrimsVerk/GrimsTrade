@@ -39,3 +39,48 @@ the era (1,000 rotations).
   15, 12 of 13 effective episodes.
 - The paper-series premium per era (0.85 / 1.38 / 1.34) matches insure-1's gym-splice numbers
   (0.86 / 1.38 / 1.34). No `tries.md` rows (re-scoring of logged positions).
+
+## Step 2, insure-geo: outside the US
+
+Card `cards/insure-geo.md` (pushed before its numbers). `tsmom12` exactly as in insure-1 (paper
+series, Friday decisions, 2 bps a side, cash at 0) on 13 developed-market headline indices
+(Yahoo daily closes, local currency, price indices except the DAX; first decisions 1966 to
+1994), counted and judged the same way: 25% falls, clusters anchored on the US market's falls
+(a cluster's value from its non-US episodes only), sign test and cluster bootstrap. Checks: the
+same on Ken French's regional daily total returns in US dollars (Europe, Japan, Asia Pacific ex
+Japan, from 1991) and on 10 more indices (Italy, New Zealand, Israel and seven emerging
+markets).
+
+| Set | Episodes / effective | Rule I > 0 (anchored; strict) | Share avoided | Net of rebound N | Premium: rule / fixed / random | p (share, premium) | Verdicts (card 1; card 2) |
+|---|---:|---|---:|---:|---|---|---|
+| **13 developed, price (decides)** | 109 / 19 | 17 of 18, p 7e-5; 14 of 15 | 0.49 | -0.9 (7 of 19 > 0) | **1.11** / 1.33 / 1.52 | 0.000, 0.009 | handed back; **timing, not just exposure** |
+| 3 regions, total return, USD | 25 / 13 | 12 of 13, p 0.002; 10 of 11 | 0.53 | +0.4 | **1.23** / 1.40 / 1.60 | 0.035, 0.24 | handed back; in between |
+| 10 more indices, price | 92 / 17 | 15 of 17, p 0.001; 13 of 15 | 0.47 | -0.3 | **1.18** / 1.34 / 1.49 | 0.009, 0.081 | handed back; in between |
+| US, 1962-2025 (step 1) | 132 / 28 | 27 of 28 | 0.46 | -3.8 | **1.36** / 1.88 / 2.20 | 0.000, 0.020 | handed back; timing |
+
+- **The insurance generalises.** Outside the US the rule lost less than holding in 17 of 18
+  effective falls (sign test p 7e-5; strict grouping 14 of 15), avoiding about half of each
+  fall (0.49), the same share as on US data. Net of the year after the low it is again a coin
+  flip (mean -0.9 log points, 7 of 19 positive). Verdict by card 1's rule: **"insurance
+  real, handed back in the rebound"**, in every set. The sign-test p (7.2e-5) narrowly misses
+  the project-wide bar (4.9e-5); it is not a pick, quoted for scale.
+- **Cheaper than holding less, again.** On the primary set the rule's premium (1.11) is below a
+  fixed 66% exposure (1.33) and random timing (1.52, p 0.009), and its share avoided beats
+  random timing (0.49 vs 0.34, p 0.000): card 2's verdict "timing, not just exposure". The
+  order rule < fixed < random holds in every set; the rotation p-values are weaker on the
+  shorter or smaller sets (premium p 0.24 on 3 regions, 0.08 on the wider 10), so those read
+  "in between".
+- **Price indices flatter the level, not the order.** Dividends are missing from the price
+  indices, which lowers what the rule gives up while out. The total-return regions put the
+  premium at 1.23 (2002-2025: 1.49) against 1.11 on prices (a different set, in US dollars, so
+  not all of the gap is dividends). The fixed and random controls have the same mean exposure
+  and miss the same dividends, so the comparison with them is fair; the price-index level is
+  too low, by roughly 0.1-0.4.
+- **Fast falls fail outside the US too:** 23 falls of three months or less (1987, 1989 Hong
+  Kong, 2020, August 2024 in Japan): share avoided 0.35, net -15 log points, positive in 3 of
+  23. Slow falls (over a year, 46): share 0.63, net +9.7, positive in 32 of 46.
+- **By era:** price indices 1.12 before 2002 and 1.11 after; total-return regions 0.91 and
+  1.49; wider set 0.98 and 1.37. Since 2002 the rule trailed holding by about 2-2.7 log points
+  a year on the total-return regions and the wider set (2.2 on US data), and about 0.8 on the
+  price indices.
+- `tries.md`: 27 rows of kind `insure-check` (13 + 3 + 10 + Developed ex US), idea `insure-2`.
