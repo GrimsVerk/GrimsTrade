@@ -1,5 +1,17 @@
 # Next steps
 
+## eu-4 (in progress 2026-11-18 night, branch `eu-4` from `eu-3`, draft PR -> `eu-3`)
+
+DEEPER lane on eu-3: fewer *signal flips* for the small coin-free book `euw`. Chain: (1)
+diagnose on train where `euw`'s orders go (entries, exits, drift top-ups; whipsaw round trips
+that reverse within N weeks; their fee cost per tier EUR 1/2/3 per order; which assets whipsaw
+most), a note, no new rule; (2) a card with one or two whipsaw reducers that keep the signal's
+character (confirmation over two Fridays, a dead zone around zero on the 12-month return), with
+an explicit character test and the family bar, then train runs, every try logged; (3) minimum
+book per fee tier and whether the eu-3 verdict changes. Fees described as generic tiers only.
+
+- Doing: step 1.
+
 ## eu-3 (done 2026-11-18 night, branch `eu-3` from `eu-2`, draft PR #63 -> `eu-2`)
 
 DEEPER lane on eu-2: can a slower decision clock or fewer, larger slots cut the coin-free
