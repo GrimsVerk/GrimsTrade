@@ -1,6 +1,6 @@
 # Next steps
 
-## Wide 2 (done 2026-11-18, branch `wide-2`, draft PR -> `wide-1`)
+## Wide 2 (done 2026-11-18, branch `wide-2`, draft PR #47 -> `wide-1`)
 
 One mechanism picked from the 42 that wide-1 listed and did not card: Q5, trend age (hazard
 rate). Rule `age4`: hold a `tsmom12` slot only once the signal has been on for four Fridays.
