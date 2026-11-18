@@ -273,3 +273,53 @@ Checked and correct (do not redo):
 ### Changes made after round 2
 
 (filled in by the lead as fixes land)
+
+Fix agent, 2026-11-18 ~22:10-23:00 UTC. No new backtest or try (item 2 reads the existing
+reentry table side by side; item 1 and the window days are calendar arithmetic in
+`report_checks.py`), so no new card or `tries.md` row.
+
+- Required 1 (fund 5-10 day row) -> 4aaf3f5. One meaning for every row: "cash at the broker
+  within N business days of the order", then broker payout 2 bank days, then 1 day to a euro
+  account. Re-derived with a new `sale_chains()` in `scripts/report_checks.py`, which also
+  reproduces the share, 2-5 and 2-6 rows. Slow funds (5-10 days): fallback Fri 4 Dec -> euro
+  account Wed 23 Dec (was "Mon 21 Dec"); last safe **Wed 9 Dec** -> Wed 30 Dec (was Fri 11 Dec,
+  which lands in January 2027). A global 5-10 day fund that skips 28 Dec gives the same dates.
+  The table's rows are relabelled "cash at the broker within ..."; the assumptions paragraph says
+  what to do if a platform's figure means cash in the bank account. Updated: summary step 2,
+  section 4 row (fallback/last safe), 6.2 step 3 table and assumptions, step 4, checklist 6.4,
+  10.1 "Spare day" row, 10.4. `lanes/park.md` 7.3 corrected with a dated note (D+11 -> D+13).
+- Required 2 (re-entry samples) -> cd36f74. 8.2 now shows `dca12` and `staged-24` side by side
+  from `lanes/reentry-rules.txt` (10-year horizon): sample B median 0.97 vs 0.92, worst tenth
+  0.90 vs 0.72, share above 1 31% vs 35%, mean 0.99 vs 0.97; from 1972 0.97/0.90 vs 0.90/0.68;
+  tops before real busts 1.09-1.34 vs 1.40-1.61; sold 2-3 years early 0.88-0.93 vs 0.64-0.71;
+  all months mean 0.98 vs 0.96; Nasdaq sample B 0.96/0.86/35% vs 0.89/0.69/5%. `dca12` (12
+  monthly buys, January-December 2027) is now the default; `staged-24` (thirds at -20/-30/-40%,
+  rest by Fri 29 Dec 2028, levels unchanged) is kept as an explicit bet that a real bust comes,
+  with the cost stated. The choice of default is marked post hoc (sections 4 and 10.2).
+  Updated: summary step 5, section 4 row 5 and the "chosen after seeing results" list, 8.2,
+  10.2; dated note in `lanes/reentry.md`.
+- Optional, VIX cut-off -> 389936f. `bt_now.py` US cut moved from 16:10 to 16:20 New York (VIX
+  is cut at the S&P's last bar); reran `bt_now.py --fetch` at 22:12 UTC: VIX 24.56 (was 24.3),
+  1.38 x its 50-day mean (was 1.36), VIX/VIX3M 1.011 (was 1.007), HYG/LQD +0.50% (was +0.53%).
+  All index readings, sample matches and rule states unchanged. Updated: intro, summary, 2.1 VIX
+  cell (was the stale "17 Nov: VIX 25.5"), 5.1; `lanes/bt.md` "Review round 2 fixes". The
+  checklist carries no VIX number. ruff check and format pass.
+- Optional, stale Nasdaq note -> 389936f. 6.1: -11.5% at the 18 Nov close, about 0.6% further
+  fall leaves the `now-like` band (0.88 / 0.8851).
+- Optional, "only euro cash never lost value" -> e1c9a28. Now "lost at most about 0.5%" (XEON
+  -0.5% in 2020, 3-month Euribor cash -0.2% at worst in 2022, from negative rates) in the
+  summary, 2.4, section 4 row 4, 7.3 and 9.3; 7.3 adds that IEGE was not in the crash table
+  (-4.9% since launch over the negative-rate years).
+- Optional, crash-list currencies -> e1c9a28. Summary: Berkshire "(in dollars)", OBX/S&P
+  "(both in euros)"; same in section 4 row 3.
+- Optional, smaller ones -> e476115: section 4 row 2 and the 6.1 bullet now say `crash-window`
+  (all start days with a 10%+ fall); summary bullet 2 notes the 200-day speed-up is post hoc and
+  Oslo rests on 10 spells (2013-2025); step 0 and the checklist say an ETF follows the share
+  rows; 5.2 says the S&P 500 governs if it and `URTH` disagree (`URTH` matches no tested
+  sample); Berkshire cost stated as 0.5% plus EUR 4 per round trip (7.1, 9.2) instead of
+  0.58%; 9.1 IPO lead time measured from the peak-count year (1996 is not one of the four);
+  10.2 comparisons "up to 14 sample cuts" as in bt's honesty notes; 10.3 notes the fund
+  fallbacks are trading days 17 (Fri 11 Dec) and 12 (Fri 4 Dec), not 22, untested
+  (`report_checks.py` now prints days 12 and 17).
+- Report header now says "revised after review rounds 1 and 2" (this commit).
+- Not done: none of the listed items skipped.
