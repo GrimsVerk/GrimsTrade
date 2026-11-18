@@ -337,7 +337,9 @@ skipped; for a holding on another market use that market's calendar):
 - Fund with cash in 2-5 days: order D (before the fund's cut-off) -> cash at the broker worst
   D+5 -> payout +2 -> euro account +1. Worst = **D+8**.
 - Fund with cash in 2-6 days (global funds): worst = **D+9**.
-- Slow platform (5-10 days): cash worst D+10 -> euro account +1. Worst = **D+11**.
+- Slow platform (5-10 days): cash at the broker worst D+10 -> payout +2 -> euro account +1.
+  Worst = **D+13**. (Corrected in review round 2: the first version, "D+10 -> euro account +1 =
+  D+11", dropped the 2 payout days that the other rows count.)
 - Fund held at a bank (cash lands in the bank account in 2-4 days): worst about D+5.
 - "Last safe" = worst case reaches the euro account by **Wed 30 Dec**, keeping Thu 31 Dec as the
   one spare day. "Recommended fallback" = worst case lands by about Wed 23 Dec, before the
@@ -348,7 +350,7 @@ skipped; for a holding on another market use that market's calendar):
 | (a) Shares (T+2) | **Fri 18 Dec** | **Mon 21 Dec** (confirmed) | Wed 30 Dec | Tue 29 Dec |
 | (b) Fund, cash in 2-5 days | **Fri 11 Dec** | **Wed 16 Dec** | Wed 30 Dec | Wed 23 Dec |
 | (c) Global fund, cash in 2-6 days | **Fri 11 Dec** | **Tue 15 Dec** | Wed 30 Dec | Mon 28 Dec |
-| Fund at a slow platform (5-10 days) | **Fri 4 Dec** | **Fri 11 Dec** | Wed 30 Dec | Mon 21 Dec |
+| Fund at a slow platform (cash at the broker in 5-10 days) | **Fri 4 Dec** | **Wed 9 Dec** (was Fri 11 Dec, corrected in review round 2) | Wed 30 Dec | Wed 23 Dec |
 | Fund held at a bank (2-4 days) | Fri 11 Dec (same rule, for simplicity) | about Mon 21 Dec (D+5) | Wed 30 Dec | well before Christmas |
 
 Worked examples:
@@ -366,10 +368,14 @@ Worked examples:
 So the reviewer's **Fri 11 Dec for funds is confirmed** as the recommended fallback (with
 step 2's watch window for funds ending Thu 10 Dec), and the last-safe days are Wed 16 Dec
 (2-5-day funds) and Tue 15 Dec (2-6-day funds). Slow platforms are the exception: 5-10 days push
-the last-safe day to Fri 11 Dec and the fallback to Fri 4 Dec.
+the last-safe day to Wed 9 Dec and the fallback to Fri 4 Dec. (Review round 2 correction: the
+first version said last safe Fri 11 Dec; with the 2 payout days that order lands in January
+2027. Fri 4 Dec: cash at the broker Fri 18 Dec, payout Mon 21 / Tue 22, euro account Wed 23 Dec.
+Wed 9 Dec: cash at the broker Wed 23 Dec, payout Mon 28 / Tue 29, euro account Wed 30 Dec. A
+global fund that skips 28 Dec gives the same dates. Checked in `scripts/report_checks.py`.)
 
-Assumptions to state in the report: the "2-5" and "2-6" are counted in business days from the day
-the order is sent to the fund manager; payout worst 2 bank days; transfer 1 day; fund NAV and
+Assumptions to state in the report: the "2-5", "2-6" and "5-10" are the business days until the
+cash is at the broker, counted from the day the order is sent to the fund manager; payout worst 2 bank days; transfer 1 day; fund NAV and
 payout days skip 24, 25, 31 Dec (and 28 Dec for global funds). Platform figures are "normally"
 figures, and a fund can take up to the legal two weeks; that is why the fallback, not the
 last-safe day, is the plan.
