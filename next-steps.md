@@ -1,5 +1,13 @@
 # Next steps
 
+## ls-trend-2 (in progress 2026-11-18, branch `ls-trend-2`, draft PR -> `ls-trend-1`)
+
+Doing: card `research/cards/ls-trend-2.md` (pushed before any number). Part A: one blend,
+`tsmom12` + wide-LS rescaled to gross 1, equal risk from trailing vol, at most 1x gross; decided
+by the Sharpe gap to `tsmom12` at the family bar (p < 0.00147); crash insurance reported as a
+risk preference. Part B: Hurst-Ooi-Pedersen 1/3/12-month signal on the wide book (descriptive).
+Price cache: copy `research/data/` and `research/macro.local.json` from another worktree.
+
 ## ls-trend-1 (done 2026-11-18, branch `ls-trend-1`, draft PR #83 -> `survey-5`)
 
 Is `tsmom12`'s missing crisis alpha the missing short side and the narrow universe? Literature
