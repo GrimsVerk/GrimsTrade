@@ -198,6 +198,18 @@ just before the crash, and never buying back. Taken together:
 Honest uncertainty: 8 high-valuation episodes since 1928, and only 3 since 1972. Rule 2 is
 insurance against regret, not an edge.
 
+**Review round 2 (2026-11-18): the default is swapped.** Points 2 and 3 above compared
+`staged-24` on all-months and high-CAPE numbers with `dca12` on high-CAPE numbers only. Read
+in the same sample B (10-year horizon, `reentry-rules.txt`): `dca12` median 0.97, worst tenth
+0.90, mean 0.99, share above 1 31%; `staged-24` median 0.92, worst tenth 0.72, mean 0.97, share
+above 1 35%. From 1972: 0.97 / 0.90 against 0.90 / 0.68. Nasdaq sample B: 0.96 / 0.86 / 35%
+against 0.89 / 0.69 / 5%. At the named tops before real busts (1929-08, 1968-11, 1972-12,
+2000-03, 2007-10) `staged-24` gave 1.40-1.61 against 1.09-1.34; sold early (1996-12, 1997-12)
+0.64-0.71 against 0.88-0.93. So in the sample that fits today `dca12` was better on the median
+and the bad tail, and `staged-24` is a bet that a real bust comes. The report (section 8.2) now
+makes `dca12` the default and keeps `staged-24` as that bet. No new test: the same table, read
+side by side; the choice of default was made after seeing it.
+
 ## Part 2: IPO waves and sentiment as top signals
 
 ### Ritter's counts
