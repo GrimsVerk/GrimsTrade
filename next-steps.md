@@ -1,6 +1,6 @@
 # Next steps
 
-## forward-1 (done 2026-11-18 night, branch `forward-1` from `main`, draft PR -> `main`)
+## forward-1 (done 2026-11-18 night, branch `forward-1` from `main`, draft PR #67 -> `main`)
 
 WIDER lane (new method): a forward-only shadow registry. Each candidate rule is frozen (hash of
 code + parameters + data source) with its metric, bar and minimum sample written at freeze, and
