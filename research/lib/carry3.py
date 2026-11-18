@@ -107,7 +107,10 @@ def load_binance(grid: cp.Grid) -> None:
         rest = extra / "rest" / "fundingRate-2026-11" / f"{d.name}.json"
         if held and rest.exists():
             for x in json.loads(rest.read_text()):
-                rows.append((int(x["fundingTime"]) // 1000, float(x["fundingRate"])))
+                if isinstance(x, dict) and "fundingTime" in x:
+                    rows.append((int(x["fundingTime"]) // 1000, float(x["fundingRate"])))
+        if not rows:
+            continue
         f = np.array(sorted(set(rows)))
         ft, fr = f[:, 0].astype(np.int64), f[:, 1]
         acc.add(d.name, _ts(k[:, 0]), k[:, 2], k[:, 3], k[:, 4], k[:, 7], ft, fr)

@@ -5,8 +5,29 @@
 Question: does `ls-funding` survive the costs a small fake-money account would really pay
 (venue taker fees + spread + impact by coin size), with a slower shape fixed in advance, and
 does it hold in the held-out year? Card: `research/carry-3.md` (pushed before any number).
-Doing: cost model, shapes and tests; then one logged train run; the held-out year only if the
-primary (`band`) passes train.
+Draft PR #31 (`carry-3` -> `carry-2`), not merged.
+
+**Done (2026-11-18):** card; cost model calibrated on three order-book snapshots
+(`research/results/carry-3-cost.json`); the one logged train run (126 rows in `tries.md`,
+tables `research/results/carry-3.md`). The primary `band` **passes train** at the realistic
+cost (~8 bps a side for a 10,000 USD account): pooled Sharpe 0.79, p 0.025, positive on every
+venue; blend with BTC/ETH `tsmom12` 0.91 against 0.70. Train write-up is in
+`research/carry-3.md`.
+
+**Paused mid-step (usage limit). Exactly what is next:**
+
+1. The held-out downloads were started 2026-11-18 ~01:45 UTC
+   (`scripts/fetch_carry3.py heldout binance|bybit|hyperliquid`, into `<cache>/carry-3/heldout/`;
+   logs `carry3_held_*.log` in the job tmp dir). Check each log ends with `done` and has no
+   `FAIL` line; rerun the same command for a venue that did not finish (resumable).
+2. Then, **once only**: `uv run python -I research/lib/carry3.py --heldout`. It writes its claim
+   row to `tries.md`, checks that the train part of the long run equals the train run, scores
+   2025-11-11 .. 2026-11-10 for `band` only, and writes `research/results/carry-3-heldout.md`.
+   **The held-out year is unspent until that command has run.** If it crashes before printing
+   any number it may be restarted (card, "restart rule"); once result rows exist it refuses.
+3. Then: put the held-out line at the top of `research/carry-3.md` (replace
+   `HELDOUT-PLACEHOLDER`), add "what it means" and 2-3 next lanes, disclosures and status, an
+   `ideas.md` section, this section as "done", update the PR text.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 
