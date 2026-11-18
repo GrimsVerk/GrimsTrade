@@ -1,10 +1,41 @@
 # Evo 1: tables
 
 Card and reading: `research/evo-1.md`. Every number below is a `control` row of `evo-1-control`
-in `research/tries.md` (33 rows 2026-11-18 19:05-19:09 UTC, 27 rows 19:20-19:24 UTC). No
-real-data search, replay world or real-data number of evo-1 exists yet.
+in `research/tries.md` (33 rows 19:05-19:09 UTC, 27 rows 19:14-19:17 UTC, 94 tuning and
+confirmation rows 19:22-19:29 UTC, all 2026-11-18). No real-data search, replay world or
+real-data number of evo-1 exists.
 
-## Controls after the null fix (2026-11-18 ~19:20 UTC): zero mean simple return worlds
+## Greed tuning and confirmation (2026-11-18 ~19:22-19:29 UTC; card note "Lead's decision 2")
+
+Grid fixed on the card before any tuning number (population 500 throughout): A 0.01 / 30
+generations (the card's), B 0.03 / 30, C 0.06 / 30, D 0.01 / 5, E 0.03 / 10, F 0.06 / 10 (node
+penalty / generations). Tuning worlds 11, 12, 13 (noise) and the plant k=0.04 on world 11,
+zero mean simple return. Gym Sharpe 2000-2025 of evo-top1 / evo-ens10 / evo-val. Recovery = the
+mean of the three over the ceiling.
+
+| Setting | noise 11 | noise 12 | noise 13 | Noise found | plant k=0.04 (ceiling 0.22) | Recovery |
+|---|---|---|---|---:|---|---:|
+| A | -0.08 / -0.04 / 0.16 | -0.00 / -0.14 / -0.01 | 0.07 / -0.16 / 0.33 | 1 of 3 | -0.09 / 0.09 / 0.09 | 0.15 |
+| B | -0.07 / -0.14 / -0.10 | -0.16 / -0.28 / -0.25 | 0.10 / 0.02 / 0.08 | 0 of 3 | -0.07 / 0.09 / -0.18 | -0.24 |
+| C | 0.02 / 0.01 / 0.25 | -0.24 / -0.17 / -0.34 | 0.15 / -0.05 / 0.29 | 2 of 3 | 0.01 / -0.01 / -0.14 | -0.20 |
+| D | 0.06 / 0.09 / -0.16 | -0.18 / -0.33 / -0.09 | -0.02 / -0.06 / 0.10 | 0 of 3 | -0.09 / -0.00 / 0.20 | 0.16 |
+| E | -0.23 / -0.02 / 0.03 | -0.18 / -0.14 / -0.29 | 0.10 / -0.09 / 0.15 | 0 of 3 | -0.10 / -0.06 / 0.11 | -0.06 |
+| F | -0.10 / -0.04 / -0.03 | -0.20 / -0.16 / -0.19 | 0.00 / -0.01 / 0.31 | 1 of 3 | 0.11 / -0.04 / -0.06 | 0.02 |
+
+No setting finds the plant in the tuning world. The rule (noise 0 of 3, then highest recovery)
+picks **D** (0.16, against B -0.24 and E -0.06). Equal weight in the tuning plant world: -0.72;
+every procedure of every setting is ahead of it by +0.54 to +0.92.
+
+**Confirmation of D** on fresh worlds 21, 22, 23 and the plant k=0.04 on world 21 (ceiling
+0.24, logged first): noise found in 0 of 3 (-0.44 to 0.14); plant **not found** (-0.10 / -0.11 /
+0.11; recovery -0.16; equal weight -0.56, procedures ahead of it by +0.45 to +0.66). **FAIL**:
+by the card note, no replay and no real search.
+
+Ceilings of `H` at k=0.04 in the three planted worlds: 0.72 (world 1), 0.22 (world 11), 0.24
+(world 21). The same strength gives very different edges, because the plant drives the very
+91-day trend that `H` reads, and how often `H` holds differs by world.
+
+## Controls after the null fix (2026-11-18 ~19:14-19:17 UTC): zero mean simple return worlds
 
 Card note of 2026-11-18 (lead's decision, option b): the same worlds, each asset's returns
 shifted so its mean simple daily return is 0, the plant on top; all controls and ceilings

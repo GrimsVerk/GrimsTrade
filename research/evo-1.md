@@ -13,7 +13,15 @@ test over every rule tried, and assets the search never saw.
 
 ## Results
 
-Not run yet. This file holds only the card until the runs are done.
+**Stopped before the real search (2026-11-18): the search cannot find a planted rule at any
+tested greed.** In zero-mean worlds (no holding premium) the planted rule `H` at the card's
+strongest strength (k=0.04; `H` itself makes 0.72 in world 1, 0.22-0.24 in worlds 11 and 21)
+was not found by the card's search or by any of 5 less or more greedy settings, and the
+setting chosen on tuning worlds failed again on fresh worlds. Noise is found in 0 of 3 worlds
+at the chosen setting. By the card a real-data fail would read "too weak to tell", so,
+by the lead's decision, no replay world and no real-data search were run. No real price has
+produced an evo-1 number; the held-out year is untouched. Details below ("Build notes, burst
+2") and in `results/evo-1.md`.
 
 ## Build notes, burst 1 (2026-11-18 ~11:10 UTC): code and a toy smoke, no market data
 
@@ -147,7 +155,7 @@ Details the card left open, fixed in code before any control, replay or real-dat
   high-volatility assets than `tsmom12`, which makes bar 3 harsher, not softer. Not changed
   here: the controls were run as the card says.
 
-**Controls rerun after the null fix (2026-11-18 ~19:20-19:24 UTC, card note "Lead's
+**Controls rerun after the null fix (2026-11-18 ~19:14-19:17 UTC, card note "Lead's
 decisions")**, zero mean simple return worlds; table in `results/evo-1.md`, 27 more `control`
 rows.
 
@@ -171,6 +179,23 @@ rows.
   cannot find a planted Sharpe-0.72 rule would only buy an uninformative fail and would make
   any improved pipeline a second look at the real data. Options for the lead are in
   `next-steps.md`.
+
+**Greed tuning and confirmation (2026-11-18 ~19:22-19:29 UTC, card note "Lead's decision
+2")**; tables in `results/evo-1.md`, 94 more `control` rows.
+
+- On the tuning worlds no setting of the grid finds the plant (k=0.04, ceiling 0.22 in world
+  11): procedures -0.18 to 0.20. Noise is found in 0 of 3 for B, D and E, 1 for A and F, 2
+  for C (the heaviest penalty). The pre-written rule picks **D** (penalty 0.01, 5
+  generations; recovery 0.16).
+- Confirmation of D on fresh worlds: noise 0 of 3, plant **not found** (-0.10 / -0.11 / 0.11
+  against a ceiling of 0.24). **The confirmation fails, so no replay and no real search.**
+- What the procedures do pick up: in every k=0.04 world they are far ahead of equal weight
+  (+0.45 to +1.02 Sharpe, p up to 0.024), and their weights correlate 0.3-0.6 with `H`'s. They
+  find the plant's "don't hold" half (the plant takes `k s` a day off every bar `H` does not
+  hold), not enough of its "hold" half to beat cash.
+- The k=0.04 ceiling is 0.72 in world 1 but 0.22 and 0.24 in worlds 11 and 21. So "a
+  Sharpe-0.72 planted rule" holds for world 1 only; in the tuning and confirmation worlds the
+  plant was a ~0.2-Sharpe edge, which no setting found either.
 
 ## Card (written 2026-11-18 ~01:50 UTC, before any evo-1 code or number)
 
