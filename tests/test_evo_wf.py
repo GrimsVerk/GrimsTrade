@@ -11,7 +11,9 @@ Driver (`evo_wf`, with a tiny population and few fits):
 - a fit dated `D` gives the same fitness when every bar from `D` on is scrambled;
 - the walk-forward is repeatable, `evo-top1` takes the fittest candidate, `evo-val` starts at
   the second fit, the out-of-sample weights are zero before the first traded fit, and the gym
-  replay of the procedure stays close to the fast scorer.
+  replay of the procedure stays close to the fast scorer;
+- the replay statistic is the best procedure's Sharpe difference to `tsmom12`, and `tsmom12`
+  chosen at every fit scores exactly 0.
 """
 
 from __future__ import annotations
@@ -193,3 +195,7 @@ def test_walk_forward_procedures(lib: dict[str, ModuleType], small: Any) -> None
         assert len(fast) == len(g.rets)
         assert abs(st.sharpe(fast) - st.sharpe(g.rets)) < 0.05
     assert all(gp.valid(r[1]) for proc in procs.values() for rs in proc.chosen.values() for r in rs)
+    st = wf.replay_stats(p, procs)
+    assert st["best"] == max(st[n] for n in wf.PROCS)
+    twin = wf.Procedure("twin", weights=wf.oos_weights(p, {y: [gp.TSMOM12] for y in wf.FIT_YEARS}))
+    assert wf.replay_stats(p, {**procs, "evo-top1": twin})["evo-top1"] == 0.0

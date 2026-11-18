@@ -1,63 +1,59 @@
 # Next steps
 
-## Evo 1 (PAUSED 2026-11-18 ~11:20 UTC after burst 1, branch `evo-1`, draft PR #44 -> `carry-2`)
+## Evo 1 (PAUSED 2026-11-18 ~19:20 UTC after burst 2, branch `evo-1`, draft PR #44 -> `carry-2`)
 
 Question: can a genetic-programming search over trading rules find anything that beats `tsmom12`
-once it is charged for its luck (walk-forward selection, Reality Check / SPA over every rule
-tried, out-of-universe sets)? Card: `research/evo-1.md`; rules: `research/protocol.md`
-"Evolved-rule search tests".
+once it is charged for its luck (walk-forward selection, a full-search replay test, out-of-universe
+sets)? Card: `research/evo-1.md`; rules: `research/protocol.md` "Evolved-rule search tests".
 
-- Done: card and protocol section (before any code or number). Burst 1: `research/lib/evo_stats.py`
-  (Reality Check, SPA, effective number, deflated best, chunked), `research/lib/evo_gp.py`
-  (grammar, evaluation, operators, one GP run), `research/lib/evo_smoke.py` (toy world, no market
-  data), `research/lib/evo_feat.py` (the 72 inputs per Friday from `harness.Panel.view`; no
-  scorer yet), tests `tests/test_evo_stats.py`, `tests/test_evo_gp.py`, `tests/test_evo_feat.py`. 12 toy runs logged as
-  `control` rows `evo-1-smoke` in `research/tries.md`; table and reading in `research/evo-1.md`
-  "Build notes, burst 1".
-- Found in the toy: the SPA is right over a fixed list of rules (p 0.23-0.55 in noise) but
-  rejects in noise over the rules a GP visited (p <= 0.006 in 4 of 4 runs; the "found" rule
-  earns nothing on unseen days). The search does recover the planted rule at k=0.1 at the
-  card's size (500 x 30), not at 200 x 15.
-- Decided by the lead (2026-11-18 ~11:12 UTC) and written on the card and in `protocol.md`
-  before any real number: bar 3 (SPA p) is replaced by the **full-search replay test**: the
-  whole search rerun on 20 block-bootstrapped zero-drift worlds (seeds 101-120); a procedure
-  passes if its out-of-sample Sharpe difference to `tsmom12` beats the 95th percentile of the
-  replays' best scores. SPA and Reality Check are reported only. Budget escape now ~24
-  CPU-hours (this number is the lane's guess: the lead should confirm it).
-- Bar 3 tightened by the lead (2026-11-18 ~11:15 UTC, on the card): pass only if none of the 20
-  replays is at or above the real score (p = 1/21); if the budget allows, 40 worlds with at most
-  one above, chosen at the timing test. Seeds, bootstrap and the 24 CPU-hour budget confirmed.
-- Doing (burst 2, 2026-11-18 evening, lead's chain): (1) fast scorer `research/lib/evo_score.py`
-  + `tests/test_evo_score.py`: DONE (Sharpe within 0.04 of the gym on fixed rules, measured
-  0.028 max); (2) `evo_wf.py`, `evo_world.py`, timing test: DONE (one walk-forward search
-  ~0.04 CPU-h, whole plan ~1.2 CPU-h with 20 replays, ~2.1 with 40: no halving, 40 replay
-  worlds chosen per the card, lead may still pick 20); (3) noise and planted controls
-  through the full pipeline. Not tonight: the real search and the replay worlds. Held-out year
-  untouched.
-- Next, in this order (all specified on the card):
-  1. The fast scorer, in `research/lib/evo_feat.py` (sparse matrix from Friday weights to daily
-     returns, each asset's fill at its next open, overnight and open-to-close parts split on the
-     fill day, costs on the fill day), with a test that it stays within a stated tolerance of
-     `gym.simulate` on fixed rules, and a test that a fit is unchanged when bars after its date
-     are scrambled. The inputs are done: `evo_feat.friday_feats(panel, fridays)` gives the 72
-     inputs, `"coin"`, `"vol30"` and the eligibility mask; `tests/test_evo_feat.py` shows
-     `mom(365) > 0` equals the harness `tsmom12` and `gap(290) > 0` equals `sma200` exactly on a
-     synthetic panel, and that inputs do not see later bars. It loops over views in Python:
-     time it on the real panel (1962-2025 is ~3,300 Fridays) before the timing test.
-  2. `evo_wf.py` (15 fits, 5 seeds each, the three selection rules, candidates = 20 best
-     behaviourally different rules per run) and `evo_world.py` (shuffled zero-drift worlds from
-     real train bars, planted rule `H`). Timing test with no result looked at (budget escape on
-     the card), then commit and push.
-  3. Controls first (3 noise worlds, 3 planted strengths; ceiling before search results) and the
-     20 replay worlds of the new bar 3 (`evo_world.py` needs the block-bootstrap world next to
-     the plain shuffle; scores logged as `evo-1-replay` control rows before any real number),
-     then the real walk-forward through the gym, transfer to the three out-of-universe sets, static twins, re-evolved runs. Rows in
-     `research/tries.md` as the card says.
+- Done, burst 1: card, protocol section, `evo_stats.py` (Reality Check, SPA), `evo_gp.py`
+  (grammar, GP), `evo_smoke.py` (toy world), `evo_feat.py` (the 72 inputs). Toy finding: an SPA
+  over the rules a GP visited passes pure noise (p <= 0.006 in 4 of 4), so bar 3 became the
+  **full-search replay test** (lead, 2026-11-18 ~11:15 UTC, on the card before any real number):
+  pass only if none of 20 replay worlds is at or above the real score, or 40 worlds with at
+  most one, chosen at the timing test.
+- Done, burst 2 (2026-11-18 ~18:30-19:20 UTC), all in `research/lib/`, tests in `tests/`:
+  - `evo_score.py`, the fast scorer (`test_evo_score.py`): within 0.04 Sharpe of `gym.simulate`
+    on 16 fixed rules (measured 0.028), growth within 0.4 points, daily correlation > 0.995.
+    It models cash-limited coin buys on the weekend (without it, ETF-to-coin rotations were off
+    by up to 0.13 Sharpe).
+  - `evo_world.py` (shuffle and block-bootstrap worlds, the plant `H`) and `evo_wf.py` (the
+    walk-forward driver: 14 fits x 5 GP runs, candidates, `evo-top1` / `evo-ens10` /
+    `evo-val`, gym replay, commands `timing`, `ceilings`, `control`, `baselines`, `replay`);
+    `test_evo_wf.py`.
+  - **Timing test** (on the card, "Bar 3, replaced"): one walk-forward search ~0.04 CPU-hours
+    (a GP run 1.3-3.2 CPU s); the whole plan ~1.2 CPU-hours with 20 replays, ~2.1 with 40. No
+    halving. By the card's rule the lane chose **40 replay worlds (seeds 101-140, at most one at
+    or above)**; the lead may still pick 20 before the first replay runs.
+  - **Controls** (33 `control` rows `evo-1-control`, table `research/results/evo-1.md`):
+    planted `H` found at k=0.04 (top1 0.46, ens10 0.51; ceiling 0.82; equal weight -0.26 there)
+    and k=0.02 (all three), not at k=0.01. Noise found in 1 of 3 worlds (world 3: ens10 0.31 p
+    0.051, val 0.37 p 0.024), so bar 5 is not triggered.
+- **Open question for the lead (blocks the replays):** the control worlds have zero *log* drift,
+  which still pays a holder about half the variance a day: equal weight earns Sharpe 0.32 / 0.41
+  / 0.47 in the three noise worlds. Cash is the wrong null for the noise control, and noise
+  world 3's "find" is that premium (every procedure trails equal weight in its world). Options,
+  to be written as a dated card note before any replay or real number: (a) judge the noise
+  control against equal weight in the same world; (b) zero *mean simple* return worlds (shift
+  log returns by mean + variance / 2), rerun the 6 controls (~15 CPU-minutes) and decide
+  whether the replay worlds change too (the replay statistic is relative to `tsmom12`, so the
+  premium mostly cancels; the rest makes bar 3 harsher). Details in `research/evo-1.md`, end of
+  "Build notes, burst 2".
+- Doing: nothing. No process running. Held-out year untouched. No real-data search, replay
+  world or real-data number of evo-1 exists.
+- Next, in this order:
+  1. The lead answers the open question (card note), and confirms 40 replays (or 20).
+  2. Replay worlds: `uv run python research/lib/evo_wf.py replay SEED` for seeds 101-140 (or
+     101-120), each one `evo-1-replay` control row; ~2.5 CPU-minutes each with 8 workers
+     (~20 s wall). Run them one after another (each uses 8 processes).
+  3. Then the real walk-forward (needs a `real` command: 15 fits incl. the final fit, the three
+     procedures through the gym as `variant` rows, the `search` row, Reality Check / SPA /
+     deflated Sharpe as descriptions), transfer to the three out-of-universe sets, static
+     twins, re-evolved runs. Rows in `research/tries.md` as the card says.
   4. Tables `research/results/evo-1.md`, write-up at the top of `research/evo-1.md`, this
      section, PR text. Never merge.
-- Compute: CPU only, at most 2 heavy processes, `free -g` first; scratch under
-  `<cache_root>/derived/evo-1/`. The toy smoke takes ~1 s (200 x 15) to ~10 s (500 x 30) a run:
-  `uv run python research/lib/evo_smoke.py`.
+- Compute: CPU only; `evo_wf.py` uses 8 worker processes (a few hundred MB in all); run with
+  `OMP_NUM_THREADS=1`. Scratch (JSON per world) under `<cache_root>/derived/evo-1/`.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

@@ -122,6 +122,31 @@ Details the card left open, fixed in code before any control, replay or real-dat
   world's SPA p over its universe is not computed in this burst (the replay test replaced it
   as the bar; it is reported later with the real search).
 
+**Controls run (2026-11-18 ~19:05-19:09 UTC)**, all six of the card plus context rows; table in
+`results/evo-1.md`, 33 `control` rows in `tries.md`. About 2.5 CPU-minutes per world.
+
+- **Planted: found.** At k=0.04 `evo-top1` (Sharpe 0.46, p 0.009) and `evo-ens10` (0.51, p
+  0.002) reach more than half the ceiling (0.82), with weights correlated 0.47-0.56 with `H`'s,
+  in a world where equal weight loses (-0.26). At k=0.02 all three procedures are found (0.23
+  to 0.42, ceiling 0.45); at k=0.01 none (ceiling 0.32). So a later null on real data would
+  read "the search finds nothing honest", not "too weak to tell" (card, "Reading a fail").
+- **Noise: found in 1 of 3 worlds** (world 3: `evo-ens10` 0.31, p 0.051; `evo-val` 0.37, p
+  0.024; smallest p x 3 = 0.072, which would pass bar 1's p test). Bar 5 needs 2 of 3, so it
+  is not triggered.
+- **A flaw in the control worlds, found by the context rows:** "zero total log return" is not
+  "no edge for a holder". A long position earns about half the daily variance in simple
+  returns even with zero log drift, so plain equal weight has Sharpe 0.32, 0.41 and 0.47 in
+  the three noise worlds (p 0.057, 0.013, 0.007) and `tsmom12` 0.46 in world 3. Every search
+  procedure in noise trails equal weight in its world; world 3's "find" is this holding
+  premium, not search luck. The card's benchmark for the controls (cash, Sharpe 0) is the
+  wrong null. **For the lead, before any replay world runs:** either judge the noise control
+  against equal weight in the same world, or rebuild the worlds with zero mean simple return
+  (shift each asset's log returns by its mean plus half its variance), and say whether the
+  replay worlds change too. The replay statistic is already relative to `tsmom12` in the same
+  world, so the premium mostly cancels there; what is left rewards rules that hold more
+  high-volatility assets than `tsmom12`, which makes bar 3 harsher, not softer. Not changed
+  here: the controls were run as the card says.
+
 ## Card (written 2026-11-18 ~01:50 UTC, before any evo-1 code or number)
 
 Seen before writing: every result in `ideas.md`, `tries.md` and `results/` up to carry-2. No

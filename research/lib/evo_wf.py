@@ -24,6 +24,8 @@ Commands (run from the repo root, `uv run python research/lib/evo_wf.py ...`):
 - `timing`: the timing test of the card (no fitness or result is printed), on control world 1.
 - `ceilings`: the planted controls' ceilings (`H` through the gym), logged first.
 - `baselines noise|plant`: equal weight and `tsmom12` (no search) in the control worlds.
+- `replay SEED`: one replay world of bar 3 (seeds 101-140), logged as an `evo-1-replay` row.
+  Built 2026-11-18, not run yet: the lead's open question on the worlds comes first.
 - `control noise SEED` / `control plant K`: one control world through the whole pipeline
   (14 fits; the final fit enters no out-of-sample number), logged as `control` rows
   (`evo-1-control`) in `research/tries.md`.
@@ -34,6 +36,7 @@ Scratch output goes to `<cache_root>/derived/evo-1/` (never committed).
 from __future__ import annotations
 
 import bisect
+import fcntl
 import json
 import math
 import multiprocessing as mp
@@ -274,6 +277,18 @@ def oos_weights(p: Prepared, chosen: dict[int, list[gp.Rule]]) -> np.ndarray:
     return w
 
 
+def replay_stats(p: Prepared, procs: dict[str, Procedure]) -> dict[str, float]:
+    """Bar 3's statistic per procedure: fast-scorer out-of-sample Sharpe minus `tsmom12`'s on
+    the same days of the same world; `best` is a replay world's score."""
+    bench = stats.sharpe(p.oos_book.daily(gp.weights(gp.TSMOM12, p.six_feats, p.six_elig)))
+    out = {}
+    for name, proc in procs.items():
+        assert proc.weights is not None
+        out[name] = stats.sharpe(p.oos_book.daily(proc.weights)) - bench
+    out["best"] = max(out[n] for n in PROCS)
+    return out
+
+
 def lookup(fridays: list[date], w: np.ndarray, syms: list[str]) -> harness.ResearchStrategy:
     """A weight matrix as a daily research strategy, mapped to Fridays like `common.weekly`."""
     row = {f: i for i, f in enumerate(fridays)}
@@ -477,6 +492,39 @@ def world_baselines(which: str) -> None:
             _log_control(run, f"{p.label}: {name}, no search (world context; p vs cash {pv:.3f})")
 
 
+def replay(seed: int) -> None:
+    """One replay world of bar 3 (block bootstrap, zero log drift): the whole walk-forward,
+    scored as the best of the three procedures' Sharpe differences to `tsmom12` (fast scorer).
+    Logged as one `control` row (`evo-1-replay`) and written to the scratch folder."""
+    p = prepare(ew.world(ew.load_real(), "block", seed))
+    runs = search(p)
+    procs = select(p, runs)
+    st = replay_stats(p, procs)
+    formulas = sum(r["formulas"] for r in runs)
+    cells = ", ".join(f"{n} {st[n]:+.3f}" for n in PROCS)
+    row = (
+        f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | evo-1-replay | {p.label}: best Sharpe "
+        f"difference to tsmom12 out of sample, fast scorer ({cells}; {formulas} formulas) | "
+        f"control | train | {OOS_START} | {SIX_END} | {st['best']:.3f} | - | - | - |\n"
+    )
+    with harness.TRIES.open("a") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        f.write(row)
+    (scratch() / f"replay-{seed}.json").write_text(
+        json.dumps(
+            {
+                "seed": seed,
+                "stats": st,
+                "rules": {n: {y: [gp.show_rule(r) for r in rs] for y, rs in pr.chosen.items()}
+                          for n, pr in procs.items()},
+                "cpu_h": sum(r["cpu"] for r in runs) / 3600,
+            },
+            indent=1,
+        )
+    )  # fmt: skip
+    print(f"{p.label}: best {st['best']:+.3f} ({cells})", flush=True)
+
+
 def main(argv: Sequence[str]) -> None:
     if argv[:1] == ["timing"]:
         timing()
@@ -484,6 +532,8 @@ def main(argv: Sequence[str]) -> None:
         ceilings()
     elif argv[:1] == ["baselines"] and argv[1:] in (["noise"], ["plant"]):
         world_baselines(argv[1])
+    elif argv[:1] == ["replay"] and len(argv) == 2:
+        replay(int(argv[1]))
     elif argv[:1] == ["control"] and len(argv) == 3 and argv[1] in ("noise", "plant"):
         control(argv[1], argv[2])
     else:
