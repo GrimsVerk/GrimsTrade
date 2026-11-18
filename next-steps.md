@@ -89,7 +89,12 @@
     2020, citation checked) fails: primary Sharpe 1.05 vs 1.05 (p 0.49); paper's years in our
     data -0.2 bps/day, after sample +0.4 (t 0.1); b6 -0.03, full -0.04. Family 61, 14 tested,
     0 passed. Survey-2 list used up: only `announcement-premium` live (event study first).
-  - RUNNING: `ann-1` (`grimstrade-ann1`: FOMC announcement-premium event study), `trend-1926-fix`
+  - DONE `ann-1` (draft #65 -> survey-3): FOMC day-0 premium replicates in-paper (SPY +30.9
+    bps, t 3.06, 1994-2011, 138 meetings), gone after (2015-2025: -0.8, t -0.06; Lucca-Moench
+    2 pm window +8.9, t 0.8). Dead by the pre-set rule; no card, no tries. Published calendar
+    effects 0 for 3 after publication: new lists should favour mechanisms with post-sample
+    years or forward-only checks. Family stays 61 / 14 tested / 0 passed.
+  - RUNNING: `trend-1926-fix`
     (`grimstrade-trend1926b`: era-2 replay gaps, TREND_ERA=1962 test, docs) (`grimstrade-cashint`: interest on idle cash in the gym, draft PR
     -> main)
     (`grimstrade-evo2`: <=8 inputs, six-asset days only, plant calibrated per world, controls
