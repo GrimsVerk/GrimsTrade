@@ -28,8 +28,9 @@ script and logged test behind it.
 > 2. **The rest:** sell on the trading day after the index first closes below its 200-day
 >    average, or on the fallback day, whichever comes first. Shares: fallback
 >    **Fri 18 Dec**, last safe day **Mon 21 Dec**. Funds: fallback **Fri 11 Dec**, order in
->    before the fund's cut-off; last safe Tue 15 or Wed 16 Dec for a fund that pays out within
->    2-6 business days, earlier for slower funds (section 6.2, step 3).
+>    before the fund's cut-off; last safe Tue 15 or Wed 16 Dec for a fund whose cash reaches
+>    your broker within 2-6 business days of the order. A slow fund (cash at the broker within
+>    5-10 business days): fallback **Fri 4 Dec**, last safe Wed 9 Dec (section 6.2, step 3).
 > 3. **Each time cash lands:** if it settled in another currency, convert it to euros the same
 >    day and move it to your Dutch account. Do not hold the other currency while you wait.
 > 4. **Park it in euro cash:** a Dutch savings account under the deposit guarantee, or a euro
@@ -161,7 +162,7 @@ Ranking = strength of evidence × usability within six weeks (lit §15).
 |---|---|---|---|---|
 | **1. On your start day, sell half of each holding; sell all of a holding whose index already closed below its 200-day average** | Six-week returns are mostly noise (2.1). Staging costs little and caps regret (Vanguard, 2.2) | Scale, don't flip (lesson 3) | "Half now, half at the fallback" passed the six-week bar (bt Part A). Per holding: Oslo fits the card's `late` sample; US and tech holdings fit only the post-hoc `now-like` sample, where staging also held up (section 6.1) | Bar fixed before any number. But `late` was defined to fit Nov 2026, its windows come from only about 20 separate spells, and the US/tech evidence is post hoc |
 | **2. Sell the rest on the trading day after the first close below the 200-day average, else at the fallback** | Trend is the only reaction rule with a long out-of-sample record (Faber, Moskowitz-Ooi-Pedersen, Hurst-Ooi-Pedersen). Its whipsaw cost (Zakamulin) does not matter for a forced sale. The 200-day daily line is a heuristic (2.3) | React, don't predict (lessons 1, 6). Pre-commit, because exits are a race (Abreu-Brunnermeier) | Avoided a third or more of the fall in 8 of 8 crashes (bt Part B). Added to staging, it cut the mean loss when a 10% fall came in the window from -5.0% to -1.4% (S&P, `late`) | **Post hoc:** the combination was added after the first results (bt amendment). 8 crashes are 8 observations |
-| **Fallback 18 Dec for shares, 11 Dec for funds; last safe 21 Dec (shares), 15-16 Dec (funds paying out in 2-6 business days)** | None: this is the calendar | A plan must work if the pop comes late (lesson 2) | Settlement, fund cut-offs and the holiday calendar (park sections 4 and 7). The fallback day is the forced sale in the test | A fact, not a market signal. Fund dates rest on a platform's "normally" figures |
+| **Fallback 18 Dec for shares, 11 Dec for funds (4 Dec for slow funds); last safe 21 Dec (shares), 15-16 Dec (funds with cash at the broker within 2-6 business days), 9 Dec (within 5-10)** | None: this is the calendar | A plan must work if the pop comes late (lesson 2) | Settlement, fund cut-offs and the holiday calendar (park sections 4 and 7). The fallback day is the forced sale in the test | A fact, not a market signal. Fund dates rest on a platform's "normally" figures |
 | **3. Move the money to euros the same day** | None | None | Currency risk of a smaller non-euro market: the krone (NOK) fell about 20% against the euro in late 2008 and 18.5% in one month in 2020. OBX lost 62% in euros in 2007-09, more than the S&P's 52% (haven, park) | Descriptive |
 | **4. Park in euro cash** | Havens are conditional on the kind of crash; money funds can break (2.4) | Crash safety from the asset (lesson 6). Berkshire fell 54% in 2007-09 | In our table of 10 crashes, only euro cash never lost value (haven) | Descriptive, nothing fitted |
 | **5. Buy back in thirds at -20%, -30% and -40%, all in by 29 Dec 2028** | A lump sum usually wins (Vanguard). The literature gives no threshold | Re-enter with rules set in advance, and expect to be early (lesson 4). The deadline avoids the Grantham/Hussman failure | No re-entry rule beat buying back at once. The levels are ours (reentry card, fixed before any number) | 8 high-valuation episodes, only 3 since 1972 |
@@ -408,22 +409,25 @@ For each holding still unsold: did its index close below its 200-day average tod
 case still reaches your Dutch account by Wed 30 Dec, with Thu 31 Dec spare. The fallback is the
 plan; the last-safe day is for a missed fallback.
 
-| Holding (by settlement time) | Fallback | Last safe day (fund: order in before the cut-off) | Worst-case cash in NL if sold on the fallback / last-safe day |
+| Holding (by when the cash is at the broker) | Fallback | Last safe day (fund: order in before the cut-off) | Worst-case cash in NL if sold on the fallback / last-safe day |
 |---|---|---|---|
-| Shares settling T+2 (Oslo Børs calendar) | **Fri 18 Dec** | **Mon 21 Dec** | Tue 29 Dec / Wed 30 Dec |
-| US shares (settle T+1) | **Fri 18 Dec** | **Mon 21 Dec** | as T+2 shares or a day earlier |
-| Nordic fund paying out 2-5 business days after the order | **Fri 11 Dec** | **Wed 16 Dec** | Wed 23 Dec / Wed 30 Dec |
-| Non-Nordic or global fund paying out 2-6 business days after the order | **Fri 11 Dec** | **Tue 15 Dec** | Mon 28 Dec / Wed 30 Dec |
-| Any fund paying out 5-10 business days after the order | **Fri 4 Dec** | **Fri 11 Dec** | Mon 21 Dec / Wed 30 Dec |
+| Shares, cash at the broker 2 trading days after the sale (T+2, Oslo Børs calendar) | **Fri 18 Dec** | **Mon 21 Dec** | Tue 29 Dec / Wed 30 Dec |
+| US shares (cash at the broker T+1) | **Fri 18 Dec** | **Mon 21 Dec** | as T+2 shares or a day earlier |
+| Nordic fund, cash at the broker within 2-5 business days of the order | **Fri 11 Dec** | **Wed 16 Dec** | Wed 23 Dec / Wed 30 Dec |
+| Non-Nordic or global fund, cash at the broker within 2-6 business days of the order | **Fri 11 Dec** | **Tue 15 Dec** | Mon 28 Dec / Wed 30 Dec |
+| Any fund, cash at the broker within 5-10 business days of the order (slow platform) | **Fri 4 Dec** | **Wed 9 Dec** | Wed 23 Dec / Wed 30 Dec |
 
-Assumptions (park section 7.3): the "2-5" and "2-6" days count business days from the day the
-order goes to the fund manager, and platforms quoting such figures call them "normal" and do not
-guarantee a date; the broker pays out within 2 bank days at worst; converting and moving the
+Assumptions (park section 7.3; every row uses the same chain, `report_checks.py`): "2-5",
+"2-6" and "5-10" days mean the cash is at your broker within that many business days, counted
+from the day the order goes to the fund manager; platforms quoting such figures call them
+"normal" and do not guarantee a date; after that, the broker pays out within 2 bank days at worst; converting and moving the
 money to a Dutch account takes 1 day; fund days skip 24, 25 and 31 Dec (and 28 Dec for global
 funds). A fund may be allowed by its rules to take up to two weeks to pay a redemption, which is
 why the fallback, not the last-safe day, is the plan. Commissions, fund cut-offs and settlement
-times vary by broker: check yours, and if unsure, use the slower row. For a 5-10 day fund,
-step 2 ends Thu 3 Dec.
+times vary by broker: check yours, and if unsure, use the slower row. If your platform's figure
+is the day the cash reaches your bank account (not the broker), drop the 2 payout days: the
+dates above then have that much spare. For a 5-10 day fund, step 2 ends Thu 3 Dec; a 5-10 day
+global fund that skips 28 Dec has the same dates, because its tenth day falls before Christmas.
 
 Shares sold later than 21 Dec: Tue 22 Dec settles Mon 28 Dec (no spare day); Mon 28 Dec is the
 last sale that certainly settles in 2026 (Wed 30 Dec), with the cash likely in January; Wed 30
@@ -438,8 +442,8 @@ park sections 3.4 and 7.1.
 **Step 4. Move the money (after each sale).**
 
 1. Shares: two trading days after the sale, the cash settles at the broker (US shares: one).
-   Funds: the cash shows after the fund's settlement time (e.g. 2-5 or 2-6 business days after
-   the order).
+   Funds: the cash reaches the broker after the fund's settlement time (2-5, 2-6 or up to 10
+   business days after the order).
 2. Pay it out, or move it, to the account where you will park it (section 7). Check your
    broker's payout rules and times.
 3. If the proceeds settled in another currency, convert them to euros the same day. Low-cost
@@ -502,12 +506,13 @@ SELL
         yes -> sell the rest the next trading day (fund: before its cut-off)
 [ ] Fallback, sell everything left:
         shares Fri 18 Dec (missed it: Mon 21 Dec is the last safe day)
-        funds  Fri 11 Dec (last safe, 2-5/2-6 day funds: Nordic Wed 16 Dec, global Tue 15 Dec;
-               5-10 day funds: fallback Fri 4 Dec, last safe Fri 11 Dec)
+        funds  Fri 11 Dec (last safe, cash at broker in 2-5/2-6 days: Nordic Wed 16 Dec,
+               global Tue 15 Dec; cash at broker in 5-10 days: fallback Fri 4 Dec,
+               last safe Wed 9 Dec)
 [ ] Thin Oslo stock: limit order at or just below the best bid, never a market order
 
 MOVE (after each sale)
-[ ] Cash settled (shares +2 trading days; funds per their settlement time, e.g. 2-6 days)
+[ ] Cash at the broker (shares +2 trading days; funds +2-6, slow ones up to +10 business days)
     -> pay out / move to your Dutch account
 [ ] Same day: non-euro proceeds -> EUR. No waiting for a better rate.
 
@@ -738,7 +743,7 @@ above, against the same literature and data.
 | Gold in the Lehman weeks | -22% (haven, dollars, gold futures own fall) | -16% (haven, euros) | Currency. |
 | Short euro govt bonds | -3.1% / -4.6% (haven: DBXP, 2020/2022 own falls) | -4.29% (2022) and -6.10% since launch (park: IBGS) | Different products and windows. Both say: a few percent at worst. |
 | Trend following in big drawdowns | Positive in 8 of 10 (lit, full text of Hurst-Ooi-Pedersen) | "8 or 9" (haven, summary) | Use 8 of 10. |
-| Spare day | bt: 30 Dec as a spare day | park: a 30 Dec sale settles Mon 4 Jan 2027 | 30 Dec is not a spare day for cash in 2026; Mon 21 Dec is the spare for shares, Tue 15 / Wed 16 Dec for funds paying out in 2-6 business days. |
+| Spare day | bt: 30 Dec as a spare day | park: a 30 Dec sale settles Mon 4 Jan 2027 | 30 Dec is not a spare day for cash in 2026; Mon 21 Dec is the spare for shares, Tue 15 / Wed 16 Dec for funds with cash at the broker within 2-6 business days, Wed 9 Dec within 5-10. |
 | Drawdown and volatility exits | lit ranks a drawdown stop 2nd and VIX/credit as confirmers | bt: trailing stops and the VIX trigger failed the six-week bar (they rarely fire in time) | Not used for the sale. Over years, drawdown stops do protect (bt Part B). VIX/credit are kept only to bring a re-entry tranche forward. |
 | S&P distance from its high | -2.9% on 12 Nov (reentry) | -6.1% on 17 Nov (bt) | Different dates. inv's "-9.1% in 2026" is another measure: the deepest fall within calendar 2026 (its script). |
 | Berkshire chair | Buffett stays chairman, Abel CEO from 1 Jan 2026 (inv: AP via NY1, 28 Feb 2026; also the reviewer) | Howard Buffett now chair (park: one TIKR blog post) | **Resolved for the sourced date:** Buffett was chairman at 28 Feb 2026 (AP). The TIKR claim has no second source (unverified). It does not change the verdict. |
@@ -779,7 +784,7 @@ above, against the same literature and data.
 ### 10.4 Practical items not verified
 
 Broker payout times and commission classes (they vary by broker: check yours); whether a fund
-platform's "2-5" / "2-6" days count from the order day (assumed) or the trade date, and whether
+platform's "2-5" / "2-6" / "5-10" days count from the order day (assumed) or the trade date, and whether
 fund cash is withdrawable the day it shows; other fund platforms' settlement wording and payout
 times; whether VPS settles share trades on Thu 31 Dec (Oslo Børs and the funds are closed);
 current bid-ask spreads of Oslo small caps and the closing-auction times; banks' FX markup on
