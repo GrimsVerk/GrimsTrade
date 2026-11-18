@@ -291,6 +291,14 @@
     CAVEAT: W17 upgrade dates were from memory, not checked against ethereum.org (verdict
     unlikely to move; check before reuse). List 72 / 16. 0 rows.
   - 23:10 UTC 5h 0.71, weekly 0.92: no new lanes; running survey-6, fast-reentry.
+  - DONE `survey-6` (draft #91 -> survey-5): 15 families via 60 live funds vs matched index
+    funds: no family beat its plain index after fees. Long-only factors (value, momentum,
+    quality, low-vol, multi-factor, dividend) within -0.06..+0.03 Sharpe; option writing -0.20
+    (fee-free BXM -0.17), risk parity -0.30 vs 60/40, tail hedges -0.54, FX carry ~0. Positive
+    and uncorrelated: long-short style premia 0.50 (t 1.7), merger arb 0.40, trend 0.17 (gained
+    in every crash). Paper-to-live kept: median 8% of published Sharpe. 15 `live-check` rows.
+    Next (judged on crash behaviour): small SPY/QQQ downtrend short sleeve; defensive weights
+    write-up; descriptive multi-signal screen (low prior).
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
