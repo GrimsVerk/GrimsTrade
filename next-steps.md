@@ -1,5 +1,17 @@
 # Next steps
 
+## Wide 2 (done 2026-11-18, branch `wide-2`, draft PR -> `wide-1`)
+
+One mechanism picked from the 42 that wide-1 listed and did not card: Q5, trend age (hazard
+rate). Rule `age4`: hold a `tsmom12` slot only once the signal has been on for four Fridays.
+**Fails train: 0.99 against 1.05 (difference -0.06, 90% range -0.11 to -0.01), behind in all
+five eras; held-out year unspent.** Short spells are common (50 of 111 end within four weeks)
+but cheap; the three missed weeks of lasting trends cost more. Write-up `research/wide-2.md`;
+table `research/results/trend-age.md`; 7 rows in `tries.md`.
+
+- Doing: nothing. No process running.
+- Next: nothing from this card. wide-1's three lanes below stand as written.
+
 ## Wide 1 (done 2026-11-18, branch `wide-1`, draft PR #33 -> `carry-2`)
 
 New hypotheses from ten other fields (ecology, epidemiology, signal processing, control,

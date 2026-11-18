@@ -975,3 +975,10 @@ Never edit or delete a row.
 | 2026-11-17 23:26 | contagion-catchup | TS@coin8 | baseline | train | 2019-08-08 | 2025-11-09 | 0.74 | +401.7% | 64.3% | 4.19 |
 | 2026-11-17 23:26 | contagion-catchup | EW@coin8 | baseline | train | 2019-08-08 | 2025-11-09 | 0.81 | +659.8% | 83.4% | 2.49 |
 | 2026-11-17 23:26 | contagion-catchup | catchup@coin8 | robustness | train | 2019-08-08 | 2025-11-09 | 0.38 | +14.9% | 70.2% | 46.05 |
+| 2026-11-18 11:13 | trend-age | age4 | variant | train | 1994-02-01 | 2025-11-09 | 0.99 | +12259.5% | 37.9% | 1.93 |
+| 2026-11-18 11:13 | trend-age | age4@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.60 | +206.1% | 17.0% | 1.65 |
+| 2026-11-18 11:13 | trend-age | age4@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.37 | +13.7% | 90.8% | 3.44 |
+| 2026-11-18 11:13 | trend-age | age4@GSPC | robustness | train | 1962-01-02 | 1993-01-27 | 0.41 | +225.9% | 33.2% | 1.10 |
+| 2026-11-18 11:13 | trend-age | age4@N225 | robustness | train | 1966-01-06 | 2025-11-09 | 0.53 | +3554.2% | 45.0% | 1.46 |
+| 2026-11-18 11:13 | trend-age | age4@FTSE | robustness | train | 1985-01-03 | 2025-11-09 | 0.28 | +179.5% | 40.4% | 1.50 |
+| 2026-11-18 11:13 | trend-age | age4@GDAXI | robustness | train | 1988-12-30 | 2025-11-09 | 0.47 | +773.7% | 55.2% | 0.97 |
