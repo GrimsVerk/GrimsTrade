@@ -1,5 +1,13 @@
 # Next steps
 
+## Evo 2 (IN PROGRESS 2026-11-18 from ~19:40 UTC, branch `evo-2` from `evo-1`)
+
+Redesign of evo-1 after its planted control failed. Card: `research/cards/evo-2.md` (committed
+before any evo-2 number): 8 inputs, fitness on six-asset days only, 12 nodes, one fixed greed
+(500 x 10, penalty 0.02), plant calibrated per world to ceilings 0.8 (gate) and 0.5. Chain:
+controls (noise 31-33 must be 0 of 3; plant 0.8 on 34-36 found in >= 2 of 3) -> 40 replays
+(201-240) -> one real search on train -> verdict. Doing: implementing the card.
+
 ## Evo 1 (STOPPED 2026-11-18 ~19:35 UTC: the search fails its planted control; close or redesign, branch `evo-1`, draft PR #44 -> `carry-2`)
 
 Question: can a genetic-programming search over trading rules find anything that beats `tsmom12`
