@@ -74,3 +74,85 @@ What the gaps say, and the likely causes:
 
 **Usable for monthly tests:** Shiller bond from label 1953-04, gold from 1971-01, both with a
 one-month gap between the last return a signal sees and the first return it trades.
+
+## 3. trend-where-long: does `where-vol` change the worst loss on bonds and gold before 2002?
+
+Card `research/cards/trend-where-long.md` (commit `11beac0`, pushed before any number). Code
+`research/lib/trend_where_long.py` (rule copied from trend-where, translated to monthly bars,
+one-month gap between signal and traded return; tests `tests/test_trend_where_long.py`: all-yes
+is `tsmom12` exactly, all-no is hold, answers and weights unchanged when later returns are
+replaced). One run; 18 rows in `research/tries.md` (idea `trend-where`, books `*-m`). Tables:
+`research/results/trend-where-long.md`. Held-out year not touched (last return 2025-10).
+
+### In plain words
+
+**On bonds the switch never drops the filter, so nothing changes. On gold it drops the filter
+from 1986, and the worst loss gets deeper by 9 points before 2002 and by 18 points after.
+2022 was not a one-off: wherever `where-vol` drops the filter on a non-stock slot, it gives up
+the filter's protection in the next long fall.** Robustness of a rule that already failed its
+bar; nothing is selected, nothing changes in the live rule.
+
+| Worst loss (monthly) | `where-vol` | `tsmom12` | Hold | Deeper than `tsmom12`? |
+|---|---:|---:|---:|---|
+| Bond alone, 1954-06 to 2001 | 25.6% | 25.6% | 15.2% | no (identical) |
+| Gold alone, 1972-02 to 2001 | **51.7%** | 42.6% | 62.1% | **yes, +9.1 pts** (1980-01 to 1999-07) |
+| Gold alone, 2002-2025 | **39.3%** | 21.7% | 39.3% | **yes, +17.6 pts** (2011-09 to 2015-12) |
+| Bond + gold book, 1972-02 to 2001 | 21.6% | 21.6% | 28.1% | no (both 1980-01 to 1982-01) |
+| Bond + gold book, 2002-2025 | **21.3%** | 12.0% | 20.1% | **yes, +9.3 pts** (gold 2012-2015) |
+
+- **Bonds: yes at all 71 refits (1954-2024).** On monthly 10y returns the out months were
+  clearly rougher than the in months (Dec 1981: 8.1% against 4.7% a year; Dec 2000: 7.9% against
+  6.1%; Dec 2024: 7.2% against 6.3%), so the filter stays. That differs from trend-where, where
+  daily TLT (20+ year bonds) turned no from 2009; the gap is shrinking here too (7.2 vs 6.3 by
+  2024), but 1954-1981 weighs on the evidence for decades. So on this data the bond answer is
+  not the one that cost 2022.
+- **Gold: no from the Dec 1985 refit on (40 of 53 refits no; 16 of 29 before 2002).** The first
+  five years with enough out months (1981-85) already show out months calmer (17.8% against
+  30.0%): gold's violent months were rallies, in months. Dropping the filter then held gold
+  through 1987-1999 (about half lost on monthly averages, Dec 1987 to Jul 1999), where
+  `tsmom12` was out part of the time.
+  Sharpe to 2001: 0.47 against 0.51 (p 0.73); 2002-2025: equal to hold, 0.94 against 0.93.
+- **In the two-asset book the pre-2002 worst loss does not move** (both 21.6%, the 1980-82
+  gold-and-bond fall, before the gold answer turned no); after 2002 it is 9 points deeper.
+- **Sensitivities (disclosed, not selectable).** With 12-month minimums gold turns no already
+  from Dec 1977 and the worst loss is that of hold (62.1% alone; 34.9% against 21.6% in the
+  pair book): the waiting period of the 60-bar minimum was protecting the rule. Without the gap
+  month (`-lag0`), every trend rule looks better (bond `tsmom12` Sharpe 0.97 against 0.82, gold
+  worst loss 32.5% against 42.6%): that is the monthly-average overlap, not skill; the
+  where-vol-versus-`tsmom12` ordering is unchanged.
+- **Side finding, bonds alone:** the trend filter itself did not shrink the bond worst loss
+  before 2002. Hold fell 15.2% (1979-08 to 1980-03); `tsmom12` lost 25.6% from 1979-08 to
+  1982-01, whipsawed in the Volcker years (in for the Oct 1979 and Feb 1980 falls, out for the
+  Apr-Jun 1980 rally, in for the Jul-Sep 1980 fall, out for the Nov 1981 rally), Sharpe 0.82 against hold's 0.99 (p 0.01). On monthly
+  averages with a one-month gap, a 12-month filter on 10y bonds paid for itself only in the
+  2020-2023 shock (15.3% against 25.2%).
+
+### How sure
+
+- One run, card first, no tuning. Gold has two long falls in the span (1980-1999, 2011-2015)
+  and the switch had dropped the filter for 1986-1999 and for 2011-2015: two more episodes on
+  top of 2022, so the trend-where worry now rests on three. Bonds give no answer to the question,
+  because the switch never fired.
+- Monthly averages (gold) and a rebuilt 10y constant-maturity bond (Shiller) are not fund
+  prices: levels of worst loss are shallower than on daily closes, and the one-month gap delays
+  every rule more than a weekly rule would be. The comparison between rules is like for like.
+- Cash earns 0 (repo convention): in the 1970s-80s bills paid 5-15%, so the rules that sit out
+  (`tsmom12`) are understated on growth here; worst losses are not affected.
+
+### What this means
+
+1. The live rule stays (`tsmom12` with the filter everywhere); this confirms trend-where's own
+   conclusion that the filter on the gold slot is insurance, now on 1972-2025 instead of 2022.
+2. The walk-forward "rougher out than in" test reads gold wrongly for risk: gold's rallies are
+   its rough months, so the test says "the filter buys no calm", yet the filter is what keeps the
+   book out of gold's long bears. Volatility of out months is the wrong yardstick for an asset
+   whose risk is long slow falls.
+
+### Next
+
+- trend-where can be closed: its open worst-loss question now has an answer on gold (deeper,
+  three episodes) and none possible on US 10y bonds (the switch never fires on 1954-2024).
+- If a third non-stock slot is wanted: retry FRED (`PPIACO` all-commodity index 1913-, timed out
+  from this machine on 2026-11-18) and run `where-vol` on it unchanged, card first.
+- Loaders for the paper book: Shiller bond from 1953-04 and datahub gold from 1971-01 are usable
+  as monthly stress histories, with the one-month gap; neither is a substitute for daily data.
