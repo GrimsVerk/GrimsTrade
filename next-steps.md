@@ -1,5 +1,31 @@
 # Next steps
 
+## Wide 3 (done 2026-11-18, branch `wide-3`, draft PR #54 -> `wide-2`)
+
+Two more picks from wide-1's list, then three new mechanisms and a test of the best one. Choice
+note, cards and code were each pushed before any number. **All three tested ideas fail train;
+held-out year unspent.** Write-up `research/wide-3.md`; tables `research/results/`; 8 rows in
+`tries.md`.
+
+- `hedge-regime` (F2, stock-bond correlation as order parameter: keep TLT out of trend while
+  it hedges): 1.05 vs 1.05 (+0.003, p 0.39); other ETFs -0.006. One sign flip (2023).
+- `attention-peak` (P2, SIR on English-Wikipedia page views: leave a coin after its attention
+  peak): 1.02 vs 1.05 (-0.03); other coins 0.33 vs 0.54. Caught 2017-12, wrong in 2021.
+- `opex-pin` (new W1, option-expiry week, idle cash into stocks): 1.01 vs 1.05 (-0.04), behind
+  its placebo week. SPY expiry week vs average week: -0.3 bps (t 0.0, 381 weeks).
+- New, untested, with test plans in `research/wide-1.md` (last section): W2 `tax-drain`
+  (reserve drain on tax dates, 1994-2007 as placebo), W3 `lunar` (lowest prior).
+
+Count (corrected): wide-1's list has 46 entries; 10 cards now cover 11 of them plus one new
+mechanism; 35 listed entries uncarded (wide-2's "39" counted cards, not entries). With the 3
+new ones the family is 49; the next test is read at p < 0.10 / 49.
+
+- Doing: nothing. No process running.
+- Next: W2 `tax-drain` as an event study first (check when Treasury receipts moved from
+  commercial-bank accounts to the Fed before writing its placebo). Of the 35 listed entries
+  left, none has a better prior than the failures so far; the list looks exhausted for this
+  book.
+
 ## Wide 2 (done 2026-11-18, branch `wide-2`, draft PR #47 -> `wide-1`)
 
 One mechanism picked from the 42 that wide-1 listed and did not card: Q5, trend age (hazard

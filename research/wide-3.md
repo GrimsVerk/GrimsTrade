@@ -1,7 +1,27 @@
-# Wide 3: two more mechanisms from wide-1's list
+# Wide 3: two more mechanisms from wide-1's list, and three new ones
 
 Research run wide-3, 2026-11-18. Branch `wide-3` (from `wide-2`). Research only: fake money,
 public data, no change to the gym, the daily runner or the live strategies.
+
+## In plain words (results, 2026-11-18)
+
+**All three ideas tested fail against the 12-month trend rule (`tsmom12`, Sharpe 1.05). The
+held-out year was not looked at.**
+
+| Idea (field) | In one line | Sharpe vs 1.05 | Why |
+|---|---|---:|---|
+| `hedge-regime` (physics, F2) | Keep TLT out of trend while it moves against stocks | 1.05 (+0.00) | The sign flipped once (2023); the added bond weeks earned nothing (+1 bp a week) |
+| `attention-peak` (epidemiology, P2) | Leave a coin once its Wikipedia attention has surged and turned down | 1.02 (-0.03) | Caught the 2017 top, but attention peaked at the start of the 2021 rally, not its end; other coins 0.33 vs 0.54 |
+| `opex-pin` (physics/control, new W1) | Idle cash into stocks for the option-expiry week | 1.01 (-0.04) | The expiry week is an average week since 1994 (-0.3 bps); buying stocks in a downtrend costs, whatever the week |
+
+Three new mechanisms were added to wide-1's list (W1-W3); W2 `tax-drain` and W3 `lunar` are
+written up with test plans and untested. Count: 49 mechanisms, 10 tested, none passed; the bar
+for the next is p < 0.10 / 49.
+
+What it adds to wide-1 and wide-2: the two remaining "different input" ideas on the list (a
+correlation regime, outside attention data) fail the same way the price-only ones did, and the
+trend rule's idle cash is not a free resource: it is idle because the assets it could buy are
+falling.
 
 ## Step 1. Choice (pushed 2026-11-18 19:05 UTC, commit 3dea3e7, before any number of this run)
 
@@ -154,3 +174,92 @@ be the wrong audience after 2018 (the November 2021 top did not trigger it), and
 was tested, on purpose.
 
 **Compared with my guess** (card): 3%, -0.10 to +0.15. It came out at -0.03, inside the range.
+
+## Step 3. Three new mechanisms, and a test of the best one
+
+Both picks failed, so three mechanisms that are not in wide-1's list were written down before
+any number (`wide-1.md`, last section; pushed in d63aade): **W1 `opex-pin`** (physics/control:
+option dealers' hedging damps the market into the monthly expiry), **W2 `tax-drain`**
+(hydraulics: tax dates drain bank reserves into the Treasury's account) and **W3 `lunar`**
+(chronobiology). The family is now 49 and a test is read at p < 0.10 / 49 = 0.0020. W1 was
+carded (`cards/opex-pin.md`, pushed in 3d0a81a) and tested.
+
+## W1 result: opex-pin (run once, 2026-11-18 19:16 UTC, train only)
+
+**It fails, and the mechanism is not there at the index level: the expiry week earned no more
+than an average week on SPY over 1994-2025 (-0.3 bps, t -0.02, 381 weeks). The overlay is
+behind the twin (1.01 against 1.05) and behind its own placebo week (1.03). The held-out year
+was not looked at.** Table: `results/opex-pin.md`; 4 rows in `tries.md` (1 variant, 3
+robustness: the placebo `pin-after` and the two out-of-universe sets).
+
+| | `pin` | `pin-after` (placebo week) | `tsmom12` |
+|---|---:|---:|---:|
+| Sharpe, six assets | 1.01 | 1.03 | 1.05 |
+| Difference to the twin (p) | -0.04 (0.76) | -0.02 (0.64) | |
+| Max drawdown | 40.6% | 35.3% | 36.5% |
+| Turnover a year | 9.4 | 9.4 | 2.7 |
+| Other ETFs / indexes | -0.14 / -0.08 | | |
+
+| Expiry week minus the average week (close to close) | Weeks | bps | t |
+|---|---:|---:|---:|
+| SPY 1994-2025 | 381 | -0.3 | -0.02 |
+| SPY 1994-99 / 2000-09 / 2010-16 | 71 / 120 / 84 | +26 / +8 / +5 | +1.1 / +0.3 / +0.3 |
+| SPY 2017-21 / 2022-25 | 60 / 46 | -38 / -26 | -1.1 / -0.7 |
+| S&P 500 index 1962-01 to 1983-02 (placebo: no listed index options) | 254 | -0.2 | -0.02 |
+| S&P 500 index 1983-03 to 1993-01 | 119 | +19 | +1.0 |
+
+**What it shows.**
+
+1. **The sign of the story, and its decay.** Nothing before listed index options (1962-1983),
+   +19 bps a week in 1983-1993 and +26 in 1994-99, then a steady fade to below zero after 2017,
+   when short-dated options and dealers' short positions grew. That is the shape the mechanism
+   predicts if dealers were long options then and are not now, but no single period has t
+   above 1.1. Not supported by the card's reading (t >= 2 on SPY 1994-2025).
+2. **Idle cash in stocks is idle because stocks are out of trend.** The overlay buys stocks one
+   week a month in bear markets: the dot-com bust cost 40% instead of 28%, and 2022 25% instead
+   of 13%. The placebo week does the same with less damage, so most of the loss is the timing
+   of *any* stock week in a downtrend, not the expiry week in particular. This is wide-1's
+   lesson 3 seen from the other side: the trend rule's cash is not free money waiting for a
+   use; it is cash because the obvious use is losing.
+
+**How sure.** Sure the expiry week carries nothing at the index level in our period: 381 weeks
+with a mean of zero. The 1983-1999 values are suggestive and could be chance (t about 1).
+
+**Compared with my guess** (card): 2%, -0.01 to +0.03, event study +0 to +20 bps. It came out
+at -0.04 and -0.3 bps: below both ranges.
+
+## Status (2026-11-18)
+
+**Done:** choice note, cards and one train run each for `hedge-regime` (F2), `attention-peak`
+(P2) and the new `opex-pin` (W1); three new mechanisms in wide-1's list; `ideas.md`;
+`next-steps.md`. All three fail; held-out year unspent. Draft PR #54 (`wide-3` -> `wide-2`).
+
+**Count after this run:** 46 listed + 3 new = 49 mechanisms; 10 carded and tested (wide-1: 4,
+wide-2: 3, wide-3: 3); none passed. Of the 46, 11 entries are covered by cards and 35 are not;
+of the 3 new, W2 and W3 are untested. Any next pick is read at p < 0.10 / 49.
+
+**Doing:** nothing half-finished. No process running.
+
+## Disclosures
+
+- **One run each, no dry run.** `hedge-regime` 19:08 UTC, `attention-peak` 19:11 UTC,
+  `opex-pin` 19:16 UTC. Plumbing was checked by `tests/test_wide3.py` on
+  synthetic bars and synthetic page views (each rule does what its card says; no bar or view
+  after the decision is read).
+- **Times on the choice note and the first two cards** were written as guesses ("~19:20" to
+  "~19:30 UTC") and later than the real clock; after the first run they were corrected to the
+  commit times (3dea3e7, f25b507). Nothing else on those cards changed.
+- **The choice of picks used PR titles of other lanes** (`volume-1`, `month-end-bonds`,
+  `cointop-1`, `slow-1`) to avoid testing the same thing twice. No PR body or result of
+  those lanes was read.
+- **Page views** were downloaded once, after the card was pushed; the download script printed
+  only the number of days per title. A title with missing days counts 0 views on those days;
+  `XRP_Ledger` has data only from 2018-08-24 and is summed with the old title, as the card says.
+- **`attention-peak` eras.** The card's reading (2 of 2 eras from 2017-21) is stricter than
+  any looser count; the rule cannot act before 2016-07.
+- **`opex-pin` event study** uses closes (close of the pre-expiry Friday to close of the expiry
+  Friday), not the gym's next-open fills; it has no row in `tries.md`. Third Fridays that are
+  holidays are kept on the calendar Friday.
+- **Price cache:** copied from the wide-2 worktree. `tsmom12` and equal weight reproduce 1.05
+  and 0.88.
+- **Not run:** the held-out year, for any of the three.
