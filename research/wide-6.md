@@ -174,3 +174,66 @@ The fix was meant to be pushed before the run; a lint error stopped that commit 
 went ahead, so the fix is in the commit after the run. The code that ran is the code pushed
 there (the only later change is a ruff-required ternary). Family count unchanged by a gate:
 63 mechanisms, 16 tested (W11 makes it 64; see the count at the end).
+
+## Step 2. W3 `lunar`: the same gate
+
+### Literature check
+
+- **Yuan, Zheng, Zhu (2006)**, "Are investors moonstruck? Lunar phases and stock returns",
+  Journal of Empirical Finance 13(1), pp. 1-23, DOI 10.1016/j.jempfin.2005.06.001 (Crossref).
+  `[pages read]` pp. 1-14 of the authors' accepted version
+  (<https://personal.lse.ac.uk/yuan/papers/lunar.pdf>).
+  - 48 countries, January 1973 to July 2001 (Datastream). A full-moon period is the full-moon
+    day plus N days either side (N = 7: the 15-day window; N = 3: the 7-day window); new-moon
+    periods likewise.
+  - Equal-weighted global portfolio: new-moon minus full-moon periods 40.3 bps per lunar cycle
+    (15-day window) and 27.5 bps (7-day), both significant at 5%; value-weighted 30.4 bps
+    (10%) and 25.9 bps (5%): 3% to 5% a year. Daily differences 2.8 to 4.9 bps. Pooled over
+    countries: about 4 bps a day (15-day window); larger in emerging markets (11.3 bps on the
+    7-day window), **2.4 bps a day for the G-7** (both windows). In the US stronger for NASDAQ
+    and small stocks.
+  - No difference in volatility or volume; not explained by macro announcements or other
+    calendar effects. The cause offered is mood.
+- **Dichev and Janes (2003)**, "Lunar cycle effects in stock returns", Journal of Private
+  Equity 6(4), pp. 8-29, DOI 10.3905/jpe.2003.320053 (Crossref; working paper SSRN 281665,
+  2001). `[search summary, unverified]` (the SSRN page refused the fetch): returns in the 15
+  days around new moons about double those around full moons, for all major US indexes over
+  about 100 years and nearly all major indexes of 24 other countries over about 30 years; no
+  effect in volatility or volume.
+
+Post-sample years: Yuan et al.'s data end in 2001-07; the journal version appeared in 2006.
+The gate window is **2007-01 to the end of train (2025-11-10)**, as `next-steps.md` proposed.
+
+**Power, written before any number.** SPY's daily standard deviation since 2007 is about
+1.2%; with about 2,300 trading days in each of the two periods, the standard error of the
+difference is about 3.5 bps a day. The published G-7 size (2.4 bps) would show up at t of
+about 0.7; the gate's t >= 2 needs about 7 bps a day, three times the published size for big
+markets. So a failed gate cannot say the effect is gone; it can only say it is not large. For
+this book that is the question that matters: an idle-cash overlay on half the days at 2.4
+bps a day is a few hundredths of Sharpe.
+
+### Decision rule (fixed and pushed before any number)
+
+**Gate statistic.** SPY's dividend-adjusted close-to-close daily log return, mean over
+trading days in new-moon periods minus mean over trading days in full-moon periods, 15-day
+window (Yuan et al.'s N = 7; a day belongs to the period of the nearer of the two phases
+within 7 calendar days, UTC dates), Welch t. Phases from the mean lunation (29.530589 days
+from the new moon of 2000-01-06 18:14 UTC; off the true phase by up to about a day, which
+moves a window edge by at most one day).
+
+**Gate window.** 2007-01-01 to 2025-11-10 (train's last bar). No later bar is read.
+
+**Rule.** Pass only if the difference is positive with t >= 2 **and** the true phase ranks in
+the top 3 of the 29 phase shifts (the event dates moved by 0, 1, ..., 28 days; the same
+statistic for each). On a pass, a card (idle cash into SPY and QQQ in new-moon periods, the
+weekly harness, rows in `tries.md`, family bar). Otherwise W3 is dead by the gate, with no
+card and no row.
+
+**Shown, not gating.** The same statistic for the S&P 500 index (GSPC, no dividends) in
+1962-1972 (before the paper's sample), 1973 to 2001-07 (its sample), 2001-08 to 2006
+(after the sample, before the journal), 2007-2016 and 2017-2025; SPY in 1993 to 2001-07;
+QQQ, N225, FTSE, GDAXI and BTC in the gate window; the 7-day window (N = 3) for SPY and GSPC.
+
+**My guess before any number.** SPY gate difference between -3 and +4 bps, |t| < 1.2; the
+paper's own years on GSPC positive at about t 1 to 2 (the US is a G-7 market). Chance of a
+pass: 2%.
