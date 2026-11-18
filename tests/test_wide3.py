@@ -73,3 +73,53 @@ def test_hedge_uses_no_later_data() -> None:
     same = [d for d in a if d <= last_seen]
     assert len(same) > 20 and any("TLT" in a[d] for d in same)
     assert all(a[d] == b[d] for d in same)
+
+
+def _mania(n: int = 700, start: int = 450) -> Any:
+    """Flat attention, then a surge that rises for 20 days and falls back over 60."""
+    import numpy as np
+
+    v = np.full(n, 100.0)
+    for k in range(20):
+        v[start + k] = 100.0 + 50.0 * (k + 1)
+    for k in range(60):
+        v[start + 20 + k] = max(1100.0 - 15.0 * k, 100.0)
+    return v
+
+
+def test_attention_holds_on_the_rise_and_leaves_after_the_peak() -> None:
+    (idea,) = _mods("idea_wide3_attention_peak")
+    first = date(2018, 1, 1)
+    views = {"BTC": (first, _mania())}
+    rising = first + timedelta(days=450 + 15)  # sees days up to 464: still rising
+    after = first + timedelta(days=450 + 35)  # 15 days past the peak, surge still on
+    late = first + timedelta(days=690)  # the epidemic is over
+    assert not idea.out_of_mania(views, "BTC", rising)
+    assert idea.out_of_mania(views, "BTC", after)
+    assert not idea.out_of_mania(views, "BTC", late)
+    assert not idea.out_of_mania(views, "ETH", after)  # no data: the twin
+
+
+def test_attention_uses_no_view_of_the_decision_day_or_later() -> None:
+    (idea,) = _mods("idea_wide3_attention_peak")
+    first = date(2018, 1, 1)
+    v = _mania()
+    day = first + timedelta(days=480)
+    other = v.copy()
+    other[480:] = 1e6  # a scrambled future from the decision day on
+    for d in (day, day - timedelta(days=10), day - timedelta(days=25)):
+        a = idea.out_of_mania({"BTC": (first, v)}, "BTC", d)
+        b = idea.out_of_mania({"BTC": (first, other)}, "BTC", d)
+        assert a == b
+
+
+def test_attention_rule_only_drops_coin_slots() -> None:
+    (idea,) = _mods("idea_wide3_attention_peak")
+    up = [50.0 + 0.1 * k for k in range(700)]
+    hist = {"SPY": _bars(up), "BTC": _bars(up)}
+    first = hist["SPY"][0].date
+    views = {"BTC": (first, _mania(1200, 500)), "SPY": (first, _mania(1200, 500))}
+    w = _friday_weights(idea.peak_rule(views), hist)
+    twin = _friday_weights(_mods("common")[0].slots(_mods("common")[0].tsmom_signal), hist)
+    assert any("BTC" not in w[d] and "BTC" in twin[d] for d in w)
+    assert all("SPY" in w[d] for d in w if "SPY" in twin[d])
