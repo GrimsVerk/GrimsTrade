@@ -1,5 +1,32 @@
 # Next steps
 
+## Ann 1 (done 2026-11-18, branch `ann-1`, draft PR #65 -> `survey-3`)
+
+Survey-3's last live candidate, `announcement-premium`, checked by an FOMC event study before
+any card. Decision rule pushed before any number (969f20e), script before its run (9e4f93b).
+Write-up `research/ann-1.md`; table `research/results/ann-1.md`. No strategy, no `tries.md` row.
+
+- Literature: Savor and Wilson (JFQA 2013: 1958-2009, 11.4 vs 1.1 bps on CPI/PPI/jobs/FOMC
+  days; JFE 2014: beta priced only on those days); Lucca and Moench (JF 2015: S&P 500 +49 bps in
+  the 24 h before FOMC, 1994-2011); their 2018 update (only at press-conference meetings);
+  Kurov, Wolfe, Gilbert (FRL 2021: gone after 2015). Links and how far each was read in the note.
+- SPY on FOMC day 0 minus other days: +30.9 bps (t 3.06, 138 meetings) in 1994-2011;
+  -0.8 bps (t -0.06, 87 meetings) in 2015-2025. 2 pm to 2 pm from minute bars 2016-2025:
+  +8.9 (t 0.8). Gate not met: **dead**, no card. CPI/payroll legs dropped by literature.
+- Side cell, not a candidate: TLT day 0 +26.5 bps (t 2.3) after 2015, all in 2015-2019; that is
+  `fomc-bond-drift` in its own sample years (still forward-only).
+
+Count: 61 mechanisms, 14 tested by a strategy, none passed (unchanged). Next test at
+p < 0.10 / 61 = 0.00164.
+
+- Doing: nothing. No process running.
+- Next: survey-2's list is fully spent (all seven closed or forward-only). Calendar effects from
+  published papers are 0 for 3 after publication here; a new list should favour mechanisms with
+  years after their sample, or forward-only checks.
+- Data: none added. Needs `research/macro.local.json` (copy the `.example`), the FOMC calendar
+  `<cache_root>/derived/survey-2/fomc.csv`, Yahoo daily snapshot `yahoo-1d/2026-11-12/` and
+  the Alpaca SPY minute cache `alpaca/1m-sip/SPY/`.
+
 ## Survey 3 (done 2026-11-18, branch `survey-3`, draft PR #64 -> `survey-2`)
 
 Card and train test of survey-2's rank 2, `xtsmom` (Pitkäjärvi, Suominen, Vaittinen, JFE
