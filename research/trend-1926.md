@@ -231,3 +231,57 @@ stocks whatever the Sharpe says; present only in 1927-45 means it was the 1930s.
 - The 50 bps row and the 125-day block are additions to the brief (which named 2 and 10 bps
   and the protocol's bootstrap).
 - 1926-07 to 1927-06 is warm-up: the rule needs a year of history, so results start 1927-07.
+
+## Card 2: 1962-2001 (fixed 2026-11-18 11:18 UTC, after the result above, before any 1962-2001 number)
+
+Asked by the coordinator after era 1: the same rule on the same French files for the years
+between era 1 and the book's own data. **Not run yet when this was written; no code changed.**
+
+### What had been seen
+
+- Era 1 above (1927-1961), in full.
+- The S&P 500 index 1962-1993 (`results/baselines.md`): `tsmom12` 0.45 against 0.49 for holding.
+  SPY and QQQ 1994-2025 (trend-tune): +0.09 and +0.11, from 2000-2002. So 1994-2001 overlaps
+  the book's data and its direction is known; 1962-1993 is known on the index.
+- General knowledge: the bear market of 1973-74, the one-day crash of October 1987 (a 12-month
+  rule would have been in), the long rise of 1982-1999, the fall from 2000.
+- From the French files after 1961: nothing but the layout.
+- Expectation, stated so it can be wrong: "no" or a small lead from 1973-74 and 2000-01.
+
+### Data, rule, engine
+
+- Same two files, same snapshot (2026-11-12). Loaded 1961-01-01 to 2001-12-31; nothing later
+  is parsed. 1961 is warm-up only; decisions from 1962-01-02 to the day before the last bar of
+  2001. 40 years.
+- Rule, twin, engine, fills (primary and `late`), costs (2, 10, 50 bps), cash and T-bill
+  re-scoring, bootstrap and rotation test: exactly as on the card above. Nothing is tuned.
+- Series are registered as `F62-Mkt`, `F62-NoDur`, ..., `F62-ind10`, so the saved runs and the
+  `tries.md` rows do not collide with era 1. Result file `results/trend-1926-era2.md`.
+- `tries.md`: 24 rows `baseline`, 72 `robustness`, idea `trend-1926`. One run.
+
+### Windows
+
+- `whole`: 1962-01 to 2001-12.
+- Two eras: `1962-81` and `1982-01` (two halves of 20 years).
+- `x1`: calendar years 1973 and 1974 removed. `x2`: calendar year 1987 removed. `x3`: both
+  removed. Days dropped from both series, the rest joined, as `d1` above.
+- `to1993`: 1962-01 to 1993-12, the part that does not overlap the book's data (description).
+
+### The bar (the same as above, with `x3` for `d1` and `x1` for `d3`)
+
+| Outcome | When |
+|---|---|
+| **A property** | Market difference positive over the whole period, in both eras, in `x3` and in `x1`; the book agrees in sign over the whole period and in `x3`; the mechanism (days out rougher, ratio above 1 with rotation p < 0.10) present on the market over the whole period and in `x1`. An edge only if also p < 0.10 on the market and on the book over the whole period. |
+| **Crashes only** | Market difference positive over the whole period, but not in `x3` or not in `x1`. |
+| **No** | Market difference zero or negative over the whole period. |
+| **Too fragile to call** | Market and book disagree in sign over the whole period, or primary and `late` fills disagree in sign on the market. |
+
+No outcome changes the live rule. Together with era 1: "a property" here would lift the stock
+slots back toward "pays on stocks"; "crashes only" or "no" confirms "crash insurance".
+
+### Code changes this needs (none made yet)
+
+`lib/trend_1926.py` is written for one era: `LAST` is bound as a default argument in the
+parsers, `Window.drop` holds one range (`x3` needs two), `section_data` and `section_outcome`
+name era-1 years and window keys, and the result path is fixed. These must be made
+era-aware (and the tests extended) before the run.
