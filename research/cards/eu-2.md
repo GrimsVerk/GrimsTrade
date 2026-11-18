@@ -82,6 +82,46 @@ Books `eu6` (SXR8, SXRV, 4GLD, IBGL, BTC-EUR, ETH-EUR) and `euw` (SXR8, EXSA, IQ
   at `slip` the 5% band moves `tsmom12`'s Sharpe by no more than 0.05 and its max drawdown by no
   more than 2 points against the 1% band (it must not change the rule's character).
 
-## Amendment 2: EUR-hedged US equity
+## Amendment 2: EUR-hedged US equity (written ~22:45 UTC, before any run with hedged lines)
 
-Written after the hedged lines' data check and before any run with them: see below once added.
+Seen before writing: amendment 1's results (`results/eu-2-fees.md`) and the hedged lines' data
+check (`eu-2.md` section 3: coverage, tracking, calendar-year buy-and-hold returns of the hedged
+S&P 500 line, SPY in USD and SXR8; no strategy number on a hedged line).
+
+### Failure mode
+
+In eu-1 the coin-free book `euw` trailed equal weight by 0.21 Sharpe in EUR against 0.04 for
+`usw` in USD; about 0.06 of that came from the currency alone (`usw-eur` -0.10). A euro investor
+holding unhedged US stocks also holds the dollar, which tends to rise in US sell-offs (2022), so
+the 12-month trend of SXR8 in EUR is not the trend of the S&P 500. Does an EUR-hedged line put
+the US behaviour back, and what does the hedge cost (about the USD-EUR short-rate gap)?
+
+### Lines (Yahoo, EUR)
+
+- **IUSE**: iShares S&P 500 EUR Hedged (Acc), the EUR line on London (`IUSE.L`), from
+  2010-09-30, so eligible for all of W. Same fund as IBCF on Xetra (`IBCF.DE`, from
+  2011-03-24; daily difference sd 0.14%); IUSE.AS (Amsterdam) is not on Yahoo. A Dutch investor
+  would buy IUSE on Euronext Amsterdam or IBCF on Xetra; the London line is the price source.
+- **XAD1**: Xtrackers Physical Gold EUR Hedged ETC (Xetra), from 2010-06-15.
+- NQSE (Nasdaq 100 EUR Hedged) starts 2018-09: too late for W, not used. SXRV stays unhedged.
+
+### Runs (all; window W; Dutch percentage costs `nl` as in eu-1, so eu-1's rows compare
+directly; idea `eu-2`)
+
+1. `euw-h` = `euw` with IUSE in place of SXR8: `tsmom12` and `equal-weight` (2 rows). Primary.
+2. `euw-hh` = `euw-h` with XAD1 in place of 4GLD: `tsmom12` and `equal-weight` (2 rows).
+3. `eu6-h` = `eu6` with IUSE in place of SXR8: `tsmom12` and `equal-weight` (2 rows).
+4. Single slots: `tsmom12` and buy-and-hold on IUSE and on XAD1 (4 rows).
+
+10 rows, `tsmom12` `robustness`, the rest `baseline`. Nothing selected; no held-out data.
+
+### What counts
+
+- **Hedging removes the currency drag** (book `euw-h`, primary) if `tsmom12` minus
+  `equal-weight` Sharpe improves on `euw`'s gap (-0.21) by at least +0.06 (eu-1's currency part);
+  **in part** if by at least +0.03; **no** otherwise. `euw-hh` is read the same way, robustness.
+- **The US slot behaves as in USD** if `tsmom12` minus hold Sharpe on IUSE is within 0.05 of
+  SPY's in USD (eu-1: -0.12; SXR8 in EUR: -0.27).
+- **Hedge cost**: mean calendar-year return of IUSE minus SPY (USD) over 2012-2025 (train cut),
+  and IUSE minus SXR8, and hold IUSE against hold SXR8 (Sharpe, vol, max DD). Descriptive.
+- eu-1's four character tests for `eu6-h` vs `us6` and `euw-h` vs `usw` are reported.

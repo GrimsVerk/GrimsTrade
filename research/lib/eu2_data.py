@@ -113,13 +113,23 @@ def check() -> None:
             f"{corr:.2f} |"
         )
     print()
-    print("Calendar-year total return: hedged line, SPY in USD, SXR8 (unhedged, EUR)")
-    print("| Year | IBCF | SPY (USD) | SXR8 (EUR) | IBCF - SPY | IBCF - SXR8 |")
-    print("|---|---:|---:|---:|---:|---:|")
+    print("Calendar-year total return: hedged lines, SPY in USD, SXR8 (unhedged, EUR)")
+    print(
+        "| Year | IUSE (London) | IBCF (Xetra) | SPY (USD) | SXR8 (EUR) | IUSE - SPY "
+        "| IUSE - SXR8 |"
+    )
+    print("|---|---:|---:|---:|---:|---:|---:|")
+    iuse = e1.read_rows(e1.DATA / "adj" / "IUSEL.csv")
     ibcf = e1.read_rows(e1.DATA / "adj" / "IBCF.csv")
+    d_spy, d_sxr8 = [], []
     for y in range(2011, 2026):
-        a, b, s = _year(ibcf, y), _year(spy, y), _year(sxr8, y)
-        print(f"| {y} | {a:+.1%} | {b:+.1%} | {s:+.1%} | {a - b:+.1%} | {a - s:+.1%} |")
+        a, i, b, s = _year(iuse, y), _year(ibcf, y), _year(spy, y), _year(sxr8, y)
+        print(f"| {y} | {a:+.1%} | {i:+.1%} | {b:+.1%} | {s:+.1%} | {a - b:+.1%} | {a - s:+.1%} |")
+        if y >= 2012:
+            d_spy.append(a - b)
+            d_sxr8.append(a - s)
+    n = len(d_spy)
+    print(f"| mean 2012-2025 | | | | | {sum(d_spy) / n:+.1%} | {sum(d_sxr8) / n:+.1%} |")
 
 
 def _year(rows: list[e1.Row], y: int) -> float:
