@@ -10,9 +10,77 @@ designed on at 10 bps a side (pooled Sharpe 0.69, p 0.04), but it trades ~42 tim
 year and is about zero at 30 bps. **Does it survive the costs a small fake-money account would
 really pay, and does it hold in the held-out year?**
 
-## In plain words (train results, 2026-11-18; held-out line to follow)
+## In plain words (train results and the one held-out run, 2026-11-18)
 
-HELDOUT-PLACEHOLDER
+**Held-out year (2025-11-11 .. 2026-11-10, run once, 2026-11-18 11:01 UTC): `band` FAILS.
+Pooled Sharpe -0.65 (-8.1% over the year, worst loss 18%); the card needed above 0. The blend
+with its twin is behind the twin (-0.66 against -0.21), and half BTC/ETH `tsmom12` plus half
+`band` is worse than `tsmom12` alone (-1.68 against -1.49). By the card the carry book is not a
+result: it passed train and did not hold on the year it had never seen.** Table:
+`results/carry-3-heldout.md`; 21 rows in `tries.md` (1 claim, 20 results). The year is spent;
+the guard refuses a second run.
+
+| Held-out year, `band`, realistic cost | Sharpe | Per year | Worst loss | Traded/yr | Funding/yr | Costs/yr | Blend with twin - twin |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **Pooled (the judged row)** | **-0.65** | **-8.1%** | **18%** | 30x | +16.2% | -2.3% | **-0.45** |
+| B-out (Binance outside the 30) | -0.29 | -5.8% | 22% | 27x | +26.2% | -2.2% | -0.16 |
+| Bybit (survivors only) | +0.51 | +7.0% | 15% | 30x | +16.8% | -2.5% | +0.65 |
+| Hyperliquid (~19 coins) | -1.33 | -24.8% | 31% | 32x | +5.5% | -2.3% | -1.29 |
+| Pooled, no costs at all | -0.47 | -6.1% | 18% | 30x | +16.1% | 0 | -0.31 |
+| Pooled, flat 10 bps | -0.72 | -8.8% | 18% | 30x | +16.1% | -3.0% | -0.50 |
+| Pooled, spread and impact doubled | -0.72 | -8.9% | 18% | 30x | +16.2% | -3.1% | -0.50 |
+
+### What the held-out year means
+
+- **It was not the costs.** With no costs at all the year is still -0.47. The cost model, the
+  question this card was written for, held up: costs were 2.3% of the account (train: 2.5%).
+- **It was not the funding either.** The book collected 16% of the account in funding, twice
+  the train rate (7.7%), and still lost 8%. So it lost roughly 22% on price (funding plus
+  costs minus the result; not a separately scored number). The likely reading, not scored by leg on this
+  year (the card allows no further row on it): the high-funding coins it was short rose by
+  more than they paid. Train already hinted at that failure (`f30`: funding collected, given
+  back on price; the short leg alone loses on price); here it was large enough to sink the
+  whole book.
+- **One year is weak evidence both ways.** A true Sharpe of 0.79 has a one-year error bar of
+  about +-1, so -0.65 is about 1.4 standard errors below train: unlucky but not impossible for
+  a real 0.79, and ordinary for a true 0. The card said so in advance ("twelve months cannot
+  prove anything; they can only fail to contradict"). They contradicted. Train's own "how
+  sure" (p x 5 = 0.12, deflated Sharpe 0.84) already said "probably real, not proven"; after
+  this year the fair reading is "not shown".
+- **Venues disagree, as on train, but in a new order:** Bybit, weakest on train, is the only
+  positive one (+0.51); Hyperliquid, with ~19 coins, lost 25%. Three one-year samples; shown,
+  not judged (card).
+- **The paper system's rule had a bad year too:** BTC/ETH `tsmom12` (on perp closes) scored
+  -1.49, and the carry book did not offset it. The train case for the book was "a different
+  rule, unrelated to `tsmom12`"; in the one year that tested it, both lost together.
+
+**Status: parked, not live-worthy.** No gym, runner or strategy change follows from this card.
+The "what going live would need" section below stays as a description only.
+
+### Disclosures for the held-out run
+
+- Run once, as the card says, with the pushed code unchanged; the look-ahead check (the train
+  part of the long run equals the train run to 1e-12) passed inside the run. No other row was made on
+  the held-out bars before or after (`tries.md` held no carry-3 held-out row before the claim).
+- The scored window ends 2026-11-10 (365 days), one day later than the card's heading and the
+  claim row (2026-11-09). The script's `HELD_END` was fixed before the run; not changed.
+- Downloads: all three logs ended `done` with no `FAIL` line (finished 2026-11-18 ~02:25 UTC).
+  Bybit serves no delisted contracts (survivors only, as the card says).
+- The BTC/ETH blend uses perp closes in place of spot (card, "details fixed while coding").
+
+### Next lanes (owner's choice; none started)
+
+1. **Stop here (recommended).** Carry on small perps joins the parked list; the paper system
+   stays long-only BTC/ETH on spot. Costs nothing.
+2. **Why did the shorts lose on price?** A descriptive card on train plus this now-spent year
+   (no held-out left for it, so it can only describe, never pass): price return of the
+   high-funding third by week, by venue, and against the market's direction. It would say
+   whether the failure is one squeeze or a steady leak.
+3. **Forward test instead of back-test.** The only unspent data is the future: record `band`'s
+   weekly decisions in the research cache from now on (no gym change) and score them in a year.
+   Cheap, slow, and the only clean second look this idea can ever get.
+
+The train results below are unchanged from before the held-out run.
 
 **On the train years: yes, for a small account. The costs a 10,000 USD account would really pay
 are lower than carry-2 assumed, and the book survives them.** Tables: `results/carry-3.md`;

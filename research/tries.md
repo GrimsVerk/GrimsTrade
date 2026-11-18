@@ -1062,3 +1062,24 @@ Never edit or delete a row.
 | 2026-11-18 01:32 | carry-3-B-all | weekly cross-sectional IC, 7-day funding vs next week's price + funding: +0.023 (t +2.5, 249 weeks) | robustness | train | 2021-01-23 | 2025-11-09 | - | - | - | - |
 | 2026-11-18 01:32 | carry-3-B-all | weekly cross-sectional IC, 30-day funding vs next week's price: -0.004 (t -0.5, 249 weeks) | robustness | train | 2021-01-23 | 2025-11-09 | - | - | - | - |
 | 2026-11-18 01:32 | carry-3-B-all | weekly cross-sectional IC, 30-day funding vs next week's price + funding: +0.014 (t +1.5, 249 weeks) | robustness | train | 2021-01-23 | 2025-11-09 | - | - | - | - |
+| 2026-11-18 11:01 | carry-3 | claim: the one held-out run of carry-3 starts | variant | heldout | 2025-11-11 | 2026-11-09 | - | - | - | - |
+| 2026-11-18 11:01 | carry-3-B-out | tsmom12 twin | baseline | heldout | 2025-11-11 | 2026-11-10 | -0.17 | -2.5% | 9.0% | 2.84 |
+| 2026-11-18 11:01 | carry-3-B-out | band | variant | heldout | 2025-11-11 | 2026-11-10 | -0.29 | -5.8% | 22.1% | 27.15 |
+| 2026-11-18 11:01 | carry-3-B-out | band nocost | robustness | heldout | 2025-11-11 | 2026-11-10 | -0.18 | -4.1% | 21.2% | 27.26 |
+| 2026-11-18 11:01 | carry-3-B-out | band flat10 | robustness | heldout | 2025-11-11 | 2026-11-10 | -0.35 | -6.7% | 22.3% | 27.26 |
+| 2026-11-18 11:01 | carry-3-B-out | band x2 | robustness | heldout | 2025-11-11 | 2026-11-10 | -0.34 | -6.5% | 22.4% | 27.15 |
+| 2026-11-18 11:01 | carry-3-Bybit | tsmom12 twin | baseline | heldout | 2025-11-11 | 2026-11-10 | -0.65 | -8.4% | 11.1% | 2.76 |
+| 2026-11-18 11:01 | carry-3-Bybit | band | variant | heldout | 2025-11-11 | 2026-11-10 | 0.51 | +7.0% | 15.3% | 30.18 |
+| 2026-11-18 11:01 | carry-3-Bybit | band nocost | robustness | heldout | 2025-11-11 | 2026-11-10 | 0.67 | +9.7% | 14.6% | 30.18 |
+| 2026-11-18 11:01 | carry-3-Bybit | band flat10 | robustness | heldout | 2025-11-11 | 2026-11-10 | 0.48 | +6.4% | 15.4% | 30.18 |
+| 2026-11-18 11:01 | carry-3-Bybit | band x2 | robustness | heldout | 2025-11-11 | 2026-11-10 | 0.46 | +6.1% | 15.5% | 30.18 |
+| 2026-11-18 11:01 | carry-3-Hyperliquid | tsmom12 twin | baseline | heldout | 2025-11-11 | 2026-11-10 | 0.15 | +1.0% | 18.1% | 4.44 |
+| 2026-11-18 11:01 | carry-3-Hyperliquid | band | variant | heldout | 2025-11-11 | 2026-11-10 | -1.33 | -24.8% | 31.3% | 31.82 |
+| 2026-11-18 11:01 | carry-3-Hyperliquid | band nocost | robustness | heldout | 2025-11-11 | 2026-11-10 | -1.21 | -23.1% | 29.9% | 31.82 |
+| 2026-11-18 11:01 | carry-3-Hyperliquid | band flat10 | robustness | heldout | 2025-11-11 | 2026-11-10 | -1.37 | -25.5% | 31.9% | 31.82 |
+| 2026-11-18 11:01 | carry-3-Hyperliquid | band x2 | robustness | heldout | 2025-11-11 | 2026-11-10 | -1.38 | -25.5% | 31.9% | 31.82 |
+| 2026-11-18 11:01 | carry-3-pooled | tsmom12 twin, equal capital per venue | baseline | heldout | 2025-11-11 | 2026-11-10 | -0.21 | -3.1% | 9.6% | 3.35 |
+| 2026-11-18 11:01 | carry-3-pooled | band, equal capital per venue | variant | heldout | 2025-11-11 | 2026-11-10 | -0.65 | -8.1% | 18.2% | 29.72 |
+| 2026-11-18 11:01 | carry-3-pooled | band nocost, equal capital per venue | robustness | heldout | 2025-11-11 | 2026-11-10 | -0.47 | -6.1% | 17.6% | 29.75 |
+| 2026-11-18 11:01 | carry-3-pooled | band flat10, equal capital per venue | robustness | heldout | 2025-11-11 | 2026-11-10 | -0.72 | -8.8% | 18.3% | 29.75 |
+| 2026-11-18 11:01 | carry-3-pooled | band x2, equal capital per venue | robustness | heldout | 2025-11-11 | 2026-11-10 | -0.72 | -8.9% | 18.3% | 29.72 |

@@ -1,33 +1,23 @@
 # Next steps
 
-## Carry 3 (in progress, started 2026-11-17, branch `carry-3` from `carry-2`)
+## Carry 3 (done 2026-11-18, branch `carry-3`, draft PR #31 -> `carry-2`)
 
-Question: does `ls-funding` survive the costs a small fake-money account would really pay
-(venue taker fees + spread + impact by coin size), with a slower shape fixed in advance, and
-does it hold in the held-out year? Card: `research/carry-3.md` (pushed before any number).
-Draft PR #31 (`carry-3` -> `carry-2`), not merged.
+Does `ls-funding` survive the costs a small fake-money account would really pay (venue taker
+fees + spread + impact by coin size), with a slower shape fixed in advance, and does it hold in
+the held-out year? **Train: yes. Held-out: no.** The primary `band` passed train at the
+realistic cost (~8 bps a side for a 10,000 USD account): pooled Sharpe 0.79, p 0.025, positive
+on every venue; blend with BTC/ETH `tsmom12` 0.91 against 0.70. The one held-out run
+(2025-11-11 .. 2026-11-10, made 2026-11-18 11:01 UTC) **fails**: pooled Sharpe -0.65 (-8.1%),
+blend behind the twin (-0.66 against -0.21); B-out -0.29, Bybit +0.51, Hyperliquid -1.33. Not
+the costs (-0.47 with none) and not the funding (16% collected, twice train's rate): the book
+lost ~22% on price. **The held-out year is spent; `carry3.py --heldout` refuses a second
+run. Never rerun it with changes.** Write-up `research/carry-3.md` (result at the top), tables
+`research/results/carry-3.md` and `carry-3-heldout.md`, 147 rows in `tries.md`.
 
-**Done (2026-11-18):** card; cost model calibrated on three order-book snapshots
-(`research/results/carry-3-cost.json`); the one logged train run (126 rows in `tries.md`,
-tables `research/results/carry-3.md`). The primary `band` **passes train** at the realistic
-cost (~8 bps a side for a 10,000 USD account): pooled Sharpe 0.79, p 0.025, positive on every
-venue; blend with BTC/ETH `tsmom12` 0.91 against 0.70. Train write-up is in
-`research/carry-3.md`.
-
-**Paused mid-step (usage limit). Exactly what is next:**
-
-1. The held-out downloads were started 2026-11-18 ~01:45 UTC
-   (`scripts/fetch_carry3.py heldout binance|bybit|hyperliquid`, into `<cache>/carry-3/heldout/`;
-   logs `carry3_held_*.log` in the job tmp dir). Check each log ends with `done` and has no
-   `FAIL` line; rerun the same command for a venue that did not finish (resumable).
-2. Then, **once only**: `uv run python -I research/lib/carry3.py --heldout`. It writes its claim
-   row to `tries.md`, checks that the train part of the long run equals the train run, scores
-   2025-11-11 .. 2026-11-10 for `band` only, and writes `research/results/carry-3-heldout.md`.
-   **The held-out year is unspent until that command has run.** If it crashes before printing
-   any number it may be restarted (card, "restart rule"); once result rows exist it refuses.
-3. Then: put the held-out line at the top of `research/carry-3.md` (replace
-   `HELDOUT-PLACEHOLDER`), add "what it means" and 2-3 next lanes, disclosures and status, an
-   `ideas.md` section, this section as "done", update the PR text.
+Status: parked. Owner options (none started): stop here (recommended; the paper system stays
+long-only BTC/ETH on spot); a descriptive card on why the high-funding shorts lost on price
+(cannot pass anything, no held-out left); or record `band`'s weekly decisions forward and score
+them in a year. PR #31's text carries the held-out result.
 
 ## Carry 2 (done 2026-11-13, branch `carry-2`, draft PR #26 -> `short-1`)
 

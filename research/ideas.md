@@ -130,3 +130,12 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
 | ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
 | ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
+
+### Funding carry at real costs (carry-3, 2026-11-18)
+
+Pooled Sharpe on Binance perps outside the 30, Bybit and Hyperliquid, realistic cost for a 10,000 USD account (~8 bps a side) plus funding. Train 2021-2025 / the one held-out year 2025-11-11 .. 2026-11-10.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| band (primary) | Funding carry, weekly with a no-trade band | dead (held-out spent) | [carry-3.md](carry-3.md) | Train 0.79 (p 0.025), passed all bars; held-out -0.65, blend behind the twin. 16% funding collected, ~22% lost on price. |
+| w1, w2, w4, f30 | Funding carry, other speeds and a 30-day signal | parked (train only) | [carry-3.md](carry-3.md) | Train 0.78 / 1.01 / 0.69 / 0.29; never run on the held-out year, which `band` spent. |
