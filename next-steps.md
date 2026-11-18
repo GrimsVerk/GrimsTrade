@@ -266,6 +266,15 @@
     (wrong sign, rank 29/31) and W15 hurricane claims (t 0.09) dead. New W18, W19. List 72 / 16.
   - 23:00 UTC 5h 0.63 (fresh), weekly 0.90. `wide-9` started (W, <- wide-8): W19, W17 gates,
     placebo-null method note. Reserve mode: no new lanes from 5h 0.80 until 02:15 UTC.
+  - DONE `insure-2` (draft #90 -> insure-1): crash insurance holds across eras and countries
+    and is cheaper than holding less, but costs more than it saves today. US premium per unit
+    of loss avoided (trend / fixed / random): 1927-61 0.85/1.38/1.63, 1962-2001 1.38/2.15/2.60,
+    2002-25 1.34/1.53/1.91 (1962-2025 timing test p 0.020; 2002-25 alone p 0.19). 13 developed
+    non-US indices 1966-2025: lost less in 17/18 effective falls (p 7e-5), avoided 0.49,
+    premium 1.11 vs 1.33/1.52. Expect ~1.3-1.5 premium (~2 log pts/yr behind holding); fails
+    in fast falls. 27 `insure-check` rows. Next: `fast-reentry` on the 50 + 19 falls.
+  - 23:08 UTC 5h 0.68, weekly 0.91: no new lane (would overshoot the 0.80 reserve line); running
+    survey-6, register-2, wide-9.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
