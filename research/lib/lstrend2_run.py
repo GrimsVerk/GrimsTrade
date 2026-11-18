@@ -710,19 +710,32 @@ def part_b(root: Path) -> None:
         "",
         "## 4. 1987 on the S&P 500 alone (price index, no dividends; long-short, 40% / sigma)",
         "",
-        "| Cell | 1987-10 | 1987-10..12 | 1987-09 (the month before) | Sharpe 1961..2025-10 | "
-        "Position on 1987-10-01 |",
+        "| Cell | 1987-10 | 1987-10..12 | Cell's 1987-09 | Sharpe 1961..2025-10 | "
+        "Position held 1987-10-02..10-30 (x capital) |",
         "|---|---:|---:|---:|---:|---:|",
     ]
     for bk in gb:
         s = gmon[bk.name]
-        i = bisect.bisect_left(bk.days, date(1987, 10, 1))
+        i = bisect.bisect_left(bk.days, date(1987, 10, 2))
         out.append(
             f"| {bk.name} | {pct(compound(s, months((1987, 10), (1987, 10))))} | "
             f"{pct(compound(s, months((1987, 10), (1987, 12))))} | "
             f"{pct(compound(s, months((1987, 9), (1987, 9))))} | "
             f"{f2(stats.sharpe(on_cal(book_ex(bk), *g0)))} | {bk.net[i]:+.2f} |"
         )
+    gp = gspc_prices()["GSPC"]
+
+    def lvl(d: date) -> float:
+        return gp[max(x for x in gp if x <= d)]
+
+    out += [
+        "",
+        f"S&P 500 price index: 1987-09 {lvl(date(1987, 9, 30)) / lvl(date(1987, 8, 31)) - 1:+.1%},"
+        f" 1987-07..09 {lvl(date(1987, 9, 30)) / lvl(date(1987, 6, 30)) - 1:+.1%}, 1987-10 "
+        f"{lvl(date(1987, 10, 31)) / lvl(date(1987, 9, 30)) - 1:+.1%}. The cells size one market "
+        "at 40% / sigma, so a calm September means about 2-3x leverage; divide by 4 for a 10% "
+        "volatility reading.",
+    ]
     out += ["", f"Rows logged this run: {len(rows) if logged else 0}."]
     text = "\n".join(out) + "\n"
     (harness.RESEARCH / "results" / "ls-trend-2-hop.md").write_text(text)

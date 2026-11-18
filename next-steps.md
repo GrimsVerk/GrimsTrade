@@ -1,12 +1,26 @@
 # Next steps
 
-## ls-trend-2 (in progress 2026-11-18, branch `ls-trend-2`, draft PR -> `ls-trend-1`)
+## ls-trend-2 (done 2026-11-18, branch `ls-trend-2`, draft PR #89 -> `ls-trend-1`)
 
-Doing: card `research/cards/ls-trend-2.md` (pushed before any number). Part A: one blend,
-`tsmom12` + wide-LS rescaled to gross 1, equal risk from trailing vol, at most 1x gross; decided
-by the Sharpe gap to `tsmom12` at the family bar (p < 0.00147); crash insurance reported as a
-risk preference. Part B: Hurst-Ooi-Pedersen 1/3/12-month signal on the wide book (descriptive).
-Price cache: copy `research/data/` and `research/macro.local.json` from another worktree.
+Card before numbers (`research/cards/ls-trend-2.md`, 7bb600f), script before its run
+(4b090ab). Write-up `research/ls-trend-2.md`; tables `research/results/ls-trend-2-blend.md`,
+`research/results/ls-trend-2-hop.md`. 10 rows in `tries.md`.
+
+- **Blend fails the bar:** `tsmom12` + wide-LS at gross 1, equal risk (mean 26% in `tsmom12`),
+  gross <= 1: Sharpe 0.97 vs `tsmom12` 1.21 in 2007-04..2025-10 (p 0.89). Crash windows
+  +8.9% / +2.2% / +2.0% vs -1.6% / -14.1% / -12.9%, ahead of both dilution controls: real
+  insurance, paid with Sharpe. Verdict: a risk choice, not an edge. Costs 0.5% a year.
+- `tsmom12` + bills at the same split (control): Sharpe 1.26, max DD 5.6% (volatility timing).
+- 1/3/12-month signal: +11 points in 2020-02..03 at 10% vol, but Sharpe L -0.09 (12-month
+  0.15), 29x turnover; still long into October 1987 on the S&P alone.
+
+Count unchanged: 68 mechanisms, 16 tested, none passed (p < 0.00147).
+
+- Doing: nothing. No process running.
+- Next: (1) volatility-targeted `tsmom12` (card, bar); (2) split menu on the risk map
+  (descriptive, owner's risk choice); (3) shorts in the gym only if a crash sleeve is wanted.
+- Rerun: `uv run --with openpyxl python -I research/lib/lstrend2_run.py <cache_root> A` (or `B`);
+  needs ls-trend-1's and survey-5's caches, `research/data/` and `research/macro.local.json`.
 
 ## ls-trend-1 (done 2026-11-18, branch `ls-trend-1`, draft PR #83 -> `survey-5`)
 

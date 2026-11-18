@@ -1061,3 +1061,7 @@ Never edit or delete a row.
 | 2026-11-18 22:56 | ls-trend-2 | blend-er-cost2@L07 | robustness | train | 2007-04-01 | 2025-10-31 | 0.83 | +124.0% | 9.0% | 3.26 |
 | 2026-11-18 22:56 | ls-trend-2 | tsmom12-split-bills@L07 | baseline | train | 2007-04-01 | 2025-10-31 | 1.26 | +130.9% | 5.6% | 0.71 |
 | 2026-11-18 22:56 | ls-trend-2 | wide-LS-g1@L07 | replication | train | 2007-04-01 | 2025-10-31 | 0.14 | +11.8% | 16.2% | 2.82 |
+| 2026-11-18 22:57 | ls-trend-2 | hop-wide-LS@live-L | replication | train | 2010-02-01 | 2025-10-31 | -0.09 | -28.9% | 45.9% | 28.55 |
+| 2026-11-18 22:57 | ls-trend-2 | hop-wide-LS-g1@live-L | replication | train | 2010-02-01 | 2025-10-31 | -0.04 | -4.6% | 17.9% | 10.05 |
+| 2026-11-18 22:57 | ls-trend-2 | gspc-12m@1961 | replication | train | 1961-01-01 | 2025-10-31 | 0.22 | +6.6% | 95.0% | 9.24 |
+| 2026-11-18 22:57 | ls-trend-2 | gspc-hop@1961 | replication | train | 1961-01-01 | 2025-10-31 | 0.21 | +180.6% | 86.9% | 20.20 |
