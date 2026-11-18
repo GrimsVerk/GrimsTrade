@@ -323,3 +323,152 @@ reentry table side by side; item 1 and the window days are calendar arithmetic i
   (`report_checks.py` now prints days 12 and 17).
 - Report header now says "revised after review rounds 1 and 2" (this commit).
 - Not done: none of the listed items skipped.
+
+## Round 3 (2026-11-18 ~22:30 UTC, fresh Opus reviewer, high effort): FINAL
+
+Reviewed `report.md` at 3529214 (branch `research/exit-1`), with `review-log.md` read first. None
+of the round 1 or round 2 fixes are undone below, and I found no reason to doubt any item on
+either round's "checked and correct" list. Scratch output (bt_now rerun, extracted PDFs) was kept
+outside the repo. The repo was not modified.
+
+Required:
+
+None. I found no remaining error that would change what the investor does. The fund date chains
+(6.2, step 3), the re-entry comparison (8.2) and the refreshed readings all reproduce from the
+scripts and lane files (details under "Checked and correct").
+
+Optional (in rough order of value):
+
+1. **Summary step 5 overgeneralises "waiting for falls".**
+   - The claim: the summary says the 12 monthly buys had "a better typical result and a milder
+     bad tail than waiting for falls".
+   - The evidence: in `lanes/reentry-rules.txt` (10-year horizon, sample B), the pure
+     wait-for-a-fall rules had medians of 1.000 (`dd20`), 1.009 (`dd30`) and 1.000
+     (`dd20-sma10`). `dca12` had 0.972. Their bad tails were far worse: p10 0.35-0.52, and `dd30`
+     was never back in for 22% of months.
+   - So `dca12` beats the thirds rule (`staged-24`) on both counts, but beats the no-deadline
+     waiting rules only on the tail.
+   - The fix: say "than buying in thirds on falls". Optionally add in 8.1 that the no-deadline
+     waiting rules had a median of about 1.0 but a worst tenth of 0.35-0.52.
+   - Related: 8.1's "worst tenth of 0.33-0.52" mixes samples. Sample B at 10 years gives 0.35-0.52.
+     The 0.33 comes from sample A or from sample B from 1972.
+   - Related: "No re-entry rule beat buying back at once" means "no rule passed the card's bar".
+     `dd30`'s sample-B median is 1.009 and `dd20-sma10`'s mean is 1.008. Saying "passed the
+     card's bar" once (summary or 8.1) heads off that objection.
+2. **Summary step 2 does not say which fund gets which last-safe day.** It says "last safe Tue 15
+   or Wed 16 Dec for a fund whose cash reaches your broker within 2-6 business days".
+   - If a reader with a global 2-6-day fund picks Wed 16, the worst case misses 2026. The sixth
+     fund day is Tue 29 Dec when 28 Dec is skipped, so the cash reaches a euro account in January.
+   - The table in 6.2 and the checklist are correct.
+   - The fix: "last safe Wed 16 Dec (cash at the broker within 2-5 days) or Tue 15 Dec (2-6 days,
+     e.g. global funds)".
+3. **Edge case in the `staged-24` alternative (8.2, item 2).** The test counts a month-end close
+   20% or more below the high from the sale month itself on.
+   - If the S&P has a month-end close at -20% or lower at end-Dec 2026, the test would buy that
+     third at once. The investor cannot hold stocks on 31 Dec.
+   - The fix: one clause, e.g. "a level already reached at the Dec 2026 month-end is bought on the
+     first trading day of January 2027". This matches how `dca12` is shifted to January.
+4. **Euribor figure differs between 7.1 and 7.3/2.4.**
+   - 7.1 (savings row) says "3-month Euribor cash: at worst -0.1% over 2022". That is the
+     whole-drawdown cell in `lanes/haven-table.md`.
+   - 7.3 says "0.2% at worst in 2022". That is the own-max-drawdown cell, which the round 2 fix
+     log also uses.
+   - The fix: use -0.2% in both places.
+5. **Robertson wording, lesson 1 (section 3).** "Robertson quit 20 days before he would have been
+   proved right" does not match the table, which says Tiger's closure came 20 days *after* the
+   Nasdaq peak. inv says "quit 3 weeks after the top". The fix: "Robertson quit 20 days after the
+   top, just before the fall proved him right".
+6. **The refresh command in 5.1 needs the local cache root.** Without `BT_CACHE`,
+   `GRIMSTRADE_DATA` or `research/macro.local.json`, `bt_now.py --fetch` prints the index table
+   and then exits with an error. It never prints the per-holding 200-day states or VIX that 5.1
+   promises. The fix: one clause in 5.1 ("needs the cache root set up as in the script header;
+   otherwise use a 200-day chart"). The chart fallback is already there.
+7. **2028 holidays.** 8.2 says "(2028 exchange holidays not checked)", but 11.2 cites the NYSE
+   2026-2028 holiday calendar. Fri 29 Dec 2028 is not on it. Either drop the caveat for NYSE or
+   say "(Euronext 2028 not checked)".
+8. **Lump sum as an explicit option in 8.2.** The literature (Vanguard) and the reentry table say
+   that buying back at once in early January 2027 had the highest expected result. 8.2 offers
+   only `dca12` and `staged-24`. One line ("highest expected value, largest regret if a crash
+   follows; choose it if regret does not weigh on you") would make the choice complete. The
+   report already says this implicitly in 8.1.
+9. **OBX "lost less in 2022" depends on the window.** 5.3 and the summary use the S&P's 2022
+   peak-to-trough window (OBX -9.0% vs S&P -13.1% in euros). By each index's own maximum drawdown
+   in 2022, OBX fell more: -22.0% vs -18.0% (`lanes/haven-table.md`). One clause ("over the S&P's
+   window") would keep it honest. It does not change the advice to convert promptly.
+
+Checked and correct (do not redo):
+
+- **Readings rerun.** I ran `bt_now.py --fetch` at about 22:20 UTC, with the cache root taken
+  from another worktree's local config. Every number in 5.1, 5.2, the summary and 6.2 reproduces:
+  - Index readings: S&P 7,323.63 (-0.31% vs 7,346.55; 2 closes below; last cross 17 Nov).
+    Nasdaq 24,429.88 (-2.87%; since 13 Nov). OSEBX +3.15%, OBX +1.92%, URTH -0.99% (high 13
+    Aug).
+  - Averages and returns: 50-day -4.25 / -6.87 / -1.01 / -1.37. Distances from highs -6.33 /
+    -11.49 / -3.32 / -3.83. Faber +3.78 / +1.81 / +7.24 / +6.57, live -0.26. 12-month and
+    24-month returns as stated.
+  - Volatility and credit: VIX 24.56 (1.378 times its 50-day mean, 92nd percentile).
+    VIX/VIX3M 1.011, and the 5, 11-13 and 17 Nov ratios are as stated. HYG/LQD +0.5%.
+  - Valuation: Baa 1.51, hostile above 1.946. CAPE 39.37 (98.3rd percentile; max 44.2 in Dec
+    1999). Lagged CAPE 39.78.
+  - Sample matching: Oslo `late`, S&P and Nasdaq `now-like-below200`, URTH none.
+  - Part B rule states as in 5.1, including the Nasdaq dd8 stop out since 2 Nov.
+- **Fund and share date chains (6.2, step 3).** I re-derived them by hand and with
+  `report_checks.py`. The calendar assumptions: Oslo bank days skip 24-25 Dec, fund days also
+  skip 31 Dec, and global funds also skip 28 Dec.
+  - Shares: Fri 18 Dec -> settles Tue 22 -> euro account Tue 29 Dec. Mon 21 -> Wed 30.
+  - 2-5-day fund: Fri 11 -> Fri 18 -> Wed 23. Wed 16 -> Wed 23 -> payout 28/29 -> Wed 30.
+  - 2-6-day fund: Fri 11 -> Mon 21 -> Mon 28. Tue 15 -> Wed 23 -> Wed 30.
+  - 5-10-day fund: Fri 4 -> Fri 18 -> payout 21/22 -> Wed 23. Wed 9 -> Wed 23 -> Wed 30. Same
+    for a global fund.
+  - Tue 22 Dec settles Mon 28 (no spare day). Mon 28 settles Wed 30. Wed 30 settles Mon 4 Jan.
+  - Trading days 12, 17 and 22 are Fri 4, Fri 11 and Fri 18 Dec. The watch windows end Thu 3,
+    Thu 10 and Thu 17 Dec.
+  - The rows, summary step 2, section 4's row, the checklist and 10.1's "spare day" row agree.
+  - Park 7.3 matches, including the dated D+13 correction.
+  - The Dutch/TARGET side is open on 24 and 31 Dec, so the Oslo-calendar chain is conservative.
+- **The two-week legal backstop for Oslo funds** (calendar days) still fits the Fri 11 Dec
+  fallback (paid by Thu 24 Dec, payout 28/29, euro account Wed 30). So "the fallback is the
+  plan" holds for that row.
+- **The re-entry table in 8.2 against `lanes/reentry-rules.txt` (10 years).**
+  - Sample B: `dca12` 0.972 / p10 0.899 / 31% / mean 0.988. `staged-24` 0.924 / 0.722 / 35% /
+    0.967.
+  - Sample B from 1972: 0.968/0.899 vs 0.901/0.683.
+  - Named busts (1929-08, 1968-11, 1972-12, 2000-03, 2007-10): 1.09-1.34 vs 1.40-1.61.
+  - Dec 1996 and Dec 1997: 0.88-0.93 vs 0.64-0.71.
+  - Sample A mean 0.983 vs 0.963.
+  - Nasdaq sample B: 0.959/0.859/35% vs 0.891/0.685/5%.
+  - Both rules are on the reentry card's rule list. The post-hoc choice of default is stated in
+    sections 4 and 10.2.
+- **No look-ahead in the re-entry test.** `DD` is the month-end close over the running all-time
+  high of daily closes, so the 7,819 base (6 Oct closing high) and the levels 6,255 / 5,473 /
+  4,691 are the right reference. The high-CAPE flag uses an expanding 80th percentile of lagged
+  CAPE. `staged-24` buys at month-end decisions only and is fully in at 24 months.
+- **Weekdays checked:** Thu 19 Nov, Fri 30 Oct, Mon 30 Nov, Thu 5 Nov, Tue 6 Oct, Thu 17 Dec
+  (ECB), Mon 1 Mar 2027, Fri 29 Dec 2028 (31 Dec 2028 is a Sunday).
+- **Sources spot-checked this round (not checked before):**
+  - Baur-Lucey WP abstract: "safe haven for stocks only for 15 trading days after an extreme
+    shock"; in the body, gold is a haven for stocks but not for bonds.
+  - Marks, "Is It a Bubble?" memo: "no one should go all-in ... no one should stay all-out ... A
+    moderate position".
+  - Grantham's "slim to none" (ThinkAdvisor, 20 Jan 2026; podcast around 19 Jan).
+  - Bree-Joseph: 11 Hang Seng crashes 1970-2008, parameters in the post-hoc ranges for only 7.
+  - Kritzman-Turkington via the Quantpedia summary: 49 industries, 1926-2025; "virtually none";
+    the less-when-concentrated rule "reduces return and increases risk".
+  - Cederburg et al. 2020: 103 equity strategies, no systematic real-time outperformance.
+  - SpaceX IPO: USD 75bn, priced 11 Jun 2026, the largest ever.
+  - Berkshire 2008 letter: $14.5bn in Wrigley, Goldman and GE paper (via inv's quote).
+  - ECB: hikes in June and September 2026, held at 2.50% on 29 Oct, so "raising rates" is fair.
+- **Internal consistency:**
+  - Summary vs 6.1 per-holding numbers: 9.3->1.0, 10.7->1.7, 15.7->5.0; drift 0.7-1.4.
+  - Summary vs 5.1 readings.
+  - Section 4 rows vs 6.2, 7 and 8.2.
+  - Checklist vs step 3 table.
+  - The OBX/S&P euro crash figures in summary, 4, 5.3 and 10.1 match `lanes/haven-table.md`.
+  - The Grantham "+97% by 17 Nov" figure (3,726.86 -> 7,340.53).
+  - Nvidia -35.0%.
+- **Priority order, scope and framing:** literature first and largest, then investors, then
+  common ideas. Tax is out of scope. No personal details: percentages and generic brokers only.
+
+### After round 3
+
+Review loop ends: FINAL at 3529214. Optional items are polished by the lead where cheap and logged here; they do not reopen the review.
