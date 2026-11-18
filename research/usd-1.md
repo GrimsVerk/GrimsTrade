@@ -12,7 +12,22 @@ search never touched, before anyone trades it. This card is that second look.
 
 ## In plain words (results)
 
-Not run yet. This section is filled in after the numbers.
+**Short version, 2026-11-18 (the run is done; the full write-up is not yet written, paused for
+the usage window): echo only. It does not replicate. No trading card, no backtest, held-out
+year untouched.** Table: `results/usd-1.md`. S > 0 means "same sign as the screen".
+
+| Set (13 weeks) | S | p | Reading |
+|---|---:|---:|---|
+| `before`: four stock indexes, 1971-1999, the only set sharing no date with the screen | +0.013 | 0.44 | nothing |
+| `markets`: 18 other risk markets, 2000-2025 | +0.070 | 0.12 | faint; zero once SPY is taken out (-0.001) |
+| `coins`: 292 other coins, 2017-2025 | +0.267 | 0.004 | strong, but it is BTC and ETH again: beyond them -0.087 |
+| pooled, sets counted equally | P +1.16 | 0.025 | bar (a) and (b) met |
+
+Bar (c), added by this card, fails: the independent decades show no effect (S +0.013; an effect
+of 0.16 would have been caught four times in five, one of 0.10 only about half the time). The
+other coins repeat the sign in the same 33 crypto quarters the screen already counted, and
+carry nothing beyond what BTC and ETH showed. So the dollar effect is still one observation
+from one crypto era, neither confirmed nor refuted.
 
 ## Card (written 2026-11-18, before any usd-1 number was computed)
 
@@ -223,5 +238,21 @@ under `<cache_root>/derived/usd-1/`.
 
 ## Status (2026-11-18)
 
-**Done:** this card; code and tests (`lib/usd1.py`, `tests/test_usd1.py`); reproduction.
-**Doing:** the one logged run. **Next:** table, write-up, `next-steps.md`.
+**Done:** this card; code and tests (`lib/usd1.py`, `tests/test_usd1.py`); reproduction; the
+one logged run (`usd1.py --run --log`, 26 rows in `tries.md`: 12 `screen`, 14 `robustness`);
+table `results/usd-1.md`. Verdict: echo only. Held-out year not loaded, not spent.
+
+**Paused 2026-11-18 (usage window). No process running.**
+
+**Next, in this order (nothing below is started):**
+1. Post-hoc reading, labelled as such and logged as one `robustness` row: S for `coins` and for
+   BTC and ETH with each calendar year left out (does it rest on 2018 and 2022?), the number of
+   separate dollar-up spells in 2017-2025, the mean return after dollar-up against dollar-down
+   Fridays per set, and how far the dollar's own 13-week change repeats (to read DBC's +0.255).
+   Add it as `usd1.py --posthoc` and append its output to `results/usd-1.md`.
+2. The full write-up at the top of this file (plain words, table, how sure, 2-3 next lanes).
+3. `next-steps.md` "USD 1" final text, with "For the owner": the Fed's `DTWEXM` file.
+4. Draft PR `usd-1` -> `slow-1`, never merged.
+
+Do not rerun `--run --log` (the rows are in `tries.md`). `--report` rebuilds the table from the
+saved json under `<cache_root>/derived/usd-1/`.
