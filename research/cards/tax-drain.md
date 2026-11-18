@@ -82,6 +82,18 @@ dates). The September 2019 repo spike happened on exactly this mechanism.
   `lib/wide4_fred.py` into `<cache_root>/derived/wide-4/`. The download script prints only
   the number of rows and the first and last date of each series. Values after 2025-11-10 are
   dropped.
+- **Amendment (2026-11-18, before any value was read).** FRED refused every automated
+  download (HTTP/2 stream reset, three series, also over HTTP/1.1 and the `.txt` route). The
+  first stage uses the Treasury's own Daily Treasury Statement instead (fiscaldata.treasury.gov,
+  `accounting/dts/operating_cash_balance`, public and keyless; saved under
+  `<cache_root>/treasury/dts-2026-11-18/`): the closing balance of the Treasury's account at
+  the Fed ("Federal Reserve Account" to 2021-09, "Treasury General Account (TGA)" after) and of
+  the TT&L accounts, **daily, from 2005-10-03**. Only the account labels and their null
+  pattern were printed before the run. Consequences: no reserve series (the first stage is the
+  TGA alone); the first stage covers regime A only from 2005-10 (about 15 tax dates, not 58).
+  The first stage is then the change in the TGA's closing balance from session D-2 to session
+  D+1 (daily data, so no Wednesday rounding), against all other 3-session changes of the same
+  regime. The event study on prices is unchanged.
 
 ## Tax dates (fixed)
 
