@@ -163,6 +163,12 @@
     only). 0 rows (no backtest).
   - 22:27 UTC `register-1` started (D, <- dsr-1): fix scoreboard refs, project-wide register +
     generated BAR.md, convention PROPOSED.
+  - DONE `eu-6` (draft #77 -> eu-5): small coin-free EUR book 2012-2025 (5/25 band): trend
+    Sharpe 0.62 / hold-the-seven 0.78 / 60-40 0.75 (gaps noise, SE 0.10-0.17); worst loss
+    13.6% / 19.8% / 22.3%; trend best in all 6 crash windows (2008 US proxy -0.7% vs -23%;
+    2022 +1.7% vs -7%) but 58 vs 31 months under water and 21 vs ~2 orders/yr. Trend = crash
+    insurance only (book >= EUR 5k at EUR 1/order, >= 10k at EUR 2-3). 26 rows.
+  - 22:29 UTC `eu-7` started (D, <- eu-6): trend on stock funds only; hold-seven + fixed cash.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
