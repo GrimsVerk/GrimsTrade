@@ -1,15 +1,25 @@
 # Next steps
 
-## fast-reentry (in progress 2026-11-18 night, branch `fast-reentry` -> `insure-2`)
+## fast-reentry (done 2026-11-18 night, branch `fast-reentry` -> `insure-2`, draft PR #94)
 
 One pre-registered faster re-entry rule for `tsmom12`, judged on net-of-rebound over insure-1/2's
 effective falls (US 50, non-US 19) and on the full-period premium. Card
-`research/cards/fast-reentry.md` (rule `or3-12`: hold if 12-month OR 3-month return > 0).
-Chain: (1) card, pushed before any number; (2) run once, `tries.md` rows, one-screen verdict in
-`research/fast-reentry.md`. Rerun needs insure-2's setup (saved trend-1926 runs in
-`research/data/runs/trend-1926/`, `research/macro.local.json`, insure-2's data cache).
+`research/cards/fast-reentry.md` (rule `or3-12`: hold if 12-month OR 3-month return > 0), code
+`research/lib/fastreentry.py` (2 s), tables `research/results/fast-reentry.md`, verdict at the
+top of `research/fast-reentry.md`. Rerun needs insure-2's setup (saved trend-1926 runs in
+`research/data/runs/trend-1926/`, `research/macro.local.json`, insure-2's data cache); no new
+rows if they are already in `tries.md` (`--no-log` skips them).
 
-- Step 1 done: card pushed.
+- Done: card pushed before any number; run once; 27 `tries.md` rows (1 variant, 26
+  robustness). Verdict "In between": US net +1.5 log pts per fall (p 0.10 / 0.19), rebound
+  +8.4 but insurance -6.9 (share avoided 0.50 -> 0.35; stays in at 36% of exits); non-US net
+  +4.7; premium 1.07 -> 0.97 but with 83% mean exposure (US 2002-25 1.34 -> 1.33). First pick in
+  the insure line (family bar 0.05), not met; project-wide bar (N 433, p <= 1.2e-4) far.
+- Doing: nothing. No process running. Held-out year unspent.
+- Next lanes (not started): (1) `or3-12` against insure-1's card 2 controls (fixed 83%,
+  rotations): timing or exposure? (2) the "armed" pure re-entry rule (keep `tsmom12`'s exits),
+  its own card, second pick in the insure line (family bar 0.025); (3) if (2) is also in
+  between, close the line.
 
 ## insure-2 (done 2026-11-18 night, branch `insure-2` -> `insure-1`)
 
