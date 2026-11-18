@@ -431,7 +431,42 @@ them.
   The decision names the control worlds only: **the replay worlds stay as written above**
   (block bootstrap, zero total log return). Their statistic is relative to `tsmom12` in the
   same world, so the holding premium mostly cancels, and what is left rewards rules that hold
-  more high-volatility assets than `tsmom12`: it can only make bar 3 harsher.
+  more high-volatility assets than `tsmom12`: it can only make bar 3 harsher. (Accepted by
+  the lead, ~20:25 UTC.)
+- **Lead's decision 2, card note 2026-11-18** (lead's message ~20:25 UTC by the lead's clock,
+  written here ~19:25 UTC by this machine's clock; after the controls rerun with zero mean
+  simple return found noise 0 of 3 and the plant at no strength; before any tuning number,
+  replay world or real-data search). **The search's greed is tuned on synthetic worlds only,
+  then confirmed on fresh ones.**
+  - **Grid, fixed now (6 settings; population 500, tournament, operators, elite, seeds,
+    grammar, candidates and the three procedures unchanged):**
+
+    | Setting | Node penalty | Generations after the initial one |
+    |---|---:|---:|
+    | A (the card's) | 0.01 | 30 |
+    | B | 0.03 | 30 |
+    | C | 0.06 | 30 |
+    | D | 0.01 | 5 |
+    | E | 0.03 | 10 |
+    | F | 0.06 | 10 |
+
+  - **Tuning worlds, fresh seeds** (zero mean simple return, as the controls): noise worlds
+    11, 12, 13 (shuffle) and the plant `H` at k=0.04 on world 11. `H`'s ceiling there is
+    logged before any tuning search. Every run is a `control` row (`evo-1-control`, the
+    setting in the Variant cell).
+  - **Rule to pick the setting, fixed now:** among the settings whose noise control is found in
+    0 of the 3 tuning noise worlds (found = the card's: Sharpe above 0 with p < 0.10, any
+    procedure), the one with the highest planted **recovery** = the mean over the three
+    procedures of out-of-sample gym Sharpe divided by the ceiling. Ties (within 0.01): fewer
+    generations, then the larger penalty. If no setting has noise 0 of 3, the lane stops.
+  - **Confirmation, fresh seeds again:** the chosen setting on noise worlds 21, 22, 23 and the
+    plant at k=0.04 on world 21 (ceiling logged first). Passes only if the plant is found (some
+    procedure: Sharpe above 0, p < 0.10, at least half the ceiling) and noise is found in 0 of
+    3. All `control` rows.
+  - **Only if the confirmation passes:** the chosen setting becomes the search for every later
+    run (40 replays, seeds 101-140, then the one real search on train only, the bar as
+    written). If it fails: write up "the search cannot find a 0.72 planted rule at any tested
+    greed", propose close or redesign in `next-steps.md`, and run no replay and no real search.
 
 ### Controls (run before the real search; kind `control`, idea `evo-1-control`)
 
