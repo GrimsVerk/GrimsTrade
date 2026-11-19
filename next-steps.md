@@ -1,10 +1,20 @@
-## risk-menu-2 (doing 2026-11-19, branch `risk-menu-2`, draft PR -> `risk-menu`)
+## risk-menu-2 (done 2026-11-19, branch `risk-menu-2`, draft PR #105 -> `risk-menu`)
 
-Card `research/cards/risk-menu-2.md` (1971e16): risk-menu items 1-7 (no wide book) on
-1994-02..2025-10 with T-bill cash; do the worst-loss / worst-12-month / under-water rankings
-hold with 2000-2002 included? Script `research/lib/riskmenu2_run.py` next.
+Card before numbers (`research/cards/risk-menu-2.md`, 1971e16), script before its run
+(ab05f14). Tables `research/results/risk-menu-2.md` (+ `.json`); section "With 2000-2002
+included" in `research/risk-menu.md`. 4 `replication` rows (`@W94`). Descriptive, no pick.
 
-# Next steps
+- Risk-menu items 1-7 on 1994-02..2025-10 (T-bill cash): the orders by worst loss and worst 12
+  months are unchanged (Kendall tau 1.00; own-vol 26% first, 5.4% / -2.7%); only holding the
+  six gets worse (worst loss 47% to 69%, 2000-03..2002-10).
+- Time under water does not hold (tau 0.52, same first item): holding 2.3 to 11.1 years (4th
+  to last), `tsmom12` 2.6 to 5.7 y, 60/40 last to 4th (4.3 y).
+- Doing: nothing. No process running.
+- Next: (1) the start and end of each longest under-water spell on 1994-2025 (where `tsmom12`'s
+  5.7 years sit); (2) a 1994-2025 menu with an index-based stand-in for the wide book only if
+  the crash-gain row is wanted.
+- Rerun: `uv run python -I research/lib/riskmenu2_run.py` (no new rows); needs
+  `research/data/` and `results/risk-menu.json`.
 
 ## risk-menu (done 2026-11-19, branch `risk-menu`, draft PR #101 -> `vol-timing`)
 

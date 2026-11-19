@@ -42,6 +42,25 @@ carry no standard error; the crash columns rest on three episodes.
   row holds, the more. 2000-2002 is outside the window (see [`risk-map.md`](risk-map.md)).
 - Orders for mixes are approximate (card); the held-out year is untouched.
 
-Rows: 7 `replication` rows in `tries.md` (not selectable). Items: hold the six, 60/40,
+## With 2000-2002 included (risk-menu-2, 2026-11-19)
+
+Card [`cards/risk-menu-2.md`](cards/risk-menu-2.md); tables
+[`results/risk-menu-2.md`](results/risk-menu-2.md). Items 1-7 (everything without the wide
+book) on 1994-02..2025-10, same definitions, costs and T-bill cash. Before 1999 the six is SPY
+alone; before mid-2002 60/40 is 60% SPY and 40% bills.
+
+| Ranking | Holds? | What changes |
+|---|---|---|
+| Worst loss | Yes: same order, tau 1.00 | Only holding the six gets worse: 47% to 69% (2000-03 to 2002-10). Every `tsmom12` form keeps its 2018-2020 worst; own-vol 26% stays first (5.4%) |
+| Worst 12 months | Yes: same order, tau 1.00 | Holding the six -44.9% to -53.6% (to 2001-09); the rest move under a point |
+| Time under water | Partly: same first (own-vol 26%, 1.3 y), tau 0.52 | Holding the six drops from 4th to last (2.3 to 11.1 years); `tsmom12` full 2.6 to 5.7 y, 70% to 4.7 y, own-vol 70% to 3.3 y; 60/40 rises from last to 4th (4.3 y) |
+
+In 2000-2002 holding lost 62.5%, `tsmom12` 21.7%, `tsmom12` 70% 12.5%; own-vol 26% gained
+6.3%. Over the longer window Sharpe falls for all (`tsmom12` 0.94, own-vol 1.03 / 1.08, hold
+0.77, SE 0.18); own-vol's k was re-solved on this window. Still one history, no standard error
+on the risk columns, and no pick: the lesson is that the order by depth of loss is stable, while
+the wait for a new high depends on which bear market the window contains.
+
+Rows: 7 `replication` rows in `tries.md` (not selectable), plus 4 from risk-menu-2 (`@W94`). Items: hold the six, 60/40,
 `tsmom12` at 100 / 70 / 26%, own-vol target at 26 / 70%, the equal-risk blend, and splits
 90/10, 70/30, 50/50 with `wide-LS-g1`.
