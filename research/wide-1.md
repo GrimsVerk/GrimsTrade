@@ -690,3 +690,15 @@ price, oppositely to the story. Dead, no card.
 **Family count: union of the wide and survey lines 80 mechanisms (79 + W23), 18 tested by a
 strategy, none passed. The next strategy test is read at p < 0.10 / 80 = 0.00125.** Gates
 so far: 15, all failed.
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W24 `inflation-disagreement` | survey methodology x forecaster dispersion as a measure of uncertainty | Long bonds pay a term premium for inflation risk, larger when inflation is more uncertain (Wright 2011, international panel to about 2009) | Interquartile range of the SPF's 10-year CPI forecasts (`CPI10_D1`), quarterly, as a 40-survey z | TLT and IEF next-quarter return from the first day of the survey quarter's third month, placebo = dose calendar moved 7-45 quarters; judging years 2010Q1 .. 2025Q2 | 1.5% |
+
+**Closed by wide-12's gate (2026-11-19, `wide-12.md` step 3):** W24 `inflation-disagreement`:
+-0.49% per unit of z over a quarter, t -0.75, rank 36 of 41 (124 rows), wrong sign; inside
+Wright's years -0.64% (t -1.25). Dead, no card.
+
+**Family count: union of the wide and survey lines 81 mechanisms (79 + W23 + W24), 18 tested
+by a strategy, none passed. The next strategy test is read at p < 0.10 / 81 = 0.00123.**
+Gates so far: 16, all failed.

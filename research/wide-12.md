@@ -255,3 +255,64 @@ several times the literature's passes.
 
 **My guess before any number.** b near zero, t between -1 and +1.5; rank in the middle;
 placebo t sd 1.0-1.5. Feedback: weak (|t| < 1.5). Chance of a pass: 2%.
+
+### What came out (one run, 2026-11-19; table `results/inflation-disagreement.md`)
+
+Dry run first (counts only): `CPI10_D1` has 141 surveys, 1991Q4 .. 2026Q4. That showed the
+script would let future-dose placebos read surveys released after the last train bar
+(2025Q4 on), so before the real run the script was changed to read only surveys whose entry
+date is on or before 2025-11-10 (pushed as its own commit): 136 surveys to 2025Q3, z from
+1996Q4. Gate: 62 quarters for each of TLT and IEF, **124 pooled rows**; the 40 placebos keep
+36 to 124 rows (the far future-dose shifts run out of surveys). Then one real run.
+
+**The gate fails on both counts. One unit of inflation-disagreement z goes with -0.49% on TLT
+and IEF over the next quarter (t -0.75, 124 rows, surveys 2010Q1 .. 2025Q2): the wrong sign;
+rank 36 of 41 (empirical one-sided p 0.88). W24 `inflation-disagreement` is dead by the gate:
+no card, no strategy, no `tries.md` row.** Held-out year untouched.
+
+| Next-quarter return on 10-year CPI forecast dispersion z | b, % per unit | t | Rows |
+|---|---:|---:|---:|
+| **Gate: TLT, IEF pooled, 2010Q1 .. 2025Q2** | **-0.487** | **-0.75** | 124 |
+| With past 13/26/52-week returns as controls | -0.351 | -0.60 | 124 |
+| Next-year dose `CPI_D1(T+4)` instead | -0.981 | -1.58 | 124 |
+| TLT / IEF alone | -0.653 / -0.321 | -0.74 / -0.73 | 62 each |
+| SPY alone (not in the gate) | -0.211 | -0.27 | 62 |
+| Pre-gate 1996Q4 .. 2009Q4 (Wright's years; ETFs from 2002) | -0.642 | -1.25 | 60 |
+
+- **No inflation-uncertainty premium in next-quarter bond returns**, after Wright's sample or
+  inside it: every cut has the wrong sign. Wright's result is about yields and term-premium
+  estimates across countries; in the time series of US bond ETF returns it does not show.
+- **F2 held:** dispersion does not follow the bonds' own past returns (13 weeks t -1.07, 52
+  weeks t -0.97). The dose was clean; the premium is just not there at this power.
+- **Null width: SD of placebo t 0.90, no placebo past |t| 2**, quantiles 5/50/95% -1.39 /
+  +0.40 / +1.45, extremes -1.85 / +1.65. Narrower than N(0, 1): non-overlapping quarters and
+  short placebo samples. The first design in `gate-null.md` whose null is narrower than normal
+  with 40 placebos.
+- My guess (t -1 to +1.5, middle rank, placebo sd 1.0-1.5, feedback weak, pass 2%) held on t
+  and feedback; the rank was lower and the null narrower.
+
+## Family count and status
+
+Two mechanisms added and closed by their gates. **Union count: 81 mechanisms (wide-11's 79 +
+W23 + W24), 18 tested by a strategy, none passed. The next strategy test is read at
+p < 0.10 / 81 = 0.00123 (family) and the register's p <= 4.8e-5 (3,118 tries, N 1,032).**
+Gates so far: 16, all failed. Published effects after publication in this book: 0 for 10
+(W23's flow carry-over and W24's inflation-uncertainty premium added; both papers measured
+level effects, not the next month's return).
+
+What the filters did: both candidates passed F1 and F2 on paper. W24's dose was clean
+(no feedback), and still nothing. W23's dose answered price in the same window, the opposite
+way to the story (reserve managers sell into Treasury rallies), which the controls absorbed.
+Passing the filters removes the known reasons for failure; it does not supply an effect.
+
+## Next
+
+1. **D3 `geopolitical-premium` and D4 `debt-maturity-supply` stay parked** (score 4). D3 needs
+   an xls (BIFF) reader or a CSV copy of the index; D4 is monthly and slow (low power). Neither
+   is worth a gate before a candidate scores 5 or more.
+2. **The ideation constraint is now very tight**: 16 gates, 0 passes, and the last four
+   candidates designed against the known failure modes died at |t| < 1.3 with wrong signs. A
+   lane that wants a different result should change the question (for example, what the
+   live `tsmom12` loses to costs or turnover), not the field.
+3. W23's side result (foreign official custody flows fall in the weeks Treasuries rally,
+   t -3.19) is descriptive only; it is not a tradeable lead (it is contemporaneous).

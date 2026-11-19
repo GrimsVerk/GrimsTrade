@@ -1,14 +1,27 @@
 # Next steps
 
-## Wide 12 (in progress 2026-11-19, branch `wide-12`, draft PR -> `wide-11`)
+## Wide 12 (done 2026-11-19, branch `wide-12`, draft PR #112 -> `wide-11`)
 
-- Done: step 1 (four candidates D1-D4 against F1/F2, scored before any data look); step 2
-  **W23 `custody-selling` fails** (TLT/IEF 4-week return -0.154% per unit of custody-flow z,
-  t -1.20, rank 34/41, placebo sd 1.19; the flow falls when bonds rally the same 4 weeks,
-  t -3.19). Count: **80 mechanisms, 18 tested, none passed; gates 15, all failed.**
-- Doing: D2 `inflation-disagreement` (W24) gate, rule first.
-- Data: Fed H.4.1 whole-release zip (keyless DDP) in the shared cache, `fed-ddp/h41-2026-11-19/`
-  (URL in `research/wide-12.md`). FRED's web CSV refuses this machine; the FRED API needs a key.
+Step 1: four candidates written against F1/F2 and scored before any data look (D1-D4 in
+`research/wide-12.md`). Steps 2-3: the top two gated under `research/gate-null.md` (rule,
+script, tests pushed first; dry run counts; one run each). **Both fail; no card, no
+`tries.md` row; held-out year untouched.**
+- W23 `custody-selling` (Fed H.4.1 custody of marketable Treasuries, keyless DDP zip): TLT/IEF
+  4-week return -0.154% per unit of flow z, t -1.20, rank 34/41, placebo sd 1.19. The flow
+  falls when bonds rally the same 4 weeks (t -3.19). Table `research/results/custody-selling.md`.
+- W24 `inflation-disagreement` (SPF `CPI10_D1`, keyless xlsx): next-quarter TLT/IEF -0.49% per
+  z, t -0.75, rank 36/41, placebo sd 0.90. Table `research/results/inflation-disagreement.md`.
+
+Count: union **81 mechanisms, 18 tested, none passed**; next strategy test p < 0.00123
+(family), register p <= 4.8e-5. Gates: 16, all failed.
+
+- Doing: nothing. No process running.
+- Next: (1) D3/D4 stay parked (score 4). (2) Change the question, not the field (see
+  `research/wide-12.md` Next). (3) Carry 81/18 into the merged list.
+- Data: Fed H.4.1 whole-release zip (`fed-ddp/h41-2026-11-19/`) and SPF dispersion xlsx
+  (`philly-spf/2026-11-19/`) in the shared cache; URLs in `research/wide-12.md`. FRED's web
+  CSV refuses this machine; the FRED API needs a key. `wide12_events.read_xlsx_sheet` reads
+  xlsx without a library.
 
 ## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
