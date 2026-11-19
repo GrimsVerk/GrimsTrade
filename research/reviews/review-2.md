@@ -285,4 +285,76 @@ long-only funds built on them matched their index after fees".
 
 ## 5. Gates (wide-9 gate-null #93, wide-11 #109, weather-1 #116)
 
-(pending)
+**Verdict: the gate-null method is sound and the two verdicts I checked (W22 hedging
+pressure, weather-1) hold. One placebo design flaw (W22's backward shifts look into the
+outcome) makes that null too wide. It is harmless for this failed gate but would wrongly
+fail a real effect. Step 7 of the method (reading a 40-placebo scale out to the register's
+p 1e-4) is not valid as written.**
+
+### 5a. The method (`research/gate-null.md`, branch `wide-9`): sound, two caveats
+
+- Ranking the true t among at least 40 placebos computed by the same code path, keeping t >= 2
+  as a further condition, and printing the null's width every time: all correct, and a real
+  improvement over reading clustered t against N(0, 1). The measured placebo SDs (2.18, 1.74,
+  1.48) show that the problem is real. The re-reading of old verdicts ("no verdict changes")
+  is right: every earlier gate failed on sign or on |t| < 1.5.
+- **Placebos must use no information from the outcome window.** Step 1 says "move the events
+  where the mechanism predicts nothing". It does not say a shifted dose must be built only
+  from data before the outcome. Shifting a dose that responds to prices **backwards** (taking
+  a later dose) breaks this (5b).
+- **Step 7 is not valid as written (medium, method).** z = (t - median) / SD of 40 placebos,
+  read against N(0, 1) at the register bar (p 1e-4, z about 3.7-3.9), extrapolates a
+  40-draw scale four standard deviations into a tail the method itself calls heavy (W19's
+  extreme -5.93, wide-8's +8.9). The fallback is a block bootstrap by event cluster. With the
+  8-20 independent episodes these designs have, that cannot produce a trustworthy p of 1e-4
+  either. The honest statement is that **a clustered design with about 10 independent
+  episodes cannot reach the card bar at all**. A gate on such a design can only kill an idea.
+  Fix: add to the method that each gate states, before it runs, the smallest p its design
+  could honestly reach. Where that is above the card bar, the gate is labelled "kill-only".
+
+### 5b. wide-11 W22 hedging pressure (#109): verdict holds; its placebo null is contaminated (low for the verdict, medium for the method)
+
+`research/results/hedging-pressure.md` and `research/lib/wide11_events.py`
+(`shifted_z`: z_k(T) = z(T - 7k days)). Release lag is handled: positions dated Tuesday T are
+public on the Friday, and y runs from the first bar >= T + 7 to >= T + 35. The true statistic
+fails by itself (+0.075% per z, t 0.49, wrong side of 2), so the verdict stands.
+
+But the 40 placebos are not null draws. For **negative k** the dose is z from 27-103 weeks
+**later**. Its 156-week window contains the outcome weeks, and hedgers add to their net short
+after rallies (the lane's own feedback check F2: slope +0.90, t 1.13). The placebo t are
+lopsided (recomputed from the printed table). The 20 negative-k placebos average **+0.74**,
+and the ten nearest backward shifts (k = -27..-63) are all at least +0.83. All three placebos
+with t >= 2 are negative k (k = -27: +2.52, -31: +3.41, -55: +2.20). The 20 positive-k
+placebos average -0.39 (median -0.32), and none is above +0.65. A true effect would
+have had to beat the contaminated +3.41 and +2.52 to rank in the top 2. Fix (for later gates
+on price-responsive doses): use only earlier doses (positive k), far enough back that the
+placebo dose is not just a lagged copy of the true one, or use year shifts. A later dose
+whose window overlaps the outcome is never a valid placebo. The W22 verdict needs no
+rerun.
+
+### 5c. weather-1 (#116): verdict holds; SUMMARY's reason is an interpretation (low)
+
+`research/weather-1.md`, `research/results/hdd-gas.md` (branch `weather-1`). The placebo
+design is good: derangements of 18 winters keep the season and real weather, and winters'
+weather is independent, so the placebos are exchangeable with the truth. Their SD of 1.12 is
+consistent with that. Release lag: dose to Friday, entry at the Tuesday close (CPC posts the
+next day). No look-ahead, and weather cannot be caused by prices (F2). The pre-registered
+gate is a conjunction (t >= 2, rank <= 2 and both halves > 0), which is stricter than 5% and
+fine. Result: wrong sign (t -0.29), rank 19 of 41. **Dead, correctly.**
+
+SUMMARY gives the reason as "the market trades the forecast". The evidence for that is one
+shown cell, a weak same-week slope (t 1.68). That fits the forecast story, but it fits equally
+well a realised CONUS anomaly that is a poor proxy for the hub price's driver, or UNG's roll
+noise. It is the lane's explanation, not a tested finding. Fix: "no signal; the lane's reading
+is that the forecast, not the realised weather, moves the price (untested)". One more caveat:
+CPC's daily files are today's vintage. Any revision after first posting would be look-ahead
+for a pass. It does not matter for a fail.
+
+### 5d. Multiple testing across gates
+
+About 20 gates have now run at about 5% each, so about one chance pass was expected and none
+happened. Only a card at the register bar can make a pass count, so the two-stage design
+controls this. Per 5a, though, most clustered designs could never get that far. The count
+"19 tested, none passed" (SUMMARY) is therefore weaker evidence against borrowed ideas than it
+sounds: several gates had little power by design. Examples are weather-1's own power note
+(t = 2 needs a one-SD cold week worth +0.6-0.7%) and W19's eight independent ENSO swings.
