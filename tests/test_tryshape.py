@@ -12,7 +12,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from grimstrade import data, tryshape
+from grimstrade import data, returnstore, tryshape
 
 ROOT = Path(__file__).resolve().parents[1]
 ROW = "| 2026-11-19 01:00 | idea-x | v1 | variant | train | 1994-02-01 | 2025-11-09 | 0.50 |"
@@ -97,6 +97,8 @@ def test_harness_log_writes_the_shape_next_to_the_row(
         tries, shapes = tmp_path / "tries.md", tmp_path / "tries-shape.jsonl"
         monkeypatch.setattr(harness, "TRIES", tries)
         monkeypatch.setattr(harness, "SHAPES", shapes)
+        store = tmp_path / "returns"
+        monkeypatch.setattr(harness, "STORE", store)
         days, eq = weekday_curve([100.0, 110.0, 99.0, 108.9])
         full = [days[0] + timedelta(days=k) for k in range((days[-1] - days[0]).days + 1)]
         known = dict(zip(days, eq, strict=True))
@@ -113,6 +115,13 @@ def test_harness_log_writes_the_shape_next_to_the_row(
         got = tryshape.read(shapes.read_text())
         assert list(got) == [row]
         assert got[row] == tryshape.of_equity(days, eq)
+        # register-5: the train try's weekly returns went into the store, family idea-x
+        (stored,) = returnstore.read(store)
+        assert [p.name for p in store.iterdir()] == ["idea-x.csv.gz"]
+        assert (stored.source, stored.idea, stored.variant) == ("curve", "idea-x", "v1")
+        assert f"| {stored.sharpe:.2f} |" in row
+        want = returnstore.quantize(tryshape.weekly_returns(days, eq))
+        assert list(stored.rets) == want
     finally:
         sys.modules.pop(spec.name, None)
         data.UNIVERSE.clear()
