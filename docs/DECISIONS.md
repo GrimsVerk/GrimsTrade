@@ -2,6 +2,44 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-18 (cash interest): Idle cash earns the 13-week US Treasury bill rate. Why: the gym
+  paid nothing on cash, while a real account can park cash in T-bills (or a T-bill fund) and
+  every backtest in the literature credits it; a book that sits in cash (e.g. trend models out
+  of trend) looked worse than it would be. The rules, the same for the live record and backtests
+  (`gym.simulate(rates=...)` is the one place interest is computed):
+  - Rate: Yahoo's `^IRX` daily close (keyless, the same chart API as the ETF bars), the 13-week
+    bill's discount rate in percent, used as an annual rate. A discount rate is a little below
+    the bill's true yield (about 0.1 percentage point at 4%), which roughly pays for a T-bill
+    fund's fee: the cautious side. A rate below zero is used as zero (US brokers and bill funds
+    don't charge on cash).
+  - Accrual: every calendar day (weekends and holidays too), on the cash held at the end of the
+    UTC day, at rate / 365 (the repo's 365-day convention), credited into cash when the replay
+    moves past that day, so it compounds daily. The last day of a replay (possibly still open)
+    is credited by the next run. Interest is credited only once a strategy has a decision.
+  - No look-ahead: the rate for day d is the newest rate known at d 00:00 UTC. A rate is known
+    from its session's close (`data.close_time` for an ETF day, 21:00 UTC) in backtests, and in
+    the live record from the later of that and the time the row was stored (`seen`), the way a
+    decision counts from its commit (`ledger.in_force`). So the live record earns interest only
+    from the day after the first run with this code; nothing earlier changes there.
+  - Missing data: the last known rate carries forward (holidays, a failed fetch). Before the
+    first known rate: no interest. A failed fetch is a problem line on every run until it works.
+  - Negative cash (only float dust; the gym never borrows) is charged at the same rate, never
+    credited.
+  - Store: `data/rates.csv` (`date,rate,seen`) on the record branch, append-only like the bars:
+    rows are only appended for sessions that closed at least 15 minutes ago, never rewritten.
+    The first run fills it from the first stored bar (for the backtest report); `check_record`
+    refuses rows no run writes (dates out of order, a weekend, a rate outside -5..30%, stored
+    before its session closed or after now).
+  - Sharpe is now measured above the cash rate the gym pays (the zero risk-free rate of
+    2026-11-11 stays where no rate is passed). Without this a strategy that only holds cash
+    would show a huge Sharpe from interest with almost no variance. Total return, drawdown and
+    equity include the interest.
+  Every score is replayed each run, so this changes backtests once (research train period
+  1994-2025, `tsmom12` and `sixty_forty`: see PR `cash-interest`); no ledger line, bar or other
+  stored row changes. Not modelled: a broker's spread below the bill rate (Interactive Brokers
+  pays the benchmark minus 0.5% and nothing on the first 10,000 USD; a T-bill fund avoids that),
+  and margin interest (the gym never borrows).
+
 - 2026-11-18 (crypto fee tiers, replaces the flat 0.60% of audit G3): A crypto fill pays Kraken
   Pro's spot taker fee for the strategy's crypto volume in the 30 days before the fill (fills at
   the same open not counted). Each strategy is its own account; ETF trades are elsewhere and
@@ -56,8 +94,8 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   about six weeks after), at most one quarterly payout (about 0.3% of the position) a few
   weeks early, which is far smaller than the 1-4% a year missing before. The cash is not
   reinvested by itself: it sits in cash until the strategy's next decision buys back to target
-  (band applied), as for a real account without automatic reinvestment. Cash still earns no
-  interest. Strategies do not see dividends (they decide on raw bars as before). Every score is
+  (band applied), as for a real account without automatic reinvestment. Meanwhile it earns the
+  cash rate like any cash (since 2026-11-18, cash interest). Strategies do not see dividends (they decide on raw bars as before). Every score is
   replayed from the stored record each run, so stored payouts change past backtests once (700
   days to 2026-11-17: buy-and-hold SPY +2.1%, 60/40 +4.9%, equal weight +2.4%); the live
   record had no ex-date yet (it began 2026-11-11).
@@ -172,7 +210,8 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   retroactively, which breaks append-only data. Dividends are paid separately as cash since
   2026-11-17 (audit G4, above).
 - 2026-11-11: Sharpe uses 365 calendar days and a zero risk-free rate. Why: crypto trades every day;
-  one convention for all strategies.
+  one convention for all strategies. (Since 2026-11-18 the risk-free rate is the cash rate the
+  gym pays, see "cash interest".)
 - 2026-11-11: No real-money broker, ever, without the owner's explicit decision. No keys in git.
 - 2026-11-11: License is MIT. Why: owner's ruling.
 - 2026-11-12: All three risk presets from the risk map run in paper side by side (owner: fake money,
