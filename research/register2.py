@@ -580,7 +580,8 @@ def effective_trials(series: list[Series], a: date, b: date) -> dict[str, Any]:
         "cluster_sharpe_mean": round(float(np.mean(srs)), 4),
         "cluster_sharpe_var": round(float(np.var(srs, ddof=1)), 4) if k > 1 else None,
         "cluster_sharpes": [round(x, 4) for x in srs],
-        "cluster_sharpes_minvar": [round(x, 4) for x in srs_minvar],
+        # register-6 (review-2 1b): in-sample long-short weights, Sharpe up to ~5; never quote.
+        "cluster_sharpes_minvar_in_sample_diagnostic": [round(x, 4) for x in srs_minvar],
     }
 
 
@@ -723,6 +724,18 @@ def estimate() -> None:
         },
         "windows": {name: effective_trials(sample, a, b) for name, (a, b) in WINDOWS.items()},
         "main_window": MAIN_WINDOW,
+        "notes": {
+            "cluster_sharpes_minvar_in_sample_diagnostic": (
+                "Diagnostic only, not used in the bar: Sharpes of in-sample minimum-variance"
+                " portfolios per cluster (long-short weights fitted on the same returns), up to"
+                " about 5. They mean nothing; do not quote them (review-2 section 1b)."
+            ),
+            "cluster_sharpe_var": (
+                "Sample variance of as many numbers as there are clusters (2 in the main"
+                " window): almost no precision, so the against-zero bar built on it is rough"
+                " (review-2 section 1b)."
+            ),
+        },
         "onc_check_planted_found": onc_check(),
         "sensitivity_one_per_family": one_per_family(sample, *WINDOWS[MAIN_WINDOW]),
     }
