@@ -1,5 +1,22 @@
 # Next steps
 
+## Weather 2 (done 2026-11-19, branch `weather-2`, draft PR #117 -> `weather-1`)
+
+One pre-registered gate (card `research/weather-2.md`, pushed before any price): change in a
+gas-weighted index of CPC's 6-10/8-14 day temperature outlooks vs UNG's next-session
+open-to-close, winters 2012-13..2024-25 (keyless shapefile archive starts 2012-09; nothing
+numeric reaches 2007). **Fails: -0.076 points per 0.10, t -0.68, rank 36/41 winter-derangement
+placebos (sd 0.95, median +0.78); halves both negative.** The dose is real (t 7.9 from the
+close before the issue day to the next open): priced before the open. One `screen` row in
+`research/tries.md`; held-out year untouched. Table `research/results/cpc-revision.md`.
+
+Count: union **81 mechanisms, 20 tested, none passed** (80/19 from weather-1 plus
+`cpc-revision`).
+- Doing: nothing. No process running.
+- Next weather angle: none suggested (only intraday timing remains; daily bars cannot test it).
+- Data: `weather-2/` under the cache root (outlook zips Oct 20-Mar 31 of 2012-2025,
+  `k-cache.json` of the index; rebuild with `scripts/fetch_weather2.py`). UNG from `weather-1/`.
+
 ## Weather 1 (done 2026-11-19, branch `weather-1`, draft PR #116 -> `wide-11`)
 
 One pre-registered weather gate (card `research/weather-1.md`, pushed before any return
