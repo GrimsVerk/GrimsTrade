@@ -484,6 +484,14 @@
     episodes). 2 `screen` rows. Count 84 mechanisms / 18 strategy-tested / 19 gates, 0 passed.
     No loaded-source idea left scoring >= 5. ~03:20 UTC `gate-power` started (D, <- wide-13):
     planted-effect power of the gate design on real dose series.
+  - DONE `decisions-1` (draft #121 -> review-2): `research/owner-decisions.md`: "For the
+    owner" deduplicated into 16 decisions (A landing, B rules, C risk) + 7 small, each with
+    options, effects, evidence, recommended default, what it unblocks; review-2's corrected
+    numbers. 5-minute list: A4 research archive #118, A1 engineering order (gym PRs on one
+    day), A2 #61 full bill rate, B1 register + bar, C2 presets + one own-vol 70% book.
+    Deadline: B3 `turn-of-year-losers@1` freeze needs a yes before 2026-11-30 (default no,
+    8% power). fix-2 is #122. ~03:27 UTC `wide-14` started (W, <- wide-13): earthquake ->
+    country-ETF gate with many episodes, corrected placebo rule.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
@@ -586,6 +594,9 @@ money above T-bills against a same-size T-bill slot.
 
 ### For the owner
 
+- START HERE (night 2026-11-19): `research/owner-decisions.md` (branch `decisions-1`, PR #121)
+  folds every item below into 16 decisions with recommended defaults and a 5-minute list.
+  Only deadline: B3 (forward entry freeze) before 2026-11-30.
 - Night 2026-11-19, integrate-1 (#115): the 9 engineering PRs to main land cleanly in the
   order in `docs/integrate-1.md` (branch `integrate-1`). Your calls there: #61's three
   questions (full bill rate or spread; Sharpe above cash for research too; a second rate
