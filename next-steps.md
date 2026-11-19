@@ -94,6 +94,34 @@ every book (convention change, not a loss).
   rate). Open questions in PR #61: a broker spread below the T-bill rate; should the research
   harness also measure Sharpe above T-bills; a second rate source (US Treasury CSV).
 
+## forward-1 (done 2026-11-18 night, branch `forward-1` from `main`, draft PR #67 -> `main`)
+
+WIDER lane (new method): a forward-only shadow registry. Each candidate rule is frozen (hash of
+code + parameters + data source) with its metric, bar and minimum sample written at freeze, and
+scored only on bars that start after the freeze. Research only; no change to the daily runner,
+its schedule or workflows. Design `docs/forward-registry.md`; code `src/grimstrade/forward.py`
+(`python -m grimstrade.forward table|score`); tests `tests/test_forward.py` (freeze,
+append-only, refusal of pre-freeze bars, hash mismatch, power calculator, verdict read once);
+proposals `research/forward/candidates.jsonl` (made by `research/forward/propose.py`; NOT
+frozen); DECISIONS entry 2026-11-18 marked PROPOSED.
+
+- Years needed at 80% power, alpha 0.025 each (0.10 over the four): `carry-3-band@1` 12.7
+  (7.3 at a lone 0.10; train Sharpe 0.79 assumed, held-out was -0.65); `fomc-bond-drift@1` 78
+  (papers' 12 bps a meeting); `coin-stop-0.25@1` 26 (15/21 episodes; ~55 counting only
+  independent episodes); `eu-monthly-vs-weekly@1` 32 (signal-to-noise 0.50 from eu-3's p 0.03).
+- Finding: only carry can be judged forward in useful time; the other three need decades, so
+  their decisions should be taken on other grounds now (stop = risk choice; monthly clock's fee
+  saving is mechanical; FOMC drift descriptive only).
+- Before any freeze: each rule needs a forward adapter (the research scripts stop at
+  `TRAIN_END`/`HELD_END` on purpose); the adapter's files join the hash, so the proposal hashes
+  change at freeze. Carry also needs weekly snapshots of the perp lists (delisted coins vanish
+  from later downloads).
+- Doing: nothing. No process running.
+- [ ] **Owner decision: freeze these and schedule the scorer?** (1) adopt the registry rules
+      (DECISIONS 2026-11-18); (2) which to freeze (recommended: `carry-3-band@1` for a verdict;
+      the other three descriptive only, or not at all); (3) a lane to write the adapters and
+      freeze; (4) whether a weekly job (owner-made schedule) runs `forward score`.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
