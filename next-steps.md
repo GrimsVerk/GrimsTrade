@@ -500,6 +500,21 @@
     CLOSED (only intraday timing left, untestable on daily bars).
   - ~03:32 UTC `weather-3` started (D, <- weather-2): can the outlook be traded from its
     publication time? Intraday feasibility first (micro-1's minute cache), then card + gate.
+  - DONE `fix-2`: review-2's six fixes on 4 draft PRs: #122 (fix-2 -> review-2: SUMMARY.md
+    corrected, pr-map one-liners, new `research/errata-2.md` listing every wrong statement by
+    branch/file/line), #123 (risk-menu-4: no-look-ahead own-vol rows lead; middle size 13.8%/yr,
+    worst loss 15.7%, share 0.61), #124 (gate-null-2 -> wide-11: no placebo may use outcome-
+    window info; step 7 replaced; 18 past verdicts listed, W21-W26 used backward shifts, none
+    can flip: all failed on their own t), #126 (register-6 -> register-5: in-sample cluster
+    portfolios relabelled, 12..486 range note in BAR.md via the generators). Lane branches with
+    wrong statements left as is (errata-2 records them). risk-menu.svg still look-ahead ->
+    `risk-menu-5` started (D, small, <- risk-menu-4).
+  - DONE (night-2's lanes, no pushes for 30-40 min, worktrees clean): `register-5` (#111):
+    register regenerated (3,130 tries, 146 families, N 1,032, eff. N 486 unchanged); harness
+    writes a try's weekly returns into the store. `wide-12` (#112): 4 candidates against F1/F2;
+    W23 custody-selling gate fails (t -1.20, rank 34/41); W24 inflation-disagreement fails
+    (t -0.75, rank 36/41); count 81/18, gates 16.
+  - (Night-3 times from "~03:20 gate-power" on ran ~10 min ahead of the clock.)
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
