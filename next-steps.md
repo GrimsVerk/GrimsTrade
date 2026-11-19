@@ -375,6 +375,8 @@
     -21.7%, own-vol 26% +6.3%. Sharpe 1994-2025: `tsmom12` 0.94, own-vol 1.03/1.08, hold 0.77
     (SE 0.18). Caveat: own-vol share re-fitted on the full window (descriptive, mild look-ahead).
     4 replication rows.
+  - DONE `summary-3` (draft #107 -> summary-2): SUMMARY.md refreshed (insurance across eras
+    and countries; live families; risk menu as the owner's main decision; current bar).
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
