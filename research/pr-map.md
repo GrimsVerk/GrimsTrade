@@ -56,7 +56,7 @@ Legend: [E] engineering change to `main`, [R] research record, [O] waits on an o
                               - #64 `survey-3` [R]: survey-3: `xtsmom` fails.
                                 - #65 `ann-1` [R]: ann-1: FOMC day premium gone after publication.
                                   - #72 `survey-4` [R]: survey-4: ts-carry, halloween fail.
-                                    - #78 `survey-5` [R][O]: survey-5: live trend funds vs `tsmom12`; ~80% paper-to-live decay. O8.
+                                    - #78 `survey-5` [R][O]: survey-5: live trend funds vs `tsmom12`; the "~80% decay" is one same-manager pair, mostly the effect fading after its sample (`errata-2.md`). O8.
                                       - #83 `ls-trend-1` [R][O]: ls-trend-1: crisis alpha needs shorts AND a wide universe. O6.
                                         - #89 `ls-trend-2` [R][O]: ls-trend-2: wide long-short blend at 1x fails Sharpe; a risk choice. O6.
                                           - #98 `vol-timing` [R]: vol-timing: ls-trend-2's control is vol timing; no card; edge lanes CLOSED.
@@ -82,7 +82,7 @@ Legend: [E] engineering change to `main`, [R] research record, [O] waits on an o
                       - #37 `trend-1926` [R]: trend-1926: trend beats holding 1927-61, but it is crash insurance (1929-32, 1973-74).
                         - #55 `gsy-1` [R] **tip**: gsy-1: run-up crash flag replicates weakly; not a candidate.
                         - #66 `trend-1926-fix` [R][O]: trend-1926-fix: replay gaps explained (Friday holidays); era-2 tests. O12.
-                          - #87 `insure-1` [R]: insure-1: trend lost less than holding in 48/50 independent falls; cheapest way to lose less.
+                          - #87 `insure-1` [R]: insure-1: trend lost less than holding in 20/21 US market falls (50 with industry-only falls), avoiding 0.50 of each vs 0.27 at random timing; cheaper than holding less shown only for 1927-1961 (`errata-2.md`).
                             - #90 `insure-2` [R]: insure-2: insurance holds across eras and 13 non-US indices; costs ~1.3-1.5 per unit saved.
                               - #94 `fast-reentry` [R]: fast-reentry: `or3-12` is a bigger position, not cheaper insurance.
                                 - #96 `fast-reentry-2` [R]: fast-reentry-2: `arm3-12` in between; insure/re-entry line CLOSED.
