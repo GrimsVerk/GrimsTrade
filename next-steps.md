@@ -1,5 +1,12 @@
 # Next steps
 
+## In progress: register-3 (branch `register-3`, draft PR into `register-2`)
+
+Card: `research/register-3.md`. Chain: (1) the harness logs weeks/skew/kurtosis of every try
+(`research/tries-shape.jsonl`), the register joins them; (2) correlation sample capped at 10
+series per family, N_eff and bar recomputed; (3) register and BAR.md regenerated with tonight's
+branches.
+
 ## Waiting for review: register-2 (branch `register-2`, draft PR #92 into `register-1`)
 
 Measured inputs for the bar (card and results: `research/register-2.md`). Done:
