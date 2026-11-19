@@ -429,6 +429,14 @@
     Dose-week UNG t 1.68 only: the market trades the forecast. 1 `screen` row; count 80 / 19
     tested / 0 passed. 02:45 UTC `weather-2` started (W, <- weather-1): CPC 6-10/8-14 outlook
     revisions as the dose (feasibility of the archive first).
+  - DONE `pr-map` (draft #113 -> summary-3): `research/pr-map.md` + SUMMARY.md refresh. 104
+    open PRs = 14 engineering + 90 research; 64 research PRs are contained in a descendant
+    (only 26 tips hold all research). Proposed: review engineering #27, #13, #29, #30, #32,
+    #61 (after its owner item), #14/#15, #67, then the register chain as one merge of #111;
+    land research as one archive PR into main, then close the rest as landed (never delete
+    branches: the register counts them). It cleaned 55 throwaway rerere entries it had
+    written to the shared `.git/rr-cache`. ~02:50 UTC `archive-1` started (D, <- main): build the
+    real research-archive branch, run the 45 research test files, containment check.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
@@ -531,6 +539,10 @@ money above T-bills against a same-size T-bill slot.
 
 ### For the owner
 
+- Night 2026-11-19, pr-map (#113): ~100 open draft PRs. Read `research/pr-map.md` (branch
+  `pr-map`): review order for the 14 engineering PRs, and one "research archive" PR
+  (`archive-1`, being built) to land all research at once instead of 90 reviews. OK to then
+  close the contained research PRs as "landed via the archive" (branches kept)?
 - Night 2026-11-18, wide-11 (#109): allow perpetual futures in the paper gym? It is the only way
   to test `crypto-carry`, the last candidate passing the new scoring filters (a risk-map choice).
 - Night 2026-11-18, risk-menu (#101): pick your risk level from `research/risk-menu.md` (on
