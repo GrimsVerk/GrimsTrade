@@ -1,17 +1,22 @@
 # Next steps
 
-## bear-legs (in progress 2026-11-19 night, branch `bear-legs` -> `fast-reentry-2`)
+## bear-legs (done 2026-11-19 night, branch `bear-legs` -> `fast-reentry-2`, draft PR #103)
 
-Descriptive, no pick. Card `research/cards/bear-legs.md` (pushed before any number). Chain:
-(1) catalogue multi-leg bears in the US 50 + non-US 19 effective falls (legs, rallies, signals
-at rally tops); (2) can a bear-market rally be told from the bottom at the time (8 observables,
-AUC, cluster bootstrap, block-bootstrap placebo); (3) one-screen note `research/bear-legs.md`.
-Code `research/lib/bearlegs.py`, tables `research/results/bear-legs.md`. No `tries.md` rows
-(card says why). Rerun needs insure-2's setup (saved trend-1926 runs, macro.local.json, cache).
+Descriptive, no pick, no `tries.md` rows (card says why). Card `research/cards/bear-legs.md`
+(pushed before any number), code `research/lib/bearlegs.py` (30 s), tables
+`research/results/bear-legs.md`, one-screen note `research/bear-legs.md`. Rerun needs insure-2's
+setup (saved trend-1926 runs, `research/macro.local.json`, insure-2's data cache).
 
-- Step 1 done (catalogue in `results/bear-legs.md`): 74% of US 25% episodes are multi-leg; single-leg first falls cost the 3-month re-entry rules nothing (dI -0.1), 88% of `or3-12`'s summed leak is in falls with 10% rallies inside, 69% in follow-on legs.
-- Step 2 done (30 AUCs, 500 placebo draws, 30 s): US set A (decides) nothing distinguishes a bear rally from the bottom (AUC 0.47-0.54, placebo p >= 0.45); in set B only fall duration passes both p < 0.05 on US (AUC 0.62) and fails non-US (0.53). Real share of 10% rallies that are the bottom 0.55 vs placebo 0.62.
-- Doing: step 3 note `research/bear-legs.md`.
+- Done: (1) catalogue: 74% of US 25% episodes (72% non-US) are multi-leg; `or3-12`/`arm3-12`
+  bought 25-26% of bear rallies, `tsmom12` 9%; single-leg first falls cost the re-entry nothing
+  (dI -0.1), 88% of `or3-12`'s leak is in falls with 10% rallies. (2) At a 10% rally off the
+  low (US 482 events, 50 falls) no observable separates bottom from bear rally (AUC 0.47-0.54,
+  placebo p >= 0.45; non-US the same); share of rallies that are the bottom 0.55 vs placebo
+  0.62. (3) Note: the late buy-back is the price of the insurance; no observable worth a card
+  (30 looks; project bar N 1,012, p <= 4.9e-5).
+- Doing: nothing. No process running. Held-out year unspent.
+- Next: the insure / re-entry line stays closed. Optional: the catalogue on total-return non-US
+  country series.
 
 ## fast-reentry-2 (done 2026-11-18 night, branch `fast-reentry-2` -> `fast-reentry`, draft PR #96)
 
