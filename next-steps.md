@@ -1,3 +1,9 @@
+## risk-menu-3 (doing 2026-11-19, branch `risk-menu-3`, draft PR -> `risk-menu-2`)
+
+Card `research/cards/risk-menu-3.md`. Task: (1) own-vol targeting with an expanding-window k
+(no look-ahead), W 1994-2025 and P 2007-2025, change vs the re-fitted version; (2) dates of each
+item's longest under-water spell on W; (3) section in `research/risk-menu.md`.
+
 ## risk-menu-2 (done 2026-11-19, branch `risk-menu-2`, draft PR #105 -> `risk-menu`)
 
 Card before numbers (`research/cards/risk-menu-2.md`, 1971e16), script before its run
