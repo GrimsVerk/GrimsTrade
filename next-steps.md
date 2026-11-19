@@ -348,6 +348,11 @@
     fixed 70%: 17.6%, 24.6%, -20.6%). Only the wide long-short blend gained in all 3 crash
     windows (needs shorts). Page `research/risk-menu.md` + `risk-menu.svg`. 7 replication rows.
   - 00:20 UTC 5h 0.87: `risk-menu-2` started (D, small): menu risk columns on 1994-2025.
+  - DONE `wide-10` (draft #102 -> survey-7): W20 `fed-purchase-flow` (t 0.37, rank 11/41) and
+    W21 `stablecoin-mint` (t 1.06, rank 17/41) dead: an announced dose is priced; a dose that
+    follows price predicts nothing. Count 78 / 18 tested; 13 gates all failed. 0 rows.
+  - 00:22 UTC 5h 0.89: `wide-11` started (W, <- wide-10): scoring filters, CFTC hedging-pressure
+    gate.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
