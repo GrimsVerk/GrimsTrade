@@ -369,6 +369,12 @@
     0.45-0.57). 74% of US 25% falls have a 10% rally before the low; 88% of `or3-12`'s lost
     insurance comes from those. Late buy-back = price of the insurance. 0 rows. Line stays closed.
   - 00:25 UTC 5h 0.91: `summary-3` started (<- summary-2): refresh SUMMARY.md with lanes since 22:40.
+  - DONE `risk-menu-2` (draft #105 -> risk-menu): menu items 1-7 on 1994-02..2025-10: worst
+    loss / worst 12m ranking unchanged (tau 1.00); time under water changes (tau 0.52: holding
+    the six 11.1 y, `tsmom12` 5.7 y, own-vol 26% 1.3 y). 2000-02: holding -62.5%, `tsmom12`
+    -21.7%, own-vol 26% +6.3%. Sharpe 1994-2025: `tsmom12` 0.94, own-vol 1.03/1.08, hold 0.77
+    (SE 0.18). Caveat: own-vol share re-fitted on the full window (descriptive, mild look-ahead).
+    4 replication rows.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
