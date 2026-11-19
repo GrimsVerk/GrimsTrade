@@ -2,6 +2,26 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-17 (audit G2): An unpaid buy waits for cash. Two rules in `gym._execute`, the same for
+  live and backtests. (a) A buy the cash cannot fully pay for at its open stays pending with its
+  target weight and is tried again at that asset's next open (re-sized to the equity then, band
+  applied, buying only, never turned into a sell), until it fills or a newer decision of the
+  same strategy replaces it. (b) At an open, when the decision's buys still pending and outside
+  the band (any asset, at the latest known prices) need more than the cash on hand, every asset
+  opening then that is above its target is sold down to it, even inside the 1% band. Why: each
+  asset filled once at its next open and the rest was dropped. Crypto opens at 00:00 UTC, the
+  ETFs at 13:30, so a switch from an ETF to crypto sat in cash until a later decision, and a
+  fully invested `equal_weight` could never top up crypto that fell 1-1.6% behind: the buy found
+  no cash and each ETF, alone inside the band, was never sold (health check 2026-11-17). Rule
+  (b) is what a rebalancer does (sell to fund buys); with the live cron late (decision about
+  03:00 UTC, ETFs open first) it is what makes the top-up happen at all. No look-ahead: every
+  fill is still at an open after the decision, and a waiting buy fills at an open after the cash
+  arrived. The record is not touched: every score is replayed from the ledger and the bars on
+  each run, so past results change once, at the first run with this code (on the record to
+  2026-11-17: `equal_weight` live +1.78 USD, `xs_momentum` +1.58, others unchanged; 700-day
+  backtests of `equal_weight` -0.6% from more crypto top-ups and their fees). Not chosen:
+  netting a decision into one batch at the first open (would fill ETFs at a crypto time).
+
 - 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
   refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
   before the one under it or in the future; no record file or folder that is a symbolic link;
