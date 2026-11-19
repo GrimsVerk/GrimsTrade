@@ -1,5 +1,13 @@
 # Next steps
 
+## Breadth screen (in progress 2026-11-19, branch `breadth-screen`, draft PR -> `multi-signal`)
+
+Descriptive rerun of multi-signal's five signals (unchanged) on ls-trend-1's 34 cached ETFs,
+ranked within the four asset classes. Card `cards/breadth-screen.md` (before any number).
+
+- Doing: card pushed; next the script `lib/breadth_screen.py` (push before its run), one run
+  with `--log` (6 `screen` rows, idea `breadth-screen`), write-up `research/breadth-screen.md`.
+
 ## Multi-signal (done 2026-11-19, branch `multi-signal`, draft PR #104 -> `survey-6`)
 
 Descriptive IC screen of value, carry, cross-sectional momentum (AMP 2013), low-vol and BAB
