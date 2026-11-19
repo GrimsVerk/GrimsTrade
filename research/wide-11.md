@@ -115,3 +115,92 @@ stories are flows on a public schedule (F1) and most crypto stories are flows th
 price (F2). A new mechanism worth a gate now needs **an unscheduled flow that does not answer
 price, or a premium**, and the list of such ideas is short: the next ideation lane should
 start from that sentence, not from a new field.
+
+## Step 2. C3 `hedging-pressure` gate (enters the list as W22)
+
+### Data access (checked 2026-11-19, before any price was cut by it)
+
+The CFTC's legacy Commitments of Traders report, futures only, as yearly zip files without a
+key or account: `https://www.cftc.gov/files/dea/history/deacot1986_2016.zip` and
+`deacot{YYYY}.zip` for 2017-2025. They sit in the shared research cache (`cftc/legacy/` under
+the cache root of `research/macro.local.json`; fetched 2026-11-13 by `scripts/fetch_info1.py`,
+sha256 in the cache's `manifest.jsonl`), read as CSV data only. Format probe before this rule
+(header and market names only, no position or price value printed): fields `CFTC Contract
+Market Code`, `As of Date in Form YYMMDD`, `Commercial Positions-Long (All)`, `Commercial
+Positions-Short (All)`; codes 088691 gold (COMEX), 020601 Treasury bonds (CBOT), 13874A E-mini
+S&P 500, 209742 E-mini Nasdaq-100, 043602 10-year notes, 084691 silver, 133741 CME bitcoin.
+
+### Decision rule (fixed and pushed before any number)
+
+**Markets.** Gate panel: GLD <- gold 088691, TLT <- Treasury bonds 020601, SPY <- E-mini S&P
+500 13874A, QQQ <- E-mini Nasdaq-100 209742 (the four ETFs of the live six with a matching
+futures market and history long enough for the placebos). Shown only: IEF <- 10-year notes
+043602, SLV <- silver 084691, BTC <- CME bitcoin 133741 (from 2017-12: too short for the
+long placebo shifts, so not in the gate).
+
+**Reports.** One report per market per Tuesday position date T (duplicates across files: the
+later file wins). Only T <= 2025-11-10. Reports whose release was delayed by a government
+shutdown are dropped everywhere (info-1's windows): T in 2013-10-01 .. 2013-10-29,
+2018-12-21 .. 2019-03-05, and from 2025-09-30.
+
+**Dose.** Hedging pressure HP(T) = (CS - CL) / (CS + CL), CS and CL = commercial short and long
+positions (all). HP > 0: hedgers are net short, speculators are paid to be long (Keynes-Hicks),
+so the predicted sign is positive. z(T) = (HP(T) - mean) / sd (ddof 1) over the market's
+earlier reports dated T - 1092 days .. T - 1 day (156 weeks), needing at least 104 of them;
+past-only, so markets with different hedger mixes are comparable.
+
+**No look-ahead (the release lag).** T's report is released on Friday T + 3 at 15:30 New York
+time, after the close only in holiday weeks it moves to Monday or later. Entry is therefore at
+the close of the asset's first bar dated >= T + 7 (the next Tuesday): a day of slack beyond the
+latest regular release. Exit at the close of the first bar dated >= T + 35. y(T) = ln(exit /
+entry), dividend-adjusted closes (`harness.load_history("train")`). The row is dropped if
+either bar is missing, the exit bar is dated after T + 42, or after 2025-11-10. (ETF total
+returns stand in for futures returns: the difference is the cash rate, nearly constant
+within 4 weeks and taken up by the market intercepts.)
+
+**Controls (F2).** r4(T) = ln(close of the last bar dated <= T / close of the last bar dated <=
+T - 28) and r52(T) the same with T - 364: the asset's own past 4- and 52-week returns, known at
+T.
+
+**Statistic.** Pooled OLS over all gate rows of the four markets: y = a_market + b z + g4 r4 +
+g52 r52 (one intercept per market). t of b with Driscoll-Kraay standard errors: scores summed
+over the rows of each report week, then Newey-West (Bartlett) with 4 lags over the week index
+(weeks counted by date, so dropped weeks stay gaps): the four markets' rows in a week are
+correlated and the 4-week returns overlap by 3 weeks.
+
+**Placebo null (the decider), one family, fixed here.** The same function with each market's
+dose calendar moved by k weeks: z_k(market, T) = z(market, T - 7k days), outcome and controls
+stay put, rows with a missing z_k dropped from that placebo only. k in +-{27, 31, 35, ..., 103}
+(odd, step 4): **40 placebos**. Shifts under half a year are left out because hedging
+pressure is persistent for months (a short shift would be nearly the true dose); odd weeks are
+never a multiple of 52, so no placebo is the same date a year away.
+
+**Gate. Pass only if both hold** (gate sample: report dates 2018-06-05 .. 2025-10-06, after the
+latest source sample, Fan et al.'s May 2018; the last exit is <= 2025-11-10):
+1. b > 0 with t >= 2.
+2. The true t ranks among the 2 highest of 41 (true plus 40 placebos); empirical one-sided p =
+   rank / 41 <= 0.049.
+
+**Shown, not gating** (b, t, rows): without the controls; the 1-week horizon (exit at the first
+bar >= T + 14, 1 lag; the info-1 mirror, with commercials); raw HP level instead of z (market
+intercepts kept); each gate market alone; IEF, SLV and BTC alone (own z; BTC's starts about
+2020); the pre-gate years, report dates 2008-01-01 .. 2018-05-29 (inside Fan et al.'s
+sample); the feedback check for F2: z(T) - z(T - 28 days) on r4(T), pooled (how much hedgers
+follow price); the placebo null's width (gate-null step 5).
+
+**On a pass:** no card in this run. A proposed card for the next window (the four ETFs held or
+scaled by z inside `tsmom12`'s slots on the Tuesday-plus-7 clock), read at the family bar
+p < 0.10 / 79 = 0.00127 and the register's p <= 4.9e-5 with z = (t - placebo median) /
+placebo sd. **On a fail:** W22 dead by the gate, no card, no row.
+
+**Power, written before any number.** 4-week returns of the four ETFs have an sd near 4-6%;
+z has sd about 1. About 385 report weeks, four correlated markets (say 1.5 effective each),
+overlapping by 3 weeks: the standard error of b is roughly 5% / sqrt(385 x 1.5 / 2), about
+0.4% per unit of z (the overlap halves the effective count). A premium of 3% a year per sd of
+hedging pressure is 0.23% per 4 weeks: t about 0.6. Only an effect several times the size the
+literature reports for financial futures passes.
+
+**My guess before any number.** b near zero, t between -1 and +1.5; rank in the middle; placebo
+t sd 1.3-1.8 (persistent dose, overlapping returns, four correlated markets). The feedback
+check: clearly negative (hedgers' net short falls... no: commercials sell forward into rallies,
+so HP rises after a rally: slope positive, t > 3). Chance of a pass: 2%.
