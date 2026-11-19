@@ -32,6 +32,10 @@ Never edit or delete a row.
   not selectable, not a strategy try, not counted in any family (`cards/crash-insurance.md`,
   numbers in `results/insure-1.md`). Turnover/yr there = position flips a year. insure-2 adds
   27 such rows on non-US stock indices (paper series; `cards/insure-geo.md`, `results/insure-2.md`).
+
+  From rl-5 (2026-11-18) a `screen` row of idea `rl-5-screen` is one input's pooled
+  third-against-third book after 10 bps (weekly, Sharpe with sqrt(52), turnover = weight changes
+  a year), sign picked in sample; numbers in `results/rl-5-screen.md`.
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 - `invest-1` rows (added 2026-11-13): monthly decisions; Sharpe is of monthly returns in excess
   of T-bills x sqrt(12); period `train` = 1927-01..1989-12, `oos` = 1990-01..2025-10 (both fixed
@@ -2523,3 +2527,160 @@ Never edit or delete a row.
 | 2026-11-18 22:41 | stop-reentry | stop-cool-13-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +5623.9% | 29.0% | 2.79 |
 | 2026-11-18 22:41 | stop-reentry | stop-cool-13, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.41 | +98643.5% | 65.9% | 2.83 |
 | 2026-11-18 22:41 | stop-reentry | stop-cool-13, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.39 | +86869.4% | 66.1% | 2.83 |
+| 2026-11-17 22:58 | rl-4-control | ols3-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +4633.2% | 38.6% | 2.96 |
+| 2026-11-17 22:58 | rl-4-control | ols3-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4364.8% | 39.0% | 9.07 |
+| 2026-11-17 22:58 | rl-4-control | ols3-0.10 | control | train | 2000-01-07 | 2025-11-09 | 1.03 | +5859.6% | 38.9% | 13.58 |
+| 2026-11-17 22:58 | rl-4-control | ols3-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15348.6% | 35.5% | 17.04 |
+| 2026-11-17 22:58 | rl-4-control | ridge28-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.99 | +5295.6% | 34.9% | 2.77 |
+| 2026-11-17 22:58 | rl-4-control | ridge28-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4979.5% | 33.6% | 3.86 |
+| 2026-11-17 22:58 | rl-4-control | ridge28-0.10 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4525.5% | 38.0% | 8.77 |
+| 2026-11-17 22:58 | rl-4-control | ridge28-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.25 | +12569.1% | 35.3% | 14.92 |
+| 2026-11-17 22:58 | rl-4-control | lasso28-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.99 | +5255.0% | 37.0% | 2.77 |
+| 2026-11-17 22:58 | rl-4-control | lasso28-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.97 | +4674.8% | 36.2% | 6.40 |
+| 2026-11-17 22:58 | rl-4-control | lasso28-0.10 | control | train | 2000-01-07 | 2025-11-09 | 1.06 | +6071.7% | 32.8% | 12.48 |
+| 2026-11-17 22:58 | rl-4-control | lasso28-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.35 | +16401.2% | 24.9% | 16.76 |
+| 2026-11-17 22:58 | rl-4-control | ols28-pool-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.92 | +2879.3% | 31.3% | 6.32 |
+| 2026-11-17 22:58 | rl-4-control | ols28-pool-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +3396.3% | 31.8% | 8.69 |
+| 2026-11-17 22:58 | rl-4-control | ols28-pool-0.10 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +4723.5% | 31.1% | 11.85 |
+| 2026-11-17 22:58 | rl-4-control | ols28-pool-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.32 | +13815.5% | 26.3% | 15.51 |
+| 2026-11-17 22:58 | rl-4-control | ols28-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.88 | +2727.1% | 42.0% | 4.92 |
+| 2026-11-17 22:58 | rl-4-control | ols28-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.90 | +2879.4% | 40.8% | 7.48 |
+| 2026-11-17 22:58 | rl-4-control | ols28-0.10 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +3953.6% | 39.4% | 10.84 |
+| 2026-11-17 22:58 | rl-4-control | ols28-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.25 | +10922.9% | 35.3% | 14.80 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-ml, perp 10 bps + funding | variant | train | 2022-01-08 | 2025-11-09 | -0.55 | -36.1% | 47.7% | 21.48 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-ml, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | -0.83 | -47.5% | 55.6% | 21.48 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-funding, perp 10 bps + funding | baseline | train | 2022-01-08 | 2025-11-09 | 0.37 | +14.2% | 24.2% | 42.45 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-funding, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | -0.46 | -19.5% | 34.7% | 42.45 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-equal, perp 10 bps + funding | baseline | train | 2022-01-08 | 2025-11-09 | -0.38 | -20.4% | 36.0% | 35.82 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | ls-equal, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | -0.95 | -41.1% | 51.5% | 35.82 |
+| 2026-11-17 23:09 | rl-4-perp-B-out | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2022-01-08 | 2025-11-09 | -0.30 | -43.2% | 52.7% | 4.00 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-ml, perp 10 bps + funding | variant | train | 2022-05-14 | 2025-11-09 | -0.00 | -7.1% | 35.7% | 23.04 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-ml, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | -0.26 | -23.0% | 40.8% | 23.04 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-funding, perp 10 bps + funding | baseline | train | 2022-05-14 | 2025-11-09 | 0.31 | +12.9% | 19.5% | 46.16 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-funding, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | -0.35 | -19.6% | 29.5% | 46.16 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-equal, perp 10 bps + funding | baseline | train | 2022-05-14 | 2025-11-09 | 0.19 | +6.4% | 25.6% | 37.20 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | ls-equal, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | -0.26 | -19.7% | 30.6% | 37.20 |
+| 2026-11-17 23:09 | rl-4-perp-Bybit | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2022-05-14 | 2025-11-09 | 0.20 | +1.3% | 51.3% | 5.64 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-ml, perp 10 bps + funding | variant | train | 2023-06-10 | 2025-11-09 | 0.49 | +27.2% | 33.5% | 25.08 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-ml, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.29 | +11.0% | 33.6% | 25.08 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-funding, perp 10 bps + funding | baseline | train | 2023-06-10 | 2025-11-09 | 0.47 | +23.6% | 27.1% | 44.28 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-funding, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.10 | -1.5% | 27.3% | 44.28 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-equal, perp 10 bps + funding | baseline | train | 2023-06-10 | 2025-11-09 | 0.43 | +20.4% | 33.8% | 40.34 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | ls-equal, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.09 | -2.2% | 37.1% | 40.34 |
+| 2026-11-17 23:09 | rl-4-perp-Hyperliquid | tsmom12 twin, perp close as spot, 30 bps | baseline | train | 2023-06-10 | 2025-11-09 | 0.52 | +37.6% | 51.3% | 11.32 |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-ml, equal capital per venue | variant | train | 2022-01-08 | 2025-11-09 | 0.03 | -4.0% | 31.6% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-ml @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | -0.27 | -21.8% | 39.6% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-funding, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.57 | +24.4% | 19.1% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-funding @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | -0.27 | -13.1% | 28.6% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-equal, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.06 | -0.5% | 27.4% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | ls-equal @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | -0.51 | -26.9% | 38.8% | nan |
+| 2026-11-17 23:09 | rl-4-perp-pooled | tsmom12 twin, equal capital per venue | baseline | train | 2022-01-08 | 2025-11-09 | 0.01 | -22.7% | 49.6% | nan |
+| 2026-11-17 23:11 | rl-4-perp-B-out | ls-ml-ret, perp 10 bps + funding | variant | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-B-out | ls-ml-ret, perp 30 bps + funding | robustness | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Bybit | ls-ml-ret, perp 10 bps + funding | variant | train | 2022-05-14 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Bybit | ls-ml-ret, perp 30 bps + funding | robustness | train | 2022-05-14 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Hyperliquid | ls-ml-ret, perp 10 bps + funding | variant | train | 2023-06-10 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-Hyperliquid | ls-ml-ret, perp 30 bps + funding | robustness | train | 2023-06-10 | 2025-11-09 | 0.00 | +0.0% | 0.0% | 0.00 |
+| 2026-11-17 23:11 | rl-4-perp-pooled | ls-ml-ret, equal capital per venue | variant | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | nan |
+| 2026-11-17 23:11 | rl-4-perp-pooled | ls-ml-ret @30, equal capital per venue | robustness | train | 2022-01-08 | 2025-11-09 | 0.00 | +0.0% | 0.0% | nan |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.99 | +5395.5% | 36.5% | 2.79 |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.05 | control | train | 2000-01-07 | 2025-11-09 | 1.02 | +4982.8% | 32.1% | 10.53 |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.10 | control | train | 2000-01-07 | 2025-11-09 | 1.13 | +7125.5% | 29.6% | 14.63 |
+| 2026-11-17 23:12 | rl-4-control | ols1-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.42 | +19509.5% | 22.2% | 17.35 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s0 | control | train | 2000-01-07 | 2025-11-09 | 0.93 | +3521.3% | 35.1% | 3.17 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s1 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +3888.7% | 35.5% | 2.98 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s2 | control | train | 2000-01-07 | 2025-11-09 | 0.97 | +4720.5% | 35.4% | 3.04 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s3 | control | train | 2000-01-07 | 2025-11-09 | 0.93 | +3494.0% | 35.6% | 2.98 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s4 | control | train | 2000-01-07 | 2025-11-09 | 0.97 | +4268.1% | 34.9% | 3.04 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s5 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +3636.0% | 35.1% | 3.21 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s6 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4084.9% | 35.4% | 2.97 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s7 | control | train | 2000-01-07 | 2025-11-09 | 0.97 | +4435.5% | 35.1% | 3.02 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s8 | control | train | 2000-01-07 | 2025-11-09 | 0.97 | +4696.1% | 35.4% | 3.03 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00-s9 | control | train | 2000-01-07 | 2025-11-09 | 0.97 | +4476.5% | 35.0% | 3.23 |
+| 2026-11-18 01:31 | rl-4-control | ppo3-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4096.8% | 35.0% | 3.02 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s0 | control | train | 2000-01-07 | 2025-11-09 | 0.93 | +3514.4% | 34.9% | 3.59 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s1 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4109.0% | 35.0% | 3.26 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s2 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4158.4% | 35.7% | 3.56 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s3 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +3650.2% | 35.5% | 3.19 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s4 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4286.0% | 35.5% | 3.35 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s5 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +3923.0% | 35.2% | 3.67 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s6 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +3850.6% | 35.0% | 3.72 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s7 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4562.6% | 35.3% | 3.61 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s8 | control | train | 2000-01-07 | 2025-11-09 | 0.92 | +3421.9% | 35.0% | 3.30 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05-s9 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4073.2% | 35.7% | 3.76 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +3909.3% | 35.8% | 3.42 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s0 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +3964.3% | 35.3% | 4.49 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s1 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4587.7% | 34.9% | 5.78 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s2 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4180.0% | 35.7% | 4.59 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s3 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4126.9% | 35.0% | 4.11 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s4 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4518.0% | 35.0% | 4.36 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s5 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4497.6% | 35.3% | 5.65 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s6 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4268.6% | 35.2% | 4.96 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s7 | control | train | 2000-01-07 | 2025-11-09 | 1.00 | +4997.7% | 35.8% | 5.21 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s8 | control | train | 2000-01-07 | 2025-11-09 | 0.99 | +4791.6% | 35.3% | 5.37 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10-s9 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4606.8% | 35.5% | 4.65 |
+| 2026-11-18 01:32 | rl-4-control | ppo3-0.10 | control | train | 2000-01-07 | 2025-11-09 | 0.98 | +4444.6% | 34.9% | 4.75 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s0 | control | train | 2000-01-07 | 2025-11-09 | 1.15 | +8007.7% | 32.9% | 10.94 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s1 | control | train | 2000-01-07 | 2025-11-09 | 1.14 | +8354.2% | 34.7% | 10.39 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s2 | control | train | 2000-01-07 | 2025-11-09 | 1.14 | +8419.9% | 32.8% | 10.17 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s3 | control | train | 2000-01-07 | 2025-11-09 | 1.15 | +9095.5% | 34.4% | 10.59 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s4 | control | train | 2000-01-07 | 2025-11-09 | 1.14 | +8232.9% | 32.9% | 10.84 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s5 | control | train | 2000-01-07 | 2025-11-09 | 1.11 | +7919.8% | 37.0% | 10.82 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s6 | control | train | 2000-01-07 | 2025-11-09 | 1.14 | +7883.1% | 34.5% | 10.70 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s7 | control | train | 2000-01-07 | 2025-11-09 | 1.17 | +9520.6% | 32.8% | 9.96 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s8 | control | train | 2000-01-07 | 2025-11-09 | 1.17 | +9480.0% | 32.8% | 10.67 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20-s9 | control | train | 2000-01-07 | 2025-11-09 | 1.15 | +8545.1% | 32.8% | 10.72 |
+| 2026-11-18 01:33 | rl-4-control | ppo3-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.15 | +8561.1% | 33.6% | 10.51 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s0 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4388.3% | 41.5% | 3.08 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s1 | control | train | 2000-01-07 | 2025-11-09 | 0.93 | +4406.2% | 43.6% | 3.11 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s2 | control | train | 2000-01-07 | 2025-11-09 | 0.93 | +4376.5% | 43.4% | 3.08 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s3 | control | train | 2000-01-07 | 2025-11-09 | 0.93 | +4397.4% | 43.7% | 3.09 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s4 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4533.1% | 42.7% | 3.09 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s5 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4494.5% | 43.0% | 3.09 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s6 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4407.5% | 42.2% | 3.09 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s7 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4481.7% | 42.0% | 3.09 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s8 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4606.3% | 43.2% | 3.06 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00-s9 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4414.5% | 42.4% | 3.09 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.00 | control | train | 2000-01-07 | 2025-11-09 | 0.94 | +4464.0% | 42.8% | 3.09 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s0 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4876.8% | 42.4% | 8.31 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s1 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +4688.1% | 43.9% | 8.52 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s2 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +4791.0% | 43.7% | 8.21 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s3 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4979.4% | 43.8% | 8.24 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s4 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4825.8% | 42.9% | 8.23 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s5 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4901.6% | 42.7% | 8.32 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s6 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4872.8% | 42.5% | 8.22 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s7 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4884.1% | 42.4% | 8.29 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s8 | control | train | 2000-01-07 | 2025-11-09 | 0.95 | +4820.7% | 43.2% | 8.44 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05-s9 | control | train | 2000-01-07 | 2025-11-09 | 0.97 | +5042.3% | 42.5% | 8.37 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.05 | control | train | 2000-01-07 | 2025-11-09 | 0.96 | +4905.4% | 42.9% | 8.30 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s0 | control | train | 2000-01-07 | 2025-11-09 | 1.03 | +6316.6% | 41.9% | 13.11 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s1 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6423.5% | 42.4% | 13.16 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s2 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6383.9% | 41.7% | 13.08 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s3 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6434.9% | 41.7% | 12.98 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s4 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6431.6% | 42.3% | 13.14 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s5 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6601.7% | 41.9% | 13.10 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s6 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6412.3% | 42.3% | 13.01 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s7 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6461.0% | 41.8% | 13.14 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s8 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6430.5% | 41.7% | 13.04 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10-s9 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6391.9% | 41.9% | 13.02 |
+| 2026-11-18 01:49 | rl-4-control | ppo3-warm-0.10 | control | train | 2000-01-07 | 2025-11-09 | 1.04 | +6409.1% | 42.0% | 13.08 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s0 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15855.4% | 37.3% | 16.86 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s1 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15919.2% | 37.9% | 16.88 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s2 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15742.1% | 37.9% | 16.86 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s3 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15838.5% | 37.7% | 16.85 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s4 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15839.3% | 38.1% | 16.88 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s5 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15938.5% | 37.5% | 16.85 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s6 | control | train | 2000-01-07 | 2025-11-09 | 1.29 | +15640.8% | 38.1% | 16.85 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s7 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15866.3% | 37.3% | 16.86 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s8 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15857.8% | 37.8% | 16.88 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20-s9 | control | train | 2000-01-07 | 2025-11-09 | 1.29 | +15737.8% | 37.9% | 16.86 |
+| 2026-11-18 01:50 | rl-4-control | ppo3-warm-0.20 | control | train | 2000-01-07 | 2025-11-09 | 1.30 | +15834.8% | 37.7% | 16.87 |
+| 2026-11-18 11:08 | rl-5-screen | funding | screen | train | 2021-02-19 | 2025-10-31 | 0.73 | +51.0% | 20.3% | 39.24 |
+| 2026-11-18 11:08 | rl-5-screen | premium | screen | train | 2021-02-19 | 2025-10-31 | 0.49 | +32.9% | 23.9% | 38.04 |
+| 2026-11-18 11:08 | rl-5-screen | mom_12_1 | screen | train | 2021-02-19 | 2025-10-31 | 0.10 | -0.3% | 23.3% | 14.93 |
+| 2026-11-18 11:08 | rl-5-screen | vol | screen | train | 2021-02-19 | 2025-10-31 | -0.01 | -9.7% | 38.8% | 20.61 |
+| 2026-11-18 11:08 | rl-5-screen | rev_1w | screen | train | 2021-02-19 | 2025-10-31 | -0.17 | -17.9% | 41.7% | 62.19 |
+| 2026-11-18 11:08 | rl-5-screen | mom_1m | screen | train | 2021-02-19 | 2025-10-31 | -0.20 | -21.8% | 41.7% | 32.38 |
+| 2026-11-18 11:08 | rl-5-screen | fund_30 | screen | train | 2021-02-19 | 2025-10-31 | 0.64 | +43.4% | 13.3% | 20.95 |
+| 2026-11-18 11:08 | rl-5-screen | max_30 | screen | train | 2021-02-19 | 2025-10-31 | 0.18 | +8.2% | 35.8% | 24.65 |
+| 2026-11-18 11:08 | rl-5-screen | log_qv | screen | train | 2021-02-19 | 2025-10-31 | 0.79 | +63.9% | 24.5% | 15.67 |

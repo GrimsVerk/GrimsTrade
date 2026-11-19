@@ -311,3 +311,12 @@ It is never a strategy. Its rows in `tries.md` carry kind `control` and an idea 
 `-control`; they are not selectable and are not counted as strategy tries. The rules of the
 pipeline under test apply unchanged; the card (`rl-3.md`) fixes the strengths, the "found" rule
 and the ceiling before any run. Held-out data is never used by a control.
+
+## Learner gate (added 2026-11-17 ~23:00 UTC, run rl-4, before any rl-4 code or number)
+
+A change to the learner (inputs, fitting, algorithm) is tried on real data only after it passes
+a planted-signal control whose gate is fixed on its card first (`rl-4.md`: finds IC 0.10 with
+p < 0.10, captures at least a third of rl-3's ceiling, finds 0.20, and neither "finds" nor
+loses more than 0.025 Sharpe on planted noise). Gate rows are `control` rows. Passing the gate
+says the learner can find a signal of that size on that book; it says nothing about whether
+real inputs hold one.
