@@ -498,6 +498,8 @@
     placebos; halves both negative. The forecast moves gas BEFORE the open (close -> next open
     t 7.9, rank 1/41, not tradable on daily bars); nothing after. 1 `screen` row. Weather line
     CLOSED (only intraday timing left, untestable on daily bars).
+  - ~03:32 UTC `weather-3` started (D, <- weather-2): can the outlook be traded from its
+    publication time? Intraday feasibility first (micro-1's minute cache), then card + gate.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
