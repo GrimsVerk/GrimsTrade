@@ -671,3 +671,22 @@ rows); inside Fan et al.'s years -0.18% (t -1.19). The future-dose placebos lean
 **Family count: union of the wide and survey lines 79 mechanisms (78 + W22), 18 tested by a
 strategy, none passed. The next strategy test is read at p < 0.10 / 79 = 0.00127.** Gates
 so far: 14, all failed.
+
+### Added by wide-12 (2026-11-19, `wide-12.md`): candidates written against F1 and F2
+
+Four candidates scored before any data look (D1-D4 in `wide-12.md` step 1); D1 gated as W23.
+D2 `inflation-disagreement`, D3 `geopolitical-premium`, D4 `debt-maturity-supply` stay parked
+there (not in the count unless gated).
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W23 `custody-selling` | international reserve management x a reserve manager defending a currency | Foreign central banks sell Treasuries held in custody at the New York Fed to defend their currencies: an unannounced, persistent, price-insensitive seller, so last month's net selling should mean lower Treasury prices next month (level effects: Bernanke, Reinhart and Sack 2004; Warnock and Warnock 2009; Beltran et al. 2013) | 4-week log change of custody holdings of marketable Treasuries (H.4.1, Wednesday level, keyless Fed DDP), as a 156-week z | TLT and IEF 4-week return from the Monday after, past 4/13/26/52-week returns as controls, placebo = dose calendar moved 27-103 weeks; judging years 2010-01 .. 2025-10 | 2% |
+
+**Closed by wide-12's gate (2026-11-19, `wide-12.md`; rule pushed first, 40 placebos):**
+W23 `custody-selling`: -0.154% per unit of z over 4 weeks, t -1.20, rank 34 of 41 (1,644
+rows), wrong sign. The flow falls when bonds rally in the same 4 weeks (t -3.19): it answers
+price, oppositely to the story. Dead, no card.
+
+**Family count: union of the wide and survey lines 80 mechanisms (79 + W23), 18 tested by a
+strategy, none passed. The next strategy test is read at p < 0.10 / 80 = 0.00125.** Gates
+so far: 15, all failed.

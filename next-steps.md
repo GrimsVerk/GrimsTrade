@@ -2,9 +2,13 @@
 
 ## Wide 12 (in progress 2026-11-19, branch `wide-12`, draft PR -> `wide-11`)
 
-- Doing: step 1 done (four candidates D1-D4 written against F1/F2 and scored before any data
-  look, `research/wide-12.md`); next: gate D1 `custody-selling` (W23) under
-  `research/gate-null.md`, then D2 `inflation-disagreement` (W24) if time remains.
+- Done: step 1 (four candidates D1-D4 against F1/F2, scored before any data look); step 2
+  **W23 `custody-selling` fails** (TLT/IEF 4-week return -0.154% per unit of custody-flow z,
+  t -1.20, rank 34/41, placebo sd 1.19; the flow falls when bonds rally the same 4 weeks,
+  t -3.19). Count: **80 mechanisms, 18 tested, none passed; gates 15, all failed.**
+- Doing: D2 `inflation-disagreement` (W24) gate, rule first.
+- Data: Fed H.4.1 whole-release zip (keyless DDP) in the shared cache, `fed-ddp/h41-2026-11-19/`
+  (URL in `research/wide-12.md`). FRED's web CSV refuses this machine; the FRED API needs a key.
 
 ## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
