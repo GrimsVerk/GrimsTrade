@@ -55,6 +55,53 @@ Engineering only: no new configuration is backtested, no try rows, no held-out d
 
 Tries rows added by this lane: none planned.
 
-## Results
+## Results (2026-11-19)
 
-(not yet)
+Built as on the card: `src/grimstrade/returnstore.py` (stdlib), steps `export` and the store
+reader in `research/register2.py` (`sources`, `to_store`, `fits` split out of `match`), a
+coverage sentence in BAR.md (`register.stored`), `research/register/README.md`.
+Tests: `tests/test_returnstore.py` (round trip with NaN/inf and a comma in a variant,
+byte-stable gzip, stale family files removed, bad header refused; and, with numpy,
+`register2` export then delete the caches: same series, same matches, a stray curve left out,
+a second export changes no byte), one in `tests/test_register.py`.
+
+### The store
+
+| | |
+|---|---:|
+| Series | 1,178 (39 re-simulated baselines, 11 live, 1,128 saved curves that fit a register row) |
+| Local curves not stored | 8 of 1,136 (fit no row; one has NaN returns) |
+| Family files | 64 (largest `trend-1926` 0.89 MB) |
+| Size | **3.9 MB** (budget 5 MB: no sampling needed) |
+| Weekly returns stored | 1.84 million |
+
+### Rounding to 1e-6 (the card's accepted side effect)
+
+From the same register (register-3's 3,118 tries) and the same series, regenerated from the
+store against register-3's files: `moments.jsonl` same 1,224 ids and sources; skew moved in
+41 rows (at most 0.0001), excess kurtosis in 261 (at most 0.001, on a kurtosis of 95),
+weekly Sharpe in 23 (0.0001); the live lines now come in name order. `trials.json`: every rho,
+count, ONC result and shape figure identical; cluster Sharpe means and one variance move by
+0.0001; only the unused minimum-variance cluster Sharpes move more (up to 0.019, the
+ill-conditioned weights register-3 replaced). **BAR.md rendered from the same register is
+byte-identical** to register-3's (N_eff 486, rho 0.53, +0.30 / +0.56 over `tsmom12`,
+Bonferroni 1.0e-4); the only change is the new sentence naming the store.
+
+The local-only run (no store, caches rounded and sorted the same way) and the store-plus-
+caches run give byte-identical files, so canonical order changes nothing but the live lines'
+order.
+
+### Clean-checkout check
+
+A fresh `git worktree` of commit 282a789 (no `research/data/`, no `register2.local.json`):
+`uv run --with numpy python research/register2.py estimate` wrote `trials.json` and
+`moments.jsonl` byte-identical to the committed ones (`git status` clean), and BAR.md
+rendered there from the committed register was byte-identical too (6 s for the estimate).
+
+How BAR.md was rendered for these checks: `grimstrade.register` with the census of remote
+branches switched off (the committed register, 89 branches as counted), so tries pushed
+since register-3 do not mix in. The register itself was not regenerated here: the next
+regeneration (`git fetch origin`, register, `export` of the new lanes' curves, `estimate`,
+register) picks up tonight's newer branches.
+
+Tries rows added by this lane: none.
