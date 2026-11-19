@@ -95,3 +95,41 @@ Weighting every family by its share of the register gives 0.49 (N 524). The edge
 +0.30 (close) / +0.55-0.57 (far). The bar is settled by its order of magnitude, not by the
 sample. Only one per family moves rho much (0.69), and that pick lands mostly in the larger
 (non-crypto) cluster (48 of 57).
+
+### 3. Regenerated with tonight's branches (after `git fetch origin`, 2026-11-19)
+
+| | register-2 | now |
+|---|---:|---:|
+| Distinct tries / remote branches with a `tries.md` | 3,023 / 79 | 3,118 / 89 |
+| Selectable + live = N for a new pick | 1,016 + 11 = 1,027 | 1,021 + 11 = 1,032 |
+| Rows with weeks, skew, kurtosis (selectable) | 1,209 (410) | 1,213 (413) |
+| of which logged by the harness | - | 0 |
+| Correlation sample, uncapped / capped (families) | 294 / - (57) | 297 / 178 (59) |
+| rho used for the bar | 0.58 (uncapped) | 0.53 (at most 10 per family) |
+| **N_eff for a new pick** | **433** | **486** |
+| Edge over `tsmom12`, close / far rule | +0.30 / +0.56 | +0.30 / +0.56 |
+| Bonferroni p | 1.2e-4 | 1.0e-4 |
+
+Tonight's 95 new rows are mostly robustness, replication and live-check rows (5 selectable);
+the five new local curve directories added 4 matched rows (short-sleeve 2, diversifier-1 2).
+Shape of weekly returns unchanged (skew median -0.09, excess kurtosis median 9.1). The live
+strategies' moments are identical to register-2's (only the commit in their source label
+moved). Tries rows added by this lane: none.
+
+Deviation found on regenerating (not on the card): the cluster Sharpe variance of section 8.2
+jumped to 7.4. Its minimum-variance portfolio per cluster went long one and short the other of
+two near-identical new series (`short-sleeve` `bill10@bills` and `short10@bills`), a cluster
+Sharpe of 4.87; register-2's uncapped sample had the same flaw hidden in it (min-variance
+cluster Sharpes 5.39 and 1.35 now). Replaced by inverse-variance weights (long only; both
+kept in `trials.json`, `cluster_sharpes` and `cluster_sharpes_minvar`). The clusters' Sharpes
+are then 0.94 and 1.46, variance 0.136, above the selectable variants' 0.098, so the
+per-record-length table now uses 0.136 (register-2's rule: the larger of the two). The edge
+over `tsmom12` is unchanged; against zero a rule needs more: 32 years 1.42 (was 1.23) normal,
+1.47 (was 1.28) fat tail; 10 years 1.65 (was 1.48) to 1.77 (was 1.58). Two clusters give
+this variance one degree of freedom: it is noisy, and it sets the against-zero bar.
+
+How to carry the hook to the research lanes: on the branch new lanes start from, run
+`git cherry-pick 5937c52` (adds `src/grimstrade/tryshape.py`, `tests/test_tryshape.py`, three
+lines in `research/lib/harness.py`). Rows logged before that, or by scripts that write
+`tries.md` without `harness.run` (e.g. some breadth and screen scripts), still need saved
+curves; they can call `tryshape.log` the same way.
