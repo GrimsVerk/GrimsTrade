@@ -156,3 +156,12 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | y10 | Macro (video 3) | dead (tested) | [card](cards/yt-1.md) | Yield change and three levels: -0.07..-0.01. [result](results/y10.md) |
 | trend3 | Trend (video 2) | dead (tested): it is `sma200` | [card](cards/yt-1.md) | SPY/GLD/BTC above 200-day: -0.01 vs tsmom12 on the same three. [result](results/trend3.md) |
 | fng | Sentiment (video 4, stand-in) | dead (tested) | [card](cards/yt-1.md) | Buy extreme fear -0.10, sell extreme greed -0.08 (coins, from 2018). [result](results/fng.md) |
+
+### Funding carry at real costs (carry-3, 2026-11-18)
+
+Pooled Sharpe on Binance perps outside the 30, Bybit and Hyperliquid, realistic cost for a 10,000 USD account (~8 bps a side) plus funding. Train 2021-2025 / the one held-out year 2025-11-11 .. 2026-11-10.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| band (primary) | Funding carry, weekly with a no-trade band | dead (held-out spent) | [carry-3.md](carry-3.md) | Train 0.79 (p 0.025), passed all bars; held-out -0.65, blend behind the twin. 16% funding collected, ~22% lost on price. |
+| w1, w2, w4, f30 | Funding carry, other speeds and a 30-day signal | parked (train only) | [carry-3.md](carry-3.md) | Train 0.78 / 1.01 / 0.69 / 0.29; never run on the held-out year, which `band` spent. |
