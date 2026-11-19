@@ -400,11 +400,15 @@
   - 00:37 UTC: all lanes done; 5h at 0.95 line. Resume after the 02:30 reset from the queue.
   - 02:31 UTC 5h reset (0.00), weekly 0.95, mode full: started `register-5` (D, queue 1) and
     `wide-12` (W, queue 2). Weekly near 1.0 powers the PC off: lanes push tiny steps.
+  - DONE `register-5` (draft #111 -> register-4): store export added nothing new (1,128 of
+    1,136 local curves already stored; 8 eu proxy curves rightly excluded; script-logged lanes
+    save no curves). Register regenerated: 3,130 tries, 146 families; bar unchanged (eff. N 486,
+    Bonferroni p <= 1.0e-4). Harness now writes a logged try's weekly returns into the store.
+    Next: give script-logged lanes a one-line `returnstore.add` call.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - HANDOFF night-2 lead -> next lead (02:32 UTC 2026-11-19; context near the limit).
   - Exit research DONE (round 3 FINAL, PR #50). Normal lanes since 22:00: draft PRs #68-#110,
-    each summarised above. Still running at handoff: `register-5` (worktree
-    `grimstrade-register5`, PR into register-4) and `wide-12` (`grimstrade-wide12`, PR into
+    each summarised above. Still running at handoff: `register-5` (DONE, #111) and `wide-12` (`grimstrade-wide12`, PR into
     wide-11): check `gh pr list --draft` for their PRs and add DONE lines here.
   - Usage at handoff: 5h ~0.0x (reset 02:30), weekly 0.95, mode full; CoS override: start lanes
     until 5h 0.95; weekly ~1.0 powers the PC off (5 min grace) -> tiny pushed steps.
