@@ -62,6 +62,10 @@ SEED = 20261118
 N_INIT = 5
 K_MAX = 60  # ONC searches k = 2..min(K_MAX, M - 1); a best k at the cap is flagged
 SELECTABLE = ("variant", "baseline")
+# register-3: the correlation sample keeps at most CAP series per family (the `Idea` column),
+# the first by SHA-256 of idea/variant/start (a pick that never looks at returns).
+CAP = 10
+CAP_SENSITIVITY = (1, 5, 20)
 
 
 # --- weekly returns ---
@@ -480,6 +484,47 @@ def one_per_family(series: list[Series], a: date, b: date) -> dict[str, Any]:
     return effective_trials(list(first.values()), a, b)
 
 
+def pick_key(s: Series) -> str:
+    return hashlib.sha256(f"{s.idea}/{s.variant}/{s.start}".encode()).hexdigest()
+
+
+def capped(series: list[Series], a: date, b: date, cap: int) -> list[Series]:
+    """The series covering the window, at most `cap` per family (card register-3)."""
+    idx, _ = window_matrix(series, a, b)
+    by_family: dict[str, list[Series]] = {}
+    for s in sorted((series[i] for i in idx), key=pick_key):
+        by_family.setdefault(s.idea, []).append(s)
+    return [s for fam in sorted(by_family) for s in by_family[fam][:cap]]
+
+
+def family_sizes(series: list[Series]) -> list[int]:
+    count: dict[str, int] = {}
+    for s in series:
+        count[s.idea] = count.get(s.idea, 0) + 1
+    return sorted(count.values(), reverse=True)
+
+
+def register_weighted_rho(
+    series: list[Series], a: date, b: date, register_share: dict[str, int]
+) -> dict[str, Any]:
+    """Sensitivity (register-3 card): the uncapped sample's average correlation with each pair
+    weighted so every family counts by its share of the register's selectable rows."""
+    idx, rets = window_matrix(series, a, b)
+    fams = [series[i].idea for i in idx]
+    n_f: dict[str, int] = {}
+    for f in fams:
+        n_f[f] = n_f.get(f, 0) + 1
+    w = np.array([register_share.get(f, 0) / n_f[f] for f in fams], dtype=float)
+    corr = np.corrcoef(rets, rowvar=False)
+    pw = np.outer(w, w)
+    np.fill_diagonal(pw, 0.0)
+    return {
+        "series": len(idx),
+        "families": len(n_f),
+        "rho_mean": round(float((pw * corr).sum() / pw.sum()), 4),
+    }
+
+
 def estimate() -> None:
     rows = register_rows()
     by_id = {r["id"]: r for r in rows}
@@ -554,6 +599,28 @@ def estimate() -> None:
         "main_window": MAIN_WINDOW,
         "onc_check_planted_found": onc_check(),
         "sensitivity_one_per_family": one_per_family(sample, *WINDOWS[MAIN_WINDOW]),
+    }
+    a0, b0 = WINDOWS[MAIN_WINDOW]
+    main = [sample[i] for i in window_matrix(sample, a0, b0)[0]]
+    share: dict[str, int] = {}
+    for r in rows:
+        if r["kind"] in SELECTABLE and r["period"] == "train":
+            share[r["idea"]] = share.get(r["idea"], 0) + 1
+    share["live"] = len(lives)
+    out["family_cap"] = {
+        "card": "research/register-3.md",
+        "cap": CAP,
+        "rule": "at most CAP series per family (Idea), first by sha256(idea/variant/start)",
+        "families": len(family_sizes(main)),
+        "largest_families_uncapped": family_sizes(main)[:5],
+        "windows": {
+            name: effective_trials(capped(sample, a, b, CAP), a, b)
+            for name, (a, b) in WINDOWS.items()
+        },
+        "sensitivity_caps": {
+            str(c): effective_trials(capped(sample, a0, b0, c), a0, b0) for c in CAP_SENSITIVITY
+        },
+        "sensitivity_register_weighted": register_weighted_rho(sample, a0, b0, share),
     }
     TRIALS.write_text(json.dumps(out, indent=2, sort_keys=True) + "\n")
     print(json.dumps(out, indent=2, sort_keys=True))
