@@ -1,14 +1,26 @@
 # Next steps
 
-## risk-menu (in progress 2026-11-19, branch `risk-menu`, draft PR -> `vol-timing`)
+## risk-menu (done 2026-11-19, branch `risk-menu`, draft PR #101 -> `vol-timing`)
 
-Descriptive, no pick: the risk dials (hold the six, 60/40, `tsmom12` at 100/70/26%, own-vol
-targeting at mean share 26/70%, equal-risk blend and fixed splits 90/10, 70/30, 50/50 with the
-wide long-short book) on one footing (P 2007-04..2025-10, T-bill cash, standard costs). Card
-`research/cards/risk-menu.md` (before numbers). Then `research/lib/riskmenu_run.py`, tables in
-`research/results/risk-menu.md`, map `research/risk-menu.svg`, one-screen `research/risk-menu.md`.
+Card before numbers (`research/cards/risk-menu.md`, b195922), script before its run (e89d02f).
+One-screen menu `research/risk-menu.md` with map `research/risk-menu.svg`; tables
+`research/results/risk-menu.md` (+ `.json`). 7 `replication` rows in `tries.md`. No pick.
 
-- Doing: step 1 card committed; next the script.
+- Eleven risk dials on one footing (P 2007-04..2025-10, T-bill cash, costs): Sharpe 0.66
+  (60/40) to 1.34 (own-vol target), SE 0.24; all `tsmom12` forms inside the bootstrap range of
+  holding the six. Risk differs a lot: worst loss 6.3% (own-vol 26%) to 47% (hold six).
+- Own-vol target at 70% mean share: growth 15.9%, worst loss 18.2%, worst 12 months -8.4%
+  against `tsmom12` 70% + bills 17.6% / 24.6% / -20.6%.
+- Equal-risk blend with the wide long-short book is the only item positive in all three
+  crashes (+10.4% / +4.4% / +4.1%), at Sharpe 0.97 and ~500 orders a year with shorts.
+
+- Doing: nothing. No process running.
+- Next: (1) own-vol targeting as a forward paper strategy only if the owner picks it as a risk
+  level (needs a monthly share reset in the runner); (2) a pre-2007 check of the menu's risk
+  columns (no wide book there: items 1-7 only, 1994-2025); (3) shorts in the gym only if the
+  crash-gain row is wanted.
+- Rerun: `uv run --with openpyxl python -I research/lib/riskmenu_run.py <cache_root>` (no new
+  rows); needs ls-trend-2 Part A's caches, `research/data/` and `research/macro.local.json`.
 
 ## vol-timing (done 2026-11-19, branch `vol-timing`, draft PR #98 -> `ls-trend-2`)
 
