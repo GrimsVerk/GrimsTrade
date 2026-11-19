@@ -192,3 +192,66 @@ card, no strategy, no `tries.md` row.** Held-out year untouched.
   to wide-11's 1.13 for the same placebo family.
 - My guess (b small and positive, t -1 to +2, top-half rank, placebo sd 1.1-1.5, pass 3%) held
   on the null width only; the sign and rank were wrong.
+
+## Step 3. D2 `inflation-disagreement` gate (enters the list as W24)
+
+### Data access (checked 2026-11-19, before any number was cut by it)
+
+The Philadelphia Fed's Survey of Professional Forecasters dispersion files, keyless:
+`https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/historical-data/Dispersion_1.xlsx`
+(and `Dispersion_2.xlsx`), stored under the cache root at `philly-spf/2026-11-19/`, sha256 in
+the cache's `manifest.jsonl`. Format probe before this rule (sheet names and column labels
+only, no value printed): sheet `CPI10` with columns `CPI10_P25_D1`, `CPI10_P75_D1`, `CPI10_D1`
+(D1 = 75th minus 25th percentile of the forecasts), sheet `CPI` with `CPI_D1(T)` ..
+`CPI_D1(T+4)`; first column `Survey_Date(T)` as `YYYYQn`, missing values `#N/A`. The repo has
+no xlsx library; a small reader (zip + XML, shared strings) is written and tested.
+
+### Decision rule (fixed and pushed before any number)
+
+**Dose.** D(q) = `CPI10_D1` of survey quarter q: the interquartile range of the forecasters'
+average CPI inflation over the next 10 years (the horizon of a long bond's inflation risk).
+z(q) = (D(q) - mean) / sd (ddof 1) over the surveys q-40 .. q-1 (10 years), needing at least
+20; past-only (dispersion trended down after the 1990s). Predicted sign: positive (more
+inflation uncertainty, a larger term premium, higher bond returns over the next quarter).
+
+**No look-ahead.** The survey of quarter q is released around the middle of the quarter's
+second month. Entry at the close of the asset's first bar dated >= the first day of the
+quarter's third month (1 March, 1 June, 1 September, 1 December), exit at the close of the
+first bar dated >= the same day three months later. y(q) = ln(exit / entry), dividend-adjusted
+closes, train bars only; the row is dropped if a bar is missing, the exit bar is dated more
+than 7 days after its target date, or after 2025-11-10. Returns of successive quarters do not
+overlap.
+
+**Panel and statistic.** Gate assets TLT and IEF. Pooled OLS y = a_asset + b z (F2 passed
+outright: no controls in the gate; a shown cell adds them). t of b with Driscoll-Kraay
+standard errors: scores summed over the rows of each quarter, Newey-West 1 lag over the quarter
+index.
+
+**Placebo null (the decider), one family, fixed here.** z_k(q) = z(q - k quarters), outcome
+stays put, rows with a missing z_k dropped from that placebo only. k in +-{7, 9, ..., 45} (odd,
+so never a whole number of years; shifts under 7 quarters left out because the dose is
+persistent for about a year and a half): **40 placebos**. Future-dose shifts (negative k) run
+out of surveys at the end and keep fewer rows; that is accepted as it comes.
+
+**Gate. Pass only if both hold** (gate sample: survey quarters 2010Q1 .. 2025Q2, after
+Wright's sample; about 62 quarters, 124 rows):
+1. b > 0 with t >= 2.
+2. The true t ranks among the 2 highest of 41.
+
+**Shown, not gating:** with the asset's past 13-, 26- and 52-week returns as controls (at the
+entry date's previous bar); the next-year dose `CPI_D1(T+4)` (same z, same clock); TLT alone;
+IEF alone; SPY alone; the pre-gate years 1996Q4 .. 2009Q4 (inside Wright's sample, as far as
+the z can reach); the F2 feedback check, z(q) on TLT's and IEF's own past 13- and 52-week
+returns, pooled with asset intercepts; the placebo null's width.
+
+**On a pass:** no card in this run; a proposed card read at p < 0.10 / 81 and the register's
+bar with z = (t - placebo median) / placebo sd. **On a fail:** W24 dead, no card, no row.
+
+**Power, written before any number.** Quarterly returns: TLT sd about 7%, IEF about 3%; 62
+quarters, two correlated ETFs (about 80 effective rows): standard error of b roughly 5% /
+sqrt(80), about 0.55% per unit of z. A term premium that moves by 50 bp a year per sd of
+inflation uncertainty is about 0.1-0.3% a quarter on these ETFs: t 0.2-0.6. Only an effect
+several times the literature's passes.
+
+**My guess before any number.** b near zero, t between -1 and +1.5; rank in the middle;
+placebo t sd 1.0-1.5. Feedback: weak (|t| < 1.5). Chance of a pass: 2%.
