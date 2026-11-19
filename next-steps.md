@@ -341,6 +341,13 @@
   - 00:11 UTC CoS override: start lanes until 5h 0.95 (also after the 02:30 reset). Started
     `multi-signal` (W, <- survey-6), `bear-legs` (D, <- fast-reentry-2), `risk-menu`
     (D, <- vol-timing).
+  - DONE `risk-menu` (draft #101 -> vol-timing): 11 risk dials, 2007-04..2025-10, T-bill
+    cash: Sharpe above T-bills 0.66 (60/40) .. 1.34 (own-vol target, 26% avg share), SE ~0.24;
+    every `tsmom12` form within -0.18..+0.19 of holding the six (1.15), none separable; worst
+    loss 6.3% .. 47%. Own-vol target at 70%: 15.9%/yr, worst loss 18.2%, worst 12m -8.4% (vs
+    fixed 70%: 17.6%, 24.6%, -20.6%). Only the wide long-short blend gained in all 3 crash
+    windows (needs shorts). Page `research/risk-menu.md` + `risk-menu.svg`. 7 replication rows.
+  - 00:20 UTC 5h 0.87: `risk-menu-2` started (D, small): menu risk columns on 1994-2025.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -446,6 +453,10 @@ above T-bills, against a same-size T-bill slot (diversifier-1 lesson).
 
 ### For the owner
 
+- Night 2026-11-18, risk-menu (#101): pick your risk level from `research/risk-menu.md` (on
+  branch `risk-menu`): "if you care most about X, pick Y". None is a proven edge; e.g. own-vol
+  targeting of `tsmom12` at 70% had a 18% worst loss vs 25% for a fixed 70%. A forward paper
+  run of the chosen dial needs a monthly share reset in the runner.
 - Night 2026-11-18, register-2 (#92): accept the measured project-wide bar (433 effective
   trials; a new rule needs +0.30..+0.56 Sharpe over `tsmom12`)?
 - Night 2026-11-18, wide-8 (#88): freeze the forward entry `turn-of-year-losers@1` (needs a
