@@ -1,5 +1,13 @@
 # Next steps
 
+## Weather 1 (doing 2026-11-19, branch `weather-1`, draft PR -> `wide-11`)
+
+One pre-registered weather gate: CPC utility-gas-weighted HDD surprise vs a rolling 20-year
+normal, next-week UNG return (card `research/weather-1.md`, pushed before any return data).
+- Doing: card pushed; next the script `research/lib/weather1_hdd.py`, one run, write-up.
+- Data: `weather-1/` under `research/macro.local.json`'s cache root (CPC files 1981-2025, UNG
+  train bars only).
+
 ## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
 Step 1: two filters added to the candidate score before any data look: **F1 not announced**
