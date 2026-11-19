@@ -398,6 +398,8 @@
     `research/register/README.md` says how lanes add returns. Next: export tonight's newer lanes'
     curves, then regenerate.
   - 00:37 UTC: all lanes done; 5h at 0.95 line. Resume after the 02:30 reset from the queue.
+  - 02:31 UTC 5h reset (0.00), weekly 0.95, mode full: started `register-5` (D, queue 1) and
+    `wide-12` (W, queue 2). Weekly near 1.0 powers the PC off: lanes push tiny steps.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
