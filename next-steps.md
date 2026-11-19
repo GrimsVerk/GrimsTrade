@@ -335,6 +335,9 @@
     crash windows +2.6 (2008) / -1.0 (2020Q1, signal too late) / +1.1 (2022), +6.2 in 2000-02;
     premium 1.30 per unit of loss avoided (QQQ 1.17) vs `tsmom12`'s 1.07. 2 rows (1 pick).
     Narrow short sleeves closed; the wide long-short blend was already done (ls-trend-2 #89).
+  - 00:06 UTC mode -> full (5h 0.80, weekly 0.93): start-nothing-new line now 0.85. Started
+    `wide-10` (W, <- survey-7: 2 new mechanisms, gates) and `register-3` (D, <- register-2:
+    auto-fill weeks/skew/kurtosis, family-capped correlation sample, regenerate with tonight).
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
