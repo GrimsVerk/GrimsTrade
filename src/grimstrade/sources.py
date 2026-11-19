@@ -15,7 +15,7 @@ from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
-from grimstrade.data import UNIVERSE, Bar, settled
+from grimstrade.data import UNIVERSE, Bar, Dividend, settled
 
 Get = Callable[[str], bytes]
 
@@ -109,6 +109,33 @@ def yahoo(ticker: str, since: date, get: Get) -> list[Bar]:
     if holes:
         raise ValueError(f"yahoo: no prices for {holes[0]} but later days have them")
     return bars
+
+
+def yahoo_dividends(ticker: str, since: date, get: Get) -> list[Dividend]:
+    """Distributions from Yahoo's chart API (`events=div`): per unit, keyed by the ex-date (the
+    event's time is that day's open). Split-adjusted like Yahoo's prices."""
+    period2 = int(datetime.now(UTC).timestamp()) + 86400
+    url = (
+        f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+        f"?period1={_ts(since)}&period2={period2}&interval=1d&events=div"
+    )
+    payload: dict[str, Any] = json.loads(get(url))
+    chart = payload["chart"]
+    if chart.get("error"):
+        raise ValueError(f"yahoo error: {chart['error']}")
+    events: dict[str, Any] = (chart["result"][0].get("events") or {}).get("dividends") or {}
+    out = []
+    for e in events.values():
+        amount = float(e["amount"])
+        if not (math.isfinite(amount) and amount > 0):
+            raise ValueError(f"yahoo: dividend amount {e['amount']!r} is not a positive number")
+        if (d := _day(e["date"])) >= since:
+            out.append(Dividend(d, amount))
+    return sorted(out, key=lambda d: d.ex_date)
+
+
+# symbol -> Yahoo ticker, for the symbols that pay distributions (the ETFs).
+DIVIDEND_TICKERS: dict[str, str] = {"SPY": "SPY", "QQQ": "QQQ", "GLD": "GLD", "TLT": "TLT"}
 
 
 def stooq(ticker: str, since: date, get: Get) -> list[Bar]:

@@ -20,12 +20,14 @@ PLAIN: dict[str, str] = {
     "buy_hold_btc": "Hold Bitcoin",
     "buy_hold_spy": "Hold the US stock market (SPY)",
     "sixty_forty": "60% stocks, 40% bonds",
-    "equal_weight": "Equal parts of all six",
+    "equal_weight": "Equal parts of all six (also the Bold preset)",
     "ts_momentum": "Trend following: hold what rose over the last year",
     "xs_momentum": "Winners: hold the best risers of the last 6 months",
     "vol_target_spy": "Stocks, but less of them when markets are wild",
     "risk_parity": "Balanced risk: less of the wild assets, more of the calm",
     "crypto_mean_reversion": "Buy sharp crypto dips in an uptrend",
+    "preset_careful": "Careful preset: trend, calmed when wild, 5% per coin",
+    "preset_middle": "Middle preset: trend, 10% per coin",
 }
 
 
@@ -100,9 +102,9 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         f"# Weekly summary: the week to {today:%A %d %B %Y}",
         "",
         "Fake money on real prices. Every strategy started with 10,000 USD; all figures are "
-        "after trading fees and slippage. Dividends are not credited yet, which makes the fund "
-        "yardsticks 1 to 2% a year too easy to beat. A strategy only matters if it beats the "
-        "yardsticks below.",
+        "after trading fees and slippage. Fund dividends are paid in as cash on the ex-dividend "
+        "day; cash earns the 3-month US Treasury bill rate. A strategy only matters if it beats "
+        "the yardsticks below.",
         "",
         "## Yardsticks",
         "",

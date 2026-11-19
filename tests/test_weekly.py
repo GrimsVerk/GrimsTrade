@@ -97,3 +97,11 @@ def test_a_late_copy_of_a_yardstick_does_not_beat_it(tmp_path: Path) -> None:
     text = weekly.render(tmp_path, history, tmp_path)
     row = next(line for line in text.splitlines() if line.startswith("| Trend following"))
     assert "| 0 of 1 |" in row
+
+
+def test_every_live_strategy_has_a_plain_name() -> None:
+    # Health check 2026-11-17: the risk presets went live without one, and the owner's page
+    # showed them as "preset_careful" and "preset_middle".
+    from grimstrade.strategies import LIVE
+
+    assert sorted(set(LIVE) - set(weekly.PLAIN)) == []

@@ -2,6 +2,148 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-18 (PROPOSED by lane forward-1, not yet decided by the owner): a forward-only shadow
+  registry (`docs/forward-registry.md`, `src/grimstrade/forward.py`). A candidate rule is frozen
+  as an append-only line in `research/forward/registry.jsonl`: sha256 of its code files,
+  parameters and data source, one-sided metric, alpha, power, the effect assumed, and the minimum
+  sample and years that effect needs. It counts as frozen from the commit that holds the line;
+  it is scored only on bars that start after that; the verdict is read once, on exactly the
+  first `min_sample` observations; a changed rule is a new id. Alpha is shared across a batch
+  (four rules at 0.025 = 0.10 one-sided). Freezing a rule already counted in `research/tries.md`
+  is not a new try. It runs as a separate offline command, never in the daily runner. Why:
+  published effects vanished after publication three times in one night, held-out years are
+  spent, and several candidates can only be judged on the future. Proposed first batch (not
+  frozen): `carry-3-band@1` (~13 years needed), `fomc-bond-drift@1` (~78), `coin-stop-0.25@1`
+  (~26), `eu-monthly-vs-weekly@1` (~32). Owner: adopt, and freeze which?
+
+- 2026-11-18 (cash interest): Idle cash earns the 13-week US Treasury bill rate. Why: the gym
+  paid nothing on cash, while a real account can park cash in T-bills (or a T-bill fund) and
+  every backtest in the literature credits it; a book that sits in cash (e.g. trend models out
+  of trend) looked worse than it would be. The rules, the same for the live record and backtests
+  (`gym.simulate(rates=...)` is the one place interest is computed):
+  - Rate: Yahoo's `^IRX` daily close (keyless, the same chart API as the ETF bars), the 13-week
+    bill's discount rate in percent, used as an annual rate. A discount rate is a little below
+    the bill's true yield (about 0.1 percentage point at 4%), which roughly pays for a T-bill
+    fund's fee: the cautious side. A rate below zero is used as zero (US brokers and bill funds
+    don't charge on cash).
+  - Accrual: every calendar day (weekends and holidays too), on the cash held at the end of the
+    UTC day, at rate / 365 (the repo's 365-day convention), credited into cash when the replay
+    moves past that day, so it compounds daily. The last day of a replay (possibly still open)
+    is credited by the next run. Interest is credited only once a strategy has a decision.
+  - No look-ahead: the rate for day d is the newest rate known at d 00:00 UTC. A rate is known
+    from its session's close (`data.close_time` for an ETF day, 21:00 UTC) in backtests, and in
+    the live record from the later of that and the time the row was stored (`seen`), the way a
+    decision counts from its commit (`ledger.in_force`). So the live record earns interest only
+    from the day after the first run with this code; nothing earlier changes there.
+  - Missing data: the last known rate carries forward (holidays, a failed fetch). Before the
+    first known rate: no interest. A failed fetch is a problem line on every run until it works.
+  - Negative cash (only float dust; the gym never borrows) is charged at the same rate, never
+    credited.
+  - Store: `data/rates.csv` (`date,rate,seen`) on the record branch, append-only like the bars:
+    rows are only appended for sessions that closed at least 15 minutes ago, never rewritten.
+    The first run fills it from the first stored bar (for the backtest report); `check_record`
+    refuses rows no run writes (dates out of order, a weekend, a rate outside -5..30%, stored
+    before its session closed or after now).
+  - Sharpe is now measured above the cash rate the gym pays (the zero risk-free rate of
+    2026-11-11 stays where no rate is passed). Without this a strategy that only holds cash
+    would show a huge Sharpe from interest with almost no variance. Total return, drawdown and
+    equity include the interest.
+  Every score is replayed each run, so this changes backtests once (research train period
+  1994-2025, `tsmom12` and `sixty_forty`: see PR `cash-interest`); no ledger line, bar or other
+  stored row changes. Not modelled: a broker's spread below the bill rate (Interactive Brokers
+  pays the benchmark minus 0.5% and nothing on the first 10,000 USD; a T-bill fund avoids that),
+  and margin interest (the gym never borrows).
+
+- 2026-11-18 (crypto fee tiers, replaces the flat 0.60% of audit G3): A crypto fill pays Kraken
+  Pro's spot taker fee for the strategy's crypto volume in the 30 days before the fill (fills at
+  the same open not counted). Each strategy is its own account; ETF trades are elsewhere and
+  do not count. Schedule (kraken.com/pro/fees, read 2026-11-18, same as on 2026-11-12), 30-day
+  spot volume in USD -> taker: 0 -> 0.80%, 2,500 -> 0.60%, 10,000 -> 0.38%, 25,000 -> 0.35%,
+  50,000 -> 0.30%, 100,000 -> 0.25%, 250,000 -> 0.22%, 500,000 -> 0.20%, 1M -> 0.18%, 2.5M ->
+  0.15%, 5M -> 0.12%, 10M -> 0.10% (and lower above 50M; all in `gym.KRAKEN_TAKER`). Not
+  modelled: the page's 0.02% discount on "selected pairs" (it does not say whether BTC/USD and
+  ETH/USD are among them; leaving it out charges more, the cautious side) and reaching a tier
+  through assets held or futures volume (out of reach at 10,000 USD). Kraken's public
+  `AssetPairs` endpoint lists empty fee tables now, so the page is the source. Why: the flat
+  0.60% was the tier of the busiest live crypto strategy; a 10,000 USD account's tier really
+  moves with what it trades: its first purchase pays 0.80%, and one that turns its crypto over
+  about twice a month pays 0.38%. Every score is replayed with this table, so past results
+  change once (record to 2026-11-17: `buy_hold_btc` live -17 USD, `equal_weight` -7,
+  `risk_parity` and `xs_momentum` -3; backtests: `crypto_mean_reversion` +3.8% (it trades
+  often enough for 0.38%), `equal_weight` -0.5%, `buy_hold_btc` -0.2%). Change the table only
+  with a new entry here, giving the date the page was read.
+
+- 2026-11-17 (audit G2): An unpaid buy waits for cash. Two rules in `gym._execute`, the same for
+  live and backtests. (a) A buy the cash cannot fully pay for at its open stays pending with its
+  target weight and is tried again at that asset's next open (re-sized to the equity then, band
+  applied, buying only, never turned into a sell), until it fills or a newer decision of the
+  same strategy replaces it. (b) At an open, when the decision's buys still pending and outside
+  the band (any asset, at the latest known prices) need more than the cash on hand, every asset
+  opening then that is above its target is sold down to it, even inside the 1% band. Why: each
+  asset filled once at its next open and the rest was dropped. Crypto opens at 00:00 UTC, the
+  ETFs at 13:30, so a switch from an ETF to crypto sat in cash until a later decision, and a
+  fully invested `equal_weight` could never top up crypto that fell 1-1.6% behind: the buy found
+  no cash and each ETF, alone inside the band, was never sold (health check 2026-11-17). Rule
+  (b) is what a rebalancer does (sell to fund buys); with the live cron late (decision about
+  03:00 UTC, ETFs open first) it is what makes the top-up happen at all. No look-ahead: every
+  fill is still at an open after the decision, and a waiting buy fills at an open after the cash
+  arrived. The record is not touched: every score is replayed from the ledger and the bars on
+  each run, so past results change once, at the first run with this code (on the record to
+  2026-11-17: `equal_weight` live +1.78 USD, `xs_momentum` +1.58, others unchanged; 700-day
+  backtests of `equal_weight` -0.6% from more crypto top-ups and their fees). Not chosen:
+  netting a decision into one batch at the first open (would fill ETFs at a crypto time).
+
+- 2026-11-17 (audit G4): ETF distributions are paid into the gym as cash, on the ex-date, at
+  that day's open, on the units held before the open (a unit sold at that open is paid, one
+  bought there is not). Source: Yahoo's chart API with `events=div` (keyless, the same host as
+  the bars; amounts per unit, split-adjusted like its prices). Stored append-only in
+  `data/dividends.csv` (`symbol,ex_date,amount`) on the record branch; each daily run asks for
+  the whole stored span of each ETF and appends what is new, so a failed or late answer is
+  caught up next run (a failure is still a problem line). Refused, and a problem line: an
+  ex-date with no stored session on and before it, an amount over 10% of the previous close.
+  `check_record` refuses rows no run writes (a second payout for one day, a crypto symbol, a
+  bad day or amount). Why the ex-date, not the pay date: the raw price drops at the ex-date's
+  open, so paying then keeps a holder's equity whole on the day the drop shows; Yahoo gives no
+  pay date. The price: the cash is spendable early (TLT and QQQ pay about a week after, SPY
+  about six weeks after), at most one quarterly payout (about 0.3% of the position) a few
+  weeks early, which is far smaller than the 1-4% a year missing before. The cash is not
+  reinvested by itself: it sits in cash until the strategy's next decision buys back to target
+  (band applied), as for a real account without automatic reinvestment. Meanwhile it earns the
+  cash rate like any cash (since 2026-11-18, cash interest). Strategies do not see dividends (they decide on raw bars as before). Every score is
+  replayed from the stored record each run, so stored payouts change past backtests once (700
+  days to 2026-11-17: buy-and-hold SPY +2.1%, 60/40 +4.9%, equal weight +2.4%); the live
+  record had no ex-date yet (it began 2026-11-11).
+
+- 2026-11-13 (ingest 2): The finer data the daily job now collects (`grimstrade.intraday`:
+  Coinbase 1-hour BTC-USD/ETH-USD, Yahoo 1-hour SPY/QQQ/GLD/TLT, Kraken Futures funding
+  PF_XBTUSD/PF_ETHUSD) is **not published**: none of it goes on `paper-trail`. Terms read
+  2026-11-13: Kraken Global Terms (last updated 2026-11-06) section 8 allows its content "only for
+  your own benefit" and section 9 forbids to "distribute" or "make available to any third party";
+  Yahoo's terms forbid using the services "to create any database, archive, ... data feed" and to
+  "reproduce ... distribute" (OTOS 2(d)(10), 2(h)), and its API terms claim the API output;
+  Coinbase's Market Data Terms of Use (they govern the Exchange market data API) answered 403 to
+  our fetch, so unread, and unclear counts as no. Where it lives instead: a **GitHub Actions
+  cache** of this repo, restored and re-saved under a new key (`intraday-<run>-<attempt>`) by the
+  daily job after the record is pushed (four best-effort steps, `continue-on-error`). Why a
+  cache: nobody outside can download it (there is no download API; only this repo's workflows
+  restore it, and outside pull requests are off). Not artifacts: in a public repo anyone signed in
+  to GitHub can download them, which is publishing, and they expire within 90 days. How long it
+  survives: GitHub deletes a cache entry not read for 7 days and caps a repo at 10 GB; the daily
+  job reads it every day and saves a full new copy (a few MB), so it lives as long as the daily
+  job runs. A missed restore must not let a shorter fresh copy become the newest entry:
+  `scripts/intraday-store.sh` skips the day when a store exists but did not restore. If the job
+  stops for over a week the store is gone; the owner's local snapshots
+  (`scripts/snapshot_rolling.py`, `docs/data-inventory.md`) are the backup. A cache can't be
+  downloaded to a PC directly: reading it locally needs a manual job that encrypts it with a key
+  the owner adds as a secret (not built; owner's call). Compared with the daily bars on
+  `paper-trail`: those come from the same sources under the same terms but are public, permanent
+  and tamper-evident in git, which the record needs (every score is recomputed from them); that
+  existing practice stays the owner's call (`docs/data-sources.md`). The intraday files are not
+  part of the record: nothing that trades or scores reads them (`tests/test_intraday_wiring.py`),
+  so they need no tamper evidence. Yahoo's terms also frown on automated collection as such; the
+  project already fetches Yahoo daily bars, so this adds no new kind of risk. The repository
+  variable `INTRADAY_COLLECT=off` turns the collection off.
+
 - 2026-11-12 (honesty audit 1, second review): What the record must look like, or the daily run
   refuses it (`run_daily.check_record`). One line of commits, never a merge; no commit dated
   before the one under it or in the future; no record file or folder that is a symbolic link;
@@ -17,7 +159,7 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   10,000, 0.35% from 25,000, 0.30% from 50,000; 25 bps is below all of them. The busiest live
   crypto strategy turns its book over about 10 times a year (about 9,000 USD a month): the
   0.60% tier. One flat number is still a simplification: slower accounts really pay 0.80%,
-  faster ones 0.38% or less; volume tiers are in the BACKLOG. Every score is recomputed with
+  faster ones 0.38% or less (replaced by volume tiers on 2026-11-18, above). Every score is recomputed with
   today's cost table, so changing it changes all past results too: change it only with a new
   entry here. If the owner would trade elsewhere, set that venue's taker fee.
 - 2026-11-12 (honesty audit 1): Scoring conventions. (a) Every day in a record has a return, the
@@ -108,10 +250,12 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   a data-only branch keeps the record's history clean and CI quiet.
 - 2026-11-11: Bars and ledger are CSV/JSONL, stdlib only. Why: diff-able in git (the tamper
   evidence), no dependencies to break the unattended runner.
-- 2026-11-11: Prices are raw (not dividend-adjusted); dividends are not credited yet. Why: adjusted
-  history changes retroactively, which breaks append-only data. Understates SPY/TLT a little.
+- 2026-11-11: Prices are raw (not dividend-adjusted). Why: adjusted history changes
+  retroactively, which breaks append-only data. Dividends are paid separately as cash since
+  2026-11-17 (audit G4, above).
 - 2026-11-11: Sharpe uses 365 calendar days and a zero risk-free rate. Why: crypto trades every day;
-  one convention for all strategies.
+  one convention for all strategies. (Since 2026-11-18 the risk-free rate is the cash rate the
+  gym pays, see "cash interest".)
 - 2026-11-11: No real-money broker, ever, without the owner's explicit decision. No keys in git.
 - 2026-11-11: License is MIT. Why: owner's ruling.
 - 2026-11-12: All three risk presets from the risk map run in paper side by side (owner: fake money,
