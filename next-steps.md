@@ -1,5 +1,12 @@
 # Next steps
 
+## Wide 11 (in progress 2026-11-19, branch `wide-11`, draft PR -> `wide-10`)
+
+Doing: step 1 done (two filters F1 not-announced, F2 not-price-driven added to the score;
+parked candidates re-scored in `research/wide-11.md`). Next: gate C3 `hedging-pressure`
+(CFTC legacy COT, commercials' hedging pressure, 4-week return, price-path controls) under
+`research/gate-null.md`; then count and write-up.
+
 ## Wide 10 (done 2026-11-19, branch `wide-10`, draft PR #102 -> `survey-7`)
 
 Six candidate mechanisms from fields not in the list, scored by a rule written before any data
