@@ -1,12 +1,73 @@
 # Review 2 of night 3 (the claims in `research/SUMMARY.md`)
 
 Reviewer: lane `review-2`, an agent that wrote none of the reviewed code. Branch `review-2`,
-made from `pr-map` at `91968a9`. Written 2026-11-19. Status: **in progress** (sections are
-added as they are done).
+made from `pr-map` at `91968a9`. Written 2026-11-19. Status: **verdict final**.
+
+## Verdict
+
+**The decisions SUMMARY.md asks for are sound. No finding here changes one of them. Several
+sentences the owner would quote are stronger than the evidence, and one is factually wrong.**
+
+| Claim | Verdict | Severity |
+|---|---|---|
+| Bar: N_eff about 486, z >= 4.69, +0.30..+0.56 over `tsmom12` (#74, #92, #111) | **Holds** (formulas match the paper; recomputed). The range covers rules correlated 0.77-0.93 with `tsmom12` only; "486" is the cautious end of a 12..486 range | low |
+| "Largest lead ever seen on the main test was +0.18" | **Wrong**: `halving-alone` +0.23 (z about 3.2-3.6), right at the ONC-scaled bar | medium |
+| Trend = crash insurance, 48 of 50 falls (#87) | **Holds with caveat**: 21 market falls (20 of 21), not 50 "independent US falls"; the timing evidence is 0.50 vs 0.27 avoided, not the count | medium |
+| "Cheaper than simply holding less" (#87, #90) | **Holds in direction only**: shown statistically for 1927-1961 (and 13 developed price indices); since 2002 p 0.19 | medium |
+| Premium, "2 points a year behind holding since 2002" (#90) | **Holds** | - |
+| Own-vol targeting without look-ahead (#110) | **Fix correct**; but the menu's middle-size row and SUMMARY still quote look-ahead numbers (the cost is 3.8 points of growth a year, not 1.7); shares 24%/66%, not 26%/70%; the SE quoted is the wrong one (conclusion unchanged) | medium |
+| "None separable" (#101) | **Holds** (paired bootstrap) | - |
+| `tsmom12` = holding 2010-2025 (#78) | **Holds** (recomputed: 1.36 vs 1.34 weekly) | - |
+| "80% paper-to-live decay" (#78) | **Holds as arithmetic, overstated**: one pair, mostly post-sample decay, wide range, does not transfer to `tsmom12` (correlation 0.09) | low-medium |
+| "Median 8% kept" (#91) | **Mixes measures**: the published factors kept a median of about 28% after publication; the 8% adds long-only fund IRs and proxies | medium |
+| Gate-null method (#93) | **Sound**, but step 7 (z from 40 placebos to p 1e-4) is invalid; clustered designs are kill-only | medium (method) |
+| W22 hedging pressure (#109), weather-1 (#116) dead | **Hold**. W22's backward-shift placebos look into the outcome (null too wide); weather-1's "market trades the forecast" is an interpretation | low |
 
 ## Required fixes
 
-(filled in as the sections below are finished)
+1. **SUMMARY (`pr-map`), the bar bullet:** replace "the largest lead ever seen on the main test
+   was +0.18" with "+0.23 (`halving-alone`, a secondary variant on two or three coin cycles;
+   z about 3.2-3.6, below the bar of 4.69 but at the ONC-scaled 3.29)". Say "worth 12 to 486
+   independent shots; the bar uses the cautious 486", and that +0.30..+0.56 is for rules
+   correlated 0.77-0.93 with `tsmom12` (others use the z column). (Section 1.)
+2. **SUMMARY, the insurance bullets:** "21 US market falls since 1927: it lost less in 20 (50
+   effective episodes with industries)". Lead with "avoided 0.50 of each fall against 0.27
+   for the same exposure at random dates". Qualify "cheaper than holding less" as "in
+   direction everywhere; statistically shown before 1962 and on developed-market price
+   indices, not since 2002". (Section 2.)
+3. **`risk-menu.md` (a `risk-menu-4` lane or the PR #110 author) and SUMMARY's decision
+   example:** quote own-vol rows without look-ahead and with their realised share (P: 0.61,
+   13.8% a year, worst loss 15.7%; the trade-off against `tsmom12` 70% is 3.8 points of growth
+   for 8.9 points of worst loss), and move the look-ahead figures to a footnote. In SUMMARY's
+   own-vol bullet, use "24% / 66% average share" and the paired SE (about 0.1), not 0.18.
+   (Section 3.)
+4. **SUMMARY, the live-funds bullet:** replace "published backtests kept a median 8%" with
+   "published effects kept about a quarter after publication (median of six factors), and
+   long-only funds built on them matched their index after fees". In `pr-map.md` line 59 and
+   survey-5 step 3, describe the 80% as one same-manager pair, mostly post-sample decay, and
+   drop the 0.21 live-Sharpe projection for `tsmom12`. (Section 4.)
+5. **`research/gate-null.md` (next wide-* lane):** (a) placebos may never use a dose whose
+   window overlaps the outcome, so for price-responsive doses use earlier doses or year
+   shifts only (W22's negative-k placebos break this); (b) replace step 7's extrapolation with
+   "state the smallest honest p the design can reach; if above the card bar, the gate is
+   kill-only". (Section 5.)
+6. **Minor, register (`register-5` or later):** label or drop `cluster_sharpes_minvar` in
+   `trials.json` (in-sample long-short portfolios, Sharpe about 5). Note that the "against
+   zero" V = 0.136 is the variance of two numbers. (Section 1b.)
+7. **Minor, SUMMARY weather line:** "no signal; the lane reads it as the market pricing the
+   forecast (untested)". (Section 5c.)
+
+## What holds (the owner can rely on these)
+
+- The Deflated Sharpe arithmetic and the bar's order of magnitude. Any N between 12 and
+  3,130 puts the close-rule bar between +0.21 and +0.34, so the conclusion "nothing has
+  cleared it" survives every counting choice except, marginally, `halving-alone` under ONC.
+- `tsmom12` earned what holding earned after 2009. Its lead is all from before 2010.
+- Trend's crash insurance is timing, not just lower exposure, and it costs growth (premium
+  above 1 since 1962, about 2 points a year since 2002).
+- The risk menu's look-ahead fix is correct, and no row is separable from the best on Sharpe.
+- No live strategy family beat its plain holding after fees.
+- The gates checked are dead, correctly. The placebo-rank method is a real improvement.
 
 ## How the review was done
 
@@ -86,8 +147,9 @@ measurement.**
 dsr-1 quoted +0.18 because it took each family's pre-named primary variant (`halving-and`).
 That is a fair rule for its own test, but it does not make +0.18 the largest lead seen.
 `halving-alone` still fails the bar (3.6 < 4.69, and < 3.88 under the exact equicorrelated
-count). But it **passes the ONC-scaled row (z 3.31)**, so it is the one result where the
-choice of N_eff method decides the verdict. Its iid z is also too kind: the edge sits in two
+count). But it **sits right at the ONC-scaled row (z 3.29)**: 3.6 by my iid SE, 3.2 by the
+lane's own 90% range (SE about 0.073). So it is the one result where the choice of N_eff
+method decides the verdict. Its iid z is also too kind: the edge sits in two
 or three coin halving cycles, with fat tails. Severity: medium. The decision does not change,
 but SUMMARY tells the owner nothing came near, and that is not so.
 
@@ -122,8 +184,9 @@ random timing at the same exposure (0.50 vs 0.27) should replace the count.
 
 From insure-2's own multiple-testing paragraph (`insure-2.md`, step 1): with 8 rotation
 p-values at Bonferroni 0.006, "trend buys that cheaper than random timing" survives **only
-in 1927-1961**. US 1962-2001 premium p 0.013, 1962-2025 p 0.020, **2002-2025 p 0.19**. Of the
-non-US sets, only the 13 developed price indices pass (p 0.009). The lane reads this
+in 1927-1961**. US 1962-2001 premium p 0.013, 1962-2025 p 0.020, **2002-2025 p 0.19**. Outside
+the US, only the 13 developed price indices are clearly below random timing (unadjusted
+p 0.009; the regions 0.24, the wider set 0.08). The lane reads this
 correctly ("solid only in 1927-1961, suggestive after"). SUMMARY drops the qualifier, in the
 period the owner cares about most (since 2002: trend 1.34, fixed 1.53, random 1.91, an
 "in between" verdict on 13 episodes). Fix: "cheaper than holding less in every era and
@@ -255,7 +318,7 @@ unlike things by the in-sample paper Sharpe of a **long-short** factor:
   its index**. Even with no decay at all, that ratio is the factor's Sharpe times the
   correlation of the fund's active return with the factor (well below 1), less fees. So the
   measure is biased low by construction.
-- Four of the 11 entries use a stand-in or a different measure: dividend against a carry
+- Five of the 11 entries use a stand-in or a different measure: dividend against a carry
   paper's 0.36 (no dividend paper), FX carry against a long-only emerging-currency basket (the
   lane: "weak proxy"), multi-factor taken as 31% (long-short) though the long-only reading is
   <0, and option writing and risk parity as gaps rather than Sharpes.
