@@ -1,11 +1,29 @@
 # Next steps
 
-## Wide 10 (in progress 2026-11-19, branch `wide-10`, draft PR -> `survey-7`)
+## Wide 10 (done 2026-11-19, branch `wide-10`, draft PR #102 -> `survey-7`)
 
-Two new mechanisms from unused fields picked by a written score (`research/wide-10.md` step 1):
-W20 `fed-purchase-flow` (7 points) and W21 `stablecoin-mint` (6). Count 78/18.
+Six candidate mechanisms from fields not in the list, scored by a rule written before any data
+look (cause, dose x2, post-sample, power, unseen, not killed); the top two gated under
+`research/gate-null.md` (rule, script, tests pushed first; dry run counts only; one run each).
+**Both fail; no card, no strategy, no `tries.md` row; held-out year untouched.** Write-up
+`research/wide-10.md`; tables `research/results/fed-purchase-flow.md`, `stablecoin-mint.md`.
 
-- Doing: W20 gate (rule, script, tests first; dry run counts only; one real run), then W21.
+- W20 `fed-purchase-flow` (NY Fed operations, keyless): TLT open-to-close +3.3 bps per unit of
+  ln(1 + $bn of 20+ year purchases), t 0.37, rank 11/41, placebo sd 0.99. Papers' years -8.5
+  (t -1.55). Dead.
+- W21 `stablecoin-mint` (DefiLlama, keyless): next-week BTC/ETH +0.16 per unit of weekly
+  issuance, t 1.06, rank 17/41, placebo sd 1.24 (28% |t| >= 2). Issuance follows prices
+  (same-week t 2.92). Dead.
+
+Count: union **78 mechanisms, 18 tested, none passed**; next strategy test p < 0.00128
+(family), register p <= 4.9e-5. Gates: 13, all failed.
+
+- Doing: nothing. No process running.
+- Next: (1) add to the score two filters before any data look: the dose is not announced
+  before the window, and it is not a function of recent prices. (2) C3 `hedging-pressure`
+  parked (CFTC, ~30 files). (3) Carry 78/18 into the merged mechanism list.
+- Data: `research/data/nyfed/` and `research/data/stablecoins/` (gitignored; URLs in
+  `research/wide-10.md`).
 
 ## Survey 7 (done 2026-11-19, branch `survey-7`, draft PR #97 -> `wide-9`)
 

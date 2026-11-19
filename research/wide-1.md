@@ -642,3 +642,10 @@ step 1). Each needs a gate first (`gate-null.md`).
 18 tested by a strategy, none passed. The next strategy test is read at p < 0.10 / 78 =
 0.00128.** (The survey-4 entries `ts-carry`, `halloween`, `seasonal-20y`, `ts-value` are
 counted in the 76 but listed on their own branch.)
+
+**Closed by wide-10's gates (2026-11-19, `wide-10.md`; rules pushed first, 40 placebos each):**
+W20 `fed-purchase-flow`: TLT open-to-close +3.3 bps per unit of ln(1 + $bn of 20+ year
+purchases), t 0.37, rank 11 of 41 (2014-2025, 224 purchase days); in the papers' years -8.5
+(t -1.55). W21 `stablecoin-mint`: next-week BTC/ETH +0.16 per unit of weekly issuance, t 1.06,
+rank 17 of 41 (339 weeks); issuance follows prices (same-week t 2.92). Both dead, no card.
+Count unchanged: 78 mechanisms, 18 tested, none passed; gates 13, all failed.

@@ -287,3 +287,61 @@ coins the next week. Only a strong effect passes.
 **My guess before any number.** b > 0 with t between 0 and 1.5 after the control; rank in the
 upper half; placebo t sd 1.2-1.6 (issuance is persistent, so shifted doses share regimes).
 Chance of a pass: 4%.
+
+### What came out (one run, 2026-11-19; table `results/stablecoin-mint.md`)
+
+Dry run first (`DRY=1`, counts only): 396 Fridays; the $1bn guard drops 57 (DefiLlama's total
+stays under $1bn until 2019, so the early tracking is incomplete and the gate in practice starts
+in 2019), the jump guard drops none; 339 weeks with dose, outcome and control; every placebo has
+at least 317 weeks. Then one real run.
+
+**The gate fails on both counts. A week of issuance adds +0.16 x m to next week's coin return
+(a 1% week of issuance: +0.16%; t +1.06, 339 weeks); the true t ranks 17 of 41 (empirical
+one-sided p 0.41). W21 `stablecoin-mint` is dead by the gate: no card, no strategy, no
+`tries.md` row.** Held-out year untouched.
+
+| Next-week BTC/ETH return on the week's stablecoin issuance | b | t | Weeks |
+|---|---:|---:|---:|
+| **Gate: mean of BTC and ETH, last week's return as control** | **+0.16** | **+1.06** | 339 |
+| Without the control | +0.15 | +1.03 | 339 |
+| BTC alone / ETH alone | +0.09 / +0.21 | +0.65 / +1.26 | 339 |
+| 2018-04 .. 2021-12 / 2022-01 .. 2025-10 | +0.10 / -0.15 | +0.52 / -0.56 | 139 / 200 |
+| Same week: issuance on the week's own return (reversed axes) | +0.08 | **+2.92** | 339 |
+
+- **Issuance follows prices; it does not lead them.** Issuance rises in weeks when coins rise
+  (t 2.92), and the placebo null shows the direction: the highest placebo t are mostly
+  *negative* shifts, i.e. issuance 3-19 weeks *later* "predicting" this week's return (k -13:
+  t 3.31, k -11: 3.29, k -4: 2.88). Minting answers demand that has already shown up in prices.
+- **The clustered kind of design:** SD of placebo t 1.24, **28% with |t| >= 2**, quantiles
+  5/50/95% -0.93 / +0.85 / +3.29, extremes -1.09 / +3.34. Issuance is persistent and high in
+  bull markets, so most shifted doses still "predict" returns (median +0.85); the true week is
+  in the middle of them. A plain t against N(0, 1) would have overstated anything here.
+- The weeks after the top fifth of issuance averaged +2.18% against +0.52% after the rest: the
+  same bull-market regime, which the shifted placebos share, not a week-by-week flow. The second
+  half (2022-2025, the larger-supply years) has the wrong sign.
+- My guess (t 0 to 1.5, upper half, sd 1.2-1.6, pass 4%) held, except that the rank fell in the
+  lower half because the placebos lean positive.
+
+## Family count and status
+
+Two new mechanisms from unused fields, both through a written score, both dead by their gates.
+**Union count: 78 mechanisms (survey-7's 76 + W20, W21), 18 tested by a strategy, none
+passed. The next strategy test is read at p < 0.10 / 78 = 0.00128 (family) and the register's
+p <= 4.9e-5 (2,904 tries, N 1,012).** Gates so far: 13, all failed. Published effects after
+publication in this book: now 0 for 7 (W20's flow effect added).
+
+What the two add to the night's lesson: a structural cause and a large measured dose are not
+enough when the dose is *public in advance* (W20: the purchase schedule is announced, so a
+sector fund prices it before the day; the papers' flow effect is cross-sectional, between bonds
+in and out of the operation) or *endogenous to price* (W21: issuance follows prices). A dose
+that can still move prices must be both unannounced before the decision and not caused by the
+price.
+
+## Next
+
+1. Score the parked C3 `hedging-pressure` (6 points; about 30 CFTC files) only if a lane wants
+   a commodity question; its cause is a business choice, the kind that died tonight.
+2. For any next new mechanism, add two filters to the score before any data look: the dose is
+   not announced before the window (else it is priced), and it is not a function of the
+   asset's recent price (else it follows, as W21 did).
+3. Carry 78/18 into the mechanism list wherever the wide and survey lines merge.

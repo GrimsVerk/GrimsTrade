@@ -22,6 +22,8 @@ shows how wide the real null is:
 | SPY new- minus full-moon days (wide-6, W3) | 28 phase shifts | 1.34 * | 11% * | adjacent shifts overlap; a smooth wave, not independent draws |
 | GLD festival runs minus their month's mean (wide-7, W13) | 14 weekly shifts | 0.59 * | 0% * | few placebos |
 | ETH minus BTC, ten days into and after 15 upgrades, one-sample t (wide-9, W17) | 40 calendars moved by k x 30 days | **1.05** | **2%** | non-overlapping, roughly independent events: the normal null is right |
+| TLT open-to-close on the day's Fed purchase dose, HC1, 2,983 days (wide-10, W20) | 40 calendars moved k trading days | 0.99 | 2% | daily, nearly independent days: normal null about right |
+| BTC/ETH next-week return on weekly stablecoin issuance, HC1, 339 weeks (wide-10, W21) | 40 calendars moved k weeks | 1.24 | **28%** | persistent dose, high in bull markets: shifted doses share the regime (median +0.85) |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
