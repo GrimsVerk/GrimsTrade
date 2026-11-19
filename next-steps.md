@@ -9,7 +9,8 @@ AUC, cluster bootstrap, block-bootstrap placebo); (3) one-screen note `research/
 Code `research/lib/bearlegs.py`, tables `research/results/bear-legs.md`. No `tries.md` rows
 (card says why). Rerun needs insure-2's setup (saved trend-1926 runs, macro.local.json, cache).
 
-- Doing: step 1 code.
+- Step 1 done (catalogue in `results/bear-legs.md`): 74% of US 25% episodes are multi-leg; single-leg first falls cost the 3-month re-entry rules nothing (dI -0.1), 88% of `or3-12`'s summed leak is in falls with 10% rallies inside, 69% in follow-on legs.
+- Doing: step 2 (event sets A/B, AUC, bootstrap, placebo).
 
 ## fast-reentry-2 (done 2026-11-18 night, branch `fast-reentry-2` -> `fast-reentry`, draft PR #96)
 
