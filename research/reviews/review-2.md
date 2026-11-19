@@ -93,7 +93,69 @@ but SUMMARY tells the owner nothing came near, and that is not so.
 
 ## 2. Crash insurance (insure-1 #87, insure-2 #90)
 
-(pending)
+**Verdict: holds with caveats. The insurance and its timing component are solid. Three
+SUMMARY wordings overstate it: "50 independent falls", "48 of 50" as the evidence, and an
+unqualified "cheaper than simply holding less".**
+
+### 2a. "50 independent US falls": overstated wording (medium)
+
+`research/lib/insure1.py` (branch `insure-1`), `market_anchored` (about line 287): the 50 are
+the 21 falls of the US market, each with the industry falls inside it, **plus 29 clusters of
+industry-only falls**, single-linked when their windows overlap. So 29 of the 50 are falls of
+one or a few of 10 industry portfolios while the market did not fall 25%. They are separate
+in time, but they are not "US falls" in the sense a reader takes. The market zigzag also
+counts five legs of 1929-1933 as five episodes (the lane says so, `insure-1.md`, "How sure").
+The stricter linkage gives 37 (36 of 37). The market alone gives **20 of 21**, and that is
+the figure to quote for "US falls". Fix: "in 21 US market falls of 25% or more since 1927 it
+lost less in 20 (50 when industry falls are added, 37 under strict grouping)".
+
+### 2b. "Lost less than holding in 48": the easy test is not the evidence (low-medium)
+
+The lane itself calls the sign test "easy by construction" (`insure-1.md`, bar paragraph).
+Any rule that is out of the market part of the time loses less in most falls. The evidence
+that the rule times falls is card 2: share of the fall avoided **0.50**, against 0.27 for
+the rule's own positions rotated to random dates and 0.29 for a fixed 73% exposure (0 of
+1,000 rotations as good). SUMMARY gives "48 of 50" and "about half". The comparison with
+random timing at the same exposure (0.50 vs 0.27) should replace the count.
+
+### 2c. "It is cheaper than simply holding less": true in direction, proven only before 1962 (medium)
+
+From insure-2's own multiple-testing paragraph (`insure-2.md`, step 1): with 8 rotation
+p-values at Bonferroni 0.006, "trend buys that cheaper than random timing" survives **only
+in 1927-1961**. US 1962-2001 premium p 0.013, 1962-2025 p 0.020, **2002-2025 p 0.19**. Of the
+non-US sets, only the 13 developed price indices pass (p 0.009). The lane reads this
+correctly ("solid only in 1927-1961, suggestive after"). SUMMARY drops the qualifier, in the
+period the owner cares about most (since 2002: trend 1.34, fixed 1.53, random 1.91, an
+"in between" verdict on 13 episodes). Fix: "cheaper than holding less in every era and
+market in direction; statistically shown only for 1927-1961 and the developed-market price
+indices; since 2002 not shown".
+
+### 2d. Look-ahead and independence
+
+- Episodes are defined with hindsight on holding's prices, which does not favour the rule.
+  The rebound window (365 days after the trough, cut at the next peak) charges the late
+  buy-back to the insurance, and the decomposition I + B + C = total is asserted in code
+  (`score`, `AssertionError` if off by 1e-6). Fine.
+- **Small fill optimism (low):** the paper series (`research/lib/trend_tune.py`, `paper`,
+  about lines 154-186) decides on Friday's close, visible at 22:30 UTC, and earns the bars
+  **after** that close: in effect a fill at Friday's close, not the next open
+  (`AGENTS.md`: "fills are at the next open"). The daily index files have no open, so this is
+  a necessary approximation. It is the only source for US 2002-2025 and for every non-US set.
+  insure-1 bounds the gap at 3.7 log points in one episode on 1927-2001, where both sources
+  exist. Not material for a 12-month signal, but it should be stated where the paper series
+  stands alone.
+- Non-US independence: insure-2 anchors non-US clusters on US falls and says the sets
+  "are not independent of each other or of the US after 1966". SUMMARY's "17 of 18" is
+  correct; it should not be read as 18 more independent confirmations on top of the US 50.
+
+### 2e. The premium figures: hold
+
+Premium = -(B + C) / I (`insure1.py`, `prem`, about line 430): growth given up in rebounds
+and calm markets per log point of loss avoided. Pooled 1.07 (0.97 with T-bills on cash),
+per era 0.86 / 1.38 / 1.34, matched by insure-2's paper series (0.85 / 1.38 / 1.34).
+"About 2 points of growth a year behind holding since 2002" is insure-2's total-return
+figure (US 2.2, regions 2.7, wider set 2.1). The price-index set gives about 0.8, and the
+lane says price indices flatter the level. Consistent.
 
 ## 3. Risk menu (#101, #105, #110)
 
