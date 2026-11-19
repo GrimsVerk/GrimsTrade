@@ -19,14 +19,20 @@ so the same series give the same bytes everywhere. One CSV row per series:
   space separated; `nan`, `inf` and `-inf` as such.
 
 Only strategy returns: never prices or other market data. Stdlib only.
+
+register-5: the research harness (`research/lib/harness.py`, `_log`) adds a train try's series
+here itself when it logs the row (`of_equity`, then `add`), so no saved curve is needed; the
+row is the one `register2.py export` builds from that try's saved curve (same key).
 """
 
 from __future__ import annotations
 
 import csv
+import fcntl
 import gzip
 import io
 import math
+import os
 import re
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
@@ -182,3 +188,83 @@ def write(directory: Path, rows: Iterable[Row]) -> dict[str, int]:
         if old.name not in by_file:
             old.unlink()
     return sizes
+
+
+def _ratio(b: float, a: float) -> float:
+    """b / a - 1 as numpy computes it (register2), also when a is zero."""
+    if a == 0:
+        return (
+            math.nan
+            if b == 0 or math.isnan(b)
+            else math.copysign(math.inf, b) * (math.copysign(1.0, a))
+        )
+    return b / a - 1
+
+
+def of_equity(
+    source: str,
+    idea: str,
+    variant: str,
+    days: Sequence[date],
+    equity: Sequence[float],
+    sharpe: float,
+) -> Row | None:
+    """A series from an equity curve as `research/register2.py` builds it from a saved curve:
+    equity on every calendar day (carried over days without a bar), simple returns Friday to
+    Friday keyed by the Friday they end on; `start` is the first day. `sharpe` is the harness's
+    daily Sharpe of the same curve. None when the curve holds no full week."""
+    if len(days) != len(equity):
+        raise StoreError(f"{idea}/{variant}: {len(days)} days but {len(equity)} equity values")
+    if not days:
+        return None
+    known = {d: float(e) for d, e in zip(days, equity, strict=True)}
+    first, last = days[0], days[-1]
+    fridays: list[tuple[date, float]] = []
+    cur = float(equity[0])
+    d = first
+    while d <= last:
+        cur = known.get(d, cur)
+        if d.weekday() == FRIDAY:
+            fridays.append((d, cur))
+        d += timedelta(days=1)
+    if len(fridays) < 2:
+        return None
+    weeks = [f.isoformat() for f, _ in fridays[1:]]
+    rets = [_ratio(b, a) for (_, a), (_, b) in zip(fridays, fridays[1:], strict=False)]
+    return Row.of(source, idea, variant, first.isoformat(), sharpe, weeks, rets)
+
+
+def add(directory: Path, rows: Iterable[Row]) -> dict[str, int]:
+    """Merge `rows` into their family files; other files are not touched. Holds an exclusive
+    lock on the directory, so parallel runs of one lane keep each other's rows, and replaces
+    each changed file in one rename. Returns the bytes of each family file touched."""
+    by_file: dict[str, list[Row]] = {}
+    for r in rows:
+        by_file.setdefault(family_file(r.idea), []).append(r)
+    if not by_file:
+        return {}
+    directory.mkdir(parents=True, exist_ok=True)
+    fd = os.open(directory, os.O_RDONLY)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        sizes = {}
+        for name in sorted(by_file):
+            path = directory / name
+            old = path.read_bytes() if path.exists() else None
+            stored = decode(old, str(path)) if old is not None else []
+            raw = encode(stored + by_file[name])
+            if raw != old:
+                tmp = directory / f".{name}.tmp"
+                tmp.write_bytes(raw)
+                os.replace(tmp, path)
+            sizes[name] = len(raw)
+        return sizes
+    finally:
+        os.close(fd)  # releases the lock
+
+
+def size(directory: Path) -> int:
+    """Bytes of the whole store (the budget is checked against this)."""
+    if not directory.is_dir():
+        return 0
+    return sum(p.stat().st_size for p in directory.glob(f"*{SUFFIX}"))

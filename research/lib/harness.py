@@ -34,7 +34,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from grimstrade import data, gym, report, tryshape  # noqa: E402
+from grimstrade import data, gym, report, returnstore, tryshape  # noqa: E402
 from grimstrade.data import CRYPTO, ETF, UNIVERSE, Bar, close_time  # noqa: E402
 from grimstrade.gym import DECIDE_AT, Decision  # noqa: E402
 
@@ -42,6 +42,7 @@ RESEARCH = ROOT / "research"
 DATA = RESEARCH / "data"
 TRIES = RESEARCH / "tries.md"
 SHAPES = ROOT / tryshape.SHAPES  # weeks, skew, kurtosis of each logged row (register-3)
+STORE = ROOT / returnstore.STORE  # weekly returns of each logged train try (register-5)
 
 TRAIN_START = date(1994, 2, 1)  # SPY's first day plus a year of warm-up
 TRAIN_END = date(2025, 11, 9)  # last train decision
@@ -328,6 +329,25 @@ def _log(run: Run, kind: str, start: date, end: date) -> None:
         fcntl.flock(f, fcntl.LOCK_EX)
         f.write(row)
     tryshape.log(SHAPES, row, run.days, [float(e) for e in run.equity])
+    if run.period == "train":
+        _store(run, sharpe)
+
+
+def _store(run: Run, sharpe: float) -> None:
+    """Add the try's weekly returns to the committed store (register-5): commit the changed
+    `research/register/returns/<idea>.csv.gz` with `research/tries.md`. A failure only warns:
+    the row is logged and the curve CSV is still saved (`register2.py export` reads it)."""
+    try:
+        r = returnstore.of_equity(
+            "curve", run.idea, run.variant, run.days, [float(e) for e in run.equity], sharpe
+        )
+        if r is None:
+            return
+        returnstore.add(STORE, [r])
+        if (n := returnstore.size(STORE)) > returnstore.BUDGET:
+            print(f"harness: returns store {n:,} bytes, over its budget", file=sys.stderr)
+    except (OSError, ValueError) as e:  # StoreError is a ValueError
+        print(f"harness: weekly returns not stored ({e})", file=sys.stderr)
 
 
 def run(

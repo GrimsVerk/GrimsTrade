@@ -139,3 +139,49 @@ def test_register2_reads_the_store_like_the_local_caches(
         assert {p.name: p.read_bytes() for p in store.iterdir()} == before
     finally:
         sys.modules.pop(spec.name, None)
+
+
+def test_harness_rows_equal_what_export_builds_from_the_saved_curve(tmp_path: Path) -> None:
+    """register-5: `of_equity` (the harness hook) gives the very row `register2.py` builds
+    from the same curve saved as CSV, so the store never holds the try twice."""
+    np = pytest.importorskip("numpy")
+    spec = importlib.util.spec_from_file_location("register2", ROOT / "research" / "register2.py")
+    assert spec is not None and spec.loader is not None
+    r2 = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = r2
+    try:
+        spec.loader.exec_module(r2)
+        days = [date(2012, 1, 2) + timedelta(days=k) for k in range(500)]
+        eq = np.array([100 * 1.0003**k * (1 + 0.02 * math.sin(k / 3)) for k in range(500)])
+        r = eq[1:] / eq[:-1] - 1
+        sharpe = float(r.mean() / r.std() * np.sqrt(365))  # as harness._log computes it
+        mine = returnstore.of_equity("curve", "trend", "v", days, [float(e) for e in eq], sharpe)
+        theirs = r2.to_row(r2.series_of("curve", "trend", "v", list(zip(days, eq, strict=True))))
+        assert mine is not None and mine.key() == theirs.key()
+    finally:
+        sys.modules.pop(spec.name, None)
+
+
+def test_add_merges_one_family_and_leaves_the_others(tmp_path: Path) -> None:
+    a, b = row("trend", "a", [0.01, 0.02]), row("other", "x", [0.03, -0.01])
+    returnstore.write(tmp_path, [a, b])
+    other = (tmp_path / "other.csv.gz").read_bytes()
+    c = row("trend", "c", [0.0, 0.05])
+    sizes = returnstore.add(tmp_path, [c])
+    assert list(sizes) == ["trend.csv.gz"]
+    assert (tmp_path / "other.csv.gz").read_bytes() == other
+    assert returnstore.read(tmp_path) == returnstore.merge([a, b, c])
+    before = (tmp_path / "trend.csv.gz").read_bytes()
+    returnstore.add(tmp_path, [c])  # a re-run adds nothing
+    assert (tmp_path / "trend.csv.gz").read_bytes() == before
+    assert returnstore.size(tmp_path) == len(before) + len(other)
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["other.csv.gz", "trend.csv.gz"]
+
+
+def test_of_equity_carries_days_without_a_bar() -> None:
+    days = [date(2012, 1, 6), date(2012, 1, 12), date(2012, 1, 20)]  # no bar on Friday 13th
+    got = returnstore.of_equity("curve", "t", "v", days, [100.0, 110.0, 99.0], 0.5)
+    assert got is not None
+    assert got.start == "2012-01-06" and got.weeks() == ["2012-01-13", "2012-01-20"]
+    assert got.rets == (0.1, -0.1)
+    assert returnstore.of_equity("curve", "t", "v", days[:2], [1.0, 2.0], 0.5) is None
