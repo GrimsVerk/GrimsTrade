@@ -1390,3 +1390,5 @@ Never edit or delete a row.
 | 2026-11-19 00:24 | risk-menu-2 | vt-own-70@W94 | replication | train | 1994-02-01 | 2025-10-31 | 1.08 | +2090.5% | 17.0% | 1.92 |
 | 2026-11-19 00:30 | risk-menu-3 | vt-own-26-x@W94 | replication | train | 1994-02-01 | 2025-10-31 | 0.97 | +159.0% | 7.6% | 0.66 |
 | 2026-11-19 00:30 | risk-menu-3 | vt-own-70-x@W94 | replication | train | 1994-02-01 | 2025-10-31 | 1.04 | +1509.2% | 15.8% | 1.81 |
+| 2026-11-19 00:02 | short-sleeve | short10@bills | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +13498.6% | 32.8% | 2.60 |
+| 2026-11-19 00:02 | short-sleeve | bill10@bills | baseline | train | 1994-02-01 | 2025-11-09 | 1.09 | +14008.2% | 32.1% | 2.46 |
