@@ -219,10 +219,12 @@ def svg_map(items: list[Item], m: dict[str, dict[str, float]]) -> str:
             ly += 13
         placed.append((cx, ly))
         o.append(f'<text x="{cx + 9:.1f}" y="{ly:.1f}" fill="#111">{it.key}</text>')
+    o.append(f'<rect x="{W - R - 165}" y="{H - B - 105}" width="200" height="92" fill="#fff" '
+             'stroke="#d1d5db"/>')  # fmt: skip
     for k, g in enumerate(col):
         yy = H - B - 90 + 20 * k
-        o.append(f'<circle cx="{W - R - 230}" cy="{yy}" r="5.5" fill="{col[g]}"/>')
-        o.append(f'<text x="{W - R - 220}" y="{yy + 4}" fill="#111" font-size="11">'
+        o.append(f'<circle cx="{W - R - 150}" cy="{yy}" r="5.5" fill="{col[g]}"/>')
+        o.append(f'<text x="{W - R - 140}" y="{yy + 4}" fill="#111" font-size="11">'
                  f"{lab[g]}</text>")  # fmt: skip
     o.append("</svg>")
     return "\n".join(o) + "\n"
