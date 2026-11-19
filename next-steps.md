@@ -481,25 +481,23 @@ Brief: `chief-of-staff/briefs/grimstrade-lead-1.md`. One lead agent runs lanes t
   Staff); always WIDER and DEEPER lanes. 2026-11-18: bursts use only the last 30 min of each
   5-hour window (`chief-of-staff/briefs/grimstrade-burst.md`), weekly stop 0.84.
 
-### Lane queue (W = wider, D = deeper; rewritten by night-2 lead 2026-11-18 23:25 UTC)
+### Lane queue (W = wider, D = deeper; night-2 lead, updated 2026-11-19 ~00:45 UTC)
 
-Old items 1-6 are all done or closed (evo, data-long, coin-cap, wide-3, rl, long-horizon).
-Closed lines tonight: combo, eu, coin, insure/re-entry, evo, rl, forced Treasury flows, published
-calendar effects. Every new card quotes `research/register/BAR.md` (register-2: ~433 effective
-trials; a new pick needs +0.30..+0.56 Sharpe over `tsmom12`) and gates use
-`research/gate-null.md` (40 fixed placebos, rank decides). Score anything that holds less money
-above T-bills, against a same-size T-bill slot (diversifier-1 lesson).
+Closed tonight: combo, eu, coin, insure/re-entry, vol-timing (edge), narrow short sleeves, style
+signals on keyless ETFs, evo, rl, forced Treasury flows, published calendar effects. Every card
+quotes `research/register/BAR.md` (eff. N ~486; +0.30..+0.56 Sharpe over `tsmom12`); gates use
+`research/gate-null.md` and the F1/F2 scoring filters (wide-11). Score anything holding less
+money above T-bills against a same-size T-bill slot.
 
-1. DONE `vol-timing` (#98): covered by `trend-vol`; no card. Optional: own-vol targeting of
-   `tsmom12` on the risk map next to ls-trend-2's fixed-split menu (descriptive).
-2. DONE `short-sleeve` (#99): fails (Sharpe p 0.79; 2020 loss); not cheaper insurance.
-3. W gates: W18 `elimination-mood` (needs keyless match list; 2026 World Cup is held-out:
-   owner), new mechanisms from unused fields, each with the placebo null.
-4. W `multi-signal`: descriptive screen of value/carry/momentum/low-vol signals across the six
-   assets (survey-6 next 3; low prior, no pick).
-5. D `register-3`: lanes log weeks/skew/kurtosis in `register_try`; widen the correlation sample
-   across families (register-2 next).
-6. D descriptive: why 3-month re-entries fail in multi-leg bears (1929-33), no pick.
+1. D `register-5`: export tonight's newer lanes' curves into `research/register/returns/`
+   (README steps), regenerate the register and BAR.md; harness writes weekly returns straight
+   into the store when it logs a row (register-4 next 3).
+2. W gates: new candidates written against F1/F2 first (an unscheduled flow that does not
+   answer price, or a premium whose dose does not follow price up to a year).
+3. W18 `elimination-mood` only after the owner rules on the held-out 2026 World Cup.
+4. `crypto-carry` only if the owner allows perpetual futures in the gym.
+5. Forward items only after owner decisions: `turn-of-year-losers@1` (wide-8), forward registry
+   (forward-1), the chosen risk dial from `research/risk-menu.md`.
 
 ### For the owner
 
