@@ -457,6 +457,17 @@
     Japan MOF FX intervention. 8 sources refused scripted clients (SEC/BLS want personal
     contact in the User-Agent: not allowed). Unchecked: MOF daily-detail publication dates.
     ~02:58 UTC `wide-13` started (W, <- data-wide-1): score its 11 ideas, card + gate <= 2.
+  - DONE `review-2` (draft #119 -> pr-map): skeptical review of tonight's claims. Holds:
+    DSR formulas, bar arithmetic (any N 12..3,130 -> close-rule bar +0.21..+0.34: "nothing
+    cleared it" survives), `tsmom12` = holding after 2009, insurance is timing not just less
+    exposure, risk-menu look-ahead fix, no live family beat holding. Required fixes: SUMMARY
+    "largest lead +0.18" wrong (`halving-alone` +0.23, z ~3.2-3.6 < 4.69); "50 independent
+    falls" = 21 market + 29 industry; "cheaper than holding less" significant only 1927-61;
+    risk-menu "middle size" row + SUMMARY example still look-ahead (3.8 pts growth for 8.9 pts
+    less worst loss; shares 24%/66%); "median 8% kept" -> ~28%, drop the 0.21 live projection;
+    gate-null backward-shift placebos overlap the outcome (W22), step 7 invalid, ~10-episode
+    gates are kill-only. ~03:05 UTC `fix-2` started (D, <- review-2): SUMMARY + errata-2, child
+    branches risk-menu-4, gate-null-2, register-6. wide-13 told about the gate-null flaw.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
