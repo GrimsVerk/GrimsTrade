@@ -1,5 +1,12 @@
 # Next steps
 
+## Multi-signal (doing, 2026-11-19, branch `multi-signal`, draft PR -> `survey-6`)
+
+Descriptive IC screen of value, carry, cross-sectional momentum, low-vol and BAB across the six
+assets, against `tsmom12` (card `research/cards/multi-signal.md`, written before any number).
+Steps: card (done) -> script `research/lib/multisignal_ic.py` pushed before its run -> one run
+with `--log` (12 `screen` rows) -> `results/multi-signal.md` -> summary `research/multi-signal.md`.
+
 ## Survey 6 (done 2026-11-19, branch `survey-6`, draft PR #91 -> `survey-5`)
 
 Which strategy families paid investors live, net of fees? 15 families, 60 live funds against
