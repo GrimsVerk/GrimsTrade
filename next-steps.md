@@ -413,6 +413,12 @@
     BAR.md + gate-null procedure + push every ~5 min.
   - Next: the lane queue below (register export/regenerate, F1/F2 gates); everything else waits
     on the owner decisions in "For the owner".
+- 02:38 UTC night-3 lead took over (night-2 at its context limit). `register-5`, `wide-12`
+    still running (night-2's). Started (Opus): D `pr-map` (<- summary-3; map of all open draft
+    PRs + landing plan, SUMMARY.md refresh), D `integrate-1` (<- main; conflict-resolved
+    integration preview of the main-bound engineering PRs, tests), W `data-wide-1` (<- wide-11;
+    keyless F1/F2 dose sources: inventory, verify, loaders; no gates), W `weather-1`
+    (<- wide-11; one carded weather-shock gate).
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
