@@ -441,6 +441,15 @@
     branches: the register counts them). It cleaned 55 throwaway rerere entries it had
     written to the shared `.git/rr-cache`. ~02:50 UTC `archive-1` started (D, <- main): build the
     real research-archive branch, run the 45 research test files, containment check.
+  - DONE `integrate-1` (draft #115 -> main, review aid, not to merge as-is): all 9
+    main-bound engineering PRs merge with checks green (290 passed vs main 211 + 1 xfail).
+    Order: #13 -> #27 -> #29 -> #30 -> #32 -> #61 -> #67 -> #14 -> #15. 22 conflicted files,
+    3 real decisions: pending buy sized with the tier fee (#32 on #29); one G2 test tolerance
+    0.5% -> 1% (= `gym.BAND`; tiered fees leave 0.9% under target); weekly page "cash earns no
+    interest" (#30) rewritten for #61. 4 interaction tests (`tests/test_integration.py`). #70
+    and #74 kept out (#70 would decide whether main holds a research tree). Doc
+    `docs/integrate-1.md`. ~02:53 UTC `review-2` started (D, <- pr-map): skeptical review of
+    tonight's main claims (bar/DSR, crash insurance, risk menu, live decay, gate-null).
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
@@ -543,6 +552,11 @@ money above T-bills against a same-size T-bill slot.
 
 ### For the owner
 
+- Night 2026-11-19, integrate-1 (#115): the 9 engineering PRs to main land cleanly in the
+  order in `docs/integrate-1.md` (branch `integrate-1`). Your calls there: #61's three
+  questions (full bill rate or spread; Sharpe above cash for research too; a second rate
+  source), #15 adds steps to the live daily workflow, each gym PR shifts every replayed score
+  once, and whether main should hold a research tree (#70).
 - Night 2026-11-19, pr-map (#113): ~100 open draft PRs. Read `research/pr-map.md` (branch
   `pr-map`): review order for the 14 engineering PRs, and one "research archive" PR
   (`archive-1`, being built) to land all research at once instead of 90 reviews. OK to then
