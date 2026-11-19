@@ -387,6 +387,11 @@
     -0.012, XS momentum -0.005 (its +0.043 on the six was cross-class), low-vol -0.017, BAB
     +0.003. Extra look: raw carry +0.029 (Treasury duration + FX), IC-IR 0.54 < 0.59 bar. 6
     `screen` rows. Style signals on keyless ETFs CLOSED.
+  - DONE `wide-11` (draft #109 -> wide-10): W22 `hedging-pressure` (CFTC COT commercial z,
+    release lag respected) dead: +0.075%/z, t 0.49, rank 14/41 (2018-06..2025-10); wrong sign in
+    the paper's years; hedging follows rallies by 6-12 months. Scoring filters F1 (not announced)
+    and F2 (not price-driven) added before any data look; only C3 and `crypto-carry` (needs
+    perps) pass both. Count 79 / 18; 14 gates, all failed. 0 rows.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -492,6 +497,8 @@ above T-bills, against a same-size T-bill slot (diversifier-1 lesson).
 
 ### For the owner
 
+- Night 2026-11-18, wide-11 (#109): allow perpetual futures in the paper gym? It is the only way
+  to test `crypto-carry`, the last candidate passing the new scoring filters (a risk-map choice).
 - Night 2026-11-18, risk-menu (#101): pick your risk level from `research/risk-menu.md` (on
   branch `risk-menu`): "if you care most about X, pick Y". None is a proven edge; e.g. own-vol
   targeting of `tsmom12` at 70% had a 18% worst loss vs 25% for a fixed 70%. A forward paper
