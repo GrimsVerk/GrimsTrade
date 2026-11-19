@@ -224,7 +224,9 @@ def main() -> None:
         f"## 2. Longest spell under water on W ({W[0]}..{W[1]})",
         "",
         "High = the last day at the old high before the spell; low = the spell's lowest day; "
-        "back = the first day at or above the old high again.",
+        "back = the first day at or above the old high again. Calendar days: bills accrue on "
+        "weekends and holidays, so a high can fall on one (2000-03-26 is the Sunday after the "
+        "Friday 2000-03-24 close).",
         "",
         "| Item | Years | High | Low | Back |",
         "|---|---:|---|---|---|",
