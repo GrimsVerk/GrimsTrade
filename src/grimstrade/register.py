@@ -576,7 +576,7 @@ def render_measured(s: Summary, m: Measured) -> list[str]:
     if m.cluster_var is not None:
         out.append(
             f"| Variance of the clusters' annual Sharpes | {m.cluster_var:.3f} | "
-            "minimum-variance portfolio per cluster (section 8.2) |"
+            "inverse-variance portfolio per cluster (8.2: minimum variance; register-3) |"
         )
     if m.check:
         name, cm, crho, ck = m.check

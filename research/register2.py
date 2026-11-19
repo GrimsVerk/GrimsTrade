@@ -416,13 +416,19 @@ def onc(corr: np.ndarray, rng: np.random.Generator) -> np.ndarray:
     return new if new_q > old_redo_q else lab
 
 
-def cluster_sharpes(rets: np.ndarray, lab: np.ndarray) -> list[float]:
-    """Annualised Sharpe of each cluster's minimum-variance portfolio (section 8.2)."""
+def cluster_sharpes(rets: np.ndarray, lab: np.ndarray, how: str = "ivp") -> list[float]:
+    """Annualised Sharpe of each cluster's portfolio. `minvar`: the minimum-variance weights of
+    section 8.2; with two near-identical series in a cluster they go long one and short the
+    other, and the portfolio's Sharpe means nothing (register-3 found 4.87). `ivp` (used):
+    inverse-variance weights, long only."""
     out = []
     for k in np.unique(lab):
         r = rets[:, lab == k]
         if r.shape[1] == 1:
             agg = r[:, 0]
+        elif how == "ivp":
+            w = 1 / r.var(0)
+            agg = r @ (w / w.sum())
         else:
             cov = np.cov(r, rowvar=False)
             w = np.linalg.pinv(cov) @ np.ones(r.shape[1])
@@ -445,6 +451,7 @@ def effective_trials(series: list[Series], a: date, b: date) -> dict[str, Any]:
     lab = onc(corr, np.random.default_rng(SEED))
     k = int(len(np.unique(lab)))
     srs = cluster_sharpes(rets, lab)
+    srs_minvar = cluster_sharpes(rets, lab, "minvar")
     sizes = sorted((int((lab == j).sum()) for j in np.unique(lab)), reverse=True)
     return {
         "from": a.isoformat(),
@@ -459,6 +466,8 @@ def effective_trials(series: list[Series], a: date, b: date) -> dict[str, Any]:
         "onc_sizes": sizes,
         "cluster_sharpe_mean": round(float(np.mean(srs)), 4),
         "cluster_sharpe_var": round(float(np.var(srs, ddof=1)), 4) if k > 1 else None,
+        "cluster_sharpes": [round(x, 4) for x in srs],
+        "cluster_sharpes_minvar": [round(x, 4) for x in srs_minvar],
     }
 
 

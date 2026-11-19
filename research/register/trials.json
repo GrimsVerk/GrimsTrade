@@ -3,7 +3,7 @@
   "family_cap": {
     "cap": 10,
     "card": "research/register-3.md",
-    "families": 57,
+    "families": 59,
     "largest_families_uncapped": [
       97,
       27,
@@ -14,94 +14,134 @@
     "rule": "at most CAP series per family (Idea), first by sha256(idea/variant/start)",
     "sensitivity_caps": {
       "1": {
-        "cluster_sharpe_mean": 0.8324,
-        "cluster_sharpe_var": 0.1177,
+        "cluster_sharpe_mean": 1.1412,
+        "cluster_sharpe_var": 0.2042,
+        "cluster_sharpes": [
+          1.4607,
+          0.8216
+        ],
+        "cluster_sharpes_minvar": [
+          1.4962,
+          0.5898
+        ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          48,
+          50,
           9
         ],
-        "participation_ratio": 1.77,
-        "rho_mean": 0.6895,
-        "rho_median": 0.8049,
-        "series": 57,
+        "participation_ratio": 1.74,
+        "rho_mean": 0.6982,
+        "rho_median": 0.8135,
+        "series": 59,
         "to": "2025-11-07",
         "weeks": 722
       },
       "20": {
-        "cluster_sharpe_mean": 1.2617,
-        "cluster_sharpe_var": 0.0292,
+        "cluster_sharpe_mean": 1.1851,
+        "cluster_sharpe_var": 0.1405,
+        "cluster_sharpes": [
+          1.4502,
+          0.9201
+        ],
+        "cluster_sharpes_minvar": [
+          4.943,
+          1.3825
+        ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          128,
+          131,
           82
         ],
-        "participation_ratio": 2.71,
-        "rho_mean": 0.5184,
-        "rho_median": 0.427,
-        "series": 210,
+        "participation_ratio": 2.67,
+        "rho_mean": 0.5226,
+        "rho_median": 0.4323,
+        "series": 213,
         "to": "2025-11-07",
         "weeks": 722
       },
       "5": {
-        "cluster_sharpe_mean": 0.541,
-        "cluster_sharpe_var": 0.2183,
+        "cluster_sharpe_mean": 1.1544,
+        "cluster_sharpe_var": 0.1776,
+        "cluster_sharpes": [
+          1.4524,
+          0.8564
+        ],
+        "cluster_sharpes_minvar": [
+          4.8672,
+          0.2107
+        ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          99,
+          102,
           41
         ],
-        "participation_ratio": 2.35,
-        "rho_mean": 0.562,
-        "rho_median": 0.658,
-        "series": 140,
+        "participation_ratio": 2.31,
+        "rho_mean": 0.5689,
+        "rho_median": 0.6744,
+        "series": 143,
         "to": "2025-11-07",
         "weeks": 722
       }
     },
     "sensitivity_register_weighted": {
-      "families": 57,
-      "rho_mean": 0.4899,
-      "series": 294
+      "families": 59,
+      "rho_mean": 0.4914,
+      "series": 297
     },
     "windows": {
       "1994-2025": {
-        "cluster_sharpe_mean": 0.4466,
-        "cluster_sharpe_var": 0.0183,
+        "cluster_sharpe_mean": 0.8432,
+        "cluster_sharpe_var": 0.1537,
+        "cluster_sharpes": [
+          0.566,
+          1.1204
+        ],
+        "cluster_sharpes_minvar": [
+          0.5521,
+          5.148
+        ],
         "from": "1994-02-04",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          98,
-          17
+          100,
+          18
         ],
-        "participation_ratio": 1.89,
-        "rho_mean": 0.6816,
-        "rho_median": 0.7673,
-        "series": 115,
+        "participation_ratio": 1.86,
+        "rho_mean": 0.6881,
+        "rho_median": 0.7748,
+        "series": 118,
         "to": "2025-11-07",
         "weeks": 1657
       },
       "2012-2025": {
-        "cluster_sharpe_mean": 1.0197,
-        "cluster_sharpe_var": 0.0002,
+        "cluster_sharpe_mean": 1.1979,
+        "cluster_sharpe_var": 0.1358,
+        "cluster_sharpes": [
+          0.9372,
+          1.4585
+        ],
+        "cluster_sharpes_minvar": [
+          1.0303,
+          4.8701
+        ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          112,
+          115,
           63
         ],
-        "participation_ratio": 2.63,
-        "rho_mean": 0.5237,
-        "rho_median": 0.4488,
-        "series": 175,
+        "participation_ratio": 2.58,
+        "rho_mean": 0.5291,
+        "rho_median": 0.4629,
+        "series": 178,
         "to": "2025-11-07",
         "weeks": 722
       }
@@ -129,72 +169,96 @@
       20
     ]
   ],
-  "rows_backfilled": 1209,
+  "rows_backfilled": 1213,
   "rows_backfilled_by_source": {
-    "curve": 1122,
+    "curve": 1126,
     "harness": 87,
     "live": 11,
     "logged": 0
   },
-  "rows_backfilled_selectable": 410,
-  "sample_series": 365,
+  "rows_backfilled_selectable": 413,
+  "sample_series": 368,
   "seed": 20261118,
   "sensitivity_one_per_family": {
-    "cluster_sharpe_mean": 0.6737,
-    "cluster_sharpe_var": 0.6579,
+    "cluster_sharpe_mean": 1.0833,
+    "cluster_sharpe_var": 0.2838,
+    "cluster_sharpes": [
+      1.46,
+      0.7066
+    ],
+    "cluster_sharpes_minvar": [
+      4.8896,
+      0.1001
+    ],
     "from": "2012-01-06",
     "onc_k": 2,
     "onc_k_at_cap": false,
     "onc_sizes": [
-      48,
+      50,
       8
     ],
-    "participation_ratio": 1.74,
-    "rho_mean": 0.7011,
-    "rho_median": 0.8005,
-    "series": 56,
+    "participation_ratio": 1.71,
+    "rho_mean": 0.7099,
+    "rho_median": 0.8112,
+    "series": 58,
     "to": "2025-11-07",
     "weeks": 722
   },
   "shape": {
-    "excess_kurtosis_median": 9.042,
-    "excess_kurtosis_p90": 17.427,
-    "series": 421,
-    "skew_median": -0.095,
-    "skew_p10": -1.058
+    "excess_kurtosis_median": 9.061,
+    "excess_kurtosis_p90": 17.422,
+    "series": 424,
+    "skew_median": -0.092,
+    "skew_p10": -1.057
   },
   "windows": {
     "1994-2025": {
-      "cluster_sharpe_mean": 0.4452,
-      "cluster_sharpe_var": 0.025,
+      "cluster_sharpe_mean": 0.8577,
+      "cluster_sharpe_var": 0.1189,
+      "cluster_sharpes": [
+        1.1015,
+        0.6139
+      ],
+      "cluster_sharpes_minvar": [
+        5.4128,
+        0.5571
+      ],
       "from": "1994-02-04",
       "onc_k": 2,
       "onc_k_at_cap": false,
       "onc_sizes": [
-        182,
+        185,
         33
       ],
-      "participation_ratio": 1.72,
-      "rho_mean": 0.7197,
-      "rho_median": 0.8165,
-      "series": 215,
+      "participation_ratio": 1.71,
+      "rho_mean": 0.7227,
+      "rho_median": 0.8187,
+      "series": 218,
       "to": "2025-11-07",
       "weeks": 1657
     },
     "2012-2025": {
-      "cluster_sharpe_mean": 1.2108,
-      "cluster_sharpe_var": 0.0383,
+      "cluster_sharpe_mean": 1.168,
+      "cluster_sharpe_var": 0.1438,
+      "cluster_sharpes": [
+        1.4361,
+        0.8998
+      ],
+      "cluster_sharpes_minvar": [
+        5.3908,
+        1.3491
+      ],
       "from": "2012-01-06",
       "onc_k": 2,
       "onc_k_at_cap": false,
       "onc_sizes": [
-        206,
+        209,
         88
       ],
-      "participation_ratio": 2.28,
-      "rho_mean": 0.5785,
-      "rho_median": 0.6771,
-      "series": 294,
+      "participation_ratio": 2.26,
+      "rho_mean": 0.5815,
+      "rho_median": 0.6867,
+      "series": 297,
       "to": "2025-11-07",
       "weeks": 722
     }

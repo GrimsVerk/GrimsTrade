@@ -1,11 +1,23 @@
 # Next steps
 
-## In progress: register-3 (branch `register-3`, draft PR into `register-2`)
+## Waiting for review: register-3 (branch `register-3`, draft PR #100 into `register-2`)
 
-Card: `research/register-3.md`. Chain: (1) the harness logs weeks/skew/kurtosis of every try
-(`research/tries-shape.jsonl`), the register joins them; (2) correlation sample capped at 10
-series per family, N_eff and bar recomputed; (3) register and BAR.md regenerated with tonight's
-branches.
+Card and results: `research/register-3.md`. Done:
+
+1. The harness logs weeks, skew, excess kurtosis of every try it logs, next to the row, in
+   `research/tries-shape.jsonl` (`grimstrade.tryshape`; hook in `research/lib/harness.py`
+   `_log`). `grimstrade.register` and `research/register2.py` read it from every branch.
+2. Correlation sample capped at 10 series per family: rho 0.52 (was 0.58), N_eff 490 (was 433)
+   at the same data; the edge needed over `tsmom12` moves by 0.002 (+0.30 / +0.56 stays).
+3. Regenerated with tonight's branches: 3,118 tries, N 1,032, N_eff 486, same edge over
+   `tsmom12`. Cluster Sharpes now inverse-variance (min-variance broke on two twin series):
+   against zero a 32-year rule needs 1.42 (was 1.23).
+
+- [ ] Lead: `git cherry-pick 33f3b4a` onto the research base new lanes start from, so their
+      tries carry their shape (0 rows logged so far).
+- [ ] Next: scripts that append to `tries.md` without `harness.run` call `tryshape.log` too.
+- [ ] Next: the correlation sample still needs return series (saved curves, one machine);
+      a compact committed weekly-returns file per logged try would make it portable.
 
 ## Waiting for review: register-2 (branch `register-2`, draft PR #92 into `register-1`)
 
