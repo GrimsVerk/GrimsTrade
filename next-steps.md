@@ -1,5 +1,15 @@
 # Next steps
 
+## risk-menu (in progress 2026-11-19, branch `risk-menu`, draft PR -> `vol-timing`)
+
+Descriptive, no pick: the risk dials (hold the six, 60/40, `tsmom12` at 100/70/26%, own-vol
+targeting at mean share 26/70%, equal-risk blend and fixed splits 90/10, 70/30, 50/50 with the
+wide long-short book) on one footing (P 2007-04..2025-10, T-bill cash, standard costs). Card
+`research/cards/risk-menu.md` (before numbers). Then `research/lib/riskmenu_run.py`, tables in
+`research/results/risk-menu.md`, map `research/risk-menu.svg`, one-screen `research/risk-menu.md`.
+
+- Doing: step 1 card committed; next the script.
+
 ## vol-timing (done 2026-11-19, branch `vol-timing`, draft PR #98 -> `ls-trend-2`)
 
 Card before numbers (`research/cards/vol-timing.md`, d1854ec), script before its run (3234309,
