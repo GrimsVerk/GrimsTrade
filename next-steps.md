@@ -1,5 +1,11 @@
 # Next steps
 
+## Wide 12 (in progress 2026-11-19, branch `wide-12`, draft PR -> `wide-11`)
+
+- Doing: step 1 done (four candidates D1-D4 written against F1/F2 and scored before any data
+  look, `research/wide-12.md`); next: gate D1 `custody-selling` (W23) under
+  `research/gate-null.md`, then D2 `inflation-disagreement` (W24) if time remains.
+
 ## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
 Step 1: two filters added to the candidate score before any data look: **F1 not announced**
