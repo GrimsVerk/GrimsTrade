@@ -205,6 +205,27 @@ def test_the_measured_trial_count_sets_the_bar(repo: Path) -> None:
     assert "**The bar for a new pick: N = 4.0 effectively independent trials" in bar
     assert "## The bar per record length" in bar
     assert "| 32 | 1,670 |" in bar
+    assert "committed in" not in bar  # no returns store yet
+
+
+def test_bar_md_counts_the_committed_returns(repo: Path) -> None:
+    from grimstrade import returnstore
+
+    register.regenerate(repo)
+    ids = [json.loads(ln)["id"] for ln in (repo / register.REGISTER).read_text().splitlines()]
+    measure(repo, ids[:2])
+    weeks = ["2012-01-06", "2012-01-13"]
+    rows = [
+        returnstore.Row.of("curve", idea, "v", "2012-01-02", 0.5, weeks, [0.01, -0.02])
+        for idea in ("trend", "trend", "carry")
+    ]
+    rows[1] = returnstore.Row.of("curve", "trend", "w", "2012-01-02", 0.5, weeks, [0.0, 0.0])
+    returnstore.write(repo / register.STORE, rows)
+    s = register.regenerate(repo)
+    assert s.measured is not None and s.measured.stored is not None
+    assert s.measured.stored[:2] == (3, 2)
+    bar = (repo / register.BAR).read_text()
+    assert "committed in `research/register/returns/` (3 series, 2 family files" in bar
 
 
 def test_a_moments_line_for_an_unknown_try_is_refused(repo: Path) -> None:
