@@ -159,7 +159,59 @@ lane says price indices flatter the level. Consistent.
 
 ## 3. Risk menu (#101, #105, #110)
 
-(pending)
+**Verdict: holds with caveats. The look-ahead is fixed correctly in risk-menu-3, and "no row is
+a proven edge" is stated right (with paired SEs). But the owner's decision table and SUMMARY
+still quote the look-ahead numbers for the middle-size choice, and SUMMARY misstates the
+shares and the SE.**
+
+### 3a. The look-ahead fix: correct
+
+`research/lib/riskmenu3_run.py` (branch `risk-menu-3`), `vt_expanding`: on each month's 1st,
+sigma is taken from the sleeve up to the day before (`s1.sigma(d - timedelta(days=1))`),
+appended to the sigmas seen so far, and k is solved on those only. A fixed target share
+applies for the first 24 sigmas. I found no other use of future data. The check row
+reproduces risk-menu-2's re-fitted Sharpe exactly (+0.000). The cost of the fix is small on
+Sharpe (-0.01 to -0.06), as reported.
+
+### 3b. The decision table still leads with look-ahead numbers (medium)
+
+`research/risk-menu.md` (branch `risk-menu-3`), the table at the top, row "A middle size",
+says: own-vol 70% "15.9% a year, worst loss 18.2% ... What you give up: **1.7 points of growth
+a year for 6 points less worst loss**". Those are the re-fitted (look-ahead) figures. Without
+look-ahead (`results/risk-menu-3.md`, window P), own-vol "70%" has a realised share of
+**0.61**, 13.8% a year, worst loss 15.7%, against `tsmom12` 70%'s 17.6% and 24.6%. That is
+**3.8 points of growth a year for 8.9 points less worst loss**. Part of the change is the
+lower realised share (an expanding k runs below the whole-window k). SUMMARY's example "own-vol
+target at 70% had a worst loss of 18% against 25% for a fixed 70%" quotes the look-ahead row
+too. The ordering survives: per unit of average share, own-vol's worst loss (15.7 / 0.61 =
+26) is still well below a fixed share's (24.6 / 0.70 = 35). But the trade-off the owner is
+asked to price is about twice as expensive in growth as the table says. Fix: the menu rows and
+SUMMARY quote the no-look-ahead row with its realised share, and the look-ahead figures move
+to a footnote.
+
+### 3c. SUMMARY's own-vol sentence (low)
+
+- "kept Sharpe 0.97 (26% average share) and 1.04 (70%)": the realised mean shares without
+  look-ahead are **0.24 and 0.66** on 1994-2025 (0.20 / 0.61 on 2007-2025).
+- "(standard error 0.18: noise)": 0.18 is the SE of **one** Sharpe. The question is a
+  difference between two highly correlated books, which needs the paired SE. The first menu's
+  paired stationary bootstrap (`results/risk-menu.md`, section 3) gives own-vol 70% vs
+  `tsmom12` +0.12 (5-95% -0.06..+0.32), a paired SE of about 0.115 on 2007-2025. The
+  no-look-ahead lead of +0.03 to +0.10 is still about one SE or less, so "noise" is the right
+  word, for a different reason.
+
+### 3d. "None separable": stated right
+
+The menu's paired bootstrap against the best item (vt-own 26%) separates only 60/40
+(-0.68, -1.16..-0.23) and the equal-risk blend (-0.37, -0.66..-0.08). Every `tsmom12` form,
+holding the six and the other own-vol row cross zero. "8 of the other 10 are inside its
+bootstrap range" is right, and it comes from the paired table, not from comparing point
+Sharpes with a single-Sharpe interval. Remaining caveats, already stated by the lane: the
+target levels (26%, 70%) were set to match the fixed rows; the risk columns (worst loss, time
+under water, crash columns) come from one history with no SE, and the crash columns rest on
+three episodes. The "Pick" column is the best of 11 on each measure, so it is the maximum of
+a selection. That is fine for a menu but would need deflating if a row were ever proposed as
+an edge.
 
 ## 4. Live track records (survey-5 #78, survey-6 #91)
 
