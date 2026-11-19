@@ -16,6 +16,7 @@ a pause between requests, a generic User-Agent.
 Sources (all keyless; terms in research/data-wide-1.md):
 - usgs:      USGS ComCat earthquakes, M >= 6 since 1900 and M >= 5 since 1973 (CSV).
 - gpr:       Caldara-Iacoviello geopolitical risk, daily (1985-) and monthly (1900-) (XLS).
+- gprvint:   six archived daily GPR vintages from the authors' GitHub (to read the lag).
 - nuc:       EIA bulk file NUC_STATUS (daily US nuclear outages by plant, 2007-) (ZIP).
 - flu:       Delphi Epidata FluView, US national ILI, latest issue plus one early vintage (JSON).
 - hacks:     DefiLlama hacks list (JSON).
@@ -47,6 +48,8 @@ PORTWATCH = (
     "&orderByFields=ObjectId&f=json"
 )
 PAGE = 2000
+# Mondays, a Tuesday (2026-07-07) and month starts, spread over the archive (2022-02 onward).
+GPR_VINTAGES = ["20220224", "20240701", "20260706", "20260707", "20261102", "20261109"]
 
 
 def cache_root() -> Path:
@@ -68,6 +71,12 @@ def jobs(source: str) -> list[tuple[str, str]]:
     if source == "gpr":
         base = "https://www.matteoiacoviello.com/gpr_files/"
         return [(n, base + n) for n in ("data_gpr_daily_recent.xls", "data_gpr_export.xls")]
+    if source == "gprvint":  # a few archived daily vintages, to read the release lag
+        base = (
+            "https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/"
+            "gpr_archive_files/data_gpr_daily_recent_"
+        )
+        return [(f"{d}.xls", f"{base}{d}.xls") for d in GPR_VINTAGES]
     if source == "nuc":
         return [("NUC_STATUS.zip", "https://www.eia.gov/opendata/bulk/NUC_STATUS.zip")]
     if source == "flu":
@@ -105,7 +114,7 @@ def jobs(source: str) -> list[tuple[str, str]]:
     raise ValueError(f"unknown source {source}")
 
 
-SOURCES = ["usgs", "gpr", "nuc", "flu", "hacks", "fdic", "portwatch", "mof", "kev"]
+SOURCES = ["usgs", "gpr", "gprvint", "nuc", "flu", "hacks", "fdic", "portwatch", "mof", "kev"]
 
 
 def fetch(url: str) -> bytes:
