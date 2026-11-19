@@ -170,3 +170,65 @@ Legs across episodes: 29 times a series began a new 25% fall within 365 days of 
 | 17 | HongKong | 2021-02-17 | 2022-10-31 | 53% | 621 | 2 / 1 / 1 | 22% (20) | 1 / 0 | 1 / 1 / 0 | 3 of 3 | -10 / -8 |
 | 18 | Austria | 2022-02-09 | 2022-09-29 | 35% | 232 | 3 / 1 / 0 | 17% (15) | 1 / 1 | 1 / 1 / 1 | 2 of 2 | -10 / -10 |
 | 19 | Japan | 2024-07-11 | 2024-08-05 | 25% | 25 | 0 / 0 / 0 |  | 0 / 0 | 0 / 0 / 0 | 0 of 1 | +0 / +0 |
+
+## Step 2: bear-market rally or bottom, with information at the time
+
+Events per the card: A = first close 10% above the lowest close L since the peak, inside a confirmed 25% fall; B = last session of a week where the 3-month signal turns on with the 12-month off, inside a confirmed 25% fall. Bottom = L is the episode's trough. AUC = P(observable of a bottom > that of a bear rally). Bootstrap: 10,000 draws over effective falls. Placebo: 500 stationary block-bootstrap histories (mean block 21 sessions, same draws for all series of a set); placebo p = share of placebo AUCs at least as far from 0.5; the column AUC minus placebo median (not on the card, description) shows what is left once the placebo's mechanical AUC is taken out. Breadth: US over the 10 industries, non-US over the 13 indices. Looks: 7 observables in A + 8 in B, two regions = 30 AUCs (the card's count of 31 was an arithmetic slip; 30 were computed).
+
+### US: market + 10 industries (set A decides)
+
+Forward zigzag reproduces insure-1/insure-2's episodes: yes.
+
+**Set A, rally of 10% off the low:** 482 events (267 bottoms, 215 bear rallies) from 50 effective falls; share bottoms 0.55 (placebo median 0.62, 5-95% 0.55 - 0.69).
+
+| Observable | Median, bottoms | Median, bear rallies | AUC | Bootstrap 90% | Bootstrap p | Placebo AUC median (5-95%) | Placebo p | AUC minus placebo median | Reading |
+|---|---:|---:|---:|---|---:|---|---:|---:|---|
+| Prior fall, log(peak / L) | 0.44 | 0.42 | 0.53 | 0.49 - 0.58 | 0.247 | 0.51 (0.43 - 0.58) | 0.482 | +0.02 | not shown (non-US AUC 0.53) |
+| Fall duration, days peak -> L | 208 | 204 | 0.54 | 0.49 - 0.60 | 0.174 | 0.53 (0.45 - 0.60) | 0.448 | +0.01 | not shown (non-US AUC 0.51) |
+| Rally speed, days L -> event | 7 | 7 | 0.50 | 0.43 - 0.56 | 0.973 | 0.53 (0.46 - 0.61) | 0.992 | -0.03 | not shown (non-US AUC 0.49) |
+| Volatility, 21 sessions, annualized | 0.40 | 0.44 | 0.47 | 0.41 - 0.53 | 0.407 | 0.47 (0.38 - 0.55) | 0.616 | +0.00 | not shown (non-US AUC 0.47) |
+| Volatility ratio, 21 / 252 sessions | 1.42 | 1.41 | 0.49 | 0.42 - 0.56 | 0.813 | 0.47 (0.39 - 0.55) | 0.858 | +0.02 | not shown (non-US AUC 0.45) |
+| 12-month log return | -0.19 | -0.23 | 0.52 | 0.46 - 0.57 | 0.710 | 0.49 (0.42 - 0.57) | 0.732 | +0.03 | not shown (non-US AUC 0.49) |
+| Breadth, share of the set with 3-month return > 0 | 0.10 | 0.00 | 0.51 | 0.45 - 0.57 | 0.802 | 0.52 (0.45 - 0.60) | 0.858 | -0.01 | not shown (non-US AUC 0.57) |
+
+**Set B, 3-month re-entry moment:** 367 events (221 bottoms, 146 bear rallies) from 43 effective falls; share bottoms 0.60 (placebo median 0.62, 5-95% 0.53 - 0.73).
+
+| Observable | Median, bottoms | Median, bear rallies | AUC | Bootstrap 90% | Bootstrap p | Placebo AUC median (5-95%) | Placebo p | AUC minus placebo median | Reading |
+|---|---:|---:|---:|---|---:|---|---:|---:|---|
+| Prior fall, log(peak / L) | 0.37 | 0.37 | 0.55 | 0.45 - 0.64 | 0.406 | 0.52 (0.43 - 0.62) | 0.446 | +0.03 |  |
+| Retracement, log(close / L) / log(peak / L) | 0.33 | 0.28 | 0.61 | 0.54 - 0.69 | 0.017 | 0.66 (0.59 - 0.74) | 0.886 | -0.05 |  |
+| Fall duration, days peak -> L | 340 | 259 | 0.62 | 0.52 - 0.73 | 0.047 | 0.49 (0.39 - 0.58) | 0.036 | +0.14 |  |
+| Rally speed, days L -> event | 71 | 67 | 0.53 | 0.47 - 0.59 | 0.357 | 0.54 (0.47 - 0.61) | 0.612 | -0.01 |  |
+| Volatility, 21 sessions, annualized | 0.18 | 0.19 | 0.49 | 0.38 - 0.59 | 0.824 | 0.51 (0.44 - 0.58) | 0.740 | -0.02 |  |
+| Volatility ratio, 21 / 252 sessions | 0.87 | 0.80 | 0.56 | 0.49 - 0.63 | 0.138 | 0.50 (0.42 - 0.57) | 0.146 | +0.07 |  |
+| 12-month log return | -0.14 | -0.20 | 0.62 | 0.54 - 0.70 | 0.009 | 0.55 (0.46 - 0.64) | 0.062 | +0.07 |  |
+| Breadth, share of the set with 3-month return > 0 | 0.80 | 0.70 | 0.49 | 0.42 - 0.56 | 0.772 | 0.50 (0.43 - 0.56) | 0.794 | -0.01 |  |
+
+### Non-US: 13 developed price indices (replication)
+
+Forward zigzag reproduces insure-1/insure-2's episodes: yes.
+
+**Set A, rally of 10% off the low:** 211 events (109 bottoms, 102 bear rallies) from 19 effective falls; share bottoms 0.52 (placebo median 0.58, 5-95% 0.49 - 0.67).
+
+| Observable | Median, bottoms | Median, bear rallies | AUC | Bootstrap 90% | Bootstrap p | Placebo AUC median (5-95%) | Placebo p | AUC minus placebo median | Reading |
+|---|---:|---:|---:|---|---:|---|---:|---:|---|
+| Prior fall, log(peak / L) | 0.46 | 0.44 | 0.53 | 0.46 - 0.64 | 0.438 | 0.51 (0.44 - 0.59) | 0.506 | +0.02 |  |
+| Fall duration, days peak -> L | 308 | 299 | 0.51 | 0.42 - 0.63 | 0.726 | 0.51 (0.42 - 0.58) | 0.830 | +0.00 |  |
+| Rally speed, days L -> event | 7 | 7 | 0.49 | 0.38 - 0.57 | 0.829 | 0.49 (0.39 - 0.59) | 0.860 | -0.00 |  |
+| Volatility, 21 sessions, annualized | 0.42 | 0.44 | 0.47 | 0.35 - 0.61 | 0.669 | 0.51 (0.41 - 0.62) | 0.594 | -0.04 |  |
+| Volatility ratio, 21 / 252 sessions | 1.50 | 1.68 | 0.45 | 0.29 - 0.61 | 0.602 | 0.51 (0.41 - 0.62) | 0.398 | -0.06 |  |
+| 12-month log return | -0.24 | -0.25 | 0.49 | 0.39 - 0.56 | 0.665 | 0.50 (0.42 - 0.58) | 0.908 | -0.01 |  |
+| Breadth, share of the set with 3-month return > 0 | 0.00 | 0.00 | 0.57 | 0.45 - 0.66 | 0.326 | 0.50 (0.40 - 0.60) | 0.236 | +0.07 |  |
+
+**Set B, 3-month re-entry moment:** 196 events (105 bottoms, 91 bear rallies) from 16 effective falls; share bottoms 0.54 (placebo median 0.54, 5-95% 0.45 - 0.64).
+
+| Observable | Median, bottoms | Median, bear rallies | AUC | Bootstrap 90% | Bootstrap p | Placebo AUC median (5-95%) | Placebo p | AUC minus placebo median | Reading |
+|---|---:|---:|---:|---|---:|---|---:|---:|---|
+| Prior fall, log(peak / L) | 0.40 | 0.40 | 0.48 | 0.39 - 0.61 | 0.948 | 0.52 (0.43 - 0.61) | 0.822 | -0.04 |  |
+| Retracement, log(close / L) / log(peak / L) | 0.31 | 0.28 | 0.61 | 0.51 - 0.66 | 0.080 | 0.66 (0.58 - 0.73) | 0.826 | -0.05 |  |
+| Fall duration, days peak -> L | 308 | 328 | 0.53 | 0.41 - 0.64 | 0.550 | 0.49 (0.39 - 0.57) | 0.508 | +0.05 |  |
+| Rally speed, days L -> event | 70 | 81 | 0.46 | 0.35 - 0.56 | 0.481 | 0.54 (0.47 - 0.61) | 0.546 | -0.07 |  |
+| Volatility, 21 sessions, annualized | 0.19 | 0.20 | 0.45 | 0.34 - 0.54 | 0.335 | 0.53 (0.45 - 0.59) | 0.270 | -0.08 |  |
+| Volatility ratio, 21 / 252 sessions | 0.80 | 0.84 | 0.46 | 0.35 - 0.56 | 0.543 | 0.50 (0.43 - 0.58) | 0.426 | -0.04 |  |
+| 12-month log return | -0.15 | -0.18 | 0.57 | 0.50 - 0.62 | 0.084 | 0.55 (0.46 - 0.64) | 0.374 | +0.02 |  |
+| Breadth, share of the set with 3-month return > 0 | 0.77 | 0.62 | 0.56 | 0.46 - 0.62 | 0.304 | 0.50 (0.42 - 0.57) | 0.198 | +0.06 |  |
