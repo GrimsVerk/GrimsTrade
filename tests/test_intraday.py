@@ -1,0 +1,65 @@
+import json
+from datetime import UTC, datetime
+from pathlib import Path
+
+from grimstrade.intraday import BAR_FIELDS, append_new, collect, kraken_funding, yahoo_1h
+
+NOW = datetime(2026, 11, 12, 15, 0, tzinfo=UTC)
+H = 3600
+T0 = int(datetime(2026, 11, 12, 12, 0, tzinfo=UTC).timestamp())
+
+
+def yahoo_body(n: int) -> bytes:
+    ts = [T0 + i * H for i in range(n)]
+    q = {k: [1.0] * n for k in ("open", "high", "low", "close", "volume")}
+    q["close"][1] = None  # type: ignore[call-overload]
+    return json.dumps(
+        {"chart": {"result": [{"timestamp": ts, "indicators": {"quote": [q]}}]}}
+    ).encode()
+
+
+def funding_body() -> bytes:
+    rates = [
+        {"timestamp": "2026-11-12T13:00:00.000Z", "fundingRate": 1.5, "relativeFundingRate": 2e-5},
+        {"timestamp": "2026-11-12T14:50:00.000Z", "fundingRate": 9.0, "relativeFundingRate": 1e-4},
+    ]
+    return json.dumps({"rates": rates}).encode()
+
+
+def test_yahoo_skips_empty_hours_and_stamps_available_at() -> None:
+    rows = yahoo_1h("SPY", lambda url: yahoo_body(3))
+    assert [r["open_time"] for r in rows] == ["2026-11-12T12:00:00Z", "2026-11-12T14:00:00Z"]
+    assert rows[0]["available_at"] == "2026-11-12T13:15:00Z"
+
+
+def test_append_new_stores_only_available_rows_and_never_rewrites(tmp_path: Path) -> None:
+    path = tmp_path / "SPY.csv"
+    rows = yahoo_1h("SPY", lambda url: yahoo_body(3))
+    # the 14:00 bar is available at 15:15, after NOW: not stored yet
+    assert append_new(path, BAR_FIELDS, rows, "open_time", NOW) == 1
+    before = path.read_text()
+    later = datetime(2026, 11, 12, 16, 0, tzinfo=UTC)
+    changed = [dict(r, close="99.0") for r in rows]  # a source changing a stored bar
+    assert append_new(path, BAR_FIELDS, changed, "open_time", later) == 1
+    text = path.read_text()
+    assert text.startswith(before)  # the stored line is untouched
+    assert text.count("\n") == 3
+
+
+def test_kraken_funding_known_at_settlement_plus_15_min() -> None:
+    rows = kraken_funding("PF_XBTUSD", lambda url: funding_body())
+    assert rows[0]["time"] == "2026-11-12T13:00:00Z"
+    assert rows[0]["available_at"] == "2026-11-12T13:15:00Z"
+
+
+def test_collect_isolates_failures(tmp_path: Path) -> None:
+    def get(url: str) -> bytes:
+        if "kraken" in url:
+            return funding_body()
+        raise OSError("offline")
+
+    report = collect(tmp_path, NOW, get)
+    assert report["funding/PF_XBTUSD"] == "+1"  # 14:50 settles 15:05, after NOW
+    assert report["etf-1h/SPY"].startswith("error")
+    assert report["crypto-1h/BTC-USD"].startswith("error")
+    assert (tmp_path / "funding" / "PF_ETHUSD.csv").exists()
