@@ -1,5 +1,12 @@
 # Next steps
 
+## short-sleeve (doing, 2026-11-19, branch `short-sleeve`, draft PR -> `ls-trend-1`)
+
+`tsmom12` + a 10% SPY/QQQ downtrend short sleeve vs `tsmom12` + a 10% T-bill slot, one pick.
+Card `research/cards/short-sleeve.md` (before numbers); script `research/lib/shortsleeve1.py`;
+verdict `research/short-sleeve.md`. Needs the gitignored price cache in `research/data/`
+(bars + adj, as made by `research/lib/fetch.py`).
+
 ## ls-trend-1 (done 2026-11-18, branch `ls-trend-1`, draft PR #83 -> `survey-5`)
 
 Is `tsmom12`'s missing crisis alpha the missing short side and the narrow universe? Literature
