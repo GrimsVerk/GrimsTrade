@@ -1927,3 +1927,12 @@ Never edit or delete a row.
 | 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-FF-Europe | robustness | train | 1991-06-21 | 2025-10-31 | 0.54 | +820.3% | 37.8% | 3.75 |
 | 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-FF-Japan | robustness | train | 1991-06-21 | 2025-10-31 | 0.33 | +303.4% | 45.2% | 4.86 |
 | 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-FF-AsiaPacExJapan | robustness | train | 1991-06-21 | 2025-10-31 | 0.70 | +1514.9% | 42.2% | 3.98 |
+| 2026-11-18 11:07 | trend-where | where-vol | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +24412.0% | 35.3% | 1.71 |
+| 2026-11-18 11:07 | trend-where | where-dd | variant | train | 1994-02-01 | 2025-11-09 | 1.05 | +21300.2% | 35.7% | 2.41 |
+| 2026-11-18 11:07 | trend-where | where-vol@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.65 | +273.8% | 16.8% | 2.38 |
+| 2026-11-18 11:07 | trend-where | where-dd@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.53 | +185.1% | 19.5% | 2.61 |
+| 2026-11-18 11:07 | trend-where | where-vol@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.61 | +326.9% | 92.4% | 3.77 |
+| 2026-11-18 11:07 | trend-where | where-dd@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +297.6% | 92.4% | 3.80 |
+| 2026-11-18 11:07 | trend-where | where-vol@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4653.9% | 27.4% | 2.25 |
+| 2026-11-18 11:07 | trend-where | where-dd@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.69 | +4293.4% | 30.3% | 2.16 |
+| 2026-11-18 11:11 | trend-where | where-vol@F-ind10 | robustness | train | 1927-07-02 | 1961-12-28 | 1.07 | +5912.9% | 32.5% | 1.30 |
