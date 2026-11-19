@@ -256,3 +256,30 @@ def test_a_broken_shape_line_is_refused(repo: Path) -> None:
     push(repo, "shape-2", {**tries_md(A), str(register.SHAPES): '{"row": 1}\n'})
     with pytest.raises(register.RegisterError, match="not a shape line"):
         register.regenerate(repo)
+
+
+def test_the_family_capped_sample_sets_the_bar_and_the_uncapped_one_is_shown(
+    repo: Path,
+) -> None:
+    register.regenerate(repo)
+    ids = [json.loads(ln)["id"] for ln in (repo / register.REGISTER).read_text().splitlines()]
+    measure(repo, ids[:2])
+    main: dict[str, object] = json.loads(json.dumps(TRIALS))["windows"]["2012-2025"]
+    capped_main = {**main, "series": 6, "rho_mean": 0.2, "onc_k": 3}
+    trials = {
+        **TRIALS,
+        "family_cap": {
+            "cap": 10,
+            "families": 3,
+            "windows": {"2012-2025": capped_main, "1994-2025": {"series": 3, "rho_mean": 0.6}},
+        },
+    }
+    (repo / register.TRIALS).write_text(json.dumps(trials))
+    s = register.regenerate(repo)
+    assert s.measured is not None and s.measured.uncapped == (10, 0.5)
+    by = {b.label: b.n for b in s.bar()}
+    assert by["measured rho 0.20 (A.3, at most 10 per family)"] == pytest.approx(0.2 + 0.8 * 7)
+    assert by["ONC 3 clusters in 6, scaled to N"] == pytest.approx(3 * 7 / 6)
+    assert by["uncapped sample of 10: rho 0.50 (A.3, register-2)"] == pytest.approx(4.0)
+    assert s.headline().n == pytest.approx(0.2 + 0.8 * 7)  # the comparison row never sets it
+    assert "at most 10 per family (3 families" in (repo / register.BAR).read_text()

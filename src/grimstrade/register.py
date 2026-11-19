@@ -234,17 +234,28 @@ class Measured:
     skew_p10: float
     ek_median: float
     ek_p90: float
+    cap: int | None = None  # series per family in the sample (register-3); None: uncapped
+    families: int | None = None
+    uncapped: tuple[int, float] | None = None  # the uncapped sample: M, rho (comparison)
 
     def rows_for(self, n: int) -> list[tuple[str, float]]:
-        """(label, N_eff) for `n` trials: the measured estimates, cautious first."""
-        return [
-            (f"measured rho {self.rho_mean:.2f} (A.3)", effective(n, self.rho_mean)),
+        """(label, N_eff) for `n` trials: the measured estimates the bar chooses from first,
+        then comparisons."""
+        capped = f", at most {self.cap} per family" if self.cap else ""
+        out = [
+            (f"measured rho {self.rho_mean:.2f} (A.3{capped})", effective(n, self.rho_mean)),
             (
                 f"ONC {self.onc_k} clusters in {self.sample:,}, scaled to N",
                 min(float(n), self.onc_k * n / self.sample),
             ),
             (f"ONC {self.onc_k} clusters, sample only", float(min(self.onc_k, n))),
         ]
+        if self.uncapped:
+            m, rho = self.uncapped
+            out.append(
+                (f"uncapped sample of {m:,}: rho {rho:.2f} (A.3, register-2)", effective(n, rho))
+            )
+        return out
 
     def headline(self, n: int) -> tuple[str, float]:
         """The bar's N: the more cautious of A.3 and ONC scaled (card register-2)."""
@@ -269,8 +280,11 @@ def read_measured(repo: Path, known: set[str]) -> Measured | None:
         rows += 1
         sel += d["kind"] in ("variant", "baseline")
     t = json.loads((repo / TRIALS).read_text())
-    w = t["windows"][t["main_window"]]
-    others = [(k, v) for k, v in sorted(t["windows"].items()) if k != t["main_window"]]
+    # register-3: the family-capped sample when there is one, the uncapped one as comparison.
+    cap = t.get("family_cap")
+    windows = cap["windows"] if cap else t["windows"]
+    w = windows[t["main_window"]]
+    others = [(k, v) for k, v in sorted(windows.items()) if k != t["main_window"]]
     check = None
     if others and "onc_k" in others[0][1]:
         k, v = others[0]
@@ -281,6 +295,8 @@ def read_measured(repo: Path, known: set[str]) -> Measured | None:
         w["rho_median"], w["participation_ratio"], w["onc_k"], w["onc_k_at_cap"],
         w["cluster_sharpe_var"], check, sh["skew_median"], sh["skew_p10"],
         sh["excess_kurtosis_median"], sh["excess_kurtosis_p90"],
+        cap["cap"] if cap else None, cap["families"] if cap else None,
+        (u["series"], u["rho_mean"]) if cap and (u := t["windows"][t["main_window"]]) else None,
     )  # fmt: skip
 
 
@@ -539,7 +555,13 @@ def render_measured(s: Summary, m: Measured) -> list[str]:
         "equity curves the harness saved when the try was logged.",
         "",
         f"Correlation sample: {m.sample:,} distinct selectable or live return series that cover "
-        f"every week {a}..{b} ({m.weeks:,} weekly returns).",
+        f"every week {a}..{b} ({m.weeks:,} weekly returns)"
+        + (
+            f", at most {m.cap} per family ({m.families} families; first by SHA-256 of "
+            f"idea/variant/start, card `research/register-3.md`; uncapped: {m.uncapped[0]:,})."
+            if m.cap and m.uncapped
+            else "."
+        ),
         "",
         "| Estimate | Value | Method |",
         "|---|---:|---|",
