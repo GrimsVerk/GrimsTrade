@@ -1,0 +1,115 @@
+# PR map (open draft PRs, 2026-11-19)
+
+One page to decide on the ~100 open draft PRs quickly. Written by the `pr-map` lane of the
+night-3 usage run; docs only, nothing merged or closed. Status as of 2026-11-19 ~03:00 UTC.
+
+WORK IN PROGRESS: skeleton first (tree only); verdicts, categories, merge order and the landing
+proposal follow in the next commits.
+
+## 1. Tree by base chain
+
+- base `main`
+  - #4 `research-1`
+  - #7 `research-2`
+  - #8 `review-1`
+  - #9 `research-3`
+    - #16 `macro-1`
+      - #17 `rl-1`
+        - #18 `rl-2`
+          - #19 `rl-3`
+            - #21 `info-1`
+              - #22 `breadth-1`
+                - #23 `short-1`
+                  - #24 `invest-1`
+                    - #25 `fm-1`
+                  - #26 `carry-2`
+                    - #28 `summary-1`
+                      - #84 `summary-2`
+                        - #107 `summary-3`
+                    - #31 `carry-3`
+                    - #33 `wide-1`
+                      - #45 `month-end-bonds`
+                      - #47 `wide-2`
+                        - #54 `wide-3`
+                          - #57 `wide-4`
+                            - #60 `survey-2`
+                              - #64 `survey-3`
+                                - #65 `ann-1`
+                                  - #72 `survey-4`
+                                    - #78 `survey-5`
+                                      - #83 `ls-trend-1`
+                                        - #89 `ls-trend-2`
+                                          - #98 `vol-timing`
+                                            - #101 `risk-menu`
+                                              - #105 `risk-menu-2`
+                                                - #110 `risk-menu-3`
+                                        - #99 `short-sleeve`
+                                      - #86 `rp-1`
+                                      - #91 `survey-6`
+                                        - #95 `diversifier-1`
+                                        - #104 `multi-signal`
+                                          - #106 `breadth-screen`
+                            - #71 `wide-5`
+                              - #76 `wide-6`
+                                - #81 `wide-7`
+                                  - #88 `wide-8`
+                                    - #93 `wide-9`
+                                      - #97 `survey-7`
+                                        - #102 `wide-10`
+                                          - #109 `wide-11`
+                                            - #112 `wide-12`
+                    - #34 `trend-tune`
+                      - #37 `trend-1926`
+                        - #55 `gsy-1`
+                        - #66 `trend-1926-fix`
+                          - #87 `insure-1`
+                            - #90 `insure-2`
+                              - #94 `fast-reentry`
+                                - #96 `fast-reentry-2`
+                                  - #103 `bear-legs`
+                      - #43 `trend-where`
+                      - #59 `eu-1`
+                        - #62 `eu-2`
+                          - #63 `eu-3`
+                            - #68 `eu-4`
+                              - #73 `eu-5`
+                                - #77 `eu-6`
+                                  - #80 `eu-7`
+                                    - #85 `eu-8`
+                    - #35 `slow-1`
+                      - #39 `usd-1`
+                    - #36 `deep-1`
+                      - #40 `cointop-1`
+                        - #49 `coin-cap`
+                          - #53 `coin-cap-2`
+                            - #56 `coin-cap-3`
+                              - #69 `coin-cap-4`
+                                - #82 `stop-reentry`
+                    - #38 `rl-4`
+                      - #42 `rl-5`
+                        - #52 `rl-6`
+                    - #41 `volume-1`
+                    - #44 `evo-1`
+                      - #58 `evo-2`
+                    - #46 `micro-1`
+                    - #48 `data-long-1`
+                      - #50 `research/exit-1`
+                      - #51 `data-long-2`
+          - #20 `ideas-1`
+  - #13 `data-search-1`
+  - #14 `ingest-1`
+    - #15 `ingest-2`
+  - #27 `health-1`
+  - #29 `g2-pending-buy`
+  - #30 `g4-dividends`
+  - #32 `fee-tiers`
+  - #61 `cash-interest`
+  - #67 `forward-1`
+  - #70 `combo-1`
+    - #75 `combo-2`
+  - #74 `dsr-1`
+    - #79 `register-1`
+      - #92 `register-2`
+        - #100 `register-3`
+          - #108 `register-4`
+            - #111 `register-5`
