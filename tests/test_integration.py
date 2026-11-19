@@ -57,3 +57,38 @@ def test_a_buy_waiting_for_cash_pays_the_fee_tier_of_the_open_it_fills_at() -> N
     assert rates == [0.0080, 0.0060, 0.0038]
     assert res.cash >= -1e-9
     assert res.positions["SPY"] == 0
+
+
+RATE = 0.0365  # 0.01% a day
+RATES = [(datetime(2026, 10, 1, tzinfo=UTC), RATE)]  # known long before the replays below
+DAILY = 1 + RATE / gym.DAYS_PER_YEAR
+
+
+def test_a_dividend_paid_as_cash_earns_the_cash_rate() -> None:
+    """G4 x cash interest (#61). All in SPY from Tuesday; Wednesday is an ex-date. The payout
+    sits in cash (it is not reinvested by itself) and earns the T-bill rate every day after,
+    weekends included, until the replay's last day (credited by the next run)."""
+    hist: History = {"SPY": flat(12, 100.0, weekdays_only=True)}
+    divs = {"SPY": [Dividend(DAY1 + timedelta(days=2), 1.0)]}
+    decisions = [Decision(at(0), {"SPY": 1.0})]
+    res = gym.simulate(decisions, hist, costs=NO_COSTS, dividends=divs, rates=RATES)
+    ((_, _, paid),) = res.income
+    assert paid == pytest.approx(res.positions["SPY"] * 1.0)
+    # Wednesday 4 to Thursday 12 November credited (9 days); Friday 13 is the last day.
+    assert res.cash == pytest.approx(paid * DAILY**9)
+    no_rate = gym.simulate(decisions, hist, costs=NO_COSTS, dividends=divs)
+    assert no_rate.cash == pytest.approx(100.0)
+
+
+def test_cash_waiting_for_a_pending_buy_earns_interest_and_the_buy_spends_it() -> None:
+    """G2 x cash interest (#61). SPY to BTC: the BTC buy waits from Thursday 00:00 for the SPY
+    sale at 13:30. The proceeds sit in cash over Thursday night and earn one day's interest, which
+    the waiting buy spends at Friday 00:00."""
+    hist: History = {"SPY": flat(12, 100.0, weekdays_only=True), "BTC": flat(12, 100.0)}
+    decisions = [Decision(at(0), {"SPY": 1.0}), Decision(at(2), {"BTC": 1.0})]
+    res = gym.simulate(decisions, hist, costs=NO_COSTS, rates=RATES)
+    spy_sold = next(f for f in res.fills if f.symbol == "SPY" and f.qty < 0)
+    (btc,) = [f for f in res.fills if f.symbol == "BTC"]
+    assert (spy_sold.time, btc.time) == (at(3, 13, 30), at(4, 0, 0))
+    assert btc.qty == pytest.approx(-spy_sold.qty * DAILY)
+    assert res.cash >= -1e-9
