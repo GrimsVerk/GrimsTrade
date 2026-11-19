@@ -330,6 +330,11 @@
     targeting 1.34 / max DD 6.3% (p 0.17 vs `tsmom12`); `trend-vol` +0.00. Card rule: covered by
     `trend-vol` (corr 0.54 vs cutoff 0.5; borderline), no card. Best +0.13 vs needed +0.30. 3
     `replication` rows. Vol-timing edge lanes CLOSED; own-vol targeting = a risk-map choice.
+  - DONE `short-sleeve` (draft #99 -> ls-trend-1): 90% `tsmom12` + 10% SPY/QQQ downtrend short
+    vs 90% + 10% T-bills (1994-2025): Sharpe above T-bills 0.922 vs 0.933 (p 0.79) FAILS;
+    crash windows +2.6 (2008) / -1.0 (2020Q1, signal too late) / +1.1 (2022), +6.2 in 2000-02;
+    premium 1.30 per unit of loss avoided (QQQ 1.17) vs `tsmom12`'s 1.07. 2 rows (1 pick).
+    Narrow short sleeves closed; the wide long-short blend was already done (ls-trend-2 #89).
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
@@ -424,8 +429,7 @@ above T-bills, against a same-size T-bill slot (diversifier-1 lesson).
 
 1. DONE `vol-timing` (#98): covered by `trend-vol`; no card. Optional: own-vol targeting of
    `tsmom12` on the risk map next to ls-trend-2's fixed-split menu (descriptive).
-2. RUNNING (23:56 UTC) D `short-sleeve`: small SPY/QQQ downtrend short sleeve (ETFs only), judged as insurance above
-   T-bills vs a T-bill slot (survey-6 next 1; ls-trend-1 narrow LS as prior).
+2. DONE `short-sleeve` (#99): fails (Sharpe p 0.79; 2020 loss); not cheaper insurance.
 3. W gates: W18 `elimination-mood` (needs keyless match list; 2026 World Cup is held-out:
    owner), new mechanisms from unused fields, each with the placebo null.
 4. W `multi-signal`: descriptive screen of value/carry/momentum/low-vol signals across the six
