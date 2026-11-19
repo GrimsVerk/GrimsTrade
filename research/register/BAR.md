@@ -5,21 +5,21 @@ pushed branch's `research/tries.md`; do not edit by hand. The dedup rule is in t
 of `src/grimstrade/register.py`. Convention (PROPOSED): every card quotes the
 project-wide count and the bar below, next to its own family bar (`docs/DESIGN.md`).
 
-Rows through 2026-11-19 00:21. Remote branches with a `research/tries.md`: 89.
+Rows through 2026-11-19 00:30. Remote branches with a `research/tries.md`: 94.
 
 ## Counts
 
 | What | Count |
 |---|---:|
-| Distinct tries, project-wide (`research/register/tries.jsonl`) | **3,118** |
-| Families (the `Idea` column) | 143 |
-| Tries without a Sharpe | 420 |
+| Distinct tries, project-wide (`research/register/tries.jsonl`) | **3,130** |
+| Families (the `Idea` column) | 146 |
+| Tries without a Sharpe | 426 |
 | Selectable tries (`variant` or `baseline`, period `train`) | 1,021 |
 | Live strategies | 11 (lines of `ledger/tries.jsonl` on the remote `paper-trail`) |
 | **N for a new pick** (selectable + live) | **1,032** |
 | Tries whose shape the harness logged (`research/tries-shape.jsonl`) | 0 (0 selectable) |
 
-By kind: robustness 1,226, variant 617, control 508, baseline 426, screen 226, insure-check 68, live-check 19, replication 19, note 9.
+By kind: robustness 1,226, variant 617, control 508, baseline 426, screen 232, insure-check 68, replication 25, live-check 19, note 9.
 
 ## The bar for a new pick at N = 1,032
 
