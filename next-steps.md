@@ -1,5 +1,12 @@
 # Next steps
 
+## Wide 10 (in progress 2026-11-19, branch `wide-10`, draft PR -> `survey-7`)
+
+Two new mechanisms from unused fields picked by a written score (`research/wide-10.md` step 1):
+W20 `fed-purchase-flow` (7 points) and W21 `stablecoin-mint` (6). Count 78/18.
+
+- Doing: W20 gate (rule, script, tests first; dry run counts only; one real run), then W21.
+
 ## Survey 7 (done 2026-11-19, branch `survey-7`, draft PR #97 -> `wide-9`)
 
 `seasonal-20y` (survey-4's candidate C, same-calendar-month seasonality; Heston-Sadka 2008,
