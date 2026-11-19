@@ -1,3 +1,9 @@
+## risk-menu-2 (doing 2026-11-19, branch `risk-menu-2`, draft PR -> `risk-menu`)
+
+Card `research/cards/risk-menu-2.md` (1971e16): risk-menu items 1-7 (no wide book) on
+1994-02..2025-10 with T-bill cash; do the worst-loss / worst-12-month / under-water rankings
+hold with 2000-2002 included? Script `research/lib/riskmenu2_run.py` next.
+
 # Next steps
 
 ## risk-menu (done 2026-11-19, branch `risk-menu`, draft PR #101 -> `vol-timing`)
