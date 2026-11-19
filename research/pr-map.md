@@ -260,7 +260,7 @@ commit dates the protocol relies on: "card committed before numbers").
 - O1 (#109): allow perpetual futures in the paper gym? Only way to test `crypto-carry`, the last
   candidate passing the F1/F2 filters.
 - O2 (#101, #105, #110): pick a risk level from `research/risk-menu.md` (main decision).
-- O3 (#92): accept the measured bar (~486 effective tries; +0.30..+0.56 Sharpe over `tsmom12`)?
+- O3 (#92): accept the measured bar (12..486 effective tries, the bar at the cautious 486: z >= 4.69, +0.30..+0.56 Sharpe over `tsmom12` for rules correlated 0.77-0.93 with it; #126)?
 - O4 (#88): freeze forward entry `turn-of-year-losers@1`? Allow W18 to use a 2026 event inside
   the held-out year?
 - O5 (#86, #77, #80, #85): want a smaller worst loss simply by holding `tsmom12` at a smaller

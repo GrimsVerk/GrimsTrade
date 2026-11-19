@@ -40,7 +40,8 @@ the ~100 open pull requests, start with [`pr-map.md`](pr-map.md) (#113).
   (#108, #111). The largest lead seen on the main test is +0.23 (`halving-alone`, a secondary
   variant whose edge sits in two or three coin cycles; z about 3.2-3.6): below the bar of 4.69,
   but at the 3.29 the bar would be if tries were counted by clusters.
-- **Borrowed ideas: 80 listed, 19 tested, none passed.** New candidates must now pass two
+- **Borrowed ideas: 80 listed, 19 tested, none passed** (several gates could only kill an idea,
+  never pass one, by design: few independent episodes; #124). New candidates must now pass two
   filters first: not announced, not driven by price (#109). Tonight's gates failed too: foreign
   central banks' Treasury selling (#112: wrong sign, rank 34 of 41) and weather surprises for
   natural gas (#116: no signal; the lane reads it as the market pricing the forecast, untested). Style signals (value, carry, momentum,
