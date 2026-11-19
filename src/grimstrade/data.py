@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
@@ -279,3 +280,92 @@ def revisions(root: Path) -> list[dict[str, object]]:
     if not path.exists():
         return []
     return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+
+
+# --- dividends: data/dividends.csv, one row per ETF distribution, append-only ---
+
+DIVIDENDS = Path("data/dividends.csv")
+DIVIDEND_FIELDS = ["symbol", "ex_date", "amount"]
+# A distribution larger than this share of the previous close is not stored (see
+# `dividend_problem`). The ETFs here pay 0.1-0.4% a month or quarter; no ordinary payout of
+# theirs comes near it, but a misplaced decimal point would.
+MAX_DIVIDEND = 0.1
+
+
+@dataclass(frozen=True)
+class Dividend:
+    ex_date: date
+    amount: float  # cash per unit held when the market opens on the ex-date
+
+
+Dividends = Mapping[str, Sequence[Dividend]]
+
+
+def load_dividends(root: Path) -> dict[str, list[Dividend]]:
+    """The stored distributions per symbol, oldest first. Raises ValueError on a row no run
+    writes: an unknown or crypto symbol, an amount that is not a positive number, or a second row
+    for the same symbol and day (it would pay twice)."""
+    path = root / DIVIDENDS
+    if not path.exists():
+        return {}
+    out: dict[str, list[Dividend]] = {}
+    with path.open(newline="") as f:
+        for r in csv.DictReader(f):
+            sym, d = r["symbol"], Dividend(date.fromisoformat(r["ex_date"]), float(r["amount"]))
+            if UNIVERSE.get(sym) != ETF:
+                raise ValueError(f"dividend for {sym!r}: only the ETFs pay distributions")
+            if not (math.isfinite(d.amount) and d.amount > 0):
+                raise ValueError(f"{sym} {d.ex_date}: dividend amount {d.amount} is not positive")
+            if any(o.ex_date == d.ex_date for o in out.get(sym, [])):
+                raise ValueError(f"{sym}: a second dividend row for {d.ex_date}")
+            out.setdefault(sym, []).append(d)
+    return {s: sorted(ds, key=lambda d: d.ex_date) for s, ds in out.items()}
+
+
+def dividend_problem(symbol: str, d: Dividend, bars: Sequence[Bar]) -> str | None:
+    """Why `d` cannot be a real distribution of `symbol` given its stored bars, or None. The
+    ex-date must be a stored session (the price drop is in its open), with a session before it,
+    and the amount at most MAX_DIVIDEND of the close before it."""
+    before = [b for b in bars if b.date < d.ex_date]
+    if not any(b.date == d.ex_date for b in bars) or not before:
+        return f"{symbol} {d.ex_date}: a dividend on a day with no stored session before and on it"
+    if d.amount > MAX_DIVIDEND * before[-1].close:
+        return (
+            f"{symbol} {d.ex_date}: dividend {d.amount} is over {MAX_DIVIDEND:.0%} of the previous "
+            f"close {before[-1].close}: bad data? Not stored."
+        )
+    return None
+
+
+def append_dividends(
+    root: Path, symbol: str, fetched: Iterable[Dividend], bars: Sequence[Bar]
+) -> tuple[int, list[str]]:
+    """Append the distributions not stored yet. Never touches stored rows. One whose ex-date is
+    after the newest stored bar waits (it is fetched again next run); one before the first bar
+    is of no use and left out. Returns (rows added, problems with refused ones)."""
+    if not bars:
+        return 0, []
+    stored = {d.ex_date for d in load_dividends(root).get(symbol, [])}
+    rows, problems = [], []
+    for d in sorted({d.ex_date: d for d in fetched}.values(), key=lambda d: d.ex_date):
+        if d.ex_date in stored or d.ex_date > bars[-1].date or d.ex_date <= bars[0].date:
+            continue
+        problem = dividend_problem(symbol, d, bars)
+        if problem:
+            problems.append(problem)
+            continue
+        rows.append(d)
+    if not rows:
+        return 0, problems
+    path = root / DIVIDENDS
+    path.parent.mkdir(parents=True, exist_ok=True)
+    write_header = not path.exists() or path.stat().st_size == 0
+    with path.open("a", newline="") as f:
+        if ends_mid_line(path):
+            f.write("\n")
+        w = csv.writer(f, lineterminator="\n")
+        if write_header:
+            w.writerow(DIVIDEND_FIELDS)
+        for d in rows:
+            w.writerow([symbol, d.ex_date.isoformat(), _num(d.amount)])
+    return len(rows), problems

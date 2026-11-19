@@ -35,6 +35,25 @@ case runs at 22:30 and at the late-cron 03:00).
 
 - The rule changes the live gym: merging is your call. Nothing else needs you.
 
+## G4: ETF dividends paid as cash (branch `g4-dividends`, draft PR #30, not merged)
+
+Fix for audit G4 (dividends half; cash still earns nothing). Rule and why: `docs/DECISIONS.md`
+(2026-11-17, audit G4). Code: `data.py` (dividend store), `sources.yahoo_dividends`,
+`run_daily._dividends` and `check_record`, `gym.simulate(dividends=...)`. Tests:
+`tests/test_dividends.py` (offline, fixture `tests/fixtures/yahoo_dividends.json`, hand-made in
+Yahoo's format).
+
+- [ ] After merging: the first daily run creates `data/dividends.csv` on `paper-trail` with
+      every stored ETF's payouts since its first stored bar (on 2026-11-17: SPY 8, QQQ 8, TLT 23,
+      GLD none). Check the log shows `+N dividends (yahoo)` and no "dividends not fetched".
+- [ ] After merging: backtests move up once (60/40 about +4.9% over the stored span); tell the
+      research lane their fund baselines were missing dividends.
+
+### For the owner
+
+- The rule changes the live gym and the daily runner (one more Yahoo request per ETF per run):
+  merging is your call.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
@@ -57,6 +76,10 @@ ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/te
       (D6, needs a key: owner's call); crypto fee by volume tier (BACKLOG). G2: branch
       `g2-pending-buy`.
 
+- [ ] Open findings to build next: dividends (G4: branch `g4-dividends`); a second ETF source, Stooq is dead
+      (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
+      tier (BACKLOG).
+
 ## M0 status: built, not yet proven live
 
 Done: template scaffold, data ingest (BTC, ETH, SPY, QQQ, GLD, TLT, append-only CSV), gym
@@ -76,7 +99,7 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 
 ## Assumptions (see docs/DECISIONS.md)
 
-- CSV + stdlib only (no parquet/pandas). Raw prices; dividends not credited yet.
+- CSV + stdlib only (no parquet/pandas). Raw prices; dividends paid as cash on the ex-date (G4).
 - Bot commits to orphan branch `paper-trail` because `main` requires PRs.
 - Costs: crypto 60 bps fee (was 25 until the audit, G3) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
 - Decisions at ~22:30 UTC see crypto bars through yesterday (today's still open) and ETFs through

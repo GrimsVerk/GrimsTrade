@@ -33,7 +33,7 @@ def check_record(root: Path, now: datetime) -> None:
     recomputed from them."""
     ledger.check_history(root, now)
     bars = [data.bars_path(root, sym).relative_to(root) for sym in data.UNIVERSE]
-    for rel in (*ledger.APPEND_ONLY, *bars, data.REVISIONS, data.SOURCES_LOG):
+    for rel in (*ledger.APPEND_ONLY, *bars, data.REVISIONS, data.SOURCES_LOG, data.DIVIDENDS):
         ledger.refuse_links(root, rel)
         ledger.check_append_only(root / rel)
     for name in WRITTEN_EACH_RUN:  # a link here would swallow what the run writes
@@ -48,6 +48,17 @@ def check_record(root: Path, now: datetime) -> None:
             raise ledger.LedgerTampered(str(e)) from e
         if stored and data.close_time(cls, stored[-1].date) > now:
             raise ledger.LedgerTampered(f"{sym}: the bar for {stored[-1].date} has not closed yet")
+    # Dividends are paid into every score: a row no run would write (a second payout for one day,
+    # one on a day with no session, one far too large) is refused like a bad bar.
+    try:
+        dividends = data.load_dividends(root)
+    except ValueError as e:
+        raise ledger.LedgerTampered(str(e)) from e
+    for sym, divs in dividends.items():
+        stored = data.load(root, sym)
+        for d in divs:
+            if problem := data.dividend_problem(sym, d, stored):
+                raise ledger.LedgerTampered(problem)
 
 
 def fingerprint(decide: gym.Strategy) -> str:
@@ -94,6 +105,7 @@ def run(
             problems.append(str(e))
             print(f"{sym}: FAILED {e}", file=sys.stderr)
 
+    problems += _dividends(root, get)
     problems += _overdue(root, now)
     problems += _etf_holes(root)
     problems += _revisions(root, now, get)
@@ -138,6 +150,28 @@ def run(
     (reports / "backtest.md").write_text(report.render_backtest(root, history, repo))
     (reports / "weekly.md").write_text(weekly.render(root, history, repo))
     return problems
+
+
+def _dividends(root: Path, get: sources.Get) -> list[str]:
+    """Append each ETF's distributions not stored yet (Yahoo, keyless). Each run asks for the
+    whole stored span, so a failed or late answer is caught up by the next run; a refused
+    distribution (no session on its day, far too large) is a problem line on every run."""
+    out = []
+    for sym, ticker in sources.DIVIDEND_TICKERS.items():
+        bars = data.load(root, sym)
+        if not bars:
+            continue
+        try:
+            fetched = sources.yahoo_dividends(ticker, bars[0].date, get)
+        except Exception as e:  # noqa: BLE001 - one bad answer must not stop the run
+            out.append(f"{sym}: dividends not fetched: {e}")
+            print(f"{sym}: dividends FAILED {e}", file=sys.stderr)
+            continue
+        added, refused = data.append_dividends(root, sym, fetched, bars)
+        out += refused
+        if added:
+            print(f"{sym}: +{added} dividends (yahoo)")
+    return out
 
 
 # Crypto closes every day: a new bar is overdue when the newest stored one closed longer ago
