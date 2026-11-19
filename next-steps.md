@@ -1,5 +1,16 @@
 # Next steps
 
+## Research archive (branch `research-archive-1`, draft PR #118): owner decision
+
+This branch brings every research lane's record into `main` in one merge (89 of the 90 research
+PRs; engineering PRs are not in it). Start at `research/SUMMARY.md` (what the research found),
+then `research/pr-map.md` (every PR and the owner questions O1-O18) and
+`docs/research-archive-1.md` (how the archive was built, checks, which PRs could close after a
+merge). Each lane's own status log stays on its branch; the leads' running log is on `summary-1`.
+
+- [ ] Owner: merge the archive (option A) or keep it as a branch (option B), pr-map section 4.
+- [ ] `combo-2` (#75) is in as cherry-picks only; merge #75 itself after cash interest (#61, O9).
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
