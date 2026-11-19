@@ -21,6 +21,12 @@ Never edit or delete a row.
   hold), tagged `@live-L` (2010-02 to 2025-10, Sharpe on excess returns); not selectable, not a
   strategy try, not counted in the family (`cards/ls-trend.md`, numbers in
   `results/ls-trend.md`).
+
+  (`cards/live-check.md`, numbers in `results/live-check.md`). Survey-6 extends it:
+  `<family>@live-fund` rows are equal-weight composites of live funds of a strategy family
+  over their own months (From/To), Sharpe = monthly return above the T-bill (not the daily
+  convention), Return and Max DD of the total return, turnover `-`
+  (`cards/live-families.md`, numbers in `results/live-families.md`).
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 - `invest-1` rows (added 2026-11-13): monthly decisions; Sharpe is of monthly returns in excess
   of T-bills x sqrt(12); period `train` = 1927-01..1989-12, `oos` = 1990-01..2025-10 (both fixed
@@ -1396,3 +1402,20 @@ Never edit or delete a row.
 | 2026-11-18 22:51 | rp-1 | where-rp@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.68 | +178.3% | 14.2% | 2.30 |
 | 2026-11-18 22:51 | rp-1 | where-rp@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.61 | +349.8% | 91.8% | 3.95 |
 | 2026-11-18 22:51 | rp-1 | where-rp@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +4000.8% | 29.5% | 2.43 |
+| 2026-11-18 23:10 | survey-6 | value@live-fund | live-check | train | 1992-11-01 | 2025-10-31 | 0.53 | +2296.9% | 59.1% | - |
+| 2026-11-18 23:10 | survey-6 | momentum@live-fund | live-check | train | 2007-04-01 | 2025-10-31 | 0.58 | +530.9% | 55.7% | - |
+| 2026-11-18 23:10 | survey-6 | quality@live-fund | live-check | train | 2010-07-01 | 2025-10-31 | 1.00 | +758.3% | 26.0% | - |
+| 2026-11-18 23:10 | survey-6 | low-vol@live-fund | live-check | train | 2011-06-01 | 2025-10-31 | 0.70 | +221.9% | 18.3% | - |
+| 2026-11-18 23:10 | survey-6 | multi-factor@live-fund | live-check | train | 2005-10-01 | 2025-10-31 | 0.59 | +632.6% | 53.0% | - |
+| 2026-11-18 23:10 | survey-6 | dividend@live-fund | live-check | train | 2003-01-01 | 2025-10-31 | 0.67 | +789.2% | 47.5% | - |
+| 2026-11-18 23:10 | survey-6 | style-premia@live-fund | live-check | train | 2013-11-01 | 2025-10-31 | 0.50 | +120.0% | 34.9% | - |
+| 2026-11-18 23:10 | survey-6 | fx-carry@live-fund | live-check | train | 2009-07-01 | 2025-10-31 | -0.03 | +13.6% | 26.3% | - |
+| 2026-11-18 23:10 | survey-6 | merger-arb@live-fund | live-check | train | 1989-02-01 | 2025-10-31 | 0.40 | +504.1% | 11.5% | - |
+| 2026-11-18 23:10 | survey-6 | option-writing@live-fund | live-check | train | 1988-01-01 | 2025-10-31 | 0.43 | +962.1% | 32.0% | - |
+| 2026-11-18 23:10 | survey-6 | tail-hedge@live-fund | live-check | train | 2011-02-01 | 2025-10-31 | -0.54 | -95.7% | 97.4% | - |
+| 2026-11-18 23:10 | survey-6 | gold-miners@live-fund | live-check | train | 2004-12-01 | 2025-10-31 | 0.32 | +318.9% | 77.6% | - |
+| 2026-11-18 23:10 | survey-6 | defensive-sectors@live-fund | live-check | train | 1999-01-01 | 2025-10-31 | 0.57 | +708.2% | 33.6% | - |
+| 2026-11-18 23:10 | survey-6 | trend@live-fund | live-check | train | 2007-03-01 | 2025-10-31 | 0.17 | +58.9% | 19.6% | - |
+| 2026-11-18 23:10 | survey-6 | risk-parity@live-fund | live-check | train | 2009-07-01 | 2025-10-31 | 0.63 | +184.8% | 20.4% | - |
+| 2026-11-18 23:18 | diversifier-1 | merfx7 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +11421.5% | 30.8% | 2.36 |
+| 2026-11-18 23:18 | diversifier-1 | mna7@mna | robustness | train | 2010-11-17 | 2025-11-09 | 1.37 | +2606.7% | 31.5% | 2.46 |
