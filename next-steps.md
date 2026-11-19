@@ -423,6 +423,12 @@
     integration preview of the main-bound engineering PRs, tests), W `data-wide-1` (<- wide-11;
     keyless F1/F2 dose sources: inventory, verify, loaders; no gates), W `weather-1`
     (<- wide-11; one carded weather-shock gate).
+  - DONE `weather-1` (draft #116 -> wide-11): heating-degree-day surprise (gas-heating-
+    weighted CPC HDD vs 20-y normal, week to Friday) vs next-week UNG, 18 winters, 389 weeks:
+    slope -0.036/10 HDD (t -0.29, wrong sign), rank 19/41 vs winter-swap placebos, halves split.
+    Dose-week UNG t 1.68 only: the market trades the forecast. 1 `screen` row; count 80 / 19
+    tested / 0 passed. 02:45 UTC `weather-2` started (W, <- weather-1): CPC 6-10/8-14 outlook
+    revisions as the dose (feasibility of the archive first).
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
