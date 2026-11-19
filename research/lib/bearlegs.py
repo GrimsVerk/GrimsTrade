@@ -98,6 +98,7 @@ class Leg:
     n20: int
     d_or: float  # dI, or3-12 minus tsmom12
     d_arm: float
+    db_or: float = 0.0  # dB (year after the low), or3-12 minus tsmom12
     cluster: int = -1
     follow: bool = False  # peak within NEXT_PEAK days of the same series' previous trough
 
@@ -137,7 +138,9 @@ def legs_of(trio: f2.Trio, eps: Sequence[i1.Episode], tw_or: dict[int, i1.Episod
             ))  # fmt: skip
         n15 = len(rallies(s.px, a, b, RALLY_SENS[0]))
         n20 = len(rallies(s.px, a, b, RALLY_SENS[1]))
-        out.append(Leg(e, rl, n15, n20, tw_or[id(e)].ins - e.ins, tw_arm[id(e)].ins - e.ins))
+        o = tw_or[id(e)]
+        out.append(Leg(e, rl, n15, n20, o.ins - e.ins, tw_arm[id(e)].ins - e.ins,
+                       o.rebound - e.rebound))  # fmt: skip
     return out
 
 
@@ -281,7 +284,20 @@ def catalogue(sd: SetData) -> list[str]:
         f"Share of the summed episode dI of `or3-12` ({tot_or:+.0f} log pts) in follow-on "
         f"legs: {tot_fo / tot_or:.0%}; in falls with 10% rallies inside: {tot_ml / tot_or:.0%}.",
         "",
+        "Added after the card (description, not a test): the follow-on flag is known when a fall "
+        "starts, the rally count is not. `or3-12` minus `tsmom12` by that flag alone, episode "
+        "level (dB = year after the low; the rebound of a follow-on leg can overlap the next "
+        "fall's peak, as in insure-1):",
+        "",
+        "| Episodes | Count | Clusters touched | dI | dB | dN = dI + dB |",
+        "|---|---:|---:|---:|---:|---:|",
     ]
+    for lab, fol in (("first leg", False), ("follow-on leg", True)):
+        g = [lg for lg in sd.legs if lg.follow == fol]
+        di, db = np.mean([lg.d_or for lg in g]), np.mean([lg.db_or for lg in g])
+        out.append(f"| {lab} | {len(g)} | {len({lg.cluster for lg in g})} | {di:+.1f} | "
+                   f"{db:+.1f} | {di + db:+.1f} |")  # fmt: skip
+    out += [""]
 
     # legs across episodes
     pairs = lows = 0

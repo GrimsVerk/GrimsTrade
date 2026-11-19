@@ -48,6 +48,13 @@ Episode level (all member episodes; not independent, description): the fall's ow
 
 Share of the summed episode dI of `or3-12` (-1913 log pts) in follow-on legs: 69%; in falls with 10% rallies inside: 88%.
 
+Added after the card (description, not a test): the follow-on flag is known when a fall starts, the rally count is not. `or3-12` minus `tsmom12` by that flag alone, episode level (dB = year after the low; the rebound of a follow-on leg can overlap the next fall's peak, as in insure-1):
+
+| Episodes | Count | Clusters touched | dI | dB | dN = dI + dB |
+|---|---:|---:|---:|---:|---:|
+| first leg | 153 | 34 | -3.8 | +8.3 | +4.5 |
+| follow-on leg | 117 | 29 | -11.3 | +8.9 | -2.4 |
+
 Legs across episodes: 117 times a series began a new 25% fall within 365 days of a trough (the 25%+ rally that ended the episode was a bear-market rally in the wider sense); in 79 of them the new trough was below the old.
 
 | # | Representative | Peak | Trough | Depth | Days | Rallies 10% / 15% / 20% | Largest rally (days) | Tops with 3m on / 12m on | `or3-12` / `arm3-12` / `tsmom12` bought | Episodes multi-leg | dI or / arm |
@@ -146,6 +153,13 @@ Episode level (all member episodes; not independent, description): the fall's ow
 | follow-on leg, 10% rallies inside | 25 | 10 | +0.80 | -8.9 | -7.9 |
 
 Share of the summed episode dI of `or3-12` (-584 log pts) in follow-on legs: 41%; in falls with 10% rallies inside: 96%.
+
+Added after the card (description, not a test): the follow-on flag is known when a fall starts, the rally count is not. `or3-12` minus `tsmom12` by that flag alone, episode level (dB = year after the low; the rebound of a follow-on leg can overlap the next fall's peak, as in insure-1):
+
+| Episodes | Count | Clusters touched | dI | dB | dN = dI + dB |
+|---|---:|---:|---:|---:|---:|
+| first leg | 80 | 18 | -4.3 | +8.2 | +3.9 |
+| follow-on leg | 29 | 10 | -8.2 | +12.2 | +4.0 |
 
 Legs across episodes: 29 times a series began a new 25% fall within 365 days of a trough (the 25%+ rally that ended the episode was a bear-market rally in the wider sense); in 26 of them the new trough was below the old.
 
