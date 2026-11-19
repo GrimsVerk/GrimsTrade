@@ -338,6 +338,9 @@
   - 00:06 UTC mode -> full (5h 0.80, weekly 0.93): start-nothing-new line now 0.85. Started
     `wide-10` (W, <- survey-7: 2 new mechanisms, gates) and `register-3` (D, <- register-2:
     auto-fill weeks/skew/kurtosis, family-capped correlation sample, regenerate with tonight).
+  - 00:11 UTC CoS override: start lanes until 5h 0.95 (also after the 02:30 reset). Started
+    `multi-signal` (W, <- survey-6), `bear-legs` (D, <- fast-reentry-2), `risk-menu`
+    (D, <- vol-timing).
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
