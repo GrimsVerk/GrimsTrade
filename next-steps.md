@@ -1,5 +1,16 @@
 # Next steps
 
+## In progress: register-4 (branch `register-4`, draft PR into `register-3`)
+
+Card: `research/register-4.md`. A committed weekly-returns store
+(`research/register/returns/`) so `research/register2.py estimate` and BAR.md regenerate on
+any checkout without the one machine's saved curves.
+
+- [ ] Store format, export step, size check (< 5 MB).
+- [ ] `register2.py` reads the store first, local curves as fallback; fixture test and a
+      clean-checkout regeneration check.
+- [ ] `research/register/README.md`: how a lane adds its returns.
+
 ## Waiting for review: register-3 (branch `register-3`, draft PR #100 into `register-2`)
 
 Card and results: `research/register-3.md`. Done:
