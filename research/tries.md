@@ -2418,3 +2418,108 @@ Never edit or delete a row.
 | 2026-11-18 01:49 | usd-1 | left out: GSPC from 2000 h=4w (S +0.036, p 0.205, null sd 0.046, 1345 cells, 1345 weeks) | robustness | train | 2000-01-07 | 2025-10-10 | - | - | - | - |
 | 2026-11-18 01:49 | usd-1 | pooled before+markets+coins h=13w (P +1.16, p 0.025, 3 of 3 sets S > 0) | screen | train | 1971-01-01 | 2025-11-09 | - | - | - | - |
 | 2026-11-18 01:49 | usd-1 | pooled before+markets+coins h=4w (P +0.80, p 0.120, 2 of 3 sets S > 0) | screen | train | 1971-01-01 | 2025-11-09 | - | - | - | - |
+| 2026-11-17 23:26 | deep-1 | liquidity/walcl-and@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.51 | +150.4% | 17.0% | 2.55 |
+| 2026-11-17 23:26 | deep-1 | absorption-ratio/six@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.64 | +379.4% | 90.0% | 3.88 |
+| 2026-11-17 23:26 | deep-1 | trend-to-safe/safe@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.54 | +179.5% | 92.4% | 4.62 |
+| 2026-11-17 23:26 | deep-1 | liquidity/walcl-and@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.53 | +216.5% | 69.5% | 1.92 |
+| 2026-11-17 23:26 | deep-1 | hmm-regime/hard@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.57 | +1585.4% | 37.8% | 7.82 |
+| 2026-11-17 23:26 | deep-1 | fracdiff-momentum/d0.4@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.67 | +2829.0% | 34.6% | 8.23 |
+| 2026-11-17 23:26 | deep-1 | drawdown-control/d1.0@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.71 | +1840.1% | 21.9% | 3.42 |
+| 2026-11-17 23:26 | deep-1 | absorption-ratio/six@idx | robustness | train | 2002-01-01 | 2025-11-09 | 0.40 | +138.7% | 34.5% | 1.38 |
+| 2026-11-17 23:26 | deep-1 | hawkes-clustering/down2@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.60 | +2955.0% | 57.7% | 6.68 |
+| 2026-11-17 23:26 | deep-1 | ensemble-tsmom/e4@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.77 | +2977.8% | 23.4% | 5.43 |
+| 2026-11-17 23:26 | deep-1 | trend-vol/tv40@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4379.0% | 25.3% | 2.30 |
+| 2026-11-17 23:26 | deep-1 | trend-to-safe/safe@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4377.3% | 25.7% | 2.28 |
+| 2026-11-17 23:27 | deep-1 | fed-hiking/hike-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.65 | +1425.0% | 23.9% | 2.08 |
+| 2026-11-17 23:27 | deep-1 | real-rate/real-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.63 | +1690.9% | 26.0% | 2.47 |
+| 2026-11-17 23:27 | deep-1 | yield-curve/curve-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.69 | +2040.2% | 25.7% | 1.64 |
+| 2026-11-17 23:27 | deep-1 | liquidity/m2-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.59 | +1638.0% | 28.5% | 2.08 |
+| 2026-11-17 23:27 | deep-1 | liquidity/walcl-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.66 | +2602.2% | 25.7% | 2.12 |
+| 2026-11-17 23:27 | deep-1 | credit-spread/spread-and@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.70 | +3161.0% | 27.2% | 2.14 |
+| 2026-11-18 01:34 | deep-1-stack | stack | variant | train | 1994-02-01 | 2025-11-09 | 1.01 | +4061.1% | 30.9% | 1.21 |
+| 2026-11-18 01:34 | deep-1-switch | switch | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +8204.3% | 34.7% | 3.15 |
+| 2026-11-18 01:34 | deep-1-meta | meta | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +7647.5% | 32.3% | 2.26 |
+| 2026-11-18 01:34 | deep-1-stack | stack@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.52 | +180.5% | 17.3% | 3.91 |
+| 2026-11-18 01:34 | deep-1-switch | switch@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.56 | +154.8% | 16.8% | 6.00 |
+| 2026-11-18 01:34 | deep-1-meta | meta@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.59 | +189.8% | 16.7% | 2.13 |
+| 2026-11-18 01:34 | deep-1-stack | stack@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.44 | +67.1% | 92.4% | 7.49 |
+| 2026-11-18 01:34 | deep-1-switch | switch@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.54 | +192.1% | 92.4% | 5.57 |
+| 2026-11-18 01:34 | deep-1-meta | meta@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.59 | +310.5% | 91.9% | 3.89 |
+| 2026-11-18 01:34 | deep-1-stack | stack@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.73 | +2099.3% | 24.0% | 2.17 |
+| 2026-11-18 01:34 | deep-1-switch | switch@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.63 | +1617.6% | 22.9% | 3.73 |
+| 2026-11-18 01:34 | deep-1-meta | meta@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.75 | +2859.9% | 23.3% | 2.98 |
+| 2026-11-18 01:35 | deep-1-meta | naive-1n | baseline | train | 1994-02-01 | 2025-11-09 | 1.06 | +7367.4% | 39.7% | 2.49 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.25 on the coin book (pooled single-coin 0.42, vs TS -0.01 p 0.55) | variant | train | 2019-04-07 | 2025-11-09 | 1.00 | +350.3% | 37.0% | 3.28 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.5 on the coin book (pooled single-coin 0.38, vs TS -0.06 p 0.72) | variant | train | 2019-04-07 | 2025-11-09 | 0.72 | +290.5% | 59.5% | 3.80 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.75 on the coin book (pooled single-coin 0.38, vs TS -0.06 p 0.83) | variant | train | 2019-04-07 | 2025-11-09 | 0.67 | +280.0% | 64.1% | 4.16 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-1 on the coin book (pooled single-coin 0.41, vs TS -0.03 p 0.86) | variant | train | 2019-04-07 | 2025-11-09 | 0.68 | +320.1% | 64.4% | 4.10 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-28 on the coin book (pooled single-coin 0.58, vs TS +0.14 p 0.10) | variant | train | 2019-04-07 | 2025-11-09 | 1.23 | +1026.1% | 35.9% | 7.07 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-56 on the coin book (pooled single-coin 0.47, vs TS +0.03 p 0.42) | variant | train | 2019-04-07 | 2025-11-09 | 0.84 | +441.6% | 46.8% | 5.35 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-91 on the coin book (pooled single-coin 0.43, vs TS -0.00 p 0.51) | variant | train | 2019-04-07 | 2025-11-09 | 0.79 | +397.5% | 53.8% | 4.70 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-182 on the coin book (pooled single-coin 0.33, vs TS -0.11 p 0.96) | variant | train | 2019-04-07 | 2025-11-09 | 0.57 | +181.0% | 67.4% | 4.29 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-28 on the coin book (pooled single-coin 0.61, vs TS +0.18 p 0.14) | variant | train | 2019-04-07 | 2025-11-09 | 1.12 | +951.6% | 42.7% | 6.81 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-56 on the coin book (pooled single-coin 0.44, vs TS +0.01 p 0.50) | variant | train | 2019-04-07 | 2025-11-09 | 0.73 | +343.2% | 62.8% | 5.24 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-91 on the coin book (pooled single-coin 0.44, vs TS +0.00 p 0.49) | variant | train | 2019-04-07 | 2025-11-09 | 0.72 | +339.7% | 63.1% | 3.95 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-182 on the coin book (pooled single-coin 0.33, vs TS -0.10 p 0.86) | variant | train | 2019-04-07 | 2025-11-09 | 0.50 | +121.2% | 75.5% | 3.71 |
+| 2026-11-18 11:02 | cointop-1-cm | TS twin on the selection set (pooled single-coin 0.44) | baseline | train | 2019-04-07 | 2025-11-09 | 0.72 | +391.2% | 64.5% | 4.04 |
+| 2026-11-18 11:02 | cointop-1-cm | stop-0.25 control: condition read 26 weeks late (pooled 0.44) | control | train | 2019-04-07 | 2025-11-09 | 0.99 | +268.8% | 32.3% | 3.10 |
+| 2026-11-18 11:02 | cointop-1-cm | fade-28 control: condition read 26 weeks late (pooled 0.44) | control | train | 2019-04-07 | 2025-11-09 | 0.87 | +369.9% | 45.5% | 6.39 |
+| 2026-11-18 11:02 | cointop-1-cm | breadth-28 control: condition read 26 weeks late (pooled 0.46) | control | train | 2019-04-07 | 2025-11-09 | 0.74 | +294.2% | 53.7% | 5.77 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +9967.0% | 28.9% | 3.81 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +12344.2% | 28.9% | 4.76 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28 | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +14344.8% | 29.9% | 4.30 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.51 | +211.8% | 64.3% | 4.28 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.55 | +273.2% | 81.7% | 9.05 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.51 | +197.3% | 91.6% | 7.35 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.25 | +79142.5% | 67.6% | 6.20 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.28 | +150817.0% | 77.0% | 10.14 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28@BTC | robustness | train | 2013-01-01 | 2025-11-09 | 1.23 | +186942.5% | 78.1% | 8.37 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.95 | +2085.5% | 62.2% | 6.51 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.91 | +2159.3% | 76.9% | 9.58 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28@ETH | robustness | train | 2017-05-19 | 2025-11-09 | 0.94 | +2595.0% | 82.3% | 8.19 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.07 | +9061.6% | 29.0% | 3.79 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +10808.9% | 29.0% | 4.72 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +12994.4% | 30.2% | 4.26 |
+| 2026-11-18 11:08 | cointop-1 | tsmom12-daily | baseline | train | 1994-02-01 | 2025-11-09 | 1.06 | +19463.0% | 35.8% | 4.89 |
+| 2026-11-18 11:08 | cointop-1-stop | stop-0.25-daily | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +7587.0% | 30.9% | 7.96 |
+| 2026-11-18 11:08 | cointop-1-fade | fade-28-daily | robustness | train | 1994-02-01 | 2025-11-09 | 1.11 | +12690.9% | 30.9% | 10.52 |
+| 2026-11-18 11:08 | cointop-1-breadth | breadth-28-daily | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +12568.5% | 33.1% | 8.98 |
+| 2026-11-18 11:15 | coin-cap | cap10-cash | variant | train | 1994-02-01 | 2025-11-09 | 1.00 | +3803.8% | 28.9% | 2.04 |
+| 2026-11-18 11:15 | coin-cap | cap10-rest | variant | train | 1994-02-01 | 2025-11-09 | 1.02 | +4578.9% | 28.9% | 2.72 |
+| 2026-11-18 11:15 | coin-cap | cap15-cash | variant | train | 1994-02-01 | 2025-11-09 | 1.05 | +6701.1% | 28.9% | 2.30 |
+| 2026-11-18 11:15 | coin-cap | cap15-rest | variant | train | 1994-02-01 | 2025-11-09 | 1.06 | +7565.2% | 28.9% | 2.82 |
+| 2026-11-18 11:15 | coin-cap | cap20-cash | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +11223.2% | 28.9% | 2.49 |
+| 2026-11-18 11:15 | coin-cap | cap20-rest | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +12163.3% | 28.9% | 2.89 |
+| 2026-11-18 11:15 | coin-cap | cap25-cash | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +13608.9% | 28.9% | 2.61 |
+| 2026-11-18 11:15 | coin-cap | cap25-rest | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +14041.1% | 28.9% | 2.83 |
+| 2026-11-18 11:15 | coin-cap | cap-wf | variant | train | 1994-02-01 | 2025-11-09 | 1.05 | +10189.5% | 28.9% | 2.30 |
+| 2026-11-18 11:15 | coin-cap | cap10-cash-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 0.99 | +3679.2% | 29.0% | 2.05 |
+| 2026-11-18 11:15 | coin-cap | cap10-rest-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +4422.7% | 29.0% | 2.72 |
+| 2026-11-18 11:15 | coin-cap | cap15-cash-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +6415.8% | 29.0% | 2.30 |
+| 2026-11-18 11:15 | coin-cap | cap15-rest-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +7234.4% | 29.0% | 2.82 |
+| 2026-11-18 11:15 | coin-cap | cap20-cash-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.07 | +10615.8% | 29.0% | 2.49 |
+| 2026-11-18 11:15 | coin-cap | cap20-rest-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.08 | +11525.2% | 29.0% | 2.90 |
+| 2026-11-18 11:15 | coin-cap | cap25-cash-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +12774.3% | 29.0% | 2.61 |
+| 2026-11-18 11:15 | coin-cap | cap25-rest-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +13342.9% | 29.0% | 2.83 |
+| 2026-11-18 11:15 | coin-cap | cap-wf-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +9867.8% | 29.0% | 2.30 |
+| 2026-11-18 11:19 | coin-cap | cap-wf coin years reread | robustness | train | 2013-01-01 | 2025-11-09 | 1.44 | +1796.6% | 27.2% | 2.30 |
+| 2026-11-18 19:07 | coin-cap-2 | TS twin, extended coin book (all coins, 2013 on) | baseline | train | 2013-02-10 | 2025-11-09 | 1.14 | +21116.3% | 83.2% | 4.38 |
+| 2026-11-18 19:07 | coin-cap-2 | stop-0.25, extended coin book | robustness | train | 2013-02-10 | 2025-11-09 | 1.34 | +9685.3% | 37.0% | 5.23 |
+| 2026-11-18 19:07 | coin-cap-2 | cap matched cost f*=0.663, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.15 | +6037.3% | 66.4% | 2.90 |
+| 2026-11-18 19:07 | coin-cap-2 | cap matched time f_time=0.311, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.17 | +818.0% | 37.5% | 1.36 |
+| 2026-11-18 19:19 | coin-cap-3 | stop-0.25-d, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.41 | +123002.3% | 65.8% | 9.60 |
+| 2026-11-18 19:19 | coin-cap-3 | stop-0.25-dx, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.46 | +129969.1% | 68.6% | 6.08 |
+| 2026-11-18 19:19 | coin-cap-3 | stop-0.25-d, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.34 | +78935.0% | 67.3% | 9.60 |
+| 2026-11-18 19:19 | coin-cap-3 | stop-0.25-dx, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.41 | +96112.4% | 70.0% | 6.08 |
+| 2026-11-18 19:19 | coin-cap-3 | stop-0.25 weekly, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.32 | +90470.3% | 68.6% | 4.16 |
+| 2026-11-18 19:19 | coin-cap-3 | TS twin, extended coin book, 2x cost | baseline | train | 2013-02-10 | 2025-11-09 | 1.21 | +258381.9% | 83.8% | 3.48 |
+| 2026-11-18 22:11 | coin-cap-4 | cap25+stop | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +7620.3% | 28.9% | 3.60 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25 | variant | train | 1994-02-01 | 2025-11-09 | 1.12 | +12968.8% | 28.9% | 3.18 |
+| 2026-11-18 22:11 | coin-cap-4 | cap25+stop-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +6960.5% | 29.0% | 3.58 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.10 | +12082.3% | 29.0% | 3.19 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.49 | +190837.6% | 64.1% | 3.55 |
+| 2026-11-18 22:11 | coin-cap-4 | pstop-0.25, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.46 | +163343.9% | 64.1% | 3.55 |
+| 2026-11-18 22:41 | stop-reentry | stop-cool-13 | variant | train | 1994-02-01 | 2025-11-09 | 1.04 | +5969.5% | 28.9% | 2.79 |
+| 2026-11-18 22:41 | stop-reentry | stop-cool-13-2xcost | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +5623.9% | 29.0% | 2.79 |
+| 2026-11-18 22:41 | stop-reentry | stop-cool-13, extended coin book | variant | train | 2013-02-10 | 2025-11-09 | 1.41 | +98643.5% | 65.9% | 2.83 |
+| 2026-11-18 22:41 | stop-reentry | stop-cool-13, extended coin book, 2x cost | robustness | train | 2013-02-10 | 2025-11-09 | 1.39 | +86869.4% | 66.1% | 2.83 |
