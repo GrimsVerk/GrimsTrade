@@ -492,6 +492,12 @@
     Deadline: B3 `turn-of-year-losers@1` freeze needs a yes before 2026-11-30 (default no,
     8% power). fix-2 is #122. ~03:27 UTC `wide-14` started (W, <- wide-13): earthquake ->
     country-ETF gate with many episodes, corrected placebo rule.
+  - DONE `weather-2` (draft #117 -> weather-1): CPC 6-10/8-14 outlook shapefiles are keyless
+    (13 train winters 2012-13..2024-25; issue ~3 pm ET). Gas-weighted cold-outlook revision
+    -> UNG open-to-close next session: t -0.68 (wrong sign), rank 36/41 vs winter-swap
+    placebos; halves both negative. The forecast moves gas BEFORE the open (close -> next open
+    t 7.9, rank 1/41, not tradable on daily bars); nothing after. 1 `screen` row. Weather line
+    CLOSED (only intraday timing left, untestable on daily bars).
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
