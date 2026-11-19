@@ -1,5 +1,16 @@
 # Next steps
 
+## bear-legs (in progress 2026-11-19 night, branch `bear-legs` -> `fast-reentry-2`)
+
+Descriptive, no pick. Card `research/cards/bear-legs.md` (pushed before any number). Chain:
+(1) catalogue multi-leg bears in the US 50 + non-US 19 effective falls (legs, rallies, signals
+at rally tops); (2) can a bear-market rally be told from the bottom at the time (8 observables,
+AUC, cluster bootstrap, block-bootstrap placebo); (3) one-screen note `research/bear-legs.md`.
+Code `research/lib/bearlegs.py`, tables `research/results/bear-legs.md`. No `tries.md` rows
+(card says why). Rerun needs insure-2's setup (saved trend-1926 runs, macro.local.json, cache).
+
+- Doing: step 1 code.
+
 ## fast-reentry-2 (done 2026-11-18 night, branch `fast-reentry-2` -> `fast-reentry`, draft PR #96)
 
 Card `research/cards/fast-reentry-2.md` (pushed before any number), code
