@@ -37,3 +37,23 @@ def test_a_dividend_on_units_sold_to_fund_a_waiting_buy_is_spent_by_that_buy() -
     assert [f.time for f in btc] == [at(4, 0, 0)]
     assert res.positions["BTC"] == pytest.approx(101.0)  # 10,000 from the sale + 100 paid
     assert res.cash == pytest.approx(0.0, abs=1e-6)
+
+
+def test_a_buy_waiting_for_cash_pays_the_fee_tier_of_the_open_it_fills_at() -> None:
+    """G2 x crypto fee tiers (#32). In and out of BTC (about 19,800 USD of crypto volume), then
+    SPY, then back to BTC: that buy finds no cash at Thursday 00:00 and waits for the SPY sale.
+    At Friday's open it pays the 0.38% tier of the volume before that open, and the fee is in its
+    sizing, so cash never goes below zero."""
+    hist: History = {"SPY": flat(12, 100.0, weekdays_only=True), "BTC": flat(12, 100.0)}
+    decisions = [
+        Decision(at(0), {"BTC": 1.0}),
+        Decision(at(1), {"SPY": 1.0}),
+        Decision(at(2), {"BTC": 1.0}),
+    ]
+    res = gym.simulate(decisions, hist)
+    btc = [f for f in res.fills if f.symbol == "BTC"]
+    assert [f.time for f in btc] == [at(1, 0, 0), at(2, 0, 0), at(4, 0, 0)]
+    rates = [round(f.fee / abs(f.qty * f.price), 4) for f in btc]
+    assert rates == [0.0080, 0.0060, 0.0038]
+    assert res.cash >= -1e-9
+    assert res.positions["SPY"] == 0
