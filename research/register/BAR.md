@@ -43,6 +43,10 @@ A card on other data or another comparator uses its own SE with the z column.
 
 **The bar for a new pick: N = 486 effectively independent trials (measured rho 0.53 (A.3, at most 10 per family)): z >= 4.69, an edge over `tsmom12` of +0.30 (close rule) to +0.56 (far rule) on the primary test; Bonferroni p <= 1.0e-04.**
 
+The measured count is a range, not one number: 12 (ONC 2 clusters in 178, scaled to N) to 486 (measured rho 0.53 (A.3, at most 10 per family)) effectively independent trials. The bar takes the cautious end. At the other end it would be z >= 3.29 (+0.21 close rule), so a result with z between 3.29 and 4.69 is one where the counting method decides (review-2, section 1b). The close and far SEs stand for rules correlated about
+0.93 and 0.77 with `tsmom12`; a less correlated rule has a larger SE (about 0.25 if
+uncorrelated) and uses the z column (review-2, section 1a).
+
 ## How many independent trials (measured)
 
 From `research/register/trials.json` and `research/register/moments.jsonl`, written by
@@ -59,7 +63,7 @@ Correlation sample: 178 distinct selectable or live return series that cover eve
 | Average pairwise correlation | 0.53 (median 0.46) | N_eff = rho + (1 - rho) N, appendix A.3 of Bailey and Lopez de Prado (2014) |
 | ONC clusters | 2 of 178 | Lopez de Prado and Lewis (2019), sections 8.1-8.2: k-means on sqrt((1 - rho) / 2), best mean/std of silhouettes, recursive re-clustering |
 | Eigenvalue participation ratio | 2.6 of 178 | (sum l)^2 / sum l^2, cross-check only |
-| Variance of the clusters' annual Sharpes | 0.136 | inverse-variance portfolio per cluster (8.2: minimum variance; register-3) |
+| Variance of the clusters' annual Sharpes | 0.136 | inverse-variance portfolio per cluster (8.2: minimum variance; register-3); the variance of 2 numbers, so rough |
 | Check, window 1994-2025 | rho 0.69, 2 clusters of 118 | same methods |
 
 The sample is the part of the register whose returns could be rebuilt; the ONC count is
@@ -74,7 +78,7 @@ At N = 486. Edge over `tsmom12`: the SEs above are for the primary test's 1,657 
 `tsmom12` assumed). Against zero: annual Sharpe for a deflated Sharpe of 0.95 on weekly
 returns (Bailey and Lopez de Prado 2014, eq. 2 with skew and kurtosis), trials' Sharpes
 spread with variance 0.136 (the larger of the clusters' and the selectable
-variants' spread).
+variants' spread). With 2 clusters the clusters' variance rests on 2 numbers, so the against-zero columns are rough (review-2, section 1b).
 
 | Years | Weeks | Edge, close rule | Edge, far rule | Against zero: normal | median shape | fat tail (p10 skew, p90 kurtosis) |
 |---:|---:|---:|---:|---:|---:|---:|

@@ -550,6 +550,24 @@ def render(s: Summary) -> str:
     return "\n".join(out) + "\n"
 
 
+def _range_note(s: Summary, m: Measured) -> list[str]:
+    """register-6 (review-2, section 1b): the measured count is a range; the bar takes its
+    cautious end. Also the correlation the close/far SEs stand for."""
+    lo, hi = sorted(m.rows_for(s.n)[:2], key=lambda r: r[1])
+    blo, bhi = bar_row(*lo), bar_row(*hi)
+    return [
+        f"The measured count is a range, not one number: {_n(blo.n)} ({blo.label}) to "
+        f"{_n(bhi.n)} ({bhi.label}) effectively independent trials. The bar takes the "
+        f"cautious end. At the other end it would be z >= {blo.z_dsr:.2f} "
+        f"(+{blo.z_dsr * SE_CLOSE:.2f} close rule), so a result with z between "
+        f"{blo.z_dsr:.2f} and {bhi.z_dsr:.2f} is one where the counting method decides "
+        "(review-2, section 1b). The close and far SEs stand for rules correlated about",
+        "0.93 and 0.77 with `tsmom12`; a less correlated rule has a larger SE (about 0.25 if",
+        "uncorrelated) and uses the z column (review-2, section 1a).",
+        "",
+    ]
+
+
 def render_measured(s: Summary, m: Measured) -> list[str]:
     head = s.headline()
     a, b = m.window
@@ -559,6 +577,7 @@ def render_measured(s: Summary, m: Measured) -> list[str]:
         f"+{head.z_dsr * SE_CLOSE:.2f} (close rule) to +{head.z_dsr * SE_FAR:.2f} (far rule) on "
         f"the primary test; Bonferroni p <= {head.p_bonferroni:.1e}.**",
         "",
+        *_range_note(s, m),
         "## How many independent trials (measured)",
         "",
         f"From `{TRIALS.as_posix()}` and `{MOMENTS.as_posix()}`, written by",
@@ -599,7 +618,8 @@ def render_measured(s: Summary, m: Measured) -> list[str]:
     if m.cluster_var is not None:
         out.append(
             f"| Variance of the clusters' annual Sharpes | {m.cluster_var:.3f} | "
-            "inverse-variance portfolio per cluster (8.2: minimum variance; register-3) |"
+            "inverse-variance portfolio per cluster (8.2: minimum variance; register-3); "
+            f"the variance of {m.onc_k} numbers, so rough |"
         )
     if m.check:
         name, cm, crho, ck = m.check
@@ -628,9 +648,15 @@ def render_measured(s: Summary, m: Measured) -> list[str]:
     v = max((x for x in (m.cluster_var, s.v_selectable) if x is not None), default=None)
     if v is None:
         return [*out, "spread unknown: no table.", ""]
+    rough = (
+        f" With {m.onc_k} clusters the clusters' variance rests on {m.onc_k} numbers, so the"
+        " against-zero columns are rough (review-2, section 1b)."
+        if m.cluster_var is not None and v == m.cluster_var
+        else ""
+    )
     out += [
         f"spread with variance {v:.3f} (the larger of the clusters' and the selectable",
-        "variants' spread).",
+        "variants' spread)." + rough,
         "",
         "| Years | Weeks | Edge, close rule | Edge, far rule | Against zero: normal | "
         "median shape | fat tail (p10 skew, p90 kurtosis) |",
