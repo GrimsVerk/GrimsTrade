@@ -215,7 +215,73 @@ an edge.
 
 ## 4. Live track records (survey-5 #78, survey-6 #91)
 
-(pending)
+**Verdict: the qualitative findings hold. `tsmom12` tied holding after 2009, and no live
+family beat its plain holding after fees. The two decay figures are weaker than their wording:
+"80% paper-to-live decay" is one pair over 16 years and is mostly the effect fading, not the
+cost of going live. "A median 8% kept" mixes unlike measures. The effect itself kept about
+28%.**
+
+### 4a. `tsmom12` = holding after 2009: holds (recomputed)
+
+From the committed weekly returns (`research/register/returns/baselines.csv.gz`, zero-rate
+weekly Sharpe, so the levels differ from survey-5's monthly-above-bills numbers):
+2010-02..2025-10 `tsmom12` **1.36**, equal weight **1.34**; 1994-2009 0.72 against 0.45;
+2003-2025 1.21 against 1.22. So the tie after 2009 and "the lead is all from before 2010"
+reproduce. SUMMARY's "Sharpe 1.11 each" (survey-5, monthly above bills) holds.
+
+### 4b. "~80% paper-to-live decay" (survey-5): holds as arithmetic, overstated as a measure (low-medium)
+
+`research/survey-5.md` (branch `survey-5`), step 2 point 3: h = 1 - 0.29 / 1.41. The 1.41 is
+the published factor's Sharpe **inside its paper sample** (1985-2009, today's rebuilt
+version). The 0.29 is one live fund from the same manager over 2010-2025. The lane splits it
+correctly: the paper factor itself fell to 0.35 in 2010-2025 (25% kept), and the live fund
+kept 83% of the factor in the same months. So about three quarters of the "decay" is the
+effect's own post-sample decade, which was a known weak one for trend. Only about a sixth is
+fees and implementation. With 16 years the SE of each live Sharpe is about 0.25, so the
+factor's 25% "kept" has a 90% range of roughly -5% to +55%. Also, `tsmom12` correlates
+**0.09** with that factor and 0.17 with the trend funds (same file), so the figure does not
+transfer to `tsmom12`. The lane says so ("the haircut belongs on the trend edge"), but
+`pr-map.md` line 59 and the step-3 "expected live Sharpe 0.21" still carry the 80%. Fix:
+describe it as "one same-manager pair: the published effect kept about a quarter after its
+sample (wide range), and the live fund lost a further sixth to costs". Drop the 0.21 live
+Sharpe projection for `tsmom12`, which the lane's own correlation of 0.09 contradicts.
+
+### 4c. "Published backtests kept a median 8% of their paper result" (survey-6): mixes measures (medium)
+
+`research/survey-6.md` (branch `survey-6`), "Paper to live" table. The "Kept" column divides
+unlike things by the in-sample paper Sharpe of a **long-short** factor:
+
+- For the six long-only families it uses the **information ratio of a long-only fund against
+  its index**. Even with no decay at all, that ratio is the factor's Sharpe times the
+  correlation of the fund's active return with the factor (well below 1), less fees. So the
+  measure is biased low by construction.
+- Four of the 11 entries use a stand-in or a different measure: dividend against a carry
+  paper's 0.36 (no dividend paper), FX carry against a long-only emerging-currency basket (the
+  lane: "weak proxy"), multi-factor taken as 31% (long-short) though the long-only reading is
+  <0, and option writing and risk parity as gaps rather than Sharpes.
+- The median is sensitive to these choices. With multi-factor at its long-only <0, it is 4%;
+  as printed, 8%.
+
+The cleaner measure is in the same table: the **paper factor after publication**, same
+construction, today's data. Recomputed from the table's own numbers: value 0.12 / 0.55 = 22%,
+momentum 0.26 / 0.81 = 32%, low-vol (BAB) 0.42 / 0.78 = 54%, trend 0.35 / 1.41 = 25%,
+QMJ -0.03 / 0.58 = -5%, RMW 0.45 / 0.40 = 113%. **Median about 28%.** That is close to
+McLean-Pontiff's 42% kept after publication. So the factors decayed by about 70%, and long-only
+funds, after fees, delivered almost none of what was left. Both are worth knowing; "8%"
+blends them. Fix in SUMMARY: "the published effects kept about a quarter after publication;
+long-only funds built on them matched their index after fees".
+
+### 4d. Source handling: acceptable, flagged as it should be
+
+- Every literature haircut the lanes lean on is tagged `[secondary]`: the bank-index 73%, the
+  Harvey-Liu non-linear haircut, the backtest-cohort study. Their papers were not read. The
+  Harvey-Liu "at most ~25% above Sharpe 1.0" depends on the number of tests assumed, so it is
+  not a general ceiling. Neither lane rests a conclusion on these; they are context.
+- Survivorship is stated in both (live panels are survivors only, so they flatter the
+  families). The declared slips (four 1985 rows; one 1963 row; a Bonferroni t typo 2.94 vs
+  2.71) are immaterial.
+- Nothing past 2025-10 was read (both cards). Privacy: fund tickers and published papers
+  only; nothing personal.
 
 ## 5. Gates (wide-9 gate-null #93, wide-11 #109, weather-1 #116)
 
