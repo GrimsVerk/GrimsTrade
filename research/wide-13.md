@@ -193,6 +193,146 @@ t below -3. Chance of a pass: 1%.
 family bar p < 0.10 / 84 = 0.00119 and the register's bar above, with z = (t - placebo median) /
 placebo sd. **On a fail:** dead by the gate, no card, no strategy; one `screen` row each.
 
-## What came out
+## What came out (one dry run, then one real run, 2026-11-19)
 
-(Filled after the runs.)
+Dry run first (`DRY=1`, counts only): GPR 14,924 days 1985-01-01 .. 2025-11-10 (nothing later
+read), 2,028 weekly acts z; 1,084 gate Mondays, every one with a z; 1,083 rows each for GLD, TLT
+and SPY (the last Monday's exit falls after 2025-11-10); the 40 placebos keep 986 to 1,084 dose
+weeks. FDIC: 4,113 failures read (none after 2025-11-10), 1,871 dose weeks from 1990; 1,344 gate
+Fridays, **268 with a failure**; 1,344 XLF and SPY rows with outcome and all four controls, 1,158
+for TLT and IEF (from 2002-07); placebos keep 1,246 to 1,344 dose weeks. Then one real run each,
+as carded. Tables: `results/act-haven.md`, `results/failure-premium.md`.
+
+### W25 `act-haven`: fails
+
+**One unit of acts z goes with -0.137% on GLD and TLT over the next 4 weeks (t -1.02, 2,166
+rows, 2005-01 .. 2025-10): the wrong sign; the true t ranks 21 of 41 (empirical one-sided p
+0.51). Dead by the gate: no card, no strategy.** Held-out year untouched.
+
+| Cut (4-week return, GLD+TLT unless named) | b, % per unit of z | t | Rows |
+|---|---:|---:|---:|
+| **Gate: acts z, no controls** | **-0.137** | **-1.02** | 2,166 |
+| Threats z instead | -0.229 | -1.69 | 2,166 |
+| Total index z instead | -0.225 | -1.69 | 2,166 |
+| GLD / TLT alone | -0.118 / -0.156 | -0.70 / -0.95 | 1,083 each |
+| SPY alone (shown only) | -0.115 | -0.64 | 1,083 |
+| Post-paper years 2020-01 .. 2025-10 | -0.163 | -0.55 | 600 |
+| With past 4/13/26/52-week returns | -0.135 | -1.00 | 2,120 |
+| 1-week horizon | +0.001 | +0.01 | 2,168 |
+
+- **No safe-haven premium after geopolitical acts**, not in the full span, not after the paper,
+  not for either asset alone. Every 4-week cut is negative; the theory point in the prior (a
+  safe asset is insurance and should earn *less* when risk is high) fits the sign, but nothing
+  reaches |t| 1.7, and the threats cell (the story said "priced on the day", so near zero) is
+  no different from the acts cell.
+- **The placebo null is centred below zero:** median placebo t -0.96, so the true t is exactly
+  ordinary (z against the placebo scale -0.05). Shifted GPR calendars "predict" lower safe-haven
+  returns about as well as the true one: what the index shares with GLD/TLT is slow regimes, not
+  a weekly dose.
+- **F2 on paper, a slow link in the data:** acts z is lower after GLD/TLT have rallied over 26
+  and 52 weeks (slopes -1.32 and -0.94 z per unit of log return, t -2.96 and -2.81; at 4 weeks
+  0.00). Newspapers do not read gold prices; the link is coincident regimes (the 2022 war
+  started in the year bonds fell most). The controls cell shows it does not move b.
+- **Null width: SD of placebo t 1.11, 12% with |t| >= 2**, quantiles 5/50/95% -2.37 / -0.96 /
+  +0.99, extremes -2.74 / +1.68.
+- My guess (t -1 to +1.5, middle rank, placebo sd 1.0-1.4, feedback weak, pass 1%) held on t,
+  rank and width; the feedback guess was wrong (|t| near 3 at 26-52 weeks).
+
+### W26 `failure-premium`: fails
+
+**One unit of ln(1 + failed assets) goes with -0.059% on XLF over the next 4 weeks, controls
+for XLF's past 4/13/26/52-week returns (t -0.48, 1,344 weeks, 2000-01 .. 2025-10): the wrong
+sign; the true t ranks 21 of 41 (empirical one-sided p 0.51). Dead by the gate: no card, no
+strategy.** Held-out year untouched.
+
+| Cut (4-week return from the Monday close after the failure week) | b, % per unit of x | t | Rows |
+|---|---:|---:|---:|
+| **Gate: XLF, four controls** | **-0.059** | **-0.48** | 1,344 |
+| Without the controls | -0.061 | -0.45 | 1,344 |
+| Failure-week dummy instead of x (% per failure week) | -0.201 | -0.30 | 1,344 |
+| Year 2023 dropped | -0.073 | -0.57 | 1,292 |
+| SPY instead | -0.023 | -0.25 | 1,344 |
+| TLT / IEF instead (idea 3, F1 fails; shown only) | +0.122 / +0.056 | +1.72 / +1.68 | 1,158 each |
+| Monday reaction, XLF (Friday close to Monday close) | -0.071 | -1.59 | 1,344 |
+| 1-week horizon | +0.037 | +0.61 | 1,344 |
+
+- **No distress premium in bank equity after failures.** A failure week of median size changes
+  XLF's next 4 weeks by about -0.3%, t -0.5; neither the dummy nor the cut without SVB's spring
+  changes that.
+- **F2 confirmed, and it shapes the null:** failures follow bank-stock falls (x on XLF's past
+  52-week return: slope -2.37, t -3.87; 4-26 weeks t -1.2 to -1.5), so the *future-dose* placebos
+  (negative k: next year's failures against this month's XLF return) are strongly negative
+  (down to t -4.37 at k = -91) while past-dose shifts sit near +0.6. The null is wide and skewed:
+  **SD of placebo t 1.63, 25% with |t| >= 2**, quantiles 5/50/95% -3.26 / -0.71 / +1.21,
+  extremes -4.37 / +1.56; the true t is ordinary (z +0.14).
+- **The TLT and IEF cells (t +1.72 / +1.68) are noted only, not a lead:** idea 3's flight to
+  quality fails F1 (the failure is public before the window), the cells are 2 of 8 shown in a
+  design whose null has SD 1.63, and by `gate-null.md` step 6 they would need their own placebo
+  before anyone writes "lead". wide-13 does not run it (a second look after a fail is a
+  forking-paths pick).
+- My guess (t -1.5 to +1.5, middle rank, placebo sd 1.2-1.8, feedback below -3 at long horizons,
+  pass 1%) held on all four counts; the feedback was below -3 only at 52 weeks.
+
+### Card note, 2026-11-19 03:15 UTC, written AFTER both gates had run: review-2's flaw in the null
+
+While this write-up was being finished, the night lead relayed review-2 (draft PR #119,
+`research/reviews/review-2.md` on branch `review-2`) on `gate-null.md`: (1) placebos that move
+the dose *later* than the true one can overlap the outcome window and lean one way (W22's showed
+it), so placebos should use only earlier doses (or year shifts / a swap design); (2) step 7,
+stretching a 40-placebo rank into a z read at p 1e-4, is invalid; (3) a gate with about ten
+independent episodes or fewer can only kill an idea, never pass it. Both gates had already run
+as carded; the card is not changed. Both readings are reported:
+
+| Gate | True t | Carded null: rank of 41 (p) | Earlier-dose placebos only (k = +27 .. +103, 20): rank of 21 (p) | Earlier-only null: SD, median, 5%-share with \|t\| >= 2, range |
+|---|---:|---|---|---|
+| W25 `act-haven` | -1.02 | 21 (0.51) | 16 (0.76) | 0.97, -0.26, 5%, -2.36 .. +0.98 |
+| W26 `failure-premium` | -0.48 | 21 (0.51) | 21 (1.00): every earlier-dose placebo is above it | 0.48, +0.61, 0%, -0.18 .. +1.56 |
+
+(Read from the stored placebo tables in `results/act-haven.md` and `results/failure-premium.md`;
+no rerun.) **Neither verdict changes: both t are of the wrong sign, so no null can make them
+pass.** What changes is the null's shape: for W26 the later-dose placebos (next year's failures
+against this month's XLF) carried all the wide negative tail (to -4.37), exactly review-2's
+point; the earlier-dose null alone is narrow (SD 0.48) and centred at +0.61. For W25 the
+earlier-dose null is near normal.
+
+Labels under point (3): **W26 is a kill-only gate** (its 268 failure weeks sit in about two
+episodes, 2008-2012 and 2023, plus scattered single failures); **W25 is kill-only too** to be
+safe (the acts index is dominated by perhaps 10-15 war and terror episodes since 2005). Both
+results are kills, which is what such gates can deliver. Point (2): the card's "on a pass"
+reading (z = (t - placebo median) / placebo sd at p < 0.00119 and 1.0e-4) was step 7 and is
+withdrawn; it was never used, since neither gate passed. The z values printed in the result
+files are descriptive only.
+
+## Family count and status
+
+Two mechanisms added and closed by their gates (W25 `act-haven`, W26 `failure-premium`; W numbers
+follow wide-12's W24; if a parallel lane used them, the names decide).
+
+**Count, reconciled with the branches visible on 2026-11-19 03:05 UTC:** wide-12 (branch
+`wide-12`) 81 mechanisms, 18 tested by a strategy, 16 gates; weather-1 (branch `weather-1`)
+gated one more without a W number (`hdd-gas`, failed, one `screen` row): 82 and 17 gates;
+weather-2 (branch `weather-2`) has carded a CPC outlook-revision gate but posted no result yet,
+so it is not counted here. **Union count: 84 mechanisms (82 + W25 + W26), 18 tested by a
+strategy, none passed; 19 gates, all failed.** (The lead's "~80 / 19 tested" reads as gates, not
+strategy tests: no branch has a 19th strategy test.) The next strategy test is read at
+**p < 0.10 / 84 = 0.00119** (family) and the register's bar (N_eff 486: z >= 4.69, +0.30 to
++0.56 Sharpe over `tsmom12`, Bonferroni p <= 1.0e-4). Published effects after publication: still
+0 for 10 (neither gate tested a published claim: the GPR index is published, the forward
+safe-haven cut is not; the failure premium has no literature found).
+
+Rows logged in `tries.md`: 2 (`act-haven`, `failure-premium`, kind `screen`, as weather-1 did).
+
+## Next
+
+1. **data-wide-1's sources are spent for now.** After this run no idea on the four loaded sources
+   scores 5 (2: 4, 3 and 6: filtered, 4: 3 and W23 in other words, 5: 4 and W15 in other words);
+   the unloaded ones (9-11) score 4 and carry data limits (no publication dates for hacks,
+   under 7 years for chokepoints, IMF gold never queried). None is worth a gate by wide-12's
+   threshold.
+2. **The MOF daily detail is not a tradable dose** (quarterly publication); only the monthly
+   total is, and its channel died as W23. Its exact quarterly publication dates are still
+   unchecked; nobody should build on `mof_daily_available_on` without checking them.
+3. Both nulls again show the pattern of W21-W23: a dose that shares slow regimes with the asset
+   (GPR) or follows its price at 6-12 months (failures) makes future-dose placebos lean one way.
+   A gate whose dose has a known 52-week feedback should expect a skewed null and say so in the
+   card (W26's did).
