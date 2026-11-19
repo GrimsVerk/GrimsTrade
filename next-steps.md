@@ -392,6 +392,12 @@
     the paper's years; hedging follows rallies by 6-12 months. Scoring filters F1 (not announced)
     and F2 (not price-driven) added before any data look; only C3 and `crypto-carry` (needs
     perps) pass both. Count 79 / 18; 14 gates, all failed. 0 rows.
+  - DONE `register-4` (draft #108 -> register-3): committed weekly-returns store
+    `research/register/returns/` (1,178 series, 64 gzip CSVs, 3.9 MB); BAR.md rebuilds byte for
+    byte on a clean checkout (no local caches). Bar unchanged (eff. N 486, +0.30/+0.56).
+    `research/register/README.md` says how lanes add returns. Next: export tonight's newer lanes'
+    curves, then regenerate.
+  - 00:37 UTC: all lanes done; 5h at 0.95 line. Resume after the 02:30 reset from the queue.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
