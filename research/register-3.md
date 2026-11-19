@@ -54,3 +54,43 @@ lanes added to the local list, then the register again (BAR.md reads the new
 `trials.json`). A short note of what changed: tries, N, rows with a shape, sample, N_eff, bar.
 
 Tries rows added by this lane: none planned (no new configuration is backtested).
+
+## Results (2026-11-19)
+
+### 1. Shape logged by the harness
+
+Built as on the card: `src/grimstrade/tryshape.py`, the hook in `research/lib/harness.py`
+(`_log`, three lines), `register.logged_shapes`, source `logged` in `research/register2.py`.
+Tests: `tests/test_tryshape.py` (hand values for a two-point series, append-only file, the
+harness's `_log` end to end with numpy: `uv run --with numpy pytest`), two in
+`tests/test_register.py`. The hook commit (`33f3b4a`) was cherry-picked onto `summary-2` in a
+scratch checkout: applies cleanly, its tests pass. No lane has logged a shape yet (0 rows):
+it starts when the research base carries that commit.
+
+### 2. Family-capped sample (same register and series as register-2: N 1,027)
+
+The uncapped sample has 294 series from 57 families; the five largest hold 97, 27, 20, 12 and
+12. Capped at 10 per family: 175 series.
+
+| Sample (2012-2025 window) | Series | rho | N_eff (A.3) | ONC K | Close edge | Far edge |
+|---|---:|---:|---:|---:|---:|---:|
+| uncapped (register-2) | 294 | 0.58 | 433 | 2 | +0.30 | +0.56 |
+| **at most 10 per family** | 175 | **0.52** | **490** | 2 | **+0.30** | **+0.56** |
+| at most 5 | 140 | 0.56 | 450 | 2 | +0.30 | +0.56 |
+| at most 20 | 210 | 0.52 | 495 | 2 | +0.31 | +0.56 |
+| one per family | 57 | 0.69 | 320 | 2 | +0.30 | +0.55 |
+| uncapped, pairs weighted by register share | 294 | 0.49 | 524 | - | +0.31 | +0.57 |
+
+(Edges at three decimals: 433 gives z 4.654, +0.303 / +0.559; 490 gives z 4.691, +0.305 /
++0.563; Bonferroni p from 1.2e-4 to 1.0e-4.) Check window 1994-2025, capped: 115 series, rho
+0.68, 2 clusters. ONC still finds 2 clusters (112 and 63); scaled, 11.7 trials: A.3 stays the
+cautious estimate and sets the bar.
+
+Finding: capping raises N_eff from 433 to 490 (+13%), not lowers it. register-2's note guessed
+the big family lowered the average; it was the other way round: the 97 trend-tuning series
+correlate highly with each other, so their many within-family pairs pushed the average up.
+Weighting every family by its share of the register gives 0.49 (N 524). The edge needed over
+`tsmom12` moves by 0.002-0.004: E[max] grows with log N, so any N between 320 and 524 gives
++0.30 (close) / +0.55-0.57 (far). The bar is settled by its order of magnitude, not by the
+sample. Only one per family moves rho much (0.69), and that pick lands mostly in the larger
+(non-crypto) cluster (48 of 57).
