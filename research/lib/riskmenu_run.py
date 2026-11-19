@@ -171,11 +171,11 @@ def worst_12m(eq: np.ndarray) -> float:
 
 
 def svg_map(items: list[Item], m: dict[str, dict[str, float]]) -> str:
-    W, H, L, R, T, B = 760, 500, 70, 210, 50, 60
+    W, H, L, R, T, B = 720, 500, 70, 80, 50, 60
     xs = [m[i.key]["mdd"] * 100 for i in items]
     ys = [m[i.key]["cagr"] * 100 for i in items]
     x1 = 5 * math.ceil(max(xs) / 5 + 0.2)
-    y0, y1 = 2 * math.floor(min(ys) / 2 - 0.5), 2 * math.ceil(max(ys) / 2 + 0.5)
+    y0, y1 = 4 * math.floor(min(ys) / 4 - 0.1), 4 * math.ceil(max(ys) / 4 + 0.1)
     y0 = min(y0, 0)
     px = lambda x: L + (W - L - R) * x / x1  # noqa: E731
     py = lambda y: T + (H - T - B) * (1 - (y - y0) / (y1 - y0))  # noqa: E731
@@ -200,7 +200,7 @@ def svg_map(items: list[Item], m: dict[str, dict[str, float]]) -> str:
                  'stroke="#e5e7eb"/>')  # fmt: skip
         o.append(f'<text x="{px(gx):.1f}" y="{H - B + 16}" text-anchor="middle" '
                  f'fill="#444">{gx}%</text>')  # fmt: skip
-    for gy in range(int(y0), int(y1) + 1, 2):
+    for gy in range(int(y0), int(y1) + 1, 4):
         o.append(f'<line x1="{L}" y1="{py(gy):.1f}" x2="{W - R}" y2="{py(gy):.1f}" '
                  'stroke="#e5e7eb"/>')  # fmt: skip
         o.append(f'<text x="{L - 8}" y="{py(gy) + 4:.1f}" text-anchor="end" '
@@ -220,9 +220,9 @@ def svg_map(items: list[Item], m: dict[str, dict[str, float]]) -> str:
         placed.append((cx, ly))
         o.append(f'<text x="{cx + 9:.1f}" y="{ly:.1f}" fill="#111">{it.key}</text>')
     for k, g in enumerate(col):
-        yy = T + 10 + 20 * k
-        o.append(f'<circle cx="{W - R + 22}" cy="{yy}" r="5.5" fill="{col[g]}"/>')
-        o.append(f'<text x="{W - R + 32}" y="{yy + 4}" fill="#111" font-size="11">'
+        yy = H - B - 90 + 20 * k
+        o.append(f'<circle cx="{W - R - 230}" cy="{yy}" r="5.5" fill="{col[g]}"/>')
+        o.append(f'<text x="{W - R - 220}" y="{yy + 4}" fill="#111" font-size="11">'
                  f"{lab[g]}</text>")  # fmt: skip
     o.append("</svg>")
     return "\n".join(o) + "\n"

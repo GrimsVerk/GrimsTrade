@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" width="760" height="500" font-family="sans-serif" font-size="12">
+<rect width="760" height="500" fill="#ffffff"/>
+<text x="70" y="24" font-size="15" font-weight="bold" fill="#111">Risk menu: growth a year against worst loss, 2007-04 to 2025-10</text>
+<text x="70" y="40" fill="#555">Total return, T-bill interest on cash, costs included. One history: no point is a proven edge.</text>
+<line x1="70.0" y1="50" x2="70.0" y2="440" stroke="#e5e7eb"/>
+<text x="70.0" y="456" text-anchor="middle" fill="#444">0%</text>
+<line x1="118.0" y1="50" x2="118.0" y2="440" stroke="#e5e7eb"/>
+<text x="118.0" y="456" text-anchor="middle" fill="#444">5%</text>
+<line x1="166.0" y1="50" x2="166.0" y2="440" stroke="#e5e7eb"/>
+<text x="166.0" y="456" text-anchor="middle" fill="#444">10%</text>
+<line x1="214.0" y1="50" x2="214.0" y2="440" stroke="#e5e7eb"/>
+<text x="214.0" y="456" text-anchor="middle" fill="#444">15%</text>
+<line x1="262.0" y1="50" x2="262.0" y2="440" stroke="#e5e7eb"/>
+<text x="262.0" y="456" text-anchor="middle" fill="#444">20%</text>
+<line x1="310.0" y1="50" x2="310.0" y2="440" stroke="#e5e7eb"/>
+<text x="310.0" y="456" text-anchor="middle" fill="#444">25%</text>
+<line x1="358.0" y1="50" x2="358.0" y2="440" stroke="#e5e7eb"/>
+<text x="358.0" y="456" text-anchor="middle" fill="#444">30%</text>
+<line x1="406.0" y1="50" x2="406.0" y2="440" stroke="#e5e7eb"/>
+<text x="406.0" y="456" text-anchor="middle" fill="#444">35%</text>
+<line x1="454.0" y1="50" x2="454.0" y2="440" stroke="#e5e7eb"/>
+<text x="454.0" y="456" text-anchor="middle" fill="#444">40%</text>
+<line x1="502.0" y1="50" x2="502.0" y2="440" stroke="#e5e7eb"/>
+<text x="502.0" y="456" text-anchor="middle" fill="#444">45%</text>
+<line x1="550.0" y1="50" x2="550.0" y2="440" stroke="#e5e7eb"/>
+<text x="550.0" y="456" text-anchor="middle" fill="#444">50%</text>
+<line x1="70" y1="440.0" x2="550" y2="440.0" stroke="#e5e7eb"/>
+<text x="62" y="444.0" text-anchor="end" fill="#444">0%</text>
+<line x1="70" y1="414.0" x2="550" y2="414.0" stroke="#e5e7eb"/>
+<text x="62" y="418.0" text-anchor="end" fill="#444">2%</text>
+<line x1="70" y1="388.0" x2="550" y2="388.0" stroke="#e5e7eb"/>
+<text x="62" y="392.0" text-anchor="end" fill="#444">4%</text>
+<line x1="70" y1="362.0" x2="550" y2="362.0" stroke="#e5e7eb"/>
+<text x="62" y="366.0" text-anchor="end" fill="#444">6%</text>
+<line x1="70" y1="336.0" x2="550" y2="336.0" stroke="#e5e7eb"/>
+<text x="62" y="340.0" text-anchor="end" fill="#444">8%</text>
+<line x1="70" y1="310.0" x2="550" y2="310.0" stroke="#e5e7eb"/>
+<text x="62" y="314.0" text-anchor="end" fill="#444">10%</text>
+<line x1="70" y1="284.0" x2="550" y2="284.0" stroke="#e5e7eb"/>
+<text x="62" y="288.0" text-anchor="end" fill="#444">12%</text>
+<line x1="70" y1="258.0" x2="550" y2="258.0" stroke="#e5e7eb"/>
+<text x="62" y="262.0" text-anchor="end" fill="#444">14%</text>
+<line x1="70" y1="232.0" x2="550" y2="232.0" stroke="#e5e7eb"/>
+<text x="62" y="236.0" text-anchor="end" fill="#444">16%</text>
+<line x1="70" y1="206.0" x2="550" y2="206.0" stroke="#e5e7eb"/>
+<text x="62" y="210.0" text-anchor="end" fill="#444">18%</text>
+<line x1="70" y1="180.0" x2="550" y2="180.0" stroke="#e5e7eb"/>
+<text x="62" y="184.0" text-anchor="end" fill="#444">20%</text>
+<line x1="70" y1="154.0" x2="550" y2="154.0" stroke="#e5e7eb"/>
+<text x="62" y="158.0" text-anchor="end" fill="#444">22%</text>
+<line x1="70" y1="128.0" x2="550" y2="128.0" stroke="#e5e7eb"/>
+<text x="62" y="132.0" text-anchor="end" fill="#444">24%</text>
+<line x1="70" y1="102.0" x2="550" y2="102.0" stroke="#e5e7eb"/>
+<text x="62" y="106.0" text-anchor="end" fill="#444">26%</text>
+<line x1="70" y1="76.0" x2="550" y2="76.0" stroke="#e5e7eb"/>
+<text x="62" y="80.0" text-anchor="end" fill="#444">28%</text>
+<line x1="70" y1="50.0" x2="550" y2="50.0" stroke="#e5e7eb"/>
+<text x="62" y="54.0" text-anchor="end" fill="#444">30%</text>
+<text x="310" y="482" text-anchor="middle" fill="#111">Worst loss (largest fall from a high)</text>
+<text x="18" y="245" text-anchor="middle" fill="#111" transform="rotate(-90 18 245)">Growth a year</text>
+<circle cx="521.5" cy="84.1" r="5.5" fill="#c2410c" stroke="#fff" stroke-width="1"/>
+<text x="530.5" y="88.1" fill="#111">hold six</text>
+<circle cx="412.1" cy="123.1" r="5.5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>
+<text x="421.1" y="127.1" fill="#111">tsmom12</text>
+<circle cx="376.0" cy="151.5" r="5.5" fill="#7c3aed" stroke="#fff" stroke-width="1"/>
+<text x="385.0" y="155.5" fill="#111">split 90%/10%</text>
+<circle cx="300.9" cy="208.9" r="5.5" fill="#7c3aed" stroke="#fff" stroke-width="1"/>
+<text x="309.9" y="212.9" fill="#111">split 70%/30%</text>
+<circle cx="306.2" cy="211.8" r="5.5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>
+<text x="315.2" y="228.8" fill="#111">tsmom12 70%</text>
+<circle cx="244.5" cy="232.7" r="5.5" fill="#047857" stroke="#fff" stroke-width="1"/>
+<text x="253.5" y="249.7" fill="#111">vt-own 70%</text>
+<circle cx="225.3" cy="266.9" r="5.5" fill="#7c3aed" stroke="#fff" stroke-width="1"/>
+<text x="234.3" y="270.9" fill="#111">split 50%/50%</text>
+<circle cx="359.8" cy="327.1" r="5.5" fill="#c2410c" stroke="#fff" stroke-width="1"/>
+<text x="368.8" y="331.1" fill="#111">60/40</text>
+<circle cx="147.5" cy="343.4" r="5.5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>
+<text x="156.5" y="347.4" fill="#111">tsmom12 26%</text>
+<circle cx="130.5" cy="352.6" r="5.5" fill="#047857" stroke="#fff" stroke-width="1"/>
+<text x="139.5" y="369.6" fill="#111">vt-own 26%</text>
+<circle cx="153.8" cy="352.8" r="5.5" fill="#7c3aed" stroke="#fff" stroke-width="1"/>
+<text x="162.8" y="382.8" fill="#111">equal-risk blend</text>
+<circle cx="572" cy="60" r="5.5" fill="#c2410c"/>
+<text x="582" y="64" fill="#111" font-size="11">plain holding</text>
+<circle cx="572" cy="80" r="5.5" fill="#1d4ed8"/>
+<text x="582" y="84" fill="#111" font-size="11">tsmom12 + T-bills, fixed share</text>
+<circle cx="572" cy="100" r="5.5" fill="#047857"/>
+<text x="582" y="104" fill="#111" font-size="11">tsmom12 + T-bills, own-vol target</text>
+<circle cx="572" cy="120" r="5.5" fill="#7c3aed"/>
+<text x="582" y="124" fill="#111" font-size="11">tsmom12 + wide long-short book</text>
+</svg>
