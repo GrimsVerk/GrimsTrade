@@ -1,5 +1,7 @@
 # Idea lab (M2)
 
+**One screen on every run, the leads and the dead ends: [`SUMMARY.md`](SUMMARY.md).**
+
 ## Plain-language summary
 
 Three research runs, night of 2026-11-12. **Neither the clever maths (run 1) nor machine
