@@ -320,3 +320,33 @@ p < 0.10, captures at least a third of rl-3's ceiling, finds 0.20, and neither "
 loses more than 0.025 Sharpe on planted noise). Gate rows are `control` rows. Passing the gate
 says the learner can find a signal of that size on that book; it says nothing about whether
 real inputs hold one.
+
+## Evolved-rule search tests (added 2026-11-18 01:50 UTC, run evo-1, before any evo-1 code or number)
+
+Everything above still applies. The full design is the card in `evo-1.md`; these are the rules a
+result is judged by.
+
+- **A search is not one try.** An automated search over rules (genetic programming here) logs
+  one `variant` row per walk-forward procedure, and one row of kind `search` stating how many
+  rules it evaluated. The data-snooping test (White's Reality Check, Hansen's SPA) is run over
+  every behaviourally different rule the search scored, not over the winners.
+- **Fidelity.** The search may use a faster scorer only if a test shows it stays within a stated
+  tolerance of `grimstrade.gym.simulate` on fixed rules. Every reported number of a walk-forward
+  procedure comes from replaying its decisions through `gym.simulate`.
+- **Walk-forward.** Rules are evolved on an expanding window and chosen by a rule fixed on the
+  card; a fit dated `D` uses no bar and no return dated `D` or later; the chosen rule trades the
+  next block. The out-of-sample series therefore includes the selection.
+- **Pass bar** as written in `evo-1.md`: the default bar on the out-of-sample series against
+  `tsmom12` (the bootstrap p multiplied by the number of procedures), not behind `tsmom12` since
+  2003, SPA consistent p < 0.10, out-of-universe transfer of the chosen rules in 2 of 3 sets.
+- **Amended 2026-11-18 ~11:15 UTC, before any real-data number of evo-1:** a Reality Check or SPA
+  over the rules a search visited is not a valid correction for an adaptive search (the search's
+  selection is not in the test's reference set; in evo-1's toy noise worlds it rejected in 4 of
+  4 runs). It is reported, never binding. The binding test is a **full-search replay**: the whole
+  search, same settings, is rerun on worlds built from the train data with no edge left in them
+  (block-bootstrapped, zero-drift returns), and the real search's out-of-sample score must beat
+  the 95th percentile of the replays' best scores. Details in `evo-1.md`, "Bar 3, replaced".
+- **Controls first.** Synthetic worlds with no edge (shuffled, zero-drift returns) and with a
+  known rule's edge planted are run through the unchanged pipeline before the real data
+  ("Planted-signal controls" above). Grammar, budget and seeds are fixed on the card and are
+  never changed after a real-data number has been seen.
