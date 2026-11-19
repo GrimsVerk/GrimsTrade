@@ -1011,3 +1011,4 @@ Never edit or delete a row.
 | 2026-11-18 22:12 | extension-dose | ext-high | variant | train | 1994-02-01 | 2025-11-09 | 1.06 | +19956.0% | 35.8% | 5.96 |
 | 2026-11-18 22:12 | extension-dose | ext-low | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +19461.1% | 36.1% | 6.01 |
 | 2026-11-18 22:12 | extension-dose | ext-high@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.62 | +244.1% | 16.4% | 6.88 |
+| 2026-11-19 02:42 | hdd-gas | UNG next-week on HDD surprise (slope -0.036 pp/10DD, t -0.29, rank 19/41, gate fail) | screen | train | 2007-11-02 | 2025-03-28 | - | - | - | - |

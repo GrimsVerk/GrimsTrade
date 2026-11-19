@@ -117,6 +117,42 @@ is not read here.
   selectable), whatever the result.
 - Script: `research/lib/weather1_hdd.py`; output `research/results/hdd-gas.md`.
 
-## Result
+## Result (one run, 2026-11-19; table `results/hdd-gas.md`)
 
-(Filled in after the one run.)
+**Gate: fail on all three tests.** Slope -0.036 points per 10 degree days (t -0.29, 389
+weeks), the wrong sign; rank 19 of 41 among the winter-derangement placebos; halves +0.165
+(t 1.16, winters 2007-15) and -0.248 (t -1.14, 2016-24). The coldest fifth of weeks was
+followed by a mean UNG week of -1.24%, the warmest by -0.77% (UNG's mean week -1.05%: the
+roll drag). No strategy card. One `screen` row in `research/tries.md`. Held-out year untouched
+(weather cut at 2025-11-09, UNG fetched only to 2025-11-10).
+
+Placebo null: SD of t 1.12, 10% with |t| >= 2, 5/50/95% -1.90 / -0.32 / +1.53, extremes
+-2.53 / +2.37. Weekly non-overlapping weeks with a whole-winter permutation give a null close
+to N(0, 1), slightly wide.
+
+Deviation from the card, found in the dry run (before any statistic): a placebo week gets no
+dose when the other winter has no Friday within +-3 days of the same November-1 offset (first
+or last week of a season), so placebo samples have 382-389 weeks instead of 389. No effect on
+the verdict.
+
+What the shown cells say (noted only, none is a lead):
+- **The same-week check is weak**: UNG rose +0.23 points per 10 degree days in the dose week
+  itself (t 1.68). Realised weather moves the gas fund much less than its weekly 7.3% SD; the
+  market trades the forecast, so by the time the week is measured most of it is in the price.
+  That is the main reason a lagged realised anomaly carries nothing: the surprise that matters
+  is forecast revision, which keyless sources do not give historically.
+- UNG over 10 sessions: -0.08 (t -0.47). XLE next week +0.08 (t 1.44), same week +0.03
+  (t 0.51): energy equities do not trade on heating weather.
+
+**Verdict: the realised HDD surprise does not predict next-week natural gas returns in
+2007-2025.** The under-reaction story is dead in this form.
+
+## Next weather idea (not tested)
+
+The dose that matters is the forecast surprise, not the realised anomaly. A keyless version:
+CPC's 6-10 and 8-14 day outlooks are archived as probability maps (temperature tercile
+probabilities, issued daily); the change in the population-weighted cold probability from
+one issue to the next is a forecast revision that nobody schedules and that prices cannot
+cause (F1/F2 pass). Testing it needs a parser for the archived outlook files and their issue
+times, and the same winter-derangement null. Before that, check whether the archive goes back
+far enough (at least 2007) in a form that can be weighted by gas-heated homes.
