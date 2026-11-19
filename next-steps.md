@@ -382,6 +382,11 @@
     1.08 -> 1.04 (70%) vs `tsmom12` 0.94 (SE 0.18): noise; 2007-2025 1.31/1.32, still first.
     Menu order unchanged; menu rows corrected. Longest under water 1994-2025: holding the six
     2000-03..2011-04, `tsmom12` 2000-03..2005-12, own-vol 26% 2014-07..2015-10. 2 rows.
+  - DONE `breadth-screen` (draft #106 -> multi-signal): same 5 signals on 34 ETFs (~24/week,
+    ranked within class): all weekly ICs within +-0.02 (chance 0.015); value +0.005, carry
+    -0.012, XS momentum -0.005 (its +0.043 on the six was cross-class), low-vol -0.017, BAB
+    +0.003. Extra look: raw carry +0.029 (Treasury duration + FX), IC-IR 0.54 < 0.59 bar. 6
+    `screen` rows. Style signals on keyless ETFs CLOSED.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
