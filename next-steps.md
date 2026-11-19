@@ -1,11 +1,29 @@
 # Next steps
 
-## Multi-signal (doing, 2026-11-19, branch `multi-signal`, draft PR -> `survey-6`)
+## Multi-signal (done 2026-11-19, branch `multi-signal`, draft PR #104 -> `survey-6`)
 
-Descriptive IC screen of value, carry, cross-sectional momentum, low-vol and BAB across the six
-assets, against `tsmom12` (card `research/cards/multi-signal.md`, written before any number).
-Steps: card (done) -> script `research/lib/multisignal_ic.py` pushed before its run -> one run
-with `--log` (12 `screen` rows) -> `results/multi-signal.md` -> summary `research/multi-signal.md`.
+Descriptive IC screen of value, carry, cross-sectional momentum (AMP 2013), low-vol and BAB
+(FP 2014) across the six assets against `tsmom12` (`research/multi-signal.md`; card
+`cards/multi-signal.md` eb76f36 before any number; script c8715e2 before its run; table
+`results/multi-signal.md`). 12 `screen` rows (`multi-signal-screen`), no strategy try, no pick.
+
+- **Nothing is worth a card.** None passes the card's bar; none has a partial (beyond
+  `tsmom12`) weekly IC near 0.10. Only XS momentum is positive: IC +0.043 (95% +0.010..+0.077),
+  beyond `tsmom12` +0.035 (99.5% -0.007..+0.080), positive in all 4 eras and on the ETFs, but
+  rank-correlated 0.76 with `tsmom12` (0.90 with the 12-month return): trend strength, not new.
+- Value -0.018 and carry -0.023 are inside chance (0.03); low-vol -0.059 and BAB -0.055 point the
+  wrong way (riskier assets earned more; the asset ordering, placebo B p 0.07-0.19).
+- Breadth is the limit (4-5 assets a week, one per class). These premia need a wide long-short
+  book (survey-6's live style-premia funds), an owner risk-map question.
+
+- Doing: nothing. No process running.
+- Next: (1) survey-6 next (1)-(2) stand (short-SPY/QQQ trend sleeve as insurance; defensive
+  weights write-up); (2) if breadth is wanted, a descriptive screen of the same five signals on
+  the out-of-universe ETFs + indexes (~16 markets, within-class ranks), not a test on the six;
+  (3) nothing further on style signals within the six.
+- Data: no new download. Uses the research price cache, cached FRED `DGS3MO`/`DGS10` and cached
+  Binance funding zips (`<cache_root>/binance/futures/um/monthly/fundingRate/`). Rerun:
+  `uv run python research/lib/multisignal_ic.py` (dry; `--log` would add rows again: don't).
 
 ## Survey 6 (done 2026-11-19, branch `survey-6`, draft PR #91 -> `survey-5`)
 
