@@ -134,6 +134,16 @@ Legend: [E] engineering change to `main`, [R] research record, [O] waits on an o
           - #108 `register-4` [E]: register-4: committed weekly-returns store; BAR.md rebuilds on any checkout (touches register/returnstore).
             - #111 `register-5` [E] **tip**: register-5: register regenerated (3,130 tries, eff. N 486); harness writes weekly returns into the store. Tip of the register chain.
 
+Opened after the snapshot (night 3, not in the counts above):
+
+- #113 `pr-map` -> `summary-3` [R]: this map and the SUMMARY.md refresh.
+- #114 `data-wide-1` -> `wide-11` [R] **tip**: keyless data sources for the F1/F2 filters (no
+  gates, no returns).
+- #115 `integrate-1` -> `main`: integration preview of the [E] PRs with conflicts resolved;
+  review aid, **do not merge as-is** (section 3).
+- #116 `weather-1` -> `wide-11` [R] **tip**: heating-degree-day surprise vs next-week natural
+  gas: gate fails (t -0.29, rank 19 of 41). Count now 80 mechanisms / 19 tested / 0 passed.
+
 ## 2. Categories
 
 **(a) Engineering changes aimed at `main` [E] (14).** Verified by the files each PR changes
@@ -167,8 +177,9 @@ research tests. Value is the record, not code. None changes `src/`, the workflow
 
 ## 3. Proposed review and merge order for (a)
 
-The `integrate-1` lane (branch `integrate-1`) is building a conflict-resolved integration branch
-of these PRs; at 03:00 UTC it holds #13, #27, #29, #30 and a G2 x G4 test. Reviewing that branch
+The `integrate-1` lane (draft PR #115, branch `integrate-1`, "do not merge as-is") is building
+a conflict-resolved integration branch of these PRs, with the resolutions written up in
+`docs/integrate-1.md`; at 03:00 UTC it holds #13, #27, #29, #30 and a G2 x G4 test. Reviewing that branch
 once is cheaper than rebasing each PR. Suggested order (smallest risk first, gym changes in one
 row so each rebase is done once):
 
@@ -202,7 +213,8 @@ Proposal only; nothing has been closed or merged.
 - Containment (`git merge-base --is-ancestor head(A) head(B)` for every pair): 64 research
   PRs are contained in a descendant; e.g. `carry-2` (#26) is inside 72 others. The 26 research
   tips are #8, #20, #25, #28, #31, #39, #41, #43, #45, #46, #50, #51, #52, #55, #58, #75, #82,
-  #85, #86, #95, #99, #103, #106, #107, #110, #112.
+  #85, #86, #95, #99, #103, #106, #107, #110, #112 (plus #114, #116 and this #113, opened
+  later; #113 contains #107).
 - The research stack branched from an old `main` (before M1 and the audit). `main` has moved
   on, but only outside `research/`, so it does not conflict except in `next-steps.md`.
 - Local simulation (detached worktree off `main`, never pushed): merging the tips one after
@@ -287,8 +299,9 @@ minute bars (#46), month-end bonds (#45), wide-1/2 mechanisms (#33, #47).
 
 **Still open:**
 
-- Wide gates under the F1/F2 filters: `wide-12` (#112, night 3). Count 79 mechanisms / 18
-  tested / 0 passed.
+- Wide gates under the F1/F2 filters: `wide-12` (#112, night 3: W23 custody-selling dead,
+  wrong sign; W24 inflation-disagreement running), `weather-1` (#116, dead), `data-wide-1`
+  (#114, data only). Count 80 mechanisms / 19 tested / 0 passed.
 - Register: `register-5` (#111, night 3); adoption waits on O7/O3.
 - Risk menu (#101, #105, #110): waits on O2; a forward run of the chosen dial needs a monthly
   share reset in the runner.
