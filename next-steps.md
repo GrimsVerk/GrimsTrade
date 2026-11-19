@@ -468,6 +468,14 @@
     gate-null backward-shift placebos overlap the outcome (W22), step 7 invalid, ~10-episode
     gates are kill-only. ~03:05 UTC `fix-2` started (D, <- review-2): SUMMARY + errata-2, child
     branches risk-menu-4, gate-null-2, register-6. wide-13 told about the gate-null flaw.
+  - DONE `archive-1` (draft #118 -> main, owner review): `research-archive-1` = main + 30
+    research tips (`--no-ff`, rerere off); containment 89/90 (combo-2 #75 left out: its
+    history holds engineering #61; its 6 research commits cherry-picked, so #75 merges after
+    the #61 decision). Checks green: 549 passed, 2 xfailed (evo-1 fast-scorer tolerance was set
+    for the old 0.25% crypto fee; main now 0.60%); all 58 research test files offline.
+    tries.md union kept 3,131 rows, none lost/doubled. Note: old research scripts re-run on main
+    give slightly worse numbers (gym default fee). Doc `docs/research-archive-1.md`.
+    ~03:12 UTC `decisions-1` started (D, <- review-2): one deduplicated owner decision brief.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
