@@ -34,6 +34,12 @@ backtest on it; "dead (tested)" means our own test killed it (see `results/`).
 | trend-to-safe | Trend / regime allocation | dead (tested) | [card](cards/trend-to-safe.md) | Equals tsmom12 on the six assets (1.02 vs 1.05), behind in 2022. Helped on other ETFs with mid-term bonds as the safe asset (0.68 vs 0.60, p = 0.06): a hint for a universe with IEF. [result](results/trend-to-safe.md) |
 | crypto-slot-size | Allocation | described (no pass bar) | [card](cards/crypto-slot-size.md) | Sharpe is flat from 5% to 1/6 per coin (1.34-1.39); size sets growth and worst loss (5%: +18%/yr, -31%; 1/6: +35%/yr, -47%). The owner's biggest risk setting. [result](results/crypto-slot-size.md) |
 
+## Card for research run 3: the risk map (a description, not an idea; held-out year unused)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| risk-map | Allocation | described (no pass bar) | [card](cards/risk-map.md) | 20 settings of the run 1-2 rules: hold, trend, trend with a 60/40/20% volatility cap; crypto at 0%, 5%, 10% or a sixth per coin. Since 2003 growth runs from 8% to 25% a year and the worst drop from 12% to 47%, in one rising band. Presets for the owner in [risk-map.md](risk-map.md). [result](results/risk-map.md) |
+
 ## Cards for research run 2: machine learning (all seven failed; none used the held-out year)
 
 The first three were written before any model was fitted; each later card says what had been
@@ -84,3 +90,56 @@ seen. Sharpe on the six assets, 1994-2025: `tsmom12` 1.05, equal weight 0.88.
 | ensemble-tsmom | Trend | new | - | Weight = share of 1/3/6/12-month returns that are positive (part 1) |
 | turbulence | Statistics | new | - | Mahalanobis distance of the six returns; test only against a volatility trigger (part 4) |
 | vol-shift | Volatility | new | - | Risk assets to cash when SPY's 20-day volatility jumps 1 sd above its 1-year norm. Was the plain twin of absorption-ratio and beat equal weight there (1.17 vs 1.04, not significant). Needs its own card |
+
+## Cards for run macro-1: macro phases (all six failed their bar; none used the held-out year)
+
+Written before any test (`protocol.md` "Macro tests"). Sharpe on the six assets, 1994-2025 /
+2003-2025: `tsmom12` 1.05 / 1.20. Summary: [macro-1.md](macro-1.md).
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| fed-hiking | Macro / monetary policy | dead (tested) | [card](cards/fed-hiking.md) | Out while the Fed hikes: 1.03 / 1.09. Helped on the S&P 500 1962-1993 (+0.27, p = 0.06), the inflation decades; not since. [result](results/fed-hiking.md) |
+| real-rate | Macro / monetary policy | dead (tested) | [card](cards/real-rate.md) | Out while the real policy rate rises a point a year: 0.87 / 1.05. Too late. [result](results/real-rate.md) |
+| yield-curve | Macro / term structure | dead (tested) | [card](cards/yield-curve.md) | A year out after an inversion: 1.13 / 1.17; the gain is the dot-com bust and a lucky covid call; wrong sign out of universe. [result](results/yield-curve.md) |
+| liquidity | Macro / money supply | dead (tested) | [card](cards/liquidity.md) | Real M2 below zero: 0.95 / 1.11. Fed balance sheet shrinking: 0.95 / 1.09. [result](results/liquidity.md) |
+| credit-spread | Macro / credit | dead (tested) | [card](cards/credit-spread.md) | Baa spread half a point above its yearly low: 0.99 / 1.06. No earlier than the price trend. [result](results/credit-spread.md) |
+| halving | Crypto cycle | failed bar; not believed | [card](cards/halving.md) | Coins out 18-30 months after a halving: 1.20 / 1.42, but three winters, a window taken from folklore that saw them, and gone when moved six months. [result](results/halving.md), [shifted](results/halving-shift.md) |
+
+## Run rl-1: reinforcement learning (all five failed their bar; none used the held-out year)
+
+Plan and bar in [rl-1.md](rl-1.md), fixed before training. Sharpe on the six assets, out of
+sample 2000-01-07 to 2025-11-09 / since 2003: `tsmom12` 0.99 / 1.19. Ensemble of ten seeds.
+Tables: [results/rl-1.md](results/rl-1.md).
+
+| Idea | Family | Status | Plan | Result |
+|---|---|---|---|---|
+| ppo-lin | RL, linear policy | dead | [rl-1.md](rl-1.md) | 0.63 / 0.75, worst loss 77%; holds a third in coins, overtrades. |
+| ppo-mlp | RL, small network | dead | [rl-1.md](rl-1.md) | 0.66 / 0.80, worst loss 80%; 1.15 in sample, 0.63 out. |
+| ppo-mlp-dd | RL, drawdown penalty | dead | [rl-1.md](rl-1.md) | 0.57 / 0.76, worst loss 60%; sits in cash, no smarter. |
+| ppo-mlp-px | RL, prices only | dead | [rl-1.md](rl-1.md) | 0.71 / 0.81, worst loss 82%; macro inputs did not help. |
+| es-lin | Evolution strategy (sanity check) | dead | [rl-1.md](rl-1.md) | 0.57 / 0.72, worst loss 87%; a different optimiser, the same place. |
+
+### Short side on perpetuals (short-1, 2026-11-13)
+
+Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmom12` long-only spot, 30 bps.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| tsmom12-ls | Trend, short in downtrends | dead | [short-1.md](short-1.md) | 0.73 vs 1.03 (30 coins), 0.76 vs 1.19 (BTC/ETH); shorts sit through rallies. |
+| ls-low_vol, ls-size, ls-turnover, ls-combo | Dollar-neutral relative | dead | [short-1.md](short-1.md) | Sharpe -0.3 to -0.6: short legs of wild coins lose 43-48% a year. |
+| ls-trend | Cross-sectional 12-1 | dead | [short-1.md](short-1.md) | 0.24, negative 2022-25. |
+| ls-rev_1 | Daily reversal | dead | [short-1.md](short-1.md) | -1.97; 483x turnover. |
+| ls-premium, ls-funding | Carry: short the dearest perps | parked | [short-1.md](short-1.md) | 0.83 / 0.78; blend 1.25 vs 1.03 at 10 bps, gone at 30 bps. Held-out year unspent. |
+| cape-tilt, real-tilt | Valuation / real-yield tilt of 60/40 (monthly) | dead | [invest-1.md](invest-1.md) | OOS 1990-2025 Sharpe -0.00 / -0.03 vs 60/40: stocks looked dear for 30 years and kept rising. |
+| ecy-tilt | Excess-CAPE-yield tilt of 60/40 | parked | [invest-1.md](invest-1.md) | +0.08 train (p 0.002), +0.06 OOS (p 0.15), -0.01 on ETFs 2003-25: right sign, too small to prove. |
+| term-tilt, infl-regime, xmom | Term spread, inflation switch, dual momentum | dead | [invest-1.md](invest-1.md) | No gain over 60/40 in either period; xmom 0.59 vs 0.67 OOS. |
+| 6040-sma10 | 60/40 with 10-month average filter | dead | [invest-1.md](invest-1.md) | Matches its twin `tsmom12-m` (0.75 vs 0.77 OOS): the twin is simpler. |
+| ecy-trend | ECY tilt inside the trend rule | parked | [invest-1.md](invest-1.md) | Best Sharpe in both periods (0.62 / 0.82) but beats trend only in train (p 0.002; OOS p 0.13; ETF -0.03). |
+
+## FM 1 (time-series foundation models, 2026-11-13)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| fm-chronos-zero-shot | Pretrained time-series models | dead (tested) | [card](fm-1.md) | Chronos-Bolt weekly IC 0.10-0.15 and +0.18 Sharpe in the rl-3 gate, but it is memory: IC ~0 on 2020-25, on the 1964-93 S&P and on inverted prices; Chronos-2 (no memory) IC ~0 everywhere. [results](results/fm-1.md) |
+| fm-fine-tune | Pretrained time-series models | parked | [card](fm-1.md) | Not triggered (no clean zero-shot signal); a fine-tune on train years trains on the years the models remember. |
+| fm-forward-log | Pretrained time-series models | new | - | Log Chronos forecasts forward on the paper trail (seconds of GPU a week), judge after a year: the only test free of pretraining leakage. Low priority. |

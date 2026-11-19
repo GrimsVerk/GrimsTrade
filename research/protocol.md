@@ -225,3 +225,89 @@ that was 28 days because of the label becomes 7: a row is usable at a fit if its
 window ended at least 7 days before the fit date (the embargo stays 7 days), and in purged CV
 the purge and the embargo are 7 days each. Features, yearly refits, first-model rule, position
 rules and weekly decisions are unchanged.
+
+## Macro tests (added 2026-11-13 01:55 UTC, run macro-1, before any macro test)
+
+Everything above still applies. These rules are for rules that read macro data (`lib/macro.py`).
+
+**What may be known when.** A number is used at the decision on day `d` only from the day after
+it became public. Revised series (PAYEMS, M2SL, CPIAUCSL, UNRATE, INDPRO, WALCL) come from ALFRED
+vintages: a feature on day `d` is computed from the vintage current on `d - 1`, never from
+today's revised numbers. Observations older than a series' first vintage (WALCL before
+2011-07-07) take the first vintage's value and count as public 7 days (weekly) or 45 days
+(monthly, from the 1st of the month) after the observation date. Unrevised market series (DFF,
+DGS10, T10Y2Y, BAA10Y, VIXCLS) are used from the day after the observation. Tests in
+`tests/test_macro_asof.py` prove the rule on synthetic data, including a scrambled future.
+
+**Risk and safe assets.** A macro gate acts only on risk assets. Safe assets are TLT, GLD, IEF
+and LQD; every other asset (stocks, indexes, real estate, commodities, silver, coins) is a risk
+asset. A safe asset keeps its plain `tsmom12` slot whatever the gate says.
+
+**Rule shapes.** `<card>-and`: the `tsmom12` slot of a risk asset is held only while the gate is
+not hostile (trend AND macro). `<card>-alone`: the equal-weight slot of a risk asset is held
+while the gate is not hostile, with no trend test (does the macro phase carry information on its
+own?); safe assets keep their `tsmom12` slot here too. A gate whose input does not exist yet (NaN)
+is not hostile, so the rule is its twin until the data starts. Weekly decisions, as always.
+
+**Card bar 6 (all macro cards).** Besides the default bar: the primary variant must not be behind
+`tsmom12` on Sharpe over 2003-01-01 to the end of train (the review's window: the trend rule's
+lead comes from 2000-2002). Every result shows 2003-2025 next to 1994-2025.
+
+**Episodes.** Each result counts the hostile spells the gate had in 1994-2025 (runs of hostile
+days, gaps under 30 days merged, spells under 30 days dropped). That count, not the number of
+days, is the number of independent tests a result rests on.
+
+**Out of universe.** Macro gates are US data. They run on the 8 other ETFs and on the S&P 500
+index 1962-1993 (before SPY existed: the only test with cycles our six assets never saw; gates
+start when their data starts), and on the Nikkei, FTSE and DAX as "does the US cycle reach
+abroad". The coin set gets the gate like any risk asset. A halving gate applies to coins only,
+so only the coin set applies to it.
+
+## Reinforcement-learning tests (added 2026-11-13 02:10 UTC, run rl-1, before any RL code or training)
+
+Everything above still applies, the macro as-of rule included. The full design is the plan in
+`rl-1.md`; these are the rules a result is judged by.
+
+- **Fidelity.** Training may use a faster simulator only if a test proves it gives the same
+  daily equity as `grimstrade.gym.simulate` for the same weights. Every reported number comes
+  from replaying the agent's decisions through `gym.simulate` itself.
+- **Walk-forward.** Retrain every two years on an expanding window; a model that trades from
+  1 January Y is trained only on Fridays whose one-week reward ended at least 7 days before it.
+  Out-of-sample window 2000-01-07 to 2025-11-09. Inputs are scaled with training-window
+  statistics only.
+- **Seeds.** Ten fixed seeds per variant and fold. The selectable strategy of a variant is the
+  average of its ten seeds' weights (one `variant` row); each seed is logged as `robustness`.
+  The spread across seeds is always reported.
+- **Budget.** The training budget (environment steps) is the same for every variant, seed and
+  fold, set from a timing test before the first logged run, never from results.
+- **Pass bar.** As written in `rl-1.md` ("Pass bar"), against `tsmom12`, `sma200`, `inverse-vol`
+  and equal weight re-scored from 2000-01-07; 7 of 10 seeds ahead; not behind `tsmom12` since
+  2003; out-of-universe sign in 2 of 3 sets. Held-out year: once, one finalist, only on a pass.
+- **No tuning on the out-of-sample window.** Hyperparameters are fixed in the plan. If a
+  variant fails to train at all (a bug, a divergence), the fix is noted with its date and every
+  variant is rerun with it; a fix is never chosen by out-of-sample Sharpe.
+
+## Residual RL tests (added 2026-11-13 05:10 UTC, run rl-2, before any rl-2 code or training)
+
+Everything above still applies, the RL section included. The full design is the plan in
+`rl-2.md`; these are the rules a result is judged by.
+
+- **Residual action.** The agent's weights are `tsmom12`'s weights plus a tilt of at most half
+  a slot per asset, clipped at 0, coins never above their `tsmom12` weight, scaled to sum to at
+  most 1. With zero tilt it must equal `tsmom12` exactly through `gym.simulate` (a test).
+- **Reward** is the weekly log growth against a `tsmom12` account run beside it in the same
+  simulator, minus 0.001 per unit change in the active position. Fixed in advance.
+- **Early stopping.** The last two years of each training window are a purged validation slice
+  (7-day embargo); at most 60 updates; the best of 13 checkpoints (update 0 = `tsmom12`) on the
+  validation slice is kept. The training/validation/out-of-sample gap is reported per fold.
+- **Pass bar** as written in `rl-2.md`: rl-1's bar, plus ahead of `tsmom12` since 2003 and an
+  average active share of at least 2% (an agent that only matches `tsmom12` with a near-zero
+  tilt fails).
+
+## Planted-signal controls (added 2026-11-13 05:40 UTC, run rl-3, before any rl-3 code or training)
+
+A control experiment plants a known signal into an input to measure what a pipeline can find.
+It is never a strategy. Its rows in `tries.md` carry kind `control` and an idea name ending in
+`-control`; they are not selectable and are not counted as strategy tries. The rules of the
+pipeline under test apply unchanged; the card (`rl-3.md`) fixes the strengths, the "found" rule
+and the ceiling before any run. Held-out data is never used by a control.

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
+from datetime import date
 
 import numpy as np
 from common import (
@@ -208,6 +210,35 @@ def crypto_slot(size: float) -> ResearchStrategy:
         out = {s: size for s in coins} if size > 0 else {}
         left = 1 - size * len(coins)
         out.update({s: left / len(rest) for s in rest})
+        return out
+
+    return f
+
+
+# --- macro gates (run macro-1; protocol.md "Macro tests") ---
+
+SAFE = {"TLT", "GLD", "IEF", "LQD"}
+
+
+def macro_gate(hostile: Callable[[date], bool], trend: bool = True,
+               coins_only: bool = False) -> ResearchStrategy:  # fmt: skip
+    """Risk assets: `tsmom12` slot (or the plain slot if not `trend`) held while not hostile.
+    Safe assets, and ETFs when `coins_only`, keep their `tsmom12` slot."""
+
+    def f(view: View) -> Weights:
+        held = live(view)
+        bad = hostile(view.today)
+        out = {}
+        for s in held:
+            gated = s not in SAFE and (UNIVERSE[s] == CRYPTO or not coins_only)
+            if not gated:
+                on = tsmom_signal(view, s)
+            elif bad:
+                on = False
+            else:
+                on = tsmom_signal(view, s) if trend else True
+            if on:
+                out[s] = 1 / len(held)
         return out
 
     return f

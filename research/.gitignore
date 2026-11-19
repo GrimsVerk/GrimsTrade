@@ -3,3 +3,4 @@
 data/
 __pycache__/
 *.dry.md
+macro.local.json
