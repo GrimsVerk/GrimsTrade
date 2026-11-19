@@ -23,7 +23,7 @@ The five answers that unblock the most, in order. Each links to its full item be
    order: #13, #27, #29, #30, #32, #61, #67, #14, #15, the four gym PRs on one day.**
    Default: yes. Fixes the live G2 bug, adds dividends and fee tiers; every replayed score
    shifts once, not four times.
-3. **[A2](#a2-cash-interest-pr-61) Cash interest (#61): full T-bill rate; new research scored
+3. **[A2](#a2-cash-interest-61) Cash interest (#61): full T-bill rate; new research scored
    above cash; add the second rate source.** Default: yes to all three. Unblocks #61, #75
    `combo-2`, the landing slot of #15, and fair scoring of any rule that holds cash.
 4. **[B1](#b1-project-wide-tries-register-and-the-bar) Adopt the project-wide tries register
@@ -456,7 +456,7 @@ optional trend-tune note (#34, a 2.5-5% band).
 | Id | Item | Recommended default | Why |
 |---|---|---|---|
 | D1 | Daily runs fire at 02:00-04:40 UTC, not 22:30 (GitHub delays scheduled jobs). No look-ahead, but crypto orders fill about 22 h after the decision while backtests assume about 1.5 h (health-1 #27). Accept or move the schedule? | Accept and record it in DECISIONS; compare live with backtest only with this gap in mind | Moving the cron does not stop GitHub's delay; a second crypto-only run after 00:00 UTC is already in BACKLOG |
-| D2 | Should the paper broker be able to fill at the close (two wide-1 effects were worth more at the close)? | No | Fills at the next open are a core rule (DESIGN); the main effect behind the question did not replicate on clean data (month-end-bonds #45) |
+| D2 | Should the paper broker be able to fill at the close (two wide-1 effects were worth more at the close)? | No | Fills at the next open are a core rule (DESIGN); neither effect held up: the bond-auction dip was not confirmed (wide-1 #33) and the month-end bond rally did not replicate on clean data (#45) |
 | D3 | usd-1 (#39): an optional robustness check needs a data API key | No | It cannot change the verdict; the project stays keyless |
 | D4 | evo-1 (#44) would need about 24 CPU-hours | No decision needed | The evo line is closed (evo-2 #58) |
 | D5 | month-end-bonds: spend a held-out year on it? | Already answered: no | #45's card says not to |
