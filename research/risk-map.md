@@ -1,5 +1,9 @@
 # Risk map: how big a drop, how much crypto
 
+**Update 2026-11-19:** [`risk-menu.md`](risk-menu.md) puts tonight's risk dials (fixed shares
+and own-volatility targeting of `tsmom12`, blends with the wide long-short book, holding,
+60/40) on one footing, 2007-2025 with T-bill cash; this page is the 2003-2025 map, cash at 0.
+
 For the owner. Built 2026-11-12 by `lib/risk_map.py` (research run 3); card `cards/risk-map.md`.
 
 **The question.** How big a worst drop could you stomach, and how much crypto do you want? No
