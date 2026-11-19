@@ -476,6 +476,14 @@
     tries.md union kept 3,131 rows, none lost/doubled. Note: old research scripts re-run on main
     give slightly worse numbers (gym default fee). Doc `docs/research-archive-1.md`.
     ~03:12 UTC `decisions-1` started (D, <- review-2): one deduplicated owner decision brief.
+  - DONE `wide-13` (draft #120 -> data-wide-1): 11 data-wide-1 ideas scored before prices;
+    MOF daily detail is published a quarter late (not tradable). W25 `act-haven` (GPR acts
+    index -> GLD/TLT 4w, 9-day lag) t -1.02, rank 21/41; W26 `failure-premium` (FDIC failed
+    assets -> XLF 4w, past-return controls) t -0.48, rank 21/41. Earlier-dose-only placebos
+    (review-2 fix, post-run, from stored tables): 16/21 and 21/21. Both kill-only (W26 ~2
+    episodes). 2 `screen` rows. Count 84 mechanisms / 18 strategy-tested / 19 gates, 0 passed.
+    No loaded-source idea left scoring >= 5. ~03:20 UTC `gate-power` started (D, <- wide-13):
+    planted-effect power of the gate design on real dose series.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
