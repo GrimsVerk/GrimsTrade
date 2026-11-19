@@ -34,13 +34,14 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from grimstrade import data, gym, report  # noqa: E402
+from grimstrade import data, gym, report, tryshape  # noqa: E402
 from grimstrade.data import CRYPTO, ETF, UNIVERSE, Bar, close_time  # noqa: E402
 from grimstrade.gym import DECIDE_AT, Decision  # noqa: E402
 
 RESEARCH = ROOT / "research"
 DATA = RESEARCH / "data"
 TRIES = RESEARCH / "tries.md"
+SHAPES = ROOT / tryshape.SHAPES  # weeks, skew, kurtosis of each logged row (register-3)
 
 TRAIN_START = date(1994, 2, 1)  # SPY's first day plus a year of warm-up
 TRAIN_END = date(2025, 11, 9)  # last train decision
@@ -326,6 +327,7 @@ def _log(run: Run, kind: str, start: date, end: date) -> None:
     with TRIES.open("a") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
         f.write(row)
+    tryshape.log(SHAPES, row, run.days, [float(e) for e in run.equity])
 
 
 def run(
