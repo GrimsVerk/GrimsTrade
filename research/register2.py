@@ -14,11 +14,18 @@ Steps (each can run alone):
   assets, train period, raw prices (what the paper system trades), weekly returns.
 - `curves`: equity curves the harness saved for logged tries (`research/data/runs/...`) in the
   directories listed in `research/register2.local.json` (gitignored; see the `.example`).
+- `export` (register-4): add the local series to the committed weekly-returns store
+  `research/register/returns/` (`grimstrade.returnstore`): every baseline and live series, and
+  every saved curve that fits a register row. Commit the store with the generated files.
 - `estimate`: match every series to its register rows, write `research/register/moments.jsonl`
-  and `research/register/trials.json`; `grimstrade.register` turns them into BAR.md.
+  and `research/register/trials.json`; `grimstrade.register` turns them into BAR.md. Reads the
+  committed store first and adds local series not in it, all rounded to 1e-6 and in one
+  canonical order, so a clean checkout (store only) computes the same files:
+
+    uv run --with numpy python research/register2.py estimate    # no research/data/ needed
 
 Everything is deterministic (seeded k-means). Prices and intermediate series stay in the
-gitignored `research/data/`; only the two generated files are committed.
+gitignored `research/data/`; only the generated files and the store are committed.
 """
 
 from __future__ import annotations
@@ -39,6 +46,8 @@ from typing import Any
 
 import numpy as np
 
+from grimstrade import returnstore
+
 ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = ROOT / "research"
 WORK = RESEARCH / "data" / "register2"
@@ -46,6 +55,8 @@ LOCAL = RESEARCH / "register2.local.json"
 REGISTER = RESEARCH / "register" / "tries.jsonl"
 MOMENTS = RESEARCH / "register" / "moments.jsonl"
 TRIALS = RESEARCH / "register" / "trials.json"
+STORE = ROOT / returnstore.STORE  # register-4: committed weekly returns
+LOCAL_FILES = ("baselines", "curves", "live")  # intermediates in WORK, one per source kind
 
 HARNESS_REF = "origin/summary-2"  # a research branch with research/lib/baselines.py
 TRAIN_START, TRAIN_END, TRAIN_LAST_BAR = date(1994, 2, 1), date(2025, 11, 9), date(2025, 11, 10)
@@ -130,6 +141,102 @@ def load(path: Path) -> list[Series]:
     if not path.exists():
         return []
     return [Series(**json.loads(ln)) for ln in path.read_text().splitlines() if ln.strip()]
+
+
+# --- the committed store (register-4) ---
+
+
+def to_row(s: Series) -> returnstore.Row:
+    return returnstore.Row.of(s.source, s.idea, s.variant, s.start, s.sharpe, s.weeks, s.rets)
+
+
+def from_row(r: returnstore.Row) -> Series:
+    return Series(r.source, r.idea, r.variant, r.start, r.sharpe, r.weeks(), list(r.rets))
+
+
+def kind(source: str) -> str:
+    """`harness`, `live` or `curve`."""
+    return source.split("@")[0]
+
+
+def local_rows() -> list[returnstore.Row]:
+    """The local intermediates (gitignored, this machine only) as store rows."""
+    return [to_row(s) for name in LOCAL_FILES for s in load(WORK / f"{name}.jsonl") if s.rets]
+
+
+def sources() -> tuple[list[Series], list[Series], list[Series], list[returnstore.Row]]:
+    """Baseline, curve and live series: the committed store first, then local series not in
+    it; rounded to 1e-6 and in canonical order either way. Also: those local rows."""
+    stored = returnstore.read(STORE)
+    keys = {r.key() for r in stored}
+    local = [r for r in returnstore.merge(local_rows()) if r.key() not in keys]
+    out: dict[str, list[Series]] = {"harness": [], "curve": [], "live": []}
+    for r in returnstore.merge(stored, local):
+        out[kind(r.source)].append(from_row(r))
+    return out["harness"], out["curve"], out["live"], local
+
+
+def export() -> None:
+    """Add the local series to the store: every baseline and live series, and every saved
+    curve that fits a register row (ambiguous fits too). Stored rows always stay. Over the
+    budget, drop curves that fit no selectable row, last by SHA-256 of idea/variant/start
+    first, and say so (card register-4)."""
+    stored = returnstore.read(STORE)
+    keys = {r.key() for r in stored}
+    rows = register_rows()
+    keep = to_store([r for r in returnstore.merge(local_rows()) if r.key() not in keys], rows)
+    store = returnstore.merge(stored, keep)
+    total = store_bytes(store)
+    if total > returnstore.BUDGET:
+        store = within_budget(store, rows)
+        print(f"export: over {returnstore.BUDGET:,} bytes, kept {len(store)}", file=sys.stderr)
+    sizes = returnstore.write(STORE, store)
+    print(
+        f"export: {len(store)} series ({len(keep)} new) in {len(sizes)} files, "
+        f"{sum(sizes.values()):,} bytes",
+        file=sys.stderr,
+    )
+
+
+def to_store(new: list[returnstore.Row], rows: list[dict[str, Any]]) -> list[returnstore.Row]:
+    """The rows the store takes: baselines, live series, curves that fit a register row."""
+    curve_fits = fits([from_row(r) for r in new if kind(r.source) == "curve"], rows)
+    fitting = {(s.idea, s.variant, s.start, s.sharpe) for ss in curve_fits.values() for s in ss}
+    return [
+        r
+        for r in new
+        if kind(r.source) != "curve" or (r.idea, r.variant, r.start, r.sharpe) in fitting
+    ]
+
+
+def store_bytes(store: list[returnstore.Row]) -> int:
+    by_file: dict[str, list[returnstore.Row]] = {}
+    for r in store:
+        by_file.setdefault(returnstore.family_file(r.idea), []).append(r)
+    return sum(len(returnstore.encode(v)) for v in by_file.values())
+
+
+def within_budget(
+    store: list[returnstore.Row], rows: list[dict[str, Any]]
+) -> list[returnstore.Row]:
+    """Keep baselines, live series and curves fitting a selectable row; add the other curves
+    by SHA-256 of idea/variant/start while the store stays under the budget."""
+    sel = [r for r in rows if r["kind"] in SELECTABLE]
+    sel_fits = fits([from_row(r) for r in store if kind(r.source) == "curve"], sel)
+    protected = {(s.idea, s.variant, s.start, s.sharpe) for ss in sel_fits.values() for s in ss}
+    must, rest = [], []
+    for r in store:
+        key = (r.idea, r.variant, r.start, r.sharpe)
+        (must if kind(r.source) != "curve" or key in protected else rest).append(r)
+    rest.sort(key=lambda r: hashlib.sha256(f"{r.idea}/{r.variant}/{r.start}".encode()).hexdigest())
+    lo, hi = 0, len(rest)
+    while lo < hi:  # the most of `rest` (in that order) that fits
+        mid = (lo + hi + 1) // 2
+        if store_bytes(must + rest[:mid]) <= returnstore.BUDGET:
+            lo = mid
+        else:
+            hi = mid - 1
+    return returnstore.merge(must, rest[:lo])
 
 
 # --- sources ---
@@ -248,22 +355,28 @@ def register_rows() -> list[dict[str, Any]]:
     return [json.loads(ln) for ln in REGISTER.read_text().splitlines() if ln.strip()]
 
 
-def match(series: list[Series], rows: list[dict[str, Any]]) -> dict[str, Series]:
-    """Register id -> its series. A series fits a row when idea, variant and period (train)
-    agree, it starts within START_TOL of the row's From and its Sharpe equals the logged one to
-    two decimals. A row two different series fit is dropped (ambiguous)."""
+def fits(series: list[Series], rows: list[dict[str, Any]]) -> dict[str, list[Series]]:
+    """Register id -> every series that fits the row: idea, variant and period (train) agree,
+    it starts within START_TOL of the row's From and its Sharpe equals the logged one to two
+    decimals."""
     by_key: dict[tuple[str, str], list[dict[str, Any]]] = {}
     for r in rows:
         if r["period"] == "train" and r["sharpe"] is not None:
             by_key.setdefault((r["idea"], r["variant"]), []).append(r)
-    fits: dict[str, list[Series]] = {}
+    out: dict[str, list[Series]] = {}
     for s in series:
         for r in by_key.get((s.idea, s.variant), []):
             dt = abs(date.fromisoformat(s.start) - date.fromisoformat(r["from"]))
             if dt <= START_TOL and abs(s.sharpe - r["sharpe"]) <= SHARPE_TOL:
-                fits.setdefault(r["id"], []).append(s)
+                out.setdefault(r["id"], []).append(s)
+    return out
+
+
+def match(series: list[Series], rows: list[dict[str, Any]]) -> dict[str, Series]:
+    """Register id -> its series (`fits`). A row two different series fit is dropped
+    (ambiguous)."""
     out = {}
-    for ident, ss in fits.items():
+    for ident, ss in fits(series, rows).items():
         if len({tuple(np.round(x.rets, 12)) for x in ss}) == 1:
             out[ident] = ss[0]
     return out
@@ -537,9 +650,13 @@ def register_weighted_rho(
 def estimate() -> None:
     rows = register_rows()
     by_id = {r["id"]: r for r in rows}
-    harness = load(WORK / "baselines.jsonl")
-    curves_ = load(WORK / "curves.jsonl")
-    lives = load(WORK / "live.jsonl")
+    harness, curves_, lives, local = sources()
+    if unstored := len(to_store(local, rows)):
+        print(
+            f"estimate: {unstored} local series for the register are not in {returnstore.STORE} "
+            "(run `export` and commit the store, or a clean checkout gets other numbers)",
+            file=sys.stderr,
+        )
     matched = match(harness, rows)  # re-simulated first: they win over a saved curve
     from_curves = match(curves_, rows)
     for ident, s in from_curves.items():
@@ -637,7 +754,9 @@ def estimate() -> None:
 
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0] if __doc__ else None)
-    p.add_argument("step", choices=("all", "tree", "baselines", "live", "curves", "estimate"))
+    p.add_argument(
+        "step", choices=("all", "tree", "baselines", "live", "curves", "export", "estimate")
+    )
     p.add_argument("--tree", type=Path, help="extracted tree (for `baselines`)")
     a = p.parse_args(argv)
     if a.step == "tree":
@@ -648,6 +767,8 @@ def main(argv: list[str] | None = None) -> None:
         live()
     elif a.step == "curves":
         curves()
+    elif a.step == "export":
+        export()
     elif a.step == "estimate":
         estimate()
     else:
@@ -656,6 +777,7 @@ def main(argv: list[str] | None = None) -> None:
         subprocess.run([*me, "baselines", "--tree", str(t)], check=True)
         subprocess.run([*me, "live"], check=True)
         curves()
+        export()
         estimate()
 
 

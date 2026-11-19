@@ -36,7 +36,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from statistics import NormalDist
 
-from grimstrade import ledger, stats, tryshape
+from grimstrade import ledger, returnstore, stats, tryshape
 
 TRIES_MD = ledger.RESEARCH_TRIES
 REGISTER = Path(ledger.RESEARCH_REGISTER)
@@ -44,6 +44,7 @@ BAR = REGISTER.parent / "BAR.md"
 LIVE_TRIES = "ledger/tries.jsonl"  # on the record branch
 MOMENTS = REGISTER.parent / "moments.jsonl"  # research/register2.py writes these two
 TRIALS = REGISTER.parent / "trials.json"
+STORE = Path(returnstore.STORE)  # weekly returns behind the two files above (register-4)
 SHAPES = Path(tryshape.SHAPES)  # the harness appends one per logged row (register-3)
 REMOTES = ("refs/remotes",)
 PRIMARY = ("1994-02-01", "2025-11-09")  # the six-asset train test `tsmom12` scored 1.05 on
@@ -237,6 +238,7 @@ class Measured:
     cap: int | None = None  # series per family in the sample (register-3); None: uncapped
     families: int | None = None
     uncapped: tuple[int, float] | None = None  # the uncapped sample: M, rho (comparison)
+    stored: tuple[int, int, int] | None = None  # the committed returns: series, files, bytes
 
     def rows_for(self, n: int) -> list[tuple[str, float]]:
         """(label, N_eff) for `n` trials: the measured estimates the bar chooses from first,
@@ -297,7 +299,20 @@ def read_measured(repo: Path, known: set[str]) -> Measured | None:
         sh["excess_kurtosis_median"], sh["excess_kurtosis_p90"],
         cap["cap"] if cap else None, cap["families"] if cap else None,
         (u["series"], u["rho_mean"]) if cap and (u := t["windows"][t["main_window"]]) else None,
+        stored(repo),
     )  # fmt: skip
+
+
+def stored(repo: Path) -> tuple[int, int, int] | None:
+    """Series, files and bytes in the committed weekly-returns store, if there is one."""
+    files = sorted((repo / STORE).glob(f"*{returnstore.SUFFIX}"))
+    if not files:
+        return None
+    try:
+        rows = returnstore.read(repo / STORE)
+    except returnstore.StoreError as e:
+        raise RegisterError(str(e)) from e
+    return len(rows), len(files), sum(p.stat().st_size for p in files)
 
 
 # --- the bar ---
@@ -552,7 +567,15 @@ def render_measured(s: Summary, m: Measured) -> list[str]:
         f"({m.selectable:,} of the {s.selectable:,} selectable) and {m.live} live strategies,",
         "from the shape the harness logs with each row (`research/tries-shape.jsonl`), the",
         "research harness (baselines re-simulated, each matching its logged Sharpe) and the",
-        "equity curves the harness saved when the try was logged.",
+        "equity curves the harness saved when the try was logged."
+        + (
+            f" Their weekly returns are committed in `{STORE.as_posix()}/` ({m.stored[0]:,} "
+            f"series, {m.stored[1]} family files, {m.stored[2] / 1e6:.1f} MB; card "
+            "`research/register-4.md`), so `register2.py estimate` rebuilds both files on any "
+            "checkout."
+            if m.stored
+            else ""
+        ),
         "",
         f"Correlation sample: {m.sample:,} distinct selectable or live return series that cover "
         f"every week {a}..{b} ({m.weeks:,} weekly returns)"

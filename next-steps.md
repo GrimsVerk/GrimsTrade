@@ -1,5 +1,25 @@
 # Next steps
 
+## Waiting for review: register-4 (branch `register-4`, draft PR #108 into `register-3`)
+
+Card and results: `research/register-4.md`. Done:
+
+1. `research/register/returns/`: the weekly returns of every series behind the bar (1,178:
+   baselines, live, saved curves that fit a register row), one gzip CSV per family, 3.9 MB
+   (budget 5 MB). `research/register2.py export` writes it (deterministic bytes).
+2. `register2.py estimate` reads the store first, local caches as fallback. On a clean
+   checkout it rebuilds `trials.json` and `moments.jsonl` byte-identically; BAR.md keeps every
+   number (N_eff 486, +0.30 / +0.56).
+3. `research/register/README.md`: how a lane adds its returns.
+
+- [ ] Lead: after register-4 is on the register base, regenerate with tonight's branches:
+      `git fetch origin`, register, `curves` + `export` with the new lanes' run dirs,
+      `estimate`, register; commit the store's new family files with the generated files.
+- [ ] Next: research lanes run steps 1-4 of the README (or the lead does it nightly), so
+      their curves leave the machine the night they are made.
+- [ ] Possible next: the harness writes the weekly returns straight into the store when it
+      logs a row (like `tries-shape.jsonl`), so saved curves are no longer needed at all.
+
 ## Waiting for review: register-3 (branch `register-3`, draft PR #100 into `register-2`)
 
 Card and results: `research/register-3.md`. Done:

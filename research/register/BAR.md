@@ -50,7 +50,7 @@ From `research/register/trials.json` and `research/register/moments.jsonl`, writ
 Tries with a measured record length, skew and kurtosis: 1,213 rows (413 of the 1,021 selectable) and 11 live strategies,
 from the shape the harness logs with each row (`research/tries-shape.jsonl`), the
 research harness (baselines re-simulated, each matching its logged Sharpe) and the
-equity curves the harness saved when the try was logged.
+equity curves the harness saved when the try was logged. Their weekly returns are committed in `research/register/returns/` (1,178 series, 64 family files, 3.9 MB; card `research/register-4.md`), so `register2.py estimate` rebuilds both files on any checkout.
 
 Correlation sample: 178 distinct selectable or live return series that cover every week 2012-01-06..2025-11-07 (722 weekly returns), at most 10 per family (59 families; first by SHA-256 of idea/variant/start, card `research/register-3.md`; uncapped: 297).
 
