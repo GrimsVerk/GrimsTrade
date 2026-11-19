@@ -1,7 +1,8 @@
 """Snapshot data that only lives in a rolling window, before it falls out.
 
 Yahoo 1-hour bars (~730 days) for SPY, QQQ, GLD, TLT; Kraken Futures funding history (~12 months)
-and open interest for PF_XBTUSD, PF_ETHUSD. Raw responses and a tidy CSV go to
+and open interest for PF_XBTUSD, PF_ETHUSD (every hour served, paged forward from
+`grimstrade.intraday.OI_START`; the raw file holds every page). Raw responses and a tidy CSV go to
 `<cache>/snapshots/<source>/<date>/`, each written once with a manifest line (fetch time, SHA-256).
 Re-running on the same day skips what is already there. Run: `uv run python -I
 scripts/snapshot_rolling.py`.
@@ -18,6 +19,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from grimstrade.cache import cache_root, write_once
+from grimstrade.intraday import OI_FIELDS, OI_START, kraken_open_interest
 from grimstrade.sources import http_get
 
 ETFS = ["SPY", "QQQ", "GLD", "TLT"]
@@ -70,10 +72,36 @@ def save(dirpath: str, name: str, url: str, to_csv: Any) -> str:
     return f"ok   {raw_rel} {len(raw)} B, {tidy.count(b'\n') - 1} rows"
 
 
+def save_oi(dirpath: str, symbol: str) -> str:
+    """Open interest needs many calls (2,000 hours each): fetch them all, then write once."""
+    root = cache_root()
+    raw_rel, csv_rel = f"{dirpath}/{symbol}.json", f"{dirpath}/{symbol}.csv"
+    if (root / raw_rel).exists():
+        return f"skip {raw_rel} (already saved)"
+    fetched = datetime.now(UTC)
+    pages: list[dict[str, Any]] = []
+
+    def get(url: str) -> bytes:
+        time.sleep(1)
+        body = http_get(url)
+        pages.append({"url": url, "body": json.loads(body)})
+        return body
+
+    rows = kraken_open_interest(symbol, OI_START, fetched, get)
+    if not rows:
+        raise ValueError("empty open-interest series")
+    out = io.StringIO()
+    w = csv.DictWriter(out, fieldnames=OI_FIELDS, lineterminator="\n")
+    w.writeheader()
+    w.writerows(rows)
+    write_once(root, raw_rel, json.dumps(pages).encode(), pages[0]["url"], fetched)
+    write_once(root, csv_rel, out.getvalue().encode(), pages[0]["url"], fetched)
+    return f"ok   {raw_rel} {len(pages)} pages, {len(rows)} rows from {rows[0]['time']}"
+
+
 def main() -> int:
     day = datetime.now(UTC).strftime("%Y-%m-%d")
-    since = int(time.time()) - 400 * 86400
-    jobs = []
+    jobs: list[tuple[str, str, str, Any]] = []
     for t in ETFS:
         url = f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=730d&interval=1h"
         jobs.append((f"snapshots/yahoo-1h/{day}", t, url, yahoo_csv))
@@ -88,11 +116,6 @@ def main() -> int:
                 lambda b: rows_csv(json.loads(b)["rates"], "timestamp", SETTLE),
             )
         )
-        url = (
-            f"https://futures.kraken.com/api/charts/v1/analytics/{s}/open-interest"
-            f"?since={since}&interval=3600"
-        )
-        jobs.append((f"snapshots/kraken-oi/{day}", s, url, kraken_oi_csv))
     failed = 0
     for dirpath, name, url, conv in jobs:
         try:
@@ -101,18 +124,13 @@ def main() -> int:
             failed += 1
             print(f"FAIL {dirpath}/{name}: {e!r}", flush=True)
         time.sleep(1)
+    for s in PERPS:
+        try:
+            print(save_oi(f"snapshots/kraken-oi/{day}", s), flush=True)
+        except Exception as e:  # noqa: BLE001 - one source failing must not stop the rest
+            failed += 1
+            print(f"FAIL snapshots/kraken-oi/{day}/{s}: {e!r}", flush=True)
     return 1 if failed else 0
-
-
-def kraken_oi_csv(raw: bytes) -> bytes:
-    """Kraken analytics: {"result": {"timestamp": [...], "more": ..., "data": [...]}}."""
-    res = json.loads(raw)["result"]
-    pairs = zip(res["timestamp"], res["data"], strict=True)
-    rows = [{"time": t, "open_interest": v} for t, v in pairs]
-    if not rows:
-        raise ValueError("empty open-interest series")
-    # value for the hour starting at `time`; treat it as known after the hour (+15 min)
-    return rows_csv(rows, "time", 3600 + SETTLE)
 
 
 if __name__ == "__main__":
