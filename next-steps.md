@@ -20,6 +20,21 @@ Checked runs 2026-11-12 to 2026-11-17 (logs, `paper-trail` ledger, bars, replaye
   Same family as audit G2 (keep an unfilled buy pending).
 - `next-steps.md` on `main` still lists audit-1 (PR #5) as waiting for review; it is merged.
 
+## G2: an unpaid buy waits for cash (branch `g2-pending-buy`, draft PR #29, not merged)
+
+Fix for audit G2 and the 2026-11-17 health-check symptom (fully invested `equal_weight` could
+not top up crypto). Rule and why: `docs/DECISIONS.md` (2026-11-17, audit G2). Code:
+`gym._execute`. Tests: `tests/test_audit_gym.py` (the G2 test is no longer xfail; the drifting
+case runs at 22:30 and at the late-cron 03:00).
+
+- [ ] After merging: the first run replays every score with the new rule. Expect `equal_weight`
+      and `xs_momentum` to move by a couple of dollars and their backtests a little (DECISIONS).
+      No ledger line or bar changes.
+
+### For the owner
+
+- The rule changes the live gym: merging is your call. Nothing else needs you.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
@@ -39,8 +54,8 @@ ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/te
 - [ ] Build next from the audit: GitHub's arrival time for accepted commits, passed to the run
       directly, not through a file in the record (L14).
 - [ ] Open findings to build next: credit dividends (G4); a second ETF source, Stooq is dead
-      (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
-      tier (BACKLOG).
+      (D6, needs a key: owner's call); crypto fee by volume tier (BACKLOG). G2: branch
+      `g2-pending-buy`.
 
 ## M0 status: built, not yet proven live
 

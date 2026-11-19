@@ -2,6 +2,9 @@
 
 An order decided at time T fills at the open of each asset's first bar that opens after T, at
 open * (1 +/- slippage), plus a fee on the traded value. Long-only, no leverage, fractional units.
+A buy the cash cannot fully pay for keeps waiting and buys the rest at that asset's next open,
+until a newer decision replaces it; while a decision's buys need more cash than there is, assets
+above their target are sold down to it even inside the rebalance band (DECISIONS, audit G2).
 The same replay serves the live ledger and backtests, so they can't disagree on the rules.
 """
 
@@ -96,6 +99,7 @@ def simulate(
     res = Result(cash=start_cash, positions={s: 0.0 for s in history}, start_cash=start_cash)
     price: dict[str, float] = {}
     pending: dict[str, float] = {}  # symbol -> target weight not yet executed
+    unpaid: set[str] = set()  # pending buys left over from an open whose cash ran out
     started = False
     day: date | None = None
 
@@ -119,11 +123,13 @@ def simulate(
             started = True
             w = decs[group[-1][4]].weights
             pending = {s: w.get(s, 0.0) for s in history}
+            unpaid.clear()
             continue
         for _, _, sym, px, _ in group:
             price[sym] = px
         if kind == _OPEN:
-            _execute(t, [g[2] for g in group if g[2] in pending], pending, res, price, costs, band)
+            syms = [g[2] for g in group if g[2] in pending]
+            _execute(t, syms, pending, unpaid, res, price, costs, band)
     if started and day is not None:
         res.equity.append((day, equity()))
     return res
@@ -133,21 +139,36 @@ def _execute(
     t: datetime,
     syms: list[str],
     pending: dict[str, float],
+    unpaid: set[str],
     res: Result,
     price: Mapping[str, float],
     costs: Mapping[str, Costs],
     band: float,
 ) -> None:
     eq = res.cash + sum(q * price.get(s, 0.0) for s, q in res.positions.items())
+    # Cash the decision's buys still need (outside the band; assets opening now or later, at the
+    # latest known prices). When the cash on hand does not cover it, assets above their target
+    # are sold down to it even inside the band, so the buys can be paid (audit G2).
+    need = sum(
+        d
+        for s, w in pending.items()
+        if s in price and (d := w * eq - res.positions[s] * price[s]) >= band * eq
+    )
+    short = need > res.cash
     trades = []
     for sym in syms:
         target = pending.pop(sym)
         held = res.positions[sym]
         delta = target * eq - held * price[sym]
         full_exit = target == 0 and held > 0
-        if full_exit or abs(delta) >= band * eq:
-            trades.append((delta, sym, full_exit))
-    for delta, sym, full_exit in sorted(trades):  # sells (negative) first, to free cash
+        funding = short and delta < -1e-9 * eq
+        if sym in unpaid:  # a leftover buy only ever buys
+            unpaid.discard(sym)
+            if delta < 0:
+                continue
+        if full_exit or funding or abs(delta) >= band * eq:
+            trades.append((delta, sym, full_exit, target))
+    for delta, sym, full_exit, target in sorted(trades):  # sells (negative) first, to free cash
         c = costs[UNIVERSE[sym]]
         if delta < 0:
             px = price[sym] * (1 - c.slip)
@@ -158,7 +179,11 @@ def _execute(
             res.fills.append(Fill(t, sym, -qty, px, fee))
         else:
             px = price[sym] * (1 + c.slip)
-            spend = min(delta / price[sym] * px * (1 + c.fee), res.cash)
+            wanted = delta / price[sym] * px * (1 + c.fee)
+            spend = min(wanted, res.cash)
+            if spend < wanted:  # not fully paid: try the rest again at this asset's next open
+                pending[sym] = target
+                unpaid.add(sym)
             if spend <= 0:
                 continue
             qty = spend / (px * (1 + c.fee))
