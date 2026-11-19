@@ -168,3 +168,55 @@ step 7). The held-out year (2025-11-11 .. 2026-11-09) is spent and is not read.
   the result. Shown cells are part of the same row.
 - Scripts: `research/lib/weather2_events.py` (pure functions), `research/lib/weather2_rev.py`
   (runner), `scripts/fetch_weather2.py` (downloads); output `research/results/cpc-revision.md`.
+
+## 3. Result (one run, 2026-11-19; table `results/cpc-revision.md`)
+
+Data as run: 4,069 outlook files (2,032 issue dates with both leads, 2012-10-22 ..
+2025-11-09; 215 dates answered 404, almost all weekends of 2012-13 and 2013-14; the two
+files of 2022-10-31 answer 403 and are absent, so that day's sessions use the latest issue
+before it, as the rule says). Gas weights by Census division (NNLS 1981-2006): 1 0.039,
+2 0.147, 3 0.229, 4 0.089, 5 0.102, 6 0.045, 7 0.091, 8 0.084, 9 0.173. K has SD 0.115;
+the session dose x has SD 0.058 (5.8 probability points). 1,327 sessions with a dose,
+2012-11-01 .. 2025-03-31, 97-105 per winter.
+
+**Gate: fail on all three tests.** Slope -0.076 points per 0.10 (t -0.68, 1,327
+sessions), the wrong sign; rank 36 of 41 among the winter-derangement placebos; halves
+-0.028 (t -0.22, winters 2012-17) and -0.111 (t -0.66, 2018-24). Colder-revision quintile
+followed by a mean UNG session of -0.02%, warmer quintile +0.06%. No strategy card. One
+`screen` row in `research/tries.md`. Held-out year untouched (issues cut at 2025-11-09, UNG
+bars only to 2025-11-10).
+
+Placebo null: SD of t 0.95, 10% with |t| >= 2, 5/50/95% -0.77 / +0.78 / +2.26, extremes
+-0.79 / +2.76. The null is centred above zero (median +0.78): moving a winter's revisions
+onto another winter's calendar leaves a small positive alignment with UNG's open-to-close
+returns (likely calendar structure shared across winters: holiday and weekday positions of
+large multi-day revisions). Read against that centre the true t is lower still
+(z = (-0.68 - 0.78) / 0.95 = -1.5). Width close to N(0, 1), as expected for daily,
+nearly independent sessions.
+
+What the shown cells say (noted only, none is a lead):
+- **The dose check is very strong: +1.86 points per 0.10 (t 7.93, rank 1 of 41)** from the
+  close before the issue day to the next open. The revision index is right about the gas
+  market: a colder CPC revision comes with a large UNG rise. But that rise is complete by
+  the next open; nothing follows it.
+- Close t to close t+1: +0.06 (t 0.32, rank 18). Five sessions: -0.29 (t -0.75, rank 37).
+  6-10 alone -0.06 (t -0.65), 8-14 alone -0.05 (t -0.50).
+- XLE open-to-close +0.09 (t 1.50, rank 2 of 41): t below 2 and one of six shown cells;
+  energy equities did not react to heating weather in weather-1 either. Noted only.
+- The 33% contour polygons give a signal of (33 - 33.3)/100 = -0.003 for Above (and +0.003
+  for Below) under the card's formula, a sign slip of a third of a probability point, far
+  below the 6.7-point step to the next contour. Kept as carded; it cannot move the verdict.
+
+**Verdict: CPC 6-10/8-14 day outlook revisions are priced before the next session opens.**
+The forecast moves gas exactly as the mechanism says (t 7.9 in the window where the model
+runs reach the market) and carries nothing afterwards, at one session, one day from close or
+one week. With weather-1 this closes the public-weather route to natural gas at daily and
+weekly horizons: realised weather is priced through the forecast, and the forecast is priced
+when the models run, hours before CPC publishes it.
+
+## Next weather idea (not tested)
+
+Only an input that is not public before the price moves could still work: the raw model
+runs themselves are public at their run times (not tradable for an ETF at daily bars), so
+the remaining keyless angle would be intraday timing, which this project's daily bars cannot
+test. No further weather lane is suggested.

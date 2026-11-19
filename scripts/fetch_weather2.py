@@ -58,10 +58,20 @@ def jobs() -> list[tuple[str, str]]:
     return out
 
 
-def fetch(url: str) -> bytes:
+def fetch(url: str, tries: int = 4) -> bytes:
+    """GET with a few retries on connection errors (not on HTTP errors such as 404)."""
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return bytes(r.read())
+    for k in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return bytes(r.read())
+        except urllib.error.HTTPError:
+            raise
+        except (urllib.error.URLError, OSError):
+            if k == tries - 1:
+                raise
+            time.sleep(5.0 * (k + 1))
+    raise AssertionError("unreachable")
 
 
 def get_one(root: Path, rel: str, url: str) -> str:
@@ -73,7 +83,8 @@ def get_one(root: Path, rel: str, url: str) -> str:
     except urllib.error.HTTPError as e:
         if e.code == 404:
             return "missing"
-        raise
+        print(f"HTTP {e.code}, retry on a later run:", url, file=sys.stderr)
+        return "bad"
     finally:
         time.sleep(PAUSE_S)
     if body[:2] != b"PK" and rel.endswith(".zip"):
