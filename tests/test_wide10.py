@@ -103,3 +103,52 @@ def test_rank_and_null_spread() -> None:
     assert ev.rank_highest(2.0, [1.0, 3.0, 2.0]) == 2
     sd, share = ev.null_spread([-2.0, 0.0, 2.0, 1.0])
     assert share == 0.5 and sd > 0
+
+
+def test_w21_shifts_and_supply_parse_cut_at_train_end() -> None:
+    ev = _ev()
+    s = ev.SHIFTS_W21
+    assert len(s) == 40 and len(set(s)) == 40 and min(abs(k) for k in s) == 3
+    rows = [
+        {"date": "1514764800", "totalCirculatingUSD": {"peggedUSD": 5e9}},  # 2018-01-01
+        {"date": "1763164800", "totalCirculatingUSD": {"peggedUSD": 9e9}},  # 2025-11-15
+        {"date": "1514851200", "totalCirculatingUSD": {}},
+    ]
+    assert ev.parse_supply(rows, date(2025, 11, 10)) == {date(2018, 1, 1): 5e9}
+
+
+def test_w21_issuance_window_and_guards() -> None:
+    ev = _ev()
+    f = date(2020, 1, 10)  # a Friday
+    sup = {date(2020, 1, 2): 2e9, date(2020, 1, 9): 2.2e9}
+    m, why = ev.issuance(sup, f)
+    assert why == "ok" and abs(m - math.log(1.1)) < 1e-12
+    assert ev.issuance({date(2020, 1, 2): 5e8, date(2020, 1, 9): 6e8}, f)[1] == "small"
+    assert ev.issuance({date(2020, 1, 2): 2e9, date(2020, 1, 9): 4e9}, f)[1] == "jump"
+    assert ev.issuance({date(2020, 1, 9): 2e9}, f)[1] == "missing"
+
+
+def test_w21_week_returns_use_bars_before_and_after_friday() -> None:
+    ev = _ev()
+    f = date(2020, 1, 10)
+    c = {date(2020, 1, 2): 1.0, date(2020, 1, 9): 2.0, date(2020, 1, 16): 4.0}
+    assert abs(ev.week_return(c, f) - math.log(2.0)) < 1e-12
+    assert abs(ev.week_return(c, f, prev=True) - math.log(2.0)) < 1e-12
+    assert math.isnan(ev.week_return({date(2020, 1, 9): 1.0}, f))
+    assert ev.fridays(date(2020, 1, 6), date(2020, 1, 24)) == [
+        date(2020, 1, 10),
+        date(2020, 1, 17),
+        date(2020, 1, 24),
+    ]
+
+
+def test_w21_ols_multi_recovers_coefficients() -> None:
+    ev = _ev()
+    rng = np.random.default_rng(1)
+    a, b = rng.normal(size=800), rng.normal(size=800)
+    y = 1.0 + 0.5 * a - 0.3 * b + 0.1 * rng.normal(size=800)
+    beta, t = ev.ols_hc1_multi([a, b], y)
+    assert np.allclose(beta, [1.0, 0.5, -0.3], atol=0.02) and t[1] > 50 and t[2] < -30
+    b1, t1 = ev.ols_hc1(a, y - (-0.3 * b))
+    beta1, tt = ev.ols_hc1_multi([a], y - (-0.3 * b))
+    assert abs(beta1[1] - b1) < 1e-9 and abs(tt[1] - t1) < 1e-6

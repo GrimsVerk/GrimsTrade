@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Iterable, Mapping, Sequence
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 
 import numpy as np
 
@@ -115,3 +115,73 @@ def null_spread(ts: Sequence[float]) -> tuple[float, float]:
     """(standard deviation, share with |t| >= 2) of placebo t values."""
     a = np.asarray(ts, dtype=float)
     return float(a.std(ddof=1)), float(np.mean(np.abs(a) >= 2))
+
+
+# --- Step 3: W21 stablecoin issuance ---
+
+SHIFTS_W21: list[int] = [s * k for k in range(3, 23) for s in (1, -1)]
+MIN_SUPPLY = 1e9
+MAX_JUMP = math.log(1.5)
+
+
+def parse_supply(rows: Iterable[Mapping[str, object]], last: date) -> dict[date, float]:
+    """DefiLlama stablecoincharts rows -> {UTC date: total USD supply}, dates <= `last`."""
+    out: dict[date, float] = {}
+    for r in rows:
+        d = datetime.fromtimestamp(int(str(r["date"])), tz=UTC).date()
+        tot = r.get("totalCirculatingUSD")
+        if d > last or not isinstance(tot, Mapping) or "peggedUSD" not in tot:
+            continue
+        out[d] = float(tot["peggedUSD"])
+    return out
+
+
+def issuance(supply: Mapping[date, float], friday: date) -> tuple[float, str]:
+    """(m(F), reason): m = ln S(F-1) - ln S(F-8); NaN with a reason if a guard drops it."""
+    a, b = supply.get(friday - timedelta(days=8)), supply.get(friday - timedelta(days=1))
+    if a is None or b is None or a <= 0 or b <= 0:
+        return math.nan, "missing"
+    if a < MIN_SUPPLY:
+        return math.nan, "small"
+    m = math.log(b / a)
+    if abs(m) > MAX_JUMP:
+        return math.nan, "jump"
+    return m, "ok"
+
+
+def week_return(closes: Mapping[date, float], friday: date, prev: bool = False) -> float:
+    """ln(close of bar dated F+6 / close of bar dated F-1); prev=True: the week before
+    (bars dated F-8 .. F-1). NaN if a bar is missing."""
+    a, b = (
+        (friday - timedelta(days=8), friday - timedelta(days=1))
+        if prev
+        else (
+            friday - timedelta(days=1),
+            friday + timedelta(days=6),
+        )
+    )
+    if a not in closes or b not in closes:
+        return math.nan
+    return math.log(closes[b] / closes[a])
+
+
+def fridays(a: date, b: date) -> list[date]:
+    d = a + timedelta(days=(4 - a.weekday()) % 7)
+    out = []
+    while d <= b:
+        out.append(d)
+        d += timedelta(days=7)
+    return out
+
+
+def ols_hc1_multi(cols: Sequence[np.ndarray], y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """(coefficients, HC1 t) of y on [1, *cols], rows with any NaN dropped."""
+    x = np.column_stack([np.ones(len(y)), *cols])
+    ok = ~(np.isnan(x).any(axis=1) | np.isnan(y))
+    x, ya = x[ok], y[ok]
+    n, p = x.shape
+    inv = np.linalg.inv(x.T @ x)
+    beta = inv @ x.T @ ya
+    e = ya - x @ beta
+    cov = inv @ (x.T * e**2) @ x @ inv * n / (n - p)
+    return beta, beta / np.sqrt(np.diag(cov))

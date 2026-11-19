@@ -224,3 +224,66 @@ strategy, no `tries.md` row.** Held-out year untouched.
   open-to-close drift in purchase months was slightly negative on non-purchase days.
 - My guess (b > 0, t between 0 and 2, top third, pass 8%) was right on sign and size, a little
   high on rank; placebo sd 0.99 was just under the guessed 1.0-1.3.
+
+## Step 3. W21 `stablecoin-mint` gate
+
+### Data access (checked 2026-11-19, before any price was cut by it)
+
+DefiLlama publishes the total circulating supply of USD-pegged stablecoins, daily, without a key
+or account: `https://stablecoins.llama.fi/stablecoincharts/all` (JSON list of
+`{"date": unix seconds at 00:00 UTC, "totalCirculatingUSD": {"peggedUSD": dollars}}`). The file
+read on 2026-11-19 starts 2017-11-29; its first rows show only about $0.1m, so the early years
+miss coins DefiLlama did not yet track (USDT was then about $0.6bn). The rule below guards
+against that. The file goes to `research/data/stablecoins/` (gitignored), read as JSON data
+only. Only the head of the file was printed (format check); no change or level after 2017-12 was
+looked at.
+
+### Decision rule (fixed and pushed before any number)
+
+**Supply.** S(t) = `totalCirculatingUSD.peggedUSD` at the snapshot dated t (00:00 UTC), only
+for t <= 2025-11-10 (train; later snapshots are not read even for placebos).
+
+**Dose.** For a Friday F: m(F) = ln S(F - 1 day) - ln S(F - 8 days): the week's net issuance,
+as a log change, ending Thursday 00:00 UTC, so it is public a day before the entry close below.
+Missing (and the week dropped) if either snapshot is missing, if S(F - 8 days) < $1bn
+(incomplete early tracking), or if |m| > ln 1.5 (a jump from DefiLlama adding a coin, not
+issuance). The dry run prints how many weeks each guard drops.
+
+**Outcome.** Coin bars are dated by UTC day and close at the next 00:00 UTC
+(`grimstrade.data.close_time`). y(F) = the mean of BTC's and ETH's ln(close of the bar dated
+F + 6 / close of the bar dated F - 1): Friday 00:00 UTC to the next Friday 00:00 UTC, an event
+study on closes, not a fill model. Control c(F) = the same mean over the previous week (bars
+dated F - 8 to F - 1), so the dose is not just last week's price move (issuance follows prices).
+
+**Statistic.** OLS y = a + b m + g c over the Fridays of the sample, t of b with White (HC1)
+standard errors (weekly returns do not overlap).
+
+**Placebo null (the decider), one family, fixed here.** The same function with the dose
+calendar moved by k whole weeks, m_k(F) = m(F - 7k days), for k in +-{3, ..., 22}: **40
+placebos**. The control and the outcome stay put. Shifts of 1-2 weeks are left out (issuance
+is spent over days, maybe into the next week). Weeks where m_k is missing are dropped from that
+placebo only.
+
+**Gate. Pass only if both hold** (gate sample: Fridays 2018-04-06 .. 2025-10-31, after
+Griffin and Shams's sample; the last exit bar is dated 2025-11-06):
+1. b > 0 with t >= 2.
+2. The true t ranks among the 2 highest of 41; empirical one-sided p = rank / 41 <= 0.049.
+
+**Shown, not gating** (b, t, weeks): without the control; BTC alone; ETH alone; the halves
+2018-04 .. 2021-12 and 2022-01 .. 2025-10; the same-week regression (this week's m on this
+week's return c, to show how much issuance follows prices); mean next-week y in the top fifth
+of m against the rest; the placebo null's width (gate-null step 5).
+
+**On a pass:** no card now; a proposed card for the next window (coins on the Friday clock with
+issuance as a weight overlay inside `tsmom12`'s coin slots), read at p < 0.00128 and the
+register's p <= 4.9e-5 with z = (t - placebo median) / placebo sd. **On a fail:** W21 dead by
+the gate, no card, no row.
+
+**Power, written before any number.** Weekly coin returns have an sd near 9-10%; weekly supply
+growth an sd near 1-2%. Over about 395 weeks the standard error of b is about 0.10 / (sqrt(395) x
+0.015), about 0.34, so t >= 2 needs b near 0.7: a 1% week of issuance followed by +0.7% in
+coins the next week. Only a strong effect passes.
+
+**My guess before any number.** b > 0 with t between 0 and 1.5 after the control; rank in the
+upper half; placebo t sd 1.2-1.6 (issuance is persistent, so shifted doses share regimes).
+Chance of a pass: 4%.
