@@ -1,5 +1,18 @@
 # Next steps
 
+## Wide 13 (done 2026-11-19, branch `wide-13`, draft PR #120 -> `data-wide-1`)
+
+data-wide-1's 11 ideas scored with F1/F2 + wide-10's score before any price; top two on loaded
+sources gated (card pushed first): **W25 `act-haven`** (GPR acts z -> GLD/TLT 4-week) fails,
+-0.137%/z, t -1.02, rank 21/41; **W26 `failure-premium`** (FDIC failed assets -> XLF 4-week,
+price controls) fails, -0.059, t -0.48, rank 21/41. review-2's earlier-dose-only null reported
+after the runs (ranks 16/21 and 21/21; verdicts unchanged; both labelled kill-only). MOF daily
+detail is not tradable (quarterly publication). 2 `screen` rows in `tries.md`. Count: 84
+mechanisms, 18 tested by a strategy, none passed; 19 gates, all failed. Write-up
+`research/wide-13.md`. Doing: nothing. No process running.
+- Next: no idea left on data-wide-1's loaded sources scores 5; MOF quarterly publication dates
+  still unchecked.
+
 ## Data wide 1 (done 2026-11-19, branch `data-wide-1`, draft PR #114 -> `wide-11`)
 
 Data survey for the wide-11 filters (F1 not announced, F2 not price-driven). No candidates,
