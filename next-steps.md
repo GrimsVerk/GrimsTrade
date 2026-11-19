@@ -1,5 +1,31 @@
 # Next steps
 
+## Breadth screen (done 2026-11-19, branch `breadth-screen`, draft PR #106 -> `multi-signal`)
+
+Descriptive rerun of multi-signal's five signals (unchanged) on ls-trend-1's 34 cached ETFs,
+ranked within the four asset classes (`research/breadth-screen.md`; card
+`cards/breadth-screen.md` ad2ca1a before any number; script dbf014a before its run; table
+`results/breadth-screen.md`). 6 `screen` rows (`breadth-screen`, `@wide34`), no pick.
+
+- **Breadth does not bring the published signs back.** All five primary within-class ICs within
+  +-0.02 (chance level 0.015): value +0.005, carry -0.012, XS momentum -0.005 (six assets:
+  +0.043, so that was cross-class), low-vol -0.017 (still reversed), BAB +0.003. None passes.
+- Secondary looks: raw (unscaled) carry has the paper's sign, +0.029 (95% +0.012..+0.046),
+  partial +0.026, all four eras, in Treasuries (+0.092, duration along one curve) and FX (+0.032);
+  partial IC-IR +0.54 < 0.59 (BAR.md far-rule edge). Raw value -0.025 and class-market BAB
+  -0.029 reversed. Low-risk positive only on the risk-adjusted target (+0.04): per unit of
+  risk, i.e. needs a levered long-short book.
+- Nothing is large enough for a wide book (bar: partial IC >= 0.10 or IC-IR >= 0.59; project
+  bar N 1,012, p <= 4.9e-5).
+
+- Doing: nothing. No process running.
+- Next: (1) nothing further on style signals with keyless ETFs; (2) if FX carry is ever wanted,
+  a card on currency forwards/deposit rates across more than six currencies (needs a keyless
+  rate source); (3) survey-6 next steps stand (short-SPY/QQQ trend sleeve as insurance).
+- Data: no new download (ls-trend-1's `<cache_root>/derived/ls-trend-1/*.csv`, cached FRED
+  `DGS3MO`/`DGS2`/`DGS10`). Rerun: `uv run python research/lib/breadth_screen.py` (dry;
+  `--log` would add rows again: don't).
+
 ## Multi-signal (done 2026-11-19, branch `multi-signal`, draft PR #104 -> `survey-6`)
 
 Descriptive IC screen of value, carry, cross-sectional momentum (AMP 2013), low-vol and BAB
