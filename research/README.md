@@ -112,6 +112,14 @@ in during the bear-market half only (1927-1945, 1962-1981). The replay check's o
 holiday-Friday weeks, where the gym trades one session later than the gym-free check; they move
 no deciding number (`results/trend-1926-era2.md`).
 
+Deep run (deep-1, 2026-11-18; [`deep-1.md`](deep-1.md)): **no combination of the tested models
+beats the trend rule, because they are the same six assets held at different sizes.** A failure
+atlas of 52 return series ([`results/deep-1-atlas.md`](results/deep-1-atlas.md)) names six
+failure modes; three walk-forward mixes of `tsmom12` with 29 tested models score 1.01, 1.02 and
+1.08 against 1.05, the best no better than a plain average, and the best mix with hindsight only
+1.22. Next: a breadth gate and coin tops as their own cards, and carry as the first complement
+from a different source of return.
+
 ## Ranking after run 2
 
 For forward paper trading (M3), best first. Run 2 changed nothing here: no ML model comes
