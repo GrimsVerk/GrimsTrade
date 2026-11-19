@@ -626,3 +626,19 @@ gate, with no card:
 No new mechanisms in this run. **Family count: 72 mechanisms, 16 tested by a strategy, none
 passed. The next strategy test is read at p < 0.10 / 72 = 0.00139.** Gates so far: 10, all
 failed.
+
+## Added by wide-10 (2026-11-19): two mechanisms from unused fields, by a written score
+
+Picked by a scoring rule fixed before any data look (structural cause, a dose scored double,
+post-sample years, power, unseen cut, not killed; six candidates scored, see `wide-10.md`
+step 1). Each needs a gate first (`gate-null.md`).
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W20 `fed-purchase-flow` | procurement (reverse-auction) theory x a buyer with a published shopping list | On days the Fed buys Treasuries in an operation, dealers sell it the purchased sector and that sector's price rises the same day (flow effect; D'Amico and King 2013, Song and Zhu 2018, Kandrac and Schlusche 2013, the last finding it small after the early programmes) | Par accepted that day in bonds of 20+ years remaining maturity (TLT's sector), from the NY Fed's per-CUSIP results (keyless API) | TLT open-to-close on the day's log dose, placebo = the dose calendar shifted by trading days; judging years 2014-01 .. 2025-11 (after every cited sample); unseen: any future purchase programme | 3% |
+| W21 `stablecoin-mint` | monetary history of currency boards / narrow banks x issue only against a deposit | A stablecoin is minted only when dollars are wired to the issuer, so net issuance is fresh cash on its way to buy coins; coin prices should rise over the following week (Griffin and Shams 2020 on Tether, March 2017 .. March 2018) | Weekly log change of total USD stablecoin supply (DefiLlama, keyless) | BTC and ETH next-week return on last week's issuance, own last-week return as control, placebo = issuance shifted by weeks; judging years 2018-04 .. 2025-11 (7.6 years: one short of the post-sample point) | 2% |
+
+**Family count: union of the wide and survey lines 78 mechanisms (survey-7's 76 + W20, W21),
+18 tested by a strategy, none passed. The next strategy test is read at p < 0.10 / 78 =
+0.00128.** (The survey-4 entries `ts-carry`, `halloween`, `seasonal-20y`, `ts-value` are
+counted in the 76 but listed on their own branch.)
