@@ -1,5 +1,25 @@
 # Next steps
 
+## Health 1 (branch `health-1`, draft PR, not merged): live check of the daily runs, 2026-11-17
+
+Checked runs 2026-11-12 to 2026-11-17 (logs, `paper-trail` ledger, bars, replayed fills).
+
+- Healthy: all 11 live strategies (9 + presets Careful, Middle) decided on every run with new
+  data; no duplicates, no NaN or invalid weights. Bars: BTC/ETH every day to 2026-11-16, ETFs
+  every session to 2026-11-16 (only market holidays missing). Kraken + Yahoo every run, no Stooq
+  fallback, no 429, no problems recorded; 3 revisions under 1 bp. Every decision's orders filled
+  at the first open after it; equity matches the bars.
+- Fixed here: `reports/weekly.md` showed the presets by code name (`weekly.PLAIN` lacked them).
+  Test: `test_every_live_strategy_has_a_plain_name`.
+- Watch: the 22:30 UTC cron fires at 02:00-04:40 UTC (GitHub delay). No look-ahead, but the
+  crypto bar of the run's own day opened before the decision, so crypto orders fill about 22 h
+  later (next day's 00:00 open) instead of 1.5 h; backtests still decide at 22:30 (`DECIDE_AT`).
+  Decide whether to accept this or move the run (DECISIONS) before comparing live and backtest.
+- Watch: fully invested `equal_weight` (Bold) cannot top up crypto at 00:00 (no cash; ETF sells
+  happen at 13:30 and each ETF is inside the 1% band), so it drifts until an ETF leaves the band.
+  Same family as audit G2 (keep an unfilled buy pending).
+- `next-steps.md` on `main` still lists audit-1 (PR #5) as waiting for review; it is merged.
+
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
 Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
