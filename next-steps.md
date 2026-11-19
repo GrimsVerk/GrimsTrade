@@ -1,5 +1,21 @@
 # Next steps
 
+## Weather 1 (done 2026-11-19, branch `weather-1`, draft PR #116 -> `wide-11`)
+
+One pre-registered weather gate (card `research/weather-1.md`, pushed before any return
+data): CPC utility-gas-weighted HDD surprise vs a rolling 20-year normal, next-week UNG
+return, winters 2007-08..2024-25. **Fails: -0.036 points per 10 degree days, t -0.29, rank
+19/41 winter-derangement placebos (sd 1.12); halves +0.17 / -0.25.** Same-week move only
+t 1.68 (the market trades the forecast). One `screen` row in `research/tries.md`; held-out
+year untouched. Table `research/results/hdd-gas.md`.
+
+Count: union **80 mechanisms, 19 tested, none passed** (79/18 from wide-11 plus `hdd-gas`).
+- Doing: nothing. No process running.
+- Next weather angle: forecast revisions (CPC 6-10/8-14 day outlook archive); check archive
+  depth (>= 2007) first.
+- Data: `weather-1/` under `research/macro.local.json`'s cache root (CPC files 1981-2025, UNG
+  train bars only, fetched to 2025-11-10).
+
 ## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
 Step 1: two filters added to the candidate score before any data look: **F1 not announced**
