@@ -4,7 +4,19 @@ Research run data-wide-1, 2026-11-19. Branch `data-wide-1` (from `wide-11`), dra
 `wide-11`. Data survey only: no candidate written, no gate, no backtest, no return statistic,
 no correlation with any price. Weather and climate data are out of scope (another lane).
 
-**Status: skeleton, being filled.**
+**In one paragraph.** 23 free keyless sources inventoried across geophysics, geopolitics,
+banking, central-bank operations, epidemiology, energy, shipping, cyber, regulation and crypto
+(plus 8 that refused a scripted client and the signup/paid ones, listed so nobody retries
+blindly); 9 verified by a download into the cache (counts, spans, gaps, release lags in
+`results/data-wide-1.md`); loaders with offline tests for 4 (`lib/datawide1.py`). Best F1/F2
+doses by the rule below: **(1) the daily geopolitical risk index** (1985-, no gaps, archived
+vintages since 2022), **(2) FDIC bank failures** (1934-, closures on Friday evenings without
+notice), **(3) Japan MOF FX intervention** (1991-, 389 operation days in 35 episodes, a direct
+Treasury flow). The purest by construction is **USGS earthquakes** (1900-, nothing about it
+follows prices) but its reach into the gym's assets is indirect. Every dose source has a
+caveat a card must carry: GPR and FluView values are revised (use vintages), earthquake
+magnitudes are the reviewed ones, MOF daily detail is published a quarter late, FDIC failures
+cluster in two episodes (1980s-90s, 2008-12), DefiLlama's curation grew over time.
 
 ## Why
 
@@ -63,7 +75,7 @@ No score uses any price or return.
 | 16 | **USAspending** `api.usaspending.gov` | US public domain; documented API | FY2008- | daily | days | **1**: large awards are announced the day they are made; the September spike is calendar | **2** | medium | 2 | 1 | 0.25 | 1.5 |
 | 17 | **OpenSanctions (OFAC SDN and others)** `data.opensanctions.org` | CC BY-NC 4.0 (non-commercial: fits this project) | listing dates partly back to the 1990s; reliable `first_seen` only recently | daily | 1 day | **2** | **2** | medium | 1 | 0.7 | 0.5 | 1.4 |
 | 18 | **openFDA enforcement / recalls** `api.fda.gov` | CC0; keyless 1,000 requests a day | 2004- (enforcement 2012-) | event | days | **2** | **2** | low | 1 | 1 | 0.25 | 1.0 |
-| 19 | **DefiLlama hacks** `api.llama.fi/hacks` (JSON) | free open API; no key (other endpoints paid: `/raises` answered 402) | events from about 2016, most since 2020 (see verification) | event | days; curated and back-filled, no vintages | **2**: hacks are not announced | **1**: the sum stolen scales with token prices and value locked: controls | low | 0.5 | 0.6 | 1 | 0.9 (best reach for BTC/ETH) |
+| 19 | **DefiLlama hacks** `api.llama.fi/hacks` (JSON) | free open API; no key (other endpoints paid: `/raises` answered 402) | 2011- (1,367 events; under 10 a year before 2018, 359 in 2026) | event | days; curated and back-filled, no vintages | **2**: hacks are not announced | **1**: the sum stolen scales with token prices and value locked: controls | low | 0.5 | 0.6 | 1 | 0.9 (best reach for BTC/ETH) |
 | 20 | **IMF PortWatch chokepoints** ArcGIS `services9.arcgis.com/weJ1QsnbMYJlCHdG/.../Daily_Chokepoints_Data` | IMF data, free with attribution `[unverified]`; public ArcGIS REST, 2,000 rows a page | daily 2019- (28 chokepoints, transits by vessel type, capacity); daily port calls (5.95 M rows); disruptions list (132) | daily, updated weekly | 4-10 days | **2**: attacks and closures are unscheduled | **2**: transit counts are not set by asset prices | medium | 0.5 | 0.9 | 0.5 | 0.9 |
 | 21 | **NY Fed repo / standing repo take-up** `markets.newyorkfed.org/api/rp/` (host known from wide-10; new series) | free, keyless | 2019- for current operations | daily | same day | **2**: take-up is the banks' choice on the day | **1**: follows repo-rate spikes (not an asset's own price) | low | 0.5 | 1 | 0.5 | 0.75 |
 | 22 | **CISA KEV** `cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv` | US public domain | 2021-11- | event (daily adds) | same day | **2** | **2** | low | 0.5 | 1 | 0.25 | 0.5 |
@@ -101,12 +113,92 @@ price: F2), weather and climate (another lane).
 
 ## Verified downloads
 
-(filled below)
+Nine sources were downloaded on 2026-11-19 by `scripts/fetch_datawide1.py` into the shared
+git-ignored cache (`data-wide-1/<source>/<date>/` under the cache root of
+`research/macro.local.json`; sha256 per file in the cache's `manifest.jsonl`), about 50 MB in
+all. They were read as data only (`python -I`), never executed, never committed. The
+description script `lib/datawide1_check.py` writes `results/data-wide-1.md`; it reads no price
+and computes no return or correlation. What it found, per source:
+
+| Source | Rows | Span | Gaps | Release, as-of | Surprise for a card |
+|---|---:|---|---|---|---|
+| USGS M >= 6 (and M >= 5 since 1973) | 14,487 (89,674) | 1900-01-05 .. 2026-11-18 | no year without an M >= 6; longest pause since 1973: 39 days | minutes; **reviewed magnitudes only** (7,428 of 7,456 M >= 6 rows since 1973 updated 30+ days after the event) | M >= 7.5 since 1973: 236 events; M >= 8: 40 |
+| GPR daily | 15,295 | 1985-01-01 .. 2026-11-16 | none (every calendar day) | weekly file; Monday vintages carry that Monday; **one Monday vintage (2026-11-09) still ended a week earlier**; the 2022-02-24 vintage differs from today's values by a median 2.7% (later vintages: under 0.5% on all but 22-61 days) | values before 2022 are only available in today's revised form |
+| EIA NUC_STATUS | 3 US series x 7,262 days; 174 generator series of each kind | 2007-01-01 .. 2026-11-18 | none | daily | no planned/unplanned flag |
+| FluView US ILI | 1,424 weeks | 1997-w40 .. 2026-w44 | **1998-2002: 33 weeks a year** (season only) | weekly; issue kept, revisions up to 0.07 points | rows before issue 201352 are a back-fill |
+| DefiLlama hacks | 1,367 events | 2011-06-19 .. 2026-11-18 | 1-8 a year before 2018; 359 in 2026 alone | no publication date per event | counts follow curation effort, not only hacking |
+| FDIC failures | 4,117 | 1934-04-19 .. 2026-07-17 | longest pause since 1990: 952 days (2004-2007) | **562 of 594 closures since 2000 on a Friday** | two big episodes hold most events |
+| PortWatch chokepoints | 80,528 (28 x 2,876 days) | 2019-01-01 .. 2026-11-15 | none | weekly refresh, last day 4 days old | under 7 years |
+| MOF intervention | 389 operation days | 1991-05-13 .. 2026-08-03 | 35 episodes; 2010s: 8 days | daily rows sum to every one of 142 published quarter totals | 338 days sold yen (1991-2004, buying dollar assets), 45 bought yen (1998, 2022-2026) |
+| CISA KEV | 1,786 | 2021-11-03 .. 2026-11-18 | 287 rows on the first day (the initial catalogue) | daily | under 5 years |
+
+What changed in the inventory after the downloads: DefiLlama's history starts in 2011 but holds
+too few events before 2018 for a gate (H stays 0.5); the MOF file is cleaner than expected
+(totals reconcile); GPR's release can slip a week, so its "available on" rule is conservative
+(below). No score in the table moved enough to change the top three.
 
 ## Loaders
 
-(filled below)
+`research/lib/datawide1.py` (pattern of the other research loaders: plain functions over
+text/bytes/rows, so tests need no network and no cache), tests `tests/test_datawide1.py`
+(10 tests, offline, literal samples copied from the real formats):
+
+- **USGS** `parse_usgs_csv`, `merge_quakes` (one row per event id, the latest revision wins),
+  `load_quakes(folder)`, `daily_max_magnitude(quakes, min_mag)` by UTC day.
+- **GPR** `parse_gpr_rows` (columns found by name), `read_gpr_xls` (needs
+  `uv run --with xlrd`; xlrd is not a project dependency), `gpr_available_on(day)`: the first
+  Wednesday at least 9 days after the day (covers one slipped weekly update); from 2022-02-24
+  a card should read the archived vintages (`gprvint` in the fetch script fetches six; the
+  archive has every weekly file).
+- **FDIC** `parse_fdic_failures`, `failure_available_on(day)` = next calendar day (evening
+  announcements).
+- **MOF** `parse_mof_csv` (Shift-JIS; year and month carried down; quarter-total rows
+  skipped), `mof_quarter_totals`, `monthly_totals(signed)`, `mof_month_available_on` (day
+  after the month end: the month's total is published on its last business day),
+  `mof_daily_available_on` (quarter end + 45 days: a default, the exact quarterly publication
+  dates were not checked).
+
+Not loaded (format is simple, left for the lane that needs them): NUC_STATUS (JSON lines in a
+zip), FluView (JSON with `issue`), DefiLlama hacks (JSON), PortWatch (ArcGIS pages), KEV (CSV).
 
 ## For wide-13 (ideas only, nothing tested)
 
-(filled below)
+Each is a mechanism a source could feed, written against the filters; none has been scored,
+looked at against prices, or carded. Literature checks are still to do.
+
+1. **GPR acts vs threats as a safe-haven premium (GLD, TLT).** A risk premium (F1 b): after
+   adverse acts (war starts, escalation) safe assets earn a premium over the following weeks
+   for bearing the risk of escalation; threats without acts are priced on the day. Caveat:
+   Caldara-Iacoviello (2022) is the source sample; post-sample years from 2022 are few.
+2. **GPR and the oil risk premium (DBC, XLE).** Same dose, commodity side; needs an oil-supply
+   control because wars move oil directly.
+3. **Bank-failure Fridays and the Monday flight to quality (TLT, IEF; XLF).** F1 by
+   construction (no notice); F2 with controls for the past 4/52-week return of SPY and XLF.
+   Dose: failed assets as a share of bank assets; few independent episodes, so the placebo
+   family must be shifted calendars, not permutations.
+4. **MOF dollar buying and Treasury purchases (TLT, IEF).** In 1991-2004 the MOF sold yen on
+   338 days; the dollars were invested in Treasuries over the following weeks. The monthly total
+   is public at month end, the investment flow follows it: an unscheduled flow into Treasuries
+   whose size is known before the flow completes. F2: intervention answers USDJPY, so USDJPY
+   and US yield changes are the controls. The 2022-2026 yen support (45 days) is the reverse:
+   Treasury sales.
+5. **Large earthquakes near Japan and yen repatriation (TLT, SPY).** Insurers and investors
+   repatriate after a big domestic disaster (2011 is the known case); dose: M >= 7 within a
+   radius of Japan; pure F1/F2, few events.
+6. **Earthquakes in copper and oil regions (DBC).** Supply shocks in Chile/Peru (copper) or
+   the Gulf; pure F1/F2; reach through a broad commodity fund is diluted.
+7. **Nuclear outages above the seasonal norm and gas burn (DBC, XLU).** Dose: US outage % minus
+   the same calendar week's 5-year mean, which removes most planned refuelling (F1 by the
+   split); F2 by construction.
+8. **Flu above the seasonal norm and absences (XLV, SPY).** Dose: ILI minus same-week 5-year
+   mean, read at its issue (vintages); weak reach.
+9. **Stolen coins and forced laundering sales (ETH vs BTC).** Hackers sell or bridge stolen
+   ETH within days; dose: USD stolen on Ethereum minus returned funds; F2 with controls (the
+   value stolen scales with prices and value locked). Counts drift with curation, so use
+   sizes, not counts.
+10. **Chokepoint closures and the shipping/oil premium (DBC).** Dose: Suez/Bab el-Mandeb/Hormuz
+    transits below their 1-year norm; pure F1/F2 for attacks; under 7 years of history, so a
+    lead at most, never a gate before 2027.
+11. **Central-bank gold buying and GLD.** IMF monthly official gold holdings (dataflow `IL`
+    keyless, not yet queried); persistence makes last month's buying a forecast of this
+    month's flow; F2 with controls (some buyers paused on price spikes).

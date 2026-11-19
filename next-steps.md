@@ -1,10 +1,23 @@
 # Next steps
 
-## Data wide 1 (doing 2026-11-19, branch `data-wide-1`, draft PR -> `wide-11`)
+## Data wide 1 (done 2026-11-19, branch `data-wide-1`, draft PR #114 -> `wide-11`)
 
-Inventory of free keyless sources whose series could be F1/F2 doses (wide-11 filters);
-verify the best by small downloads into the shared cache; loaders with offline tests.
-No candidates, no gates, no return statistics. Write-up `research/data-wide-1.md`.
+Data survey for the wide-11 filters (F1 not announced, F2 not price-driven). No candidates,
+no gates, no return statistics, no price read. Write-up `research/data-wide-1.md`.
+
+- 23 keyless sources inventoried and ranked by (F1 + F2) x history x reliability x reach;
+  8 more refused a scripted client (SEC, NRC, BLS, UCDP, ...), signup and paid ones listed.
+- 9 verified by download (`scripts/fetch_datawide1.py` -> cache `data-wide-1/`; description
+  `research/results/data-wide-1.md` by `research/lib/datawide1_check.py`).
+- Loaders with offline tests: `research/lib/datawide1.py` (USGS earthquakes, daily GPR,
+  FDIC failures, MOF intervention), `tests/test_datawide1.py`.
+- Top three doses: daily geopolitical risk (1985-), FDIC failures (1934-), MOF intervention
+  (1991-); purest by construction: USGS earthquakes. Eleven mechanism ideas for wide-13 at the
+  end of the write-up (not scored, not tested).
+- Doing: nothing. No process running.
+- Next: wide-13 scores the ideas against the filters; whoever loads GPR after 2022 should
+  fetch the full weekly vintage archive (only six fetched); MOF quarterly publication dates
+  and the IMF `IL` gold query were not checked.
 
 ## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
