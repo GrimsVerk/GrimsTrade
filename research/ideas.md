@@ -143,3 +143,16 @@ Sharpe on Binance USDT perps, 2020-2025, 10 bps a side plus funding. Twin: `tsmo
 | fm-chronos-zero-shot | Pretrained time-series models | dead (tested) | [card](fm-1.md) | Chronos-Bolt weekly IC 0.10-0.15 and +0.18 Sharpe in the rl-3 gate, but it is memory: IC ~0 on 2020-25, on the 1964-93 S&P and on inverted prices; Chronos-2 (no memory) IC ~0 everywhere. [results](results/fm-1.md) |
 | fm-fine-tune | Pretrained time-series models | parked | [card](fm-1.md) | Not triggered (no clean zero-shot signal); a fine-tune on train years trains on the years the models remember. |
 | fm-forward-log | Pretrained time-series models | new | - | Log Chronos forecasts forward on the paper trail (seconds of GPU a week), judge after a year: the only test free of pretraining leakage. Low priority. |
+
+## Cards from YouTube, run ideas-1 (`cards/yt-1.md`, written before any test; summary in `ideas-1.md`)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| bbwp | Volatility (video FAIAELKdn7g) | dead (tested) | [card](cards/yt-1.md) | Band-width tops: -0.04 vs tsmom12, 0/5 eras; fired once on BTC. [result](results/bbwp.md) |
+| srsi | Momentum extremes (FAIAELKdn7g) | dead (tested) | [card](cards/yt-1.md) | Monthly stochastic RSI exits: -0.23; out half the time. [result](results/srsi.md) |
+| ath | Cycle clock (FAIAELKdn7g) | dead (tested), nearest miss | [card](cards/yt-1.md) | +0.08 (p = 0.18), passes bars 2-6; gain all from coins (4 cycles) and the exact window. [result](results/ath.md), [robustness](results/ath-robust.md) |
+| gap | Sentiment (YXFvwJQBzJc, f353QO5Dgus) | dead (tested) | [card](cards/yt-1.md) | Stocks near highs + low UMCSENT: -0.09, 0/5 eras. [result](results/gap.md) |
+| oil | Macro (f353QO5Dgus) | dead (tested) | [card](cards/yt-1.md) | Oil-shock gate: +0.05 (p = 0.20), ties since 2003, mixed out of universe. [result](results/oil.md) |
+| y10 | Macro (f353QO5Dgus) | dead (tested) | [card](cards/yt-1.md) | Yield change and three levels: -0.07..-0.01. [result](results/y10.md) |
+| trend3 | Trend (YXFvwJQBzJc) | dead (tested): it is `sma200` | [card](cards/yt-1.md) | SPY/GLD/BTC above 200-day: -0.01 vs tsmom12 on the same three. [result](results/trend3.md) |
+| fng | Sentiment (Fnx513JS5Vg, stand-in) | dead (tested) | [card](cards/yt-1.md) | Buy extreme fear -0.10, sell extreme greed -0.08 (coins, from 2018). [result](results/fng.md) |
