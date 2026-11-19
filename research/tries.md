@@ -25,6 +25,13 @@ Never edit or delete a row.
   hold), tagged `@live-L` (2010-02 to 2025-10, Sharpe on excess returns); not selectable, not a
   strategy try, not counted in the family (`cards/ls-trend.md`, numbers in
   `results/ls-trend.md`).
+
+- `insure-check` (added 2026-11-18, insure-1): a descriptive re-score of an already logged
+  configuration (`tsmom12`) on a span or set it was not logged on (trend-1926's saved gym runs
+  spliced with the gym-free paper series to 1927-2025; the 30 French industries, paper series);
+  not selectable, not a strategy try, not counted in any family (`cards/crash-insurance.md`,
+  numbers in `results/insure-1.md`). Turnover/yr there = position flips a year. insure-2 adds
+  27 such rows on non-US stock indices (paper series; `cards/insure-geo.md`, `results/insure-2.md`).
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 - `invest-1` rows (added 2026-11-13): monthly decisions; Sharpe is of monthly returns in excess
   of T-bills x sqrt(12); period `train` = 1927-01..1989-12, `oos` = 1990-01..2025-10 (both fixed
@@ -1798,3 +1805,125 @@ Never edit or delete a row.
 | 2026-11-18 19:21 | gsy-runup | equal-weight@ETF4-train | baseline | train | 1999-12-23 | 2025-11-09 | 0.50 | +738.2% | 56.7% | 0.39 |
 | 2026-11-18 19:21 | gsy-runup | flag100-sma@ETF4-train | robustness | train | 1999-12-23 | 2025-11-09 | 0.45 | +247.8% | 24.9% | 3.20 |
 | 2026-11-18 19:21 | gsy-runup | flag100-vol@ETF4-train | robustness | train | 1999-12-23 | 2025-11-09 | 0.48 | +270.0% | 24.9% | 2.95 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Mkt | insure-check | train | 1927-07-02 | 2025-10-31 | 0.82 | +1202861.5% | 38.2% | 1.40 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-NoDur | insure-check | train | 1927-07-02 | 2025-10-31 | 0.87 | +600276.0% | 35.5% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Durbl | insure-check | train | 1927-07-02 | 2025-10-31 | 0.60 | +1108597.3% | 72.5% | 2.36 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Manuf | insure-check | train | 1927-07-02 | 2025-10-31 | 0.74 | +845637.1% | 49.4% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Enrgy | insure-check | train | 1927-07-02 | 2025-10-31 | 0.57 | +231174.0% | 57.0% | 2.55 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-HiTec | insure-check | train | 1927-07-02 | 2025-10-31 | 0.67 | +2644856.0% | 56.9% | 2.01 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Telcm | insure-check | train | 1927-07-02 | 2025-10-31 | 0.76 | +446328.0% | 32.7% | 1.83 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Shops | insure-check | train | 1927-07-02 | 2025-10-31 | 0.81 | +1384864.3% | 52.4% | 1.73 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Hlth | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +1068443.5% | 38.5% | 2.03 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Utils | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +541036.3% | 56.0% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure-Other | insure-check | train | 1927-07-02 | 2025-10-31 | 0.73 | +510119.9% | 48.1% | 1.73 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Food | insure-check | train | 1927-07-02 | 2025-10-31 | 0.82 | +528569.4% | 36.1% | 1.74 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Beer | insure-check | train | 1927-07-02 | 2025-10-31 | 0.61 | +881019.0% | 67.8% | 2.23 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Smoke | insure-check | train | 1927-07-02 | 2025-10-31 | 0.69 | +917498.3% | 51.4% | 2.48 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Games | insure-check | train | 1927-07-02 | 2025-10-31 | 0.59 | +1016849.6% | 57.3% | 2.07 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Books | insure-check | train | 1927-07-02 | 2025-10-31 | 0.69 | +1311500.2% | 45.2% | 1.91 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Hshld | insure-check | train | 1927-07-02 | 2025-10-31 | 0.64 | +236720.3% | 42.7% | 2.21 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Clths | insure-check | train | 1927-07-02 | 2025-10-31 | 0.64 | +184951.2% | 46.5% | 2.27 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Hlth | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +1108305.7% | 38.5% | 2.03 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Chems | insure-check | train | 1927-07-02 | 2025-10-31 | 0.56 | +120707.8% | 59.6% | 2.47 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Txtls | insure-check | train | 1927-07-02 | 2025-10-31 | 0.56 | +123659.1% | 59.4% | 1.90 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Cnstr | insure-check | train | 1927-07-02 | 2025-10-31 | 0.59 | +173008.1% | 61.8% | 2.36 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Steel | insure-check | train | 1927-07-02 | 2025-10-31 | 0.47 | +99832.9% | 76.7% | 2.62 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-FabPr | insure-check | train | 1927-07-02 | 2025-10-31 | 0.66 | +715688.5% | 60.7% | 1.99 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-ElcEq | insure-check | train | 1927-07-02 | 2025-10-31 | 0.63 | +1318608.6% | 59.6% | 1.99 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Autos | insure-check | train | 1927-07-02 | 2025-10-31 | 0.58 | +1031972.7% | 69.4% | 2.50 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Carry | insure-check | train | 1927-07-02 | 2025-10-31 | 0.68 | +1780214.2% | 45.6% | 1.85 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Mines | insure-check | train | 1927-07-02 | 2025-10-31 | 0.45 | +62420.2% | 63.0% | 2.46 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Coal | insure-check | train | 1927-07-02 | 2025-10-31 | 0.41 | +91226.1% | 85.3% | 2.38 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Oil | insure-check | train | 1927-07-02 | 2025-10-31 | 0.58 | +284878.3% | 57.7% | 2.47 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Util | insure-check | train | 1927-07-02 | 2025-10-31 | 0.78 | +526398.9% | 56.0% | 1.77 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Telcm | insure-check | train | 1927-07-02 | 2025-10-31 | 0.76 | +450017.8% | 32.7% | 1.83 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Servs | insure-check | train | 1927-07-02 | 2025-10-31 | 0.45 | +1026331.0% | 91.7% | 1.56 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-BusEq | insure-check | train | 1927-07-02 | 2025-10-31 | 0.70 | +3428047.4% | 49.8% | 2.36 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Paper | insure-check | train | 1927-07-02 | 2025-10-31 | 0.62 | +171532.0% | 48.3% | 2.29 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Trans | insure-check | train | 1927-07-02 | 2025-10-31 | 0.52 | +68510.5% | 55.2% | 2.52 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Whlsl | insure-check | train | 1927-07-02 | 2025-10-31 | 0.66 | +1084716.2% | 53.6% | 2.04 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Rtail | insure-check | train | 1927-07-02 | 2025-10-31 | 0.77 | +1198842.3% | 66.5% | 1.81 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Meals | insure-check | train | 1927-07-02 | 2025-10-31 | 0.71 | +1565555.2% | 48.1% | 1.78 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Fin | insure-check | train | 1927-07-02 | 2025-10-31 | 0.72 | +744261.3% | 48.6% | 2.05 |
+| 2026-11-18 22:49 | insure-1 | tsmom12@insure30-Other | insure-check | train | 1927-07-02 | 2025-10-31 | 0.57 | +128598.1% | 57.9% | 2.38 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Japan | insure-check | train | 1966-01-21 | 2025-10-31 | 0.57 | +5522.2% | 40.8% | 2.22 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Canada | insure-check | train | 1980-07-04 | 2025-10-31 | 0.43 | +521.5% | 34.2% | 2.05 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-UK | insure-check | train | 1984-12-28 | 2025-10-31 | 0.38 | +366.0% | 37.6% | 2.62 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Australia | insure-check | train | 1985-08-16 | 2025-10-31 | 0.37 | +323.6% | 54.0% | 2.56 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-HongKong | insure-check | train | 1988-01-08 | 2025-10-31 | 0.37 | +529.5% | 46.5% | 2.51 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Germany | insure-check | train | 1988-12-29 | 2025-10-31 | 0.42 | +563.2% | 51.9% | 1.82 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Singapore | insure-check | train | 1989-01-13 | 2025-10-31 | 0.33 | +206.3% | 47.0% | 2.63 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-France | insure-check | train | 1991-03-08 | 2025-10-31 | 0.38 | +345.6% | 39.8% | 2.11 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Switzerland | insure-check | train | 1991-11-15 | 2025-10-31 | 0.41 | +309.6% | 38.4% | 3.09 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Belgium | insure-check | train | 1992-04-16 | 2025-10-31 | 0.43 | +323.3% | 37.5% | 2.41 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Netherlands | insure-check | train | 1993-10-08 | 2025-10-31 | 0.50 | +559.1% | 36.3% | 2.21 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Austria | insure-check | train | 1993-11-19 | 2025-10-31 | 0.35 | +240.0% | 49.9% | 2.35 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Spain | insure-check | train | 1994-07-15 | 2025-10-31 | 0.47 | +454.9% | 53.7% | 1.95 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-Europe | insure-check | train | 1991-06-21 | 2025-10-31 | 0.50 | +553.7% | 39.0% | 2.30 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-Japan | insure-check | train | 1991-06-21 | 2025-10-31 | 0.31 | +224.2% | 38.6% | 3.11 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-AsiaPacExJapan | insure-check | train | 1991-06-21 | 2025-10-31 | 0.56 | +653.2% | 39.2% | 2.65 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Italy | insure-check | train | 1998-12-18 | 2025-10-31 | 0.14 | +28.5% | 62.3% | 2.05 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-NewZealand | insure-check | train | 2004-01-09 | 2025-10-31 | 0.95 | +485.9% | 25.1% | 1.05 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Israel | insure-check | train | 1993-10-01 | 2025-10-30 | 0.58 | +908.3% | 30.4% | 1.84 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Korea | insure-check | train | 1997-12-26 | 2025-10-31 | 0.48 | +586.6% | 41.8% | 2.98 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Taiwan | insure-check | train | 1998-07-17 | 2025-10-31 | 0.36 | +225.4% | 50.1% | 2.75 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-India | insure-check | train | 1998-07-17 | 2025-10-31 | 0.66 | +1229.8% | 40.7% | 2.23 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Brazil | insure-check | train | 1994-05-06 | 2025-10-31 | 0.57 | +2809.9% | 61.2% | 3.08 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Mexico | insure-check | train | 1992-11-27 | 2025-10-31 | 0.50 | +838.5% | 49.9% | 3.25 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Malaysia | insure-check | train | 1994-12-09 | 2025-10-31 | 0.24 | +76.0% | 45.7% | 2.85 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-Indonesia | insure-check | train | 1991-04-26 | 2025-10-31 | 0.51 | +849.5% | 53.2% | 2.34 |
+| 2026-11-18 23:04 | insure-2 | tsmom12@insure-geo-FF-DevExUS | insure-check | train | 1991-06-21 | 2025-10-31 | 0.49 | +390.7% | 36.0% | 2.53 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Mkt | variant | train | 1927-07-02 | 2025-10-31 | 0.82 | +2864104.0% | 50.7% | 2.13 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-NoDur | robustness | train | 1927-07-02 | 2025-10-31 | 0.90 | +1545677.9% | 50.7% | 2.28 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Durbl | robustness | train | 1927-07-02 | 2025-10-31 | 0.63 | +5592185.4% | 75.0% | 3.09 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Manuf | robustness | train | 1927-07-02 | 2025-10-31 | 0.75 | +2462135.9% | 55.9% | 2.44 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Enrgy | robustness | train | 1927-07-02 | 2025-10-31 | 0.57 | +440719.1% | 61.1% | 3.00 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-HiTec | robustness | train | 1927-07-02 | 2025-10-31 | 0.66 | +4524121.2% | 61.6% | 2.72 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Telcm | robustness | train | 1927-07-02 | 2025-10-31 | 0.74 | +721895.8% | 50.6% | 2.36 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Shops | robustness | train | 1927-07-02 | 2025-10-31 | 0.83 | +4049260.1% | 52.0% | 2.40 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Hlth | robustness | train | 1927-07-02 | 2025-10-31 | 0.70 | +846827.7% | 52.6% | 2.76 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Utils | robustness | train | 1927-07-02 | 2025-10-31 | 0.70 | +454232.3% | 69.6% | 2.13 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-Other | robustness | train | 1927-07-02 | 2025-10-31 | 0.74 | +2106804.4% | 53.8% | 2.34 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Japan | robustness | train | 1966-01-21 | 2025-10-31 | 0.60 | +11065.0% | 42.6% | 2.99 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Canada | robustness | train | 1980-07-04 | 2025-10-31 | 0.57 | +1488.7% | 32.6% | 2.80 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-UK | robustness | train | 1984-12-28 | 2025-10-31 | 0.32 | +291.0% | 37.9% | 3.55 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Australia | robustness | train | 1985-08-16 | 2025-10-31 | 0.47 | +682.4% | 44.3% | 3.01 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-HongKong | robustness | train | 1988-01-08 | 2025-10-31 | 0.47 | +1435.4% | 44.4% | 3.67 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Germany | robustness | train | 1988-12-29 | 2025-10-31 | 0.47 | +959.3% | 50.0% | 2.69 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Singapore | robustness | train | 1989-01-13 | 2025-10-31 | 0.53 | +834.2% | 50.2% | 3.29 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-France | robustness | train | 1991-03-08 | 2025-10-31 | 0.31 | +257.8% | 39.5% | 3.55 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Switzerland | robustness | train | 1991-11-15 | 2025-10-31 | 0.30 | +182.8% | 52.9% | 4.03 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Belgium | robustness | train | 1992-04-16 | 2025-10-31 | 0.50 | +550.8% | 36.6% | 3.49 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Netherlands | robustness | train | 1993-10-08 | 2025-10-31 | 0.46 | +528.6% | 41.9% | 2.96 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Austria | robustness | train | 1993-11-19 | 2025-10-31 | 0.54 | +846.2% | 39.5% | 3.10 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-Spain | robustness | train | 1994-07-15 | 2025-10-31 | 0.35 | +287.6% | 63.6% | 4.37 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-FF-Europe | robustness | train | 1991-06-21 | 2025-10-31 | 0.56 | +954.7% | 35.5% | 3.05 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-FF-Japan | robustness | train | 1991-06-21 | 2025-10-31 | 0.30 | +237.8% | 44.0% | 4.16 |
+| 2026-11-18 23:14 | fast-reentry | or3-12@insure-geo-FF-AsiaPacExJapan | robustness | train | 1991-06-21 | 2025-10-31 | 0.70 | +1577.6% | 42.2% | 3.40 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Mkt | variant | train | 1927-07-02 | 2025-10-31 | 0.83 | +3095797.2% | 50.7% | 2.40 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-NoDur | robustness | train | 1927-07-02 | 2025-10-31 | 0.91 | +1705190.2% | 48.9% | 2.56 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Durbl | robustness | train | 1927-07-02 | 2025-10-31 | 0.62 | +4320923.1% | 72.0% | 3.60 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Manuf | robustness | train | 1927-07-02 | 2025-10-31 | 0.76 | +2705034.3% | 55.9% | 2.70 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Enrgy | robustness | train | 1927-07-02 | 2025-10-31 | 0.56 | +340852.8% | 60.0% | 3.75 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-HiTec | robustness | train | 1927-07-02 | 2025-10-31 | 0.65 | +3349156.2% | 61.6% | 3.23 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Telcm | robustness | train | 1927-07-02 | 2025-10-31 | 0.73 | +591762.3% | 50.1% | 2.78 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Shops | robustness | train | 1927-07-02 | 2025-10-31 | 0.84 | +4241546.5% | 52.0% | 2.74 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Hlth | robustness | train | 1927-07-02 | 2025-10-31 | 0.71 | +773558.7% | 52.6% | 3.21 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Utils | robustness | train | 1927-07-02 | 2025-10-31 | 0.72 | +546093.8% | 68.4% | 2.50 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-Other | robustness | train | 1927-07-02 | 2025-10-31 | 0.77 | +2792413.0% | 50.9% | 2.66 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Japan | robustness | train | 1966-01-21 | 2025-10-31 | 0.63 | +14051.1% | 41.2% | 3.46 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Canada | robustness | train | 1980-07-04 | 2025-10-31 | 0.58 | +1527.3% | 32.6% | 3.06 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-UK | robustness | train | 1984-12-28 | 2025-10-31 | 0.31 | +265.2% | 39.6% | 4.13 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Australia | robustness | train | 1985-08-16 | 2025-10-31 | 0.46 | +625.4% | 44.3% | 3.70 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-HongKong | robustness | train | 1988-01-08 | 2025-10-31 | 0.46 | +1263.0% | 45.7% | 4.15 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Germany | robustness | train | 1988-12-29 | 2025-10-31 | 0.49 | +1047.4% | 48.6% | 3.01 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Singapore | robustness | train | 1989-01-13 | 2025-10-31 | 0.54 | +840.4% | 47.1% | 3.77 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-France | robustness | train | 1991-03-08 | 2025-10-31 | 0.32 | +262.2% | 45.5% | 3.95 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Switzerland | robustness | train | 1991-11-15 | 2025-10-31 | 0.31 | +198.3% | 50.0% | 4.80 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Belgium | robustness | train | 1992-04-16 | 2025-10-31 | 0.52 | +584.7% | 34.4% | 3.90 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Netherlands | robustness | train | 1993-10-08 | 2025-10-31 | 0.44 | +474.8% | 41.9% | 3.58 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Austria | robustness | train | 1993-11-19 | 2025-10-31 | 0.51 | +706.8% | 37.5% | 3.60 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-Spain | robustness | train | 1994-07-15 | 2025-10-31 | 0.35 | +269.1% | 64.0% | 4.63 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-FF-Europe | robustness | train | 1991-06-21 | 2025-10-31 | 0.54 | +820.3% | 37.8% | 3.75 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-FF-Japan | robustness | train | 1991-06-21 | 2025-10-31 | 0.33 | +303.4% | 45.2% | 4.86 |
+| 2026-11-18 23:20 | fast-reentry | arm3-12@insure-geo-FF-AsiaPacExJapan | robustness | train | 1991-06-21 | 2025-10-31 | 0.70 | +1514.9% | 42.2% | 3.98 |
