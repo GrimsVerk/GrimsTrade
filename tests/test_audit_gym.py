@@ -8,7 +8,7 @@ from datetime import UTC, date, datetime, time, timedelta
 import pytest
 
 from grimstrade import gym
-from grimstrade.data import Bar, History
+from grimstrade.data import Bar, Dividend, History
 from grimstrade.gym import Decision
 
 NO_COSTS = {"crypto": gym.Costs(0, 0), "etf": gym.Costs(0, 0)}
@@ -109,21 +109,26 @@ def test_a_crypto_fill_pays_the_taker_fee() -> None:
     assert paid == pytest.approx(2 * (0.0060 + 0.0005), abs=1e-4)  # in and out: 1.3%
 
 
-def test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year() -> None:
-    """Audit G4 (known gap, sized): prices are raw, so on each ex-dividend day the price drops by
-    the payout and the holder gets nothing for it. A fund that only pays out its 0.36% a month
-    (TLT's order of size) and otherwise goes nowhere shows about -4.2% a year here; a real holder
-    would be flat. The benchmarks holding SPY/TLT are understated by this, crypto is not."""
-    bars, px = [], 100.0
+def test_a_bond_fund_holder_is_paid_its_dividends_worth_about_4_percent_a_year() -> None:
+    """Audit G4 (fixed 2026-11-17): prices are raw, so on each ex-dividend day the price drops by
+    the payout. Without the payout a fund that only pays out its 0.36% a month (TLT's order of
+    size) and otherwise goes nowhere showed about -4.2% a year; a real holder is flat, and with
+    the distributions paid as cash on the ex-date so is the gym's."""
+    bars, px, divs = [], 100.0, []
     for i in range(365):
         d = DAY1 + timedelta(days=i)
         if d.weekday() >= 5:
             continue
         if d.day == 1 or (d.day in (2, 3) and d.weekday() == 0):  # first session of the month
+            divs.append(Dividend(d, px * 0.0036))
             px *= 1 - 0.0036
         bars.append(Bar(d, px, px, px, px, 1.0))
-    res = gym.simulate([Decision(at(-1), {"TLT": 1.0})], {"TLT": bars}, costs=NO_COSTS)
-    assert res.equity[-1][1] / gym.START_CASH - 1 == pytest.approx(-0.042, abs=0.004)
+    decisions = [Decision(at(-1), {"TLT": 1.0})]
+    unpaid = gym.simulate(decisions, {"TLT": bars}, costs=NO_COSTS)
+    assert unpaid.equity[-1][1] / gym.START_CASH - 1 == pytest.approx(-0.042, abs=0.004)
+    paid = gym.simulate(decisions, {"TLT": bars}, costs=NO_COSTS, dividends={"TLT": divs})
+    assert paid.equity[-1][1] == pytest.approx(gym.START_CASH)
+    assert len(paid.income) == 12
 
 
 def test_random_trading_at_constant_prices_never_creates_money() -> None:

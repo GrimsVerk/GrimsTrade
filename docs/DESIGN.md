@@ -15,7 +15,8 @@ keeps score per strategy against the benchmarks.
 
 ## Parts (`src/grimstrade/`, each removable)
 
-- `data.py`: `Bar`, universe, bar timing, CSV store (`data/bars/<SYM>.csv`, append-only).
+- `data.py`: `Bar`, universe, bar timing, CSV store (`data/bars/<SYM>.csv`, append-only), ETF
+  distributions (`data/dividends.csv`, append-only).
   `sources.py`: keyless public fetchers (Kraken, Coinbase for crypto; Yahoo chart, Stooq for ETFs).
 - `gym.py`: simulated broker. Event replay over bar opens/closes. Long-only, no leverage,
   fractional units, 10,000 USD start. `backtest()` makes historical decisions with the same rules.
@@ -53,7 +54,8 @@ Crypto: 60 bps fee (taker) + 5 bps half-spread/slippage. ETFs: 0 fee + 2 bps. A 
 equity is skipped (rebalance band), except full exits. A buy the cash cannot fully pay for waits
 and buys the rest at that asset's next open, until a newer decision replaces it; while a
 decision's buys need more cash than there is, assets above target are sold down to it even inside
-the band (DECISIONS, audit G2).
+the band (DECISIONS, audit G2). ETF distributions are paid as cash at the ex-date's open on the
+units held before it; cash earns no interest (DECISIONS, audit G4).
 
 ## Benchmarks (what "making money" must beat)
 

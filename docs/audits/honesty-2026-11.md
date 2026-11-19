@@ -53,7 +53,7 @@ open first, then what is fixed, each by severity.
 |---|---|---|---|
 | S2 | Six months cannot separate skill from luck; the corrected number says "no" for years | high | open: owner decision; the pages now say so |
 | L3 | The record branch can be replaced (force-push, delete) | high | detected, not yet seen working live; owner action open |
-| G4 | Dividends not credited, cash earns nothing: yardsticks 1 to 2.3% a year too low | medium | open: known, now sized |
+| G4 | Dividends not credited, cash earns nothing: yardsticks 1 to 2.3% a year too low | medium | dividends fixed 2026-11-17; cash still earns nothing |
 | D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged (first day: under 0.01%); cause open |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L13 | Old code can still write the record (a re-run of an old run, a stale branch) | medium | half fixed; clean-up after merging |
@@ -190,6 +190,10 @@ second independent review (2026-11-12, 06:35 to 07:00 UTC); a third, narrow revi
 - **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (in the
   BACKLOG). Until then `weekly.md` says it with the size: "Dividends are not credited yet, which
   makes the fund yardsticks 1 to 2% a year too easy to beat."
+- **Fixed 2026-11-17** (DECISIONS, audit G4): distributions are paid as cash at the ex-date's
+  open from Yahoo's dividend events, stored append-only in `data/dividends.csv`. Cash still earns
+  no interest; `weekly.md` says so. Tests: `tests/test_dividends.py` and
+  `tests/test_audit_gym.py::test_a_bond_fund_holder_is_paid_its_dividends_worth_about_4_percent_a_year`.
 
 ### D1. Bars are stored before the source is final (high when found; differences are now logged, the cause remains)
 
