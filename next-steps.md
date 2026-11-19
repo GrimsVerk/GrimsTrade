@@ -353,6 +353,17 @@
     follows price predicts nothing. Count 78 / 18 tested; 13 gates all failed. 0 rows.
   - 00:22 UTC 5h 0.89: `wide-11` started (W, <- wide-10): scoring filters, CFTC hedging-pressure
     gate.
+  - DONE `multi-signal` (draft #104 -> survey-6): style signals on the six: only
+    cross-sectional momentum positive (weekly IC +0.043; +0.035 beyond `tsmom12`, rank corr 0.76
+    = trend strength); value -0.018, carry -0.023 (chance ~0.03); low-vol/BAB wrong sign. Cause:
+    breadth (4-5 assets/week). 12 `screen` rows. No more style signals within the six.
+  - DONE `register-3` (draft #100 -> register-2): harness hook writes weeks/skew/kurtosis to
+    append-only `research/tries-shape.jsonl` (commit 33f3b4a, cherry-pickable); family cap 10
+    -> mean corr 0.52, effective N 490 (433 before), bar unchanged +0.30/+0.56; regenerated with
+    tonight: 3,118 tries, N 1,032, eff. N 486. Fixed a long/short cluster-portfolio flaw
+    (inverse-variance weights): a 32-year rule now needs Sharpe 1.42 vs zero (was 1.23).
+  - 00:23 UTC 5h 0.89: started `register-4` (D: committed weekly-returns store so BAR.md
+    regenerates on any computer) and `breadth-screen` (W: same 5 signals on the wide ETF set).
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
