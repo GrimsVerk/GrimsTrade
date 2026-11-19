@@ -334,8 +334,148 @@ and register-2 (#92, accept the measured bar).
 
 ## C. The risk choice for the paper book
 
-(filling in)
+Today the live runner trades 11 books with fake money, among them `tsmom12` and the three risk
+presets Careful, Middle and Bold side by side (DECISIONS 2026-11-12: "fake money, so no need to
+pick one yet ... the pick only matters for graduation"). The items below build on that.
+
+### C1. `tsmom12`: a risk choice, not an edge?
+
+- **Question:** read the live rule as a drawdown/risk choice (crash insurance with a price), not
+  as a proven edge over holding the same six assets?
+- **Options:** (1) yes; (2) no, keep treating it as a candidate edge.
+- **What it changes:** wording only (SUMMARY, the weekly page), and how the paper record is
+  read at graduation: as a description of risk, not as proof of skill. No code.
+- **Evidence:**
+  - Edge: dsr-1 #74: `tsmom12` beats zero, but its lead over equal weight (+0.17, p 0.08) fails
+    even uncorrected; deflated Sharpe 0.48 counting the 8 baselines it was picked from.
+    survey-5 #78 and review-2 s.4a (recomputed): after 2009 it earned what holding earned
+    (2010-2025 weekly Sharpe 1.36 vs 1.34); its lead is all from before 2010. No forward test
+    settles "rule vs holding" in useful time (survey-5: ~107 years).
+  - Insurance (with review-2's corrections, s.2): in **21 US market falls** of 25% or more since
+    1927 it lost less than holding in **20** (50 episodes when industry-only falls are added); it
+    avoided **0.50** of each fall against **0.27** for the same exposure at random dates (#87).
+    "Cheaper than holding less" holds in direction everywhere but is shown statistically only
+    for 1927-1961 and developed-market price indices, **not since 2002** (p 0.19). Price: about
+    2 points of growth a year behind holding since 2002; fails in falls of three months or less
+    (#90, #94, #96, #103).
+- **Recommended default: option 1.** Reason: both the edge test and the live-fund evidence say
+  "same as holding, smaller losses in long bear markets", and review-2 found those claims hold.
+- **Unblocks:** frames C2-C4 and B7 as risk preferences; closes O8.
+
+### C2. The risk level for the paper book
+
+Merges three old entries that are one decision: "pick your risk level from the risk menu"
+(#101, #105, #110), "a smaller worst loss simply by holding `tsmom12` at a smaller size"
+(#86, #77, #80, #85) and the own-vol dial (#98, #110).
+
+- **Question:** which risk dial(s) should the paper book run?
+- **Options:**
+  1. Keep the current set (presets side by side), no pick.
+  2. Add a fixed smaller size: `tsmom12` at about 70% invested, the rest in T-bill cash (no new
+     rule).
+  3. Add own-vol targeting of `tsmom12` (share = min(1, k / recent volatility), k re-solved
+     monthly from known data), target 70%.
+  4. Pick one level now as "the" book for graduation.
+- **Numbers (2007-2025, T-bill cash, risk-menu #101 with review-2 s.3b's corrections):**
+
+  | Dial | Growth a year | Worst loss | Worst 12 months |
+  |---|---:|---:|---:|
+  | `tsmom12` at a fixed 70% | 17.6% | 24.6% | -20.6% |
+  | Own-vol target "70%", no look-ahead (realised share **0.61**) | 13.8% | 15.7% | -7.6% |
+  | Hold the six | 27.4% | 47% | (2022: -36.5%) |
+
+  The trade-off for own-vol vs the fixed 70% is **3.8 points of growth a year for 8.9 points
+  less worst loss**, not the 1.7 for 6 points the menu table and SUMMARY still quote (those are
+  look-ahead figures; review-2 s.3b, being fixed by lane `fix-2`). Per unit of average share,
+  own-vol's worst loss is still smaller (26 vs 35). Sharpe: no row is separable from the best
+  (SE about 0.24 for one Sharpe; paired SE about 0.1; review-2 s.3c-d). Over 1994-2025 the
+  ranking by worst loss holds (risk-menu-2 #105, tau 1.00); time under water depends on the
+  window. The live preset Middle (trend rule, 10% per coin) already gives a smaller fixed book:
+  worst drop 23% on 2003-2025 (`research/risk-map.md`).
+- **What each changes:** 1: nothing. 2: one more live strategy (a try, N +1); little new
+  information next to Middle. 3: one more live strategy plus a **monthly share reset in the
+  runner** (new runner code, a lane's job). 4: graduation is judged on one book; the others stay
+  as yardsticks or stop.
+- **Evidence:** `research/risk-menu.md` (branch `risk-menu-3`, #101/#105/#110),
+  `research/results/risk-menu-3.md`, vol-timing #98, rp-1 #86, eu-6..8 #77 #80 #85, review-2 s.3.
+- **Recommended default: options 1 + 3** (keep the presets; add one own-vol book at a 70% target,
+  in the no-look-ahead form risk-menu-3 names as the one to use). Reason: consistent with the
+  2026-11-12 "no pick needed with fake money"; Middle already covers a smaller fixed size; own-vol
+  is the menu's best-looking dial and the only one without a forward record. It is a risk level,
+  not an edge.
+- **Unblocks:** closes O2 and O5; lane queue item 5 (forward run of the chosen dial); a lane can
+  build the monthly reset; B7 can be revisited with the risk level known.
+
+### C3. Coin `stop-0.25` as a rule?
+
+- **Question:** open a rule PR for a weekly 25% stop on the coin slots of `tsmom12`?
+- **Options:** (1) no; treat coin size as the risk budget (the presets already cap coins at 5% or
+  10% per coin); (2) yes, as a stated risk preference; (3) yes, daily-checked.
+- **What each changes:** 2 or 3: a rule change in a live book (a new try). 1: nothing.
+- **Evidence:** coin-cap-2 #53: shallower worst loss in 15 of 21 coin-crash episodes (p 0.039),
+  short of the family bar (p < 0.0077 with all coin-cap picks counted); weak on BTC. coin-cap-3
+  #56: a daily stop adds return via cheaper re-entries, not shallower losses, and most of it goes
+  at double costs. coin-cap-4 #69: no candidate meets the bar; verdict page
+  `research/coin-cap-verdict.md`: coin-years worst loss 36.5% -> 17.7% for about 2 points a year
+  of growth. stop-reentry #82: 13 of 21 (needs 17). cointop-1 #40 and coin-cap #49: "a smaller
+  coin position, not a better rule". combo-1 #70: the stop is the same bet as `trend-vol`,
+  `inverse-vol` and 60/40. Forward test: 26 years (B2).
+- **Recommended default: option 1.** Reason: no form met its bar, and a smaller coin share does
+  the same job without a new rule; the presets already offer it.
+- **Unblocks:** closes O14; the coin line stays parked.
+
+### C4. A euro-fund paper book, and the rebalance band
+
+Merges eu-1 (#59, a euro-fund copy of the live six), eu-5 (#73, the 5/25 band) and the older
+optional trend-tune note (#34, a 2.5-5% band).
+
+- **Question:** add a paper book of the live six in euro UCITS funds (the form a euro investor
+  with a small portfolio can actually buy), with or without eu-5's 5/25 band; and should the
+  live US runner's 1% band change?
+- **Options:** (1) not now; keep the US runner's 1% band; (2) add the euro book with the 1% band;
+  (3) add it with the 5/25 band; (4) also widen the US runner's band.
+- **What each changes:** 2 or 3: a new live book (a try) and euro fund prices in the runner. 4:
+  changes every live strategy's trading and is a new try for each (DECISIONS 2026-11-12: the 1%
+  band is the only damping); the live record is days old, so it would restart comparability.
+- **Evidence:** eu-1 #59: `tsmom12` keeps its character in EUR (Sharpe 1.44 vs 1.37 US twin, max
+  drawdown 31% vs 36.5%, 2012-2025). eu-5 #73: the 5/25 band (top up only when more than 25% off
+  target) cuts orders of the coin-free euro book from 30.1 to 21.1 a year at the same rule; holds
+  on the coin book and the US six; trend-tune #34: a 2.5-5% band gave the same Sharpe with 15-25%
+  less trading. eu-6 #77: for a small coin-free euro book trend is crash insurance only (Sharpe
+  0.62 vs 0.78 holding the seven funds, gaps within noise; worst loss 13.6% vs 19.8%; best in all
+  6 crash windows; but 58 vs 31 months under water and about 21 vs 2 orders a year). eu-8 #85:
+  euro cash interest changes none of that; eu line closed (its row choice is a preference call,
+  `research/eu-8.md` s.3).
+- **Recommended default: option 1; revisit after C2.** Reason: the euro work is done and its
+  answer is a preference (insurance vs fewer orders); a euro book would copy whichever dial C2
+  picks, and changing the live band now would reset a days-old record.
+- **Unblocks:** closes O10 and O13 for now.
 
 ## D. Small items
 
-(filling in)
+| Id | Item | Recommended default | Why |
+|---|---|---|---|
+| D1 | Daily runs fire at 02:00-04:40 UTC, not 22:30 (GitHub delays scheduled jobs). No look-ahead, but crypto orders fill about 22 h after the decision while backtests assume about 1.5 h (health-1 #27). Accept or move the schedule? | Accept and record it in DECISIONS; compare live with backtest only with this gap in mind | Moving the cron does not stop GitHub's delay; a second crypto-only run after 00:00 UTC is already in BACKLOG |
+| D2 | Should the paper broker be able to fill at the close (two wide-1 effects were worth more at the close)? | No | Fills at the next open are a core rule (DESIGN); the main effect behind the question did not replicate on clean data (month-end-bonds #45) |
+| D3 | usd-1 (#39): an optional robustness check needs a data API key | No | It cannot change the verdict; the project stays keyless |
+| D4 | evo-1 (#44) would need about 24 CPU-hours | No decision needed | The evo line is closed (evo-2 #58) |
+| D5 | month-end-bonds: spend a held-out year on it? | Already answered: no | #45's card says not to |
+| D6 | `next-steps.md` on `main` is stale (lists merged PR #5 as waiting) | No decision needed | Whoever lands the next PR to `main` can drop the line |
+| D7 | G2 tops up only to within the 1% band (integrate-1) | No decision needed | Rule working as written (A1 note) |
+
+## How this brief was made
+
+- Read the "For the owner" list and lane queue in `next-steps.md` (branch `summary-1`),
+  `research/pr-map.md` (#113), `docs/integrate-1.md` (#115), `docs/research-archive-1.md` (#118),
+  `research/reviews/review-2.md` (#119), `research/SUMMARY.md`, `research/risk-menu.md`
+  (branch `risk-menu-3`), `docs/forward-registry.md` (branch `forward-1`), `research/wide-8.md`,
+  #61's PR body, and `docs/DECISIONS.md` / `docs/VISION.md` on `main`.
+- Deduplicated: #61 (three entries) -> A2; integrate-1's and pr-map's landing entries -> A1, A4,
+  A5; register-1 + register-2 -> B1; wide-8's two questions -> B3 and B5; risk menu + smaller
+  size + own-vol dial -> C2; coin-cap-2/3 and coin-cap-4 -> C3; eu-1 + eu-5 + trend-tune band ->
+  C4; survey-5 + dsr-1 -> C1. pr-map's O1-O18 map as: O1 B6, O2 C2, O3 B1, O4 B3+B5, O5 C2,
+  O6 B7, O7 B1, O8 C1, O9 A2, O10 C4, O11 B2, O12 B4, O13 C4, O14 C3, O15 D1, O16 A1+C4, O17 D2,
+  O18 D3.
+- Every number is quoted from the files above; where review-2 corrected one, the corrected
+  number is used. The defaults are this lane's reading of the evidence; none is settled until the
+  owner says so.
