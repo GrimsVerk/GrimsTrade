@@ -15,18 +15,16 @@ Never edit or delete a row.
 - `live-check` (added 2026-11-18, survey-5): a descriptive re-score of an already logged
   configuration over a live-fund window (variant tagged `@live-L`, 2010-02 to 2025-10), set
   against live funds; not selectable, not a strategy try, not counted in the family
-  (`cards/live-check.md`, numbers in `results/live-check.md`).
-- `replication` (added 2026-11-18, ls-trend-1): a descriptive replication of a published effect
-  built outside the live book's constraints (here shorts and leverage the paper broker cannot
-  hold), tagged `@live-L` (2010-02 to 2025-10, Sharpe on excess returns); not selectable, not a
-  strategy try, not counted in the family (`cards/ls-trend.md`, numbers in
-  `results/ls-trend.md`).
-
   (`cards/live-check.md`, numbers in `results/live-check.md`). Survey-6 extends it:
   `<family>@live-fund` rows are equal-weight composites of live funds of a strategy family
   over their own months (From/To), Sharpe = monthly return above the T-bill (not the daily
   convention), Return and Max DD of the total return, turnover `-`
   (`cards/live-families.md`, numbers in `results/live-families.md`).
+- `replication` (added 2026-11-18, ls-trend-1): a descriptive replication of a published effect
+  built outside the live book's constraints (here shorts and leverage the paper broker cannot
+  hold), tagged `@live-L` (2010-02 to 2025-10, Sharpe on excess returns); not selectable, not a
+  strategy try, not counted in the family (`cards/ls-trend.md`, numbers in
+  `results/ls-trend.md`).
 - Sharpe: daily, 365 days/yr, zero risk-free rate (the repo's convention).
 - `invest-1` rows (added 2026-11-13): monthly decisions; Sharpe is of monthly returns in excess
   of T-bills x sqrt(12); period `train` = 1927-01..1989-12, `oos` = 1990-01..2025-10 (both fixed
@@ -1419,3 +1417,21 @@ Never edit or delete a row.
 | 2026-11-18 23:10 | survey-6 | risk-parity@live-fund | live-check | train | 2009-07-01 | 2025-10-31 | 0.63 | +184.8% | 20.4% | - |
 | 2026-11-18 23:18 | diversifier-1 | merfx7 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +11421.5% | 30.8% | 2.36 |
 | 2026-11-18 23:18 | diversifier-1 | mna7@mna | robustness | train | 2010-11-17 | 2025-11-09 | 1.37 | +2606.7% | 31.5% | 2.46 |
+| 2026-11-19 00:21 | multi-signal-screen | value (IC wk -0.018 [-0.055..+0.020], mo -0.023, partial -0.008, placebo B p 0.49, corr tsmom12 -0.501) | screen | train | 2008-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | carry (IC wk -0.023 [-0.055..+0.011], mo -0.041, partial -0.029, placebo B p 0.63, corr tsmom12 -0.062) | screen | train | 2003-08-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | xsmom (IC wk +0.043 [+0.010..+0.077], mo +0.039, partial +0.035, placebo B p 0.04, corr tsmom12 +0.760) | screen | train | 2003-08-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | lowvol (IC wk -0.059 [-0.093..-0.026], mo -0.081, partial -0.050, placebo B p 0.07, corr tsmom12 +0.113) | screen | train | 2003-08-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | bab (IC wk -0.055 [-0.088..-0.021], mo -0.124, partial -0.028, placebo B p 0.19, corr tsmom12 -0.261) | screen | train | 2005-07-29 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | tsmom12 (IC wk +0.014 [-0.028..+0.056], mo +0.007, placebo B p 0.51, corr tsmom12 +1.000) | screen | train | 2003-10-10 | 2025-10-03 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | value@etf (IC wk -0.029 [-0.068..+0.012], mo -0.043, partial -0.013, placebo B p 0.43, corr tsmom12 -0.558) | screen | train | 2008-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | carry@etf (IC wk -0.026 [-0.062..+0.007], mo -0.053, partial -0.034, placebo B p 0.61, corr tsmom12 -0.102) | screen | train | 2003-08-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | xsmom@etf (IC wk +0.052 [+0.015..+0.088], mo +0.065, partial +0.035, placebo B p 0.00, corr tsmom12 +0.796) | screen | train | 2003-08-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | lowvol@etf (IC wk -0.047 [-0.083..-0.011], mo -0.091, partial -0.044, placebo B p 0.09, corr tsmom12 +0.172) | screen | train | 2003-08-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | bab@etf (IC wk -0.076 [-0.113..-0.038], mo -0.182, partial -0.050, placebo B p 0.00, corr tsmom12 -0.355) | screen | train | 2005-07-29 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:21 | multi-signal-screen | tsmom12@etf (IC wk +0.030 [-0.018..+0.076], mo +0.056, placebo B p 0.04, corr tsmom12 +1.000) | screen | train | 2003-10-10 | 2025-10-03 | - | - | - | - |
+| 2026-11-19 00:30 | breadth-screen | value@wide34 (within-class IC wk +0.005 [-0.015..+0.023], mo -0.007, partial -0.000, placebo B p 0.74, corr tsmom12 -0.370) | screen | train | 2001-09-21 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:30 | breadth-screen | carry@wide34 (within-class IC wk -0.012 [-0.029..+0.006], mo -0.027, partial -0.007, placebo B p 0.27, corr tsmom12 +0.026) | screen | train | 1997-03-21 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:30 | breadth-screen | xsmom@wide34 (within-class IC wk -0.005 [-0.022..+0.013], mo -0.011, partial -0.004, placebo B p 0.70, corr tsmom12 +0.716) | screen | train | 1997-03-21 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:30 | breadth-screen | lowvol@wide34 (within-class IC wk -0.017 [-0.033..-0.000], mo -0.019, partial -0.020, placebo B p 0.15, corr tsmom12 +0.234) | screen | train | 1997-03-14 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:30 | breadth-screen | bab@wide34 (within-class IC wk +0.003 [-0.016..+0.023], mo -0.008, partial -0.001, placebo B p 0.81, corr tsmom12 -0.033) | screen | train | 1999-03-12 | 2025-10-31 | - | - | - | - |
+| 2026-11-19 00:30 | breadth-screen | tsmom12@wide34 (within-class IC wk -0.005 [-0.028..+0.018], mo -0.028, placebo B p 0.72, corr tsmom12 +1.000) | screen | train | 1997-03-21 | 2025-10-31 | - | - | - | - |
