@@ -241,3 +241,19 @@ tested; held-out year unspent.
 | ts-value | Value (Baltussen et al. 2021; Welch and Goyal 2008) | new | - | Stock slots only while the dividend yield is above its running median; TLT while the real yield is. Dividend-yield timing already fails out of sample (Welch and Goyal). Prior under 1% |
 | live-check | Live fund records (AQR TSMOM factor vs AQMIX; 9 trend, 3 risk-parity funds) | descriptive (no pick) | [card](cards/live-check.md) | `tsmom12` correlates 0.17 with live trend funds and 0.40 with SPY; Sharpe above bills 2010-2025 1.11, equal to holding (1.11), live trend funds 0.19. Paper TSMOM 1.41 (1985-2009) -> 0.35 after; AQMIX 0.29: haircut 80%. Our lead over holding +0.29 before 2010, 0.00 after. [result](results/live-check.md), [note](survey-5.md) |
 | where-rp | Risk parity (Maillard, Roncalli, Teiletche, JPM 2010; Kirby and Ostdiek, JFQA 2012) | dead (tested) | `rp-1.md` step 2 | `where-vol` with the protocol's inverse-vol slot sizes, carded after rp-1's diagnosis (2022 gap to live risk-parity funds = the coin slot at equal dollars, 89% of its risk). 1.05 vs 1.05 for `tsmom12` (+0.00, p 0.50), worst loss 24.5% vs 36.5%, growth 12.4% vs 17.8%: a risk dial. 2022 -19.7% (coins fixed, unfiltered TLT now -8.2 pts) vs `tsmom12` -12.8%, funds -16.1%. Fails bar 1 (family 74); `where-vol`/`blend-ws` not revived. [result](results/rp-1.md) |
+
+### Trend tune: anatomy and honest tuning of `tsmom12` (trend-tune, 2026-11-18)
+
+Card and write-up: [trend-tune.md](trend-tune.md), fixed before any number. Sharpe on the six
+assets, 1994-2025 / since 2003: `tsmom12` 1.05 / 1.20. Held-out year unspent.
+
+| Idea | Kind | Status | Card | Reason |
+|---|---|---|---|---|
+| wf-asset | Walk-forward lookback per asset | dead (tested) | [trend-tune.md](trend-tune.md) | 1.01 / 1.18 (-0.04, p 0.78); 45% more trading, nothing gained. [result](results/trend-tune.md) |
+| wf-pooled | Walk-forward lookback for the book | dead (tested) | [trend-tune.md](trend-tune.md) | 1.02 / 1.19 (-0.03, p 0.63); wanders between 6 and 9 months. [result](results/trend-tune.md) |
+| wf-shrunk | Per asset, shrunk toward 12 months | dead (tested) | [trend-tune.md](trend-tune.md) | Never leaves 12 months on the six assets: it is `tsmom12`. [result](results/trend-tune.md) |
+| trend-tune-surface | 98 settings of the trend rule | described (no pass bar) | [trend-tune.md](trend-tune.md) | A flat plateau from 6 to 12 months, any decision frequency, any threshold; best cell +0.08, luck alone +0.17. Not candidates. [result](results/trend-tune-anatomy.md) |
+| trend-1926 | Trend, older data | described (short of "a property") | [trend-1926.md](trend-1926.md) | US market 1927-1961: 0.88 vs 0.55 (+0.33, p 0.02), worst loss 38% vs 84%; ten-industry book +0.45. About two thirds is 1929-1932: without it +0.11 (p 0.18). 1946-1961: -0.09. Days out rougher in 1927-45 (10 of 10 industries), not after (1 of 10). Crash insurance, not an edge. [result](results/trend-1926.md) |
+| trend-where-it-pays | Trend, per-asset switch | new | - | Keep the filter only on assets whose past days out were rougher than days in (walk-forward yes/no, nothing to tune); the bar must include worst loss. |
+| fast-reentry | Trend, re-entry | new | - | Held if the 3-month OR the 12-month return is positive: +0.01 / +0.08 in sample (one of 98 cells). Test only out of universe, then held-out; deflate for 98. |
+| gsy-runup | Bubbles / crash risk (Greenwood, Shleifer & You 2019) | weak pass on the letter; not a candidate | [card](cards/gsy-runup.md) | Run-up flag (2-year return >= 100%/150%, raw and net of market) is real information: 38%/51% crash within 2 years against 15% base (49 industries 1928-2014). As an exit on `tsmom12` (30 French industries): +0.03 Sharpe 1928-2001 (`flag100-sma` p 0.001, `flag100-vol` p 0.007), +0.02 after 2002 (p 0.2), behind on sector ETFs. `tsmom12` already out on 88% of crash days. [write-up](gsy-1.md), [result](results/gsy-1.md) |
