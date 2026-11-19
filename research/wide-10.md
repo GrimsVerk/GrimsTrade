@@ -184,3 +184,43 @@ economic significance" after the early programmes would give t below 1.
 
 **My guess before any number.** b > 0 with t between 0 and 2, rank in the top third; placebo t
 sd 1.0-1.3 (daily, nearly independent days). Chance of a pass: 8%.
+
+### What came out (one run, 2026-11-19; table `results/fed-purchase-flow.md`)
+
+Dry run first (`DRY=1`, counts only): 1,320 kept coupon purchases out of 1,756 operations
+(the rest: TIPS 195, agency 63, bills 57, FRN 10, and 111 sales, chiefly Operation Twist's sales
+of short coupons, all left out by the rule); 473 days with a 20+ year purchase, every one a TLT
+trading day; **224 dosed days in the gate sample** (2,983 TLT days) and 221 in the papers'
+years (1,219 days); 40 placebos, each with at least 2,956 days. So the power point of the score
+holds (C1 keeps 7). Then one real run.
+
+**The gate fails on both counts. TLT open-to-close rises +3.3 bps per unit of log dose (t
++0.37, 2,983 days, 224 with a long purchase of $2.1bn on average); the true t ranks 11 of 41
+(empirical one-sided p 0.27). W20 `fed-purchase-flow` is dead by the gate: no card, no
+strategy, no `tries.md` row.** Held-out year untouched.
+
+| TLT (or other fund) on the day's purchase dose | Slope, bps per unit of ln(1 + $bn) | t | Days |
+|---|---:|---:|---:|
+| **Gate: TLT open-to-close, 2014-01 .. 2025-11** | **+3.3** | **+0.37** | 2,983 |
+| Indicator dose (any 20+ year purchase), gate sample | +2.8 | +0.46 | 2,983 |
+| Without March-April 2020 | +1.3 | +0.30 | 2,940 |
+| Close-to-close of the purchase day | +10.7 | +0.91 | 2,983 |
+| Next day's open-to-close (persistence) | +4.5 | +0.51 | 2,983 |
+| Papers' years 2009-03 .. 2013-12 | **-8.5** | **-1.55** | 1,219 |
+| IEF on its 7-10 year dose, gate / papers' years | +1.0 / +0.4 | +0.44 / +0.22 | 2,983 / 1,219 |
+| SPY on all coupon par bought, gate / papers' years | +0.4 / -0.5 | +0.10 / -0.15 | 2,983 / 1,219 |
+
+- **No flow effect at the fund level, even in the papers' own years.** In 2009-2013, when
+  D'Amico and King and Song and Zhu measured purchase-day price gains in the bought CUSIPs, TLT
+  fell slightly on long-purchase days (t -1.55). Their flow effect is a cross-sectional one
+  (bought bonds against unbought ones, on a day); a sector fund holds both, and the schedule is
+  public, so the sector's level prices the purchases in advance. Kandrac and Schlusche's "little
+  economic significance" fits the fund-level reading.
+- Nothing in the cuts: indicator dose, without the dash for cash, close-to-close, next-day
+  persistence, the 7-10 year sector in IEF, and stocks on the total purchase all sit at |t| < 1.
+- **Null width: SD of placebo t 0.99, 2% with |t| >= 2**, quantiles 5/50/95% -1.67 / -0.62 /
+  +1.06, extremes -2.27 / +1.57. Daily, nearly independent days: the normal null is about right
+  (the independent kind in `gate-null.md`'s table). The placebo median sits below zero: TLT's
+  open-to-close drift in purchase months was slightly negative on non-purchase days.
+- My guess (b > 0, t between 0 and 2, top third, pass 8%) was right on sign and size, a little
+  high on rank; placebo sd 0.99 was just under the guessed 1.0-1.3.
