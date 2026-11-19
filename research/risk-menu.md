@@ -9,16 +9,18 @@ April 2007 to October 2025, costs included, idle cash earning T-bills.
 
 | If you care most about | Pick | Its number | Runner-up | What you give up |
 |---|---|---:|---|---|
-| Return per unit of risk (Sharpe above T-bills) | Own-vol target, 26% average share | 1.34 (SE 0.24) | own-vol target 70%: 1.33 | Nothing provable: 8 of the other 10 are inside its bootstrap range |
+| Return per unit of risk (Sharpe above T-bills) | Own-vol target, 26% average share | 1.34 (SE 0.24); 1.31 without look-ahead | own-vol target 70%: 1.33 | Nothing provable: 8 of the other 10 are inside its bootstrap range |
 | Growth | Hold the six | 27.4% a year | `tsmom12`: 24.4% | A 47% worst loss, -36.5% in 2022 |
-| A small worst loss | Own-vol target, 26% | 6.3% | `tsmom12` 26%: 8.1% | Growth 6.7% a year (bills averaged 1.4%) |
-| A mild worst 12 months | Own-vol target, 26% | -3.2% | equal-risk blend: -4.2% | As above |
+| A small worst loss | Own-vol target, 26% | 6.3%; 5.2% without look-ahead (share 0.20) | `tsmom12` 26%: 8.1% | Growth 6.7% a year (bills averaged 1.4%) |
+| A mild worst 12 months | Own-vol target, 26% | -3.2%; -2.4% without look-ahead | equal-risk blend: -4.2% | As above |
 | Short time below an old high | Own-vol target, 26% | 1.3 years | equal-risk blend: 1.8 | As above; every other item 2.1-2.8 years |
 | Gaining in a slow crash (2008) | Equal-risk blend with the wide long-short book | +10.4% | split 50/50: +7.5% | Sharpe 0.97, the lowest but 60/40; shorts on 34 ETFs, ~500 orders a year |
 | Gaining in a fast crash (2020 Q1) | Equal-risk blend | +4.4% | hold six: +0.4% | As above |
 | Gaining in a rate shock (2022) | Equal-risk blend | +4.1% | own-vol target 26%: +0.6% | As above |
-| A middle size (worst loss under a quarter) | Own-vol target, 70% | 15.9% a year, worst loss 18.2%, worst 12 months -8.4% | `tsmom12` 70%: 17.6%, 24.6%, -20.6% | 1.7 points of growth a year for 6 points less worst loss |
+| A middle size (worst loss under a quarter) | Own-vol target, 70% | 15.9% a year, worst loss 18.2%, worst 12 months -8.4%; without look-ahead 13.8%, 15.7%, -7.6% (share 0.61) | `tsmom12` 70%: 17.6%, 24.6%, -20.6% | 1.7 points of growth a year for 6 points less worst loss |
 | Fewest orders | 60/40 | 45 a year | `tsmom12`: 81 | Sharpe 0.66, 30% worst loss, -23% in 2022 |
+
+Own-vol rows: "without look-ahead" = k from an expanding window (risk-menu-3, below).
 
 **How sure.** Sharpe has a standard error of about 0.24 on these 18.6 years. Against holding
 the six, every `tsmom12` form sits between -0.18 (equal-risk blend) and +0.19, with 5%..95%
@@ -64,3 +66,41 @@ the wait for a new high depends on which bear market the window contains.
 Rows: 7 `replication` rows in `tries.md` (not selectable), plus 4 from risk-menu-2 (`@W94`). Items: hold the six, 60/40,
 `tsmom12` at 100 / 70 / 26%, own-vol target at 26 / 70%, the equal-risk blend, and splits
 90/10, 70/30, 50/50 with `wide-LS-g1`.
+
+## Own-vol targeting without look-ahead (risk-menu-3, 2026-11-19)
+
+Card [`cards/risk-menu-3.md`](cards/risk-menu-3.md); tables
+[`results/risk-menu-3.md`](results/risk-menu-3.md). The menu's own-vol rows solved k
+(share = min(1, k / sigma52)) so the mean share over the scored window hit 26% or 70%: a mild
+look-ahead. Here k is re-solved each month from the sigmas known by then (expanding window from
+1995, fixed target share for the first 24 monthly sigmas, so k is first solved 1997-02); same
+costs and T-bill cash. The realised share comes out lower than the target: 0.24 / 0.66 on
+1994-2025, 0.20 / 0.61 on 2007-2025: k learned from earlier months ran below the
+whole-window k (k range 0.018..0.038 at 26%), so the share misses its target.
+
+| Own-vol | Window | Sharpe, re-fitted -> no look-ahead | Worst loss | Worst 12 months | Mean share |
+|---|---|---|---|---|---|
+| 26% | 1994-2025 | 1.03 -> 0.97 | 5.4% -> 5.2% | -2.7% -> -2.4% | 0.26 -> 0.24 |
+| 70% | 1994-2025 | 1.08 -> 1.04 | 16.9% -> 15.7% | -8.1% -> -7.6% | 0.70 -> 0.66 |
+| 26% | 2007-2025 | 1.34 -> 1.31 | 6.3% -> 5.2% | -3.2% -> -2.4% | 0.26 -> 0.20 |
+| 70% | 2007-2025 | 1.33 -> 1.32 | 18.2% -> 15.7% | -8.4% -> -7.6% | 0.70 -> 0.61 |
+
+- **The cost is Sharpe**: -0.01 to -0.06. On 1994-2025 own-vol's lead over `tsmom12` (0.94,
+  SE 0.18) shrinks from +0.09 to +0.03 at 26% and from +0.14 to +0.10 at 70%: noise either
+  way. On 2007-2025 it stays first on Sharpe (1.32 / 1.31 against 1.22 for the best fixed
+  share).
+- **Smaller losses come from the smaller share**, not a better rule: worst loss per unit of
+  mean share is about the same (2007-2025, 26%: 6.3/0.26 = 24 before, 5.2/0.20 = 26 now).
+- **Orders hold**: own-vol 26% is still first on worst loss, worst 12 months and time under
+  water (1.3 y) on both windows; own-vol 70% still sits between `tsmom12` 26% and 70%.
+
+**Longest under water, 1994-2025** (high -> back at the high): holding the six 11.1 y
+(2000-03 -> 2011-04, low 2002-10); 60/40 4.3 y (2000-09 -> 2004-12); `tsmom12` 5.7 y
+(2000-03 -> 2005-12, low already 2000-11), 70% 4.7 y (-> 2004-12), 26% 2.4 y (2000-09 ->
+2003-01); own-vol 70% 3.3 y (2000-03 -> 2003-07; 3.4 y to 2003-09 without look-ahead); own-vol
+26% 1.3 y (2014-07 -> 2015-10, low 2015-08), the only item whose longest wait is not the
+2000-2002 bear market. `tsmom12`'s worst loss (2018-2020) is a different spell from its longest
+wait.
+
+Rows: 2 more `replication` rows (`vt-own-26-x@W94`, `vt-own-70-x@W94`, not selectable). Still
+no pick: a no-look-ahead own-vol rule is the form to use if it is ever proposed as a risk level.

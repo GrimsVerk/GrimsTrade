@@ -1,8 +1,21 @@
-## risk-menu-3 (doing 2026-11-19, branch `risk-menu-3`, draft PR -> `risk-menu-2`)
+## risk-menu-3 (done 2026-11-19, branch `risk-menu-3`, draft PR #110 -> `risk-menu-2`)
 
-Card `research/cards/risk-menu-3.md`. Task: (1) own-vol targeting with an expanding-window k
-(no look-ahead), W 1994-2025 and P 2007-2025, change vs the re-fitted version; (2) dates of each
-item's longest under-water spell on W; (3) section in `research/risk-menu.md`.
+Card before numbers (`research/cards/risk-menu-3.md`, a47c5b0), script before its run
+(0584437). Tables `research/results/risk-menu-3.md` (+ `.json`); section "Own-vol targeting
+without look-ahead" in `research/risk-menu.md` (menu rows corrected). 2 `replication` rows.
+
+- Own-vol target with k from an expanding window (warm-up: 24 monthly sigmas, first k
+  1997-02): Sharpe 1994-2025 1.03 -> 0.97 (26%), 1.08 -> 1.04 (70%); 2007-2025 1.34 -> 1.31,
+  1.33 -> 1.32. Realised share lower (0.24/0.66 W, 0.20/0.61 P), so worst loss and worst 12
+  months are a bit smaller; per unit of share about the same. Orders on the menu hold.
+- Longest under water on 1994-2025: every item but own-vol 26% waits out 2000-2002 (holding
+  2000-03 -> 2011-04, `tsmom12` 2000-03 -> 2005-12); own-vol 26% 2014-07 -> 2015-10.
+- Doing: nothing. No process running.
+- Next: (1) if own-vol is ever proposed as a risk level, use the expanding-k form and a share
+  target that corrects for the miss (e.g. re-solve on realised share); (2) a 1994-2025 menu
+  with an index stand-in for the wide book only if the crash-gain row is wanted.
+- Rerun: `uv run python -I research/lib/riskmenu3_run.py` (no new rows); needs `research/data/`
+  and `results/risk-menu.json`, `results/risk-menu-2.json`.
 
 ## risk-menu-2 (done 2026-11-19, branch `risk-menu-2`, draft PR #105 -> `risk-menu`)
 
