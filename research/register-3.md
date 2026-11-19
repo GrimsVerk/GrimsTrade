@@ -88,7 +88,8 @@ cautious estimate and sets the bar.
 
 Finding: capping raises N_eff from 433 to 490 (+13%), not lowers it. register-2's note guessed
 the big family lowered the average; it was the other way round: the 97 trend-tuning series
-correlate highly with each other, so their many within-family pairs pushed the average up.
+correlate highly with each other (average 0.91; 0.60 with the other 197 series, which average
+0.48 among themselves), so their 4,656 within-family pairs pushed the average up.
 Weighting every family by its share of the register gives 0.49 (N 524). The edge needed over
 `tsmom12` moves by 0.002-0.004: E[max] grows with log N, so any N between 320 and 524 gives
 +0.30 (close) / +0.55-0.57 (far). The bar is settled by its order of magnitude, not by the
