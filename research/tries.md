@@ -3152,3 +3152,11 @@ Never edit or delete a row.
 | 2026-11-18 18:58 | trend-where | where-vol-min12@bondgold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.71 | +636.1% | 34.9% | 0.53 |
 | 2026-11-18 18:58 | trend-where | where-vol-lag0@bondgold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.90 | +985.3% | 14.6% | 0.60 |
 | 2026-11-18 18:58 | trend-where | tsmom12-lag0@bondgold-m | robustness | train | 1972-02-01 | 2001-12-31 | 0.97 | +1067.7% | 14.6% | 1.07 |
+| 2026-11-18 22:15 | combo-1 | blend-iv | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +8605.5% | 44.4% | 1.44 |
+| 2026-11-18 22:15 | combo-1 | blend-ws | variant | train | 1994-02-01 | 2025-11-09 | 1.13 | +15262.9% | 28.9% | 3.02 |
+| 2026-11-18 22:15 | combo-1 | blend-iv@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.61 | +237.0% | 21.9% | 1.73 |
+| 2026-11-18 22:15 | combo-1 | blend-ws@etf | robustness | train | 2001-05-27 | 2025-11-09 | 0.62 | +247.8% | 16.8% | 2.66 |
+| 2026-11-18 22:15 | combo-1 | blend-iv@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.65 | +454.3% | 90.9% | 4.04 |
+| 2026-11-18 22:15 | combo-1 | blend-ws@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.56 | +287.6% | 76.0% | 4.56 |
+| 2026-11-18 22:15 | combo-1 | blend-iv@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.69 | +5371.8% | 33.0% | 1.49 |
+| 2026-11-18 22:15 | combo-1 | blend-ws@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.72 | +4483.0% | 25.7% | 2.27 |
