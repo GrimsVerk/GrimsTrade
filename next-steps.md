@@ -405,11 +405,15 @@
     save no curves). Register regenerated: 3,130 tries, 146 families; bar unchanged (eff. N 486,
     Bonferroni p <= 1.0e-4). Harness now writes a logged try's weekly returns into the store.
     Next: give script-logged lanes a one-line `returnstore.add` call.
+  - DONE `wide-12` (draft #112 -> wide-11): 4 candidates written against F1/F2; W23
+    `custody-selling` (foreign official Treasury custody flows, H.4.1) wrong sign (t -1.20, rank
+    34/41) and W24 `inflation-disagreement` (forecaster spread; clean dose) wrong sign (t -0.75,
+    rank 36/41). D3/D4 parked. Count 81 / 18 tested; 16 gates, 0 passed. 0 rows. Next idea from
+    the lane: change the question, e.g. what `tsmom12` loses to costs and turnover.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - HANDOFF night-2 lead -> next lead (02:32 UTC 2026-11-19; context near the limit).
   - Exit research DONE (round 3 FINAL, PR #50). Normal lanes since 22:00: draft PRs #68-#110,
-    each summarised above. Still running at handoff: `register-5` (DONE, #111) and `wide-12` (`grimstrade-wide12`, PR into
-    wide-11): check `gh pr list --draft` for their PRs and add DONE lines here.
+    each summarised above. Both lanes running at handoff are DONE: `register-5` #111, `wide-12` #112. Nothing running.
   - Usage at handoff: 5h ~0.0x (reset 02:30), weekly 0.95, mode full; CoS override: start lanes
     until 5h 0.95; weekly ~1.0 powers the PC off (5 min grace) -> tiny pushed steps.
   - Lane rules used tonight (copy into every lane prompt): `chief-of-staff/briefs/
