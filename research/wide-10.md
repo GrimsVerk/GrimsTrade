@@ -108,3 +108,79 @@ predator-prey fit; C2 is a weekly flow dose.
 Disclosure: before this table was written, the NY Fed endpoint was probed for format and
 history (two small files: one quarter of 2011 operations and the list of 1999-2009 operations,
 fields only). No price was cut by anything here.
+
+## Step 2. W20 `fed-purchase-flow` gate
+
+### Data access (checked 2026-11-19, before any price was cut by it)
+
+The New York Fed's Markets Data API publishes every Treasury operation with per-CUSIP results
+without a key or account: `https://markets.newyorkfed.org/api/tsy/all/results/details/search.json?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`.
+Fields used: `operationDate`, `operationType`, `operationDirection` (`P` purchase, `S` sale),
+`auctionStatus`, and per security `securityDescription` (e.g. `T 08.125 05/15/21`: coupon and
+maturity) and `parAmountAccepted` (dollars). The script fetches one file per calendar quarter,
+2009-Q1 .. 2025-Q4 (end date capped at 2025-11-10), into `research/data/nyfed/` (gitignored),
+and reads them as JSON data only.
+
+### Decision rule (fixed and pushed before any number)
+
+**Operations.** Keep operations with `operationDirection` = `P`, `auctionStatus` = `Results`
+and an `operationType` that contains `Coupon Purchase` (case-insensitive): nominal coupon
+securities bought outright. Out: TIPS, bills, agency debt, sales, and anything else (the dry run
+prints the count of every type, kept or not).
+
+**Dose.** For each kept security, maturity = the last token of `securityDescription` (mm/dd/yy;
+yy < 70 means 20yy). Long if maturity >= operation date + 20 years (the same day and month, 20
+years later; 29 February -> 28 February), TLT's sector (the ICE 20+ year index). L(d) = the sum
+of `parAmountAccepted` of long securities over all kept operations dated d, in $bn. **x(d) =
+ln(1 + L(d))**, so a day without a long purchase has x = 0 and the very large days of March
+2020 do not decide the slope alone.
+
+**Outcome.** y(d) = ln(close / open) of TLT on day d (same-day ratio of the cached daily bar; a
+book could buy at the open because the purchase schedule, with dates, maturity buckets and size
+ranges, is published before the month or fortnight starts; operations run about 10:15-11:00 New
+York time). The actual accepted par stands in for the announced size range: a gate, not a fill
+model.
+
+**Statistic.** OLS y = a + b x over every TLT trading day of the sample (days with and without
+purchases), t of b with White (HC1) standard errors.
+
+**Placebo null (the decider), one family, fixed here.** The same function with the dose
+calendar moved along TLT's trading-day index: x_k(day i) = x(day i - k) for
+k in +-{3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19, 21, 22, 23, 24, 26, 27}: **40
+placebos**. Shifts of 1-2 days are left out (the days next to a purchase may carry its effect);
+multiples of 5 are left out (they keep the weekday, and buckets may sit on fixed weekdays). Every
+shift stays inside the same purchase programme, so the placebo keeps the programme's drift and
+volatility and asks only whether the purchase day itself is special. The dose series runs on all
+TLT days from 2002-07, so every shifted day has a value.
+
+**Gate. Pass only if both hold** (gate sample: TLT days 2014-01-02 .. 2025-11-10, after every
+cited sample):
+1. b > 0 with t >= 2.
+2. The true t ranks among the 2 highest of 41 (true plus 40 placebos); empirical one-sided p =
+   rank / 41 <= 0.049.
+
+**Shown, not gating** (b, t, days): the papers' years 2009-03-01 .. 2013-12-31; the gate sample
+with an indicator dose (1 if L > 0); the gate sample without 2020-03-01 .. 2020-04-30 (the
+dash for cash); IEF with its own sector's dose (maturity 7 to 10 years after the operation
+date, both ends included); SPY open-to-close on ln(1 + all coupon par bought that day); TLT
+close-to-close (previous close to close of d) on x; TLT on the next day's open-to-close on
+today's x (persistence or reversal); the number of dosed days and the mean L on them; the
+placebo t's standard deviation, share with |t| >= 2, 5/50/95% quantiles and extremes
+(gate-null step 5).
+
+**On a pass:** no card and no trading test in this run. A *proposed* card (idle cash into TLT
+on announced long-bucket purchase days, open to close is not the book's clock, so it would
+need a next-open-to-next-open version) for the next window only, read at the family bar
+p < 0.00128 and the register's p <= 4.9e-5, with z = (t - placebo median) / placebo sd. And the
+mechanism can only trade in a future purchase programme (none runs after 2022-03 in train).
+**On a fail:** W20 dead by the gate, no card, no row.
+
+**Power, written before any number.** TLT's open-to-close sd is about 0.8% a day. If about 7% of
+about 2,980 gate days carry a long purchase with x near 1.2 (L about $2-3bn), the sd of x is
+about 0.3 and the standard error of b about 0.8% / (sqrt(2980) x 0.3), roughly 0.05% per unit
+of x. D'Amico and King's 3.5 bps lower yield in the purchased sector is about 0.6% of price at
+TLT's duration (about 17): t far above 2 if it held in full. Kandrac and Schlusche's "little
+economic significance" after the early programmes would give t below 1.
+
+**My guess before any number.** b > 0 with t between 0 and 2, rank in the top third; placebo t
+sd 1.0-1.3 (daily, nearly independent days). Chance of a pass: 8%.
