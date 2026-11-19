@@ -148,3 +148,47 @@ as the same-month effect passes.
 half; placebo t sd 1.1-1.5. Feedback: positive at 13-52 weeks (holdings and bond prices both
 fall when the dollar is strong and US yields rise), t 1-3. Face-value check: slope near zero.
 Chance of a pass: 3%.
+
+### What came out (one run, 2026-11-19; table `results/custody-selling.md`)
+
+Dry run first (`DRY=1`, counts only): 1,195 Wednesdays to 2025-11-05, but the marketable-only
+series is empty (zero) before 2007-07 (earlier weeks report only total custody Treasuries, in
+a discontinued series), so flows start 2007-08 and z 2009-07. The gate sample is untouched by
+this: 822 Wednesdays, every one with a z, an outcome and all four controls, for each of TLT,
+IEF, SPY and GLD; **1,644 pooled gate rows**; the 40 placebos keep 724 to 818 dose weeks. The
+pre-gate shown cell shrinks to 2009-07 .. 2009-12 (46 rows): written as it came, not
+re-specified. Then one real run.
+
+**The gate fails on both counts. One unit of custody-flow z goes with -0.154% on TLT and IEF
+over the next 4 weeks (t -1.20, 1,644 rows, 2010-01 .. 2025-10): the wrong sign; the true t
+ranks 34 of 41 (empirical one-sided p 0.83). W23 `custody-selling` is dead by the gate: no
+card, no strategy, no `tries.md` row.** Held-out year untouched.
+
+| 4-week return on custody-flow z (controls: past 4/13/26/52-week return) | b, % per unit | t | Rows |
+|---|---:|---:|---:|
+| **Gate: TLT, IEF pooled, 2010-01 .. 2025-10** | **-0.154** | **-1.20** | 1,644 |
+| Without the controls | -0.167 | -1.35 | 1,644 |
+| 1-week horizon | -0.019 | -0.40 | 1,644 |
+| Raw 4-week flow instead of z (per unit of log change) | -1.89 | -0.15 | 1,644 |
+| TLT / IEF alone | -0.221 / -0.087 | -1.20 / -1.10 | 822 each |
+| SPY / GLD alone (not in the gate) | -0.300 / -0.197 | -1.24 / -0.90 | 822 each |
+| Pre-gate 2009-07 .. 2009-12 (series starts late) | +0.475 | +0.83 | 46 |
+
+- **No carry-over of foreign official flows into next month's bond returns.** Every cut has
+  the wrong sign, none reaches |t| 1.4. Selling does not continue to press prices down, or the
+  market prices it from other sources (TIC, the H.4.1 itself) the week it is published.
+- **F2 again, from the other side: the dose answers price in the same window, with the
+  opposite sign to the story.** The 4-week flow z falls when the bonds have rallied over the
+  same 4 weeks (slope -5.9 z per unit of log return, t -3.19); at 13-52 weeks the link fades
+  (t -1.4 to -0.9). Foreign official accounts sell Treasuries in the weeks Treasuries rally:
+  in a flight to safety the dollar strengthens, and the reserve managers who defend their
+  currencies sell their safest asset into the bid. The controls were the right worry; my
+  guess (positive feedback at 13-52 weeks) had the sign and the horizon wrong.
+- **Face-value check passes:** weekly holdings change on TLT's same-week return, slope
+  -0.017 (t -1.79), far from the +0.3 a market-value series would show. The dose is a quantity,
+  not a price in disguise.
+- **Null width: SD of placebo t 1.19, 10% with |t| >= 2**, quantiles 5/50/95% -2.07 / +0.12 /
+  +1.89, extremes -2.25 / +2.46. Symmetric this time (no lean of the future-dose shifts), close
+  to wide-11's 1.13 for the same placebo family.
+- My guess (b small and positive, t -1 to +2, top-half rank, placebo sd 1.1-1.5, pass 3%) held
+  on the null width only; the sign and rank were wrong.
