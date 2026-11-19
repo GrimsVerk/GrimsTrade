@@ -1,5 +1,12 @@
 # Next steps
 
+## Wide 13 (running 2026-11-19, branch `wide-13`, draft PR -> `data-wide-1`)
+
+Scores data-wide-1's 11 ideas with F1/F2 + wide-10's score, then gates the top two on loaded
+sources: W25 `act-haven` (GPR acts -> GLD/TLT 4-week) and W26 `failure-premium` (FDIC failed
+assets -> XLF 4-week). Card `research/wide-13.md` pushed before any price. Doing: gate script
+`research/lib/wide13.py` + tests, then dry run, then one real run each.
+
 ## Data wide 1 (done 2026-11-19, branch `data-wide-1`, draft PR #114 -> `wide-11`)
 
 Data survey for the wide-11 filters (F1 not announced, F2 not price-driven). No candidates,
