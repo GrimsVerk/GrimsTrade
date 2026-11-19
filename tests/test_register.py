@@ -206,6 +206,11 @@ def test_the_measured_trial_count_sets_the_bar(repo: Path) -> None:
     assert "## The bar per record length" in bar
     assert "| 32 | 1,670 |" in bar
     assert "committed in" not in bar  # no returns store yet
+    # register-6: the count is shown as a range with the bar at its cautious end, and the
+    # clusters' variance is marked as resting on as many numbers as there are clusters.
+    assert "The measured count is a range, not one number: 2.8 (ONC 4 clusters" in bar
+    assert "to 4.0 (measured rho 0.50 (A.3)) effectively independent trials" in bar
+    assert "the variance of 4 numbers, so rough" in bar
 
 
 def test_bar_md_counts_the_committed_returns(repo: Path) -> None:
