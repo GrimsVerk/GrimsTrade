@@ -1,57 +1,61 @@
-# Research summary (2026-11-18, after night 2)
+# Research summary (2026-11-19, end of night 2)
 
 The live rule is `tsmom12`: hold an asset only while its price is above where it was a year ago,
 otherwise cash. "Sharpe" below means return per unit of risk (higher is better).
 
 ## What we know now
 
-- **The live rule earns about what simply holding the same assets earns.** Over 1994-2025 its
-  Sharpe is 1.05 against 0.88 for holding all six, but that lead (p 0.08, not proven) comes from
-  before 2010. From 2010 to 2025 the two tie: 1.11 against 1.11 (#74, #78).
-- **What it buys is crash insurance, not an edge.** It loses less in long bear markets: 2008 -2%
-  against -13% for holding, 2022 -13% against -38%. It cannot gain from a fall, as real trend
-  funds do. A small euro book of seven funds shows the same: smaller worst loss (13.6% against
-  19.8%), but lower Sharpe (0.62 against 0.78) and longer under water (58 against 31 months,
-  #77). Using trend on fewer funds loses the insurance (#80).
-- **Published effects fade once published: 0 for 5 in our tests** (#60, #64, #65, #72). Live
-  trend funds kept about a fifth of the published trend effect (paper Sharpe 1.41, live 0.29,
-  #78).
-- **Any new "winner" now faces a very high bar.** The project has logged 2,904 tries. With that
-  many shots, a new rule must beat `tsmom12` by +0.27 to +0.59 Sharpe to count (#79). The
-  largest lead ever seen on the main test was +0.18, and it reversed after publication. Tonight's
-  closest miss, a blend of two existing rules (1.13 against 1.05, p 0.059), fails (#70, #75).
-- **Closed:** learning agents (#52), futures carry (failed its locked test year, #31), evolved
-  rules (#58), blends (#75), the coin line (#69). Of 68 ideas borrowed from other fields, 16
-  were tested and none passed (#76).
-- **Coins:** the best coin rule, a 25% stop, cuts the worst loss in coin years from 36.5% to
-  17.7% for about 2 points of growth a year: a risk choice, not a proven rule (#69).
-- **A live test cannot settle it.** Telling the rule apart from holding would take about 107
-  years of live data (#78).
+- **The rule is crash insurance, not an edge.** It earns about what simply holding the same six
+  assets earns (2010-2025: Sharpe 1.11 each, #74, #78). What it adds is smaller losses in long
+  bear markets.
+- **The insurance is real, and holds everywhere we looked.** In 50 independent US falls of 25%
+  or more since 1927 it lost less than holding in 48, avoiding about half of each (#87). In 13
+  other developed markets since 1966: 17 of 18 (#90). It is cheaper than simply holding less.
+- **But it has a price.** It buys back late, so the year after the low hands most of the gain
+  back: since 2002 about 2 points of growth a year behind holding. It fails in fast crashes of
+  three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
+  just like the bottom (#94, #96, #103).
+- **Gaining in a crash needs shorts (bets on falls) across many markets.** That is how real
+  trend funds gain in crashes (#83). Added to `tsmom12` without leverage, such a book gained in
+  2008, 2020 and 2022, but cut Sharpe from 1.21 to 0.97 (#89). A risk choice, not an edge; the
+  paper broker cannot hold shorts today.
+- **Live funds agree: no family beat its plain index after fees.** 15 strategy families, 60
+  real funds; published backtests kept a median 8% of their paper result (#91). Our own tests
+  of published effects: 0 for 5.
+- **The bar for a new rule is now measured.** 3,118 tries logged, worth about 486 independent
+  shots. A new rule must beat `tsmom12` by +0.30 to +0.56 Sharpe to count (#92, #100). The
+  largest lead ever seen on the main test was +0.18, and it faded.
+- **Closed:** learning agents, futures carry, evolved rules, blends, volatility timing as an edge
+  (#98), short sleeves (#99), euro-book variants (#85), borrowed ideas (78 listed, 18 tested,
+  none passed). Coins: a 25% stop is a risk preference, not a proven rule (#69, #82).
 
 ## Still open or running
 
-- `ls-trend-1`: would also betting on falls give the crash gains real trend funds get?
-- `stop-reentry`: one fixed rule for buying coins back after the stop.
-- `eu-8`: the euro book with interest on idle cash; trend on stocks plus long bonds.
-- `wide-7`: three more borrowed ideas (tax-loss selling, festival gold demand, December pension
-  withdrawals).
-- Live: 11 books trade fake money daily. The record is days old: description only, no verdict.
+- `wide-11` (more borrowed ideas), `breadth-screen` (style signals on a wide fund set),
+  `register-4` (lets the bar be recomputed on any computer).
+- Live: 11 books trade fake money daily. The record is days old: description only.
 
 ## Decisions only you can make
 
-Full list: "For the owner" in [`next-steps.md`](../next-steps.md). The main ones:
+**The main one: pick your risk level** from the risk menu, `research/risk-menu.md` (#101), a
+single "if you care most about X, pick Y" table. Example (2007-2025): own-vol target (size set
+by recent swings) at 70% had a worst loss of 18% against 25% for a fixed 70%; holding the six
+grew most (27% a year) with a 47% worst loss. None of the rows is a proven edge.
 
-1. Treat `tsmom12` as a risk choice (smaller losses), not an edge (#74, #78)?
-2. Adopt the project-wide tries register and its bar (#79)?
-3. Add the coin stop as a risk preference (#69)? If yes, spend the locked test year on it only.
-4. Add a euro paper book, with the rebalance band that cuts its orders by a third (#59, #73)?
+Then, in "For the owner" in [`next-steps.md`](../next-steps.md):
+
+1. Treat `tsmom12` as a risk choice, not an edge (#74, #78)?
+2. Accept the measured bar (#92) and the project-wide tries register (#79)?
+3. Let the paper broker hold shorts, so a crash-gaining book can be tested live (#83)?
+4. Coin stop as a risk preference (#69)? Euro paper book with the order-saving band (#59, #73)?
 5. Merge the engineering pull requests (interest on cash #61; #29, #30, #32)?
 
 ## Where to read more
 
-- Is the rule's edge real? #74 (`research/dsr-1.md`), #78 (`research/survey-5.md`).
-- The bar for new ideas: #79 (`research/register/BAR.md`).
-- Coins: #69 (`research/coin-cap-verdict.md`). Blends: #70, #75.
-- Euro investor: #59, #62, #63, #68, #73, #77, #80.
+- Crash insurance: #87, #90 (`research/insure-2.md`); buy-back: #94, #96, #103.
+- Risk levels: #101, #105 (`research/risk-menu.md`).
+- Is the edge real? #74 (`research/dsr-1.md`), #78; live funds #91 (`research/survey-6.md`).
+- The bar: #92, #100 (`research/register/BAR.md`).
+- Shorts: #83, #89. Coins: #69, #82. Euro investor: #59, #62, #63, #68, #73, #77, #80, #85.
 - Earlier runs (machine learning, macro, carry, papers): [`README.md`](README.md) and this
   file's git history.
