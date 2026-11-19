@@ -1,5 +1,11 @@
 # Next steps
 
+## Data wide 1 (doing 2026-11-19, branch `data-wide-1`, draft PR -> `wide-11`)
+
+Inventory of free keyless sources whose series could be F1/F2 doses (wide-11 filters);
+verify the best by small downloads into the shared cache; loaders with offline tests.
+No candidates, no gates, no return statistics. Write-up `research/data-wide-1.md`.
+
 ## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
 Step 1: two filters added to the candidate score before any data look: **F1 not announced**
