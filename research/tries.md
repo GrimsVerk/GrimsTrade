@@ -1055,3 +1055,5 @@ Never edit or delete a row.
 | 2026-11-18 22:45 | ls-trend-1 | wide-LO@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.24 | +42.4% | 27.7% | 6.57 |
 | 2026-11-18 22:45 | ls-trend-1 | narrow-LS@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.58 | +500.2% | 47.9% | 8.85 |
 | 2026-11-18 22:45 | ls-trend-1 | narrow-LO@live-L | replication | train | 2010-02-01 | 2025-10-31 | 0.93 | +1618.7% | 38.1% | 5.24 |
+| 2026-11-19 00:02 | short-sleeve | short10@bills | variant | train | 1994-02-01 | 2025-11-09 | 1.08 | +13498.6% | 32.8% | 2.60 |
+| 2026-11-19 00:02 | short-sleeve | bill10@bills | baseline | train | 1994-02-01 | 2025-11-09 | 1.09 | +14008.2% | 32.1% | 2.46 |

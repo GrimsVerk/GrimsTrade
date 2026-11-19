@@ -1,5 +1,24 @@
 # Next steps
 
+## short-sleeve (done 2026-11-19, branch `short-sleeve`, draft PR #99 -> `ls-trend-1`)
+
+`tsmom12` + a 10% SPY/QQQ downtrend short sleeve (5% each, short only while the ETF's own
+12-month return is negative; proceeds at the bill, 1% borrow, 5 bps) vs `tsmom12` + a 10% T-bill
+slot, 1994-2025. Card 42ab4b1, script f7440e9, one run. Verdict `research/short-sleeve.md`.
+
+- No edge: Sharpe above bills 0.922 vs 0.933 (d -0.011, z -0.78). Fails family and project bar.
+- Not insurance by the card's rule: +2.6 / -1.0 / +1.1 points in 2008 / 2020-Q1 / 2022
+  (dot-com +6.2). Loss avoided in all 3 SPY 25% falls (+12.3 log pts) but handed back in
+  rebounds (-10.7) and calm (-5.2): premium 1.30 (QQQ 1.17), dearer than `tsmom12`'s 1.07.
+- Count: 1 pick + 1 baseline in `tries.md`. Family unchanged (68 mechanisms, 16 tested).
+
+- Doing: nothing. No process running.
+- Next: (1) the same sleeve on a faster signal (HOP 1/3/12 blend, paper spec) only if a card
+  targets the 2020 V explicitly; (2) the wide-LS blend at gross 1 (ls-trend-1 next 1) is the
+  better-founded crisis-alpha test; (3) nothing for the paper book.
+- Rerun: copy `research/data/{bars,adj}` from another worktree (gitignored), then
+  `uv run --with numpy python research/lib/shortsleeve1.py` (appends rows: do not rerun to log).
+
 ## ls-trend-1 (done 2026-11-18, branch `ls-trend-1`, draft PR #83 -> `survey-5`)
 
 Is `tsmom12`'s missing crisis alpha the missing short side and the narrow universe? Literature
