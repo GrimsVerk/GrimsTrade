@@ -450,6 +450,13 @@
     and #74 kept out (#70 would decide whether main holds a research tree). Doc
     `docs/integrate-1.md`. ~02:53 UTC `review-2` started (D, <- pr-map): skeptical review of
     tonight's main claims (bar/DSR, crash insurance, risk menu, live decay, gate-null).
+  - DONE `data-wide-1` (draft #114 -> wide-11): 23 keyless F1/F2 dose sources inventoried
+    (ranked by a rule fixed before any download; no price/return used), 9 verified into the
+    cache (~50 MB, sha256 manifest), 4 loaded with "available on" rules (`research/lib/
+    datawide1.py`, 10 offline tests): USGS earthquakes, daily GPR index, FDIC bank failures,
+    Japan MOF FX intervention. 8 sources refused scripted clients (SEC/BLS want personal
+    contact in the User-Agent: not allowed). Unchecked: MOF daily-detail publication dates.
+    ~02:58 UTC `wide-13` started (W, <- data-wide-1): score its 11 ideas, card + gate <= 2.
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
