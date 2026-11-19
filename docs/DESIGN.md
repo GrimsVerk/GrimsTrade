@@ -22,6 +22,7 @@ keeps score per strategy against the benchmarks.
   fractional units, 10,000 USD start. `backtest()` makes historical decisions with the same rules.
 - `strategies/`: one file per strategy, `decide(history) -> (weights, reason)`. `LIVE` lists the ones
   the runner calls.
+- `rates.py`: the cash rate (13-week T-bill, Yahoo `^IRX`), `data/rates.csv`, append-only.
 - `ledger.py`: `ledger/decisions.jsonl` (one line per decision) and `ledger/tries.jsonl` (one line
   per strategy ever tried, for the deflated Sharpe).
 - `report.py`: scoreboard (return, Sharpe, max drawdown, turnover) per strategy.
@@ -56,7 +57,9 @@ equity is skipped (rebalance band), except full exits. A buy the cash cannot ful
 and buys the rest at that asset's next open, until a newer decision replaces it; while a
 decision's buys need more cash than there is, assets above target are sold down to it even inside
 the band (DECISIONS, audit G2). ETF distributions are paid as cash at the ex-date's open on the
-units held before it; cash earns no interest (DECISIONS, audit G4).
+units held before it (DECISIONS, audit G4). Cash, distributions paid out included, earns the
+13-week T-bill rate, accrued daily; Sharpe is measured above it (DECISIONS, 2026-11-18, cash
+interest).
 
 ## Benchmarks (what "making money" must beat)
 

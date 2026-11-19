@@ -15,7 +15,7 @@ import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from grimstrade import data, gym, ledger, report, signals, sources, weekly
+from grimstrade import data, gym, ledger, rates, report, signals, sources, weekly
 from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
@@ -33,7 +33,8 @@ def check_record(root: Path, now: datetime) -> None:
     recomputed from them."""
     ledger.check_history(root, now)
     bars = [data.bars_path(root, sym).relative_to(root) for sym in data.UNIVERSE]
-    for rel in (*ledger.APPEND_ONLY, *bars, data.REVISIONS, data.SOURCES_LOG, data.DIVIDENDS):
+    record = (data.REVISIONS, data.SOURCES_LOG, data.DIVIDENDS, rates.RATES)
+    for rel in (*ledger.APPEND_ONLY, *bars, *record):
         ledger.refuse_links(root, rel)
         ledger.check_append_only(root / rel)
     for name in WRITTEN_EACH_RUN:  # a link here would swallow what the run writes
@@ -59,6 +60,13 @@ def check_record(root: Path, now: datetime) -> None:
         for d in divs:
             if problem := data.dividend_problem(sym, d, stored):
                 raise ledger.LedgerTampered(problem)
+    # The cash rate is credited in every score: a row no run writes is refused like a bad bar.
+    try:
+        stored_rates = rates.load(root)
+    except ValueError as e:
+        raise ledger.LedgerTampered(str(e)) from e
+    if stored_rates and max(r.seen for r in stored_rates) > now:
+        raise ledger.LedgerTampered("a stored cash rate claims to be stored in the future")
 
 
 def fingerprint(decide: gym.Strategy) -> str:
@@ -106,6 +114,7 @@ def run(
             print(f"{sym}: FAILED {e}", file=sys.stderr)
 
     problems += _dividends(root, get)
+    problems += _rates(root, now, get)
     problems += _overdue(root, now)
     problems += _etf_holes(root)
     problems += _revisions(root, now, get)
@@ -172,6 +181,25 @@ def _dividends(root: Path, get: sources.Get) -> list[str]:
         if added:
             print(f"{sym}: +{added} dividends (yahoo)")
     return out
+
+
+def _rates(root: Path, now: datetime, get: sources.Get) -> list[str]:
+    """Append the T-bill rates (`^IRX`) not stored yet: from the first stored bar on the first
+    run, then from the day after the newest stored rate. A failure is a problem line; the gym
+    carries the last known rate forward meanwhile (DECISIONS, 2026-11-18, cash interest)."""
+    stored = rates.load(root)
+    if stored:
+        since = stored[-1].date + timedelta(days=1)
+    else:
+        firsts = [b[0].date for b in data.load_all(root).values() if b]
+        since = min(firsts) if firsts else now.date() - timedelta(days=BOOTSTRAP_DAYS)
+    try:
+        added, refused = rates.append(root, rates.fetch(since, now, get))
+    except Exception as e:  # noqa: BLE001 - one bad answer must not stop the run
+        print(f"rates: FAILED {e}", file=sys.stderr)
+        return [f"rates not fetched: {e}"]
+    print(f"rates: +{added} (yahoo ^IRX)")
+    return refused
 
 
 # Crypto closes every day: a new bar is overdue when the newest stored one closed longer ago

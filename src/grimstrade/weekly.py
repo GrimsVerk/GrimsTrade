@@ -103,7 +103,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         "",
         "Fake money on real prices. Every strategy started with 10,000 USD; all figures are "
         "after trading fees and slippage. Fund dividends are paid in as cash on the ex-dividend "
-        "day; cash earns no interest. A strategy only matters if it beats the yardsticks below.",
+        "day; cash earns the 3-month US Treasury bill rate. A strategy only matters if it beats "
+        "the yardsticks below.",
         "",
         "## Yardsticks",
         "",

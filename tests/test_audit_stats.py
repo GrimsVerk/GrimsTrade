@@ -275,8 +275,9 @@ def test_the_pages_say_how_high_the_deflated_sharpe_bar_is(tmp_path: Path) -> No
     ledger.write_decision(tmp_path, when, "buy_hold_btc", {"BTC": 1.0}, {"BTC": bars[:1]}, "t")
     page = weekly.render(tmp_path, data.load_all(tmp_path), tmp_path)
     assert "Strong evidence takes years, not months" in page and "after six months" in page
-    # Audit G4 (fixed): the page says dividends are paid and that cash earns nothing.
-    assert "dividends are paid in as cash" in page and "cash earns no interest" in page
+    # Audit G4 (fixed): the page says dividends are paid; since cash interest (#61), that cash
+    # earns the bill rate.
+    assert "dividends are paid in as cash" in page and "Treasury bill rate" in page
 
 
 def test_a_fill_on_the_first_day_counts_in_sharpe_and_drawdown() -> None:
