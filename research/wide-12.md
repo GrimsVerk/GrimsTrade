@@ -71,3 +71,80 @@ Notes on the points:
 D2 is one xlsx and the repo has no xlsx reader (it would need a hand-written XML parse), so
 **D1 is gated first (as W23), D2 second if time remains (as W24).** D3 and D4 stay parked
 here (not in the count).
+
+## Step 2. D1 `custody-selling` gate (enters the list as W23)
+
+### Data access (checked 2026-11-19, before any number was cut by it)
+
+The FRED web endpoints (`fredgraph.csv`, `/data/*.txt`) refuse automated fetches from this
+machine (stream reset, timeout), and the FRED API needs a key. The same series comes keyless
+from the Federal Reserve Board's Data Download Program as the whole H.4.1 release:
+`https://www.federalreserve.gov/datadownload/Output.aspx?rel=H41&filetype=zip` (9.1 MB zip,
+one SDMX XML of 127 MB; stored under the cache root of `research/macro.local.json` at
+`fed-ddp/h41-2026-11-19/H41.zip`, sha256 in the cache's `manifest.jsonl`). Format probe before
+this rule (series names, descriptions, observation counts and dates only, no value printed):
+series `RESH4FG_N.WW`, "Memorandum Items: Custody Holdings: Marketable U.S. Treasury
+securities: Wednesday level", weekly, 1,248 observations from 2002-12-18. Custody holdings are
+reported at face value, not market value `[memory]`; a shown cell checks that the weekly change
+does not move with the same week's bond return (a market-value series would, mechanically).
+
+### Decision rule (fixed and pushed before any number)
+
+**Dose.** H(W) = custody holdings of marketable Treasuries on Wednesday W. Flow
+f(W) = ln(H(W) / H(W - 28 days)), missing if either level is missing. z(W) = (f(W) - mean) /
+sd (ddof 1) over the flows dated W - 1092 .. W - 1 days (156 weeks), needing at least 104;
+past-only, so the trend growth of reserves in the 2000s is taken out. Predicted sign: positive
+(net buying lifts bond prices over the next weeks; net selling lowers them).
+
+**No look-ahead.** W's H.4.1 is released on Thursday W + 1 at 16:30 New York time (Friday in
+some holiday weeks). Entry at the close of the asset's first bar dated >= W + 5 (Monday), exit
+at the close of the first bar dated >= W + 33 (four weeks later). y(W) = ln(exit / entry),
+dividend-adjusted closes (`harness.load_history("train")`). The row is dropped if either bar is
+missing, the exit bar is dated after W + 40, or after 2025-11-10.
+
+**Controls (F2), all horizons up to a year.** r_h(W) = ln(close of the last bar <= W / close of
+the last bar <= W - h days) for h = 28, 91, 182, 364: the asset's own past 4-, 13-, 26- and
+52-week returns, known at W.
+
+**Panel and statistic.** Gate assets TLT and IEF (the two Treasury ETFs of the gym's data).
+Pooled OLS: y = a_asset + b z + g4 r4 + g13 r13 + g26 r26 + g52 r52. t of b with
+Driscoll-Kraay standard errors: scores summed over the rows of each Wednesday, then Newey-West
+(Bartlett) with 4 lags over the week index (weeks counted by date; the 4-week returns overlap
+by 3 weeks, and the two ETFs move together).
+
+**Placebo null (the decider), one family, fixed here.** The same function with the dose
+calendar moved by k weeks: z_k(W) = z(W - 7k days), outcome and controls stay put, rows with a
+missing z_k dropped from that placebo only. k in +-{27, 31, ..., 103} (odd, step 4): **40
+placebos** (wide-11's family: a 4-week flow z is persistent for months, so shifts under half a
+year are left out; odd weeks are never a whole year).
+
+**Gate. Pass only if both hold** (gate sample: Wednesdays 2010-01-06 .. 2025-10-01, after every
+cited sample):
+1. b > 0 with t >= 2.
+2. The true t ranks among the 2 highest of 41; empirical one-sided p = rank / 41 <= 0.049.
+
+**Shown, not gating** (b, t, rows): without the controls; the 1-week horizon (exit at the first
+bar >= W + 12, 1 lag); the raw flow f instead of z; TLT alone; IEF alone; SPY and GLD alone
+(the dollar channel; not in the gate); the pre-gate years, Wednesdays 2005-01-05 .. 2009-12-30;
+the F2 feedback check: z(W) on each past return r_h(W) alone (h = 4, 13, 26, 52 weeks), pooled
+TLT and IEF with asset intercepts, Driscoll-Kraay 4 lags (positive slope = holdings grow after
+bond rallies); the face-value check: the weekly flow ln(H(W) / H(W - 7)) on TLT's return over
+the same week, 1 lag; the placebo null's width (gate-null step 5).
+
+**On a pass:** no card in this run. A proposed card for the next window (TLT and IEF held or
+scaled by z inside `tsmom12`'s bond slots on the Monday-after clock), read at the family bar
+p < 0.10 / 80 = 0.00125 and the register's p <= 4.8e-5 (N 1,032) with z = (t - placebo median)
+/ placebo sd. **On a fail:** W23 dead by the gate, no card, no row.
+
+**Power, written before any number.** 4-week returns: TLT sd about 4%, IEF about 1.8%. About
+820 weeks, two correlated ETFs (say 1.3 effective), overlapping by 3 weeks: standard error of
+b roughly 3% / sqrt(820 x 1.3 / 4), about 0.18% per unit of z. The cited level effects (about
+80 bp on the 10-year yield per $100 bn a year, Warnock and Warnock `[memory]`) suggest a
+one-sd 4-week flow moves the 10-year yield by several bp in the same month; if a quarter of
+that carries into the next month, b is about 0.2-0.3%: t about 1-1.5. Only a carry-over as large
+as the same-month effect passes.
+
+**My guess before any number.** b small and positive, t between -1 and +2; rank in the top
+half; placebo t sd 1.1-1.5. Feedback: positive at 13-52 weeks (holdings and bond prices both
+fall when the dollar is strong and US yields rise), t 1-3. Face-value check: slope near zero.
+Chance of a pass: 3%.
