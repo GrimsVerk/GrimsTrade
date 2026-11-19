@@ -73,7 +73,7 @@ open first, then what is fixed, each by severity.
 | L12 | The outside check could be silenced or fooled | high | fixed |
 | S1 | A Sharpe ratio was printed from day two | high | fixed |
 | D2 | A stock split would be booked as a crash | high, unlikely | guarded |
-| G3 | Crypto trades were charged 0.25%; the real fee is 0.38% to 0.80% | medium | fixed (flat 0.60%) |
+| G3 | Crypto trades were charged 0.25%; the real fee is 0.38% to 0.80% | medium | fixed (flat 0.60%; by volume tier from 2026-11-18) |
 | D3 | No sanity check before a bar became permanent | medium | fixed |
 | D4 | A hole in a source's answer became a permanent gap | medium | fixed |
 | L5 | A failed fetch started a brand-new record | medium | fixed |
