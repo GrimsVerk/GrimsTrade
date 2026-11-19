@@ -185,7 +185,152 @@ This one item appears three times in the old list (integrate-1, combo-2 #75, cas
 
 ## B. Project rules
 
-(filling in)
+### B1. Project-wide tries register and the bar
+
+Merges two old entries: register-1 (#79, adopt the register and "every card quotes BAR.md")
+and register-2 (#92, accept the measured bar).
+
+- **Question:** count research tries on every branch (not only `main` and `research-*`) plus
+  an append-only register `research/register/tries.jsonl`, have every card quote the
+  project-wide bar from `research/register/BAR.md` before any number, and accept the measured
+  bar for a new pick?
+- **Options:**
+  1. Adopt as proposed (convention in `docs/DESIGN.md`, PROPOSED; DECISIONS 2026-11-12 rule
+     revised), with the bar worded as review-2 corrected it.
+  2. Adopt the register (the count) but not a fixed bar; each card picks its own N.
+  3. Keep the 2026-11-12 rule (reads `main` and `research-*` only).
+- **What each changes:**
+  - 1 and 2: the live scoreboard's N jumps from about 300 to about 2,900+ and **every live
+    deflated Sharpe drops** (#79). `ledger.py`, `run_daily.py` and a new `register.py` change;
+    the register chain lands as one merge of #111 (contains #74, #79, #92, #100, #108; adds a
+    3.9 MB committed weekly-returns store so `BAR.md` rebuilds on any computer). Branches may
+    never be deleted (A5).
+  - 3: the live N stays at about 300 while the project has logged 3,130 tries (register-5):
+    the undercount DECISIONS 2026-11-12 calls "the dishonest direction".
+- **The bar, as review-2 corrected it (s.1):** N_eff about 486 is the **cautious end** of a
+  measured range (12 by cluster count to 486 by average correlation), not a single measurement.
+  At 486: z >= 4.69, which is **+0.30 to +0.56 Sharpe over `tsmom12` for rules correlated
+  0.77-0.93 with it**; less correlated rules use the z column. Any counting choice puts the
+  close-rule bar between +0.21 and +0.34 (+0.25 to +0.32 defensible), so "nothing has cleared
+  it" holds either way. **Correction:** the largest lead seen on the main test is +0.23
+  (`halving-alone`, z about 3.2-3.6), not +0.18; it fails at 4.69 but sits at the cluster-count
+  bar (3.29), the one result where the counting method decides (review-2 s.1c). Lane `fix-2`
+  (#122) is applying this wording to SUMMARY.
+- **Evidence:** dsr-1 #74 (`research/dsr-1.md`), register-1..5 #79 #92 #100 #108 #111
+  (`research/register/BAR.md` on `register-5`), review-2 s.1.
+- **Recommended default: option 1.** Reason: VISION's first priority is the honesty of the
+  record, and every branch can only raise N (the cautious direction); review-2 found the
+  arithmetic sound.
+- **Unblocks:** the register chain (#79, #92, #100, #108, #111) in the A1 queue after #15;
+  every later card has one bar to quote; the live scoreboard counts the same tries as research.
+
+### B2. Forward registry (#67)
+
+- **Question:** adopt the forward registry (judge a frozen rule only on data after its freeze
+  commit; `src/grimstrade/forward.py`, 18 tests, offline command) and freeze `carry-3-band@1`?
+- **Options:**
+  1. Adopt the rules, freeze nothing now; the other candidates stay descriptive.
+  2. Adopt and freeze `carry-3-band@1` (the lane's recommendation).
+  3. Do not adopt.
+- **What each changes:** 1: #67 lands (new module, not imported by the runner; conflicts only in
+  `docs/DECISIONS.md`). 2: also a lane writes a carry adapter that must snapshot the perp lists
+  and commit **every week** for the test's life (venues drop delisted coins later), so it needs
+  an owner-made schedule (a local timer or a new weekly workflow). 3: #67 closes.
+- **Years needed at 80% power (alpha 0.025 each, forward-registry doc):** `carry-3-band` 12.7
+  (7.3 as a lone test at 0.10), coin stop 26.2 (about 55 counting independent episodes),
+  monthly-vs-weekly euro clock 31.5, FOMC bond drift 78.1. carry-3 `band` already failed its one
+  held-out year (pooled Sharpe -0.65, #31); if the truth is half the train Sharpe, it needs four
+  times the years.
+- **Evidence:** `docs/forward-registry.md` (branch `forward-1`, #67), carry-3 #31, rl-6 #52.
+- **Recommended default: option 1.** Reason: the registry's main use is as a filter ("anything
+  that needs decades is decided on other grounds now"); a weekly job for 7-13 years on a rule
+  that failed its held-out year is a poor use of it. Revisit freezing carry only if B6 ever
+  changes.
+- **Unblocks:** #67 (A1 slot 7); lane queue item 5 (forward items) gets its rules; B3.
+
+### B3. Freeze `turn-of-year-losers@1`
+
+- **Question:** freeze wide-8's proposed forward test of the turn-of-year rebound of ETFs that
+  lost over the year (first unseen turn 2026/27)?
+- **Options:** (1) no; keep the proposed entry as a record, and a lane may print the January 2027
+  numbers as description only; (2) yes.
+- **What "yes" changes:** `forward.py` needs a new metric (`placebo_rank`), and the registry's
+  0.10 alpha is split five ways (0.02 each) instead of four. Deadline: freeze before the dose is
+  known (end of November 2026, so before 2026-11-30); the hard limit is the window start,
+  2026-12-31.
+- **Evidence:** wide-8 #88 (`research/wide-8.md`, step 1): the empirical null over 153 placebo
+  windows has SD 2.18; a pass needs t >= 4.87; **power 8%** at the lead's own slope (5% at half),
+  so one turn will most likely say "fail" whatever the truth. A multi-turn version needs on the
+  order of ten turns.
+- **Recommended default: option 1.** Reason: with 8% power the verdict carries almost no
+  information, and freezing costs code plus an alpha split for every other forward rule.
+- **Unblocks:** closes O4's first half.
+
+### B4. `common.weekly` on the calendar Friday?
+
+- **Question:** move the shared weekly sampler `common.weekly` from "one session later on
+  Friday-holiday weeks" to the calendar Friday?
+- **Options:** (1) keep it, and write the convention into `research/protocol.md`; (2) move it,
+  under its own card.
+- **What each changes:** 2 shifts every lane's numbers a little; logged rows stay as logged, so
+  old rows would no longer reproduce on new code. 1 changes nothing.
+- **Evidence:** trend-1926-fix #66: the replay gaps were Friday-holiday weeks; no look-ahead; no
+  number changed by more than 0.012; one era-1 sign flip (energy), verdict unchanged.
+- **Recommended default: option 1.** Reason: no look-ahead and an effect of at most 0.012 do not
+  justify making 3,000 logged rows irreproducible.
+- **Unblocks:** closes O12.
+
+### B5. The held-out year and the 2026 World Cup (W18)
+
+- **Question:** may W18 `elimination-mood` use the 2026 World Cup (June-July 2026), which lies
+  inside the held-out year 2025-11-11..2026-11-09?
+- **Context:** carry-3 (#31) spent that year in its one held-out run. Every other lane still
+  leaves it unread; the first year nobody has seen started 2026-11-10 (forward-registry doc).
+- **Options:** (1) no: W18 runs its gate on the post-sample train tournaments 2006-2024 only;
+  (2) yes: the 2026 tournament joins the gate.
+- **What each changes:** 1: W18 can start now; about 25 eliminations of three countries, a weak
+  design (wide-8), and by review-2 s.5a a clustered gate with so few episodes is **kill-only**
+  (it can reject the idea, not confirm it). 2: a second look into a spent held-out year, for a
+  handful of extra events.
+- **Evidence:** wide-8 #88 (W18 row), review-2 s.5a, `research/protocol.md` (held-out year:
+  once, one finalist).
+- **Recommended default: option 1.** Reason: keeps the held-out rule simple ("unread except by
+  its one finalist"), and the gate can only kill the idea anyway. Ask again only if it passes.
+- **Unblocks:** lane queue item 3 (W18's gate can run now).
+
+### B6. Perpetual futures in the paper gym?
+
+- **Question:** allow perpetual futures (a short leg and funding payments) in the gym, the only
+  way to test `crypto-carry`, the last candidate passing the F1/F2 scoring filters (wide-11)?
+- **Options:** (1) no, the gym stays long-only spot; (2) yes, as a research-only gym mode; (3)
+  yes, in the live paper broker.
+- **What each changes:** 2 and 3 change `docs/DESIGN.md` (long-only), add funding data and a
+  short leg; 3 also changes the live runner. 1 closes queue item 4.
+- **Evidence:** wide-11 #109; carry-3 #31 (the carry book failed its held-out year: -0.65, about
+  22% lost on price, not costs or funding); carry-2 #26 (weak replication, gone at 30 bps);
+  short-1 #23; rl-6 #52 (246 training weeks detect only Sharpe >= 0.98; RL/perp line closed).
+  DECISIONS 2026-11-12: carry not built because the gym is long-only spot.
+- **Recommended default: option 1.** Reason: the one carry book tested failed its held-out year,
+  and the available perp history can only detect a Sharpe near 1.
+- **Unblocks:** closes O1 and queue item 4.
+
+### B7. Shorts in the paper broker?
+
+- **Question:** add shorts (borrow fees, interest on short proceeds, rescale to 1x) so a wide
+  long-short trend book could be forward-tested?
+- **Options:** (1) not now (proposal stays parked); (2) research-only short support; (3) shorts
+  in the live paper broker.
+- **What each changes:** 2 or 3: a design change to the long-only gym, 34 ETFs, about 500 orders
+  a year (risk-menu row). 1: nothing.
+- **Evidence:** ls-trend-1 #83: crash gains of real trend funds need shorts and a wide universe
+  (93-118% of crash gains from shorts). ls-trend-2 #89: `tsmom12` plus the wide long-short book at
+  1x: Sharpe 0.97 vs 1.21 (2007-2025, p 0.89, fails), but crash windows 2008 / 2020Q1 / 2022
+  +8.9 / +2.2 / +2.0% vs -1.6 / -14.1 / -12.9%: a risk choice, not an edge. short-sleeve #99:
+  narrow short sleeves fail. risk-menu #101: the equal-risk blend is the only row that gained in
+  all three crash windows.
+- **Recommended default: option 1, revisit after C2.** Reason: it is a risk choice (crash gains
+  for Sharpe), so it belongs with C2, and it is the biggest design change on the list.
+- **Unblocks:** closes O6 for now.
 
 ## C. The risk choice for the paper book
 
