@@ -109,7 +109,7 @@ and can be tested on the assets the gym holds. Prior lowered from 2% to **1%**.
 
 ### What the filters leave
 
-Of 15 parked or dead candidates, two pass both filters: C3 (gated below) and `crypto-carry`
+Of 14 parked or dead candidates, two pass both filters: C3 (gated below) and `crypto-carry`
 (perpetual futures; not in the gym). The filters are strict on purpose: most forced-flow
 stories are flows on a public schedule (F1) and most crypto stories are flows that follow
 price (F2). A new mechanism worth a gate now needs **an unscheduled flow that does not answer
@@ -263,7 +263,7 @@ premium added).
 
 The two filters would have caught all three of the last gates' failures in advance: W20 by F1
 (announced), W21 and W22 by F2 (the dose follows price; for W22 at a slower horizon than the
-controls covered). Of the 15 parked or dead candidates re-scored in step 1, only
+controls covered). Of the 14 parked or dead candidates re-scored in step 1, only
 `crypto-carry` now passes both filters untested, and it needs perpetual futures.
 
 ## Next

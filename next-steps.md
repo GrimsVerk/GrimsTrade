@@ -5,7 +5,7 @@
 Step 1: two filters added to the candidate score before any data look: **F1 not announced**
 (a flow public before the window is priced; a premium passes) and **F2 not price-driven**
 (the dose must not follow the asset's prices; a known reaction passes only with price-path
-controls, -1 point). 15 parked or dead candidates re-scored: only C3 `hedging-pressure` and
+controls, -1 point). 14 parked or dead candidates re-scored: only C3 `hedging-pressure` and
 `crypto-carry` (perps, not in the gym) pass both. Step 2: C3 gated as **W22** under
 `research/gate-null.md` (rule, script, tests pushed first; dry run counts; one run).
 **Fails: GLD/TLT/SPY/QQQ 4-week return +0.075% per unit of commercial hedging-pressure z,

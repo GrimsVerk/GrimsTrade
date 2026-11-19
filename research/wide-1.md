@@ -655,7 +655,7 @@ Count unchanged: 78 mechanisms, 18 tested, none passed; gates 13, all failed.
 The candidate score of `wide-10.md` gets two filters applied first (`wide-11.md` step 1):
 **F1 not announced** (a flow whose date and size are public before the window is priced;
 a risk premium passes) and **F2 not price-driven** (the dose must not follow the asset's own
-prices; a known reaction can pass only with price-path controls, at a 1-point cost). Of 15
+prices; a known reaction can pass only with price-path controls, at a 1-point cost). Of 14
 parked or dead candidates re-scored, two pass both: C3 `hedging-pressure` (gated below) and
 `crypto-carry` (needs perpetual futures).
 
