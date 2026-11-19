@@ -364,6 +364,11 @@
     (inverse-variance weights): a 32-year rule now needs Sharpe 1.42 vs zero (was 1.23).
   - 00:23 UTC 5h 0.89: started `register-4` (D: committed weekly-returns store so BAR.md
     regenerates on any computer) and `breadth-screen` (W: same 5 signals on the wide ETF set).
+  - DONE `bear-legs` (draft #103 -> fast-reentry-2): at a 10% rally inside a 25% fall, a bear-
+    market rally looks like the bottom (7 observables, US AUC 0.47-0.54, 482 events; non-US
+    0.45-0.57). 74% of US 25% falls have a 10% rally before the low; 88% of `or3-12`'s lost
+    insurance comes from those. Late buy-back = price of the insurance. 0 rows. Line stays closed.
+  - 00:25 UTC 5h 0.91: `summary-3` started (<- summary-2): refresh SUMMARY.md with lanes since 22:40.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
 - 3. Then the Lead 1 lane queue below.
 
