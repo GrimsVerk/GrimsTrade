@@ -44,8 +44,9 @@ One-screen menu `research/risk-menu.md` with map `research/risk-menu.svg`; table
 - Eleven risk dials on one footing (P 2007-04..2025-10, T-bill cash, costs): Sharpe 0.66
   (60/40) to 1.34 (own-vol target), SE 0.24; all `tsmom12` forms inside the bootstrap range of
   holding the six. Risk differs a lot: worst loss 6.3% (own-vol 26%) to 47% (hold six).
-- Own-vol target at 70% mean share: growth 15.9%, worst loss 18.2%, worst 12 months -8.4%
-  against `tsmom12` 70% + bills 17.6% / 24.6% / -20.6%.
+- Own-vol target aimed at 70%, without look-ahead (realised share 0.61): growth 13.8%, worst
+  loss 15.7%, worst 12 months -7.6% against `tsmom12` 70% + bills 17.6% / 24.6% / -20.6%
+  (with look-ahead it read 15.9% / 18.2% / -8.4%; corrected by `risk-menu-4`).
 - Equal-risk blend with the wide long-short book is the only item positive in all three
   crashes (+10.4% / +4.4% / +4.1%), at Sharpe 0.97 and ~500 orders a year with shorts.
 
