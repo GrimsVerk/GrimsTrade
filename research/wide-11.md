@@ -204,3 +204,75 @@ literature reports for financial futures passes.
 t sd 1.3-1.8 (persistent dose, overlapping returns, four correlated markets). The feedback
 check: commercials sell forward into rallies, so HP rises after a rally: slope positive,
 t > 3. Chance of a pass: 2%.
+
+### What came out (one run, 2026-11-19; table `results/hedging-pressure.md`)
+
+Dry run first (`DRY=1`, counts only): 371 report weeks in the gate sample for each market,
+every one with a z, an outcome and both controls (GLD, TLT, SPY, QQQ, IEF, SLV); BTC 222 (its
+z starts in 2021 after 104 earlier reports); **1,484 pooled gate rows**; the 40 placebos keep
+1,060 to 1,424 rows (negative shifts run out of reports at the end, positive ones hit the
+2018-19 shutdown gap). Then one real run.
+
+**The gate fails on both counts. One unit of hedging-pressure z adds +0.075% to the next 4
+weeks' return (t +0.49, 1,484 rows, four markets, 2018-06 .. 2025-10); the true t ranks 14 of
+41 (empirical one-sided p 0.34). W22 `hedging-pressure` is dead by the gate: no card, no
+strategy, no `tries.md` row.** Held-out year untouched.
+
+| 4-week return on hedging-pressure z (controls: past 4- and 52-week return) | b, % per unit | t | Rows |
+|---|---:|---:|---:|
+| **Gate: GLD, TLT, SPY, QQQ pooled, 2018-06 .. 2025-10** | **+0.075** | **+0.49** | 1,484 |
+| Without the controls | +0.088 | +0.53 | 1,484 |
+| 1-week horizon (the info-1 mirror, with commercials) | -0.006 | -0.11 | 1,484 |
+| Raw HP level instead of z (per unit of HP, i.e. 0 to 1) | +1.13 | +0.57 | 1,484 |
+| GLD / TLT / SPY / QQQ alone | -0.005 / +0.086 / -0.345 / +0.150 | -0.02 / +0.27 / -0.80 / +0.41 | 371 each |
+| IEF / SLV / BTC alone (not in the gate) | +0.517 / -0.220 / -2.87 | **+3.18** / -0.30 / -1.21 | 371 / 371 / 222 |
+| Pre-gate years 2008-01 .. 2018-05 (inside Fan et al.'s sample) | -0.184 | -1.19 | 2,152 |
+
+- **No hedging premium in the financial futures we can hold, and none in gold.** Not after
+  Fan et al.'s sample, and not inside it either (2008-2018: wrong sign, t -1.19). Fan et al.
+  found the premium in equity index futures in the cross-section of many markets; in the time
+  series of the S&P 500 and Nasdaq-100 alone it is absent (SPY -0.35%, t -0.80).
+- **The placebo pattern repeats W21's lesson: hedging pressure follows prices at slow
+  horizons.** The highest placebo t are the *negative* shifts, i.e. hedging pressure 27-55
+  weeks *later* "predicting" this month's return (k -31: t 3.41, k -27: 2.52, k -55: 2.20).
+  Rallies are followed by more commercial net short over the next half-year to year, so the
+  dose answers price; at 4 weeks the feedback is weak (slope +0.90 z per unit of log return,
+  t 1.13), at 6-12 months it is the strongest thing in the table. The F2 controls (4- and
+  52-week returns) were the right worry, at the wrong horizon to matter for the forward test.
+- **IEF alone at t 3.18 is noted only, not a lead.** It is one of 11 shown cells, not in the
+  gate panel (the 10-year note was chosen as a shown market before the run), and the design's
+  null has 8% of placebo t beyond |t| 2 with a 95% quantile of +2.22 (pooled; a single market
+  is likely wider). Fan et al. found no premium in fixed income, and TLT on the bond contract
+  shows none (t 0.27). By `gate-null.md` step 6 it would need its own placebo before anyone
+  calls it a lead; wide-11 does not run it (a second look at one market after the gate failed
+  is a garden-of-forking-paths pick).
+- **Null width: SD of placebo t 1.13, 8% with |t| >= 2**, quantiles 5/50/95% -1.35 / -0.06 /
+  +2.22, extremes -1.66 / +3.41. Between the independent and the clustered kind in
+  `gate-null.md`'s table, skewed upward by the negative (future-dose) shifts.
+- My guess (t between -1 and +1.5, rank in the middle, placebo sd 1.3-1.8, pass 2%) held on t
+  and rank; the placebo sd came in narrower (1.13). The feedback guess (t > 3 at 4 weeks) was
+  wrong: the feedback is slow, not fast.
+
+## Family count and status
+
+One mechanism added and closed by its gate. **Union count: 79 mechanisms (wide-10's 78 + W22),
+18 tested by a strategy, none passed. The next strategy test is read at p < 0.10 / 79 =
+0.00127 (family) and the register's p <= 4.9e-5 (2,904 tries, N 1,012).** Gates so far: 14,
+all failed. Published effects after publication in this book: now 0 for 8 (W22's hedging
+premium added).
+
+The two filters would have caught all three of the last gates' failures in advance: W20 by F1
+(announced), W21 and W22 by F2 (the dose follows price; for W22 at a slower horizon than the
+controls covered). Of the 15 parked or dead candidates re-scored in step 1, only
+`crypto-carry` now passes both filters untested, and it needs perpetual futures.
+
+## Next
+
+1. **Ideation against the filters, not by field.** A new mechanism needs an unscheduled flow
+   that does not answer price, or a premium whose dose does not follow price at any horizon up
+   to a year. Write such candidates first, score them with the filters, then pick. Expect few.
+2. **`crypto-carry` only with a wider action.** It passes both filters, but the gym holds spot
+   only; any test is a risk-map question (perpetuals), not a research lane.
+3. The IEF cell (t 3.18) stays noted only. If a lane ever wants it, it is one cheap run with
+   the same placebo family on IEF alone, stated before as a single-market gate with its own
+   post-sample years, and it counts as a new pick against the family bar.

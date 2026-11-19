@@ -649,3 +649,25 @@ purchases), t 0.37, rank 11 of 41 (2014-2025, 224 purchase days); in the papers'
 (t -1.55). W21 `stablecoin-mint`: next-week BTC/ETH +0.16 per unit of weekly issuance, t 1.06,
 rank 17 of 41 (339 weeks); issuance follows prices (same-week t 2.92). Both dead, no card.
 Count unchanged: 78 mechanisms, 18 tested, none passed; gates 13, all failed.
+
+## Added by wide-11 (2026-11-19): two filters for the score, W22 closed by its gate
+
+The candidate score of `wide-10.md` gets two filters applied first (`wide-11.md` step 1):
+**F1 not announced** (a flow whose date and size are public before the window is priced;
+a risk premium passes) and **F2 not price-driven** (the dose must not follow the asset's own
+prices; a known reaction can pass only with price-path controls, at a 1-point cost). Of 15
+parked or dead candidates re-scored, two pass both: C3 `hedging-pressure` (gated below) and
+`crypto-carry` (needs perpetual futures).
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W22 `hedging-pressure` | agricultural economics x Keynes-Hicks normal backwardation | Hedgers who are net short pay speculators a premium; the larger their net short, the higher the futures' expected return (de Roon, Nijman and Veld 2000; Basu and Miffre 2013; Fan, Fernandez-Perez, Fuertes and Miffre 2020, equity index premium, none in fixed income) | Commercials' (short - long) / (short + long) in the CFTC legacy COT, as a 156-week z, released three days after the Tuesday it describes | GLD, TLT, SPY, QQQ 4-week return from a week after the position date, past 4- and 52-week returns as controls, placebo = dose calendars moved 27-103 weeks; judging years 2018-06 .. 2025-10 (7.4 years after Fan et al.'s May 2018) | 1% |
+
+**Closed by wide-11's gate (2026-11-19, `wide-11.md`; rule pushed first, 40 placebos):**
+W22 `hedging-pressure`: +0.075% per unit of z over 4 weeks, t 0.49, rank 14 of 41 (1,484
+rows); inside Fan et al.'s years -0.18% (t -1.19). The future-dose placebos lean positive
+(hedging pressure follows rallies over 6-12 months). Dead, no card.
+
+**Family count: union of the wide and survey lines 79 mechanisms (78 + W22), 18 tested by a
+strategy, none passed. The next strategy test is read at p < 0.10 / 79 = 0.00127.** Gates
+so far: 14, all failed.

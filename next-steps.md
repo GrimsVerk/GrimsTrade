@@ -1,11 +1,28 @@
 # Next steps
 
-## Wide 11 (in progress 2026-11-19, branch `wide-11`, draft PR -> `wide-10`)
+## Wide 11 (done 2026-11-19, branch `wide-11`, draft PR #109 -> `wide-10`)
 
-Doing: step 1 done (two filters F1 not-announced, F2 not-price-driven added to the score;
-parked candidates re-scored in `research/wide-11.md`). Next: gate C3 `hedging-pressure`
-(CFTC legacy COT, commercials' hedging pressure, 4-week return, price-path controls) under
-`research/gate-null.md`; then count and write-up.
+Step 1: two filters added to the candidate score before any data look: **F1 not announced**
+(a flow public before the window is priced; a premium passes) and **F2 not price-driven**
+(the dose must not follow the asset's prices; a known reaction passes only with price-path
+controls, -1 point). 15 parked or dead candidates re-scored: only C3 `hedging-pressure` and
+`crypto-carry` (perps, not in the gym) pass both. Step 2: C3 gated as **W22** under
+`research/gate-null.md` (rule, script, tests pushed first; dry run counts; one run).
+**Fails: GLD/TLT/SPY/QQQ 4-week return +0.075% per unit of commercial hedging-pressure z,
+t 0.49, rank 14/41, placebo sd 1.13 (2018-06..2025-10, 1,484 rows); inside Fan et al.'s years
+-0.18% (t -1.19). Hedging pressure follows rallies over 6-12 months (future-dose placebos up to
+t 3.41). No card, no `tries.md` row; held-out year untouched.** IEF alone t 3.18: noted only.
+Write-up `research/wide-11.md`; table `research/results/hedging-pressure.md`.
+
+Count: union **79 mechanisms, 18 tested, none passed**; next strategy test p < 0.00127
+(family), register p <= 4.9e-5. Gates: 14, all failed.
+
+- Doing: nothing. No process running.
+- Next: (1) ideation against the filters (unscheduled flow not answering price, or a premium
+  whose dose does not follow price up to a year). (2) `crypto-carry` only with a wider action
+  (owner's risk-map question). (3) Carry 79/18 into the merged list.
+- Data: CFTC legacy zips in the shared cache (`cftc/legacy/` under `research/macro.local.json`'s
+  cache root; URLs in `research/wide-11.md`).
 
 ## Wide 10 (done 2026-11-19, branch `wide-10`, draft PR #102 -> `survey-7`)
 
