@@ -45,6 +45,9 @@ def main() -> None:
     book = macro.cache_root() / "philly-spf" / "2026-11-19" / "Dispersion_1.xlsx"
     d10 = ev.quarter_column(ev.read_xlsx_sheet(book, "CPI10"), "CPI10_D1")
     d1 = ev.quarter_column(ev.read_xlsx_sheet(book, "CPI"), "CPI_D1(T+4)")
+    # Train only: drop surveys released after the last train bar (entry after LAST).
+    d10 = {q: v for q, v in d10.items() if ev.entry_target(q) <= LAST}
+    d1 = {q: v for q, v in d1.items() if ev.entry_target(q) <= LAST}
     z10, z1 = ev.zscores_q(d10), ev.zscores_q(d1)
     hist = harness.load_history("train", syms=GATE_ASSETS + SHOWN)
     px = {a: w11.Closes({b.date: b.close for b in bars}) for a, bars in hist.items()}
