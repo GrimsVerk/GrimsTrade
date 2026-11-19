@@ -1,5 +1,13 @@
 # Next steps
 
+## Weather 2 (in progress 2026-11-19, branch `weather-2`, draft PR #117 -> `weather-1`)
+
+CPC 6-10/8-14 day outlook revisions (gas-weighted) vs UNG next-session open-to-close,
+winter-derangement null. Feasible: keyless shapefile archive from 2012-09 (13 train
+winters). Card `research/weather-2.md` pushed before any price. Doing: downloading the
+outlook files (`scripts/fetch_weather2.py`, resumable) into `weather-2/` under the cache
+root; then `uv run python -I research/lib/weather2_rev.py` once.
+
 ## Weather 1 (done 2026-11-19, branch `weather-1`, draft PR #116 -> `wide-11`)
 
 One pre-registered weather gate (card `research/weather-1.md`, pushed before any return
