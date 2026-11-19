@@ -224,3 +224,35 @@ def test_fat_tails_and_short_records_raise_the_sharpe_needed() -> None:
     sr0 = math.sqrt(max(v / per_year, 1 / weeks)) * register.max_z(n)
     psr = stats.probabilistic_sharpe(stats.Moments(weeks, sr, -1.0, 20.0), sr0)
     assert psr == pytest.approx(0.95, abs=1e-6)
+
+
+def test_shapes_logged_on_any_branch_join_their_register_rows(repo: Path) -> None:
+    from grimstrade import tryshape
+
+    shape = tryshape.Shape(1657, -0.1, 9.0, 1.0)
+    other = tryshape.Shape(250, 0.2, 3.0, 0.8)
+    stray = A.replace("tsmom12", "never-in-tries-md")
+    push(
+        repo,
+        "shape-1",
+        {
+            **tries_md(A, B, C, C),
+            str(register.SHAPES): "".join(
+                tryshape.to_line(r, s) + "\n" for r, s in ((B, shape), (C, other), (stray, shape))
+            ),
+        },
+    )
+    s = register.regenerate(repo)
+    tries = register.read_register((repo / register.REGISTER).read_text(), "x")
+    got = register.logged_shapes(repo, tries)
+    by_line = {t.id: t.line for t in tries}
+    assert sorted(by_line[i] for i in got) == [B, C, C]  # both occurrences of a re-run
+    assert {got[i] for i in got if by_line[i] == B} == {shape}
+    assert s.logged == (3, 3)
+    assert "| Tries whose shape the harness logged" in (repo / register.BAR).read_text()
+
+
+def test_a_broken_shape_line_is_refused(repo: Path) -> None:
+    push(repo, "shape-2", {**tries_md(A), str(register.SHAPES): '{"row": 1}\n'})
+    with pytest.raises(register.RegisterError, match="not a shape line"):
+        register.regenerate(repo)

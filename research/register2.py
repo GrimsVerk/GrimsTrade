@@ -265,6 +265,15 @@ def match(series: list[Series], rows: list[dict[str, Any]]) -> dict[str, Series]
     return out
 
 
+def logged() -> dict[str, Any]:
+    """Register id -> the shape the harness logged with the row (register-3), from
+    `research/tries-shape.jsonl` on disk and on every remote branch."""
+    sys.path.insert(0, str(ROOT / "src"))
+    from grimstrade import register
+
+    return register.logged_shapes(ROOT, register.read_register(REGISTER.read_text(), "register"))
+
+
 # --- moments and clustering ---
 
 
@@ -481,14 +490,20 @@ def estimate() -> None:
     from_curves = match(curves_, rows)
     for ident, s in from_curves.items():
         matched.setdefault(ident, s)
+    shapes = logged()  # the row's own run, logged with it: wins over a rebuilt series
     lines = []
-    for ident in sorted(matched):
-        s, r = matched[ident], by_id[ident]
-        w, sr, sk, ek = shape(s.rets)
+    for ident in sorted(set(matched) | set(shapes)):
+        r = by_id[ident]
+        if ident in shapes:
+            x = shapes[ident]
+            w, sr, sk, ek, source = x.weeks, x.sharpe_weekly, x.skew, x.excess_kurtosis, "logged"
+        else:
+            w, sr, sk, ek = shape(matched[ident].rets)
+            source = matched[ident].source
         lines.append({
             "id": ident, "idea": r["idea"], "variant": r["variant"], "kind": r["kind"],
             "weeks": w, "skew": round(sk, 4), "excess_kurtosis": round(ek, 4),
-            "sharpe_weekly": round(sr, 4), "sharpe_logged": r["sharpe"], "source": s.source,
+            "sharpe_weekly": round(sr, 4), "sharpe_logged": r["sharpe"], "source": source,
         })  # fmt: skip
     for s in lives:
         w, sr, sk, ek = shape(s.rets)
@@ -519,11 +534,11 @@ def estimate() -> None:
         "seed": SEED,
         "n_init": N_INIT,
         "k_max": K_MAX,
-        "rows_backfilled": len(matched),
-        "rows_backfilled_selectable": len(sel_ids),
+        "rows_backfilled": sum(1 for x in lines if x["kind"] != "live"),
+        "rows_backfilled_selectable": sum(1 for x in lines if x["kind"] in SELECTABLE),
         "rows_backfilled_by_source": {
             src: sum(1 for x in lines if x["source"].split("@")[0] == src)
-            for src in ("harness", "curve", "live")
+            for src in ("logged", "harness", "curve", "live")
         },
         "harness_series": len(harness),
         "harness_series_matched": len({id(matched[i]) for i in matched if matched[i] in harness}),
