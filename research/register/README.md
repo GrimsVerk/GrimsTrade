@@ -30,6 +30,13 @@ selectable row, adds the others by SHA-256 of `idea/variant/start` while they fi
 
 ## How a lane adds its returns
 
+From register-5 on, the research harness does it itself: when `research/lib/harness.py`
+logs a train try, it also adds the try's weekly returns to its family file here (the same row
+`export` would build from the saved curve). Commit the changed
+`research/register/returns/<idea>.csv.gz` together with `research/tries.md`. The harness
+warns when the store is over its budget (then run `export`, which trims). The steps below are
+for curves saved before that, or by a harness on a branch without the hook.
+
 A lane whose tries are logged through the research harness has an equity curve per try in
 its gitignored `research/data/runs/<idea>/<variant>.train.csv` (header, then `date,equity`
 rows). To put their weekly returns in the store (needs this branch's `register2.py` and
