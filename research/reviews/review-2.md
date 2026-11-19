@@ -17,7 +17,79 @@ added as they are done).
 
 ## 1. The project-wide bar (dsr-1 #74, register-1..5 #79 #92 #100 #108 #111)
 
-(pending)
+**Verdict: the bar holds (z >= 4.69, about +0.30 Sharpe for a close rule). Two statements
+around it need fixing: "the largest lead ever seen on the main test was +0.18" is wrong, and
+"worth about 486 independent shots" is the cautious end of a measured range, not a
+measurement.**
+
+### 1a. Formulas: hold
+
+- Expected best of N trials, `E + sqrt(V) * ((1 - g) Z^-1(1 - 1/N) + g Z^-1(1 - 1/(N e)))`,
+  and `DSR = Z((SR - SR0) sqrt(T - 1) / sqrt(1 - skew SR + (kurt - 1)/4 SR^2))` with raw
+  kurtosis: both match Bailey and Lopez de Prado (2014), eq. 1-2 (`research/dsr-1.md` on
+  `dsr-1`, section 2; `src/grimstrade/stats.py` reproduces the paper's worked example,
+  DSR 0.9004 at N = 100, as dsr-1 states). N_eff = rho + (1 - rho) M is the paper's
+  appendix approximation, quoted correctly.
+- Difference form: pass when `(d - SE * maxZ(N)) / SE >= 1.645`, i.e. z >= 1.645 + maxZ(N).
+  Under the null the spread of the trials' edges is their own sampling SE, so using SE as
+  sqrt(V) is right.
+- Recomputed (stdlib): maxZ(486) = 3.044, z 4.69, edge 4.69 x 0.065 = +0.305 and
+  4.69 x 0.12 = +0.563. maxZ(1,032) 3.26 -> +0.32/+0.59; maxZ(3,130, every row) 3.57 ->
+  +0.34/+0.63. All as in `research/register/BAR.md` (branch `register-5`).
+- The SEs are realistic. Recomputed from the committed weekly returns
+  (`research/register/returns/*.csv.gz`, delta-method SE of a Sharpe difference, iid):
+  tuned `tsmom12` variants with weekly correlation 0.90-0.95 to it have SE 0.06-0.08; equal
+  weight (correlation 0.82) 0.106, close to review-1's bootstrap 0.12. **Caveat:** SE 0.12 is
+  a rule correlated about 0.77 with `tsmom12`, not a "far" rule. An uncorrelated rule has SE
+  about 0.25 on 32 years and needs about +1.2 Sharpe. BAR.md says to use the z column for such
+  cards; SUMMARY's "+0.30 to +0.56" range should say it covers rules correlated 0.77-0.93
+  with `tsmom12`.
+
+### 1b. N_eff = 486: holds as the cautious choice, overstated as "measured"
+
+- The register measures two very different things: A.3 with the average pairwise
+  correlation (0.53) gives 486; ONC finds 2 clusters (12 when scaled to N); the eigenvalue
+  participation ratio is 2.6 (`BAR.md`, "How many independent trials"). The bar takes the
+  largest. `register-2.md` lines 110-113 argue for A.3 and state the disagreement, which is
+  honest.
+- A.3 is itself cautious here. For M equicorrelated trials the expected best edge is exactly
+  sqrt(1 - rho) x maxZ(M) = 0.686 x 3.26 = 2.24 standard errors, i.e. z >= 3.88 (+0.25 close
+  rule), against A.3's 4.69. So the defensible close-rule bar is **+0.25 to +0.32**, and the
+  three-way choice of method moves it from +0.21 (ONC) to +0.32 (independent).
+- The correlation is measured on the trials' raw returns. The difference test's luck term
+  depends on the correlation of their **edges over `tsmom12`**, which strips the common
+  market part and is likely lower, i.e. closer to independent (+0.32). Because maxZ grows
+  slowly with N, none of this moves the close-rule bar outside +0.25..+0.32.
+- Counting: N counts selectable rows (variant or baseline on train) plus 11 live
+  strategies. Not counted: 1,226 robustness rows and 232 screens. Screens select which ideas
+  get a backtest, so they are trials in spirit; robustness rows were sometimes used to choose
+  a variant (`trend-tune-surface`). Counting all 3,130 rows moves the bar to +0.34: immaterial.
+  Double counting goes the cautious way: an identical try re-logged with a new timestamp on
+  another branch is two lines, so two tries (dedup is by exact line, `register.py` docstring),
+  and the live `tsmom12` is also a baseline row.
+- Cluster Sharpe variance 0.136 (used for the "against zero" table) is the sample variance of
+  **two** numbers (0.937, 1.459; `trials.json`), so it has almost no precision. The "against
+  zero" bar is a rough figure. `cluster_sharpes_minvar` of 4.8-5.4 in `trials.json` are the
+  in-sample minimum-variance portfolios (long-short weights). They are not used in the bar,
+  but they should be dropped from the file or labelled, so nobody quotes them.
+
+### 1c. "The largest lead ever seen on the main test was +0.18": wrong
+
+`research/register/tries.jsonl` (branch `register-5`), primary test (six assets,
+1994-02-01..2025-11-09), sorted by Sharpe: `halving / halving-alone`, kind `variant`, Sharpe
+**1.28** against `tsmom12`'s 1.05, a lead of **+0.23** (lane's 90% range +0.12..+0.36,
+`research/results/halving.md:10`). Then `fomc-cycle / even-gate` 1.22 (+0.17) and
+`halving-and` 1.20 (+0.15). Recomputed from the committed weekly returns: `halving-alone`
++0.25, weekly correlation 0.93, iid SE 0.070, **z 3.6**; `halving-and` +0.15, z 3.0;
+`even-gate` +0.19, z 2.2.
+
+dsr-1 quoted +0.18 because it took each family's pre-named primary variant (`halving-and`).
+That is a fair rule for its own test, but it does not make +0.18 the largest lead seen.
+`halving-alone` still fails the bar (3.6 < 4.69, and < 3.88 under the exact equicorrelated
+count). But it **passes the ONC-scaled row (z 3.31)**, so it is the one result where the
+choice of N_eff method decides the verdict. Its iid z is also too kind: the edge sits in two
+or three coin halving cycles, with fat tails. Severity: medium. The decision does not change,
+but SUMMARY tells the owner nothing came near, and that is not so.
 
 ## 2. Crash insurance (insure-1 #87, insure-2 #90)
 
