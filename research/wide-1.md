@@ -454,3 +454,251 @@ which is why the card uses the **net** dose; 30-year bonds were not issued 2001-
 gain on the book is capped by the idle cash (about a quarter of the book) times four sessions
 a month. W5 is the most interesting but is built on calendars this repo has already looked
 at; W6, W7, W8 have lower priors as written.
+
+## Added by wide-5 (2026-11-18): two new mechanisms and a written choice rule
+
+Written after `coupon-dose` (W4) failed, before any number on anything below. The W entries
+left (W3, W5-W8) all carry priors of 1-2%, so two new ones were invented first, by
+cross-pollinating queueing theory and control theory with the dose-response method wide-4
+used. Numbered W9-W10 so they extend the list; **the family is now 56 (46 + W1-W10) and any
+test of one of them is read at p < 0.10 / 56 = 0.00179.**
+
+A lesson from another lane (ann-1, survey-2/3) shapes the rule: three published calendar
+effects (`fomc-cycle`, `xtsmom`, the pre-FOMC drift) held in their papers' years and were zero
+after publication. So a new pick should either be judged on years after its idea was formed,
+or rest on a structural cause (a law, a contract, an index rule, a regulator's obligation)
+rather than a habit or a mood.
+
+Seen before writing this: the field list of the Treasury's auction file (fiscaldata
+`auctions_query`, keyless), and for the new download (`<cache_root>/downloads/wide-5/`) only
+its row count and, per year, how many rows have `primary_dealer_accepted` filled in (none
+before 2008, all from 2009; 39 of 50 in 2008). No dealer share, amount, yield or price.
+
+| # | Field x tool | Mechanism in markets | Why it might survive costs on this book | Test plan and data | Prior |
+|---|---|---|---|---|---|
+| W9 `dealer-backlog` | queueing theory x a server of last resort with a measured backlog (Grossman-Miller: a liquidity provider who absorbs an order imbalance is paid by the reversal that follows, and more the larger the imbalance) | Primary dealers are obliged by their agreement with the New York Fed to bid in every Treasury auction. When end investors stay away, dealers are left with a large share of the issue (published at 1 pm on auction day). They carry it at a concession and are paid by the price recovery as they distribute it over the next days. The larger the unexpected dealer share, the larger the recovery | The dose (dealer share minus its own recent norm) varies auction to auction and is public before the close, so the rule needs no forecast; ~270 auctions of 20- and 30-year bonds since 2008 for TLT, ~210 of 10-year notes for IEF; ETF fills at 4 bps; idle cash goes to TLT. wide-1 saw the average dip before auctions and the average path after; the dealer-share cut has never been computed | Event study: TLT open-to-open over the 5 sessions after each 20/30-year auction, regressed on the dealer-share surprise; IEF on 10-year auctions as a second calendar. Rule: idle cash into TLT for those 5 sessions when the surprise is positive; placebo on non-positive surprises. Data: the auction file with `primary_dealer_accepted` and `comp_accepted` (2008-07 on) | 3% |
+| W10 `extension-dose` | control theory x feedforward on a known setpoint step (an index fund is a tracking controller; at each month end its setpoint, the index's maturity, steps up by an amount fixed by the index rules and known days ahead) | Bond index funds and benchmarked managers must match their index's duration at the month-end rebalance. The step ("index extension") is set by the issues that settled during the month and the bonds that age out of the maturity bucket. If the month-end bond rally (found post hoc by wide-1) is index buying, it must be larger in months with a larger extension | A structural cause written in index rules, with a dose computed from public auction data before the window opens; ~280 month ends since TLT began. The month-end mean was seen (wide-1, `month-end-bonds`); the extension cut has never been computed. The decisive comparison is high-extension months against low-extension months (each other's placebo), which the seen mean does not bias | Event study: TLT open-to-open over the last four sessions of the month (wide-1's window), regressed on the extension of a 20+ year bucket built from the auction file; IEF against a 7-10 year bucket. Rule: idle cash into TLT for those four sessions in months whose extension is above the median of the previous 24 months; placebo the months below | 3% |
+
+### Choice rule (fixed before any number on W3, W5-W10)
+
+Each untested W entry gets one point for each of:
+
+1. **Structural cause**: the flow or constraint is fixed by a law, regulation, contract,
+   index rule or obligation, not by a habit or mood.
+2. **Unseen cut**: the statistic that decides the test has not been computed by any run in
+   this repo.
+3. **Dose**: the event's size varies and is known from public data at the decision, so a
+   dose-response slope (and a free placebo) can be tested, not only a calendar mean.
+4. **Power**: at least 200 events in the train period on ETFs at 4 bps.
+5. **Post-sample**: at least 8 train years after the idea was first published or formed.
+6. **Not a killed idea in other words** (wide-1's sorting rule).
+
+The two highest scores are picked; ties are broken by the data already cached, then by the
+prior.
+
+| # | 1 cause | 2 unseen | 3 dose | 4 power | 5 post-sample | 6 not killed | Score |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|---:|
+| W3 `lunar` (published 2003, 2006) | 0 | 1 | 0 | 1 | 1 | 1 | 4 |
+| W5 `tidal-trigger` | 1 | 1 | 0 | 1 | 0 | 1 | 4 |
+| W6 `payday-inflow` | 1 | 1 | 0 | 1 | 0 | 1 | 4 |
+| W7 `fatigue-damage` | 0 | 1 | 1 | 0 | 0 | 0 | 2 |
+| W8 `snapshot-shrink` | 1 | 1 | 0 | 0 | 0 | 1 | 3 |
+| W9 `dealer-backlog` | 1 | 1 | 1 | 1 | 0 | 1 | 5 |
+| W10 `extension-dose` | 1 | 1 | 1 | 1 | 0 | 1 | 5 |
+
+**Picked: W9 `dealer-backlog` and W10 `extension-dose`** (5 each). Neither can be judged on
+years after the idea was formed (both are formed today); both qualify through a structural
+cause, as the lesson allows. W3 is the only entry with post-sample years, but its cause is
+mood; it stays the cleanest cheap check of a published calendar effect if one is wanted. The
+first test of the two is read at p < 0.00179, and so is the second (Bonferroni over the
+family of 56, as wide-4 did).
+
+Against W10, written now: its calendar (the last four sessions) is the one where wide-1 found
+the bond rally by looking, so its rule's Sharpe against `tsmom12` is biased upward by a seen
+mean. Its card therefore makes the high-against-low comparison (rule against its placebo) and
+the dose slope the readings that matter.
+
+## Added by wide-6 (2026-11-18): W11 closed by a gate, four new mechanisms for the queue
+
+**W11 `critical-slowing`** (ecology/physics: rising lag-1 autocorrelation and variance before a
+critical transition, Scheffer et al. 2009). Listed in `ideas.md` since run 1 as dead by
+literature; wide-6 gave it an event-study gate on our six assets (rule pushed first) and it
+fails: a year of rising AC1 adds nothing to the chance of a top-decile drawdown (t 1.4 to
+2015, 0.1 after), and rising variance adds nothing once the level of volatility is known
+(t -0.5, 1.8). Dead by the gate, no card. W3 `lunar` likewise failed its gate (SPY 2007-2025
++1.6 bps a day, t 0.4, rank 12 of 29 phase shifts). See `wide-6.md`.
+
+**Family count, union of the wide and survey lines:** 63 before wide-6, 64 with W11, **68 with
+W12-W15 below; 16 tested by a strategy, none passed. The next strategy test is read at
+p < 0.10 / 68 = 0.00147.** (wide-5 said 56 and ann-1 said 61: each missed the other branch.)
+
+The fields the run was pointed at are taken: SIR contagion between assets is P1
+(`contagion-catchup`, tested dead) and P2 (`attention-peak`, tested dead); entropy of returns
+before breaks is I1/F4 (gate family; `hurst-entropy-gate` parked); Hurst long memory is the
+same parked gate, and hydraulics is W2. Four fields this list has not used instead:
+**demography, anthropology of calendars, tax law, and catastrophe meteorology.** Each is
+written as wide-5's choice rule wants it: a structural cause, a dose that should scale, and
+years that could judge it which no run here has seen. None is tested; none has a number.
+Each should go through an event-study gate first (ann-1, wide-6), and only a pass gets a
+card.
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate (event study first) and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W12 `rmd-december` | demography x cohort flows on a Lexis diagram (a cohort crossing an age line on a known date) | US retirees must take required minimum distributions (RMDs) from IRAs and 401(k)s once past a legal age, and many take them in December. That is a sale of fund shares (stocks and bonds) of roughly the account divided by the life-expectancy divisor (about 4% at the starting age), every year, by law | The year's RMD total: IRA assets held by people past the RMD age (published yearly by the Investment Company Institute) times 1 / divisor. It grows with the baby-boom cohort. **Two zero-dose years by law**: RMDs were waived for 2009 and for 2020 (from memory: WRERA 2008, CARES Act 2020; check). The start age moved from 70.5 to 72 (2020) and 73 (2023) and moves to 75 in 2033, which thins the cohort entering in those years | SPY and TLT excess return over the last ten sessions of December (or the December sessions after the 15th), regressed on the dose with the two waiver years as zero; known collision: the turn-of-year and "Santa" calendar, so the decisive cut is waiver years against the rest, not the December mean. The waiver years are only two (weak); the start-age steps of 2033-2034 are the unseen years that can judge it | 1% |
+| W13 `festival-gold` | anthropology of calendars x lunisolar date drift (a festival fixed in the lunar calendar walks through the solar months, about 11 days a year, then jumps back) | Physical gold buying in India peaks before Dhanteras/Diwali (new moon of the month Kartika, mid-October to mid-November) and in China before the Lunar New Year (21 January to 20 February). Jewellers and households buy weeks ahead; the buying is set by the festival, not by the price | Event time against calendar time: because the festival moves by up to a month from year to year, the same calendar window is sometimes 0 and sometimes 4 weeks before it. A festival effect must follow event time; a seasonal or tax effect follows calendar time. A second dose: India's monthly gold imports (Ministry of Commerce; keyless access not checked) | GLD (2004-11 on) and the gold price before it (`datahub-gold` in the cache; check its frequency) over the 15 sessions before each festival, regressed on event-time and calendar-month terms together. Festival dates are computable from the moon code wide-6 wrote (Diwali: the new moon near the October-November boundary; Lunar New Year: the second new moon after the winter solstice, with known exceptions; check against a published table). No run has cut gold by these dates; the unseen years are 2026 on | 2% |
+| W14 `wash-sale-echo` | tax law x a refractory period (US wash-sale rule, IRC section 1091: a loss is disallowed if a substantially identical security is bought within 30 days before or after the sale) | Year-end tax-loss sellers of an ETF that is down for the year who want the exposure back must wait 31 days or hold a near-substitute. So the rebound of December's losers should come about a month after the selling peak (mid-January to early February), not on 2 January | The asset's loss for the year at the end of November (bigger loss, more harvesting) times how much of it sits in taxable accounts. **Built-in placebo across assets:** the rule covers securities, not spot coins (the IRS treats crypto as property; the extension proposed for digital assets was not law as of late 2025), so BTC and ETH can be sold and bought back at once and should show no delayed rebound, while spot-bitcoin ETF shares (2024 on) are securities and should | Excess return from the 31st to the 45th day after the third Friday of December, regressed on the November year-to-date loss, for the six assets plus the eight other ETFs of the protocol (about 30 years x 14 ETFs, of which perhaps 80 asset-years with a loss: weak). The unseen years: any year after crypto is brought under the rule (then the coin placebo must turn), and 2026 on for ETFs | 1% |
+| W15 `cat-claims` | catastrophe meteorology x a loss-to-liquidation chain (a landfall's insured loss must be paid in cash within months, and property insurers hold mostly bonds) | After a major US hurricane landfall, property and casualty insurers and reinsurers sell liquid bonds to pay claims; the selling is forced and sized by the loss, not by a view on rates | The insured-loss estimate of the event (published by catastrophe modelers within days; the National Hurricane Center's best-track file, HURDAT2, gives date, place and intensity keyless; NOAA's billion-dollar disaster list was discontinued in 2025, check) | TLT and LQD excess return over the 20 sessions after landfall, regressed on the landfall's intensity or loss estimate; the zero-dose placebo is landfalls of weak storms and the same calendar weeks in years without one. About 2-5 major landfalls a year since 2002, so the gate is weak; the unseen years are the 2026 season on. Against it: insurers' bond sales are small next to the Treasury market, so LQD (corporate bonds, thinner) should show it more than TLT | 1% |
+
+Ranking for the next lane, by wide-5's six points (cause, unseen cut, dose, power,
+post-sample, not killed): W12, W14, W15 score 4 (law or contract, unseen, dose, not killed;
+none has 200 events or post-sample train years); W13 scores 3 (festival buying is custom, not
+law). Tie broken by data already cached: **W14 `wash-sale-echo` first**, as a gate: it needs
+only the cached ETF and coin prices, and its coin placebo is built in. W13 next if a gold
+question is wanted: its event-time against calendar-time cut separates a festival from a
+season, which a plain calendar mean cannot.
+
+## Added by wide-7 (2026-11-18): W12-W14 closed by gates, two new mechanisms
+
+Three of wide-6's four queued entries went through event-study gates, rules pushed first (see
+`wide-7.md`); all three fail and are dead by the gate, with no card:
+
+- **W14 `wash-sale-echo`**: ETF return over days 31-45 after the third Friday of December on
+  the November loss: -0.003 (t -0.07) in tax years 1994-2011, +0.023 (t 0.43) in 2012-2024;
+  the coin placebo's slope (+0.049) is above the ETFs' (+0.006).
+- **W13 `festival-gold`**: GLD over the 15 sessions before Dhanteras and the Lunar New Year,
+  against the same month's mean: -1.9 bps a day (t -0.30), rank 10 of 15 weekly shifts.
+  Baur's autumn months (September, November) turned from the best to among the worst after
+  2010.
+- **W12 `rmd-december`**: SPY's last ten December sessions in the RMD waiver years (2009,
+  2020) against the others, excess of the year's drift: -0.06% (permutation p 0.51).
+
+W15 `cat-claims` stays in the queue. Two new entries from fields the list has not used
+(heliophysics, software release engineering), each needing a gate first:
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W16 `geomagnetic-storm` | heliophysics x the Kp/Ap geomagnetic index | Lower stock returns in the days after severe geomagnetic storms, through mood (Krivelyova and Robotti 2003, from memory; check) | Daily Ap (G1-G5); severe storms must matter more than minor ones | SPY and the S&P 500 index over the six sessions after storm days on Ap, against calm weeks. Post-sample train years 2003-2025 (solar cycles 24 and 25), so gate-able now; 2026 on after that | 1% |
+| W17 `fork-premium` | software release engineering x releases with a fixed activation block | A risk premium into scheduled Ethereum upgrades and a fall after them, larger for upgrades that change supply or consensus | Upgrade scope fixed from its specification before the date (supply/consensus change or not; number of included proposals) | ETH minus BTC over 10 days before and after about 18 upgrades since 2016, on scope; weak. Unseen: Fusaka (2025-12) and 2026 on | 1% |
+
+**Family count: 70 mechanisms (68 + W16, W17), 16 tested by a strategy, none passed. The next
+strategy test is read at p < 0.10 / 70 = 0.00143.**
+
+## Added by wide-8 (2026-11-18): W16 and W15 closed by gates, two new mechanisms
+
+Both gates had their rule, script and tests pushed before any number (see `wide-8.md`); both
+fail and are dead by the gate, with no card:
+
+- **W16 `geomagnetic-storm`**: SPY 2003-2025, six sessions after a severe storm (daily Ap >=
+  100, GFZ Potsdam, keyless, CC BY 4.0): +18.2 bps a day over calm sessions (t +2.46, the wrong
+  sign), minor storms +0.8; rank 29 of 31 shifted Ap calendars. In the paper's years (GSPC
+  1950-2002) -4.4 bps a day (t -1.05).
+- **W15 `cat-claims`**: 104 US landfalls 2002-2025 (NOAA HURDAT2, keyless), LQD minus half of
+  TLT over 20 sessions on the Saffir-Simpson category: +0.01 points per category (t 0.09);
+  halves -0.44 and +0.13; rank 8 of 23 year-shifted calendars.
+
+Also: the turn-of-year ETF loser rebound (a seen cell of W14's gate) is pre-registered as a
+forward test for the 2026/27 turn (`research/forward/proposed-wide8.jsonl`, proposed, not
+frozen), with an empirical null from 153 placebo windows (sd of t 2.18).
+
+Two new entries from fields the list has not used (sport sociology, oceanography), each
+needing a gate first:
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W18 `elimination-mood` | sport sociology x national mood shocks from knockout matches | Next-day index fall in a country whose team is knocked out of the World Cup (Edmans, Garcia, Norli 2007, from memory) | Round of the elimination x the country's football weight; wins as the placebo | DAX, FTSE 100, Nikkei next day after World Cup and Euro eliminations, against the same weekday without a match; post-sample 2006-2024 (about 25 events, weak); unseen: 2026 World Cup (held-out year) and 2028 on | 2% |
+| W19 `enso-commodity` | oceanography x the Oceanic Nino Index | El Nino raises non-fuel commodity prices over the next year through crop yields (Cashin, Mohaddes, Raissi 2017, from memory) | ONI level (strong events more than weak; La Nina the mirror) | DBC and commodity ETFs' 6-month return on lagged ONI, placebo ONI shifted by whole years; post-sample 2014-2025 (three or four episodes, weak); unseen: 2026-27 on | 2% |
+
+**Family count: 72 mechanisms (70 + W18, W19), 16 tested by a strategy, none passed. The next
+strategy test is read at p < 0.10 / 72 = 0.00139.**
+
+## Added by wide-9 (2026-11-19): W19 and W17 closed by gates, a gate-null method
+
+Both gates had their rule, script and tests pushed before any number (see `wide-9.md`) and
+were judged by rank among 40 placebo calendars (`gate-null.md`); both fail and are dead by the
+gate, with no card:
+
+- **W19 `enso-commodity`**: DBC's six-month return on the lagged ONI (NOAA CPC, keyless),
+  2014-2025: -2.5 points per degree (t -0.92), rank 32 of 41 year-shifted ONI calendars; in
+  the paper's years +1.8 (t 0.44). DBC is mostly energy; the non-fuel channel is untested.
+- **W17 `fork-premium`**: ETH minus BTC into and after 15 mainnet upgrades 2016-2025: premium
+  +0.70% (t 0.23), rank 19 of 41; no run-up (-0.06%), no sell-off (-0.76%).
+
+No new mechanisms in this run. **Family count: 72 mechanisms, 16 tested by a strategy, none
+passed. The next strategy test is read at p < 0.10 / 72 = 0.00139.** Gates so far: 10, all
+failed.
+
+## Added by wide-10 (2026-11-19): two mechanisms from unused fields, by a written score
+
+Picked by a scoring rule fixed before any data look (structural cause, a dose scored double,
+post-sample years, power, unseen cut, not killed; six candidates scored, see `wide-10.md`
+step 1). Each needs a gate first (`gate-null.md`).
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W20 `fed-purchase-flow` | procurement (reverse-auction) theory x a buyer with a published shopping list | On days the Fed buys Treasuries in an operation, dealers sell it the purchased sector and that sector's price rises the same day (flow effect; D'Amico and King 2013, Song and Zhu 2018, Kandrac and Schlusche 2013, the last finding it small after the early programmes) | Par accepted that day in bonds of 20+ years remaining maturity (TLT's sector), from the NY Fed's per-CUSIP results (keyless API) | TLT open-to-close on the day's log dose, placebo = the dose calendar shifted by trading days; judging years 2014-01 .. 2025-11 (after every cited sample); unseen: any future purchase programme | 3% |
+| W21 `stablecoin-mint` | monetary history of currency boards / narrow banks x issue only against a deposit | A stablecoin is minted only when dollars are wired to the issuer, so net issuance is fresh cash on its way to buy coins; coin prices should rise over the following week (Griffin and Shams 2020 on Tether, March 2017 .. March 2018) | Weekly log change of total USD stablecoin supply (DefiLlama, keyless) | BTC and ETH next-week return on last week's issuance, own last-week return as control, placebo = issuance shifted by weeks; judging years 2018-04 .. 2025-11 (7.6 years: one short of the post-sample point) | 2% |
+
+**Family count: union of the wide and survey lines 78 mechanisms (survey-7's 76 + W20, W21),
+18 tested by a strategy, none passed. The next strategy test is read at p < 0.10 / 78 =
+0.00128.** (The survey-4 entries `ts-carry`, `halloween`, `seasonal-20y`, `ts-value` are
+counted in the 76 but listed on their own branch.)
+
+**Closed by wide-10's gates (2026-11-19, `wide-10.md`; rules pushed first, 40 placebos each):**
+W20 `fed-purchase-flow`: TLT open-to-close +3.3 bps per unit of ln(1 + $bn of 20+ year
+purchases), t 0.37, rank 11 of 41 (2014-2025, 224 purchase days); in the papers' years -8.5
+(t -1.55). W21 `stablecoin-mint`: next-week BTC/ETH +0.16 per unit of weekly issuance, t 1.06,
+rank 17 of 41 (339 weeks); issuance follows prices (same-week t 2.92). Both dead, no card.
+Count unchanged: 78 mechanisms, 18 tested, none passed; gates 13, all failed.
+
+## Added by wide-11 (2026-11-19): two filters for the score, W22 closed by its gate
+
+The candidate score of `wide-10.md` gets two filters applied first (`wide-11.md` step 1):
+**F1 not announced** (a flow whose date and size are public before the window is priced;
+a risk premium passes) and **F2 not price-driven** (the dose must not follow the asset's own
+prices; a known reaction can pass only with price-path controls, at a 1-point cost). Of 14
+parked or dead candidates re-scored, two pass both: C3 `hedging-pressure` (gated below) and
+`crypto-carry` (needs perpetual futures).
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W22 `hedging-pressure` | agricultural economics x Keynes-Hicks normal backwardation | Hedgers who are net short pay speculators a premium; the larger their net short, the higher the futures' expected return (de Roon, Nijman and Veld 2000; Basu and Miffre 2013; Fan, Fernandez-Perez, Fuertes and Miffre 2020, equity index premium, none in fixed income) | Commercials' (short - long) / (short + long) in the CFTC legacy COT, as a 156-week z, released three days after the Tuesday it describes | GLD, TLT, SPY, QQQ 4-week return from a week after the position date, past 4- and 52-week returns as controls, placebo = dose calendars moved 27-103 weeks; judging years 2018-06 .. 2025-10 (7.4 years after Fan et al.'s May 2018) | 1% |
+
+**Closed by wide-11's gate (2026-11-19, `wide-11.md`; rule pushed first, 40 placebos):**
+W22 `hedging-pressure`: +0.075% per unit of z over 4 weeks, t 0.49, rank 14 of 41 (1,484
+rows); inside Fan et al.'s years -0.18% (t -1.19). The future-dose placebos lean positive
+(hedging pressure follows rallies over 6-12 months). Dead, no card.
+
+**Family count: union of the wide and survey lines 79 mechanisms (78 + W22), 18 tested by a
+strategy, none passed. The next strategy test is read at p < 0.10 / 79 = 0.00127.** Gates
+so far: 14, all failed.
+
+### Added by wide-12 (2026-11-19, `wide-12.md`): candidates written against F1 and F2
+
+Four candidates scored before any data look (D1-D4 in `wide-12.md` step 1); D1 gated as W23.
+D2 `inflation-disagreement`, D3 `geopolitical-premium`, D4 `debt-maturity-supply` stay parked
+there (not in the count unless gated).
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W23 `custody-selling` | international reserve management x a reserve manager defending a currency | Foreign central banks sell Treasuries held in custody at the New York Fed to defend their currencies: an unannounced, persistent, price-insensitive seller, so last month's net selling should mean lower Treasury prices next month (level effects: Bernanke, Reinhart and Sack 2004; Warnock and Warnock 2009; Beltran et al. 2013) | 4-week log change of custody holdings of marketable Treasuries (H.4.1, Wednesday level, keyless Fed DDP), as a 156-week z | TLT and IEF 4-week return from the Monday after, past 4/13/26/52-week returns as controls, placebo = dose calendar moved 27-103 weeks; judging years 2010-01 .. 2025-10 | 2% |
+
+**Closed by wide-12's gate (2026-11-19, `wide-12.md`; rule pushed first, 40 placebos):**
+W23 `custody-selling`: -0.154% per unit of z over 4 weeks, t -1.20, rank 34 of 41 (1,644
+rows), wrong sign. The flow falls when bonds rally in the same 4 weeks (t -3.19): it answers
+price, oppositely to the story. Dead, no card.
+
+**Family count: union of the wide and survey lines 80 mechanisms (79 + W23), 18 tested by a
+strategy, none passed. The next strategy test is read at p < 0.10 / 80 = 0.00125.** Gates
+so far: 15, all failed.
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W24 `inflation-disagreement` | survey methodology x forecaster dispersion as a measure of uncertainty | Long bonds pay a term premium for inflation risk, larger when inflation is more uncertain (Wright 2011, international panel to about 2009) | Interquartile range of the SPF's 10-year CPI forecasts (`CPI10_D1`), quarterly, as a 40-survey z | TLT and IEF next-quarter return from the first day of the survey quarter's third month, placebo = dose calendar moved 7-45 quarters; judging years 2010Q1 .. 2025Q2 | 1.5% |
+
+**Closed by wide-12's gate (2026-11-19, `wide-12.md` step 3):** W24 `inflation-disagreement`:
+-0.49% per unit of z over a quarter, t -0.75, rank 36 of 41 (124 rows), wrong sign; inside
+Wright's years -0.64% (t -1.25). Dead, no card.
+
+**Family count: union of the wide and survey lines 81 mechanisms (79 + W23 + W24), 18 tested
+by a strategy, none passed. The next strategy test is read at p < 0.10 / 81 = 0.00123.**
+Gates so far: 16, all failed.
