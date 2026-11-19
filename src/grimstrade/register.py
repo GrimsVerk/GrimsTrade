@@ -36,7 +36,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from statistics import NormalDist
 
-from grimstrade import ledger, stats
+from grimstrade import ledger, stats, tryshape
 
 TRIES_MD = ledger.RESEARCH_TRIES
 REGISTER = Path(ledger.RESEARCH_REGISTER)
@@ -44,6 +44,7 @@ BAR = REGISTER.parent / "BAR.md"
 LIVE_TRIES = "ledger/tries.jsonl"  # on the record branch
 MOMENTS = REGISTER.parent / "moments.jsonl"  # research/register2.py writes these two
 TRIALS = REGISTER.parent / "trials.json"
+SHAPES = Path(tryshape.SHAPES)  # the harness appends one per logged row (register-3)
 REMOTES = ("refs/remotes",)
 PRIMARY = ("1994-02-01", "2025-11-09")  # the six-asset train test `tsmom12` scored 1.05 on
 DAYS_PER_YEAR = 365
@@ -193,6 +194,25 @@ def live_strategies(repo: Path) -> int | None:
     )
 
 
+def logged_shapes(repo: Path, tries: Iterable[Try]) -> dict[str, tryshape.Shape]:
+    """Register id -> the shape the harness logged for its row (`research/tries-shape.jsonl`
+    on disk and on every remote branch; the same row text on two branches is the same run)."""
+    by_row: dict[str, tryshape.Shape] = {}
+    texts = [((repo / SHAPES).read_text(), str(SHAPES))] if (repo / SHAPES).exists() else []
+    for ref in ledger.research_refs(repo, REMOTES):
+        text = _show(repo, ref, SHAPES.as_posix())
+        if text:
+            texts.append((text, f"{ref}:{SHAPES.as_posix()}"))
+    for text, where in texts:
+        try:
+            found = tryshape.read(text, where)
+        except ValueError as e:
+            raise RegisterError(str(e)) from e
+        for row, shape in found.items():
+            by_row.setdefault(row, shape)
+    return {t.id: by_row[t.line] for t in tries if t.line in by_row}
+
+
 @dataclass(frozen=True)
 class Measured:
     """What `research/register2.py` measured from the tries' own weekly returns (register-2)."""
@@ -325,6 +345,7 @@ class Summary:
     mean_selectable: float | None
     windows: list[tuple[str, str, int, float, float]]  # from, to, rows, mean, variance
     measured: Measured | None = None
+    logged: tuple[int, int] = (0, 0)  # tries with a harness-logged shape: all, selectable
 
     @property
     def n(self) -> int:
@@ -355,7 +376,11 @@ def bar_row(label: str, n: float) -> BarRow:
 
 
 def summarize(
-    tries: list[Try], live: int | None, branches: int, measured: Measured | None = None
+    tries: list[Try],
+    live: int | None,
+    branches: int,
+    measured: Measured | None = None,
+    logged: dict[str, tryshape.Shape] | None = None,
 ) -> Summary:
     sel = [t for t in tries if t.selectable]
     xs = [t.sharpe for t in sel if t.kind == "variant" and t.sharpe is not None]
@@ -382,6 +407,10 @@ def summarize(
         mean_selectable=statistics.mean(xs) if xs else None,
         windows=spread[:10],
         measured=measured,
+        logged=(
+            sum(t.id in (logged or {}) for t in tries),
+            sum(t.id in (logged or {}) for t in sel),
+        ),
     )
 
 
@@ -416,6 +445,8 @@ def render(s: Summary) -> str:
         f"| Selectable tries (`variant` or `baseline`, period `train`) | {s.selectable:,} |",
         f"| Live strategies | {live} |",
         f"| **N for a new pick** (selectable + live) | **{s.n:,}** |",
+        f"| Tries whose shape the harness logged (`{SHAPES.as_posix()}`) | "
+        f"{s.logged[0]:,} ({s.logged[1]:,} selectable) |",
         "",
         f"By kind: {kinds}.",
         "",
@@ -503,8 +534,9 @@ def render_measured(s: Summary, m: Measured) -> list[str]:
         "`uv run --with numpy python research/register2.py all` (card `research/register-2.md`).",
         f"Tries with a measured record length, skew and kurtosis: {m.rows:,} rows "
         f"({m.selectable:,} of the {s.selectable:,} selectable) and {m.live} live strategies,",
-        "from the research harness (baselines re-simulated, each matching its logged Sharpe) and",
-        "the equity curves the harness saved when the try was logged.",
+        "from the shape the harness logs with each row (`research/tries-shape.jsonl`), the",
+        "research harness (baselines re-simulated, each matching its logged Sharpe) and the",
+        "equity curves the harness saved when the try was logged.",
         "",
         f"Correlation sample: {m.sample:,} distinct selectable or live return series that cover "
         f"every week {a}..{b} ({m.weeks:,} weekly returns).",
@@ -588,7 +620,8 @@ def regenerate(repo: Path) -> Summary:
             old.append(read_register(text, f"{ref}:{REGISTER.as_posix()}"))
     tries = merge(*old, census(per_branch))
     measured = read_measured(repo, {t.id for t in tries})
-    summary = summarize(tries, live_strategies(repo), len(per_branch), measured)
+    logged = logged_shapes(repo, tries)
+    summary = summarize(tries, live_strategies(repo), len(per_branch), measured, logged)
     (repo / REGISTER).parent.mkdir(parents=True, exist_ok=True)
     (repo / REGISTER).write_text("".join(t.to_json() + "\n" for t in tries))
     (repo / BAR).write_text(render(summary))
