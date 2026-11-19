@@ -31,8 +31,10 @@ def main() -> None:
         last = max(s)
         b = s[base_d]
         print(
-            f"{label}: 13F-date close {base_d} {b:.2f}; max {hi} {s[hi]:.2f} ({s[hi] / b - 1:+.0%}); "
-            f"min {lo} {s[lo]:.2f} ({s[lo] / b - 1:+.0%}); last {last} {s[last]:.2f} ({s[last] / b - 1:+.0%})"
+            f"{label}: 13F-date close {base_d} {b:.2f}; "
+            f"max {hi} {s[hi]:.2f} ({s[hi] / b - 1:+.0%}); "
+            f"min {lo} {s[lo]:.2f} ({s[lo] / b - 1:+.0%}); "
+            f"last {last} {s[last]:.2f} ({s[last] / b - 1:+.0%})"
         )
 
 

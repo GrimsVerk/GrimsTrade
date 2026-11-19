@@ -38,8 +38,8 @@ def max_dd(s: dict[date, float], a: date, b: date) -> tuple[float, date, date]:
 
 def beta(x: dict[date, float], m: dict[date, float], a: date, b: date) -> float:
     days = sorted(d for d in x if d in m and a <= d <= b)
-    rx = [x[d1] / x[d0] - 1 for d0, d1 in zip(days, days[1:])]
-    rm = [m[d1] / m[d0] - 1 for d0, d1 in zip(days, days[1:])]
+    rx = [x[d1] / x[d0] - 1 for d0, d1 in zip(days, days[1:], strict=False)]
+    rm = [m[d1] / m[d0] - 1 for d0, d1 in zip(days, days[1:], strict=False)]
     mx, mm = sum(rx) / len(rx), sum(rm) / len(rm)
     cov = sum((p - mx) * (q - mm) for p, q in zip(rx, rm, strict=True))
     var = sum((q - mm) ** 2 for q in rm)
