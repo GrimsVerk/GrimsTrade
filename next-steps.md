@@ -401,6 +401,18 @@
   - 02:31 UTC 5h reset (0.00), weekly 0.95, mode full: started `register-5` (D, queue 1) and
     `wide-12` (W, queue 2). Weekly near 1.0 powers the PC off: lanes push tiny steps.
   - (Night-2 times above from 22:25 on ran ahead of the clock: eu-6 actually started ~22:20 UTC.)
+- HANDOFF night-2 lead -> next lead (02:32 UTC 2026-11-19; context near the limit).
+  - Exit research DONE (round 3 FINAL, PR #50). Normal lanes since 22:00: draft PRs #68-#110,
+    each summarised above. Still running at handoff: `register-5` (worktree
+    `grimstrade-register5`, PR into register-4) and `wide-12` (`grimstrade-wide12`, PR into
+    wide-11): check `gh pr list --draft` for their PRs and add DONE lines here.
+  - Usage at handoff: 5h ~0.0x (reset 02:30), weekly 0.95, mode full; CoS override: start lanes
+    until 5h 0.95; weekly ~1.0 powers the PC off (5 min grace) -> tiny pushed steps.
+  - Lane rules used tonight (copy into every lane prompt): `chief-of-staff/briefs/
+    grimstrade-lead-1.md` "Rules" + privacy (generic, public repo) + card before numbers + quote
+    BAR.md + gate-null procedure + push every ~5 min.
+  - Next: the lane queue below (register export/regenerate, F1/F2 gates); everything else waits
+    on the owner decisions in "For the owner".
 - 3. Then the Lead 1 lane queue below.
 
 ## Lead 1 (usage run to the weekly reset, started 2026-11-17 ~22:45 UTC)
