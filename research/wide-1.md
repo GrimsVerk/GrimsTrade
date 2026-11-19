@@ -1,0 +1,390 @@
+# Wide 1: new hypotheses from other fields
+
+Research run wide-1, started 2026-11-17. Branch `wide-1` (from `carry-2`). Research only: fake
+money, public data, no change to the gym, the daily runner or the live strategies.
+
+Question: after 14 runs nothing beats the 12-month trend rule (`tsmom12`) on the six assets. Do
+other fields (ecology, epidemiology, signal processing, control, information theory, game
+theory, physics, queueing, neuroscience, immunology) suggest a mechanism we have not tested,
+whose edge would come from somewhere other than trend?
+
+## In plain words (results, 2026-11-18)
+
+**None of the four new ideas beats the trend rule. All four fail the pass mark that was written
+down before testing, so the held-out year was not looked at.** Two are plainly dead. Two leave a
+faint trace in the raw prices that is real enough to describe and too small to trade in our book.
+**Looking at why they failed turned up one pattern that is stronger than anything carded: long
+bonds earned almost all of their return in the last four trading days of each month.** It was
+found after the tests, on the same data, so it is a hypothesis for a new card, not a result.
+
+What was done: 46 mechanisms from ten fields were written down and sorted before any number
+(step 1 below). Most turned out to be an idea we had already killed, in different words. Four
+survived. All four bet on **someone else's mechanical trading**: a bond dealer who must absorb an
+auction, a pension fund that must restore its stock/bond mix, a fund that must follow its
+volatility formula, and prices that have not yet caught up with their relatives.
+
+| Idea (field) | In one line | Verdict | Key numbers | Why |
+|---|---|---|---|---|
+| `auction-concession` (queueing / inventory) | Hold no TLT for the five sessions ending with a 20- or 30-year Treasury auction | **fails; faint lead on TLT alone** | Book: +0.01 Sharpe over `tsmom12` (p 0.14). TLT alone: 0.50 against 0.33 (p 0.05). IEF with 7/10-year auctions: 0.26 against 0.55 | TLT did earn less on those days in every period (0 to -8 bps a day against +3 to +4), but about 70% of the gap is 2020-25. On IEF the rule fails because 7-year auctions fall in the last days of the month, when bonds rise |
+| `rebalance-pressure` (control theory) | In the last five sessions of a month, halve whichever of stocks or bonds led the month | **fails** | Book: -0.005 (p 0.67). Raw stock-minus-bond return in the window: +38 bps a month in the predicted direction (t 1.7); +56 before 2014, +21 since | The effect is the month's *loser rising*, not the leader falling. Halving the leader gives up its own month-end rise, and the freed money often has nowhere to go (the loser is out of trend) |
+| `contagion-catchup` (epidemiology) | Among 21 ETFs, hold those whose close relatives moved last week and which did not | **dead** | 0.50 against 0.60 for the trend rule on the same ETFs (p 0.87); coins 0.38 against 0.74 | Relatives' moves do not spill over: that half of the signal has IC -0.015. All that is left is plain one-week reversal (IC +0.03, t 2.9), and that does not pay either (0.53) |
+| `vol-echo` (signal processing x control) | Hold stocks for three days when a shock day leaves the 21-day volatility window | **dead** | SPY 0.25 against 0.63 at the same average exposure (p 0.98); behind on every other market too | The days it holds earn a little more on average (+9.5 against +5.1 bps since 2010) but sit in turbulent weeks and are far riskier. The 1962-1993 placebo, before such funds existed, shows the same small excess: it is not the funds |
+
+(Sharpe = return per unit of risk. IC = correlation between a signal and what happened next. p =
+chance of a gap this large by luck; the bar is below 0.10. bps = hundredths of a percent.)
+
+**The pattern worth carrying forward (post hoc; `results/wide-1-yields.md`).**
+
+- 2003-2025, last four sessions of the month: TLT +39 bps (t 4.3), IEF +24 bps (t 5.4), the
+  same in both halves of the period. At the gym's next-open fills: +32 and +21 bps (t 3.3 and
+  4.5). For TLT that is about 4.7% a year, as much as its whole average return: the other 80%
+  of days together earned nothing.
+- Before TLT existed (bond yields, data no rule here has used): nothing in 1962-1989; +13 bps
+  (10-year) and +23 bps (30-year) in 1990-2003, t about 2. By the reading fixed before looking
+  (pooled 1962-2003, |t| >= 2) that is **not confirmed**: pooled t is 0.8 and 1.2. But it is
+  what one would expect from the usual explanation, bond index funds that must buy longer
+  bonds when their index is rebuilt at month end: such funds hardly existed before 1990.
+- Our own `month-end-liquidity` test missed it because its window ran three sessions into the
+  next month, where TLT gave part back until 2013 (-39 bps then, -6 since).
+- A paper on this exists as far as I remember (Hartley and Schwarz, "Predictable end-of-month
+  Treasury returns"; not opened in this run).
+
+**How sure.**
+
+- Sure about the two dead ones: the gaps are large, every era and every other market agree, and
+  the built-in controls (plain reversal for contagion, the placebo era for the echo) explain why.
+- Sure that neither flow idea helps the six-asset book as carded.
+- The auction dip is in the closing prices and half of it is lost to our fills. Close to close,
+  TLT fell 34 bps over the five sessions ending with a 30-year auction (t 2.5; both halves),
+  near the size the 2013 paper reported. Filled at the next open, as the gym does, it is 15 bps
+  (t 1.1). Before 2003 the yield data shows no dip, but with 72 auctions it could not have shown
+  one of this size either. Not confirmed, not refuted.
+- TLT alone beating its twin ("p 0.05") is one of about ten side comparisons in this run, and its
+  out-of-universe check (IEF) went the other way: taken alone it is not evidence.
+- The month-end "loser rises" effect is **not confirmed** on unseen data: +13 bps pooled over
+  1962-2003 (t 0.9), wrong sign in 1962-1979, right sign after. Since 2003 it is large at closing
+  prices (+86 bps, t 3.9), mostly stocks rising after a month in which they trailed bonds.
+- 8 variants, 10 variant rows, 39 rows in `tries.md`. The best gain over a twin in the main book
+  is +0.01; luck alone gives far more across this many tries. Nothing came near a pass.
+
+**What died, and what it teaches.**
+
+1. **Other fields mostly rename what finance already has.** Of 46 mechanisms, 33 collapsed
+   into an idea already tested here (a smoother trend, a volatility gate, a weak weekly forecast,
+   a cycle clock with four cycles). The useful output of the exercise is the sorting rule at the
+   top of step 1, not the vocabulary.
+2. **Forced flows are real but small, and a long-only equal-slot book cannot size them.** Both
+   flow effects show up in raw prices at 15-40 bps per event. In our book one event moves half of
+   one slot for a week: a few hundredths of a percent. Flows of this size are harvested with
+   futures and leverage, which the gym does not have.
+3. **"Out of the asset" is an expensive way to trade a relative effect.** Both flow rules lost
+   part of their edge by sitting in cash: the month-end rule gives up the leader's own rise,
+   the auction rule gives up the bond's drift.
+4. **Calendars collide.** The auction calendar and the month-end calendar overlap (7-year notes
+   are sold in the last week of the month), so a rule built on one is hit by the other. That
+   collision is how the month-end bond pattern was found.
+5. **Fills at the next open cost up to half of a short-lived effect.** The auction dip keeps 45%
+   of its closing-price size at our fills, the month-end bond rally 83%.
+6. **Liquid ETFs do not lag each other by a week.** If anything they overshoot together and come
+   back: the network term was negative.
+
+**Next lanes this opens** (each needs its own card; none changes the paper system today).
+
+1. **A `month-end-bonds` card.** Rule from the mechanism, fixed before any run: hold the long
+   bond for the last four sessions of each month (bought at the open of T-3, sold at the open of
+   T+1), using the cash the trend rule leaves idle. It was found on TLT and IEF 2003-2025, so
+   passing there proves nothing. Clean tests left: LQD (not looked at in this run), TLT's first
+   year (2002-07 to 2003-07), the held-out year once, then forward paper. If real, it is worth
+   roughly +0.5 to +1% a year on the six-asset book (idle cash averages a quarter of it), about
+   +0.04 Sharpe, from a source that has nothing to do with trend.
+2. **A volume screen.** No test in 15 runs has used the six assets' own trading volume. One cheap
+   IC table by info-1's method (abnormal volume, price move per dollar traded, weekly and 4-week
+   horizons) either closes that class of input or opens it.
+3. **The month-end stock bounce, with a placebo first.** Since 1990 stocks rose in the last five
+   sessions after a month in which they trailed bonds (unseen 1990-2003: +71 bps, t 1.5; since:
+   +182 bps, t 4.0). Before a card, one table must show whether the same condition measured in
+   mid-month does the same; if it does, this is plain dip buying (`dip-rsi2`: real and small),
+   not rebalancing.
+
+For the owner rather than a research lane: flow effects of this size only matter with futures
+and modest leverage (the broker gap the carry lead ran into), and two of them are worth more at
+the close than at the next open. Whether the paper broker should fill at the close is a design
+question, not a research one.
+
+**Compared with my guess before any number** (below): I gave the four ideas a 20%, 15%, 10% and
+5-10% chance of passing. None did. The sizes came out at the low end of what I expected for the
+two flow ideas and below it for the other two. What I did not expect is that the most solid
+pattern of the run would be one no card asked about.
+
+### Disclosures
+
+- **Dry runs printed numbers before the logged runs.** Each script was first run with `DRY=1`
+  (last 120 days of train, nothing logged) to check the plumbing. The `rebalance-pressure` dry
+  run also printed its event study for the whole train period, because that table does not go
+  through the harness. All four cards were already pushed (commit a7f90ff) and no rule or
+  parameter was changed afterwards (rule code committed in ae289c5, before the logged runs).
+- **Seen before the cards:** the Treasury's auction calendar (dates and terms, no prices), to
+  write the auction rule. The download holds auction dates up to 2026-10; they are dates, and
+  no bar after 2025-11-10 was loaded by any test.
+- **Price cache:** copied from the breadth-1 worktree (fetched 2026-11-13). `tsmom12` and equal
+  weight reproduce 1.05 and 0.88.
+- **Reading of bar 2.** For the two rules that need TLT, eras are counted from 2000-09 (before
+  TLT exists the rule *is* its twin), 3 of 4 needed. Written on the cards before testing.
+- **`contagion-catchup` has its own pass bar** (card), because its book is 21 ETFs, not the six
+  assets; each line is at least as strict as the default.
+- **`constant@SPY` and `constant@QQQ` appear twice in `tries.md`**: the twins of `echo21` and of
+  `echo63` have different exposures (14% and 7%) and share a name.
+- **Post-hoc tables** (`results/wide-1-posthoc.md`, script `lib/wide1_posthoc.py`) were made after
+  the verdicts and are not strategies; they have no rows in `tries.md`.
+- **Step 4** (`results/wide-1-yields.md`, script `lib/wide1_yields.py`) is descriptive. Its three
+  questions and its reading rule were pushed (commit d6582da) before the yield data was read.
+  One section, the cross-check on ETF closes, was added after the first output, to explain why
+  the yield series and the ETF table disagreed on the auction dip; it says so in its title.
+  Carry is booked per calendar day, not per session as the definition said (same average).
+- **Not run:** the held-out year, for any of the four.
+
+## Step 1. Ideation (written 2026-11-17/18, before any number of this run)
+
+### What the earlier runs force on any new idea
+
+Three facts from our own tests decide where it is worth looking at all.
+
+1. **A new weak forecast of next week is worth nothing on six assets.** rl-3 measured it: a
+   weekly signal needs an IC (correlation between forecast and outcome) of about 0.10 to add
+   +0.16 Sharpe, and nothing screened so far reaches 0.05. So "a new predictor that tilts the six
+   weights a little" is dead before it starts, whatever field it comes from.
+2. **A "step out of risk when X" gate cannot be validated.** Thirty years hold 4-7 bear markets
+   and 3-4 crypto winters. Ten such gates were tested (macro phases, absorption ratio, HMM, the
+   halving, YouTube tops); each failed or could not be told from luck. `tsmom12` already leaves
+   when prices fall, and leaving earlier cost more than it saved.
+3. **Costs decide in crypto.** A round trip costs 60 bps there and 4 bps in ETFs. Anything that
+   trades often can only live in ETFs.
+
+So this run looks for effects with **hundreds of dated events, in ETFs, whose cause is not the
+price trend**. The best candidates are the forced, mechanical trades of other market
+participants (someone *must* trade a known amount at a known time) and the spread of a shock
+across assets that close at the same moment.
+
+### Field by field
+
+One line per mechanism: what would make money, the maths tool, and the verdict. "Kill" names the
+tested idea it collapses into.
+
+**1. Population ecology (predator-prey, carrying capacity)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| E1 | Stablecoin supply is the food coin prices live on; price that outruns it overshoots and falls back | consumer-resource Lotka-Volterra fit | **Park.** Two cycles (2018+), two coins: the halving problem again; info-1's coin inputs restated the trend |
+| E2 | ETH and BTC (or QQQ and SPY) compete for the same capital; the fitted sign says coexistence (ratio reverts) or exclusion (ratio trends) | competitive Lotka-Volterra / replicator | **Kill.** Cross-sectional momentum between two assets with a fitted sign; breadth-1: adds nothing on top of trend |
+| E3 | Bitcoin adoption follows a logistic curve; price far above the curve is a bubble | logistic fit | **Kill.** A cycle clock on 3-4 cycles (halving, `ath`, LPPLS); on-chain inputs IC ~0 (info-1) |
+| E4 | Leverage is the predator of calm prices (Minsky as predator-prey) | Lotka-Volterra phase | **Kill.** The observable is funding/basis: screened in info-1, IC ~0 |
+| E5 | A predictable supply pulse bigger than the consumers can eat at once is eaten at a discount (predator satiation) | event study | **Keep** as `auction-concession` (see 8) |
+| E6 | Leave a patch when its yield falls below the average of all patches, net of travel cost | marginal value theorem | **Kill.** Relative momentum with a switching band |
+
+**2. Epidemiology (contagion)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| P1 | A shock spreads along the links between assets. An asset whose neighbours moved, and which has not, is "susceptible" and catches up | SIR on the correlation network (graph diffusion) | **Keep** as `contagion-catchup` |
+| P2 | Attention is the infection: a mania ends when new infections peak | SIR fit on Wikipedia page views | **Park.** Three manias, all coins at once. Data is free (Wikimedia, from 2015-07) |
+| P3 | A downtrend infects sector after sector; leave when it spreads, return when it burns out | SIR on 9 sectors | **Kill.** Leaving early (macro-1); returning early = a faster trend rule (`sma200`, `ensemble-tsmom` tie); ~6 bear markets |
+| P4 | Liquidation cascades in perps percolate; buy when the forced sellers are done | percolation / avalanche size | **Kill.** Daily reversal in large coins is dead (literature); open-interest data starts 2021-12; 60 bps |
+
+**3. Signal processing (filtering, spectral methods)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| S1 | A cleaner estimate of the trend | Kalman, wavelets, spectra | **Kill.** A smoother trend rule (`drawdown-control`, `ensemble-tsmom`, `fracdiff-momentum`) |
+| S2 | Track the strength of a cycle at a known frequency (month, quarter) | lock-in amplifier | **Kill.** `month-end-liquidity` faded since 2014; the tool only tells us sooner that it is gone |
+| S3 | The same coin on two venues: the difference is one side's demand | common-mode rejection | **Kill.** A daily flow signal on two coins cannot pay 60 bps (breadth-1) |
+| S4 | Funds that target a fixed volatility measure it over fixed windows (1 and 3 months). When a shock day drops out of the window, measured volatility falls on a date known 21 days ahead, and they must buy | boxcar-filter "ghost"; shadow controller | **Keep** as `vol-echo` (with 4) |
+| S5 | Slow lead-lag between asset classes | cross-spectrum | **Kill.** info-1's 13-week cross-asset inputs: IC ~0 |
+
+**4. Control theory (feedback, robust control)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| C1 | Steer our own exposure by feedback on drawdown or volatility | PID, H-infinity | **Kill.** `vol-target`, `drawdown-control`, `kelly-shrunk`, `trend-vol` |
+| C2 | Other people's controllers: balanced funds hold a fixed stock/bond mix and correct it at month end. The correction is proportional to the month's gap and known in sign and timing | proportional controller, known setpoint | **Keep** as `rebalance-pressure` |
+| C3 | Volatility-control funds keep selling for days after a spike, then stop | rate-limited controller | **Kill.** Dip buying after a spike (`dip-rsi2`: real, small). Its echo (S4) is the untested half |
+| C4 | Bitcoin's difficulty adjustment is a sampled controller that squeezes miners | discrete feedback | **Kill.** A function of hash rate; `hash_growth` IC -0.003 (info-1) |
+| C5 | Optimal no-trade region | HJB | **Kill.** Saves costs, adds no edge; `tsmom12` trades rarely |
+
+**5. Information theory (compression, coding)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| I1 | Trade only when the series is compressible | Lempel-Ziv, MDL | **Kill.** `hurst-entropy-gate` (parked): ~5 readings in ten years |
+| I2 | Let description length pick the look-back | MDL segmentation | **Kill.** `changepoint-momentum` (dead, literature) |
+| I3 | Universal coding portfolios | exponential weights | **Kill.** `universal-portfolio` |
+| I4 | A never-seen pattern of co-movement is a warning | compression distance | **Kill.** The gate family (`absorption-ratio`, `turbulence`) |
+| I5 | The value of side information | Kelly / mutual information | Nothing to trade: it *is* fact 1 above |
+
+**6. Evolutionary game theory**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| G1 | Capital flows to the strategy that did well lately | replicator dynamics | **Kill.** Grading the trend rule's trades (`ml-filter`) |
+| G2 | When every trend signal agrees, the trade is crowded | frequency-dependent fitness | **Kill.** Leaving early |
+| G3 | Once a calendar habit is known, players move a day earlier, then another | minority game | No rule. It is why calendars fade, and why this run prefers flows that are *forced* (the auction must happen, the fund must rebalance) to flows that are habits |
+| G4 | Liquidity providers are paid for patience | hawk-dove | **Kill.** Hourly reversal is real but costs ten times the edge (breadth-1) |
+
+**7. Statistical physics (phase transitions, percolation)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| F1 | Assets as spins; alignment and spanning clusters warn of a crash | Ising, percolation | **Kill.** Alignment = breadth (no skill in run 2); spanning cluster = `absorption-ratio` |
+| F2 | The sign of the stock-bond correlation is an order parameter that says which hedge works | regime switch | **Kill.** A refinement of `trend-to-safe`; one flip since TLT exists |
+| F3 | Bubbles as critical points | LPPLS | Parked already |
+| F4 | Time-irreversibility of returns as a regime marker | entropy production | **Kill.** The gate family |
+| F5 | Heat flow on a network | graph Laplacian | Same as P1: it is the tool of `contagion-catchup` |
+
+**8. Queueing and inventory theory**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| Q1 | Bond dealers are a server with limited capacity. A Treasury auction is a large batch arriving on a published date. Dealers make room by selling beforehand; prices dip into the auction and recover after | scheduled-arrival queue; event study | **Keep** as `auction-concession` |
+| Q2 | Dealers' inventory makes yesterday's move reverse | inventory model | **Kill.** `dip-rsi2`, hourly reversal |
+| Q3 | Waiting time (price impact per dollar traded) earns a premium | Amihud ratio | **Kill.** Moves with volatility; volatility gates are dead. But see "volume" under next lanes |
+| Q4 | Ethereum's validator exit queue is a literal queue of coming supply | queue length | **Park.** Data from 2023-04, one coin |
+| Q5 | The chance a trend ends depends on its age | renewal process, hazard rate | **Kill.** Changes *when* the trend rule acts, not where the edge comes from |
+| Q6 | Token unlock schedules are supply pulses in small coins | event study | **Park.** Paid data (price not checked, nothing bought); small coins only |
+
+**9. Neuroscience (predictive coding)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| N1 | One asset predicts its sibling; the prediction error gets corrected | Kalman innovation | **Kill on six assets** (two sibling pairs, fact 1). Lives on only as the "own move" half of `contagion-catchup`, where its plain twin is run |
+| N2 | The gap between feared and realised volatility is a prediction error that pays over 1-3 months | variance risk premium | **Kill.** `vrp` weekly IC -0.002 on 1,348 weeks (info-1): nothing to add up over a quarter |
+| N3 | Anchoring on the yearly high or the average purchase price | reference dependence | **Kill.** `dd_1y`, `high_52w`: no skill; a volume-weighted cost basis is a moving average |
+
+**10. Immunology (anomaly detection)**
+
+| # | Mechanism | Tool | Verdict |
+|---|---|---|---|
+| M1 | Learn "self", react to "non-self" | negative selection, Mahalanobis distance | **Kill.** The gate family; `turbulence` stays `new` only against a volatility trigger |
+| M2 | Detectors that multiply when they were right | clonal selection | **Kill.** Boosting (`ml-gbm`) |
+| M3 | The n-th repeat of the same shock matters less | tolerance | **Kill.** Needs news labels, not bars |
+
+### What survives: four ideas, one common thread
+
+All four trade against (or alongside) **someone whose behaviour is mechanical**: a dealer who must
+absorb an auction, a fund that must restore its mix, a fund that must follow its volatility
+window, and prices that have not yet caught up with their neighbours. None uses the asset's own
+long trend, so any edge would be a second source next to `tsmom12`, not a variant of it.
+
+| Idea | Field x tool | Where the money would come from | What has to be true |
+|---|---|---|---|
+| `auction-concession` | queueing/inventory (and predator satiation) x event study on a published schedule | The Treasury pays dealers a discount to absorb new long bonds; a holder who steps aside for the week before the auction avoids paying it | Long-bond prices still dip before 20/30-year auctions by more than a week of TLT's normal drift (published 1980-2008: about 2-3 bps of yield, ~40 bps of TLT price); the dip is not already traded away; it shows at next-open fills |
+| `rebalance-pressure` | control theory x a shadow controller (the 60/40 fund's known correction) | Month-end sellers of whatever rose most pay a small price concession; a holder who leans the other way for the last week collects it | Balanced funds still rebalance on the calendar in size; the month's leader lags the loser in the last days; the effect is larger than 4 bps of cost; front-runners have not moved it out of the window |
+| `contagion-catchup` | epidemiology x diffusion on the correlation network | Slow diffusion of news across related ETFs: buy the ones whose neighbours have moved and which have not | Related ETFs still under-react to each other at a one-week horizon; the catch-up is more than plain one-week reversal; it survives being added to the trend rule |
+| `vol-echo` | signal processing x control theory (the ghost of a boxcar window in other people's risk controllers) | Mechanical buying by volatility-targeting funds on the day a shock leaves their 1- or 3-month window, a date known three weeks ahead | Enough money uses simple fixed windows; the buying moves the index by a visible amount; the effect is absent before such funds existed (a built-in placebo: 1962-2009) |
+
+### My guess before any number (so the result can be compared with it)
+
+Rough power, from published sizes and our own noise levels:
+
+- `auction-concession`: about 210 auctions of 30-year bonds since 2006 plus 66 of 20-year ones.
+  If the dip is still ~40 bps over five days, the test would see it at about t = 3; at half
+  that, t = 1.5. Published in 2013 on data to 2008, so decay is likely. Chance it passes: 20%.
+- `rebalance-pressure`: about 270 month ends since TLT exists. A 5 bps a day edge on the
+  stock-bond spread gives t = 1.3; 10 bps gives 2.6. Chance: 15%. Even if real, the gain on
+  the whole book is small (a few tenths of a percent a year), because only half a slot moves.
+- `contagion-catchup`: unknown size; our own breadth-1 found one-week momentum slightly negative
+  across 33 markets, which is half of this signal. Chance: 10%.
+- `vol-echo`: the most novel and the weakest in power. A plausible flow moves the index ~10 bps
+  per event; with ~300 events that is t = 1 to 1.5. Chance it passes: 5-10%. It is run because
+  it is cheap, has never been tested as far as I know, and has a built-in placebo.
+
+Even the optimistic cases are small: these are possible second sources of return next to the
+trend rule, not replacements for it.
+
+### Not carded, but noted for later
+
+- **Volume has never been screened.** All 15 ML features come from closes, and info-1's 23 inputs
+  are outside data. The six assets' own volume (abnormal volume, price move per dollar traded)
+  deserves one cheap IC table by info-1's method before anyone builds on it.
+- **Carry on spot.** Our one outside lead is carry on perps. The same idea exists for the six
+  assets without futures (the bond's yield over cash for TLT, the real rate for GLD); macro-1's
+  skill table has faint hints (curve slope against TLT rho +0.11, t = 2.0). Not from another
+  field, so not carded here.
+
+## Step 2. Cards (written 2026-11-17 23:20 UTC, pushed before any test)
+
+[auction-concession](cards/auction-concession.md),
+[rebalance-pressure](cards/rebalance-pressure.md),
+[contagion-catchup](cards/contagion-catchup.md), [vol-echo](cards/vol-echo.md). Each fixes the
+rule, the variants (two each: eight in all), the twin, the out-of-universe sets and the pass
+bar. The only thing looked at before writing them was the Treasury's auction calendar (dates and
+terms, no prices).
+
+## Step 3. Tests (run 2026-11-17 23:25 UTC, train only)
+
+- Rules: `lib/wide1_rules.py` (pure logic, tested offline in `tests/test_wide1.py`) and
+  `lib/wide1.py` (calendars, the auction file, book universes). One script per card:
+  `lib/idea_wide1_auction.py`, `idea_wide1_rebalance.py`, `idea_wide1_contagion.py`,
+  `idea_wide1_vol_echo.py`. The auction calendar is parsed by `lib/wide1_auctions.py` (run with
+  `python -I`) into `<cache_root>/derived/wide-1/auctions.csv`.
+- No look-ahead: `lib/wide1_check.py` proves that every rule gives the same weights as
+  `gym.backtest` (which shows a strategy only the bars closed before the decision) on eight
+  sample days, including days inside an auction window and a month-end window.
+- Results: [auction-concession](results/auction-concession.md),
+  [rebalance-pressure](results/rebalance-pressure.md),
+  [contagion-catchup](results/contagion-catchup.md), [vol-echo](results/vol-echo.md); post-hoc
+  tables in [wide-1-posthoc](results/wide-1-posthoc.md).
+- To rerun: `uv run python -I research/lib/wide1_auctions.py`, then
+  `uv run python research/lib/idea_wide1_<name>.py` (each appends its rows to `tries.md`).
+
+## Step 4. A descriptive check on data no rule has seen (defined 2026-11-18, before looking)
+
+Not a card and not a strategy: no rule is selected, nothing goes through the harness, no rows in
+`tries.md`. The post-hoc tables suggested three patterns on 2003-2025 ETF prices. The same
+patterns can be looked for in bond yields before TLT and IEF existed. Fixed here, before any of
+this data was read:
+
+- **Data.** FRED `DGS10` (10-year Treasury yield, daily from 1962) and `DGS30` (30-year, from
+  1977; not published 2002-02 to 2006-02), the cached snapshot, cut at 2025-11-10. Stocks: the
+  S&P 500 index (price only) to 1993-01, SPY (total return) after. The auction calendar (from
+  1979-10) as before.
+- **Bond return.** A par bond of maturity n (10 or 30 years) earns about `-D x (change in
+  yield) + yield / 252` a day, with D its duration at yesterday's yield,
+  `D = (1 - (1 + y/2)^(-2n)) / y`. An approximation; close to close, not gym fills.
+- **Periods.** Unseen: 1962-1979, 1980-1989, 1990 to 2003-07 (the day before our TLT and IEF
+  tests start). Seen: 2003-08 to 2025-11, by the same method, only to check that it agrees with
+  the ETF tables.
+- **Q1, the dip before auctions.** For every nominal auction of 30-year bonds and of 10-year
+  notes: the matching bond's return over sessions A-4 .. A and over A+1 .. A+5. Expected if the
+  effect is real: negative before, positive after.
+- **Q2, the month-end bond rally.** The 10- and 30-year bond's return over the last four
+  sessions of each month, minus four average days of the same period; and the first three
+  sessions of the next month. Expected: positive in the last four.
+- **Q3, the month-end loser bounce.** g = stocks minus the 10-year bond, month to date at the
+  close of T-5. For months with |g| >= 2%: the return of stocks and of the bond over sessions
+  T-4 .. T, each leg and the spread signed against g, split by who led. Expected: the signed
+  spread is positive, and stocks rise after trailing.
+- **Reading.** A pattern "holds on unseen data" if its sign is as expected in the pooled unseen
+  period with |t| >= 2. Anything less is "not confirmed". Either way it is evidence for or
+  against writing a card, not a result.
+
+### Step 4, what came out (tables in `results/wide-1-yields.md`)
+
+| Question | Unseen data (to 2003-07) | Seen data (2003-08 to 2025) | Reading |
+|---|---|---|---|
+| Q1, dip before 30-year auctions | +3 bps (t 0.1; 72 auctions): no dip, but too few auctions to tell | -54 bps from yields (t -3.6), -34 bps on TLT's closes (t -2.5), -15 bps at next-open fills (t -1.1) | not confirmed; half of it is lost to our fills |
+| Q1, dip before 10-year auctions | +17 bps (t 1.1; 97): none | -11 bps from yields (t -1.6), -5 bps on IEF's closes | not confirmed |
+| Q2, month-end bond rally (last four sessions, excess) | 10-year +3 bps (t 0.8; 499 months); 30-year +10 (t 1.2; 318). By era: about zero in 1962-1989, +13 and +23 in 1990-2003 (t 1.9 and 2.2) | 10-year +20 (t 3.9); 30-year +39 (t 3.8); TLT +39 at closes, +32 at fills; IEF +24, +21 | not confirmed by the pooled rule; present since 1990 and strong since 2003 |
+| Q3, month-end loser bounce (signed spread) | +13 bps (t 0.9; 261 months); 1962-79 -20, 1980-89 +20, 1990-2003 +46 | +86 bps (t 3.9; 172 months) | not confirmed |
+
+The yield series overstates the auction dip (-54 against -34 bps on TLT itself): at an auction
+the newly sold bond replaces the old one in the constant-maturity series, which moves the yield
+for a reason no holder earns. The ETF's own closes are the number to trust.
+
+## Status (2026-11-18)
+
+**Done:** ideation, four cards, train tests, post-hoc tables, the step 4 check, write-up,
+`ideas.md`, `next-steps.md`. Held-out year unspent. Draft PR #33 (`wide-1` -> `carry-2`), not
+merged.
+
+**Doing:** nothing half-finished. No process running.
+
+**Next (not started):** the three lanes listed at the top; `month-end-bonds` first.
