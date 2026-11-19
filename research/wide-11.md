@@ -150,7 +150,7 @@ earlier reports dated T - 1092 days .. T - 1 day (156 weeks), needing at least 1
 past-only, so markets with different hedger mixes are comparable.
 
 **No look-ahead (the release lag).** T's report is released on Friday T + 3 at 15:30 New York
-time, after the close only in holiday weeks it moves to Monday or later. Entry is therefore at
+time; in holiday weeks it moves to Monday or later. Entry is therefore at
 the close of the asset's first bar dated >= T + 7 (the next Tuesday): a day of slack beyond the
 latest regular release. Exit at the close of the first bar dated >= T + 35. y(T) = ln(exit /
 entry), dividend-adjusted closes (`harness.load_history("train")`). The row is dropped if
@@ -202,5 +202,5 @@ literature reports for financial futures passes.
 
 **My guess before any number.** b near zero, t between -1 and +1.5; rank in the middle; placebo
 t sd 1.3-1.8 (persistent dose, overlapping returns, four correlated markets). The feedback
-check: clearly negative (hedgers' net short falls... no: commercials sell forward into rallies,
-so HP rises after a rally: slope positive, t > 3). Chance of a pass: 2%.
+check: commercials sell forward into rallies, so HP rises after a rally: slope positive,
+t > 3. Chance of a pass: 2%.
