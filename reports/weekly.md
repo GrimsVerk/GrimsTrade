@@ -1,6 +1,6 @@
-# Weekly summary: the week to Thursday 19 November 2026
+# Weekly summary: the week to Friday 20 November 2026
 
-**In short:** 5 of 7 strategies are ahead of every yardstick so far; the record is only 9 days old, far too early to judge.
+**In short:** 5 of 7 strategies are ahead of every yardstick so far; the record is only 10 days old, far too early to judge.
 
 Fake money on real prices. Every strategy started with 10,000 USD; all figures are after trading fees and slippage. Dividends are not credited yet, which makes the fund yardsticks 1 to 2% a year too easy to beat. A strategy only matters if it beats the yardsticks below.
 
@@ -8,22 +8,22 @@ Fake money on real prices. Every strategy started with 10,000 USD; all figures a
 
 | Yardstick | Now (USD) | This week | Since start |
 |---|---:|---:|---:|
-| Hold Bitcoin | 8,465 | -11.8% | -15.4% |
-| Hold the US stock market (SPY) | 9,683 | -3.6% | -3.2% |
-| 60% stocks, 40% bonds | 9,783 | -1.9% | -2.2% |
-| Equal parts of all six | 9,313 | -5.8% | -6.9% |
+| Hold Bitcoin | 8,321 | -9.3% | -16.8% |
+| Hold the US stock market (SPY) | 9,493 | -5.1% | -5.1% |
+| 60% stocks, 40% bonds | 9,675 | -2.6% | -3.2% |
+| Equal parts of all six | 9,181 | -5.4% | -8.2% |
 
 ## Strategies
 
 | Strategy | Now (USD) | This week | Since start | Beats yardsticks* | How sure** |
 |---|---:|---:|---:|---|---|
 | Buy sharp crypto dips in an uptrend | 10,000 | +0.0% | +0.0% | 4 of 4 | too early to tell |
-| Trend following: hold what rose over the last year | 9,896 | -1.3% | -1.0% | 4 of 4 | too early to tell |
-| preset_careful | 9,867 | -1.3% | -1.3% | 4 of 4 | too early to tell |
-| Stocks, but less of them when markets are wild | 9,856 | -1.6% | -1.4% | 4 of 4 | too early to tell |
-| preset_middle | 9,836 | -1.6% | -1.6% | 4 of 4 | too early to tell |
-| Balanced risk: less of the wild assets, more of the calm | 9,616 | -3.6% | -3.8% | 2 of 4 | too early to tell |
-| Winners: hold the best risers of the last 6 months | 9,531 | -5.4% | -4.7% | 2 of 4 | too early to tell |
+| Trend following: hold what rose over the last year | 9,829 | -1.7% | -1.7% | 4 of 4 | too early to tell |
+| preset_careful | 9,802 | -1.7% | -2.0% | 4 of 4 | too early to tell |
+| Stocks, but less of them when markets are wild | 9,770 | -2.3% | -2.3% | 4 of 4 | too early to tell |
+| preset_middle | 9,757 | -2.0% | -2.4% | 4 of 4 | too early to tell |
+| Balanced risk: less of the wild assets, more of the calm | 9,502 | -3.7% | -5.0% | 3 of 4 | too early to tell |
+| Winners: hold the best risers of the last 6 months | 9,349 | -5.7% | -6.5% | 2 of 4 | too early to tell |
 
 \* Compared with each yardstick started afresh at the moment the strategy started (same first prices, same costs).  
 \*\* How confident we can be that its return for the risk taken is real and not luck, allowing for all 3103 strategies we have tried (deflated Sharpe). It does not by itself mean it beats the yardsticks. Real money is only discussed after 6 months, beating every yardstick, and strong evidence (95%+).  
