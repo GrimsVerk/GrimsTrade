@@ -44,3 +44,5 @@
 {"first":"2026-11-20","last":"2026-11-20","rows":1,"seen":"2026-11-21T03:20:14Z","source":"yahoo","symbol":"QQQ"}
 {"first":"2026-11-20","last":"2026-11-20","rows":1,"seen":"2026-11-21T03:20:14Z","source":"yahoo","symbol":"GLD"}
 {"first":"2026-11-20","last":"2026-11-20","rows":1,"seen":"2026-11-21T03:20:14Z","source":"yahoo","symbol":"TLT"}
+{"first":"2026-11-21","last":"2026-11-21","rows":1,"seen":"2026-11-22T02:28:02Z","source":"kraken","symbol":"BTC"}
+{"first":"2026-11-21","last":"2026-11-21","rows":1,"seen":"2026-11-22T02:28:02Z","source":"kraken","symbol":"ETH"}
