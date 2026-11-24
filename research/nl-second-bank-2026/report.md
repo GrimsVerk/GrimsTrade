@@ -2,15 +2,16 @@
 
 Research, not financial advice. Researched 24 Nov 2026.
 
-**The question.** Someone living in the Netherlands has a current account at a large Dutch bank and
-wants a second bank so that one IT outage or one attack is unlikely to cut off both. The second
+**The question.** Someone with a current account at one of the three large Dutch banks (ING, ABN
+AMRO, Rabobank) wants a second bank so that one IT outage or one attack is unlikely to cut off both. The second
 bank should be:
 - safe;
 - built on a technology stack as different as possible from the first bank's;
 - cheap to keep.
 
-ING is used as the worked example of a large Dutch bank. The same method applies to ABN AMRO or
-Rabobank as the first bank.
+ING is worked through in detail as the example; ABN AMRO and Rabobank facts are in section 3. The
+same method applies with either of them as the first bank. The top two picks (Revolut, bunq) differ
+from all three big banks in licence or ledger and cloud, so the conclusion barely changes.
 
 **How to read it.** Facts carry a source and date. **UNVERIFIED** means the fact was seen only in a
 search summary, on vendor marketing, or in a secondary source. Fees change, so check the bank's own
@@ -18,7 +19,7 @@ fee page.
 
 ## Summary
 
-- **Most different from ING while still safe and cheap: Revolut (Revolut Bank UAB, Lithuanian
+- **Most different from the big three (and ING in particular) while still safe and cheap: Revolut (Revolut Bank UAB, Lithuanian
   licence).** Every bank-specific layer (licence, ledger, cloud, supervisor) differs from ING's:
   - another country, supervisor and deposit guarantee scheme;
   - in-house core banking on Google Cloud;
@@ -31,8 +32,9 @@ fee page.
     - It runs on one cloud. On 20 Oct 2026 a Google Cloud outage (per Reuters a power event in
       London, europe-west2) left about 28 of its services partly unavailable.
     - It was fined for AML failings.
-    - The guarantee is foreign (Lithuanian, with DNB as paying agent under the EU directive), so
-      payout can take longer than 7 working days.
+    - The guarantee is foreign: the Lithuanian scheme pays within 7 working days per its depositor
+      sheet, with DNB as contact point and paying agent for branch customers under EU directive
+      2014/49/EU art. 14(2). Cross-border payout is untested in practice.
 - **Best Dutch-licensed alternative: bunq Core** (EUR 47.88 a year). Dutch deposit guarantee,
   in-house core on AWS, card processing in-house (2019 claim, UNVERIFIED for today).
   - Every ATM withdrawal costs money.
@@ -52,12 +54,11 @@ fee page.
   - For those, cash is the fallback. The DNB-chaired MOB advises EUR 70 per adult and EUR 30 per
     child at home for 72 hours and several payment methods; Rijksoverheid adds a debit card
     "possibly at different banks".
-- **Causes of outages.** For the ING, Rabobank and Triodos outages found for 2023-2026, the
-  published causes are either missing or name a supplier or network fault.
 
 ### Ranking for this purpose
 
-Order: IT difference first, then safety, then cost.
+Order: IT difference first, but a bank drops down when safety or everyday use is weak (BaFin
+special monitor, DE IBAN, no iDEAL); then cost.
 
 | # | Bank | Why | Cost per year |
 |---|---|---|---|
@@ -66,7 +67,7 @@ Order: IT difference first, then safety, then cost.
 | 3 | ASN Bank (NL) | Strong ratings, Visa card, free cash and deposits; partly AWS | EUR 48 |
 | 4 | Rabobank (NL) | Safest balance sheet (Aa3/AA-), but co-owns Geldmaat and is a classic big bank | EUR 43.20 (Standaard); EUR 0 only ages 18-27 |
 | 5 | N26 (DE) | Different stack (Mambu core on AWS, 2016-17 vendor claim, UNVERIFIED now), but BaFin special monitor since Dec 2025, DE IBAN | EUR 0 (+ EUR 10 card, UNVERIFIED) |
-| 6 | Trade Republic (DE) | Free, cheap cash from EUR 100, but a broker first, no iDEAL, cash in trust at partner banks (German, French, Irish schemes) and possibly money-market funds without guarantee | EUR 0 (+ EUR 5 card) |
+| 6 | Trade Republic (DE) | Free, cheap cash from EUR 100, but a broker first, no iDEAL, cash in trust at partner banks (German, French, Irish schemes) and possibly money-market funds without guarantee (UNVERIFIED for the Dutch branch) | EUR 0 (+ EUR 5 card) |
 
 Not a fit:
 - ABN AMRO: IT closest to ING's, co-owns Geldmaat, EUR 51.60.
@@ -84,7 +85,7 @@ Not a fit:
   instead, for about EUR 48 a year.
 - Keep only a buffer, not large balances, at a neobank.
 
-## 1. Worked example: ING Netherlands
+## 1. One of the big three in detail: ING Netherlands
 
 ### Stack (public facts)
 
@@ -164,10 +165,10 @@ guarantee per depositor.
 | ASN Bank (ex de Volksbank: SNS, RegioBank, BLG Wonen) | ASN Bank N.V. / Dutch DGS, one EUR 100k for all old brands; state-owned via NLFI | AWS cloud (vendor case study); Ohpen only for investments and loans | Visa Debit (from Apr 2026) | EUR 4.00/mo = EUR 48/yr; euro withdrawals and Geldmaat note deposits free | CET1 19.7% (H1 2026); S&P A, Moody's A2, Fitch A+ |
 | Triodos | Triodos Bank N.V. / Dutch DGS | Not found | Visa Debit | EUR 5/mo = EUR 60/yr (age 26+); withdrawals included | CET1 17.3% (H1 2026); Fitch BBB |
 | bunq | bunq B.V. / Dutch DGS | In-house core on AWS; in-house card processing (2019, UNVERIFIED now) | Mastercard | Core EUR 3.99/mo = EUR 47.88/yr; ATM EUR 0.99 (first 5 a month), then EUR 2.99; Free plan has no physical card | No rating or CET1 found; 2025 profit EUR 22.4M; DNB AML fine EUR 2.6M (under appeal) |
-| Knab | Dutch branch of BAWAG P.S.K. (Austria) since Nov 2025 / Austrian scheme, EUR 100k shared with all BAWAG brands | AWS (older case study) | Mastercard (inferred) | EUR 6/mo = EUR 72/yr (12 months free promo) | BAWAG CET1 17.1% (Q3 2026, snippet) |
-| Revolut | Revolut Bank UAB (Lithuania, Bank of Lithuania and ECB), Dutch branch / Lithuanian scheme (DNB as paying agent under the EU directive, can be slower than 7 working days); NL IBAN | In-house core on Google Cloud; own card processor (2017, UNVERIFIED now) | Visa or Mastercard | EUR 0; ATM 5 withdrawals or EUR 200 a month free, then 2% (min EUR 1); card delivery about EUR 7.99 (UNVERIFIED) | CET1 22.62%, LCR 449% (30 Jun 2026); no rating; AML fine EUR 3.5M (Apr 2025) |
+| Knab | Dutch branch of BAWAG P.S.K. (Austria) since 29 Nov 2025 (legal merger) / Austrian scheme, EUR 100k shared with all BAWAG brands | AWS (older case study) | Mastercard (inferred) | EUR 6/mo = EUR 72/yr (12 months free promo) | BAWAG CET1 17.1% (Q3 2026, snippet) |
+| Revolut | Revolut Bank UAB (Lithuania, Bank of Lithuania and ECB), Dutch branch / Lithuanian scheme, payout within 7 working days per its sheet, DNB as contact point and paying agent (EU directive art. 14(2)); NL IBAN | In-house core on Google Cloud; own card processor (2017, UNVERIFIED now) | Visa or Mastercard | EUR 0; ATM 5 withdrawals or EUR 200 a month free, then 2% (min EUR 1); card delivery about EUR 7.99 (UNVERIFIED) | CET1 22.62%, LCR 449% (30 Jun 2026); no rating; AML fine EUR 3.5M (Apr 2025) |
 | N26 | N26 Bank SE (Germany, BaFin) / German EdB; DE IBAN | Mambu core on AWS (2016-17 vendor claim, UNVERIFIED now) | Mastercard | EUR 0; card EUR 10 (UNVERIFIED); 2-3 free ATM a month then EUR 2 (sources conflict) | BaFin special monitor and extra capital (Dec 2025); first profit 2025 |
-| Trade Republic | Trade Republic Bank GmbH (Germany), Dutch branch / cash in trust at partner banks (German, French, Irish schemes); above a threshold possibly money-market funds, no guarantee | Not found | Visa | EUR 0; card EUR 5 once; ATM EUR 1 below EUR 100 | Profit EUR 232.7M (to Sep 2025); outages 7 and 9 Apr 2025 |
+| Trade Republic | Trade Republic Bank GmbH (Germany), Dutch branch / cash in trust at partner banks (German, French, Irish schemes); above a threshold possibly money-market funds, no guarantee (UNVERIFIED for the Dutch branch) | Not found | Visa | EUR 0; card EUR 5 once; ATM EUR 1 below EUR 100 | Profit EUR 232.7M (to Sep 2025); outages 7 and 9 Apr 2025 |
 
 ### Sources per bank
 
@@ -187,6 +188,7 @@ guarantee per depositor.
   - AWS: https://aws.amazon.com/solutions/case-studies/de-volksbank
   - Privatisation not yet ready (8 Jun 2026): https://www.nlfi.nl/wp-content/uploads/2026/06/Kamerbrief-voortgangsrapportage-ASN-Bank-over-2025.pdf
 - **Triodos**
+  - Fees (May 2026): https://www.triodos.nl/downloads/informatiedocument-betreffende-de-vergoedingen-internet-betaalrekening?id=1c5f1621483d
   - Results: https://www.triodos.com/en/press-releases/2026/2026-half-year-results
   - Rating: https://www.triodos.com/en/press-releases/2025/fitch-revises-triodos-banks-outlook-to-stable-affirms-at-bbb
 - **bunq**
@@ -218,7 +220,8 @@ guarantee per depositor.
   - The Betaalvereniging account table (16 Apr 2026) says no NL IBAN and no iDEAL. The table looks
     stale (it still lists Knab under the Dutch scheme); most likely NL IBAN yes, iDEAL no:
     https://www.betaalvereniging.nl/en/?p=5035
-  - Partner banks and money-market funds: https://etf.capital/trade-republic-einlagensicherung/ (2026)
+  - Partner banks and money-market funds: https://etf.capital/trade-republic-einlagensicherung/
+    (2026, German third-party blog, does not cover the Dutch branch: UNVERIFIED)
 
 ## 4. Dutch outage advice
 
@@ -228,7 +231,7 @@ guarantee per depositor.
   - Keep about **EUR 70 cash per adult and EUR 30 per child**, in small notes and coins.
   - Have **several payment methods**, including a physical card if you normally pay by phone.
   - Use the banking app as a fallback.
-- **Rijksoverheid** repeats this and mentions debit cards "possibly from different banks":
+- **Rijksoverheid** repeats this and mentions a debit card "possibly at different banks":
   https://www.rijksoverheid.nl/themas/recht-veiligheid-en-defensie/dreiging-in-nederland/vraag-en-antwoord/betalingsverkeer/contant-geld-thuis-bewaren
 - **Offline card payments (deferred authorisation):** the MOB encourages shops and banks to adopt
   them. There is no deadline; a report is due spring 2027 (DNB, 3 Jun 2026):
