@@ -1,90 +1,168 @@
 # Next steps
 
-## Waiting for review: register-4 (branch `register-4`, draft PR #108 into `register-3`)
+## Health 1 (branch `health-1`, draft PR, not merged): live check of the daily runs, 2026-11-17
 
-Card and results: `research/register-4.md`. Done:
+Checked runs 2026-11-12 to 2026-11-17 (logs, `paper-trail` ledger, bars, replayed fills).
 
-1. `research/register/returns/`: the weekly returns of every series behind the bar (1,178:
-   baselines, live, saved curves that fit a register row), one gzip CSV per family, 3.9 MB
-   (budget 5 MB). `research/register2.py export` writes it (deterministic bytes).
-2. `register2.py estimate` reads the store first, local caches as fallback. On a clean
-   checkout it rebuilds `trials.json` and `moments.jsonl` byte-identically; BAR.md keeps every
-   number (N_eff 486, +0.30 / +0.56).
-3. `research/register/README.md`: how a lane adds its returns.
+- Healthy: all 11 live strategies (9 + presets Careful, Middle) decided on every run with new
+  data; no duplicates, no NaN or invalid weights. Bars: BTC/ETH every day to 2026-11-16, ETFs
+  every session to 2026-11-16 (only market holidays missing). Kraken + Yahoo every run, no Stooq
+  fallback, no 429, no problems recorded; 3 revisions under 1 bp. Every decision's orders filled
+  at the first open after it; equity matches the bars.
+- Fixed here: `reports/weekly.md` showed the presets by code name (`weekly.PLAIN` lacked them).
+  Test: `test_every_live_strategy_has_a_plain_name`.
+- Watch: the 22:30 UTC cron fires at 02:00-04:40 UTC (GitHub delay). No look-ahead, but the
+  crypto bar of the run's own day opened before the decision, so crypto orders fill about 22 h
+  later (next day's 00:00 open) instead of 1.5 h; backtests still decide at 22:30 (`DECIDE_AT`).
+  Decide whether to accept this or move the run (DECISIONS) before comparing live and backtest.
+- Watch: fully invested `equal_weight` (Bold) cannot top up crypto at 00:00 (no cash; ETF sells
+  happen at 13:30 and each ETF is inside the 1% band), so it drifts until an ETF leaves the band.
+  Same family as audit G2 (keep an unfilled buy pending).
+- `next-steps.md` on `main` still lists audit-1 (PR #5) as waiting for review; it is merged.
 
-- [ ] Lead: after register-4 is on the register base, regenerate with tonight's branches:
-      `git fetch origin`, register, `curves` + `export` with the new lanes' run dirs,
-      `estimate`, register; commit the store's new family files with the generated files.
-- [ ] Next: research lanes run steps 1-4 of the README (or the lead does it nightly), so
-      their curves leave the machine the night they are made.
-- [ ] Possible next: the harness writes the weekly returns straight into the store when it
-      logs a row (like `tries-shape.jsonl`), so saved curves are no longer needed at all.
+## G2: an unpaid buy waits for cash (branch `g2-pending-buy`, draft PR #29, not merged)
 
-## Waiting for review: register-3 (branch `register-3`, draft PR #100 into `register-2`)
+Fix for audit G2 and the 2026-11-17 health-check symptom (fully invested `equal_weight` could
+not top up crypto). Rule and why: `docs/DECISIONS.md` (2026-11-17, audit G2). Code:
+`gym._execute`. Tests: `tests/test_audit_gym.py` (the G2 test is no longer xfail; the drifting
+case runs at 22:30 and at the late-cron 03:00).
 
-Card and results: `research/register-3.md`. Done:
+- [ ] After merging: the first run replays every score with the new rule. Expect `equal_weight`
+      and `xs_momentum` to move by a couple of dollars and their backtests a little (DECISIONS).
+      No ledger line or bar changes.
 
-1. The harness logs weeks, skew, excess kurtosis of every try it logs, next to the row, in
-   `research/tries-shape.jsonl` (`grimstrade.tryshape`; hook in `research/lib/harness.py`
-   `_log`). `grimstrade.register` and `research/register2.py` read it from every branch.
-2. Correlation sample capped at 10 series per family: rho 0.52 (was 0.58), N_eff 490 (was 433)
-   at the same data; the edge needed over `tsmom12` moves by 0.002 (+0.30 / +0.56 stays).
-3. Regenerated with tonight's branches: 3,118 tries, N 1,032, N_eff 486, same edge over
-   `tsmom12`. Cluster Sharpes now inverse-variance (min-variance broke on two twin series):
-   against zero a 32-year rule needs 1.42 (was 1.23).
+### For the owner
 
-- [ ] Lead: `git cherry-pick 33f3b4a` onto the research base new lanes start from, so their
-      tries carry their shape (0 rows logged so far).
-- [ ] Next: scripts that append to `tries.md` without `harness.run` call `tryshape.log` too.
-- [ ] Next: the correlation sample still needs return series (saved curves, one machine);
-      a compact committed weekly-returns file per logged try would make it portable.
+- The rule changes the live gym: merging is your call. Nothing else needs you.
 
-## Waiting for review: register-2 (branch `register-2`, draft PR #92 into `register-1`)
+## G4: ETF dividends paid as cash (branch `g4-dividends`, draft PR #30, not merged)
 
-Measured inputs for the bar (card and results: `research/register-2.md`). Done:
+Fix for audit G4 (dividends half; cash still earns nothing). Rule and why: `docs/DECISIONS.md`
+(2026-11-17, audit G4). Code: `data.py` (dividend store), `sources.yahoo_dividends`,
+`run_daily._dividends` and `check_record`, `gym.simulate(dividends=...)`. Tests:
+`tests/test_dividends.py` (offline, fixture `tests/fixtures/yahoo_dividends.json`, hand-made in
+Yahoo's format).
 
-1. `ledger.register_try` takes optional `weeks`, `skew`, `excess_kurtosis` (new lines only).
-2. `research/register2.py all` (numpy; needs `research/data/` prices and, for saved curves,
-   `research/register2.local.json`, see the `.example`) writes `research/register/moments.jsonl`
-   (1,209 rows + 11 live with T, skew, excess kurtosis) and `trials.json` (effective trials).
-3. `grimstrade.register` reads both: BAR.md shows the measured N (433 of 1,027, measured rho
-   0.58; ONC finds 2 clusters) and a per-record-length bar table.
+- [ ] After merging: the first daily run creates `data/dividends.csv` on `paper-trail` with
+      every stored ETF's payouts since its first stored bar (on 2026-11-17: SPY 8, QQQ 8, TLT 23,
+      GLD none). Check the log shows `+N dividends (yahoo)` and no "dividends not fetched".
+- [ ] After merging: backtests move up once (60/40 about +4.9% over the stored span); tell the
+      research lane their fund baselines were missing dividends.
 
-- [ ] Owner/lead: accept the measured bar (N 433: +0.30 close / +0.56 far over `tsmom12`).
-- [ ] Next: lanes pass `weeks`/`skew`/`excess_kurtosis` when logging (a column in
-      `research/tries.md` or the harness's `_log`), so the backfill stops depending on caches.
-- [ ] Next: a correlation sample that covers more families (only 40% of selectable rows have
-      returns; one family is a third of the sample).
+### For the owner
 
-## Waiting for review: register-1 (branch `register-1`, draft PR #79 into `dsr-1`, not merged)
+- The rule changes the live gym and the daily runner (one more Yahoo request per ETF per run):
+  merging is your call.
 
-From dsr-1's findings; no backtests, no tries. Done:
+## Crypto fee by 30-day volume tier (branch `fee-tiers`, draft PR #32, not merged)
 
-1. The scoreboard's N reads every local and remote branch except `paper-trail` (was: `main` and
-   `research-*` only) plus the committed register: 2,830 research tries, 534 train Sharpes (was
-   285 and 78). DECISIONS 2026-11-18 entry. Tests in `tests/test_stats.py` fail on the old code.
-2. `research/register/tries.jsonl` (every distinct try on every pushed branch, only grows) and
-   `research/register/BAR.md` (counts and the bar for a new pick). Regenerate:
-   `git fetch origin && uv run python -m grimstrade.register`. Reproduces dsr-1's census exactly
-   (2,811 / 947 / 124 at its snapshot). At generation: 2,904 tries, N for a new pick 1,012,
-   edge needed over `tsmom12` +0.27 (close rule, rho 0.9) to +0.59 (far rule, independent).
-3. PROPOSED convention in `docs/DESIGN.md` (Idea lab): every card quotes BAR.md's count and bar.
+Replaces the flat 0.60% crypto fee with Kraken Pro's taker schedule by each strategy's own
+30-day crypto volume. Schedule, date read and why: `docs/DECISIONS.md` (2026-11-18). Code:
+`gym.Costs.fee_at`, `gym.KRAKEN_TAKER`, `gym._execute`. Tests: `tests/test_audit_gym.py`
+(the two fee tests), `tests/test_gym.py`.
 
-- [ ] Owner/lead: settle or reject the convention; then move it to DECISIONS.
-- [ ] After merging to `main`: the night lead regenerates the register in one PR per night.
-- [ ] Possible next: lanes log T, skew and kurtosis so BAR.md can give the bar per record length.
+- [ ] After merging: the first run replays every score with the tiers (`buy_hold_btc` live
+      about -0.2%; `crypto_mean_reversion` backtest about +3.8%). Tell the research lane: a
+      backtest's crypto fee is now 0.38-0.80% by how much it trades, not a flat 0.60%.
+- [ ] Re-read kraken.com/pro/fees now and then; a change needs a new DECISIONS entry.
 
-## Waiting for review: dsr-1 (branch `dsr-1`, draft PR #74 into `main`, not merged)
+### For the owner
 
-Project-wide multiple-testing check, no backtests. Write-up with verdict: `research/dsr-1.md`;
-script: `research/dsr1.py` (`census`, `dsr`). Result: `tsmom12`'s profit survives any N, its
-edge over equal weight fails at N = 1; no near-miss survives the project's search; none is worth
-a held-out year.
+- Changes the live gym's costs: merging is your call. If you would trade crypto elsewhere,
+  that venue's schedule goes in `gym.KRAKEN_TAKER`'s place.
 
-- [x] Fix found: `ledger._RESEARCH_REFS` read only `main` and `research-*` branches (live N
-      stopped at 307). Fixed in register-1 (PR #79).
-- [ ] Owner/lead: decide on the project-wide register (built in register-1, PR #79, convention
-      PROPOSED in `docs/DESIGN.md`) and have every card quote the global N.
+## Cash interest (branch `cash-interest`, draft PR #61, not merged)
+
+Idle cash earns the 13-week T-bill rate (Yahoo `^IRX`), accrued daily, in the live record from
+the first run with this code and in backtests over all stored rates; Sharpe is measured above
+that rate. Rule and why: `docs/DECISIONS.md` (2026-11-18, cash interest). Code: `rates.py` (store,
+knowledge times), `gym.simulate(rates=...)`, `report.py` plumbing, `run_daily._rates`. Tests:
+`tests/test_cash_interest.py` (offline, fixture rates). Train-period effect (PR #61): CAGR
+`tsmom12` +17.64% -> +18.19%, `sixty_forty` +8.09% -> +8.63%; Sharpe above T-bills is lower for
+every book (convention change, not a loss).
+
+- [ ] After merging: the first daily run creates `data/rates.csv` on `paper-trail` with `^IRX`
+      closes since the first stored bar. Check the log shows `rates: +N (yahoo ^IRX)` and no
+      "rates not fetched".
+- [ ] Rebase notes: PRs #29 (G2), #30 (G4) and #32 (fee tiers) touch the same `simulate`
+      signature and `report.py` lines; conflicts are mechanical (keep both parameters). G4's
+      `weekly.md` sentence "cash earns no interest" must then say cash earns the T-bill rate.
+
+### For the owner
+
+- Merging is your call: it changes every score once (interest on cash, Sharpe above the cash
+  rate). Open questions in PR #61: a broker spread below the T-bill rate; should the research
+  harness also measure Sharpe above T-bills; a second rate source (US Treasury CSV).
+
+## forward-1 (done 2026-11-18 night, branch `forward-1` from `main`, draft PR #67 -> `main`)
+
+WIDER lane (new method): a forward-only shadow registry. Each candidate rule is frozen (hash of
+code + parameters + data source) with its metric, bar and minimum sample written at freeze, and
+scored only on bars that start after the freeze. Research only; no change to the daily runner,
+its schedule or workflows. Design `docs/forward-registry.md`; code `src/grimstrade/forward.py`
+(`python -m grimstrade.forward table|score`); tests `tests/test_forward.py` (freeze,
+append-only, refusal of pre-freeze bars, hash mismatch, power calculator, verdict read once);
+proposals `research/forward/candidates.jsonl` (made by `research/forward/propose.py`; NOT
+frozen); DECISIONS entry 2026-11-18 marked PROPOSED.
+
+- Years needed at 80% power, alpha 0.025 each (0.10 over the four): `carry-3-band@1` 12.7
+  (7.3 at a lone 0.10; train Sharpe 0.79 assumed, held-out was -0.65); `fomc-bond-drift@1` 78
+  (papers' 12 bps a meeting); `coin-stop-0.25@1` 26 (15/21 episodes; ~55 counting only
+  independent episodes); `eu-monthly-vs-weekly@1` 32 (signal-to-noise 0.50 from eu-3's p 0.03).
+- Finding: only carry can be judged forward in useful time; the other three need decades, so
+  their decisions should be taken on other grounds now (stop = risk choice; monthly clock's fee
+  saving is mechanical; FOMC drift descriptive only).
+- Before any freeze: each rule needs a forward adapter (the research scripts stop at
+  `TRAIN_END`/`HELD_END` on purpose); the adapter's files join the hash, so the proposal hashes
+  change at freeze. Carry also needs weekly snapshots of the perp lists (delisted coins vanish
+  from later downloads).
+- Doing: nothing. No process running.
+- [ ] **Owner decision: freeze these and schedule the scorer?** (1) adopt the registry rules
+      (DECISIONS 2026-11-18); (2) which to freeze (recommended: `carry-3-band@1` for a verdict;
+      the other three descriptive only, or not at all); (3) a lane to write the adapters and
+      freeze; (4) whether a weekly job (owner-made schedule) runs `forward score`.
+
+## Ingest 1 (branch `ingest-1`, draft PR #14, not merged)
+
+## Ingest (branches `ingest-1` PR #14, `ingest-2` PR #15 on top of it; neither merged)
+
+Briefs: chief-of-staff/briefs/grimstrade-ingest-1.md, grimstrade-ingest-2.md. Cache and job
+state: `docs/data-inventory.md`. Merge order: #13, #14, #15.
+
+- Done (ingest 1): rolling windows saved by hand with `scripts/snapshot_rolling.py` (2026-11-12
+  and 2026-11-13); write-once cache with manifest (`grimstrade.cache`); backfill scripts in
+  `scripts/backfill/`; collection module `grimstrade.intraday`.
+- Done (ingest 1): FRED/ALFRED solved: official API with the owner's free key,
+  `scripts/backfill/fred.py`, run 2026-11-12, 0 errors (the key never goes into Actions or logs).
+- Done (ingest 2): the daily job collects the finer data after the record is pushed
+  (`run_daily --intraday intraday`; four `continue-on-error` steps in `daily.yml`): Coinbase 1h
+  BTC/ETH, Yahoo 1h SPY/QQQ/GLD/TLT, Kraken Futures funding and open interest
+  PF_XBTUSD/PF_ETHUSD. **Not published**: Kraken's and Yahoo's terms forbid it, Coinbase's terms
+  page answered 403 (unclear = no). Stored in an Actions cache; reasons and limits in
+  `docs/DECISIONS.md` (2026-11-13). Revisions of re-fetched rows go to `revisions.jsonl` in the
+  store. Kraken open interest now pages with `since`: every hour from 2023-03-07 (collector and
+  snapshot script). Checked live 2026-11-13: first run ~6.6 MB, second run +0 everywhere.
+- Doing: Coin Metrics full community backfill (`scripts/backfill/coinmetrics.py`, started by the
+  CoS 2026-11-13 02:14 UTC); the other detached backfills (`binance`, `rest_1m-*`, `small`,
+  `alpaca`). Check with the commands in `docs/data-inventory.md`; when all logs say `DONE`, fill
+  in real sizes/rows there.
+- Next:
+  - [ ] Keep rerunning `scripts/snapshot_rolling.py` daily until #15 is on `main` and a daily run
+        has saved the store (nothing older than the windows can be recovered). The next dated
+        snapshot is the first with full open-interest history.
+  - [ ] After #15 merges, read the daily run's log: "Check the intraday store" should say "No
+        intraday store yet: starting one" the first day and "Restored the intraday store from
+        intraday-..." after that; "Collect intraday data" lists `+N` per series.
+  - [ ] Owner: the store can't be downloaded to a PC (Actions caches have no download). If you
+        want it locally, add an encryption key as an Actions secret and we add a manual job that
+        uploads it encrypted; until then the PC's snapshots are the local copy.
+  - [ ] Owner: someone with a browser should read Coinbase's Market Data Terms of Use
+        (coinbase.com/legal/market_data, 403 to our fetch). The daily bars on `paper-trail` come
+        from the same sources under the same terms (your call, `docs/data-sources.md`).
+  - [ ] Owner (optional): an Alpaca key as an Actions secret would give a second ETF source (Stooq
+        is dead) and daily ETF minute bars; we did not add it (adding secrets is yours).
+  - [ ] Stooq is behind a bot check (seen 2026-11-12): the ETF fallback in `sources.py` is dead.
+        Not fixed.
 
 ## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
 
@@ -105,8 +183,12 @@ ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/te
 - [ ] Build next from the audit: GitHub's arrival time for accepted commits, passed to the run
       directly, not through a file in the record (L14).
 - [ ] Open findings to build next: credit dividends (G4); a second ETF source, Stooq is dead
+      (D6, needs a key: owner's call); crypto fee by volume tier (BACKLOG). G2: branch
+      `g2-pending-buy`.
+
+- [ ] Open findings to build next: dividends (G4: branch `g4-dividends`); a second ETF source, Stooq is dead
       (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
-      tier (BACKLOG).
+      tier (branch `fee-tiers`).
 
 ## M0 status: built, not yet proven live
 
@@ -127,9 +209,9 @@ scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner READ
 
 ## Assumptions (see docs/DECISIONS.md)
 
-- CSV + stdlib only (no parquet/pandas). Raw prices; dividends not credited yet.
+- CSV + stdlib only (no parquet/pandas). Raw prices; dividends paid as cash on the ex-date (G4).
 - Bot commits to orphan branch `paper-trail` because `main` requires PRs.
-- Costs: crypto 60 bps fee (was 25 until the audit, G3) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
+- Costs: crypto Kraken Pro taker fee by 30-day volume, 0.38-0.80% (flat 60 bps after audit G3, 25 before) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
 - Decisions at ~22:30 UTC see crypto bars through yesterday (today's still open) and ETFs through
   today. Fills show up a day later, once the fill bar has closed and been stored.
 - A run with no new data since a strategy's last decision writes no new decision.

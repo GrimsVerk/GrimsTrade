@@ -483,10 +483,13 @@ def _blobs(top: Path, commits: list[str], rel: str) -> dict[str, tuple[str, int]
 LATE = timedelta(minutes=30)
 
 
-def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
+def _lines_recorded(path: Path, first_parent: bool = False) -> list[tuple[bytes, datetime | None]]:
     """Each non-blank line of `path` on disk with the time of the earliest commit that holds it
     (its committer time, or its parents' if that is later); None if it is not committed yet (or
-    outside git). Relies on the file being
+    outside git). `first_parent`: walk HEAD's first-parent chain only, so a line merged in from a
+    side branch counts from the merge, not from the (author-chosen) side commit; for files that
+    live on a branch with merges (the decisions ledger has none: `check_history`). Relies on the
+    file being
     append-only (`check_append_only`): a commit's new lines are the bytes past its parents'.
 
     Everything is counted in bytes and split at "\n" only, exactly as git stores the file. (Text
@@ -506,8 +509,11 @@ def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
     if where is None:
         return list(zip(lines, times, strict=True))
     top, rel, _ = where
-    log = _git(top, "rev-list", "--topo-order", "--parents", "--timestamp", "HEAD")
+    walk = ["--first-parent"] if first_parent else []
+    log = _git(top, "rev-list", *walk, "--topo-order", "--parents", "--timestamp", "HEAD")
     rows = [r.split() for r in log.decode().splitlines() if r]  # timestamp, commit, parents...
+    if first_parent:  # only the chain's own parent: a merged side branch is not on the path
+        rows = [r[:3] for r in rows]
     size = {c: n for c, (_, n) in _blobs(top, [r[1] for r in rows], rel).items()}
     # A commit's date is written by whoever commits, but a commit cannot be older than its
     # parents: it counts from the latest time on its path. A back-dated commit on top of the
@@ -528,9 +534,10 @@ def _lines_recorded(path: Path) -> list[tuple[bytes, datetime | None]]:
     return list(zip(lines, times, strict=True))
 
 
-def recorded_at(path: Path) -> list[datetime | None]:
-    """When each non-blank line of `path` was first committed (None: not yet)."""
-    return [at for _, at in _lines_recorded(path)]
+def recorded_at(path: Path, first_parent: bool = False) -> list[datetime | None]:
+    """When each non-blank line of `path` was first committed (None: not yet); `first_parent`
+    as in `_lines_recorded`."""
+    return [at for _, at in _lines_recorded(path, first_parent)]
 
 
 def in_force(root: Path) -> tuple[list[tuple[datetime, dict[str, Any]]], int]:

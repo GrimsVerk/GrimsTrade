@@ -53,12 +53,12 @@ open first, then what is fixed, each by severity.
 |---|---|---|---|
 | S2 | Six months cannot separate skill from luck; the corrected number says "no" for years | high | open: owner decision; the pages now say so |
 | L3 | The record branch can be replaced (force-push, delete) | high | detected, not yet seen working live; owner action open |
-| G4 | Dividends not credited, cash earns nothing: yardsticks 1 to 2.3% a year too low | medium | open: known, now sized |
+| G4 | Dividends not credited, cash earns nothing: yardsticks 1 to 2.3% a year too low | medium | dividends fixed 2026-11-17; cash still earns nothing |
 | D1 | Bars are stored before the source is final; later corrections were never seen | high | differences now logged (first day: under 0.01%); cause open |
 | D6 | The ETF fallback source does not work | medium | open: owner decision |
 | L13 | Old code can still write the record (a re-run of an old run, a stale branch) | medium | half fixed; clean-up after merging |
 | L14 | An accepted back-dated push keeps the date it claims | medium | open: proposed |
-| G2 | An order that cannot be paid for at its open is dropped | low | open: proposed |
+| G2 | An order that cannot be paid for at its open is dropped | low | fixed 2026-11-17 (waits for cash) |
 | S6 | The newest row of the scoreboard is provisional | low | open |
 | L6 | Outside a git checkout the ledger check checks nothing | low | open |
 | G5 | Small gym and table quirks (turnover, one-sided band, tiny weights) | low | open |
@@ -73,7 +73,7 @@ open first, then what is fixed, each by severity.
 | L12 | The outside check could be silenced or fooled | high | fixed |
 | S1 | A Sharpe ratio was printed from day two | high | fixed |
 | D2 | A stock split would be booked as a crash | high, unlikely | guarded |
-| G3 | Crypto trades were charged 0.25%; the real fee is 0.38% to 0.80% | medium | fixed (flat 0.60%) |
+| G3 | Crypto trades were charged 0.25%; the real fee is 0.38% to 0.80% | medium | fixed (flat 0.60%; by volume tier from 2026-11-18) |
 | D3 | No sanity check before a bar became permanent | medium | fixed |
 | D4 | A hole in a source's answer became a permanent gap | medium | fixed |
 | L5 | A failed fetch started a brand-new record | medium | fixed |
@@ -94,7 +94,7 @@ open first, then what is fixed, each by severity.
 | D5 | The record did not say where a bar came from | low | fixed |
 
 Tests: `tests/test_audit_*.py`. A finding that is still open and has a crisp expected behaviour
-is an `xfail(strict=True)` test (1 left: G2); findings about size or judgement are
+is an `xfail(strict=True)` test (none left; G2 was fixed 2026-11-17); findings about size or judgement are
 ordinary tests that pin the numbers quoted here. L10 to L15, D10, S9 and S10 come from the
 second independent review (2026-11-12, 06:35 to 07:00 UTC); a third, narrow review (07:12 to
 07:21 UTC) went over the code written in answer to it.
@@ -190,6 +190,10 @@ second independent review (2026-11-12, 06:35 to 07:00 UTC); a third, narrow revi
 - **Proposed fix:** credit dividends as cash on the ex-date from Yahoo's `events=div` (in the
   BACKLOG). Until then `weekly.md` says it with the size: "Dividends are not credited yet, which
   makes the fund yardsticks 1 to 2% a year too easy to beat."
+- **Fixed 2026-11-17** (DECISIONS, audit G4): distributions are paid as cash at the ex-date's
+  open from Yahoo's dividend events, stored append-only in `data/dividends.csv`. Cash still earns
+  no interest; `weekly.md` says so. Tests: `tests/test_dividends.py` and
+  `tests/test_audit_gym.py::test_a_bond_fund_holder_is_paid_its_dividends_worth_about_4_percent_a_year`.
 
 ### D1. Bars are stored before the source is final (high when found; differences are now logged, the cause remains)
 
@@ -278,6 +282,10 @@ second independent review (2026-11-12, 06:35 to 07:00 UTC); a third, narrow revi
   rotation strategies look slightly worse, never better. Test:
   `tests/test_audit_gym.py::test_a_switch_from_etf_to_crypto_ends_up_in_crypto` (xfail).
   Proposed (changes gym behaviour, so not done): keep an unfilled buy pending until cash arrives.
+  **Fixed 2026-11-17** (DECISIONS, audit G2): an unpaid buy waits for cash, and while a
+  decision's buys need cash, assets above target are sold to it inside the band too. The test
+  passes now, next to `test_a_fully_invested_equal_weight_tops_up_crypto_that_fell_behind` (the
+  live case from the 2026-11-17 health check, which also closes the band half of G5).
 - **S6. The newest row of the scoreboard is provisional.** At 22:30 UTC today's crypto bar is
   still open, so today's equity mixes today's ETF close with crypto at yesterday's close; the
   same date shows another number the next day
@@ -458,9 +466,9 @@ running it before it was fixed.
 ### G3. Crypto trades were charged less than any real fee (medium)
 
 - **What:** the gym charged 25 basis points per crypto trade, plus 5 of slippage. A fill at the
-  open is a market order and pays the taker fee. Kraken Pro's fee page on 2026-11-12 (read twice,
-  as served outside the US) lists taker 0.80% for an account that traded under 2,500 USD in the
-  last 30 days, 0.60% from 2,500, 0.38% from 10,000, 0.35% from 25,000 and 0.30% from 50,000.
+  open is a market order and pays the taker fee. Kraken Pro's fee page on 2026-11-12 (read
+  twice; Kraken's fees differ by region) lists taker 0.80% for an account that traded under
+  2,500 USD in the last 30 days, 0.60% from 2,500, 0.38% from 10,000, 0.35% from 25,000 and 0.30% from 50,000.
   25 was below every one of them.
 - **Size:** the busiest live crypto strategy, `crypto_mean_reversion`, turned its book over 10.6
   times a year in the backtest: about 9,000 USD a month, the 0.60% tier. Undercharged by 35
