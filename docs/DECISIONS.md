@@ -206,6 +206,14 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   overcounting only makes us more cautious; undercounting is the dishonest direction.
   `ledger.research_tries` / `ledger.total_tries` implement it. (Revised after a Fable review
   found undercounting paths in the first version.)
+- 2026-11-18 (register-1, draft PR; revises the entry above): research tries are read from the
+  code checkout and every local and remote branch except `paper-trail` and symbolic refs
+  (`ledger.research_refs`), no longer `main` and `research-*` only, and also from the register
+  `research/register/tries.jsonl` (same row rule). Why: lanes stopped using the `research-*` name
+  on 2026-11-13, so the live N stopped at 307 tries while the project had logged 2,811 (dsr-1).
+  A name pattern fails silently; every branch cannot. On 2026-11-18 the widened read gives 2,829
+  research tries (was 285) and 534 train Sharpes (was 78). Any branch can only raise N: the
+  cautious direction.
 - 2026-11-12: Deflated Sharpe inputs. Per-day Sharpe, skew and raw kurtosis of each strategy's
   daily equity returns; the variance of Sharpes across trials is the larger of 1/T (pure luck over
   T days) and the sample variance of the per-day Sharpes on the same table together with the

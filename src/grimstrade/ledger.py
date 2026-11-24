@@ -101,12 +101,47 @@ def decisions(root: Path, strategy: str | None = None) -> list[dict[str, Any]]:
     return [r for r in rows if strategy is None or r["strategy"] == strategy]
 
 
-def register_try(root: Path, name: str, note: str, now: datetime) -> bool:
-    """Count a strategy as tried. Returns False if it was already counted."""
+def register_try(
+    root: Path,
+    name: str,
+    note: str,
+    now: datetime,
+    *,
+    weeks: int | None = None,
+    skew: float | None = None,
+    excess_kurtosis: float | None = None,
+) -> bool:
+    """Count a strategy as tried. Returns False if it was already counted.
+
+    Optional, for the deflated Sharpe (record length T and the shape of the returns): `weeks`,
+    the length of the record the try was judged on, in weeks, and the `skew` and
+    `excess_kurtosis` (0 for normal returns) of its weekly returns. Written only when given, so
+    older lines and callers stay valid; a line never gains them later (append-only)."""
     if any(r["name"] == name for r in _read(root / TRIES)):
         return False
-    _append(root / TRIES, {"name": name, "first_tried": iso(now), "note": note})
+    entry: dict[str, Any] = {"name": name, "first_tried": iso(now), "note": note}
+    if weeks is not None:
+        if isinstance(weeks, bool) or not isinstance(weeks, int) or weeks < 1:
+            raise ValueError(f"weeks must be a positive whole number, not {weeks!r}")
+        entry["weeks"] = weeks
+    for key, value in (("skew", skew), ("excess_kurtosis", excess_kurtosis)):
+        if value is not None:
+            if not math.isfinite(value):
+                raise ValueError(f"{key} must be finite, not {value!r}")
+            entry[key] = float(value)
+    _append(root / TRIES, entry)
     return True
+
+
+def try_moments(root: Path) -> dict[str, dict[str, float]]:
+    """The optional record length and shape fields of each counted strategy that has any."""
+    keys = ("weeks", "skew", "excess_kurtosis")
+    out = {}
+    for r in _read(root / TRIES):
+        got = {k: r[k] for k in keys if k in r}
+        if got:
+            out[r["name"]] = got
+    return out
 
 
 def record_problems(root: Path, now: datetime, problems: Iterable[str]) -> None:
@@ -126,29 +161,73 @@ def tries(root: Path) -> int:
     return len(_read(root / TRIES))
 
 
-# --- the research lane's tries (research/ on main and on research-* branches) ---
+# --- the research lane's tries (research/ on every branch, and the committed register) ---
 
 RESEARCH_TRIES = "research/tries.md"
 RESEARCH_IDEAS = "research/ideas.md"
-_RESEARCH_REFS = ("refs/heads/main", "refs/remotes/*/main", "refs/heads/research-*",
-                  "refs/remotes/*/research-*")  # fmt: skip
+# Every try ever seen on any branch, one JSON line each (`grimstrade.register` writes it).
+RESEARCH_REGISTER = "research/register/tries.jsonl"
+# Every local and remote branch. Research lanes are named freely (`carry-2`, `eu-4`, ...): a list
+# of name patterns stopped counting the moment lanes stopped using it (dsr-1, 2026-11-18).
+_RESEARCH_REFS = ("refs/heads", "refs/remotes")
+RECORD_BRANCH = "paper-trail"  # the record itself, never a research branch
+
+
+def research_refs(repo: Path, prefixes: Iterable[str] = _RESEARCH_REFS) -> list[str]:
+    """Every local and remote branch of `repo` (or those under `prefixes`) except the record
+    branch and symbolic refs (`origin/HEAD`). [] outside git."""
+    try:
+        out = _git(repo, "for-each-ref", "--format=%(refname) %(symref)", *prefixes)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return []
+    refs = []
+    for line in out.decode().splitlines():
+        ref, _, symref = line.partition(" ")
+        if ref and not symref and ref.rsplit("/", 1)[-1] != RECORD_BRANCH:
+            refs.append(ref)
+    return refs
 
 
 def _research_texts(repo: Path, rel: str) -> list[str]:
-    """`rel` from the working tree, `main` and every local or remote `research-*` branch."""
+    """`rel` from the working tree and every branch (`research_refs`), each distinct text once."""
     texts = []
     if (repo / rel).exists():
-        texts.append((repo / rel).read_text())
+        texts.append((repo / rel).read_text(errors="replace"))
+    refs = research_refs(repo)
     try:
-        refs = _git(repo, "for-each-ref", "--format=%(refname)", *_RESEARCH_REFS).decode().split()
+        # Branches share files through their history: read each distinct version once.
+        blobs = {b for b, _ in _blobs(repo, refs, rel).values() if b} if refs else set()
+        # Any branch is read, so a stray non-UTF-8 byte must not stop the daily run.
+        texts += [_git(repo, "cat-file", "blob", b).decode(errors="replace") for b in sorted(blobs)]
     except (subprocess.CalledProcessError, FileNotFoundError):
-        return texts
-    for ref in refs:
-        try:
-            texts.append(_git(repo, "show", f"{ref}:{rel}").decode())
-        except subprocess.CalledProcessError:
-            continue  # branch without the file
-    return texts
+        pass
+    return list(dict.fromkeys(texts))
+
+
+def _register_rows(repo: Path) -> list[dict[str, str]]:
+    """The committed register's tries, in the shape of a `research/tries.md` table row. A line
+    that is not a JSON object with an idea is skipped: the tables are still read, and a bad line
+    must not stop the daily run."""
+    rows = []
+    for text in _research_texts(repo, RESEARCH_REGISTER):
+        for line in text.splitlines():
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if not isinstance(r, dict) or not isinstance(r.get("idea"), str):
+                continue
+            sharpe = r.get("sharpe")
+            rows.append(
+                {
+                    "idea": r["idea"],
+                    "variant": str(r.get("variant") or ""),
+                    "kind": str(r.get("kind") or "variant"),
+                    "period": str(r.get("period") or "train"),
+                    "sharpe": "" if sharpe is None else str(sharpe),
+                }
+            )
+    return rows
 
 
 def _cells(line: str) -> list[str]:
@@ -180,7 +259,8 @@ def _table_rows(text: str) -> list[dict[str, str]]:
 
 
 def _variant_rows(repo: Path) -> list[dict[str, str]]:
-    return [r for t in _research_texts(repo, RESEARCH_TRIES) for r in _table_rows(t)]
+    tables = [r for t in _research_texts(repo, RESEARCH_TRIES) for r in _table_rows(t)]
+    return tables + _register_rows(repo)
 
 
 Key = tuple[str, str | None]  # (idea, variant); variant None = an idea tried without a logged row
@@ -189,9 +269,10 @@ Key = tuple[str, str | None]  # (idea, variant); variant None = an idea tried wi
 def _visible_research(repo: Path) -> dict[Key, float | None]:
     """The research tries visible now, each with its train Sharpe if logged.
 
-    Distinct (idea, variant) rows of `research/tries.md` (any kind: baselines and robustness runs
-    count too), plus the ideas in `research/ideas.md` past status `new` (as (idea, None)). Both
-    files are read from the working tree, `main` and every `research-*` branch, and unioned.
+    Distinct (idea, variant) rows of `research/tries.md` and of the register
+    `research/register/tries.jsonl` (any kind: baselines and robustness runs count too), plus the
+    ideas in `research/ideas.md` past status `new` (as (idea, None)). All are read from the
+    working tree and every local and remote branch except the record's, and unioned.
     """
     out: dict[Key, float | None] = {}
     for r in _variant_rows(repo):

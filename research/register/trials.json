@@ -1,0 +1,270 @@
+{
+  "card": "research/register-2.md",
+  "family_cap": {
+    "cap": 10,
+    "card": "research/register-3.md",
+    "families": 59,
+    "largest_families_uncapped": [
+      97,
+      27,
+      20,
+      12,
+      12
+    ],
+    "rule": "at most CAP series per family (Idea), first by sha256(idea/variant/start)",
+    "sensitivity_caps": {
+      "1": {
+        "cluster_sharpe_mean": 1.1411,
+        "cluster_sharpe_var": 0.2043,
+        "cluster_sharpes": [
+          1.4607,
+          0.8216
+        ],
+        "cluster_sharpes_minvar_in_sample_diagnostic": [
+          1.4961,
+          0.5897
+        ],
+        "from": "2012-01-06",
+        "onc_k": 2,
+        "onc_k_at_cap": false,
+        "onc_sizes": [
+          50,
+          9
+        ],
+        "participation_ratio": 1.74,
+        "rho_mean": 0.6982,
+        "rho_median": 0.8135,
+        "series": 59,
+        "to": "2025-11-07",
+        "weeks": 722
+      },
+      "20": {
+        "cluster_sharpe_mean": 1.1851,
+        "cluster_sharpe_var": 0.1405,
+        "cluster_sharpes": [
+          1.4502,
+          0.9201
+        ],
+        "cluster_sharpes_minvar_in_sample_diagnostic": [
+          4.9324,
+          1.3812
+        ],
+        "from": "2012-01-06",
+        "onc_k": 2,
+        "onc_k_at_cap": false,
+        "onc_sizes": [
+          131,
+          82
+        ],
+        "participation_ratio": 2.67,
+        "rho_mean": 0.5226,
+        "rho_median": 0.4323,
+        "series": 213,
+        "to": "2025-11-07",
+        "weeks": 722
+      },
+      "5": {
+        "cluster_sharpe_mean": 1.1544,
+        "cluster_sharpe_var": 0.1776,
+        "cluster_sharpes": [
+          1.4524,
+          0.8564
+        ],
+        "cluster_sharpes_minvar_in_sample_diagnostic": [
+          4.853,
+          0.2084
+        ],
+        "from": "2012-01-06",
+        "onc_k": 2,
+        "onc_k_at_cap": false,
+        "onc_sizes": [
+          102,
+          41
+        ],
+        "participation_ratio": 2.31,
+        "rho_mean": 0.5689,
+        "rho_median": 0.6744,
+        "series": 143,
+        "to": "2025-11-07",
+        "weeks": 722
+      }
+    },
+    "sensitivity_register_weighted": {
+      "families": 59,
+      "rho_mean": 0.4914,
+      "series": 297
+    },
+    "windows": {
+      "1994-2025": {
+        "cluster_sharpe_mean": 0.8432,
+        "cluster_sharpe_var": 0.1537,
+        "cluster_sharpes": [
+          0.566,
+          1.1204
+        ],
+        "cluster_sharpes_minvar_in_sample_diagnostic": [
+          0.5518,
+          5.147
+        ],
+        "from": "1994-02-04",
+        "onc_k": 2,
+        "onc_k_at_cap": false,
+        "onc_sizes": [
+          100,
+          18
+        ],
+        "participation_ratio": 1.86,
+        "rho_mean": 0.6881,
+        "rho_median": 0.7748,
+        "series": 118,
+        "to": "2025-11-07",
+        "weeks": 1657
+      },
+      "2012-2025": {
+        "cluster_sharpe_mean": 1.1978,
+        "cluster_sharpe_var": 0.1358,
+        "cluster_sharpes": [
+          0.9372,
+          1.4585
+        ],
+        "cluster_sharpes_minvar_in_sample_diagnostic": [
+          1.0282,
+          4.851
+        ],
+        "from": "2012-01-06",
+        "onc_k": 2,
+        "onc_k_at_cap": false,
+        "onc_sizes": [
+          115,
+          63
+        ],
+        "participation_ratio": 2.58,
+        "rho_mean": 0.5291,
+        "rho_median": 0.4629,
+        "series": 178,
+        "to": "2025-11-07",
+        "weeks": 722
+      }
+    }
+  },
+  "generated_by": "uv run --with numpy python research/register2.py all",
+  "harness_ref": "origin/summary-2",
+  "harness_series": 39,
+  "harness_series_matched": 36,
+  "k_max": 60,
+  "main_window": "2012-2025",
+  "method": "Lopez de Prado and Lewis (2019), ONC; Bailey and Lopez de Prado (2014), A.3",
+  "n_init": 5,
+  "notes": {
+    "cluster_sharpe_var": "Sample variance of as many numbers as there are clusters (2 in the main window): almost no precision, so the against-zero bar built on it is rough (review-2 section 1b).",
+    "cluster_sharpes_minvar_in_sample_diagnostic": "Diagnostic only, not used in the bar: Sharpes of in-sample minimum-variance portfolios per cluster (long-short weights fitted on the same returns), up to about 5. They mean nothing; do not quote them (review-2 section 1b)."
+  },
+  "onc_check_planted_found": [
+    [
+      6,
+      6
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      20,
+      20
+    ]
+  ],
+  "rows_backfilled": 1213,
+  "rows_backfilled_by_source": {
+    "curve": 1126,
+    "harness": 87,
+    "live": 11,
+    "logged": 0
+  },
+  "rows_backfilled_selectable": 413,
+  "sample_series": 368,
+  "seed": 20261118,
+  "sensitivity_one_per_family": {
+    "cluster_sharpe_mean": 1.0833,
+    "cluster_sharpe_var": 0.2838,
+    "cluster_sharpes": [
+      1.46,
+      0.7066
+    ],
+    "cluster_sharpes_minvar_in_sample_diagnostic": [
+      4.8888,
+      0.1001
+    ],
+    "from": "2012-01-06",
+    "onc_k": 2,
+    "onc_k_at_cap": false,
+    "onc_sizes": [
+      50,
+      8
+    ],
+    "participation_ratio": 1.71,
+    "rho_mean": 0.7099,
+    "rho_median": 0.8112,
+    "series": 58,
+    "to": "2025-11-07",
+    "weeks": 722
+  },
+  "shape": {
+    "excess_kurtosis_median": 9.061,
+    "excess_kurtosis_p90": 17.422,
+    "series": 424,
+    "skew_median": -0.092,
+    "skew_p10": -1.057
+  },
+  "windows": {
+    "1994-2025": {
+      "cluster_sharpe_mean": 0.8577,
+      "cluster_sharpe_var": 0.1189,
+      "cluster_sharpes": [
+        1.1015,
+        0.6139
+      ],
+      "cluster_sharpes_minvar_in_sample_diagnostic": [
+        5.4118,
+        0.5567
+      ],
+      "from": "1994-02-04",
+      "onc_k": 2,
+      "onc_k_at_cap": false,
+      "onc_sizes": [
+        185,
+        33
+      ],
+      "participation_ratio": 1.71,
+      "rho_mean": 0.7227,
+      "rho_median": 0.8187,
+      "series": 218,
+      "to": "2025-11-07",
+      "weeks": 1657
+    },
+    "2012-2025": {
+      "cluster_sharpe_mean": 1.168,
+      "cluster_sharpe_var": 0.1438,
+      "cluster_sharpes": [
+        1.4361,
+        0.8998
+      ],
+      "cluster_sharpes_minvar_in_sample_diagnostic": [
+        5.3807,
+        1.3476
+      ],
+      "from": "2012-01-06",
+      "onc_k": 2,
+      "onc_k_at_cap": false,
+      "onc_sizes": [
+        209,
+        88
+      ],
+      "participation_ratio": 2.26,
+      "rho_mean": 0.5815,
+      "rho_median": 0.6867,
+      "series": 297,
+      "to": "2025-11-07",
+      "weeks": 722
+    }
+  }
+}

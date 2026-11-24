@@ -19,10 +19,14 @@ branches; the leads' night log is on branch `summary-1` (closed PR #28, branch k
 
 - DONE #115: engineering PRs #13 #27 #29 #30 #32 #61 #67 #14 #15 landed in one merge
   (`docs/integrate-1.md`; 291 tests; daily dry run passed).
-- IN PROGRESS #118: research archive (all research lanes; `docs/research-archive-1.md`), then
-  close each contained research PR as "landed via #118".
-- NEXT: register chain (#74 dsr-1 .. #126 register-6) as one merge onto `main` (touches
-  `ledger.py`, `run_daily.py`: tests, review and a daily dry run first).
+- DONE #118: research archive (all research lanes; `docs/research-archive-1.md`); 81 contained
+  research PRs closed or marked merged with "landed via #118".
+- DONE #129: scoreboard footnote says Sharpe is above the cash rate.
+- DONE #126: register chain (#79 #92 #100 #108 #111 + register-6) in one merge, with three
+  review fixes (non-UTF-8 branch files cannot stop the daily run; try-shape logging only warns;
+  `research/tries-shape.jsonl` merges by union). The returns store keeps buy-and-hold weekly
+  series (weekly returns derived from Yahoo/exchange prices back to 1994): accepted as derived
+  statistics, not bars (lead's call, `returnstore.py`).
 - Owner decisions brief (`research/owner-decisions.md`): every item answered by its default as
   an agent call (section "Answers"); no owner question left.
 

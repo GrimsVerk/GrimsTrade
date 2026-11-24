@@ -10,3 +10,7 @@ dist/
 # Machine-specific settings (copy local.toml.example)
 /local.toml
 /intraday/
+
+# Research price caches and run curves (research/lib/fetch.py, register-2). Never commit raw data.
+research/data/
+research/register2.local.json

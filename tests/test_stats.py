@@ -180,6 +180,93 @@ def test_recorded_research_tries_survive_a_deleted_branch(tmp_path: Path) -> Non
     assert ledger.check_append_only(root / ledger.RESEARCH_FLOOR) == 0
 
 
+def _branch_with_tries(
+    repo: Path, branch: str, tries: str, path: str = "research/tries.md"
+) -> None:
+    """Commit `tries` at `path` on a new branch `branch` off main, then go back to main."""
+    git(repo, "checkout", "-q", "main")
+    git(repo, "checkout", "-qb", branch)
+    (repo / path).parent.mkdir(parents=True, exist_ok=True)
+    (repo / path).write_text(tries)
+    git(repo, "add", "-A")
+    git(repo, "commit", "-qm", f"tries on {branch}")
+    git(repo, "checkout", "-q", "main")
+
+
+def _table(*rows: str) -> str:
+    head = "| UTC time | Idea | Variant | Kind | Period | From | To | Sharpe |\n"
+    head += "|---|---|---|---|---|---|---|---:|\n"
+    return head + "".join(
+        f"| 2026-11-14 01:00 | {r} | variant | train | 2020 | 2023 | 0.7 |\n" for r in rows
+    )
+
+
+def test_research_tries_read_every_branch_whatever_its_name(tmp_path: Path) -> None:
+    """dsr-1 (2026-11-18): the count read only `main` and `research-*` branches, so lanes named
+    `carry-2`, `eu-4`, ... after 2026-11-13 were never counted (307 tries seen, 2,811 logged)."""
+    git(tmp_path, "init", "-q", "-b", "main")
+    git(tmp_path, "commit", "-q", "--allow-empty", "-m", "start")
+    _branch_with_tries(tmp_path, "carry-2", _table("carry | band", "carry | flat"))
+    # A lane pushed by another machine: only its remote-tracking branch is here.
+    _branch_with_tries(tmp_path, "eu-4", _table("eu | top3"))
+    git(tmp_path, "update-ref", "refs/remotes/origin/eu-4", "eu-4")
+    git(tmp_path, "branch", "-qD", "eu-4")
+    git(tmp_path, "symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/eu-4")
+    assert not (tmp_path / "research").exists()  # main's working tree has no research/
+    assert ledger.research_tries(tmp_path) == 3
+    assert sorted(ledger.research_sharpes(tmp_path)) == [0.7, 0.7, 0.7]
+
+
+def test_a_branch_with_a_non_utf8_tries_file_does_not_stop_the_count(tmp_path: Path) -> None:
+    """Every branch is read, so one stray byte on any of them must not stop the daily run."""
+    git(tmp_path, "init", "-q", "-b", "main")
+    git(tmp_path, "commit", "-q", "--allow-empty", "-m", "start")
+    _branch_with_tries(tmp_path, "carry-2", _table("carry | band"))
+    git(tmp_path, "checkout", "-q", "-b", "stray", "main")
+    (tmp_path / "research").mkdir(exist_ok=True)
+    (tmp_path / "research" / "tries.md").write_bytes(b"\xff\xfe not utf-8\n")
+    git(tmp_path, "add", "-A")
+    git(tmp_path, "commit", "-qm", "stray")
+    git(tmp_path, "checkout", "-q", "main")
+    assert ledger.research_tries(tmp_path) == 1
+
+
+def test_the_record_branch_is_not_a_research_branch(tmp_path: Path) -> None:
+    git(tmp_path, "init", "-q", "-b", "main")
+    git(tmp_path, "commit", "-q", "--allow-empty", "-m", "start")
+    _branch_with_tries(tmp_path, "paper-trail", _table("planted | x"))
+    git(tmp_path, "update-ref", "refs/remotes/origin/paper-trail", "paper-trail")
+    assert ledger.research_refs(tmp_path) == ["refs/heads/main"]
+    assert ledger.research_tries(tmp_path) == 0
+
+
+def test_the_committed_register_counts_its_tries(tmp_path: Path) -> None:
+    """`research/register/tries.jsonl` (written by `grimstrade.register`) keeps tries whose
+    branch is gone; the count reads it like a tries table, on every branch."""
+    git(tmp_path, "init", "-q", "-b", "main")
+    git(tmp_path, "commit", "-q", "--allow-empty", "-m", "start")
+
+    def line(variant: str, kind: str, sharpe: str) -> str:
+        return (
+            f'{{"idea": "gone", "variant": "{variant}", "kind": "{kind}", "period": "train", '
+            f'"sharpe": {sharpe}}}'
+        )
+
+    register = "\n".join(
+        [
+            line("a", "variant", "0.4"),
+            line("a", "variant", "0.4"),
+            line("b", "robustness", "9"),
+            line("c", "variant", "null"),
+            "not json",
+            "[1, 2]",
+        ]
+    )
+    _branch_with_tries(tmp_path, "register-1", register + "\n", ledger.RESEARCH_REGISTER)
+    assert ledger.research_tries(tmp_path) == 3  # a, b, c: the same (idea, variant) once
+    assert ledger.research_sharpes(tmp_path) == [0.4]  # train variants only, as for tables
+
+
 def test_research_sharpes_are_train_variants_only(tmp_path: Path) -> None:
     _research(tmp_path)
     assert sorted(ledger.research_sharpes(tmp_path)) == [0.5, 0.9]
