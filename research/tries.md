@@ -3245,3 +3245,4 @@ Never edit or delete a row.
 | 2026-11-24 19:22 | halving-2 | S2 alone-btc@LZ BTC-calendar placebos (Sharpe 1.23, rank 1/41, null SD 0.22) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | C2 LZ alt/BTC own window minus outside (+0.402/yr, rank 32/41 most negative; gate fail: BTC-beta) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | BTC alone-own placebos (rank 1/41, shown) | screen | train | 2011-07-19 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 20:01 | power-map | power map of strategy classes vs the bar (z 4.69): edge needed at 80% power C1 six assets +0.51, US 1927 +0.29, 13 markets pooled (Y_eff 191) +0.21, C2 +0.34..+0.79, C3 daily +0.72, C4 +0.43, C5 +3.03; alpha form IR 0.43-2.40; chance a top-plausible edge passes <= 0.02 where known; forward d +0.10 needs 72+ years; no backtest (research/power-map-1.md) | note | - | - | - | - | - | - | - |
