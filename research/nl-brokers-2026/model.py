@@ -1,9 +1,10 @@
 # Cost model: 12 equal monthly buys of M (Jan-Dec 2027), flat prices.
 # 2027 holding fees on the average month-end value (M,2M..12M -> 6.5M), steady state on 12M.
 # Platform costs only (fund TER shown separately; same fund -> same TER everywhere).
-def plat(M, per_buy=0.0, pct=0.0, fixed=0.0, pct_buy=0.0, min_year=0.0):
-    y1 = 12*per_buy + 12*M*pct_buy + max(pct*6.5*M + fixed, min_year if min_year else 0)
-    ss = max(pct*12*M + fixed, min_year if min_year else 0)
+def plat(M, per_buy=0.0, pct=0.0, fixed=0.0, pct_buy=0.0, min_year=0.0, min_month=0.0):
+    # min_month: monthly minimum activity fee, offset by that month's commissions (LYNX)
+    y1 = 12*max(per_buy, min_month) + 12*M*pct_buy + max(pct*6.5*M + fixed, min_year if min_year else 0)
+    ss = 12*min_month + max(pct*12*M + fixed, min_year if min_year else 0)
     return y1, ss
 P = {
  'ING Zelf op de Beurs (Topselectie, periodic)': dict(pct=0.0024),
@@ -16,7 +17,7 @@ P = {
  'ABN AMRO Zelf Beleggen Basis (free-list ETF)': dict(pct=0.0020),
  'Rabobank Zelf Beleggen (periodic ETF)': dict(pct=0.0024, pct_buy=0.0010, min_year=20.0),
  'IBKR Fixed (EUR 3/buy, secondary)': dict(per_buy=3.0),
- 'LYNX (EUR 6/buy, unverified)': dict(per_buy=6.0),
+ 'LYNX (EUR 6/buy; EUR 5/month minimum activity fee)': dict(per_buy=6.0, min_month=5.0),
  'Meesman (0.31% fee + 0.20% entry)': dict(pct=0.0031, pct_buy=0.0020),
  'Brand New Day (0.44% service + 0.05% swing)': dict(pct=0.0044, pct_buy=0.0005),
  'Peaks (EUR 1.99/mo + 0.50%)': dict(pct=0.0050, fixed=23.88),
