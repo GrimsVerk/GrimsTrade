@@ -1,0 +1,1990 @@
+{
+ "cpi": {
+  "AU": {
+   "annual": {
+    "end": "2024",
+    "n": 103,
+    "start": "1922"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2025-01",
+    "n": 307,
+    "start": "1948-07"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1242,
+    "start": "1922-04"
+   },
+   "quarterly": true,
+   "unbroken_from": "1922-04",
+   "vs_jst_yoy": {
+    "corr": 0.9698,
+    "from": "1923-01",
+    "max_abs_gap": 5.253,
+    "mean_abs_gap": 0.559,
+    "mean_gap": -0.084,
+    "n": 98,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 0.9995,
+    "from": "1949-07",
+    "max_abs_gap": 0.953,
+    "mean_abs_gap": 0.067,
+    "mean_gap": -0.0,
+    "n": 303,
+    "to": "2025-01"
+   }
+  },
+  "CA": {
+   "annual": {
+    "end": "2024",
+    "n": 111,
+    "start": "1914"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2025-03",
+    "n": 1335,
+    "start": "1914-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1341,
+    "start": "1914-01"
+   },
+   "quarterly": false,
+   "unbroken_from": "1914-01",
+   "vs_jst_yoy": {
+    "corr": 0.9991,
+    "from": "1915-01",
+    "max_abs_gap": 0.683,
+    "mean_abs_gap": 0.125,
+    "mean_gap": 0.004,
+    "n": 106,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 1.0,
+    "from": "1915-01",
+    "max_abs_gap": 0.0,
+    "mean_abs_gap": 0.0,
+    "mean_gap": 0.0,
+    "n": 1323,
+    "to": "2025-03"
+   }
+  },
+  "CH": {
+   "annual": {
+    "end": "2024",
+    "n": 104,
+    "start": "1921"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2025-04",
+    "n": 844,
+    "start": "1955-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1257,
+    "start": "1921-01"
+   },
+   "quarterly": false,
+   "unbroken_from": "1921-01",
+   "vs_jst_yoy": {
+    "corr": 0.9865,
+    "from": "1922-01",
+    "max_abs_gap": 6.369,
+    "mean_abs_gap": 0.117,
+    "mean_gap": -0.069,
+    "n": 99,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 1.0,
+    "from": "1956-01",
+    "max_abs_gap": 0.091,
+    "mean_abs_gap": 0.004,
+    "mean_gap": 0.0,
+    "n": 832,
+    "to": "2025-04"
+   }
+  },
+  "DE": {
+   "annual": {
+    "end": "2024",
+    "n": 101,
+    "start": "1924"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2025-03",
+    "n": 843,
+    "start": "1955-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 921,
+    "start": "1949-01"
+   },
+   "quarterly": false,
+   "unbroken_from": "1949-01",
+   "vs_jst_yoy": {
+    "corr": 0.8904,
+    "from": "1925-01",
+    "max_abs_gap": 10.441,
+    "mean_abs_gap": 0.358,
+    "mean_gap": -0.026,
+    "n": 96,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 0.999,
+    "from": "1956-01",
+    "max_abs_gap": 0.514,
+    "mean_abs_gap": 0.035,
+    "mean_gap": -0.0,
+    "n": 831,
+    "to": "2025-03"
+   }
+  },
+  "GB": {
+   "annual": {
+    "end": "2024",
+    "n": 364,
+    "start": "1661"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2025-03",
+    "n": 843,
+    "start": "1955-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1329,
+    "start": "1915-01"
+   },
+   "quarterly": false,
+   "unbroken_from": "1915-01",
+   "vs_jst_yoy": {
+    "corr": 0.9957,
+    "from": "1871-01",
+    "max_abs_gap": 2.845,
+    "mean_abs_gap": 0.216,
+    "mean_gap": -0.027,
+    "n": 150,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 0.9908,
+    "from": "1956-01",
+    "max_abs_gap": 3.518,
+    "mean_abs_gap": 0.514,
+    "mean_gap": -0.239,
+    "n": 831,
+    "to": "2025-03"
+   }
+  },
+  "JP": {
+   "annual": {
+    "end": "2024",
+    "n": 79,
+    "start": "1946"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2021-06",
+    "n": 798,
+    "start": "1955-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 950,
+    "start": "1946-08"
+   },
+   "quarterly": false,
+   "unbroken_from": "1946-08",
+   "vs_jst_yoy": {
+    "corr": 0.9966,
+    "from": "1947-01",
+    "max_abs_gap": 10.974,
+    "mean_abs_gap": 0.344,
+    "mean_gap": -0.055,
+    "n": 74,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 0.9986,
+    "from": "1956-01",
+    "max_abs_gap": 1.755,
+    "mean_abs_gap": 0.118,
+    "mean_gap": 0.024,
+    "n": 786,
+    "to": "2021-06"
+   }
+  },
+  "NO": {
+   "annual": {
+    "end": "2024",
+    "n": 160,
+    "start": "1865"
+   },
+   "gaps": 1,
+   "mei": {
+    "end": "2025-04",
+    "n": 844,
+    "start": "1955-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1266,
+    "start": "1920-03"
+   },
+   "quarterly": false,
+   "unbroken_from": "1926-02",
+   "vs_jst_yoy": {
+    "corr": 0.961,
+    "from": "1871-01",
+    "max_abs_gap": 7.732,
+    "mean_abs_gap": 0.978,
+    "mean_gap": 0.05,
+    "n": 150,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 0.9943,
+    "from": "1956-01",
+    "max_abs_gap": 1.809,
+    "mean_abs_gap": 0.205,
+    "mean_gap": 0.013,
+    "n": 832,
+    "to": "2025-04"
+   }
+  },
+  "NZ": {
+   "annual": {
+    "end": "2024",
+    "n": 111,
+    "start": "1914"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2025-01",
+    "n": 444,
+    "start": "1914-04"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1203,
+    "start": "1925-07"
+   },
+   "quarterly": true,
+   "unbroken_from": "1925-07",
+   "vs_mei_yoy": {
+    "corr": 1.0,
+    "from": "1926-07",
+    "max_abs_gap": 0.006,
+    "mean_abs_gap": 0.001,
+    "mean_gap": 0.0,
+    "n": 395,
+    "to": "2025-01"
+   }
+  },
+  "SE": {
+   "annual": {
+    "end": "2024",
+    "n": 195,
+    "start": "1830"
+   },
+   "gaps": 290,
+   "mei": {
+    "end": "2025-03",
+    "n": 843,
+    "start": "1955-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1001,
+    "start": "1918-03"
+   },
+   "quarterly": false,
+   "unbroken_from": "1954-06",
+   "vs_jst_yoy": {
+    "corr": 0.9998,
+    "from": "1871-01",
+    "max_abs_gap": 0.501,
+    "mean_abs_gap": 0.071,
+    "mean_gap": 0.0,
+    "n": 150,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 0.9998,
+    "from": "1956-01",
+    "max_abs_gap": 0.581,
+    "mean_abs_gap": 0.041,
+    "mean_gap": -0.001,
+    "n": 831,
+    "to": "2025-03"
+   }
+  },
+  "US": {
+   "annual": {
+    "end": "2024",
+    "n": 112,
+    "start": "1913"
+   },
+   "gaps": 0,
+   "mei": {
+    "end": "2025-04",
+    "n": 844,
+    "start": "1955-01"
+   },
+   "monthly": {
+    "end": "2025-09",
+    "n": 1353,
+    "start": "1913-01"
+   },
+   "quarterly": false,
+   "unbroken_from": "1913-01",
+   "vs_bls_yoy": {
+    "corr": 1.0,
+    "from": "1914-01",
+    "max_abs_gap": 0.0,
+    "mean_abs_gap": 0.0,
+    "mean_gap": -0.0,
+    "n": 1341,
+    "to": "2025-09"
+   },
+   "vs_jst_yoy": {
+    "corr": 0.9971,
+    "from": "1914-01",
+    "max_abs_gap": 2.351,
+    "mean_abs_gap": 0.188,
+    "mean_gap": 0.088,
+    "n": 107,
+    "to": "2020-01"
+   },
+   "vs_mei_yoy": {
+    "corr": 1.0,
+    "from": "1956-01",
+    "max_abs_gap": 0.0,
+    "mean_abs_gap": 0.0,
+    "mean_gap": -0.0,
+    "n": 832,
+    "to": "2025-04"
+   }
+  },
+  "XM": {
+   "annual": {
+    "end": "2024",
+    "n": 35,
+    "start": "1990"
+   },
+   "gaps": 0,
+   "monthly": {
+    "end": "2025-09",
+    "n": 429,
+    "start": "1990-01"
+   },
+   "quarterly": false,
+   "unbroken_from": "1990-01"
+  }
+ },
+ "jst": {
+  "bill_rate": {
+   "AU": {
+    "end": "2020",
+    "n": 148,
+    "start": "1870"
+   },
+   "CA": {
+    "end": null,
+    "n": 0,
+    "start": null
+   },
+   "CH": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 145,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 145,
+    "start": "1876"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "US": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   }
+  },
+  "bond_tr": {
+   "AU": {
+    "end": "2020",
+    "n": 121,
+    "start": "1900"
+   },
+   "CA": {
+    "end": null,
+    "n": 0,
+    "start": null
+   },
+   "CH": {
+    "end": "2020",
+    "n": 120,
+    "start": "1900"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 146,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 140,
+    "start": "1881"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "US": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   }
+  },
+  "cpi": {
+   "AU": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "CA": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "CH": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "US": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   }
+  },
+  "eq_capgain": {
+   "AU": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "CA": {
+    "end": null,
+    "n": 0,
+    "start": null
+   },
+   "CH": {
+    "end": "2020",
+    "n": 87,
+    "start": "1900"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 140,
+    "start": "1879"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 140,
+    "start": "1881"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "US": {
+    "end": "2020",
+    "n": 149,
+    "start": "1872"
+   }
+  },
+  "eq_dp": {
+   "AU": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "CA": {
+    "end": null,
+    "n": 0,
+    "start": null
+   },
+   "CH": {
+    "end": "2020",
+    "n": 87,
+    "start": "1900"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 133,
+    "start": "1886"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 141,
+    "start": "1880"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "US": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   }
+  },
+  "eq_tr": {
+   "AU": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "CA": {
+    "end": null,
+    "n": 0,
+    "start": null
+   },
+   "CH": {
+    "end": "2020",
+    "n": 121,
+    "start": "1900"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 133,
+    "start": "1886"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 140,
+    "start": "1881"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "US": {
+    "end": "2020",
+    "n": 149,
+    "start": "1872"
+   }
+  },
+  "ltrate": {
+   "AU": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "CA": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "CH": {
+    "end": "2020",
+    "n": 141,
+    "start": "1880"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 145,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "US": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   }
+  },
+  "stir": {
+   "AU": {
+    "end": "2020",
+    "n": 148,
+    "start": "1870"
+   },
+   "CA": {
+    "end": "2020",
+    "n": 87,
+    "start": "1934"
+   },
+   "CH": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "DE": {
+    "end": "2020",
+    "n": 145,
+    "start": "1870"
+   },
+   "GB": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "JP": {
+    "end": "2020",
+    "n": 124,
+    "start": "1879"
+   },
+   "NO": {
+    "end": "2020",
+    "n": 150,
+    "start": "1870"
+   },
+   "SE": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "US": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   }
+  }
+ },
+ "policy": {
+  "AU": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 148,
+    "start": "1870"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 693,
+    "start": "1968-01"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 595,
+    "start": "1976-04"
+   },
+   "unbroken_from": "1976-04",
+   "vs_oecd3m": {
+    "corr": 0.9544,
+    "from": "1976-04",
+    "max_abs_gap": 28.67,
+    "mean_abs_gap": 0.504,
+    "mean_gap": -0.07,
+    "n": 594,
+    "to": "2025-09"
+   }
+  },
+  "CA": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 87,
+    "start": "1934"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 837,
+    "start": "1956-01"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 784,
+    "start": "1960-07"
+   },
+   "unbroken_from": "1960-07",
+   "vs_oecd3m": {
+    "corr": 0.9924,
+    "from": "1960-07",
+    "max_abs_gap": 3.032,
+    "mean_abs_gap": 0.3,
+    "mean_gap": -0.083,
+    "n": 783,
+    "to": "2025-09"
+   }
+  },
+  "CH": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 315,
+    "start": "1999-07"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 958,
+    "start": "1946-01"
+   },
+   "unbroken_from": "1946-01",
+   "vs_oecd3m": {
+    "corr": 0.984,
+    "from": "1999-07",
+    "max_abs_gap": 1.385,
+    "mean_abs_gap": 0.157,
+    "mean_gap": 0.096,
+    "n": 315,
+    "to": "2025-09"
+   }
+  },
+  "DE": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 145,
+    "start": "1870"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 789,
+    "start": "1960-01"
+   },
+   "span": {
+    "end": "1998-12",
+    "n": 606,
+    "start": "1948-07"
+   },
+   "unbroken_from": "1948-07",
+   "vs_oecd3m": {
+    "corr": 0.8791,
+    "from": "1960-01",
+    "max_abs_gap": 7.57,
+    "mean_abs_gap": 1.017,
+    "mean_gap": -1.004,
+    "n": 468,
+    "to": "1998-12"
+   }
+  },
+  "GB": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 477,
+    "start": "1986-01"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 958,
+    "start": "1946-01"
+   },
+   "unbroken_from": "1946-01",
+   "vs_oecd3m": {
+    "corr": 0.9979,
+    "from": "1986-01",
+    "max_abs_gap": 1.633,
+    "mean_abs_gap": 0.228,
+    "mean_gap": -0.2,
+    "n": 477,
+    "to": "2025-09"
+   }
+  },
+  "JP": {
+   "gaps": 116,
+   "jst_stir": {
+    "end": "2020",
+    "n": 124,
+    "start": "1879"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 282,
+    "start": "2002-04"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 842,
+    "start": "1946-01"
+   },
+   "unbroken_from": "2016-09",
+   "vs_oecd3m": {
+    "corr": 0.9263,
+    "from": "2006-03",
+    "max_abs_gap": 0.64,
+    "mean_abs_gap": 0.206,
+    "mean_gap": -0.206,
+    "n": 195,
+    "to": "2025-09"
+   }
+  },
+  "NO": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 150,
+    "start": "1870"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 561,
+    "start": "1979-01"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 476,
+    "start": "1986-03"
+   },
+   "unbroken_from": "1986-03",
+   "vs_oecd3m": {
+    "corr": 0.9936,
+    "from": "1986-03",
+    "max_abs_gap": 4.42,
+    "mean_abs_gap": 0.52,
+    "mean_gap": -0.495,
+    "n": 475,
+    "to": "2025-09"
+   }
+  },
+  "NZ": {
+   "gaps": 0,
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 622,
+    "start": "1973-12"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 490,
+    "start": "1985-01"
+   },
+   "unbroken_from": "1985-01",
+   "vs_oecd3m": {
+    "corr": 0.9391,
+    "from": "1985-01",
+    "max_abs_gap": 34.03,
+    "mean_abs_gap": 0.607,
+    "mean_gap": -0.067,
+    "n": 489,
+    "to": "2025-09"
+   }
+  },
+  "SE": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 525,
+    "start": "1982-01"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 958,
+    "start": "1946-01"
+   },
+   "unbroken_from": "1946-01",
+   "vs_oecd3m": {
+    "corr": 0.9576,
+    "from": "1982-01",
+    "max_abs_gap": 19.82,
+    "mean_abs_gap": 0.565,
+    "mean_gap": -0.293,
+    "n": 525,
+    "to": "2025-09"
+   }
+  },
+  "US": {
+   "gaps": 0,
+   "jst_stir": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 735,
+    "start": "1964-06"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 856,
+    "start": "1954-07"
+   },
+   "unbroken_from": "1954-07",
+   "vs_oecd3m": {
+    "corr": 0.9876,
+    "from": "1964-06",
+    "max_abs_gap": 5.36,
+    "mean_abs_gap": 0.346,
+    "mean_gap": -0.114,
+    "n": 735,
+    "to": "2025-09"
+   }
+  },
+  "XM": {
+   "gaps": 0,
+   "oecd3m": {
+    "end": "2025-09",
+    "n": 381,
+    "start": "1994-01"
+   },
+   "span": {
+    "end": "2025-10",
+    "n": 322,
+    "start": "1999-01"
+   },
+   "unbroken_from": "1999-01",
+   "vs_oecd3m": {
+    "corr": 0.9852,
+    "from": "1999-01",
+    "max_abs_gap": 1.363,
+    "mean_abs_gap": 0.284,
+    "mean_gap": 0.062,
+    "n": 321,
+    "to": "2025-09"
+   }
+  }
+ },
+ "real_fx": {
+  "AUD": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "CAD": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "CHF": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "EUR": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "GBP": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "JPY": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "NOK": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "NZD": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  },
+  "SEK": {
+   "end": "2025-09",
+   "n": 657,
+   "start": "1971-01"
+  }
+ },
+ "shares": {
+  "SPASTT01AUM661N": {
+   "end": "2025-09",
+   "n": 813,
+   "start": "1958-01"
+  },
+  "SPASTT01CAM661N": {
+   "end": "2025-09",
+   "n": 837,
+   "start": "1956-01"
+  },
+  "SPASTT01CHM661N": {
+   "end": "2025-09",
+   "n": 849,
+   "start": "1955-01"
+  },
+  "SPASTT01DEM661N": {
+   "end": "2025-09",
+   "n": 789,
+   "start": "1960-01"
+  },
+  "SPASTT01EZM661N": {
+   "end": "2025-09",
+   "n": 466,
+   "start": "1986-12"
+  },
+  "SPASTT01GBM661N": {
+   "end": "2025-09",
+   "n": 814,
+   "start": "1957-12"
+  },
+  "SPASTT01JPM661N": {
+   "end": "2025-09",
+   "n": 801,
+   "start": "1959-01"
+  },
+  "SPASTT01NOM661N": {
+   "end": "2025-09",
+   "n": 477,
+   "start": "1986-01"
+  },
+  "SPASTT01NZM661N": {
+   "end": "2025-09",
+   "n": 705,
+   "start": "1967-01"
+  },
+  "SPASTT01SEM661N": {
+   "end": "2025-09",
+   "n": 909,
+   "start": "1950-01"
+  },
+  "SPASTT01USM661N": {
+   "end": "2025-09",
+   "n": 825,
+   "start": "1957-01"
+  }
+ },
+ "yields": {
+  "AU": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 599,
+    "start": "1975-12"
+   },
+   "firms_first_last": [
+    74.0,
+    1585.0
+   ],
+   "french_yld_vs_jst_t": {
+    "corr": 0.6436,
+    "from": "1975-01",
+    "max_abs_gap": 2.293,
+    "mean_abs_gap": 0.57,
+    "mean_gap": -0.063,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "french_yld_vs_jst_tm1": {
+    "corr": 0.7538,
+    "from": "1974-01",
+    "max_abs_gap": 2.163,
+    "mean_abs_gap": 0.54,
+    "mean_gap": -0.14,
+    "n": 47,
+    "to": "2020-01"
+   },
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.1792,
+    "from": "1975-01",
+    "max_abs_gap": 4.881,
+    "mean_abs_gap": 0.93,
+    "mean_gap": 0.272,
+    "n": 50,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.8725,
+    "from": "1976-01",
+    "max_abs_gap": 3.211,
+    "mean_abs_gap": 0.384,
+    "mean_gap": 0.191,
+    "n": 50,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.5452,
+    "from": "1975-01",
+    "max_abs_gap": 3.833,
+    "mean_abs_gap": 0.784,
+    "mean_gap": -0.334,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.3927,
+    "from": "1976-01",
+    "max_abs_gap": 5.503,
+    "mean_abs_gap": 0.765,
+    "mean_gap": -0.26,
+    "n": 45,
+    "to": "2020-01"
+   }
+  },
+  "CA": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 575,
+    "start": "1977-12"
+   },
+   "firms_first_last": [
+    84.0,
+    974.0
+   ],
+   "french_yld_vs_jst_t": {
+    "n": 0
+   },
+   "french_yld_vs_jst_tm1": {
+    "n": 0
+   },
+   "jst_eq_dp": {
+    "end": null,
+    "n": 0,
+    "start": null
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 49,
+     "start": "1977"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 49,
+     "start": "1977"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 49,
+     "start": "1977"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 49,
+     "start": "1977"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.7674,
+    "from": "1977-01",
+    "max_abs_gap": 1.778,
+    "mean_abs_gap": 0.483,
+    "mean_gap": 0.27,
+    "n": 48,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.9596,
+    "from": "1978-01",
+    "max_abs_gap": 0.846,
+    "mean_abs_gap": 0.284,
+    "mean_gap": 0.242,
+    "n": 48,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "n": 0
+   },
+   "vs_jst_dec_tm1": {
+    "n": 0
+   }
+  },
+  "CH": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 599,
+    "start": "1975-12"
+   },
+   "firms_first_last": [
+    45.0,
+    309.0
+   ],
+   "french_yld_vs_jst_t": {
+    "corr": 0.6718,
+    "from": "1975-01",
+    "max_abs_gap": 3.293,
+    "mean_abs_gap": 0.435,
+    "mean_gap": -0.164,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "french_yld_vs_jst_tm1": {
+    "corr": 0.7472,
+    "from": "1974-01",
+    "max_abs_gap": 2.453,
+    "mean_abs_gap": 0.426,
+    "mean_gap": -0.187,
+    "n": 47,
+    "to": "2020-01"
+   },
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 87,
+    "start": "1900"
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.6552,
+    "from": "1975-01",
+    "max_abs_gap": 1.637,
+    "mean_abs_gap": 0.471,
+    "mean_gap": 0.089,
+    "n": 50,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.9629,
+    "from": "1976-01",
+    "max_abs_gap": 0.797,
+    "mean_abs_gap": 0.165,
+    "mean_gap": 0.065,
+    "n": 50,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.7351,
+    "from": "1975-01",
+    "max_abs_gap": 1.957,
+    "mean_abs_gap": 0.478,
+    "mean_gap": -0.259,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.6726,
+    "from": "1976-01",
+    "max_abs_gap": 3.367,
+    "mean_abs_gap": 0.454,
+    "mean_gap": -0.258,
+    "n": 45,
+    "to": "2020-01"
+   }
+  },
+  "DE": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 599,
+    "start": "1975-12"
+   },
+   "firms_first_last": [
+    99.0,
+    629.0
+   ],
+   "french_yld_vs_jst_t": {
+    "corr": 0.5888,
+    "from": "1975-01",
+    "max_abs_gap": 2.86,
+    "mean_abs_gap": 0.849,
+    "mean_gap": 0.688,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "french_yld_vs_jst_tm1": {
+    "corr": 0.65,
+    "from": "1974-01",
+    "max_abs_gap": 2.35,
+    "mean_abs_gap": 0.824,
+    "mean_gap": 0.636,
+    "n": 47,
+    "to": "2020-01"
+   },
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 151,
+    "start": "1870"
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.5731,
+    "from": "1975-01",
+    "max_abs_gap": 2.788,
+    "mean_abs_gap": 0.816,
+    "mean_gap": 0.162,
+    "n": 50,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.953,
+    "from": "1976-01",
+    "max_abs_gap": 1.198,
+    "mean_abs_gap": 0.299,
+    "mean_gap": 0.13,
+    "n": 50,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.5519,
+    "from": "1975-01",
+    "max_abs_gap": 2.968,
+    "mean_abs_gap": 0.876,
+    "mean_gap": 0.534,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.5321,
+    "from": "1976-01",
+    "max_abs_gap": 3.568,
+    "mean_abs_gap": 0.82,
+    "mean_gap": 0.577,
+    "n": 45,
+    "to": "2020-01"
+   }
+  },
+  "GB": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 599,
+    "start": "1975-12"
+   },
+   "firms_first_last": [
+    179.0,
+    1088.0
+   ],
+   "french_yld_vs_jst_t": {
+    "corr": 0.6832,
+    "from": "1975-01",
+    "max_abs_gap": 6.24,
+    "mean_abs_gap": 0.701,
+    "mean_gap": 0.342,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "french_yld_vs_jst_tm1": {
+    "corr": 0.9806,
+    "from": "1974-01",
+    "max_abs_gap": 1.33,
+    "mean_abs_gap": 0.214,
+    "mean_gap": 0.163,
+    "n": 47,
+    "to": "2020-01"
+   },
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.493,
+    "from": "1975-01",
+    "max_abs_gap": 7.221,
+    "mean_abs_gap": 0.893,
+    "mean_gap": 0.334,
+    "n": 50,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.9616,
+    "from": "1976-01",
+    "max_abs_gap": 0.921,
+    "mean_abs_gap": 0.299,
+    "mean_gap": 0.18,
+    "n": 50,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.9189,
+    "from": "1975-01",
+    "max_abs_gap": 1.456,
+    "mean_abs_gap": 0.348,
+    "mean_gap": -0.006,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.7373,
+    "from": "1976-01",
+    "max_abs_gap": 2.756,
+    "mean_abs_gap": 0.615,
+    "mean_gap": 0.056,
+    "n": 45,
+    "to": "2020-01"
+   }
+  },
+  "JP": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 599,
+    "start": "1975-12"
+   },
+   "firms_first_last": [
+    191.0,
+    3344.0
+   ],
+   "french_yld_vs_jst_t": {
+    "corr": 0.888,
+    "from": "1975-01",
+    "max_abs_gap": 0.923,
+    "mean_abs_gap": 0.267,
+    "mean_gap": 0.111,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "french_yld_vs_jst_tm1": {
+    "corr": 0.9156,
+    "from": "1974-01",
+    "max_abs_gap": 0.846,
+    "mean_abs_gap": 0.234,
+    "mean_gap": 0.101,
+    "n": 47,
+    "to": "2020-01"
+   },
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 133,
+    "start": "1886"
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.8547,
+    "from": "1975-01",
+    "max_abs_gap": 1.112,
+    "mean_abs_gap": 0.293,
+    "mean_gap": 0.037,
+    "n": 50,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.9911,
+    "from": "1976-01",
+    "max_abs_gap": 0.274,
+    "mean_abs_gap": 0.082,
+    "mean_gap": 0.026,
+    "n": 50,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.8905,
+    "from": "1975-01",
+    "max_abs_gap": 0.817,
+    "mean_abs_gap": 0.233,
+    "mean_gap": 0.07,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.8804,
+    "from": "1976-01",
+    "max_abs_gap": 1.022,
+    "mean_abs_gap": 0.245,
+    "mean_gap": 0.078,
+    "n": 45,
+    "to": "2020-01"
+   }
+  },
+  "NO": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 599,
+    "start": "1975-12"
+   },
+   "firms_first_last": [
+    14.0,
+    290.0
+   ],
+   "french_yld_vs_jst_t": {
+    "corr": 0.557,
+    "from": "1975-01",
+    "max_abs_gap": 5.866,
+    "mean_abs_gap": 0.966,
+    "mean_gap": 0.21,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "french_yld_vs_jst_tm1": {
+    "corr": 0.5632,
+    "from": "1974-01",
+    "max_abs_gap": 5.155,
+    "mean_abs_gap": 0.944,
+    "mean_gap": 0.253,
+    "n": 47,
+    "to": "2020-01"
+   },
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 141,
+    "start": "1880"
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 42,
+     "start": "1975"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.5495,
+    "from": "1975-01",
+    "max_abs_gap": 6.198,
+    "mean_abs_gap": 1.145,
+    "mean_gap": 0.158,
+    "n": 50,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.9545,
+    "from": "1976-01",
+    "max_abs_gap": 1.57,
+    "mean_abs_gap": 0.459,
+    "mean_gap": 0.267,
+    "n": 50,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.5354,
+    "from": "1975-01",
+    "max_abs_gap": 4.249,
+    "mean_abs_gap": 1.038,
+    "mean_gap": 0.008,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.5193,
+    "from": "1976-01",
+    "max_abs_gap": 4.325,
+    "mean_abs_gap": 1.088,
+    "mean_gap": 0.013,
+    "n": 45,
+    "to": "2020-01"
+   }
+  },
+  "NZ": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 443,
+    "start": "1988-12"
+   },
+   "firms_first_last": [
+    23.0,
+    117.0
+   ],
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 38,
+     "start": "1988"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 38,
+     "start": "1988"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 38,
+     "start": "1988"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 38,
+     "start": "1988"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.3963,
+    "from": "1988-01",
+    "max_abs_gap": 5.043,
+    "mean_abs_gap": 1.09,
+    "mean_gap": 0.214,
+    "n": 37,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.8932,
+    "from": "1989-01",
+    "max_abs_gap": 3.092,
+    "mean_abs_gap": 0.559,
+    "mean_gap": 0.155,
+    "n": 37,
+    "to": "2025-01"
+   }
+  },
+  "SE": {
+   "dy_gaps": 0,
+   "dy_monthly": {
+    "end": "2025-10",
+    "n": 599,
+    "start": "1975-12"
+   },
+   "firms_first_last": [
+    37.0,
+    847.0
+   ],
+   "french_yld_vs_jst_t": {
+    "corr": 0.6709,
+    "from": "1975-01",
+    "max_abs_gap": 3.57,
+    "mean_abs_gap": 0.71,
+    "mean_gap": 0.097,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "french_yld_vs_jst_tm1": {
+    "corr": 0.85,
+    "from": "1974-01",
+    "max_abs_gap": 2.75,
+    "mean_abs_gap": 0.436,
+    "mean_gap": 0.058,
+    "n": 47,
+    "to": "2020-01"
+   },
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "ratios": {
+    "B/M": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "CE/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "E/P": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    },
+    "Yld": {
+     "end": "2025",
+     "n": 51,
+     "start": "1975"
+    }
+   },
+   "vs_french_annual_dec_t": {
+    "corr": 0.476,
+    "from": "1975-01",
+    "max_abs_gap": 4.559,
+    "mean_abs_gap": 0.972,
+    "mean_gap": 0.119,
+    "n": 50,
+    "to": "2024-01"
+   },
+   "vs_french_annual_dec_tm1": {
+    "corr": 0.9335,
+    "from": "1976-01",
+    "max_abs_gap": 1.821,
+    "mean_abs_gap": 0.346,
+    "mean_gap": 0.082,
+    "n": 50,
+    "to": "2025-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.8169,
+    "from": "1975-01",
+    "max_abs_gap": 2.904,
+    "mean_abs_gap": 0.568,
+    "mean_gap": -0.014,
+    "n": 46,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.7109,
+    "from": "1976-01",
+    "max_abs_gap": 3.724,
+    "mean_abs_gap": 0.754,
+    "mean_gap": 0.046,
+    "n": 45,
+    "to": "2020-01"
+   }
+  },
+  "US": {
+   "jst_eq_dp": {
+    "end": "2020",
+    "n": 150,
+    "start": "1871"
+   },
+   "shiller_dp": {
+    "end": "2023-06",
+    "n": 1830,
+    "start": "1871-01"
+   },
+   "shiller_ep": {
+    "end": "2023-06",
+    "n": 1830,
+    "start": "1871-01"
+   },
+   "vs_jst_dec_t": {
+    "corr": 0.9998,
+    "from": "1871-01",
+    "max_abs_gap": 0.259,
+    "mean_abs_gap": 0.005,
+    "mean_gap": -0.002,
+    "n": 150,
+    "to": "2020-01"
+   },
+   "vs_jst_dec_tm1": {
+    "corr": 0.806,
+    "from": "1872-01",
+    "max_abs_gap": 4.433,
+    "mean_abs_gap": 0.761,
+    "mean_gap": 0.024,
+    "n": 149,
+    "to": "2020-01"
+   }
+  }
+ }
+}

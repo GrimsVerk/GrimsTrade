@@ -61,7 +61,9 @@ MEI_CPI = [
     "DEUCPIALLMINMEI", "AUSCPIALLQINMEI", "NZLCPIALLQINMEI", "SWECPIALLMINMEI",
     "NORCPIALLMINMEI", "USACPIALLMINMEI",
 ]  # fmt: skip
-SHARES = [f"SPASTT01{c}M661N" for c in ("US", "JP", "GB", "CH", "CA", "DE", "EZ", "AU", "NZ", "SE", "NO")]
+SHARES = [
+    f"SPASTT01{c}M661N" for c in ("US", "JP", "GB", "CH", "CA", "DE", "EZ", "AU", "NZ", "SE", "NO")
+]
 ALFRED_IDS = ["CPIAUCNS", *MEI_CPI, *SHARES]
 
 
