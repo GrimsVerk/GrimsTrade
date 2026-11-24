@@ -1,6 +1,6 @@
 # eu-1 results: `tsmom12` on European UCITS ETFs in EUR
 
-Train period only. Total-return prices. Sharpe on calendar days, zero risk-free rate, each book in its own currency. Costs: `gym` (ETFs 0 + 2 bps), `nl` (Dutch broker, ETFs 0.10% + 0.05%), `harsh` (ETFs 0.25% + 0.15%); coins 0.25% + 0.05% throughout. Card: `cards/eu-1.md`. Era columns are Sharpe ratios.
+Train period only. Total-return prices. Sharpe on calendar days, zero risk-free rate, each book in its own currency. Costs: `gym` (ETFs 0 + 2 bps), `retail` (retail broker, ETFs 0.10% + 0.05%), `harsh` (ETFs 0.25% + 0.15%); coins 0.25% + 0.05% throughout. Card: `cards/eu-1.md`. Era columns are Sharpe ratios.
 
 ## 1. Window W, 2012-01-02 .. 2025-11-09
 

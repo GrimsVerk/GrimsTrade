@@ -92,7 +92,7 @@ announcement premium; `month-end-bonds` and `volume-1` have their own lanes).
 - **S5. Pitkäjärvi, Suominen, Vaittinen, "Cross-asset signals and time series momentum",
   Journal of Financial Economics 136(1), 2020.** `[secondary]`
   <https://www.cxoadvisory.com/equity-premium/cross-asset-class-intrinsic-momentum>
-  <https://research.vu.nl/en/publications/cross-asset-signals-and-time-series-momentum/>
+  <https://doi.org/10.1016/j.jfineco.2019.02.011>
   - 20 countries, 1980-2015, monthly. Stocks: long when the past 12-month stock and bond
     returns are both positive. Bonds: long when the bond return is positive and the stock
     return negative. Sharpe 45% above plain TSMOM (abstract). CXO: gross, indexes, lags and

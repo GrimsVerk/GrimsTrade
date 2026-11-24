@@ -1,6 +1,6 @@
 # eu-2 results, amendment 2: EUR-hedged US equity
 
-Train period only, window W (decisions 2012-01-02 .. 2025-11-09). Total-return prices; EUR books at Dutch percentage costs (`nl`: ETFs 0.10% + 0.05%), US books at the gym's, coins 0.25% + 0.05%; house band 1%. Sharpe on calendar days, zero risk-free rate. `IUSEL` = IUSE, iShares S&P 500 EUR Hedged (London EUR line); `XAD1` = Xtrackers Physical Gold EUR Hedged. Rows from eu-1 are re-scored from its saved runs (no new rows). Card: `cards/eu-2.md`.
+Train period only, window W (decisions 2012-01-02 .. 2025-11-09). Total-return prices; EUR books at percentage costs (`retail`: ETFs 0.10% + 0.05%), US books at the gym's, coins 0.25% + 0.05%; house band 1%. Sharpe on calendar days, zero risk-free rate. `IUSEL` = IUSE, iShares S&P 500 EUR Hedged (London EUR line); `XAD1` = Xtrackers Physical Gold EUR Hedged. Rows from eu-1 are re-scored from its saved runs (no new rows). Card: `cards/eu-2.md`.
 
 ## 1. Coin-free asset classes: does hedging remove the currency drag?
 
