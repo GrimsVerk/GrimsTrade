@@ -44,7 +44,7 @@ little room for a gain). Most candidates are filters on the same price path, so 
 
 `[memory]`: cited from memory, not re-read for this run.
 
-**What survives.** Of 14 candidates (12 distinct after merging C2 into P1), 10 are tested
+**What survives.** Of 14 candidates (13 distinct after merging C2 into P1), 11 are tested
 records in other words: smoother or tapered filters, per-asset lookbacks, faster exits,
 momentum of momentum, soft slots, correlation-network regime signals and volatility forecasts.
 The two that survive (P1, S1) change only how `tsmom12` reads the past year, not what it holds
@@ -82,29 +82,32 @@ research/lib/wide18.py`).
 other sets): both are behind or level on every set. Nothing goes to the paper book.
 
 - **`vclock12` is worse, and worst where it was meant to help.** Era differences on the six:
-  1994-99 -0.33, 2000-09 +0.15, 2010-16 -0.18, 2017-21 -0.16, 2022-25 -0.61. It helped only in
-  the slow 2000s bear markets and on the indexes before 1994 (+0.16, +0.09), and lost the 2022
-  fall (the window was long after calm years, so the exit came late) and both the 1990s and
-  2010s bull runs (more flips: 9.6 a year against 7.2). Post hoc (`lib/wide18_posthoc.py`, not
-  a try): the variance of coins, QQQ and gold fell over the record, so the expanding "median
+  1994-99 -0.33, 2000-09 +0.15, 2010-16 -0.18, 2017-21 -0.16, 2022-25 -0.61. It was ahead in
+  the 2000s on the six (+0.15), on the indexes in 1962-79, 1980-93 and 2010-16 (+0.16, +0.09,
+  +0.09) and slightly on the ETFs in 2000-16 (+0.01, +0.03); it lost the 2022 fall and both the
+  1990s and 2010s bull runs on the six (more flips: 9.6 a year against 7.2). Post hoc
+  (`lib/wide18_posthoc.py`, not a try); the causes below are an untested interpretation, only
+  the window shares are measured: the variance of coins, QQQ and gold fell over the record, so the expanding "median
   year" was a loud year and their windows sat above a year most of the time (median 1.22-1.30
   years; at the two-year cap 10-24% of Fridays); on SPY and TLT the median window was 0.92-0.94
-  years. The physical premise (regimes turn over per unit of variance) needs a stationary
+  years. A long window after calm years would make the 2022 exit late (not checked trade by
+  trade). The physical premise (regimes turn over per unit of variance) needs a stationary
   variance scale, and these assets do not have one. A rolling reference would fix that and add
   a free parameter; it was not run.
 - **`huber52` is `tsmom12`**: correlation 0.97, the same Sharpe to three decimals on the six,
   slightly worse worst loss (40% vs 37%) and more flips (8.8 vs 7.2). On the indexes it is
   clearly worse (-0.10, z -1.84): clipping the big weeks keeps the rule in through crashes
   that come as a few large down weeks. The jumps are part of the trend, not noise around it.
-- **The power statement held**: both |z| stayed within 2.2 and both were expected fails. The
-  close rule (`huber52`, corr 0.97) has an SE of 0.038, so the bar in Sharpe units was +0.18:
+- **The expected result held (both fail). The size expectation held for `huber52` only:
+  `vclock12` lost 0.167 at SE 0.076, outside the card's |dSharpe| < 0.06, SE 0.03-0.06 and z
+  within +-2.** The close rule (`huber52`, corr 0.97) has an SE of 0.038, so the bar in Sharpe units was +0.18:
   lower than the BAR.md close-rule figure (+0.31), still far above anything a re-weighting of
   the same year has shown (trend-tune: best of 98 settings +0.08).
 
 ## What this says about the fields
 
 - **Most ideas from these fields are filters on the same price path** and so map onto tested
-  records: 10 of 12 distinct candidates were killed in step 1 without a run. The two that were
+  records: 11 of 13 distinct candidates were killed in step 1 without a run. The two that were
   new (a variance clock, a robust estimator) changed how the year is read, not what is held,
   and neither helped. Network ideas need breadth the six do not have (a six-node network is
   its mean correlation).
@@ -115,6 +118,6 @@ other sets): both are behind or level on every set. Nothing goes to the paper bo
 ## Count
 
 This run adds **2 mechanisms tested by a strategy (`vclock12`, `huber52`; 2 variants, 6
-robustness rows) and 12 killed as overlaps (note rows in `tries.md`, not counted as tries,
+robustness rows) and 11 killed as overlaps and 1 merged (12 note rows in `tries.md`, not counted as tries,
 as wide-16 did), none passed**. On wide-16's count: 90 mechanisms, 21 strategy tests, 22
 gates, none passed (not counting wide-17's, which runs in parallel).
