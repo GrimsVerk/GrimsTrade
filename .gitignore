@@ -7,3 +7,6 @@ __pycache__/
 .ruff_cache/
 dist/
 /trail/
+# Machine-specific settings (copy local.toml.example)
+/local.toml
+/intraday/

@@ -8,7 +8,7 @@ from datetime import UTC, date, datetime, time, timedelta
 import pytest
 
 from grimstrade import gym
-from grimstrade.data import Bar, History
+from grimstrade.data import Bar, Dividend, History
 from grimstrade.gym import Decision
 
 NO_COSTS = {"crypto": gym.Costs(0, 0), "etf": gym.Costs(0, 0)}
@@ -35,50 +35,128 @@ def test_non_finite_weights_are_rejected(bad: float) -> None:
         gym.simulate([Decision(at(0), {"BTC": 1.0}), Decision(at(1), {"BTC": bad})], hist)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="audit G2: an order that cannot be paid for when its market opens is dropped, not "
-    "kept: moving from an ETF into crypto leaves the money in cash until a later decision",
-)
 def test_a_switch_from_etf_to_crypto_ends_up_in_crypto() -> None:
+    """Audit G2 (fixed): an order that could not be paid for at its open was dropped."""
     hist: History = {"SPY": flat(12, 100.0, weekdays_only=True), "BTC": flat(12, 100.0)}
     # Monday: all in SPY. Wednesday 22:30: switch everything to BTC. No decision after that.
     decisions = [Decision(at(0), {"SPY": 1.0}), Decision(at(2), {"BTC": 1.0})]
     res = gym.simulate(decisions, hist, costs=NO_COSTS)
-    # BTC opens Thursday 00:00, before SPY can be sold at 13:30: the buy finds no cash and is
-    # forgotten. SPY is then sold, and the 10,000 sits in cash for good.
+    # BTC opens Thursday 00:00, before SPY can be sold at 13:30: the buy finds no cash. It stays
+    # pending, SPY is sold Thursday 13:30, and BTC is bought at the next open, Friday 00:00.
     assert res.positions["SPY"] == 0
     assert res.positions["BTC"] == pytest.approx(100.0)
+    btc = [f for f in res.fills if f.symbol == "BTC"]
+    spy_sold = next(f.time for f in res.fills if f.symbol == "SPY" and f.qty < 0)
+    assert [f.time for f in btc] == [at(4, 0, 0)]  # Friday 00:00: the first open after the sale
+    assert spy_sold == at(3, 13, 30) < btc[0].time
 
 
-def test_a_crypto_fill_pays_the_taker_fee() -> None:
+def test_a_newer_decision_replaces_a_buy_still_waiting_for_cash() -> None:
+    hist: History = {"SPY": flat(12, 100.0, weekdays_only=True), "BTC": flat(12, 100.0)}
+    # Wednesday 22:30: switch to BTC (cannot be paid at Thursday 00:00). Thursday 22:30, before
+    # the next BTC open: all cash. The waiting buy must not fill on Friday.
+    decisions = [Decision(at(0), {"SPY": 1.0}), Decision(at(2), {"BTC": 1.0}), Decision(at(3), {})]
+    res = gym.simulate(decisions, hist, costs=NO_COSTS)
+    assert res.positions["BTC"] == 0 and res.positions["SPY"] == 0
+    assert res.cash == pytest.approx(gym.START_CASH)
+
+
+SIX = ("BTC", "ETH", "SPY", "QQQ", "GLD", "TLT")
+
+
+@pytest.mark.parametrize("costs", [NO_COSTS, gym.COSTS], ids=["no-costs", "costs"])
+@pytest.mark.parametrize("decide_at", [(0, 22, 30), (1, 3, 0)], ids=["22:30", "late-cron-03:00"])
+def test_a_fully_invested_equal_weight_tops_up_crypto_that_fell_behind(
+    costs: dict[str, gym.Costs], decide_at: tuple[int, int, int]
+) -> None:
+    """Audit G2 as seen live (health check 2026-11-17): fully invested `equal_weight` holds no
+    cash, so the crypto buy at 00:00 found none; the ETF sells that would fund it come at 13:30
+    and each was inside the 1% band, so nothing was sold and crypto stayed 1.2-1.6% under target
+    for good. Now the ETFs above target are sold down to it when the decision's buys need the
+    cash, and the crypto buy waits for that cash. Both decision times: the planned 22:30 UTC
+    (crypto opens before the ETFs) and the late cron seen live, about 03:00 (ETFs first)."""
+    n = 16
+    # Crypto falls 10% on day 5 and stays there; the ETFs never move.
+    crypto = [
+        b if b.date < DAY1 + timedelta(days=5) else Bar(b.date, 90.0, 90.0, 90.0, 90.0, 1.0)
+        for b in flat(n, 100.0)
+    ]
+    hist: History = {"BTC": crypto, "ETH": crypto} | {
+        s: flat(n, 100.0, weekdays_only=True) for s in ("SPY", "QQQ", "GLD", "TLT")
+    }
+    off, hh, mm = decide_at
+    w = {s: 1 / 6 for s in SIX}
+    decisions = [Decision(at(d + off, hh, mm), w) for d in range(n - 3)]
+    res = gym.simulate(decisions, hist, costs=costs)
+    # After the drop crypto is 15.5% each, ETFs 17.2%: each ETF is inside the band.
+    equity = res.cash + sum(q * (90.0 if s in ("BTC", "ETH") else 100.0)
+                            for s, q in res.positions.items())  # fmt: skip
+    # The rule promises to reach the band, not the exact target: with the tiered crypto fee
+    # (#32) the late-cron case ends 0.9% under, inside the 1% band (it was 1.6% under before G2).
+    for s in ("BTC", "ETH"):
+        assert res.positions[s] * 90.0 / equity == pytest.approx(1 / 6, abs=gym.BAND)
+    assert res.cash >= -1e-6
+
+
+def test_a_crypto_fill_pays_the_taker_fee_of_its_30_day_volume_tier() -> None:
     """Audit G3 (fixed): the gym charged crypto fills 25 basis points. A fill at the open is a
-    market order and pays the taker fee: on Kraken Pro 0.80% / 0.60% / 0.38% for a 30-day volume
-    from 0 / 2,500 / 10,000 USD (its fee page, read 2026-11-12). The default is now 0.60%, the
-    tier of the busiest live crypto strategy; nothing below the cheapest tier in reach of a
-    10,000 USD account may come back unnoticed."""
-    assert gym.COSTS["crypto"].fee >= 0.0038
-    hist: History = {"BTC": flat(4, 100.0)}
+    market order and pays Kraken Pro's taker fee, which depends on the account's spot volume in
+    the 30 days before (kraken.com/pro/fees, read 2026-11-12 and again 2026-11-18). Each
+    strategy is its own account. The flat 0.60% that replaced the 25 bps under-charged a slow
+    account (a first purchase really pays 0.80%) and over-charged a busy one (0.38% from 10,000
+    USD a month)."""
+    taker = gym.COSTS["crypto"]
+    assert [taker.fee_at(v) for v in (0, 2_499, 2_500, 9_999, 10_000, 25_000, 50_000, 100_000)] == [
+        0.0080, 0.0080, 0.0060, 0.0060, 0.0038, 0.0035, 0.0030, 0.0025
+    ]  # fmt: skip
+    hist: History = {"BTC": flat(40, 100.0)}
     res = gym.simulate([Decision(at(0), {"BTC": 1.0}), Decision(at(1), {})], hist)
+    buy, sell = res.fills
+    assert buy.fee == pytest.approx(buy.qty * buy.price * 0.0080)  # no volume yet
+    # The buy traded 9,915 USD (10,000 less its fee and slippage): the 2,500 tier.
+    assert sell.fee == pytest.approx(-sell.qty * sell.price * 0.0060)
     paid = 1 - res.cash / gym.START_CASH
-    assert paid == pytest.approx(2 * (0.0060 + 0.0005), abs=1e-4)  # in and out: 1.3%
+    assert paid == pytest.approx(0.0080 + 0.0060 + 2 * 0.0005, abs=2e-4)  # in and out: 1.5%
 
 
-def test_dividends_are_not_credited_which_costs_a_bond_fund_holder_about_4_percent_a_year() -> None:
-    """Audit G4 (known gap, sized): prices are raw, so on each ex-dividend day the price drops by
-    the payout and the holder gets nothing for it. A fund that only pays out its 0.36% a month
-    (TLT's order of size) and otherwise goes nowhere shows about -4.2% a year here; a real holder
-    would be flat. The benchmarks holding SPY/TLT are understated by this, crypto is not."""
-    bars, px = [], 100.0
+def test_crypto_volume_older_than_30_days_no_longer_lowers_the_fee() -> None:
+    hist: History = {"BTC": flat(80, 100.0), "SPY": flat(80, 100.0, weekdays_only=True)}
+    # In and out of BTC (2 x 10,000 USD), then SPY trades (not crypto volume, not counted).
+    decisions = [
+        Decision(at(0), {"BTC": 1.0}),
+        Decision(at(1), {}),
+        Decision(at(3), {"SPY": 1.0}),
+        Decision(at(10), {}),
+        Decision(at(20), {"BTC": 0.5}),  # 19 days after the last crypto fill: 0.38%
+        Decision(at(21), {}),
+        Decision(at(60), {"BTC": 0.5}),  # 39 days later: back to 0.80%
+    ]
+    res = gym.simulate(decisions, hist)
+    btc = [f for f in res.fills if f.symbol == "BTC"]
+    rates = [round(f.fee / abs(f.qty * f.price), 4) for f in btc]
+    assert rates == [0.0080, 0.0060, 0.0038, 0.0038, 0.0080]
+
+
+def test_a_bond_fund_holder_is_paid_its_dividends_worth_about_4_percent_a_year() -> None:
+    """Audit G4 (fixed 2026-11-17): prices are raw, so on each ex-dividend day the price drops by
+    the payout. Without the payout a fund that only pays out its 0.36% a month (TLT's order of
+    size) and otherwise goes nowhere showed about -4.2% a year; a real holder is flat, and with
+    the distributions paid as cash on the ex-date so is the gym's."""
+    bars, px, divs = [], 100.0, []
     for i in range(365):
         d = DAY1 + timedelta(days=i)
         if d.weekday() >= 5:
             continue
         if d.day == 1 or (d.day in (2, 3) and d.weekday() == 0):  # first session of the month
+            divs.append(Dividend(d, px * 0.0036))
             px *= 1 - 0.0036
         bars.append(Bar(d, px, px, px, px, 1.0))
-    res = gym.simulate([Decision(at(-1), {"TLT": 1.0})], {"TLT": bars}, costs=NO_COSTS)
-    assert res.equity[-1][1] / gym.START_CASH - 1 == pytest.approx(-0.042, abs=0.004)
+    decisions = [Decision(at(-1), {"TLT": 1.0})]
+    unpaid = gym.simulate(decisions, {"TLT": bars}, costs=NO_COSTS)
+    assert unpaid.equity[-1][1] / gym.START_CASH - 1 == pytest.approx(-0.042, abs=0.004)
+    paid = gym.simulate(decisions, {"TLT": bars}, costs=NO_COSTS, dividends={"TLT": divs})
+    assert paid.equity[-1][1] == pytest.approx(gym.START_CASH)
+    assert len(paid.income) == 12
 
 
 def test_random_trading_at_constant_prices_never_creates_money() -> None:

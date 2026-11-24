@@ -3,9 +3,8 @@
 Ideas not started yet. Move one to `next-steps.md` when you start it; delete it when done.
 
 - Gymnasium env wrapper around `gym.py` (for RL, M3).
-- Credit dividends (ETF distributions) in the gym.
-- Crypto fee by 30-day volume tier instead of one flat 60 bps (Kraken Pro taker: 0.80% from 0,
-  0.60% from 2,500 USD, 0.38% from 10,000, 0.35% from 25,000; see DECISIONS, audit G3).
+- Second source for the 13-week bill rate: the US Treasury's keyless daily bill-rate CSV, used
+  when Yahoo `^IRX` fails (today the last rate carries forward; #61, decisions-1 A2c).
 - More universe: a few more liquid crypto (SOL, ...) and ETFs (IWM, EFA, ...).
 - Crypto funding-rate carry (long spot, short perpetual, collect funding). Needs a short-perp leg
   and funding cash flows in the gym first. Keyless source: Kraken Futures
@@ -47,14 +46,10 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   off, those strategies skip that day. "No LLM in the runner" is about Claude and about not
   needing the desktop, not about models in general.
 - Idea sources from the owner (2026-11-12), to read for hypotheses, never as truth:
-  - YouTube channels, fetched with GrimsVerk/YT-Harvest (transcripts stay local, never in git;
-    cite video + timestamp on each card): Andrei Jikh (@AndreiJikh), Bravos Research
-    (@bravosresearch), Real Vision (UCGXWKlq1Oxr3ddEtmKhAkPg), Raoul Pal The Journey Man
-    (UCVFSzL3VuZKP3cN9IXdLOtw), EC Krown (@ECKrown, @ECKrown4), EllioTrades
-    (@elliotrades_official), George Gammon (@GeorgeGammon), Mark Tilbury (@marktilbury), MoneyZG
-    (@MoneyZG), New Money (@NewMoneyYouTube), How Money Works (@HowMoneyWorks), Miles Deutscher
-    Finance (@milesdeutscher1357; reviews FOSS trading repos).
-  - FOSS trading repos (from Miles Deutscher's video yuckuVqd01k): TauricResearch/TradingAgents,
+  - Finance YouTube channels, fetched with GrimsVerk/YT-Harvest (the channel list is kept
+    outside this repo: `yt-channels.toml` in `private_dir` from `local.toml`, see
+    `local.toml.example`; transcripts stay local, never in git; cite video + timestamp on each card).
+  - FOSS trading repos (from one repo-review video): TauricResearch/TradingAgents,
     ZhuLinsen/daily_stock_analysis, HKUDS/Vibe-Trading, anthropics/financial-services,
     freqtrade/freqtrade, Jakeschincariol/day-trader-skill, virattt/ai-hedge-fund,
     LuckyOne7777/LLM-Trading-Lab. Read code and docs for ideas; never run their code here.

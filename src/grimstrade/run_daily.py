@@ -3,6 +3,12 @@
 `uv run python -m grimstrade.run_daily --root trail` (trail/ = the paper-trail branch checkout).
 Plain Python, no LLM. Exits 1 if any data source failed (after still doing what it could), and
 2 without writing anything if the ledger's history was rewritten.
+
+`--intraday DIR` runs only the finer-data collection (`grimstrade.intraday`) into DIR and always
+exits 0. The daily job calls it in a later step, after the record is committed and pushed, so it
+can never break or delay the trades, the ledger or the record checks. DIR is not part of the
+record (the sources' terms forbid re-publishing; docs/DECISIONS.md), and nothing that trades or
+scores reads it.
 """
 
 from __future__ import annotations
@@ -12,10 +18,11 @@ import hashlib
 import inspect
 import json
 import sys
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from grimstrade import data, gym, ledger, report, signals, sources, weekly
+from grimstrade import data, gym, intraday, ledger, rates, report, signals, sources, weekly
 from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
@@ -33,7 +40,8 @@ def check_record(root: Path, now: datetime) -> None:
     recomputed from them."""
     ledger.check_history(root, now)
     bars = [data.bars_path(root, sym).relative_to(root) for sym in data.UNIVERSE]
-    for rel in (*ledger.APPEND_ONLY, *bars, data.REVISIONS, data.SOURCES_LOG):
+    record = (data.REVISIONS, data.SOURCES_LOG, data.DIVIDENDS, rates.RATES)
+    for rel in (*ledger.APPEND_ONLY, *bars, *record):
         ledger.refuse_links(root, rel)
         ledger.check_append_only(root / rel)
     for name in WRITTEN_EACH_RUN:  # a link here would swallow what the run writes
@@ -48,6 +56,24 @@ def check_record(root: Path, now: datetime) -> None:
             raise ledger.LedgerTampered(str(e)) from e
         if stored and data.close_time(cls, stored[-1].date) > now:
             raise ledger.LedgerTampered(f"{sym}: the bar for {stored[-1].date} has not closed yet")
+    # Dividends are paid into every score: a row no run would write (a second payout for one day,
+    # one on a day with no session, one far too large) is refused like a bad bar.
+    try:
+        dividends = data.load_dividends(root)
+    except ValueError as e:
+        raise ledger.LedgerTampered(str(e)) from e
+    for sym, divs in dividends.items():
+        stored = data.load(root, sym)
+        for d in divs:
+            if problem := data.dividend_problem(sym, d, stored):
+                raise ledger.LedgerTampered(problem)
+    # The cash rate is credited in every score: a row no run writes is refused like a bad bar.
+    try:
+        stored_rates = rates.load(root)
+    except ValueError as e:
+        raise ledger.LedgerTampered(str(e)) from e
+    if stored_rates and max(r.seen for r in stored_rates) > now:
+        raise ledger.LedgerTampered("a stored cash rate claims to be stored in the future")
 
 
 def fingerprint(decide: gym.Strategy) -> str:
@@ -94,6 +120,8 @@ def run(
             problems.append(str(e))
             print(f"{sym}: FAILED {e}", file=sys.stderr)
 
+    problems += _dividends(root, get)
+    problems += _rates(root, now, get)
     problems += _overdue(root, now)
     problems += _etf_holes(root)
     problems += _revisions(root, now, get)
@@ -138,6 +166,47 @@ def run(
     (reports / "backtest.md").write_text(report.render_backtest(root, history, repo))
     (reports / "weekly.md").write_text(weekly.render(root, history, repo))
     return problems
+
+
+def _dividends(root: Path, get: sources.Get) -> list[str]:
+    """Append each ETF's distributions not stored yet (Yahoo, keyless). Each run asks for the
+    whole stored span, so a failed or late answer is caught up by the next run; a refused
+    distribution (no session on its day, far too large) is a problem line on every run."""
+    out = []
+    for sym, ticker in sources.DIVIDEND_TICKERS.items():
+        bars = data.load(root, sym)
+        if not bars:
+            continue
+        try:
+            fetched = sources.yahoo_dividends(ticker, bars[0].date, get)
+        except Exception as e:  # noqa: BLE001 - one bad answer must not stop the run
+            out.append(f"{sym}: dividends not fetched: {e}")
+            print(f"{sym}: dividends FAILED {e}", file=sys.stderr)
+            continue
+        added, refused = data.append_dividends(root, sym, fetched, bars)
+        out += refused
+        if added:
+            print(f"{sym}: +{added} dividends (yahoo)")
+    return out
+
+
+def _rates(root: Path, now: datetime, get: sources.Get) -> list[str]:
+    """Append the T-bill rates (`^IRX`) not stored yet: from the first stored bar on the first
+    run, then from the day after the newest stored rate. A failure is a problem line; the gym
+    carries the last known rate forward meanwhile (DECISIONS, 2026-11-18, cash interest)."""
+    stored = rates.load(root)
+    if stored:
+        since = stored[-1].date + timedelta(days=1)
+    else:
+        firsts = [b[0].date for b in data.load_all(root).values() if b]
+        since = min(firsts) if firsts else now.date() - timedelta(days=BOOTSTRAP_DAYS)
+    try:
+        added, refused = rates.append(root, rates.fetch(since, now, get))
+    except Exception as e:  # noqa: BLE001 - one bad answer must not stop the run
+        print(f"rates: FAILED {e}", file=sys.stderr)
+        return [f"rates not fetched: {e}"]
+    print(f"rates: +{added} (yahoo ^IRX)")
+    return refused
 
 
 # Crypto closes every day: a new bar is overdue when the newest stored one closed longer ago
@@ -223,11 +292,37 @@ def _revisions(root: Path, now: datetime, get: sources.Get) -> list[str]:
     return out
 
 
-def main() -> None:
+def collect_intraday(
+    base: Path,
+    root: Path,
+    now: datetime,
+    get: sources.Get = sources.http_get,
+    collect: Callable[[Path, datetime, sources.Get], dict[str, str]] = intraday.collect,
+) -> dict[str, str]:
+    """Collect the finer data into `base`; best effort, never raises. Refuses a `base` inside the
+    record `root`: the record checks know nothing of these files, and the terms forbid
+    publishing them."""
+    if base.resolve().is_relative_to(root.resolve()):
+        out = {"intraday": f"error: {base} is inside the record {root}; not collecting"}
+    else:
+        try:
+            out = collect(base, now, get)
+        except Exception as e:  # noqa: BLE001 - nothing here may stop the daily job
+            out = {"intraday": f"error: {e!r}"}
+    for name, result in sorted(out.items()):
+        print(f"intraday {name}: {result}")
+    return out
+
+
+def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--root", type=Path, default=Path("trail"))
     p.add_argument("--repo", type=Path, default=Path("."), help="code checkout (research/ files)")
-    args = p.parse_args()
+    p.add_argument("--intraday", type=Path, help="only collect the finer data into this folder")
+    args = p.parse_args(argv)
+    if args.intraday is not None:
+        collect_intraday(args.intraday, args.root, datetime.now(UTC))
+        return
     try:
         problems = run(args.root, datetime.now(UTC), repo=args.repo)
     except ledger.LedgerTampered as e:
