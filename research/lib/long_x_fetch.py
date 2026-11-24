@@ -67,10 +67,10 @@ OECD = (
     + [f"IRLTLT01{c}M156N" for c in COUNTRIES]
 )
 # IMF International Financial Statistics via FRED (monthly; fill the OECD short-rate gaps
-# before the mid-1980s): discount rate, Treasury bill rate, money market rate
+# before the mid-1980s): discount rate, Treasury bill rate (money market INTMMR*: 404)
 IMF = [
     f"{k}{c}M193N"
-    for k in ("INTDSR", "INTGST", "INTMMR")
+    for k in ("INTDSR", "INTGST")
     for c in ("JP", "GB", "CH", "CA", "DE", "AU", "NZ", "SE", "NO", "US")
 ]
 # BLS producer prices (commodity groups) and EIA/Dow Jones oil
