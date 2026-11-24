@@ -366,6 +366,7 @@ def load() -> tuple[list[date], dict[str, np.ndarray], np.ndarray, dict[str, Any
     chk["miss_tr"], chk["miss_pput"] = miss_tr, miss_pp
     chk["trend_flips_yr"] = float(np.abs(np.diff(pos)).sum() / ((days[-1] - days[0]).days / 365.25))
     chk["trend_in"] = float(pos[1:].mean())
+    chk["pos"] = pos  # window positions (insure-4 reuses them)
     return days, series, rf, chk
 
 
