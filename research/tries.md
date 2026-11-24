@@ -4019,3 +4019,22 @@ Never edit or delete a row.
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
+| 2026-11-24 23:45 | wide-19 | cred-xs | variant | train | 1994-02-01 | 2025-10-31 | 1.09 | +29621.4% | 39.9% | 1.83 |
+| 2026-11-24 23:45 | wide-19 | cred-xs/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.11 | +33497.4% | 38.8% | 1.82 |
+| 2026-11-24 23:45 | wide-19 | cred-lr | variant | train | 1994-02-01 | 2025-10-31 | 0.95 | +20355.6% | 48.6% | 1.72 |
+| 2026-11-24 23:45 | wide-19 | cred-lr/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +21459.4% | 47.5% | 1.73 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.62 | +325.1% | 23.6% | 2.12 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.53 | +284.1% | 36.2% | 0.96 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.70 | +4868.1% | 26.0% | 2.13 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.65 | +7530.4% | 51.9% | 0.89 |
+| 2026-11-24 23:50 | wide-19 | brier-verify: Brier skill / Murphy decomposition of the in/out signal (killed in step 1: multi-signal / info-1 IC, insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | rev-costloss: relative economic value of the exit (new, descriptive; a reframing of insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | mos-calibrate: logistic MOS soft slot (killed: kelly-shrunk, ml-linear, ml-sizing; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | damped-persistence: persistence/climatology blend (killed: combo-1 blend-iv, bet-hedge-seedbank; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bma-lookbacks: BMA / lagged ensemble of lookbacks (killed: e4, wf-pooled, tranching; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | xl-layer: reinsurance layer / aggregate stop-loss (killed: drawdown-control, cppi-floor, stop-0.25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bonus-malus: exposure ladder by monthly outcome (killed: ensemble-tsmom, slew-limit, arm3-12; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | cred-forward: credibility of the forward record, Esscher/Wang premium (killed: power-map-1, insure-4; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | stop-reentry: optimal-stopping re-entry, real-options band (killed: fast-reentry, bear-legs, eu-4 dz25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | robust-lookback: worst-case lookback set, minimax regret, newsvendor size (killed: ensemble-tsmom, wf-pooled, ib-soft; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | post hoc (not a try): Z at 2025-10-31 with the noise term corrected for correlation, V (1 - rho): six 0.00, etf 0.03, idx 0.16 (lib/wide19_posthoc.py) | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
