@@ -721,3 +721,25 @@ weeks), wrong sign; failures follow XLF's 52-week fall (t -3.87). Both dead, no 
 **Family count: union of the wide and survey lines 84 mechanisms (wide-12's 81 + weather-1's
 `hdd-gas` + W25 + W26), 18 tested by a strategy, none passed. The next strategy test is read at
 p < 0.10 / 84 = 0.00119.** Gates so far: 19, all failed.
+
+### Added by wide-15 (2026-11-24, `wide-15.md`): twelve mechanisms from unused fields, two gated
+
+Fields not used before: public / household finance, hydrology (unit hydrograph), legislative
+studies, administrative law and text counts, resource economics, power systems / mining, social
+choice (and settlement logistics, close to queueing / inventory). Twelve mechanisms X1-X12 scored
+with F1/F2 and the wide-10 points before any price (`wide-15.md` step 2); three scored 5; the two
+with the fewest fetches gated. Carried in: wide-13's 84 plus weather-2's gated `cpc-revision`.
+
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
+| W27 `congress-workload` | legislative studies x a variance-stabilised count | Stocks earn a policy-risk premium in the weeks after busy legislative weeks | 2 sqrt(n + 3/8), n = House + Senate roll calls Saturday..Friday (Voteview), with an in-session dummy so only within-session variation counts | SPY 4-week return from the Monday close, past 4/13/26/52-week returns as controls, placebo = earlier dose calendars, k = 27-105 weeks; 1994-02 .. 2025-10 | 1% |
+| W28 `refund-runoff` | public finance x the Nash-cascade unit hydrograph | Unusually large IRS refund weeks send retail cash into retail-heavy assets over the next weeks | weekly individual refunds minus the same-ISO-week median of three earlier years, % of last year's refunds, through a gamma(2, mean 2 weeks) kernel into the outcome window | QQQ, IWM, BTC, ETH 4-week return from the Wednesday close, no controls (F2 passes), placebo = dose calendar moved 27-103 weeks both ways; 2008-01 .. 2025-10 | 0.3% |
+
+**Closed by wide-15's gates (2026-11-24, rules pushed first, 40 placebos each):** W27: -0.009% per
+unit over 4 weeks, t -0.19, rank 25 of 41 (1,653 weeks), wrong sign; placebo SD 1.08. W28:
++0.281% per unit, t +1.44, rank 7 of 41 (2,999 rows); placebo SD 1.92 (32% with |t| >= 2), so
+ordinary. Both dead, no card.
+
+**Family count: union of the wide and survey lines 87 mechanisms (84 + weather-2's
+`cpc-revision` + W27 + W28), 18 tested by a strategy, none passed. The next strategy test is read
+at p < 0.10 / 87 = 0.00115.** Gates so far: 22, all failed.
