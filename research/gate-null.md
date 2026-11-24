@@ -33,6 +33,8 @@ shows how wide the real null is:
 | 4-week return of XLF on ln(1 + FDIC failed assets), four price controls, Newey-West 4 lags, 1,344 weeks (wide-13, W26) | 40 calendars moved k = 27-103 weeks (earlier-dose half only: 20) | 1.63 (0.48) | 25% (0%) | failures follow XLF at 52 weeks (t -3.87): later-dose shifts carry the whole negative tail (to -4.37), review-2 point (1); about two episodes, kill-only |
 | 4-week return of SPY on Anscombe roll-call count, session dummy and four price controls, Newey-West 4 lags, 1,653 weeks (wide-15, W27) | 40 earlier-dose calendars, k = 27-105 weeks (odd) | 1.08 | 5% | weekly count with no price feedback found (t <= 1.01): near normal |
 | 4-week return of QQQ/IWM/BTC/ETH on the runoff of the IRS refund surprise, Driscoll-Kraay 4 lags, 2,999 rows (wide-15, W28) | 40 calendars moved k = 27-103 weeks, both ways | **1.92** | **32%** | dose large only about 15 weeks a year, four co-moving assets: about one independent draw per season (about 18) |
+| SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade, Newey-West 3 lags, 393 months (wide-17, W29) | 40 calendars moved k = 13-89 months, both ways | 1.47 | 22% | persistent dose with a few ENSO-paced swings; far shifts carry the upper tail (to +3.11) |
+| SPY 4-week return on detrended Anscombe count of WHO outbreak reports, Newey-West 4 lags, 1,082 weeks (wide-17, W30) | 40 calendars moved k = 27-103 weeks, both ways | **1.64** | **22%** | reports cluster in outbreak episodes even after detrending: wider than a weekly count's 1.08 (W27) |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -173,6 +175,8 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | weather-1 (#116) | 40 derangements of winters | no: weather | t -0.29, rank 19 | no |
 | W27 `congress-workload` (wide-15) | k = 27..105 weeks, earlier only | not used (earlier only, as step 1 asks) | t -0.19, wrong sign, rank 25 | no |
 | W28 `refund-runoff` (wide-15) | k = 27..103 weeks, both ways | no: refunds do not answer prices (feedback t -1.20 .. +1.08) | t +1.44, rank 7 | no: t < 2 |
+| W29 `temperature-premium` (wide-17) | k = 13..89 months, both ways | no: temperature does not answer prices | t +1.63, rank 9 | no: t < 2 |
+| W30 `outbreak-premium` (wide-17) | k = 27..103 weeks, both ways | no: WHO reporting does not answer prices | t +1.68, rank 9 | no: t < 2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the

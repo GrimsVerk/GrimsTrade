@@ -38,7 +38,7 @@ pandemic, margin, speciation, flicker. Already done (not redone):
 | Chronobiology | `lunar` (gate wide-6, dead) |
 | Agriculture / climate | `enso-commodity` (ENSO -> crop yields -> DBC; W19, dead), `hdd-gas` (weather-1, dead), `cpc-revision` (weather-2, dead), `cat-claims` (W15, dead), `hedging-pressure` (Keynes-Hicks, W22, dead), `festival-gold` (Indian gold demand on festival dates; W13, dead), wide-15's hydro-hash and curtailment-hash (hash rate and power) |
 
-## Step 2. Twelve mechanisms, scored (2026-11-24 about 23:45 UTC, before any price was read)
+## Step 2. Twelve mechanisms, scored (2026-11-24, committed 23:31 UTC in 455cb2d, before any price was read; first written as "about 23:45", a slip)
 
 Scoring exactly as wide-13 and wide-15: wide-11's filters F1 (not announced: an unscheduled
 flow (a), or a premium (b); mood, cognition and public news are neither, as wide-13 read
@@ -144,6 +144,120 @@ parked (not counted); Y6-Y12 are filtered or dead in the literature.
 Rules, data, statistics, placebos, gates, power and guesses are in
 [`cards/wide-17.md`](cards/wide-17.md), pushed before any number.
 
-## What came out
+## What came out (one dry run, then one real run, 2026-11-24 23:35 UTC)
 
-(Written after the runs.)
+**Timestamp erratum.** The card says "written 2026-11-24 about 23:55 UTC" and step 2 first said
+"about 23:45": both were slips. The card was committed at 23:31:36 UTC (455cb2d), the script
+and tests at 23:34:25 (5c4c2f7), and the one real run wrote its results at 23:35. The order the
+method needs (card, then script, then numbers) holds; the card itself is left unchanged.
+
+**Dry run first** (`DRY=1`, counts only): GISTEMP 1,750 months read, 1880-01 .. 2025-10 (none
+later); 393 gate dose months, all with d; rows with outcome and dose SPY 393, QQQ 319, TLT 279,
+GLD 251, BTC 165, ETH 113; placebos keep 306-393 rows. WHO DON 3,162 reports read, 2004-01-05 ..
+2025-10-03 (none after the cut); 1,139 weeks, 1,087 with a dose; 1,082 gate Fridays, all with x
+and an SPY outcome (QQQ, GLD, TLT, XLV the same; BTC 722, ETH 493); placebos keep 979-1,060
+rows. Then one real run, as carded. Tables: `results/temperature-premium.md`,
+`results/outbreak-premium.md`.
+
+### W29 `temperature-premium`: fails
+
+**One degree C more warmth in the last year than in the decade before goes with +3.25% on SPY
+in the month after next (t +1.63, 393 months, outcome months 1993-02 .. 2025-10): the
+predicted sign, but t below 2 and the true t ranks 9 of 41 (empirical one-sided p 0.22). Dead
+by the gate: no card, no strategy.** Held-out year untouched. In units: d's sd is 0.112 deg C,
+so one sd goes with +0.36% a month.
+
+| Cut (SPY next-but-one month unless named) | b, % per deg C | t | Rows |
+|---|---:|---:|---:|
+| **Gate: d, no controls** | **+3.25** | **+1.63** | 393 |
+| QQQ / TLT / GLD instead | +5.83 / -0.84 / +5.82 | +1.52 / -0.35 / +2.15 | 319 / 279 / 251 |
+| BTC and ETH pooled | +14.7 | +0.91 | 278 |
+| 12-month horizon | +26.1 | +1.73 | 382 |
+| Monthly innovation instead of d | -0.23 | -0.16 | 393 |
+| Outcome months 2013-01 .. 2025-10 | +2.34 | +1.16 | 154 |
+| Reaction: SPY over month m+1 (premium story: negative) | +3.14 | +1.55 | 392 |
+
+- **Not a premium pattern.** A priced risk lowers prices when the shock lands and pays back
+  afterwards. Here the release-month slope has the same positive sign and size as the forward
+  one (+3.14, t +1.55, against +3.25), which reads as warm spells coinciding with good stock
+  years (which years was not computed). The monthly innovation, the shock itself, has no slope (t -0.16).
+- **The null is wide: SD of placebo t 1.47, 22% with |t| >= 2**, quantiles 5/50/95% -2.10 /
+  -0.11 / +2.85, extremes -2.39 / +3.11. Eight placebos beat the true t, mostly the far shifts
+  (k = -85: +3.11, +89: +2.98, +85: +2.84, -45: +2.30, -81: +2.13, +81: +2.09, -41: +1.70,
+  -49: +1.65): a persistent dose with a few ENSO-paced swings lines up with stock regimes at
+  many lags.
+- GLD's +2.15 is noted only (`gate-null.md` step 6: one of 7 shown cells, inside the placebo
+  range of this design).
+- My guess (either sign, |t| < 1.5, middle rank, placebo sd 1.2-1.8, pass 1%) held on the width
+  (1.47); t (+1.63) and rank (9) came out a little better than guessed.
+
+### W30 `outbreak-premium`: fails
+
+**One unit of outbreak activity above its trailing year (Anscombe count of WHO Disease
+Outbreak News reports) goes with +0.065% on SPY over the next 4 weeks (t +1.68, 1,082 weeks,
+2005-01 .. 2025-09): the predicted sign, but t below 2 and the true t ranks 9 of 41 (empirical
+one-sided p 0.22). Dead by the gate: no card, no strategy.** Held-out year untouched. x's sd is
+2.34 units, so one sd goes with +0.15% per 4 weeks (about 2% a year), against the 0.55% per sd
+the power note said a pass needed.
+
+| Cut (SPY 4-week return unless named) | b, % per unit of x | t | Rows |
+|---|---:|---:|---:|
+| **Gate: x, no controls** | **+0.065** | **+1.68** | 1,082 |
+| QQQ / GLD / TLT instead | +0.117 / -0.005 / +0.002 | +2.21 / -0.06 / +0.04 | 1,082 each |
+| XLV (health care) | +0.020 | +0.40 | 1,082 |
+| BTC and ETH pooled | -0.186 | -0.74 | 1,215 |
+| Raw Anscombe count z instead of x | +0.018 | +0.40 | 1,082 |
+| 1-week horizon | +0.010 | +0.46 | 1,082 |
+| Fridays 2015-01 .. 2025-09 | +0.060 | +1.78 | 561 |
+| With SPY's past 4/13/26/52-week returns | +0.068 | +1.81 | 1,082 |
+| Reaction: SPY over the dose week (premium story: negative) | +0.017 | +1.05 | 1,082 |
+
+- **Not a premium pattern either.** The dose week's own SPY return has the wrong sign for a
+  disaster premium (+0.017, t +1.05; a premium needs prices to fall when the news lands), safe
+  havens do not move (GLD -0.06, TLT +0.04), and the health-care sector, where Donadelli et
+  al. found same-day gains, shows nothing forward (t +0.40). Without the trailing-year
+  detrending the slope vanishes (t +0.40): what slope there is comes from short bursts against
+  the recent norm, i.e. from a handful of outbreak episodes.
+- **The null is wider than guessed: SD of placebo t 1.64, 22% with |t| >= 2**, quantiles 5/50/95%
+  -3.38 / +0.27 / +2.17, extremes -3.64 / +2.58. Eight placebos beat the true t, five of them
+  later doses (k = -63: +2.58, -39: +2.26, -59: +2.16, -87: +1.94, -51: +1.87) and four earlier
+  (+83: +2.06, +71: +1.94, +91: +1.90, +99: +1.64). The detrended count still clusters in
+  outbreak episodes, so shifted calendars land on other months' common moves.
+- QQQ's +2.21 is noted only (one of 10 shown cells; placebo SD 1.64, 95% quantile +2.17).
+- My guess (b near zero, |t| < 1.5, middle rank, placebo sd 1.0-1.3, pass 0.5%) was wrong on
+  the width (1.64, not 1.0-1.3): outbreak reports are not independent weekly draws.
+
+Labels: both gates are **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the
+family bar 0.0011 and the register's 1.0e-4; about 8-10 temperature swings, 10-20 outbreak
+episodes). Both are kills.
+
+## Family count and status
+
+Two mechanisms added and closed by their gates (W29 `temperature-premium`, W30
+`outbreak-premium`). The ten others (Y3-Y12) are parked, filtered or dead in the literature
+and are **not counted**, as wide-12 .. wide-15 did.
+
+**Count: 90 mechanisms (88 carried in + W29 + W30), 19 tested by a strategy, none passed; 24
+gates, all failed.** The next strategy test is read at **p < 0.10 / 90 = 0.0011** (family) and
+the register's bar (N_eff 500: z >= 4.70, +0.31 to +0.56 Sharpe over `tsmom12`, Bonferroni
+p <= 1.0e-4). Published effects after publication: still 0 for 10 (neither gate tested a
+published claim as stated: the temperature papers price the risk in the cross-section, not as a
+time-series forecast of SPY; Donadelli et al. tested pharmaceutical stocks on the day).
+
+Rows logged in `tries.md`: 2 (`temperature-premium`, `outbreak-premium`, kind `screen`).
+
+## Next
+
+1. **Parked, scored 4: Y4 `drought-inflation`, Y5 `margin-susceptibles`.** Y4 reuses W19's dead
+   channel with a new dose; Y5 (FINRA margin debt as the susceptible stock of a crash) has about
+   ten trigger episodes since 1997 and needs price controls. Neither is more likely than the 24
+   that died; a lane that runs them should expect a kill.
+2. **A check both gates suggest for any premium story: test the reaction cell first.** A risk
+   premium predicts opposite signs at the release and afterwards. Both doses here had the same
+   positive sign in both windows, which reads as "the dose shares regimes with good stock
+   years", not as a premium. A future premium card could make an opposite-signed reaction a
+   necessary condition, fixed before any number (this run did not change the rule).
+3. Life-science mechanisms that come with a *flow* (Y3 monsoon gold) fail the flow-size check of
+   wide-15 point 3 by orders of magnitude; the ones that come as *mood* (Y6-Y8) fail F1. What is
+   left from these fields is premia on rare biological or climate risk, and both premium gates
+   here found the pattern of a regime coincidence, not a premium.

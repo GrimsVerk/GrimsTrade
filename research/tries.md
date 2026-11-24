@@ -4019,3 +4019,5 @@ Never edit or delete a row.
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
+| 2026-11-24 23:35 | temperature-premium | SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade (b +3.25%/deg C, t +1.63, rank 9/41, gate fail) | screen | train | 1993-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:35 | outbreak-premium | SPY 4-week return on detrended Anscombe count of WHO Disease Outbreak News reports (b +0.065%/unit, t +1.68, rank 9/41, gate fail) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
