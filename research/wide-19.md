@@ -90,7 +90,7 @@ research/lib/wide19.py`).
 other sets). Nothing goes to the paper book.
 
 - **The data give a year of one asset's drift almost no credibility.** For `cred-xs` the
-  estimated between-asset variance of true drifts was below zero on almost every Friday (the
+  estimated between-asset variance of true drifts was at or below zero on most Fridays (Z median 0.00 in all three sets; the
   cross-sectional spread of one-year drifts, 0.78 V on the six, 0.71 V on the ETFs and 0.59 V
   on the indexes at the end, is smaller than the sampling noise V = 1/52 alone), so Z = 0 and
   the rule became a book-level switch: every eligible asset in while the book's average drift

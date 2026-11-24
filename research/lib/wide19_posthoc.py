@@ -14,7 +14,7 @@ from datetime import timedelta
 
 import common as c
 import numpy as np
-from wide19 import LAST, LR_MIN_RETURNS, V, State, weekly_returns
+from wide19 import LAST, LR_MIN_RETURNS, State, V, weekly_returns
 
 
 def main() -> None:
