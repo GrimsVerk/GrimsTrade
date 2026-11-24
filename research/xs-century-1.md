@@ -55,7 +55,7 @@ Halves (the card's "both positive" rule): 1928-1972 alpha +1.64%/yr (IR +0.28), 
    z 4.44, just under 4.70. The card fixed the primary cost in advance; R2 is a robustness row
    and cannot turn a fail into a pass. The cost of momentum in 1930-1990 is not known well:
    Novy-Marx and Velikov measured 1963-2013, and Jones (2002) puts earlier costs higher.
-   The verdict is therefore "gross edge real, net edge unproven at the bar".
+   The verdict is therefore: large gross edge in-sample (on the data HML and UMD were found on, so gross rows cannot decide); net fails the bar.
 2. **What survives costs is carry and value outside equities, plus HML.** Net sleeve alphas
    against the comparator: bond carry IR +0.45 (z 3.2), FX value +0.30, HML +0.25 (z 2.1),
    FX carry +0.21. Bond value, bond momentum and UMD (net) are about 0. Bonds and FX alone
@@ -81,7 +81,9 @@ Halves (the card's "both positive" rule): 1928-1972 alpha +1.64%/yr (IR +0.28), 
   card named, z is below 3.29 except R2 (4.44). Gross z 7.4 shows the test has the power
   power-map-1 promised: a gross IR of 0.88 over 97 years is detected easily.
 - **Limits.** UMD and HML costs are one number for 97 years (NMV's 1963-2013 estimate), on
-  scaled notional. Rescaling turnover and class-weight changes are not charged. The short
+  scaled notional. The Novy-Marx-Velikov momentum cost is measured on a decile strategy but
+  is charged here to the 2x3 UMD factor; that mismatch could move the cost either way.
+  Rescaling turnover and class-weight changes are not charged. The short
   borrow of 0.5% a year is a flat guess. Bond and FX costs (5 bps) are futures-like and
   probably low for the 1960s-70s (R3 doubles them: z 2.2). Bonds are rebuilt from monthly-
   average yields (smoothed). FX value is a spot-reversal proxy for PPP (no CPI cached), and
