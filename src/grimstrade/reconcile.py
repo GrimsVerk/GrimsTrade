@@ -141,9 +141,10 @@ def rebuild_state(
     steps = sorted(cash_rates, key=lambda r: r[0])
     known = [t for t, _ in steps]
     first = min((d.time for d in decisions), default=None)
-    day = first.date() if first is not None else None
+    # No interest before the first decision, nor without a marked day (the replay never started).
+    day = first.date() if first is not None and marked_on is not None else None
     for t, order, sym, qty, amount in events:
-        while day is not None and t.date() > day and (marked_on is None or day < marked_on):
+        while day is not None and marked_on is not None and t.date() > day and day < marked_on:
             cash += cash * _rate_on(steps, known, day) / gym.DAYS_PER_YEAR
             day += timedelta(days=1)
         if order == 0:  # a distribution: on the units held before this open
