@@ -8,20 +8,25 @@ into a broad world / all-world index fund with **12 equal monthly buys (Jan-Dec 
 
 ## Answer first
 
-**The platform choice is worth at most about EUR 30 a year at these amounts.** The cheapest
-platforms (Trade Republic and Scalable Capital FREE savings plans) cost EUR 0. The big Dutch banks
-cost 0.20-0.24% a year of the invested value; ING Zelf op de Beurs, for example (official tariffs
-valid from 1 Jan 2026), has free periodic buys from EUR 10 a month into 70+ "Topselectie" ETFs
-(including Vanguard FTSE All-World and SPDR MSCI ACWI) and into funds, and a 0.24% service fee:
+**Between a big Dutch bank's periodic plan and a EUR 0 savings plan, the difference is at most
+about EUR 30 a year at these amounts.** The cheapest platforms (Trade Republic and Scalable
+Capital FREE savings plans) cost EUR 0. ABN AMRO and ING charge a 0.20% / 0.24% yearly service fee
+on the invested value with free periodic buys of selected ETFs and funds (ABN AMRO per secondary
+sources); Rabobank has a EUR 20
+yearly minimum. ING is the worked example below because it is the only big Dutch bank whose
+official 2026 tariff could be read for this study (ABN AMRO's and Rabobank's pages could not be
+fetched): free periodic buys from EUR 10 a month into 70+ "Topselectie" ETFs (including Vanguard
+FTSE All-World and SPDR MSCI ACWI) and into funds. Other platforms with fixed fees cost more (see
+the full table).
 
-| Monthly buy | 0.24% fee in 2027 | 0.24% fee per year from 2028 | Fee at a EUR 0 savings plan |
+| Monthly buy | 0.20% fee (ABN AMRO): 2027 / later year | 0.24% fee (ING): 2027 / later year | EUR 0 savings plan |
 |---|---:|---:|---:|
-| EUR 250 | EUR 3.90 | EUR 7.20 | 0 |
-| EUR 500 | EUR 7.80 | EUR 14.40 | 0 |
-| EUR 1,000 | EUR 15.60 | EUR 28.80 | 0 |
+| EUR 250 | 3.25 / 6.00 | 3.90 / 7.20 | 0 |
+| EUR 500 | 6.50 / 12.00 | 7.80 / 14.40 | 0 |
+| EUR 1,000 | 13.00 / 24.00 | 15.60 / 28.80 | 0 |
 
-2027: 0.24% of the average month-end value (6.5 x the monthly amount, buys at the start of each
-month, flat prices). From 2028: 0.24% of 12 x the monthly amount; the fee grows with the portfolio.
+2027: the fee on the average month-end value (6.5 x the monthly amount, buys at the start of each
+month, flat prices). From 2028: the fee on 12 x the monthly amount; the fee grows with the portfolio.
 
 Two choices matter as much or more than the platform:
 
@@ -29,7 +34,7 @@ Two choices matter as much or more than the platform:
    waiting averages 5.5 x the monthly amount over 2027. A gap of 1.5 points in interest (e.g. 1.00%
    on a bank's investment-account cash vs 2.50-2.60% at Trade Republic or Scalable FREE; BUX Basic
    pays 0%) is EUR 21 / 41 / 83 in 2027 at EUR 250
-   / 500 / 1,000 a month; that exceeds the whole 2027 platform fee at a bank. The waiting cash can earn the higher rate
+   / 500 / 1,000 a month; that exceeds the whole 2027 platform fee at ING or ABN AMRO. The waiting cash can earn the higher rate
    at a savings account whichever platform does the buying.
 2. **Which fund.** Irish-domiciled ETFs such as Vanguard FTSE All-World lose an estimated 0.24-0.30% a
    year to foreign dividend tax the investor cannot reclaim; Dutch "fbi" index funds (Northern
@@ -38,8 +43,9 @@ Two choices matter as much or more than the platform:
    tax on its distributions, which the investor gets back only through the income tax return, and
    not every such fund is an fbi (Northern Trust's emerging-markets fund is not).
 
-So an investor with a current account at one of the big Dutch banks gives up EUR 4-16 in 2027 and
-EUR 7-29 a year afterwards by using that bank instead of a EUR 0 neobroker, in exchange for one
+So an investor with a current account at ING or ABN AMRO gives up about EUR 3-16 in 2027 and EUR
+6-29 a year afterwards by using that bank instead of a EUR 0 neobroker (Rabobank: EUR 20-32 a
+year, because of its minimum fee), in exchange for one
 institution fewer, Dutch tax prefill, no securities lending and the Dutch deposit guarantee on the
 cash. Whether that is worth it is a preference, not a large cost.
 
@@ -54,7 +60,7 @@ platform part only.
 | **Trade Republic** savings plan | 0 / 0 | 0 / 0 | 0 / 0 | Yes, free, EUR 10-10,000 per execution; VWCE per a third-party list (TR's list needs JS) |
 | **Scalable Capital** FREE, savings plan | 0 / 0 | 0 / 0 | 0 / 0 | Yes, free, from EUR 1; specific world ETFs not verified |
 | **Saxo** Bronze, AutoInvest | 1.95 / 3.60 | 3.90 / 7.20 | 7.80 / 14.40 | Yes, no transaction fee, 4th or 28th of the month; eligible ETFs not verified |
-| **BUX** Basic, Beleggingsplan | 3.25 / 6.00 | 6.50 / 12.00 | 13.00 / 24.00 | Yes, free, from EUR 5; world ETFs not verified |
+| **BUX** Basic, Beleggingsplan | 3.25 / 6.00 | 6.50 / 12.00 | 13.00 / 24.00 | Yes, free (EUR 5 minimum not on the tariff page); world ETFs not verified |
 | **ABN AMRO** Zelf Beleggen Basis | 3.25 / 6.00 | 6.50 / 12.00 | 13.00 / 24.00 | Yes, from EUR 20 (secondary source); which world ETFs are free not verified |
 | **ING** Zelf op de Beurs, Topselectie ETF or fund | 3.90 / 7.20 | 7.80 / 14.40 | 15.60 / 28.80 | Yes, free, from EUR 10/mo; VWCE, SPDR MSCI ACWI, iShares and UBS Core MSCI World, funds |
 | **DEGIRO**, EUR 1 per order on Tradegate, manual | 12 / 0 | 12 / 0 | 12 / 0 | No plan, no fractions (whole shares only) |
@@ -62,16 +68,17 @@ platform part only.
 | **Meesman** Aandelen Wereldwijd Totaal | 11.04 / 9.30 | 22.07 / 18.60 | 44.15 / 37.20 | Yes, direct debit from EUR 50/mo, weekly dealing |
 | **Brand New Day**, own fund choice | 8.65 / 13.20 | 17.30 / 26.40 | 34.60 / 52.80 | Yes, direct debit from EUR 50 |
 | **Interactive Brokers**, Fixed, EUR 3/order | 36 / 0 | 36 / 0 | 36 / 0 | Not verified for NL; manual |
-| **BUX** Plus (EUR 2.99/mo, 0%) | 35.88 / 35.88 | same | same | Yes |
+| **BUX** Plus (EUR 2.99/mo, 0%; 1.75% on cash) | 35.88 / 35.88 | same | same | Yes |
 | **Peaks** (EUR 1.99/mo + 0.50%) | 32 / 38.88 | 40.13 / 53.88 | 56.38 / 83.88 | Yes; no single world ETF in its standard portfolios |
-| **LYNX** (about EUR 6/order) | 72 / 0 | 72 / 0 | 72 / 0 | No |
+| **LYNX** (about EUR 6/order; EUR 5/month minimum activity fee) | 72 / 60 | 72 / 60 | 72 / 60 | No |
 | Flatex | Not offered in NL: flatex.nl redirects to flatex.de; Dutch clients were moved to DEGIRO | | | |
 
-Model inputs: ING 0.24%/yr; Saxo 0.01%/month service fee (0.12%/yr; refunded as a trading credit
+Model inputs: ING 0.24%/yr; Saxo 0.01%/month service fee (0.12%/yr, max EUR 40 a month; refunded as a trading credit
 valid one month, which free AutoInvest buys do not use); BUX Basic 0.20%/yr; ABN AMRO 0.20%/yr;
 Rabobank 0.06%/quarter, min EUR 5/quarter, plus 0.10% per periodic order; Meesman 0.31% fee (of
 its 0.40% fund cost) plus 0.20% per buy; Brand New Day 0.44% service fee plus +0.05% swing on
-buys; Peaks EUR 23.88/yr plus 0.50%. Script: `model.py` in this folder.
+buys; Peaks EUR 23.88/yr plus 0.50%; LYNX EUR 5 a month minimum activity fee when that month's
+commissions are lower (net liquidation value under EUR 100k). Script: `model.py` in this folder.
 
 Fund costs (TER): Vanguard FTSE All-World (VWCE/VWRL) 0.14%; SPDR MSCI ACWI (IE00B44Z5B48) 0.12%;
 iShares Core MSCI World 0.20%; UBS Core MSCI World 0.06% (developed markets only); Amundi Prime All
@@ -82,8 +89,8 @@ Brand New Day adds 0.15% fund cost (its Wereld Indexfonds is developed markets o
 
 | Provider | Licence / supervisor | Investor compensation | Lends your securities? | Uninvested cash | Dutch tax statement |
 |---|---|---|---|---|---|
-| ING | ING Bank N.V., DNB/AFM/ECB; securities segregated under the Dutch Wge | Dutch scheme, EUR 20k | No ("niet uitlenen of herverpanden", terms Oct 2021) | ING balance, Dutch deposit guarantee EUR 100k | Jaaroverzicht; a Dutch bank reports to the tax office (prefill) |
 | ABN AMRO / Rabobank | Dutch banks, DNB/AFM | Dutch scheme, EUR 20k | Not verified | Own balance, Dutch guarantee | Jaaroverzicht (assumed) |
+| ING | ING Bank N.V., DNB/AFM/ECB; securities segregated under the Dutch Wge | Dutch scheme, EUR 20k | No ("niet uitlenen of herverpanden", terms Oct 2021) | ING balance, Dutch deposit guarantee EUR 100k | Jaaroverzicht; a Dutch bank reports to the tax office (prefill) |
 | Trade Republic | Trade Republic Bank GmbH, BaFin/Bundesbank; Dutch branch since Jul 2025 | German bank scheme (EdB), 90% up to EUR 20k (its depositor sheet names EdB) | No clause found in the NL terms (not an explicit no) | Trust accounts at partner banks (each bank's guarantee); some balances may go to money market funds (not guaranteed; unclear for Dutch accounts) | Unclear: the NL terms exclude the tax-report clause; the NL launch release promises automated filing |
 | Scalable Capital FREE | Scalable Capital Bank GmbH, BaFin; cross-border | Not stated (EdB presumed: it is a bank) | No clause found | FREE: partly money market funds (not guaranteed); PRIME+: banks only | Tax report "can be arranged", no liability |
 | DEGIRO | flatexDEGIRO Bank SE, BaFin; Dutch branch AFM/DNB | German scheme, 90% up to EUR 20k (site; older terms name the Dutch scheme) | Opt-in only | flatex bank account, German guarantee EUR 100k, 0% interest | Dutch jaaropgave with the 1 Jan value |
@@ -108,7 +115,8 @@ dividend tax on distributions, creditable in the income tax return.
    2025; the German consumer federation raised them with BaFin) and both apps' trouble on the 7 Apr
    2025 crash morning (Trade Republic down about 1.5-2 hours; Scalable restricted).
 2. **Same cost range, more convenience if you already bank there: ING Zelf op de Beurs periodic
-   plan** (0.24%; the 2026 tariff page lists no minimum service fee), then ABN AMRO (0.20%), BUX Basic (0.20%) and Saxo AutoInvest (0.12%). ING's
+   plan**: Saxo AutoInvest (0.12%), ABN AMRO and BUX Basic (0.20%), ING (0.24%; its 2026 tariff page
+   lists no minimum service fee). ING's
    Topselectie ETFs are executed on "ING Interne Markt" (ING is the counterparty; the spread is not
    published), a cost this study did not measure; the same goes for the spreads on Tradegate, LS Exchange and
    gettex used by DEGIRO, Trade Republic and Scalable.
@@ -120,7 +128,8 @@ dividend tax on distributions, creditable in the income tax return.
    independent estimate is lower (leakage 0.24% for VWCE vs 0.015% for an fbi fund; all-in Meesman
    0.55% vs VWCE at a EUR 0 broker 0.38%; Northern Trust funds via ING about 0.35-0.49% including its
    fee, depending on the source).
-5. **Fixed fees hurt small buys:** IBKR, LYNX, Peaks, Rabobank's EUR 20 minimum, BUX Plus.
+5. **Fixed fees hurt small buys:** IBKR, LYNX (also EUR 60 a year once buying stops), Peaks,
+   Rabobank's EUR 20 minimum, BUX Plus.
 
 ## Reference: staying in euro savings
 
@@ -147,8 +156,8 @@ evidence on buying back versus waiting.
   from EUR 10 a month. Terms of Oct 2021: no lending or re-pledging; Wge protection.
 - **Trade Republic:** NL price list v02.2026
   (https://assets.traderepublic.com/documents/NL/FURTHER_INFORMATION_PRICE_LIST_20260210134114.pdf):
-  savings plan buys free, EUR 10-10,000; manual trades EUR 1; custody, transfers, FX free; fractions
-  cannot be transferred out. NL customer agreement (May 2026); NL branch release (22 Jul 2025);
+  savings plan buys free, EUR 10-10,000; manual trades EUR 1; custody and transfers free. NL
+  customer agreement (May 2026): fractions cannot be transferred out; NL branch release (22 Jul 2025);
   Berliner Zeitung on 7 Apr 2025; Stiftung Warentest on faulty depot transfers (27 Aug 2026); BaFin
   warning on phishing in its name (10 Mar 2026). Promo: 4% on the first EUR 20k for new customers
   until 1 Mar 2027 (geld.nl, 12 Nov 2026).
