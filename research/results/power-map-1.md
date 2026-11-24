@@ -119,7 +119,7 @@ Against zero (a book's own Sharpe S, alpha form uses the same row with IR for S)
 
 ## M6. Simulation checks
 
-| rho | Years | Formula SE at the true Sharpes | Monte Carlo SD of d (t(4) shocks) | Ratio | Detection at the formula's MDE80, z 4.69 |
+| rho | Years | Formula SE at the true Sharpes | Monte Carlo SD of d (t(4)) | Ratio | Detection at the formula's MDE80, z 4.69 |
 |---:|---:|---:|---:|---:|---:|
 | 0.00 | 6 | 0.603 | 0.696 | 1.15 | 78% |
 | 0.00 | 11 | 0.439 | 0.502 | 1.14 | 80% |
