@@ -36,10 +36,13 @@ checked with `ledger.check_append_only`, the same check the paper-trail ledger g
 | `alpha`, `power` | one-sided significance level and power, fixed in advance |
 | `min_sample`, `years_needed` | the sample the effect needs at that alpha and power (the calculator's numbers; `freeze` refuses others) |
 | `source`, `note` | where the candidate came from, caveats |
-| `frozen_at` | UTC time written by `freeze` |
+| `frozen_at` | UTC time written by `freeze`; `read` refuses a line without a valid one (`MissingFreezeTime`): a proposal pasted in by hand is not frozen |
 
 Observations, one file per rule (`research/forward/obs/<id>.jsonl`), one line per bar or event:
-`{"start", "end", "value", "rule_hash"}`. The rule's own forward adapter writes them.
+`{"start", "end", "value", "rule_hash"}`. The rule's own forward adapter writes them. These
+files are append-only too: `read_obs` runs the same `ledger.check_append_only` history check as
+the registry, so an observation committed once and later changed or removed (a loss dropped, a
+value edited) raises `LedgerTampered` and nothing is scored.
 
 ## Rules of scoring (all enforced by `forward.py`, all tested)
 
@@ -56,7 +59,8 @@ Observations, one file per rule (`research/forward/obs/<id>.jsonl`), one line pe
    after", not "closes after": a bar that opened before the freeze was partly known.
 3. **No re-freeze without a new id.** `freeze` refuses a known id (`AlreadyFrozen`); a file whose
    committed lines were ever changed stops everything (`LedgerTampered`); a line edited before
-   its commit fails its own `rule_hash` (`HashMismatch`).
+   its commit fails its own `rule_hash` (`HashMismatch`). The same history check runs on each
+   observation file (`read_obs`).
 4. **Same code or no score.** Every observation carries the `rule_hash` of the code that made it;
    another hash is refused (`HashMismatch`). `check_code` re-hashes the frozen files on disk or at
    a commit and names every file that changed.
