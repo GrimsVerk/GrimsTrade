@@ -5,23 +5,23 @@ pushed branch's `research/tries.md`; do not edit by hand. The dedup rule is in t
 of `src/grimstrade/register.py`. Convention (PROPOSED): every card quotes the
 project-wide count and the bar below, next to its own family bar (`docs/DESIGN.md`).
 
-Rows through 2026-11-19 00:30. Remote branches with a `research/tries.md`: 94.
+Rows through 2026-11-24 20:01. Remote branches with a `research/tries.md`: 61.
 
 ## Counts
 
 | What | Count |
 |---|---:|
-| Distinct tries, project-wide (`research/register/tries.jsonl`) | **3,130** |
-| Families (the `Idea` column) | 146 |
-| Tries without a Sharpe | 426 |
-| Selectable tries (`variant` or `baseline`, period `train`) | 1,021 |
+| Distinct tries, project-wide (`research/register/tries.jsonl`) | **3,855** |
+| Families (the `Idea` column) | 171 |
+| Tries without a Sharpe | 440 |
+| Selectable tries (`variant` or `baseline`, period `train`) | 1,072 |
 | Live strategies | 11 (lines of `ledger/tries.jsonl` on the remote `paper-trail`) |
-| **N for a new pick** (selectable + live) | **1,032** |
-| Tries whose shape the harness logged (`research/tries-shape.jsonl`) | 0 (0 selectable) |
+| **N for a new pick** (selectable + live) | **1,083** |
+| Tries whose shape the harness logged (`research/tries-shape.jsonl`) | 334 (43 selectable) |
 
-By kind: robustness 1,226, variant 617, control 508, baseline 426, screen 232, insure-check 68, replication 25, live-check 19, note 9.
+By kind: robustness 1,886, variant 641, control 508, baseline 453, screen 242, insure-check 68, replication 25, live-check 19, note 13.
 
-## The bar for a new pick at N = 1,032
+## The bar for a new pick at N = 1,083
 
 Deflated Sharpe, difference form (Bailey and Lopez de Prado 2014, as in
 `research/dsr-1.md`): a new rule's Sharpe edge d over the current bar (`tsmom12`), with
@@ -31,19 +31,19 @@ Correlated trials count as N_eff = rho + (1 - rho) N (appendix A.3); rho and the
 
 | Trials counted as | N | DSR 0.95: z needed | Edge, close rule (SE 0.065) | Edge, far rule (SE 0.12) | Bonferroni: p below | Bonferroni: z |
 |---|---:|---:|---:|---:|---:|---:|
-| independent | 1,032 | 4.91 | +0.32 | +0.59 | 4.8e-05 | 3.90 |
-| measured rho 0.53 (A.3, at most 10 per family) | 486 | 4.69 | +0.30 | +0.56 | 1.0e-04 | 3.71 |
-| ONC 2 clusters in 178, scaled to N | 12 | 3.29 | +0.21 | +0.40 | 4.3e-03 | 2.63 |
+| independent | 1,083 | 4.92 | +0.32 | +0.59 | 4.6e-05 | 3.91 |
+| measured rho 0.54 (A.3, at most 10 per family) | 500 | 4.70 | +0.31 | +0.56 | 1.0e-04 | 3.72 |
+| ONC 2 clusters in 204, scaled to N | 11 | 3.25 | +0.21 | +0.39 | 4.7e-03 | 2.60 |
 | ONC 2 clusters, sample only | 2.0 | 2.16 | +0.14 | +0.26 | 2.5e-02 | 1.96 |
-| uncapped sample of 297: rho 0.58 (A.3, register-2) | 432 | 4.65 | +0.30 | +0.56 | 1.2e-04 | 3.68 |
+| uncapped sample of 323: rho 0.58 (A.3, register-2) | 452 | 4.67 | +0.30 | +0.56 | 1.1e-04 | 3.69 |
 
 SE: a rule close to `tsmom12` on the primary test (six assets,
 1994-02-01..2025-11-09), and a far one (review-1's SE against equal weight).
 A card on other data or another comparator uses its own SE with the z column.
 
-**The bar for a new pick: N = 486 effectively independent trials (measured rho 0.53 (A.3, at most 10 per family)): z >= 4.69, an edge over `tsmom12` of +0.30 (close rule) to +0.56 (far rule) on the primary test; Bonferroni p <= 1.0e-04.**
+**The bar for a new pick: N = 500 effectively independent trials (measured rho 0.54 (A.3, at most 10 per family)): z >= 4.70, an edge over `tsmom12` of +0.31 (close rule) to +0.56 (far rule) on the primary test; Bonferroni p <= 1.0e-04.**
 
-The measured count is a range, not one number: 12 (ONC 2 clusters in 178, scaled to N) to 486 (measured rho 0.53 (A.3, at most 10 per family)) effectively independent trials. The bar takes the cautious end. At the other end it would be z >= 3.29 (+0.21 close rule), so a result with z between 3.29 and 4.69 is one where the counting method decides (review-2, section 1b). The close and far SEs stand for rules correlated about
+The measured count is a range, not one number: 11 (ONC 2 clusters in 204, scaled to N) to 500 (measured rho 0.54 (A.3, at most 10 per family)) effectively independent trials. The bar takes the cautious end. At the other end it would be z >= 3.25 (+0.21 close rule), so a result with z between 3.25 and 4.70 is one where the counting method decides (review-2, section 1b). The close and far SEs stand for rules correlated about
 0.93 and 0.77 with `tsmom12`; a less correlated rule has a larger SE (about 0.25 if
 uncorrelated) and uses the z column (review-2, section 1a).
 
@@ -51,56 +51,56 @@ uncorrelated) and uses the z column (review-2, section 1a).
 
 From `research/register/trials.json` and `research/register/moments.jsonl`, written by
 `uv run --with numpy python research/register2.py all` (card `research/register-2.md`).
-Tries with a measured record length, skew and kurtosis: 1,213 rows (413 of the 1,021 selectable) and 11 live strategies,
+Tries with a measured record length, skew and kurtosis: 1,547 rows (456 of the 1,072 selectable) and 11 live strategies,
 from the shape the harness logs with each row (`research/tries-shape.jsonl`), the
 research harness (baselines re-simulated, each matching its logged Sharpe) and the
-equity curves the harness saved when the try was logged. Their weekly returns are committed in `research/register/returns/` (1,178 series, 64 family files, 3.9 MB; card `research/register-4.md`), so `register2.py estimate` rebuilds both files on any checkout.
+equity curves the harness saved when the try was logged. Their weekly returns are committed in `research/register/returns/` (1,512 series, 80 family files, 4.8 MB; card `research/register-4.md`), so `register2.py estimate` rebuilds both files on any checkout.
 
-Correlation sample: 178 distinct selectable or live return series that cover every week 2012-01-06..2025-11-07 (722 weekly returns), at most 10 per family (59 families; first by SHA-256 of idea/variant/start, card `research/register-3.md`; uncapped: 297).
+Correlation sample: 204 distinct selectable or live return series that cover every week 2012-01-06..2025-11-07 (722 weekly returns), at most 10 per family (64 families; first by SHA-256 of idea/variant/start, card `research/register-3.md`; uncapped: 323).
 
 | Estimate | Value | Method |
 |---|---:|---|
-| Average pairwise correlation | 0.53 (median 0.46) | N_eff = rho + (1 - rho) N, appendix A.3 of Bailey and Lopez de Prado (2014) |
-| ONC clusters | 2 of 178 | Lopez de Prado and Lewis (2019), sections 8.1-8.2: k-means on sqrt((1 - rho) / 2), best mean/std of silhouettes, recursive re-clustering |
-| Eigenvalue participation ratio | 2.6 of 178 | (sum l)^2 / sum l^2, cross-check only |
-| Variance of the clusters' annual Sharpes | 0.136 | inverse-variance portfolio per cluster (8.2: minimum variance; register-3); the variance of 2 numbers, so rough |
-| Check, window 1994-2025 | rho 0.69, 2 clusters of 118 | same methods |
+| Average pairwise correlation | 0.54 (median 0.52) | N_eff = rho + (1 - rho) N, appendix A.3 of Bailey and Lopez de Prado (2014) |
+| ONC clusters | 2 of 204 | Lopez de Prado and Lewis (2019), sections 8.1-8.2: k-means on sqrt((1 - rho) / 2), best mean/std of silhouettes, recursive re-clustering |
+| Eigenvalue participation ratio | 2.5 of 204 | (sum l)^2 / sum l^2, cross-check only |
+| Variance of the clusters' annual Sharpes | 0.128 | inverse-variance portfolio per cluster (8.2: minimum variance; register-3); the variance of 2 numbers, so rough |
+| Check, window 1994-2025 | rho 0.69, 2 clusters of 133 | same methods |
 
 The sample is the part of the register whose returns could be rebuilt; the ONC count is
 scaled to all N tries by clusters per series (K N / M). The bar uses the more cautious
 (larger) of that and A.3 with the measured rho, never more than N.
 
-Shape of the weekly returns of the measured selectable and live tries: skew median -0.09 (10th percentile -1.06), excess kurtosis median 9.1 (90th percentile 17.4).
+Shape of the weekly returns of the measured selectable and live tries: skew median -0.04 (10th percentile -1.03), excess kurtosis median 9.0 (90th percentile 17.4).
 
 ## The bar per record length
 
-At N = 486. Edge over `tsmom12`: the SEs above are for the primary test's 1,657 weeks and scale with 1 / sqrt(weeks) (same correlation with
+At N = 500. Edge over `tsmom12`: the SEs above are for the primary test's 1,657 weeks and scale with 1 / sqrt(weeks) (same correlation with
 `tsmom12` assumed). Against zero: annual Sharpe for a deflated Sharpe of 0.95 on weekly
 returns (Bailey and Lopez de Prado 2014, eq. 2 with skew and kurtosis), trials' Sharpes
-spread with variance 0.136 (the larger of the clusters' and the selectable
+spread with variance 0.128 (the larger of the clusters' and the selectable
 variants' spread). With 2 clusters the clusters' variance rests on 2 numbers, so the against-zero columns are rough (review-2, section 1b).
 
 | Years | Weeks | Edge, close rule | Edge, far rule | Against zero: normal | median shape | fat tail (p10 skew, p90 kurtosis) |
 |---:|---:|---:|---:|---:|---:|---:|
-| 5 | 261 | +0.77 | +1.42 | 2.11 | 2.20 | 2.37 |
-| 10 | 522 | +0.54 | +1.00 | 1.65 | 1.69 | 1.77 |
-| 20 | 1,044 | +0.38 | +0.71 | 1.49 | 1.51 | 1.57 |
-| 32 | 1,670 | +0.30 | +0.56 | 1.42 | 1.43 | 1.47 |
+| 5 | 261 | +0.77 | +1.42 | 2.12 | 2.19 | 2.37 |
+| 10 | 522 | +0.54 | +1.00 | 1.62 | 1.65 | 1.74 |
+| 20 | 1,044 | +0.38 | +0.71 | 1.46 | 1.48 | 1.53 |
+| 32 | 1,670 | +0.30 | +0.56 | 1.39 | 1.40 | 1.44 |
 
 ## Against zero
 
-Selectable variants' annual Sharpes: mean 0.77, variance 0.098
+Selectable variants' annual Sharpes: mean 0.77, variance 0.096
 (the project-wide spread; cautious, since it mixes data sets).
 Annual Sharpe a new rule needs for a deflated Sharpe of 0.95 against zero (normal
 returns; fat tails need more):
 
 | Trials counted as | N | Luck alone, SR0 | Needed, 32 years | 10 years | 5 years |
 |---|---:|---:|---:|---:|---:|
-| independent | 1,032 | 1.02 | 1.31 | 1.55 | 2.20 |
-| measured rho 0.53 (A.3, at most 10 per family) | 486 | 0.95 | 1.24 | 1.48 | 2.10 |
-| ONC 2 clusters in 178, scaled to N | 12 | 0.52 | 0.81 | 1.04 | 1.47 |
+| independent | 1,083 | 1.02 | 1.31 | 1.56 | 2.20 |
+| measured rho 0.54 (A.3, at most 10 per family) | 500 | 0.95 | 1.24 | 1.49 | 2.10 |
+| ONC 2 clusters in 204, scaled to N | 11 | 0.50 | 0.79 | 1.03 | 1.45 |
 | ONC 2 clusters, sample only | 2.0 | 0.16 | 0.45 | 0.68 | 0.97 |
-| uncapped sample of 297: rho 0.58 (A.3, register-2) | 432 | 0.94 | 1.23 | 1.47 | 2.08 |
+| uncapped sample of 323: rho 0.58 (A.3, register-2) | 452 | 0.94 | 1.23 | 1.48 | 2.09 |
 
 ## Spread per test window
 
@@ -109,7 +109,7 @@ largest first (one window can hold several data sets):
 
 | From | To | Rows | Mean | Variance |
 |---|---|---:|---:|---:|
-| 1994-02-01 | 2025-11-09 | 287 | 0.91 | 0.040 |
+| 1994-02-01 | 2025-11-09 | 299 | 0.92 | 0.038 |
 | 2012-01-02 | 2025-11-09 | 223 | 0.74 | 0.070 |
 | 1927-07-02 | 1961-12-28 | 24 | 0.73 | 0.046 |
 | 1962-01-02 | 2001-12-30 | 24 | 0.78 | 0.018 |

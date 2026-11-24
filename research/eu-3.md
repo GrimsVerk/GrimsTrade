@@ -4,7 +4,7 @@ Lane `eu-3` (DEEPER), night of 2026-11-18. Research only, fake money, train peri
 Branch `eu-3` from `eu-2`. Card: `cards/eu-3.md` (pushed before any number; erratum at its
 end). Tables: `results/eu-3.md`. Code: `lib/eu3.py`. 81 rows in `tries.md` (idea `eu-3`).
 
-**Question.** On the coin-free book `euw` (SXR8, EXSA, IQQE, IBGS, IBGL, 4GLD, EXXY), Dutch
+**Question.** On the coin-free book `euw` (SXR8, EXSA, IQQE, IBGS, IBGL, 4GLD, EXXY),
 fixed per-order fees made `tsmom12` not worth running below about EUR 6k (EUR 1 orders), 10k
 (EUR 2) or 16k (EUR 3) (eu-2). Can a slower decision clock or fewer, larger slots cut the
 orders a lot **without changing the rule's character**, so the book is worth running at
