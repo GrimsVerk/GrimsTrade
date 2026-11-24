@@ -68,6 +68,9 @@ def test_daily_runs_build_an_append_only_record(tmp_path: Path) -> None:
     assert 9_950 < btc["equity"] < 10_050  # one day's small rise, less the cost of buying
     board = (tmp_path / "reports" / "scoreboard.md").read_text()
     assert board.startswith("# Scoreboard") and "Deflated Sharpe" in board
+    # research/lagcost-1.md, Recommendation 2: the live schedule's start effect is stated.
+    assert report.LIVE_TIMING_NOTE in board
+    assert "02:00-06:13 UTC" in board and "one day later than in a 22:30 backtest" in board
     # Backtests live in their own, clearly labelled report, never in the scoreboard.
     assert "Backtest" not in board
     backtest = (tmp_path / "reports" / "backtest.md").read_text()
