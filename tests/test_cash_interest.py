@@ -286,3 +286,30 @@ def test_interest_never_changes_a_decision_or_a_bar(tmp_path: Path) -> None:
     run_daily.run(without, now, irx_market(5.0, ok=False), without)
     for rel in (ledger.DECISIONS, Path("data/bars/BTC.csv")):
         assert (with_rates / rel).read_text() == (without / rel).read_text()
+
+
+def test_sparse_decisions_through_the_engine_credit_every_day_without_an_event() -> None:
+    # SPY only: no event on weekends, nor in a two-week gap with no bar at all. Decisions are
+    # sparse, one on a Saturday (no event that day): each calendar day still earns exactly one
+    # day's interest, whether the catch-up comes from an event or from a decision.
+    bars = [b for b in flat(MON, 42, weekdays_only=True)
+            if not MON + timedelta(days=12) <= b.date <= MON + timedelta(days=25)]  # fmt: skip
+    hist: History = {"SPY": bars}
+    times = [at(MON), at(MON + timedelta(days=5), 10, 0), at(MON + timedelta(days=19)),
+             at(MON + timedelta(days=33))]  # fmt: skip
+    replay = gym.Replay(hist, costs=NO_COSTS, rates=const(0.0365))
+    for t in times:
+        replay.decide(t, {})
+    res = replay.finish()
+    want = gym.simulate([Decision(t, {}) for t in times], hist, costs=NO_COSTS,
+                        rates=const(0.0365))  # fmt: skip
+    assert res == want  # the engine is simulate's loop: equal to the last bit
+    marked = sorted({b.date for b in bars if b.date >= MON} | {t.date() for t in times})
+    assert [d for d, _ in res.equity] == marked  # a mark on each day with an event or decision
+    for d, e in res.equity[:-1]:  # credited through the end of d: one day each since Monday
+        assert e == pytest.approx(gym.START_CASH * 1.0001 ** ((d - MON).days + 1), rel=1e-12)
+    last = marked[-1]
+    assert res.cash == pytest.approx(gym.START_CASH * 1.0001 ** (last - MON).days, rel=1e-12)
+    assert math.prod(1 + g for g in res.cash_growth) == pytest.approx(
+        1.0001 ** (last - MON).days, rel=1e-12
+    )

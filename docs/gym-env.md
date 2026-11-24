@@ -15,13 +15,15 @@ obs, reward, terminated, truncated, info = env.step(env.action_space.sample())
 
 ## Rules
 
-- **Simulator.** `Replay` is `gym.simulate`'s event loop, opened at each decision; it calls the
-  gym's own `_execute`. Fills at each asset's next open with slippage, Kraken taker tiers for
-  crypto, the 1% band, sells before buys, cash-limited buys that wait, distributions, cash
-  interest: all as in `gym.py`. Test: `ts_momentum` and `equal_weight` driven through the env give
+- **Simulator.** The env steps `gym.Replay`, the gym's one event loop: `gym.simulate` is a loop
+  of `Replay.decide` calls over it, so there is no second copy of the rules to drift. Fills at
+  each asset's next open with slippage, Kraken taker tiers for crypto, the 1% band, sells before
+  buys, cash-limited buys that wait, distributions, cash interest: all as in `gym.py`. `Replay`
+  has no held-out guard (the daily runner replays the record up to today); the env checks its
+  inputs (`check_train_only`). Tests: `ts_momentum` and `equal_weight` driven through the env give
   `simulate`'s result (equity curve, fills, cash, positions, income); also for a window starting
-  mid-history and for weekly decisions. Change `gym.simulate` and `Replay` together: the test
-  will fail otherwise.
+  mid-history, for weekly decisions, and for a short `episode_steps` window that stops before the
+  bars do. `tests/test_golden_simulate.py` pins `simulate`'s results bit-exactly.
 - **Decisions.** At 22:30 UTC (`gym.DECIDE_AT`), daily, or weekly on `weekday` (4 = Friday, the
   research protocol's rule). Between weekly decisions the same weights are re-submitted every
   day, as `common.weekly` research strategies are replayed, so the band rebalances drift.
