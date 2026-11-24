@@ -6,17 +6,20 @@ independent trials from their return correlations (card: research/register-2.md)
 
 Steps (each can run alone):
 
-- `tree`: extract `src/` and `research/lib/` of a research branch at a pinned commit into
+- `tree`: extract `src/` and `research/lib/` of a commit (`--ref`, default `HEAD`: this
+  checkout; register-7, never a named branch that can be deleted) into
   `research/data/register2/tree/<sha>/` (the harness and its baselines, as they were run).
 - `baselines`: re-simulate every baseline of `research/lib/baselines.py` in that tree on train
   (`log=False`: already counted) and save their weekly returns.
 - `live`: the live strategies (`grimstrade.strategies.LIVE`) through `grimstrade.gym` on the six
-  assets, train period, raw prices (what the paper system trades), weekly returns.
+  assets, train period, raw prices (what the paper system trades), weekly returns. Each series
+  is tagged with its code version (`live_tags`, register-7).
 - `curves`: equity curves the harness saved for logged tries (`research/data/runs/...`) in the
   directories listed in `research/register2.local.json` (gitignored; see the `.example`).
 - `export` (register-4): add the local series to the committed weekly-returns store
   `research/register/returns/` (`grimstrade.returnstore`): every baseline and live series, and
   every saved curve that fits a register row. Commit the store with the generated files.
+  Stored rows are never replaced; which re-runs are added is in `to_store` (register-7).
 - `estimate`: match every series to its register rows, write `research/register/moments.jsonl`
   and `research/register/trials.json`; `grimstrade.register` turns them into BAR.md. Reads the
   committed store first and adds local series not in it, all rounded to 1e-6 and in one
@@ -58,7 +61,10 @@ TRIALS = RESEARCH / "register" / "trials.json"
 STORE = ROOT / returnstore.STORE  # register-4: committed weekly returns
 LOCAL_FILES = ("baselines", "curves", "live")  # intermediates in WORK, one per source kind
 
-HARNESS_REF = "origin/summary-2"  # a research branch with research/lib/baselines.py
+DEFAULT_REF = "HEAD"  # register-7: `tree` reads this checkout's commit unless `--ref` says
+# another; a branch name is resolved once to its commit, and the tag records the commit
+LIVE_PREFIX = "live@code-"  # register-7: live@code-<code_hash>-sim-<sim hash>
+SIM_FILES = ("src/grimstrade/gym.py", "src/grimstrade/data.py")  # what `live` simulates with
 TRAIN_START, TRAIN_END, TRAIN_LAST_BAR = date(1994, 2, 1), date(2025, 11, 9), date(2025, 11, 10)
 WEEKS_PER_YEAR = 365.25 / 7
 SHARPE_TOL = 0.0051  # logged Sharpes have two decimals
@@ -164,49 +170,103 @@ def local_rows() -> list[returnstore.Row]:
     return [to_row(s) for name in LOCAL_FILES for s in load(WORK / f"{name}.jsonl") if s.rets]
 
 
-def sources() -> tuple[list[Series], list[Series], list[Series], list[returnstore.Row]]:
-    """Baseline, curve and live series: the committed store first, then local series not in
-    it; rounded to 1e-6 and in canonical order either way. Also: those local rows."""
+def sources(
+    rows: list[dict[str, Any]] | None = None, robustness: bool = False
+) -> tuple[list[Series], list[Series], list[Series], list[returnstore.Row]]:
+    """Baseline, curve and live series: the committed store first, then the local series
+    `export` would add to it (`to_store`); rounded to 1e-6 and in canonical order either way.
+    Also: those local rows (none on a clean checkout, or once they are exported)."""
     stored = returnstore.read(STORE)
-    keys = {r.key() for r in stored}
-    local = [r for r in returnstore.merge(local_rows()) if r.key() not in keys]
+    rows = register_rows() if rows is None else rows
+    local = to_store(local_rows(), rows, stored, robustness)
     out: dict[str, list[Series]] = {"harness": [], "curve": [], "live": []}
     for r in returnstore.merge(stored, local):
         out[kind(r.source)].append(from_row(r))
     return out["harness"], out["curve"], out["live"], local
 
 
-def export() -> None:
-    """Add the local series to the store: every baseline and live series, and every saved
-    curve that fits a register row (ambiguous fits too). Stored rows always stay. Over the
-    budget, drop curves that fit no selectable row, last by SHA-256 of idea/variant/start
-    first, and say so (card register-4)."""
+def export(robustness: bool = False) -> None:
+    """Add the local series to the store by `to_store`'s rules. Stored rows always stay (none
+    is replaced or removed). Over the budget, leave out the new curves that fit no selectable
+    row, last by SHA-256 of idea/variant/start first, and say so (cards register-4, -7)."""
     stored = returnstore.read(STORE)
-    keys = {r.key() for r in stored}
     rows = register_rows()
-    keep = to_store([r for r in returnstore.merge(local_rows()) if r.key() not in keys], rows)
+    skipped: dict[str, int] = {}
+    keep = to_store(local_rows(), rows, stored, robustness, skipped)
     store = returnstore.merge(stored, keep)
-    total = store_bytes(store)
-    if total > returnstore.BUDGET:
-        store = within_budget(store, rows)
+    if store_bytes(store) > returnstore.BUDGET:
+        store = within_budget(stored, keep, rows)
         print(f"export: over {returnstore.BUDGET:,} bytes, kept {len(store)}", file=sys.stderr)
     sizes = returnstore.write(STORE, store)
     print(
-        f"export: {len(store)} series ({len(keep)} new) in {len(sizes)} files, "
+        f"export: {len(store)} series ({len(store) - len(stored)} new) in {len(sizes)} files, "
         f"{sum(sizes.values()):,} bytes",
         file=sys.stderr,
     )
+    if skipped:
+        print(
+            "export: not added: " + ", ".join(f"{k} {n}" for k, n in sorted(skipped.items())),
+            file=sys.stderr,
+        )
 
 
-def to_store(new: list[returnstore.Row], rows: list[dict[str, Any]]) -> list[returnstore.Row]:
-    """The rows the store takes: baselines, live series, curves that fit a register row."""
-    curve_fits = fits([from_row(r) for r in new if kind(r.source) == "curve"], rows)
-    fitting = {(s.idea, s.variant, s.start, s.sharpe) for ss in curve_fits.values() for s in ss}
-    return [
-        r
-        for r in new
-        if kind(r.source) != "curve" or (r.idea, r.variant, r.start, r.sharpe) in fitting
-    ]
+def to_store(
+    local: Iterable[returnstore.Row],
+    rows: list[dict[str, Any]],
+    stored: Sequence[returnstore.Row] = (),
+    robustness: bool = False,
+    skipped: dict[str, int] | None = None,
+) -> list[returnstore.Row]:
+    """The local rows the store takes (cards register-4, register-7). A row already stored
+    (identical) is not new. Then, by kind:
+
+    - live: a new code version (source tag, `live_tags`) of a strategy; a re-run of a stored
+      version (other prices, other machine) is not added;
+    - harness (re-simulated baseline): if no stored baseline series has its idea, variant and
+      start, or if it fits a register row no stored series fits; drift re-runs are not added;
+    - curve: if it fits a register row, unless every row it fits is of a kind in
+      `returnstore.NOT_STORED_BY_DEFAULT` (robustness: never selectable) and `robustness` is
+      off.
+
+    `skipped` (if given) counts what was left out, by reason."""
+    have = {r.key() for r in stored}
+    by_key = _by_key(rows)
+    kinds = {r["id"]: r["kind"] for r in rows}
+    live_have = {(r.variant, r.source) for r in stored if kind(r.source) == "live"}
+    base_have = {(r.idea, r.variant, r.start) for r in stored if kind(r.source) == "harness"}
+    fitted = {i for r in stored if kind(r.source) != "live" for i in fit_ids(from_row(r), by_key)}
+    out = []
+
+    def skip(reason: str) -> None:
+        if skipped is not None:
+            skipped[reason] = skipped.get(reason, 0) + 1
+
+    for r in returnstore.merge(local):
+        if r.key() in have:
+            continue
+        k = kind(r.source)
+        if k == "live":
+            if (r.variant, r.source) in live_have:
+                skip("live re-runs of a stored code version")
+                continue
+            live_have.add((r.variant, r.source))
+        elif k == "harness":
+            ids = fit_ids(from_row(r), by_key)
+            if (r.idea, r.variant, r.start) in base_have and not set(ids) - fitted:
+                skip("baseline re-runs")
+                continue
+            base_have.add((r.idea, r.variant, r.start))
+            fitted.update(ids)
+        else:
+            ids = fit_ids(from_row(r), by_key)
+            if not ids:
+                skip("curves that fit no register row")
+                continue
+            if not robustness and all(kinds[i] in returnstore.NOT_STORED_BY_DEFAULT for i in ids):
+                skip("robustness-only curves")
+                continue
+        out.append(r)
+    return out
 
 
 def store_bytes(store: list[returnstore.Row]) -> int:
@@ -217,17 +277,20 @@ def store_bytes(store: list[returnstore.Row]) -> int:
 
 
 def within_budget(
-    store: list[returnstore.Row], rows: list[dict[str, Any]]
+    stored: list[returnstore.Row], new: list[returnstore.Row], rows: list[dict[str, Any]]
 ) -> list[returnstore.Row]:
-    """Keep baselines, live series and curves fitting a selectable row; add the other curves
-    by SHA-256 of idea/variant/start while the store stays under the budget."""
+    """Keep every stored row, every new baseline and live series and every new curve fitting
+    a selectable row; add the other new curves by SHA-256 of idea/variant/start while the
+    store stays under the budget. Warns when the kept rows alone are over it."""
     sel = [r for r in rows if r["kind"] in SELECTABLE]
-    sel_fits = fits([from_row(r) for r in store if kind(r.source) == "curve"], sel)
+    sel_fits = fits([from_row(r) for r in new if kind(r.source) == "curve"], sel)
     protected = {(s.idea, s.variant, s.start, s.sharpe) for ss in sel_fits.values() for s in ss}
-    must, rest = [], []
-    for r in store:
+    must, rest = list(stored), []
+    for r in new:
         key = (r.idea, r.variant, r.start, r.sharpe)
         (must if kind(r.source) != "curve" or key in protected else rest).append(r)
+    if (n := store_bytes(must)) > returnstore.BUDGET:
+        print(f"export: the rows kept are {n:,} bytes, over the budget", file=sys.stderr)
     rest.sort(key=lambda r: hashlib.sha256(f"{r.idea}/{r.variant}/{r.start}".encode()).hexdigest())
     lo, hi = 0, len(rest)
     while lo < hi:  # the most of `rest` (in that order) that fits
@@ -248,8 +311,20 @@ def git(*args: str) -> str:
     ).stdout
 
 
-def tree(ref: str = HARNESS_REF) -> Path:
-    sha = git("rev-parse", ref).strip()
+def commit_of(ref: str) -> str:
+    """The commit `ref` names here (a SHA, `HEAD`, a tag or a branch, resolved once), which
+    must hold the harness (`research/lib/baselines.py`)."""
+    try:
+        sha = git("rev-parse", "--verify", "--quiet", f"{ref}^{{commit}}").strip()
+    except subprocess.CalledProcessError:
+        raise SystemExit(f"register2: {ref!r} is not a commit in this repository") from None
+    if not git("ls-tree", sha, "research/lib/baselines.py").strip():
+        raise SystemExit(f"register2: commit {sha[:12]} has no research/lib/baselines.py")
+    return sha
+
+
+def tree(ref: str = DEFAULT_REF) -> Path:
+    sha = commit_of(ref)
     out = WORK / "tree" / sha[:12]
     if not (out / "research" / "lib" / "baselines.py").exists():
         out.mkdir(parents=True, exist_ok=True)
@@ -307,7 +382,7 @@ def live() -> None:
     closes = {
         s: [data.close_time(data.UNIVERSE[s], b.date) for b in bars] for s, bars in hist.items()
     }
-    sha = git("rev-parse", "HEAD").strip()[:12]
+    tags = live_tags()
     out = []
     for name, decide in LIVE.items():
         decs = []
@@ -318,9 +393,68 @@ def live() -> None:
             decs.append(gym.Decision(t, decide(seen)[0]))
             d += timedelta(days=1)
         res = gym.simulate(decs, hist)
-        out.append(series_of(f"live@{sha}", "live", name, res.equity))
+        out.append(series_of(tags[name], "live", name, res.equity))
         print(f"live: {name} done", file=sys.stderr)
     save(WORK / "live.jsonl", out)
+
+
+def sim_hash(root: Path = ROOT) -> str:
+    """SHA-256 (12 hex) of the simulator's source (`SIM_FILES`, bytes with CRLF read as LF, so a
+    Windows checkout gives the same hash)."""
+    h = hashlib.sha256()
+    for name in SIM_FILES:
+        h.update((root / name).read_bytes().replace(b"\r\n", b"\n"))
+    return h.hexdigest()[:12]
+
+
+def live_tags() -> dict[str, str]:
+    """Live strategy -> the source tag of its series from this checkout's code (register-7):
+    `live@code-<code_hash>-sim-<sim hash>`, with the strategy's `code_hash` as the daily runner
+    writes it into each decision (`run_daily.fingerprint`)."""
+    sys.path.insert(0, str(ROOT / "src"))
+    from grimstrade import run_daily
+    from grimstrade.strategies import LIVE
+
+    sim = sim_hash()
+    return {
+        name: f"{LIVE_PREFIX}{run_daily.fingerprint(f) or 'unknown'}-sim-{sim}"
+        for name, f in LIVE.items()
+    }
+
+
+def pick_live(lives: list[Series], current: dict[str, str]) -> list[Series]:
+    """One series per live strategy (register-7): the current code's version if stored; else
+    its only stored version; else its only versioned one (newer than a pre-register-7
+    `live@<commit>` tag); else none (no order to pick by). Warns for each fallback. Keeps the
+    canonical order."""
+    by_name: dict[str, list[Series]] = {}
+    for s in lives:
+        by_name.setdefault(s.variant, []).append(s)
+    picked, stale, left_out = set(), [], []
+    for name, ss in by_name.items():
+        cur = [s for s in ss if s.source == current.get(name)]
+        versioned = [s for s in ss if s.source.startswith(LIVE_PREFIX)]
+        if cur:
+            picked.add(id(cur[0]))
+            continue
+        if len(ss) == 1 or len(versioned) == 1:
+            picked.add(id(ss[0] if len(ss) == 1 else versioned[0]))
+            stale.append(name)
+        else:
+            left_out.append(name)
+    missing = sorted(set(current) - set(by_name))
+    for what, names in (
+        ("series not of the current code", stale),
+        ("left out: several stored code versions, none current", left_out),
+        ("no stored series", missing),
+    ):
+        if names:
+            print(
+                f"estimate: live strategies with {what} ({len(names)}): {', '.join(names)}; "
+                "run `live` and `export` and commit the store",
+                file=sys.stderr,
+            )
+    return [s for s in lives if id(s) in picked]
 
 
 def curves() -> None:
@@ -355,20 +489,33 @@ def register_rows() -> list[dict[str, Any]]:
     return [json.loads(ln) for ln in REGISTER.read_text().splitlines() if ln.strip()]
 
 
-def fits(series: list[Series], rows: list[dict[str, Any]]) -> dict[str, list[Series]]:
-    """Register id -> every series that fits the row: idea, variant and period (train) agree,
-    it starts within START_TOL of the row's From and its Sharpe equals the logged one to two
-    decimals."""
+def _by_key(rows: list[dict[str, Any]]) -> dict[tuple[str, str], list[dict[str, Any]]]:
     by_key: dict[tuple[str, str], list[dict[str, Any]]] = {}
     for r in rows:
         if r["period"] == "train" and r["sharpe"] is not None:
             by_key.setdefault((r["idea"], r["variant"]), []).append(r)
+    return by_key
+
+
+def fit_ids(s: Series, by_key: dict[tuple[str, str], list[dict[str, Any]]]) -> list[str]:
+    """Ids of the register rows the series fits (`fits`), from `_by_key` of the rows."""
+    out = []
+    for r in by_key.get((s.idea, s.variant), []):
+        dt = abs(date.fromisoformat(s.start) - date.fromisoformat(r["from"]))
+        if dt <= START_TOL and abs(s.sharpe - r["sharpe"]) <= SHARPE_TOL:
+            out.append(r["id"])
+    return out
+
+
+def fits(series: list[Series], rows: list[dict[str, Any]]) -> dict[str, list[Series]]:
+    """Register id -> every series that fits the row: idea, variant and period (train) agree,
+    it starts within START_TOL of the row's From and its Sharpe equals the logged one to two
+    decimals."""
+    by_key = _by_key(rows)
     out: dict[str, list[Series]] = {}
     for s in series:
-        for r in by_key.get((s.idea, s.variant), []):
-            dt = abs(date.fromisoformat(s.start) - date.fromisoformat(r["from"]))
-            if dt <= START_TOL and abs(s.sharpe - r["sharpe"]) <= SHARPE_TOL:
-                out.setdefault(r["id"], []).append(s)
+        for ident in fit_ids(s, by_key):
+            out.setdefault(ident, []).append(s)
     return out
 
 
@@ -648,11 +795,12 @@ def register_weighted_rho(
     }
 
 
-def estimate() -> None:
+def estimate(robustness: bool = False) -> None:
     rows = register_rows()
     by_id = {r["id"]: r for r in rows}
-    harness, curves_, lives, local = sources()
-    if unstored := len(to_store(local, rows)):
+    harness, curves_, lives, local = sources(rows, robustness)
+    lives = pick_live(lives, live_tags())
+    if unstored := len(local):
         print(
             f"estimate: {unstored} local series for the register are not in {returnstore.STORE} "
             "(run `export` and commit the store, or a clean checkout gets other numbers)",
@@ -702,7 +850,7 @@ def estimate() -> None:
         "generated_by": "uv run --with numpy python research/register2.py all",
         "card": "research/register-2.md",
         "method": "Lopez de Prado and Lewis (2019), ONC; Bailey and Lopez de Prado (2014), A.3",
-        "harness_ref": HARNESS_REF,
+        "harness_ref": " ".join(sorted({s.source.split("@", 1)[1] for s in harness})),
         "seed": SEED,
         "n_init": N_INIT,
         "k_max": K_MAX,
@@ -771,27 +919,37 @@ def main(argv: list[str] | None = None) -> None:
         "step", choices=("all", "tree", "baselines", "live", "curves", "export", "estimate")
     )
     p.add_argument("--tree", type=Path, help="extracted tree (for `baselines`)")
+    p.add_argument(
+        "--ref",
+        default=DEFAULT_REF,
+        help="commit whose harness `tree` extracts (default: HEAD, this checkout)",
+    )
+    p.add_argument(
+        "--robustness",
+        action="store_true",
+        help="also store curves that fit only robustness rows (off by default, register-7)",
+    )
     a = p.parse_args(argv)
     if a.step == "tree":
-        print(tree())
+        print(tree(a.ref))
     elif a.step == "baselines":
-        baselines(a.tree or tree())
+        baselines(a.tree or tree(a.ref))
     elif a.step == "live":
         live()
     elif a.step == "curves":
         curves()
     elif a.step == "export":
-        export()
+        export(a.robustness)
     elif a.step == "estimate":
-        estimate()
+        estimate(a.robustness)
     else:
-        t = tree()
+        t = tree(a.ref)
         me = [sys.executable, str(Path(__file__).resolve())]
         subprocess.run([*me, "baselines", "--tree", str(t)], check=True)
         subprocess.run([*me, "live"], check=True)
         curves()
-        export()
-        estimate()
+        export(a.robustness)
+        estimate(a.robustness)
 
 
 if __name__ == "__main__":
