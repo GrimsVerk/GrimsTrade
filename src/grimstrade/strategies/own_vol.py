@@ -168,7 +168,7 @@ def plan(
             return target, "no sigma yet" + (", share kept" if kept else "")
         if sg > 0:
             k = solve_k(tuple(seen[:n]), target)
-            return min(1.0, k / sg), f"sigma {sg:.1%}, k {k:.4f}" + (", kept" if kept else "")
+            return min(1.0, k / sg), f"sigma {sg:.1%}, k {k:.4f}" + (", share kept" if kept else "")
         kept = True
     return target, "warm-up" if len(seen) < WARMUP else "no sigma yet"
 
