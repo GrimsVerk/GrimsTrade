@@ -105,3 +105,46 @@ regeneration (`git fetch origin`, register, `export` of the new lanes' curves, `
 register) picks up tonight's newer branches.
 
 Tries rows added by this lane: none.
+
+## register-7 addendum: no named source branch, one series per try, a storage policy
+
+Card written 2026-11-24, before any number below "register-7 results" was computed.
+Engineering only: no new configuration is backtested, no try rows, no held-out data.
+Prompted by summary-4 (PR #156): `register2.py all` read its harness from `origin/summary-2`,
+which GitHub deleted after the merge, and `export` never replaces a stored row, so a re-run
+of the baselines (price-cache drift) or of the live strategies (live code changed) became a
+second series of the same try.
+
+1. **Source tree.** `tree`, `baselines` and `all` take `--ref <commit>` (default `HEAD`: the
+   current checkout's commit) instead of a fixed branch. The baselines' source tag stays
+   `harness@<sha12>` of that commit. `trials.json`'s `harness_ref` names the harness commits
+   of the stored baseline series instead of a branch name.
+2. **Rule for re-runs (the store only grows; committed rows are never replaced or removed).**
+   - Live strategies are versioned by code: `source = live@code-<c>-sim-<s>`, where `<c>` is
+     the strategy's `code_hash` (`run_daily.fingerprint`, the field every ledger decision
+     carries) and `<s>` the SHA-256 (12 hex) of the simulator's source (`gym.py`, `data.py`).
+     A new code version is a new stored series; the old one stays as the record of what the
+     old code did. A re-run with the same code (other prices, other machine) is not added:
+     the stored series stays.
+   - `estimate` uses one series per live strategy: the current code's version if stored;
+     else its only stored version (with a warning when that is not the current code); with
+     several stored versions and none current, the newest by tag kind (a versioned tag beats
+     a pre-register-7 `live@<commit>` tag); two or more versioned tags and none current:
+     the strategy is left out, with a warning (no order to pick by). So a live strategy
+     counts once whatever the store holds.
+   - Re-simulated baselines: a series is added only if no stored baseline series has the
+     same idea, variant and start, or if it fits a register row that no stored series fits
+     (a baseline logged by a changed harness). Drift re-runs are not added.
+   - Saved curves: unchanged (identical rows once; different curves that fit the same row
+     stay, and keep the row ambiguous).
+3. **Storage policy.** A curve whose every fitting register row is of kind `robustness`
+   (never selectable) is not stored by default: not by `export` (unless `export
+   --robustness`) and not by the harness hook (`research/lib/harness.py`, `_store`). Its
+   curve CSV is still saved locally. Stored rows stay. Over the budget, `export` no longer
+   drops stored rows: it drops only new curves that fit no selectable row (by SHA-256 of
+   idea/variant/start), and warns if the kept rows alone exceed the budget.
+4. **Checks.** Offline tests for each rule. Byte-identity: the old `register2.py` with its
+   source ref pinned to the commit the stored baselines came from (512ae2ce13e2) against the
+   new one with `--ref 512ae2ce13e2`, same price caches: `tree` and `baselines` output
+   byte-identical; `estimate` on the committed store: `moments.jsonl` byte-identical,
+   `trials.json` identical except the `harness_ref` value. BAR.md is not regenerated here.
