@@ -3,9 +3,8 @@
 Ideas not started yet. Move one to `next-steps.md` when you start it; delete it when done.
 
 - Gymnasium env wrapper around `gym.py` (for RL, M3).
-- Credit dividends (ETF distributions) in the gym.
-- Crypto fee by 30-day volume tier instead of one flat 60 bps (Kraken Pro taker: 0.80% from 0,
-  0.60% from 2,500 USD, 0.38% from 10,000, 0.35% from 25,000; see DECISIONS, audit G3).
+- Second source for the 13-week bill rate: the US Treasury's keyless daily bill-rate CSV, used
+  when Yahoo `^IRX` fails (today the last rate carries forward; #61, decisions-1 A2c).
 - More universe: a few more liquid crypto (SOL, ...) and ETFs (IWM, EFA, ...).
 - Crypto funding-rate carry (long spot, short perpetual, collect funding). Needs a short-perp leg
   and funding cash flows in the gym first. Keyless source: Kraken Futures

@@ -18,8 +18,8 @@ from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from grimstrade import data, gym, ledger, stats
-from grimstrade.data import History
+from grimstrade import data, gym, ledger, rates, stats
+from grimstrade.data import Dividends, History
 from grimstrade.gym import Decision, Result
 from grimstrade.stats import Moments
 
@@ -52,6 +52,11 @@ def score(name: str, res: Result) -> Score:
     # day (a run before the US open) must count in the Sharpe and the drawdown, not only in the
     # total return.
     rets = [b / a - 1 for a, b in zip([res.start_cash, *eq], eq, strict=False)]
+    # Sharpe and its moments are measured above what cash earned in the gym (zero without rates):
+    # interest alone is no skill (DECISIONS, 2026-11-18, cash interest). A difference under
+    # 1e-12 is rounding (a book all in cash), not a return: it must not make a Sharpe of noise.
+    rf = res.cash_growth if len(res.cash_growth) == len(rets) else [0.0] * len(rets)
+    rets = [0.0 if abs(r - f) < 1e-12 else r - f for r, f in zip(rets, rf, strict=True)]
     sd = statistics.pstdev(rets)
     # Returns per year from the real time span, not from an assumed spacing: 365 when there is a
     # point every calendar day (the live record: crypto has a bar every day), fewer when days are
@@ -103,11 +108,21 @@ def live_results(root: Path, history: History) -> dict[str, Result]:
     # A decision counts from when it reached the record (its commit), see `ledger.in_force`.
     for counts_from, row in ledger.in_force(root)[0]:
         by_strategy.setdefault(row["strategy"], []).append(Decision(counts_from, row["weights"]))
-    return {name: gym.simulate(decs, history) for name, decs in by_strategy.items()}
+    divs = data.load_dividends(root)
+    cash = rates.steps(rates.load(root), live=True)
+    return {
+        name: gym.simulate(decs, history, dividends=divs, rates=cash)
+        for name, decs in by_strategy.items()
+    }
 
 
 def restarted(
-    counted: Sequence[tuple[datetime, dict[str, Any]]], history: History, name: str, at: datetime
+    counted: Sequence[tuple[datetime, dict[str, Any]]],
+    history: History,
+    name: str,
+    at: datetime,
+    dividends: Dividends | None = None,
+    cash: gym.Rates = (),
 ) -> Result:
     """Strategy `name` as if it had started at `at` with fresh cash: the weights it had in force
     at `at`, then its later decisions (`counted` = `ledger.in_force(root)[0]`). The fair yardstick
@@ -118,11 +133,15 @@ def restarted(
     in_force_then = [w for t, w in mine if t <= at]
     decisions = [Decision(at, in_force_then[-1])] if in_force_then else []
     decisions += [Decision(t, w) for t, w in mine if t > at]
-    return gym.simulate(decisions, history)
+    return gym.simulate(decisions, history, dividends=dividends, rates=cash)
 
 
 def backtest_results(
-    history: History, names: list[str] | None = None, start: date | None = None
+    history: History,
+    names: list[str] | None = None,
+    start: date | None = None,
+    dividends: Dividends | None = None,
+    cash: gym.Rates = (),
 ) -> dict[str, Result]:
     """Replay the live strategies from `start` (default: the day after the latest first bar, so
     every asset has data) to the last stored bar. A strategy that raises is left out (the daily
@@ -137,7 +156,8 @@ def backtest_results(
     out = {}
     for name in names or list(LIVE):
         try:
-            out[name] = gym.simulate(gym.backtest(LIVE[name], history, start, end), history)
+            decisions = gym.backtest(LIVE[name], history, start, end)
+            out[name] = gym.simulate(decisions, history, dividends=dividends, rates=cash)
         except Exception:  # noqa: BLE001, S112 - one broken strategy must not hide the others
             continue
     return out
@@ -175,6 +195,8 @@ def yardsticks_beaten(
     from grimstrade.strategies import BENCHMARKS
 
     counted = ledger.in_force(root)[0]
+    divs = data.load_dividends(root)
+    cash = rates.steps(rates.load(root), live=True)
     began: dict[str, datetime] = {}
     for t, row in counted:
         began.setdefault(row["strategy"], t)
@@ -184,7 +206,8 @@ def yardsticks_beaten(
         if s.name in BENCHMARKS or s.name not in began:
             continue
         ahead = sum(
-            s.total_return > score(b, restarted(counted, history, b, began[s.name])).total_return
+            s.total_return
+            > score(b, restarted(counted, history, b, began[s.name], divs, cash)).total_return
             for b in benches
         )
         out[s.name] = (ahead, len(benches))
@@ -428,8 +451,15 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
     return "\n".join(out) + "\n"
 
 
-def backtest_scores(history: History, trials: Trials, start: date | None = None) -> list[Score]:
-    return deflate([score(n, r) for n, r in backtest_results(history, start=start).items()], trials)
+def backtest_scores(
+    history: History,
+    trials: Trials,
+    start: date | None = None,
+    dividends: Dividends | None = None,
+    cash: gym.Rates = (),
+) -> list[Score]:
+    results = backtest_results(history, start=start, dividends=dividends, cash=cash)
+    return deflate([score(n, r) for n, r in results.items()], trials)
 
 
 def _left_out(scores: Sequence[Score]) -> list[str]:
@@ -447,14 +477,17 @@ def render_backtest(root: Path, history: History, repo: Path = Path(".")) -> str
         "# Backtest (hindsight, NOT the record)",
         "",
         "The live strategies replayed over the stored price history with the same gym rules "
-        "(next-open fills, fees, slippage). This is hindsight: the strategies were chosen "
-        "knowing roughly how such rules did in the past. Only the forward record in "
+        "(next-open fills, fees, slippage, T-bill interest on cash). This is hindsight: the "
+        "strategies were chosen knowing roughly how such rules did in the past. Only the "
+        "forward record in "
         "`scoreboard.md` counts as evidence.",
         "",
     ]
     if not lasts:
         return "\n".join([*out, "No stored history yet."]) + "\n"
-    full = backtest_scores(history, trials)
+    divs = data.load_dividends(root)
+    cash = rates.steps(rates.load(root), live=False)  # hindsight: known from each close
+    full = backtest_scores(history, trials, dividends=divs, cash=cash)
     out += [
         "## All stored history",
         "",
@@ -468,7 +501,11 @@ def render_backtest(root: Path, history: History, repo: Path = Path(".")) -> str
         "With under two years stored, a strategy needing a year of history may still start this "
         "window in cash.",
         "",
-        table(backtest_scores(history, trials, max(lasts) - timedelta(days=RECENT_DAYS - 1))),
+        table(
+            backtest_scores(
+                history, trials, max(lasts) - timedelta(days=RECENT_DAYS - 1), divs, cash
+            )
+        ),
         "",
         footnote(trials),
     ]

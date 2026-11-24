@@ -4,3 +4,15 @@
 # relative to this file). It holds `yt-channels.toml`, the YouTube idea-source list: run
 # GrimsVerk/YT-Harvest with `--channels <private_dir>/yt-channels.toml`.
 private_dir = "/path/to/private/grimstrade"
+
+[cache]
+# Raw data cache for backfills and snapshots (never committed). ~300 GB budget.
+root = "~/data/grimstrade"
+
+[alpaca]
+# Market-data keys (free account), outside the repo, chmod 600. Never commit or print them.
+env_file = "~/.config/grimstrade/alpaca.env"
+
+[fred]
+# FRED API key (free account), outside the repo, chmod 600: FRED_API_KEY=...
+env_file = "~/.config/grimstrade/fred.env"

@@ -9,3 +9,4 @@ dist/
 /trail/
 # Machine-specific settings (copy local.toml.example)
 /local.toml
+/intraday/
