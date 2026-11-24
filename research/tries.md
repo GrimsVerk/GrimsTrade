@@ -3179,6 +3179,8 @@ Never edit or delete a row.
 | 2026-11-19 03:15 | cpc-revision | UNG next-session open-to-close on CPC 6-10/8-14 outlook revision (slope -0.076 pp/0.10, t -0.68, rank 36/41, gate fail) | screen | train | 2012-11-01 | 2025-03-31 | - | - | - | - |
 | 2026-11-19 03:04 | act-haven | GLD+TLT 4-week return on GPR acts z, from available-on date (b -0.137%/z, t -1.02, rank 21/41, gate fail) | screen | train | 2005-01-03 | 2025-10-06 | - | - | - | - |
 | 2026-11-19 03:04 | failure-premium | XLF 4-week return on ln(1 + FDIC failed assets) with past-return controls (b -0.059%/unit, t -0.48, rank 21/41, gate fail) | screen | train | 2000-01-07 | 2025-10-03 | - | - | - | - |
+| 2026-11-24 19:29 | congress-workload | SPY 4-week return on Anscombe roll-call count (session dummy, past-return controls) (b -0.009%/unit, t -0.19, rank 25/41, gate fail) | screen | train | 1994-02-04 | 2025-10-03 | - | - | - | - |
+| 2026-11-24 19:29 | refund-runoff | QQQ+IWM+BTC+ETH 4-week return on Nash-cascade runoff of the IRS individual-refund surprise (b +0.281%/unit, t +1.44, rank 7/41, gate fail) | screen | train | 2008-01-04 | 2025-10-03 | - | - | - | - |
 | 2026-11-24 19:18 | turbulence | turb | variant | train | 1994-02-01 | 2025-11-09 | 0.95 | +6489.3% | 40.6% | 8.76 |
 | 2026-11-24 19:18 | turbulence | corr | variant | train | 1994-02-01 | 2025-11-09 | 0.97 | +10393.3% | 31.4% | 11.48 |
 | 2026-11-24 19:18 | turbulence | mag | baseline | train | 1994-02-01 | 2025-11-09 | 1.00 | +8214.7% | 45.0% | 8.51 |
