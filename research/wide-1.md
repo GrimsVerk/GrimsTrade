@@ -702,11 +702,14 @@ Wright's years -0.64% (t -1.25). Dead, no card.
 **Family count: union of the wide and survey lines 81 mechanisms (79 + W23 + W24), 18 tested
 by a strategy, none passed. The next strategy test is read at p < 0.10 / 81 = 0.00123.**
 Gates so far: 16, all failed.
+
 ### Added by wide-13 (2026-11-19, `wide-13.md`): data-wide-1's ideas scored, two gated
 
 data-wide-1's 11 ideas scored with F1/F2 and the wide-10 score before any price (`wide-13.md`
 step 1); the top two on loaded sources gated. (W23 and W24 are on branch `wide-12`.)
 
+| # | Field x tool | Mechanism in markets | Dose that should scale | Gate and the years that can judge it | Prior |
+|---|---|---|---|---|---|
 | W25 `act-haven` | conflict studies x a newspaper-count index | After adverse geopolitical acts, safe havens earn a premium over the following weeks (index: Caldara and Iacoviello, AER 2022) | z of ln(1 + weekly mean of the daily GPR acts sub-index), 156 weeks, usable 9 days after the week's Monday | GLD and TLT 4-week return from the available-on date, no controls (F2 passes), placebo = dose calendar moved 27-103 weeks; 2005-01 .. 2025-10 (post-paper years 2020-2025 under 8: post-sample point 0) | 1% |
 | W26 `failure-premium` | bank regulation x FDIC closures without notice | Holders of bank equity are paid a distress premium in the weeks after bank failures | ln(1 + total assets of the week's FDIC failures, millions of USD), public the next day | XLF 4-week return from the Monday close, past 4/13/26/52-week returns as controls, placebo = dose calendar moved 27-103 weeks; 2000-01 .. 2025-10 | 1% |
 

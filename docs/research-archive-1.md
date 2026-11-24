@@ -21,8 +21,8 @@ rule "agents merge"), after the refresh below.
   interest. The RL line is closed and its logged results stand.
 - `research/owner-decisions.md`: section "Answers" (each item's default taken as an agent call).
 - Checks: ruff, format, mypy clean; pytest 646 passed, 4 xfailed. `docs/BACKLOG.md` is main's.
-- Not in the archive: the register chain (#74 holds research, #79-#126 change `ledger.py` and
-  `run_daily.py`); it lands as its own engineering merge.
+- Not in the archive: the register chain #79-#126 (it changes `ledger.py` and `run_daily.py`;
+  its base #74 `dsr-1` is inside); it lands as its own engineering merge.
 
 The rest of this file describes the first build (2026-11-19).
 
