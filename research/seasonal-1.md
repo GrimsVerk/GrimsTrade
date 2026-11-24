@@ -89,7 +89,7 @@ and on 8 of 13 markets (best: Singapore +0.15, z 0.93); the overlay is behind `t
   timing rule (point 2); the card did not say so. It does not change the verdict (the
   card's question is whether the rule beats holding, and it does not; against the placebos it
   leaves only the weak trace of point 3), but the next calendar card should compare with a
-  placebo or a constant-exposure twin, not with zero.
+  placebo timing twin with the same on-share (off-cycle lags or random months), not with zero (a constant scaled holding has the same Sharpe as holding when cash earns 0, so it does not remove the timing-noise penalty). With 10 placebos the smallest possible p is 1/11 = 0.09, so this design could never show p < 0.05.
 
 ## Next
 
