@@ -12,13 +12,17 @@ tests `tests/test_e4anatomy.py`.
 ## The answer on one screen
 
 **`e4`'s lead is the year after a market's low. Its faster legs buy back earlier than
-`tsmom12`, which waits for the 12-month return to turn positive. Against `tsmom12` scaled down
-to `e4`'s volatility (post hoc), the rebound gives +0.117 Sharpe a market on stocks (about 3 SE),
-more than the whole lead of +0.063. It is positive on 39 of the 41 stock markets. `e4` gives part
-of it back in slow bear markets (-0.037: it buys bear-market rallies) and in calm markets
-(-0.043: it trims on dips). Fast crashes add little (+0.009); they are 1% of the time. Whipsaw
-spells add a bit (+0.017). By leg, the 1-month signal does most of the early buying back and
-most of the calm-market damage; the 6-month leg costs least.**
+`tsmom12`, which waits for the 12-month return to turn positive. Card split (25% zigzag): the
+rebound gives +0.092 Sharpe a stock market (SE 0.039, "carrying" by the card's rule). Post hoc,
+against a `tsmom12` scaled to `e4`'s volatility, it gives +0.117, more than the whole lead of
++0.063. It is positive on all 39 stock markets that have a 25% fall (IEF and LQD have none).
+Post hoc only, `e4` gives part of it back in slow bear markets (-0.037: it buys bear-market
+rallies) and in calm markets (-0.043: it trims on dips). In the card split slow bears are
++0.003 and calm -0.159, because that split measures against a twin that holds more than `e4`.
+Fast crashes add little (card +0.022, post hoc +0.009); they are 1% of the time. Whipsaw
+spells add +0.001 to +0.033 depending on the reading. By leg, the 1-month signal does most of
+the early buying back and most of the calm-market damage. On stocks the 6-month leg costs
+least; on bonds and currencies it costs most (-0.006).**
 
 **The gap between stocks and other markets is not regime mix. By the card's rule (reading B)
 it is the risk part: +0.052 of the +0.053 gap. The return parts are equal (-0.024 against
@@ -71,11 +75,12 @@ the card's numbers; both runs are deterministic and give identical card tables.
 - **Rebound (the year after a 25% fall's low, capped at the next peak): where the lead is.**
   On stocks `e4` holds +0.17 more than `tsmom12` there (mean position gap). The legs split the
   rebound gain 1m +0.043, 3m +0.031, 6m +0.018. It is positive in every equity group (VA: US
-  industries +0.10, developed +0.12, wider +0.15, ETFs +0.09). It is positive on 39 of the
-  41 stock markets (A and VA). With volatility-scaled falls (B) it is positive on 40 of 41
-  stock markets and on all 21 bond and currency series. The card's rule calls it "carrying"
-  on stocks in readings A, B and W. Under insure-3's 15% zigzag (reading C) more time counts as rebound
-  (36% instead of 20%) and the term is +0.060 (SE 0.048). This is the fast-reentry trade-off
+  industries +0.10, developed +0.12, wider +0.15, ETFs +0.09). It is positive on all 39
+  markets of the equity pool that have a 25% fall (A and VA; the bond ETFs IEF and LQD have
+  none). With volatility-scaled falls (B) it is positive on 40 of the 41 (the exception is
+  IEF, -0.037) and on all 21 bond and currency series. The card's rule calls it "carrying" on
+  stocks in readings A, B and W. Under insure-3's 15% zigzag (reading C) more time counts as
+  rebound (36% instead of 20%) and the term is +0.060 (SE 0.048). This is the fast-reentry trade-off
   that `fast-reentry.md` and insure-1 describe (the cost of trend is the late buy-back). `e4`
   pays part of that cost back. Its faster legs buy back sooner, and it holds only part of a
   position, so the cost of buying a false start is smaller.
@@ -89,7 +94,7 @@ the card's numbers; both runs are deterministic and give identical card tables.
   moves much.
   So `e4` does not fix trend's known fast-crash weakness (insure-1, insure-3).
 - **Whipsaw (`tsmom12` flips at least twice within +-13 weeks): small and positive.** Stocks
-  +0.017 to +0.033, bonds + FX +0.011 to +0.036. Part positions soften the flips. With a
+  +0.001 (reading C) to +0.033, bonds + FX +0.011 to +0.041 (reading W). Part positions soften the flips. With a
   +-26-week window (reading W) the stock term vanishes (-0.007), so it is not robust.
 - **Calm (everything else, about half the time): the price.** Against the matched twin stocks
   -0.043, bonds + FX -0.021 (A) or -0.060 (B). The 1-month leg sells on ordinary dips in an
@@ -100,14 +105,14 @@ the card's numbers; both runs are deterministic and give identical card tables.
 The card split, per leg: (h_L - h_12) / 4 x market return. Matched reading: the same legs plus
 a scale term.
 
-| Pool | 1m | 3m | 6m | Extra costs | Scale term (post hoc) | Sum (matched) |
-|---|---:|---:|---:|---:|---:|---:|
-| Equity 41 | -0.011 | -0.008 | -0.001 | -0.005 | +0.087 | +0.063 |
-| Bonds + FX 21 | -0.003 | -0.005 | -0.006 | -0.011 | +0.035 | +0.010 |
-| Commodities 8 | -0.019 | -0.015 | -0.019 | -0.013 | +0.047 | -0.019 |
+| Pool | 1m | 3m | 6m | Extra costs | Resid (weekly compounding) | Scale term (post hoc) | Sum (matched) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Equity 41 | -0.011 | -0.008 | -0.001 | -0.005 | +0.002 | +0.087 | +0.063 |
+| Bonds + FX 21 | -0.003 | -0.005 | -0.006 | -0.011 | +0.000 | +0.035 | +0.010 |
+| Commodities 8 | -0.019 | -0.015 | -0.019 | -0.013 | -0.000 | +0.047 | -0.019 |
 
 No leg earns more return than the 12-month signal it replaces. Each is slightly negative, and
-the 6-month leg is closest to zero on stocks. The lead comes from mixing them: four signals
+the 6-month leg is closest to zero on stocks (on bonds + FX it is the most negative, -0.006). The lead comes from mixing them: four signals
 that disagree give a smoother, smaller position (sd ratio `tsmom12` / `e4` 1.18 on stocks,
 1.13 on bonds + FX). The return given up is less than what the lower risk buys. By regime the
 1-month leg is the most extreme: the largest rebound gain (+0.043) and the largest calm loss
@@ -145,6 +150,18 @@ at bonds+FX rates) + rates + risk part, in both orders:
 - Commodities (shown, not judged) are behind stocks by +0.082: mix +0.023 to +0.085 (B and VB, both orders),
   risk part +0.040. Commodity spot spends more time in slow bears (0.32), where `e4` loses
   against the matched twin.
+
+## The card's expectations, scored
+
+- "Most of D in the risk part and in rebounds": **right** (risk part +0.087, rebound +0.092 on
+  stocks in the card split).
+- "Fast crashes about zero or negative": **wrong in sign, small**: +0.022 in the card split
+  (+0.009 post hoc).
+- "Whipsaw positive": **right, weakly** (+0.018; +0.001 under reading C, -0.007 under W).
+- "The 3- and 6-month legs carry more than the 1-month leg": **wrong**. The 1-month leg is the
+  largest in rebounds (+0.043, against +0.031 and +0.018) and the most negative net (-0.011).
+- "The gap is mostly rates and risk part, not mix": **right on the risk part** (+0.052 of
+  +0.053 under reading B). The rate term is about zero there.
 
 ## How sure
 
