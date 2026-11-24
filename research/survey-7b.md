@@ -1,4 +1,4 @@
-# Survey 7b: 2024-2026 literature on trend crashes, tail hedging, volatility management, signal blending and anomaly decay (2026-11-25)
+# Survey 7b: 2024-2026 literature on trend crashes, tail hedging, volatility management, signal blending and anomaly decay (2026-11-24, UTC)
 
 Lane `survey-7` of the night lead (WIDER lane, research only, fake money). **Name collision:**
 a branch `survey-7` and a file `research/survey-7.md` already exist from an earlier lane
@@ -28,8 +28,8 @@ volatility dial in disguise). Each is scored on:
   `tsmom12` on the six assets needs about +0.44 Sharpe at 80% power (plausible: at most +0.10);
   pooled over 13 developed markets +0.18; a long-short book on about 100 years, scored in the
   alpha form (does it add to `tsmom12`?), needs an IR of 0.51-0.60. Tonight's `xs-century-1`
-  (#170, open) built exactly that book: gross IR +0.88 (z 7.4), at the cheaper published
-  momentum cost z 4.44, since 1994 IR +0.19. That near miss is the only place where the bar
+  (#170, merged) built exactly that book: gross IR +0.88 (z 7.4), at the cheaper published
+  momentum cost IR +0.51, z 4.44 (`results/xs-century-1.md`, R2), since 1994 IR +0.19. That near miss is the only place where the bar
   is within reach, and it shapes the ranking below.
 
 **Already covered, so not listed again** (checked by grep of the five surveys, `ideas.md` and
@@ -40,7 +40,7 @@ Liu-Tang-Zhou, Barroso-Detzel; Goulding-Harvey-Mazzoleni turning points (and the
 TSMOM; Benhamou et al. CTA replication (arXiv 2507.15876); Zarattini-Antonacci; Pitkajarvi et
 al.; McLean-Pontiff, Hou-Xue-Zhang, Jensen-Kelly-Pedersen, Harvey-Liu-Zhu; Baltussen et al.;
 Koijen et al. carry; live tail-hedge funds (survey-6); the VIX-call overlay (`vix-call-1`,
-#167, open); PPUT under trend (`insure-4`); volume-weighted trend (`volume-1`).
+#167, merged); PPUT under trend (`insure-4`); volume-weighted trend (`volume-1`).
 
 ## What is new, item by item
 
@@ -103,7 +103,7 @@ Premia: When Diversification Hides Redundancy", arXiv 2510.23150, 2025-10.** `[a
   by Bayesian optimisation. Same team as Benhamou et al. (covered). No numbers or sample in the
   abstract; out-of-sample not described.
 - Closest try: `e4` (1/3/6/12-month ensemble; +0.063 a stock market pooled, #142) and
-  `e4-anatomy-1` (#168, open: the lead is the rebound year plus smaller, smoother positions;
+  `e4-anatomy-1` (#168, merged: the lead is the rebound year plus smaller, smoother positions;
   the 6-month leg alone -0.001). A barbell is an `e4` variant chosen after seeing `e4`'s legs:
   **tuning risk, and the lead is a scale-down (vol dial) per `e4-anatomy-1`.**
 - F2 fail. Power: the pooled lead needed is +0.18 against `e4`'s +0.063. Cannot reach.
@@ -186,16 +186,17 @@ access).** `[first pages of the published PDF]`
   netting-of-trades cost saving needs stock-level holdings (not keyless), so a keyless test can
   only charge sleeve-level costs, which is harsher than the paper.
 - Closest try: `xs-century-1` (#170: the unmanaged style book) and the own-vol line
-  (`own-vol-target`, `own_vol_70`, `ownvol-anatomy-1` #172). **Disguise risk high**: it is
+  (`own-vol-target`, `own_vol_70`, `ownvol-anatomy-1` #172, still open). **Disguise risk high**: it is
   volatility sizing; the honest twin is each sleeve scaled by its own volatility (Moreira-Muir),
   and the paper's specific claim is that market-volatility conditioning with factor-specific
   slopes beats that.
 - F1 pass (a risk-premium timing claim). F2 **pass with controls**: the dose is the market's
   volatility, not the sleeve's own price; control = the sleeve's own-vol twin. Power: **the only
   item that can reach the bar**, and only through `xs-century-1`'s book in the alpha form
-  (needed IR 0.51-0.60 on about 97 years; the unmanaged book has about 0.53 at the cheaper cost,
-  derived here as 4.44 / (7.4 / 0.88) from #170's numbers; +13% of Sharpe would put it near
-  0.60). Shorts are parked (B7), so any result is
+  (needed IR 0.51-0.60 on about 97 years; the unmanaged book has IR +0.51 (z 4.44) at the cheaper cost
+  (`results/xs-century-1.md`, R2); +13% of Sharpe would put it near 0.58, though carrying a
+  +13% gain in a mean-variance portfolio's Sharpe over to an alpha-form IR against `tsmom12`
+  is a loose analogy). Shorts are parked (B7), so any result is
   informational.
 
 **V2. Reschenhofer and Zechner, "Volatility Managed Multi-Factor Portfolios", Journal of
@@ -265,7 +266,8 @@ allowances for luck or costs remove.
 **D3. Goncalves, Loudis and Ogden, "Out-of-Sample Alphas Post-Publication", working paper
 2025-02 (AEA 2025).** `[search summary, unverified]` 177 anomalies: with maximum-Sharpe
 weights estimated on pre-publication data, the post-publication alpha is about zero, also when
-expected decay is built into the weights.
+expected decay is built into the weights; the paper itself finds that combining many
+anomalies with shrinkage still keeps a positive out-of-sample alpha.
 
 **D4. Bowles, Reed, Ringgenberg and Thornock, "Anomaly Time", Journal of Finance 79(5), 2024,
 pp. 3543-3579, DOI 10.1111/jofi.13372.** `[abstract]` Anomaly returns concentrate in the first
@@ -305,7 +307,7 @@ piece (H3) and the JBF paper (D6); none of them would change a verdict.
 
 | # | Mechanism (`ideas.md` name) | Source | F1 | F2 | Closest try (disguise) | Keyless test | Can it reach the bar? | Verdict |
 |---|---|---|---|---|---|---|---|---|
-| 1 | `vm-style-book` | V1 (JF 2024), V2 | pass (premium timing) | pass with controls (market vol; control = own-vol twin) | `xs-century-1`, own-vol line (high: vol sizing) | partly: Ken French 1926-, sleeve-level costs only | **yes, just**: alpha form on ~97 years, needs IR 0.51-0.60; unmanaged book about 0.53 at the cheaper cost (derived) | **top 1** (informational: B7) |
+| 1 | `vm-style-book` | V1 (JF 2024), V2 | pass (premium timing) | pass with controls (market vol; control = own-vol twin) | `xs-century-1`, own-vol line (high: vol sizing) | partly: Ken French 1926-, sleeve-level costs only | **yes, just**: alpha form on ~97 years, needs IR 0.51-0.60; unmanaged book +0.51, z 4.44 (#170 R2) | **top 1** (informational: B7) |
 | 2 | `tick-tier-trend` | T1 (arXiv 2026) | pass | pass | `gap-2002-1`, `insure-2` | class level only (pooled series) | no pick possible; descriptive, kill-only | **top 2** (descriptive) |
 | 3 | `factor-zoo-timing` | V2 | pass | fail (factor momentum) | `xs-century-1`, `ensemble-tsmom` | yes (open anomaly data) but a 39 x 318 search | no on four sleeves | parked |
 | 4 | `vol-target-timing` | V3 (JPM 2026) | pass | fail | `own_vol_70` (vol dial by construction) | yes | no (+0.022 seen, +0.18 needed pooled) | dead on power |
@@ -384,7 +386,7 @@ z >= 4.70 (`BAR.md`).
 Docs only. `uv sync && uv run ruff check . && uv run ruff format --check . && uv run mypy &&
 uv run pytest` run before marking ready (see the PR).
 
-## Sources (opened 2026-11-24/25)
+## Sources (opened 2026-11-24, UTC)
 
 - T1 <https://arxiv.org/abs/2607.01550>, <https://arxiv.org/html/2607.01550v1>
 - T2 <https://arxiv.org/abs/2607.19497>
