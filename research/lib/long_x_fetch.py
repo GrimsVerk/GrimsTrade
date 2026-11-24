@@ -12,8 +12,10 @@ GRIMSTRADE_DATA.
   observation of the held-out year (from 2025-11-11) and no later revision is ever on disk.
   `alfred/<vintage>/<ID>.csv`. Plain fredgraph.csv did not answer from this machine (2026-11-18
   and 2026-11-24); ALFRED's graph CSV did.
-- World Bank Pink Sheet monthly history (CC BY 4.0): `worldbank/<date>/CMO-Historical-Data-
-  Monthly.xlsx`. The file runs to the latest month; the loader cuts at 2025-10.
+- World Bank Pink Sheet monthly history (CC BY 4.0) is NOT fetched by this script: its CDN
+  refused the script's agent (HTTP 403, 2026-11-24) and answers browsers. Download `PINK` by
+  hand in a browser into `<cache_root>/data-long-3/worldbank/<date>/CMO-Historical-Data-
+  Monthly.xlsx`; `long_x.parse_pink` reads it (cut at 2025-10).
 - Yahoo daily chart JSON for the CurrencyShares trusts (validation only, 2025-11-10 last bar):
   `yahoo/<date>/<T>.json`.
 """
@@ -51,9 +53,10 @@ RATES_US = [
     "DGS1", "DGS2", "DGS5", "DGS7", "DGS10", "DGS20", "DGS30",
     "GS1", "GS2", "GS5", "GS7", "GS10", "GS20", "GS30", "DTB3", "TB3MS",
 ]  # fmt: skip
-# Fed H.10 noon buying rates in New York (daily)
+# Fed H.10 noon buying rates in New York (daily). The daily mark (DEXGEUS) is not on ALFRED
+# (404) nor in the Fed's H.10 package; EXGEUS is its monthly average, 1971-01 to 2001-12.
 FX = [
-    "DEXJPUS", "DEXUSUK", "DEXSZUS", "DEXCAUS", "DEXGEUS", "DEXUSEU",
+    "DEXJPUS", "DEXUSUK", "DEXSZUS", "DEXCAUS", "EXGEUS", "DEXUSEU",
     "DEXUSAL", "DEXUSNZ", "DEXSDUS", "DEXNOUS",
 ]  # fmt: skip
 # OECD Main Economic Indicators via FRED: 3-month interbank, call money, 10y government
@@ -63,8 +66,23 @@ OECD = (
     + [f"IRSTCI01{c}M156N" for c in COUNTRIES]
     + [f"IRLTLT01{c}M156N" for c in COUNTRIES]
 )
+# IMF International Financial Statistics via FRED (monthly; fill the OECD short-rate gaps
+# before the mid-1980s): discount rate, Treasury bill rate, money market rate
+IMF = [
+    f"{k}{c}M193N"
+    for k in ("INTDSR", "INTGST", "INTMMR")
+    for c in ("JP", "GB", "CH", "CA", "DE", "AU", "NZ", "SE", "NO", "US")
+]
 # BLS producer prices (commodity groups) and EIA/Dow Jones oil
-COMMOD = ["PPIACO", "WPU10", "WPU05", "WPU01", "WPU0211", "WTISPLC", "DCOILWTICO"]
+# BLS PPI (price on the Tuesday of the week with the 13th, not a monthly average):
+# all commodities, farm products, grains, wheat, slaughter livestock, coal, natural gas, crude
+# petroleum, metals, iron and steel, nonferrous metals, primary nonferrous metals
+COMMOD = [
+    "PPIACO", "WPU01", "WPU012", "WPU0121", "WPU013", "WPU051", "WPU0531", "WPU0561",
+    "WPU10", "WPU101", "WPU102", "WPU1022", "WTISPLC", "DCOILWTICO",
+]  # fmt: skip
+# IMF Primary Commodity Prices via FRED (monthly averages, from 1990): cross-checks only
+IMF_PCPS = ["POILWTIUSDM", "PCOPPUSDM", "PWHEAMTUSDM", "PMAIZMTUSDM", "PNGASUSUSDM"]
 YAHOO_ETFS = ["FXE", "FXY", "FXB", "FXF", "FXC", "FXA"]
 
 
@@ -95,9 +113,8 @@ def _get(url: str, tries: int = 3) -> bytes:
 def plan() -> list[tuple[str, str]]:
     out = [
         (f"data-long-3/alfred/{VINTAGE}/{s}.csv", ALFRED.format(id=s, v=VINTAGE))
-        for s in RATES_US + FX + OECD + COMMOD
+        for s in RATES_US + FX + OECD + COMMOD + IMF + IMF_PCPS
     ]
-    out.append((f"data-long-3/worldbank/{SNAP}/CMO-Historical-Data-Monthly.xlsx", PINK))
     out += [(f"data-long-3/yahoo/{SNAP}/{t}.json", YAHOO.format(t=t)) for t in YAHOO_ETFS]
     return out
 

@@ -290,32 +290,32 @@ _MONTH = re.compile(r"^(\d{4})M(\d{2})$")
 def parse_pink(rows: Sequence[Sequence[str]], last: date = LAST) -> dict[str, Series]:
     """Monthly prices by commodity name from the 'Monthly Prices' sheet rows.
 
-    Layout: a header row whose later cells are commodity names, a units row below it, then one
-    row per month with a first cell like '1960M01'. Missing cells ('', '..', '…') are dropped."""
-    head = next(i for i, r in enumerate(rows) if len(r) > 3 and _MONTH.match(_first_month(rows)))
-    del head
-    first = next(i for i, r in enumerate(rows) if r and _MONTH.match(r[0].strip()))
-    names_row = next(
-        i for i in range(first - 1, -1, -1) if sum(1 for x in rows[i][1:] if x.strip()) > 3
-    )
-    # the units row sits directly above the first month; names are the row above the units
-    if names_row == first - 1 and _looks_like_units(rows[names_row]):
-        names_row -= 1
-    names = [x.strip() for x in rows[names_row]]
+    Layout (World Bank CMO history file): title rows, a row of commodity names, a units row
+    like '($/bbl)' (and possibly a row of codes), then one row per month whose first cell is
+    like '1960M01'. Cells that are not numbers ('', '..', '...') are dropped."""
+    first = next((i for i, r in enumerate(rows) if r and _MONTH.match(r[0].strip())), None)
+    if first is None:
+        raise ValueError("no month rows")
+    i = first - 1
+    while i >= 0 and (_filled(rows[i]) < 2 or _units(rows[i]) or _codes(rows[i])):
+        i -= 1
+    if i < 0:
+        raise ValueError("no name row above the months")
+    names = [x.strip() for x in rows[i]]
     out: dict[str, Series] = {n: [] for n in names[1:] if n}
     for r in rows[first:]:
-        if not r or not _MONTH.match(r[0].strip()):
+        mm = _MONTH.match(r[0].strip()) if r else None
+        if not mm:
             continue
-        y, m = _MONTH.match(r[0].strip()).groups()  # type: ignore[union-attr]
-        d = date(int(y), int(m), 1)
+        d = date(int(mm.group(1)), int(mm.group(2)), 1)
         if d > last:
             break
-        for j, n in enumerate(names):
-            if j == 0 or not n or j >= len(r):
+        for j in range(1, min(len(names), len(r))):
+            n = names[j]
+            if not n:
                 continue
-            x = r[j].strip()
             try:
-                v = float(x)
+                v = float(r[j].strip())
             except ValueError:
                 continue
             if math.isfinite(v):
@@ -323,15 +323,18 @@ def parse_pink(rows: Sequence[Sequence[str]], last: date = LAST) -> dict[str, Se
     return {k: v for k, v in out.items() if v}
 
 
-def _first_month(rows: Sequence[Sequence[str]]) -> str:
-    for r in rows:
-        if r and _MONTH.match(r[0].strip()):
-            return r[0].strip()
-    raise ValueError("no month rows")
+def _filled(r: Sequence[str]) -> int:
+    return sum(1 for x in r[1:] if x.strip())
 
 
-def _looks_like_units(r: Sequence[str]) -> bool:
-    return sum(1 for x in r if x.strip().startswith("($")) >= 2
+def _units(r: Sequence[str]) -> bool:
+    cells = [x.strip() for x in r[1:] if x.strip()]
+    return bool(cells) and sum(x.startswith("(") for x in cells) >= len(cells) / 2
+
+
+def _codes(r: Sequence[str]) -> bool:
+    cells = [x.strip() for x in r[1:] if x.strip()]
+    return bool(cells) and all(re.fullmatch(r"[A-Z0-9_]+", x) for x in cells)
 
 
 # ---------------------------------------------------------------- Yahoo chart json
