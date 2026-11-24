@@ -56,6 +56,65 @@ where the bar is reachable (wide-16, `power-map-1`). Both are expected to fail.
 See the card. Two variants, both against `tsmom12` on the primary test, both cash conventions;
 out-of-universe signs on the 8 ETFs and the four price indexes.
 
-## Step 3. Result
+Order: candidates and card 7890c6d (23:29 UTC; the card says "about 23:45", a slip: it was
+written about 23:28), script and tests 030543d (23:31), one dry run (last 120 days, nothing
+logged, plumbing only), then the one real run (23:31).
 
-(Filled in after the one real run.)
+## Step 3. Result (one real run, 2026-11-24 23:31 UTC): both fail; neither is even ahead
+
+Tables: [`results/wide-18.md`](results/wide-18.md) (`uv run --with numpy python
+research/lib/wide18.py`).
+
+| Primary test, 1994-02-01 .. 2025-10-31 | Sharpe | dSharpe vs `tsmom12` | Paired SE | z | corr | Edge it needed (4.70 SE) | Max DD | Slot flips/yr |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `tsmom12` | 1.044 | - | - | - | - | - | 37.4% | 7.2 |
+| `vclock12` | 0.878 | -0.167 | 0.076 | **-2.18** | 0.92 | +0.36 | 48.3% | 9.6 |
+| `vclock12`, above bills | 0.765 | -0.166 | 0.076 | -2.18 | | | | |
+| `huber52` | 1.044 | -0.001 | 0.038 | **-0.01** | 0.97 | +0.18 | 40.1% | 8.8 |
+| `huber52`, above bills | 0.931 | -0.000 | 0.038 | -0.00 | | | | |
+
+| Out of universe (signs) | `vclock12` dSharpe (z) | `huber52` dSharpe (z) |
+|---|---:|---:|
+| 8 ETFs, 2001-2025 | -0.036 (-0.37) | -0.037 (-0.46) |
+| 4 price indexes, 1962-2025 | -0.043 (-0.61) | -0.103 (-1.84) |
+
+**Verdict: both fail the card's bar** (z >= 4.70 in both cash conventions and positive on both
+other sets): both are behind or level on every set. Nothing goes to the paper book.
+
+- **`vclock12` is worse, and worst where it was meant to help.** Era differences on the six:
+  1994-99 -0.33, 2000-09 +0.15, 2010-16 -0.18, 2017-21 -0.16, 2022-25 -0.61. It helped only in
+  the slow 2000s bear markets and on the indexes before 1994 (+0.16, +0.09), and lost the 2022
+  fall (the window was long after calm years, so the exit came late) and both the 1990s and
+  2010s bull runs (more flips: 9.6 a year against 7.2). Post hoc (`lib/wide18_posthoc.py`, not
+  a try): the variance of coins, QQQ and gold fell over the record, so the expanding "median
+  year" was a loud year and their windows sat above a year most of the time (median 1.22-1.30
+  years; at the two-year cap 10-24% of Fridays); on SPY and TLT the median window was 0.92-0.94
+  years. The physical premise (regimes turn over per unit of variance) needs a stationary
+  variance scale, and these assets do not have one. A rolling reference would fix that and add
+  a free parameter; it was not run.
+- **`huber52` is `tsmom12`**: correlation 0.97, the same Sharpe to three decimals on the six,
+  slightly worse worst loss (40% vs 37%) and more flips (8.8 vs 7.2). On the indexes it is
+  clearly worse (-0.10, z -1.84): clipping the big weeks keeps the rule in through crashes
+  that come as a few large down weeks. The jumps are part of the trend, not noise around it.
+- **The power statement held**: both |z| stayed within 2.2 and both were expected fails. The
+  close rule (`huber52`, corr 0.97) has an SE of 0.038, so the bar in Sharpe units was +0.18:
+  lower than the BAR.md close-rule figure (+0.31), still far above anything a re-weighting of
+  the same year has shown (trend-tune: best of 98 settings +0.08).
+
+## What this says about the fields
+
+- **Most ideas from these fields are filters on the same price path** and so map onto tested
+  records: 10 of 12 distinct candidates were killed in step 1 without a run. The two that were
+  new (a variance clock, a robust estimator) changed how the year is read, not what is held,
+  and neither helped. Network ideas need breadth the six do not have (a six-node network is
+  its mean correlation).
+- **Physics' clock change needs a stationary scale.** If a later lane wants the variance clock,
+  the honest next form is a rolling reference (e.g. the median year of the last ten), carded
+  fresh, and judged on the pooled 41 markets (pooled-1's design), not the six.
+
+## Count
+
+This run adds **2 mechanisms tested by a strategy (`vclock12`, `huber52`; 2 variants, 6
+robustness rows) and 12 killed as overlaps (note rows in `tries.md`, not counted as tries,
+as wide-16 did), none passed**. On wide-16's count: 90 mechanisms, 21 strategy tests, 22
+gates, none passed (not counting wide-17's, which runs in parallel).
