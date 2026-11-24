@@ -3,6 +3,8 @@
 Method note, wide-9, 2026-11-19. Applies to every event-study gate from now on (and to any
 card whose statistic comes from a few clustered events). Written after wide-8 measured the
 problem and wide-9's two gates measured it again.
+Amended 2026-11-19 by `gate-null-2` (placebo rule in step 1, new step 7, kill-only label):
+see "Method change" at the end.
 
 ## The problem, in numbers
 
@@ -53,6 +55,14 @@ advance with confidence, so every gate measures it.
    - permutation of the event years when there are only a handful (W12).
    Leave out placebos that share part of the true events (W19 dropped k = 1: ENSO episodes
    span two calendar years).
+   **No placebo may use information from the outcome window** (rule added 2026-11-19, see
+   "Method change" below). A placebo dose, including any window it is built on (a z-score's
+   lookback, a moving sum), must end before the outcome it is paired with starts. For a dose
+   that can respond to prices (positioning, flows, issuance, failures, anything F2 can find),
+   this rules out backward shifts (a later dose, negative k): use only earlier doses, far
+   enough back that the placebo is not a lagged copy of the true dose, or whole-year shifts
+   that keep the dose before the outcome. Shifts in both directions stay allowed only for doses
+   that prices cannot move (calendars, weather, solar activity, scheduled dates).
 2. **At least 20 placebos, 40 by default.** The smallest one-sided p is 1 / (1 + N).
 3. **Same statistic, same code path.** The placebo t is computed by the very function that
    computes the true t (a `shift` argument, not a copy).
@@ -66,13 +76,20 @@ advance with confidence, so every gate measures it.
    SD is near 2 is ordinary, and is written as "noted only", never as a lead. A shown cell that
    looks like a lead needs its own placebo before anyone writes "lead" (wide-8 did this for the
    turn-of-year cell: t 3.9 in the pooled table, rank 6 of 154 in the one-window null).
-7. **After a gate passes, for a card.** The card's p must beat the family bar (p < 0.00139)
-   and the register's (p <= 4.9e-5 at 2,904 tries); a rank among 40 placebos cannot reach
-   either (it bottoms at 0.024). The card's test therefore reads its t against the placebo
-   distribution's scale: z = (t - median of placebo t) / SD of placebo t, read against N(0, 1)
-   at the bar, and states both z and the plain t. If the placebo t look far from normal (heavy
-   tails: the wide-8 null reached +8.9 among 153, W19's -5.93 among 40), the card instead uses a block bootstrap
-   by event cluster (year or episode) for its p, and says so in the card before the run.
+7. **State the smallest honest p, and label kill-only gates** (replaces the old step 7,
+   2026-11-19). The card's p must beat the family bar (p < 0.00139) and the register's
+   (p <= 4.9e-5 at 2,904 tries). A rank among 40 placebos bottoms at 0.024, and reading t
+   against the placebos' median and SD at N(0, 1) (the old step 7) extrapolates a 40-draw
+   scale about four SDs into a tail this method has measured as heavy (W19's -5.93 among 40,
+   the wide-8 null's +8.9 among 153): that p is not valid. A block bootstrap by event cluster
+   cannot reach 1e-4 honestly either when there are only 8-20 independent episodes. So each
+   gate writes into its rule, before any number: the number of independent episodes (years,
+   swings, crises) and the smallest p its design can honestly reach (at best about
+   1 / (number of distinct placebo or bootstrap outcomes), and never below what the episode
+   count supports). If that p is above the card bar, the gate is labelled **kill-only**: a
+   fail kills the idea; a pass only says "not dead yet" and needs a new design with more
+   independent episodes (other markets, other periods, more events) before any card. **A
+   clustered design with about 10 independent episodes is kill-only.**
 
 ## Earlier verdicts re-read under the placebo null
 
@@ -112,3 +129,56 @@ changes the weight of the **shown** cells, not the verdicts:
 None of the earlier gates was near a pass, so nothing here asks for a rerun. If a later lane
 wants the table above to carry placebo t for W14, W15 and the shown cells, each is one cheap
 rerun with a `shift` argument added; that is optional, not a correction.
+
+## Method change, 2026-11-19 (lane `gate-null-2`, from review-2)
+
+The independent review `review-2` (`research/reviews/review-2.md` on branch `review-2`, section
+5) found two faults in this note, both fixed above:
+
+1. **Backward shifts look into the outcome.** W22 (wide-11) moved a price-responsive dose (the
+   hedging-pressure z, 156-week window) both ways. For negative k the placebo dose is z from
+   27-103 weeks *later*, whose window contains the outcome weeks, and hedgers add to their net
+   short after rallies. The placebo t are lopsided: the 20 backward shifts average **+0.74**
+   (the ten nearest, k = -27..-63, all at least +0.83), the 20 forward shifts **-0.39** (none
+   above +0.65), and all three placebos with t >= 2 are backward (k = -27: +2.52, -31: +3.41,
+   -55: +2.20) (review-2, 5b). Such a null is too wide on the side a true effect would need,
+   so it would fail a real effect. Step 1 now forbids it.
+2. **Step 7 was invalid** (extrapolating 40 placebos to p 1e-4). Replaced by "state the
+   smallest honest p; kill-only when it is above the card bar".
+
+Old gates are not re-run. The table lists every gate verdict so far, whether its placebos used
+backward shifts of a dose that prices can move, and whether the verdict could flip.
+
+| Gate (run, branch) | Placebos | Backward shift of a price-responsive dose? | True statistic | Could the verdict flip? |
+|---|---|---|---|---|
+| ann-1 FOMC drift | none, N(0, 1) | no | t -0.06 | no: wrong side |
+| `critical-slowing` (wide-6) | none, N(0, 1) | no | t < 1.5 or wrong sign in a period | no |
+| W3 `lunar` (wide-6) | phase shifts, both ways | no: a calendar | t +0.43 | no: t < 2 |
+| W12 `rmd-december` (wide-7) | permutation of years | no | wrong sign | no |
+| W13 `festival-gold` (wide-7) | weekly shifts | no: a calendar | t -0.30 | no |
+| W14 `wash-sale-echo` (wide-7) | none (year-clustered N(0, 1)) | no | t -0.07 / +0.43 | no |
+| W15 `cat-claims` (wide-8) | k = -11..11 shifts | no: landfalls | t +0.09 | no |
+| W16 `geomagnetic-storm` (wide-8) | k x 61 days, both ways | no: solar activity | t +2.46, wrong sign | no |
+| W17 `fork-premium` (wide-9) | k x 30 days, both ways | no: scheduled upgrades | t +0.23 | no |
+| W19 `enso-commodity` (wide-9) | k = 2..41 years, earlier only | no | t -0.92 | no |
+| W20 Fed purchase dose (wide-10) | k = 3..27 days, both ways | judged no: purchases follow a schedule announced ahead | t +0.37, rank 11 | no: t < 2 |
+| W21 stablecoin issuance (wide-10) | k = 3..22 weeks, both ways | **yes**: issuance runs high in bull markets (placebo median +0.85) | t +1.06, rank 17 | no: t < 2 |
+| W22 hedging pressure (wide-11) | k = 27..103 weeks, both ways | **yes** (above) | t +0.49 | no: t < 2 |
+| W23 custody flow (wide-12) | as W22 | **yes**: holdings follow TLT's same-week return | t -1.20, wrong sign | no |
+| W24 inflation dispersion (wide-12) | k = 7..45 quarters, both ways | possible (survey dispersion may follow yields) | t -0.75, wrong sign | no |
+| W25 `act-haven` (wide-13) | k = 27..103 weeks; earlier half also reported | yes, weakly (26-52-week link) | t -1.02, wrong sign | no |
+| W26 `failure-premium` (wide-13) | k = 27..103 weeks; earlier half also reported | **yes**: failures follow XLF (t -3.87) | t -0.48, wrong sign | no |
+| weather-1 (#116) | 40 derangements of winters | no: weather | t -0.29, rank 19 | no |
+
+W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
+from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
+gate passes" section leans on the old step 7; with 13 winters it is kill-only.
+
+**No verdict can flip, and dead ideas stay dead.** A gate passes only if the true t is at least
+2 with the predicted sign *and* ranks among the top 2 of 41. Removing contaminated placebos can
+only narrow the null on the side that matters, so it could turn a fail into a pass only where
+the true t cleared 2 with the right sign and the rank alone failed. No gate is in that position:
+every one failed on its own t (wrong sign or t < 2). Where a null is widened instead (stricter
+placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
+W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" is weaker evidence against
+borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
