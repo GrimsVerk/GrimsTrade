@@ -24,8 +24,9 @@ branches; the leads' night log is on branch `summary-1` (closed PR #28, branch k
 - DONE #129: scoreboard footnote says Sharpe is above the cash rate.
 - DONE #126: register chain (#79 #92 #100 #108 #111 + register-6) in one merge, with three
   review fixes (non-UTF-8 branch files cannot stop the daily run; try-shape logging only warns;
-  `research/tries-shape.jsonl` merges by union). Buy-and-hold weekly series in the returns store
-  accepted (documented in `returnstore.py`).
+  `research/tries-shape.jsonl` merges by union). The returns store keeps buy-and-hold weekly
+  series (weekly returns derived from Yahoo/exchange prices back to 1994): accepted as derived
+  statistics, not bars (lead's call, `returnstore.py`).
 - Owner decisions brief (`research/owner-decisions.md`): every item answered by its default as
   an agent call (section "Answers"); no owner question left.
 
