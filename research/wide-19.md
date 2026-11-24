@@ -66,7 +66,11 @@ out-of-universe signs on the 8 ETFs and the four price indexes.
 Order: candidates and card f1cf2a4 (23:43 UTC; the card says "about 23:50", a slip: it was
 pushed at 23:43), script and tests 68cf51b (23:45), one dry run (last 120 days, nothing logged;
 it showed end-of-window Z values of 0.00 for `cred-xs` and 0.02-0.16 for `cred-lr` on the two
-other sets, plumbing only, after the card), then the one real run (23:45).
+other sets and Sharpe / dSharpe on the last 120 days for all three sets, plumbing only, after the
+card), then the one real run (23:45). The 11 `note` rows in `tries.md` are stamped 23:50 but
+were appended at 23:46; rows are written once, so the stamp stays. The card's "ten killed
+candidates" get note rows: it is 9 kills plus 1 new idea (M2), each with a note row (card
+unchanged).
 
 ## Step 3. Result (one real run, 2026-11-24 23:45 UTC): both fail
 
@@ -106,7 +110,7 @@ other sets). Nothing goes to the paper book.
   risks; with correlated assets the noise part of the cross-sectional variance is V (1 - rho),
   not V, so Z = 0 is biased low. Corrected at the last Friday (mean pairwise rho of weekly
   returns 0.15 / 0.33 / 0.60), Z is 0.00 on the six, 0.03 on the ETFs and 0.16 on the indexes:
-  the conclusion stands. The 1994-99 era (SPY alone, so Z plays no part) differs by -0.022:
+  the conclusion stands. The 1994-99 era (SPY alone: `cred-xs` has Z = 1; `cred-lr`'s Z falls from 0.43 to 0, but with SPY's long-run and one-year drift both positive its decisions equal `cred-xs`'s) differs by -0.022:
   the 52-week Friday grid is 364 days, not `tsmom12`'s 365, a small timing difference, not the
   method.
 - **The power statement held**: |z| stayed within 1.1; both expected fails.
