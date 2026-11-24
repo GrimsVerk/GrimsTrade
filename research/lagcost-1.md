@@ -155,7 +155,9 @@ the 30-day burn-in re-score gives the same to 0.001):
 | coin 2012-2025 | +0.073 (-0.172..+0.340) | +1.70 (-4.10..+7.84) |
 
 Below the +0.10 asked and both intervals include zero (and include losses as large as the
-gain). `buy_hold_btc` recovers nothing (it only enters once). For the mixed books a run before
+gain). The test is weak: the intervals also allow gains up to +0.24 / +0.34 Sharpe, so
+the verdict rests on the card's decision rule plus the cost of building, not on evidence that
+the effect is zero. `buy_hold_btc` recovers nothing (it only enters once). For the mixed books a run before
 00:00 UTC for all books (e0-c0 against today's live schedule) would recover between -0.022 and
 +0.019 Sharpe, every interval across zero. Two more reasons against: an early run at about 00:15
 UTC reaches c0 only if the gym may fill at a price after the run (an hourly bar or a quote);
@@ -164,7 +166,7 @@ build would include a gym change. And BACKLOG says re-timing a live strategy is 
 a new name, which adds to N. Keep the BACKLOG line with a pointer to this file; revisit only if a
 live coin rule with a short signal and a positive train Sharpe at c1 appears.
 
-### Recommendation 2: the scoreboard needs no bias note for the delayed schedule
+### Recommendation 2: rule 2 triggers on one row (`buy_hold_btc`, 2012-2025, +0.92 CAGR points a year): add the scoreboard note
 
 Live schedule (decision at 03:00 UTC the next day) minus today's backtest schedule (22:30), per
 book, after the first 30 days: |dSharpe| <= 0.004 and |dCAGR| <= 0.27 points a year on both
@@ -176,11 +178,12 @@ measurable. So comparing the live record with 22:30 backtests is fair.
 One exception, and it is a start effect only: a book that starts from cash enters coins one day
 later on the live schedule (its first decision fills at D+2). Over the full window (no burn-in)
 this shows up once, in `buy_hold_btc` on 2012-2025: +0.92 CAGR points a year, from one day of
-2012 BTC; read literally, rule 2 (card) triggers on that row. It is one day, and it no longer
-shows after the first 30 days. A scoreboard line is only worth it while the live record is
-weeks long, if anyone compares a book's first days with a backtest: "live runs start
-02:00-06:13 UTC; a first coin entry fills one day later than a 22:30 backtest". Optional, not
-required by the data.
+2012 BTC; rule 2 (card, fixed before the run) triggers on that row, so the card's outcome
+stands: the scoreboard gets the note "live runs start 02:00-06:13 UTC; a first coin entry fills
+one day later than a 22:30 backtest" (adding it to the scoreboard is a follow-up engineering
+change). It matters now, while the live record is weeks old. The 30-day burn-in above was added
+after seeing this row (review of #144): it is a post-hoc explanation that the gap is a start
+effect, not a reason to drop the note.
 
 ### Deviation from the card
 
