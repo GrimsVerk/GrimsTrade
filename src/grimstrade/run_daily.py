@@ -171,21 +171,25 @@ def run(
         print(f"{name}: {weights} ({reason})")
 
     ledger.record_research(root, repo, now)
-    results = report.live_results(root, history)
-    state = {name: state_row(r) for name, r in results.items()}
-    state_path = root / "state" / "portfolio.json"
-    state_path.parent.mkdir(parents=True, exist_ok=True)
-    state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
-    # The record just written, checked against the rules (`grimstrade.reconcile`): a failure is a
-    # problem line like a failed source, so the run exits 1 and the record is still committed.
-    new_lines = ledger.decisions(root)[lines_before:]
-    checked = reconcile.check_state(root, results)
-    checked += reconcile.check_lines(new_lines, data.load_all(root), LIVE)
-    for line in checked:
-        print(f"FAILED {line}", file=sys.stderr)
-    print(f"reconcile: {len(results)} books, {len(new_lines)} new lines, {len(checked)} problems")
-    problems += checked
-    ledger.record_problems(root, now, problems)
+    # The source problems are saved even if the replay, the state write or the check raises.
+    try:
+        results = report.live_results(root, history)
+        state = {name: state_row(r) for name, r in results.items()}
+        state_path = root / "state" / "portfolio.json"
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
+        # The record just written, checked against the rules (`grimstrade.reconcile`): a failure
+        # is a problem line like a failed source, so the run exits 1 and the record is committed.
+        new_lines = ledger.decisions(root)[lines_before:]
+        checked = reconcile.check_state(root, results)
+        checked += reconcile.check_lines(new_lines, data.load_all(root), LIVE)
+        for line in checked:
+            print(f"FAILED {line}", file=sys.stderr)
+        books, n_new = len(results), len(new_lines)
+        print(f"reconcile: {books} books, {n_new} new lines, {len(checked)} problems")
+        problems += checked
+    finally:
+        ledger.record_problems(root, now, problems)
     reports = root / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "scoreboard.md").write_text(report.render(root, history, repo))
