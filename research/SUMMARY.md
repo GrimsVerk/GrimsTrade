@@ -17,7 +17,7 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   every era and market, but statistically shown only for 1927-1961 and the developed-market
   price indices; since 2002 not shown (p 0.19).
 - **But it has a price.** It buys back late, so the year after the low hands most of the gain
-  back, and it trails a little in calm markets too. Since 2002 that left it about 1 point of
+  back, and it trails holding in calm markets too, by about 2 points a year. Since 2002 the fall gain and the late buy-back about cancelled, so the calm drag is most of the cost: it left it about 1 point of
   growth a year behind holding on the broad US index (S&P 500 total return 0.7 with idle cash
   at bills, 1.0 with cash at 0; the French US market 1.1-1.4) and about 2 on single industries
   (mean of 10: 1.6-2.0; from about 1 ahead to 4 behind by industry) (#162). It fails in fast
