@@ -144,3 +144,28 @@ reports the realised SE and the edge it detects at 80% for each variant.
   Sharpe cell = mean per-market Sharpe, weekly with sqrt(52)); per market and rule one
   `robustness` row (8 variants and `tsmom12` x 41 markets). `research/ideas.md` lines for the
   variants touched.
+
+## Amendment 1 (2026-11-24, after the plumbing run, before any real number)
+
+The plumbing run (41 independent random walks, drift 6% and volatility 18% a year, no timing
+skill anywhere; `results/pooled-1-plumbing.md`) shows that D is not zero without skill: `e4`
++0.024 (z +2.14), `or3-12` +0.019, `arm3-12` +0.012, `vt-own-70-x` -0.009, `vt-own-26-x` -0.029,
+`tv40` 0.000 (its cap never binds at 18%), `fade-28` -0.097, `stop-0.25` -0.123. On an asset that
+drifts up, a rule that is in more often, or holds part positions instead of all-or-nothing, has a
+higher Sharpe than `tsmom12` with no skill at timing (mean scales with the average position, the
+variance with the average squared position); rules that are out more lose it. So "D > 0" mixes
+timing with exposure. Added now, before the real run, nothing else changed:
+
+- **Drift-matched null**: 100 replications in which every market's closes are replaced by an
+  i.i.d. normal random walk with that market's own mean and standard deviation of daily log
+  returns (its whole span to 2025-10-31), on its own dates, seed 1000 + replication. D of each
+  variant on each replication (point estimate, same engine). Reported: the null's mean and its
+  5% / 95% quantiles, and D minus the null mean ("beyond drift").
+- **Reading rule**: a variant whose verdict is "real small edge" (or "selectable candidate") but
+  whose D is not above the null's 95% quantile is written as **"exposure, not timing"**: the
+  pooled Sharpe gain is what holding more (or smoother) earns on a drifting market, not a better
+  rule. A "killed" variant whose D lies inside the null's 5-95% range is written as "no timing
+  effect either way". The card's verdicts themselves are unchanged.
+- Limits, stated: an i.i.d. walk has no volatility clustering and no fat tails, which matter most
+  for the volatility rules (`vt-own`, `tv40`, `stop-0.25`); the null is a reading aid for
+  exposure, not a full placebo of every rule.
