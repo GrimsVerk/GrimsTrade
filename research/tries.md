@@ -4016,3 +4016,6 @@ Never edit or delete a row.
 | 2026-11-24 20:57 | pooled-2 | e4@COM8-GOLD | robustness | train | 1972-03-01 | 2025-10-01 | 0.57 | +2882.0% | 49.8% | 2.28 |
 | 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-GOLD | robustness | train | 1972-03-01 | 2025-10-01 | 0.65 | +2921.7% | 38.9% | - |
 | 2026-11-24 21:27 | gap-2002-1 | re-score (not a try): tsmom12 minus holding 2002-01..2025-10, log pts a year, cash 0 / bills: S&P 500 TR -1.00 / -0.70, French US market -1.41 / -1.08, mean of 10 industries -2.02 / -1.60 (Telcm +0.72 to Hlth -3.92), 11-series mean -1.96 / -1.55 (insure-2's -2.19 by peak reproduced); by date fall +7.4, rebound lag -7.5, calm drag -1.9 (11-series mean, cash 0); S&P +4.9 / -4.3 / -1.7 (research/gap-2002-1.md) | note | train | 2002-01-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
+| 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
+| 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
