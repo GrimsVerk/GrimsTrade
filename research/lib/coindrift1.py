@@ -71,6 +71,9 @@ def bill_rate(book: bb.Book, synthetic: bool) -> np.ndarray:
     if synthetic:
         return np.full(n, 0.02)
     rates = harness.bill_rates()
+    assert rates, (
+        "no bill rates (research/data/bars/IRX.csv missing): the above-bills test needs them"
+    )
     known = [t for t, _ in rates]
     return np.array([gym.cash_rate(rates, book.day0 + timedelta(days=i), known) for i in range(n)])
 
