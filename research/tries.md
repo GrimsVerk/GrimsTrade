@@ -4040,3 +4040,12 @@ Never edit or delete a row.
 | 2026-11-24 23:32 | wide-18 | tail-index: Hill exponent crash warning (killed: critical-slowing, volatility in disguise; not run) | note | train | - | - | - | - | - | - |
 | 2026-11-24 23:32 | wide-18 | irreversibility: Zumbach time-reversal asymmetry for sizing (killed: a volatility target; not run) | note | train | - | - | - | - | - | - |
 | 2026-11-24 23:32 | wide-18 | post hoc (not a try): vclock12 window by asset (lib/wide18_posthoc.py); median 1.22-1.30 y on BTC, ETH, QQQ, GLD, 0.92-0.94 on SPY, TLT | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:34 | xs-century-1 | tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12) | baseline | train | 1928-07-01 | 2025-10-31 | 0.55 | +49427.7% | 44.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | book (primary): alpha vs tsmom12 IR +0.31 z +2.75 (monthly excess x sqrt12) | variant | train | 1928-07-01 | 2025-10-31 | 0.40 | +501.1% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R1 gross: alpha vs tsmom12 IR +0.88 z +7.39 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.96 | +9139.5% | 18.8% | - |
+| 2026-11-24 23:34 | xs-century-1 | R2 UMD cost 0.34%/mo: alpha vs tsmom12 IR +0.51 z +4.44 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.59 | +1440.5% | 24.6% | - |
+| 2026-11-24 23:34 | xs-century-1 | R3 bond/FX costs x2: alpha vs tsmom12 IR +0.25 z +2.22 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.34 | +353.6% | 34.5% | - |
+| 2026-11-24 23:34 | xs-century-1 | R4 + commodity spot: alpha vs tsmom12 IR +0.31 z +2.61 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.39 | +366.3% | 25.1% | - |
+| 2026-11-24 23:34 | xs-century-1 | R5 1994-01..2025-10: alpha vs tsmom12 IR +0.19 z +0.75 (monthly excess x sqrt12) | robustness | train | 1994-01-01 | 2025-10-31 | 0.20 | +21.1% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R6 vs six-asset tsmom12: alpha vs tsmom12 IR +0.22 z +0.84 (monthly excess x sqrt12) | robustness | train | 1994-03-01 | 2025-10-31 | 0.20 | +21.6% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R7 bonds + FX only: alpha vs tsmom12 IR +0.43 z +2.63 (monthly excess x sqrt12) | robustness | train | 1962-04-01 | 2025-10-31 | 0.45 | +274.8% | 23.2% | - |
