@@ -207,9 +207,9 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
 
 def append_rows(path: Path, fields: Sequence[str], rows: Iterable[Sequence[str]]) -> None:
     """Append CSV `rows` to `path` (with the `fields` header if it is new or empty) in one
-    write: a job killed part way through a run then leaves each file with all of this run's rows
-    or none of them, not a row cut in half (which would stay: see `read_rows`). Never glues a
-    row onto a last row that lost its newline."""
+    write, which makes a row cut in half by a killed job unlikely but not impossible (a signal
+    mid-write or a full disk can still leave one; it would stay: see `read_rows`, which then
+    refuses it). Never glues a row onto a last row that lost its newline."""
     path.parent.mkdir(parents=True, exist_ok=True)
     text = io.StringIO()
     if ends_mid_line(path):
