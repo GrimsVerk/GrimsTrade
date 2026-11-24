@@ -116,6 +116,16 @@ def _load_csv(path: Path) -> list[Bar]:
         ]  # fmt: skip
 
 
+def bill_rates(period: str = "train") -> gym.Rates:
+    """The 13-week T-bill rate (`^IRX`, research/data/bars/IRX.csv) as the gym takes it: each
+    session's rate is known from its close (the backtest rule of `grimstrade.rates.steps`).
+    `train` never reads a session after TRAIN_LAST_BAR."""
+    bars = data.load(RESEARCH, "IRX")
+    if period == "train":
+        bars = [b for b in bars if b.date <= TRAIN_LAST_BAR]
+    return [(close_time(ETF, b.date), b.close / 100) for b in bars]
+
+
 def decide_time(d: date) -> datetime:
     return datetime.combine(d, DECIDE_AT, tzinfo=UTC)
 
@@ -363,11 +373,13 @@ def run(
     end: date | None = None,
     costs: Mapping[str, gym.Costs] = gym.COSTS,
     log: bool = True,
+    rates: gym.Rates = (),
 ) -> Run:
     """Backtest one variant through the gym and append it to tries.md.
 
     `log=False` is only for re-scoring an already logged variant (e.g. reading its equity curve
-    again); every new configuration must be logged.
+    again); every new configuration must be logged. `rates`: what idle cash earns (default
+    nothing, the protocol's convention; `bill_rates()` for the 13-week T-bill, gym PR #61).
     """
     if kind not in ("variant", "baseline", "robustness"):
         raise ValueError(kind)
@@ -378,7 +390,7 @@ def run(
     a, b = _period_dates(period)
     a, b = start or a, end or b
     decs = decisions(strategy, pan, a, b)
-    res = gym.simulate(decs, hist, costs=costs)
+    res = gym.simulate(decs, hist, costs=costs, rates=rates)
     sc = report.score(f"{idea}/{variant}", res)
     days, equity = _calendar(res.equity)
     out = Run(
