@@ -12,6 +12,7 @@ Output: research/results/congress-workload.md and research/results/refund-runoff
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 import urllib.request
@@ -59,18 +60,15 @@ def fetch() -> None:
     rel = f"wide-15/voteview/{SNAP}/HSall_rollcalls.csv"
     if not (root / rel).exists():
         cache.write_once(root, rel, _get(VOTEVIEW), VOTEVIEW)
-    n = 1
-    while True:
+    n, pages = 1, 1
+    while n <= pages:
         rel = f"wide-15/dts-refunds/{SNAP}/page-{n:02d}.json"
         url = DTS.format(n=n)
-        if not (root / rel).exists():
-            data = _get(url)
-            if b'"data":[]' in data.replace(b" ", b""):
-                break
-            cache.write_once(root, rel, data, url)
+        path = root / rel
+        if not path.exists():
+            cache.write_once(root, rel, _get(url), url)
+        pages = int(json.loads(path.read_text())["meta"]["total-pages"])
         n += 1
-        if n > 50:
-            break
     print("fetched into", root / "wide-15")
 
 
