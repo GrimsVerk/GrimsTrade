@@ -399,10 +399,11 @@ def live() -> None:
 
 
 def sim_hash(root: Path = ROOT) -> str:
-    """SHA-256 (12 hex) of the simulator's source (`SIM_FILES`, raw bytes)."""
+    """SHA-256 (12 hex) of the simulator's source (`SIM_FILES`, bytes with CRLF read as LF, so a
+    Windows checkout gives the same hash)."""
     h = hashlib.sha256()
     for name in SIM_FILES:
-        h.update((root / name).read_bytes())
+        h.update((root / name).read_bytes().replace(b"\r\n", b"\n"))
     return h.hexdigest()[:12]
 
 

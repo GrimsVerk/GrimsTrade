@@ -185,3 +185,12 @@ def test_tree_reads_a_commit_and_survives_a_deleted_branch(
     assert out.name == sha[:12]
     assert (out / "research" / "lib" / "baselines.py").read_text() == "IDEA = 'baselines'\n"
     assert r2.tree(sha) == out
+
+
+def test_sim_hash_ignores_crlf_line_endings(r2: ModuleType, tmp_path: Path) -> None:
+    for name in r2.SIM_FILES:
+        src = (r2.ROOT / name).read_bytes().replace(b"\r\n", b"\n")
+        dst = tmp_path / name
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.write_bytes(src.replace(b"\n", b"\r\n"))
+    assert r2.sim_hash(tmp_path) == r2.sim_hash()
