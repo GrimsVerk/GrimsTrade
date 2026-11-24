@@ -1,3 +1,15 @@
+{"excess_kurtosis":6.2415,"row":"| 2026-11-24 19:18 | turbulence | turb | variant | train | 1994-02-01 | 2025-11-09 | 0.95 | +6489.3% | 40.6% | 8.76 |","sharpe_weekly":0.9318,"skew":0.4638,"weeks":1657}
+{"excess_kurtosis":12.0298,"row":"| 2026-11-24 19:18 | turbulence | corr | variant | train | 1994-02-01 | 2025-11-09 | 0.97 | +10393.3% | 31.4% | 11.48 |","sharpe_weekly":0.9852,"skew":0.0763,"weeks":1657}
+{"excess_kurtosis":5.9432,"row":"| 2026-11-24 19:18 | turbulence | mag | baseline | train | 1994-02-01 | 2025-11-09 | 1.00 | +8214.7% | 45.0% | 8.51 |","sharpe_weekly":0.9857,"skew":0.4106,"weeks":1657}
+{"excess_kurtosis":5.9385,"row":"| 2026-11-24 19:18 | turbulence | mag-match | baseline | train | 1994-02-01 | 2025-11-09 | 0.99 | +8131.5% | 45.0% | 8.35 |","sharpe_weekly":0.9835,"skew":0.4063,"weeks":1657}
+{"excess_kurtosis":7.2867,"row":"| 2026-11-24 19:18 | turbulence | mag-match-c | baseline | train | 1994-02-01 | 2025-11-09 | 1.05 | +11449.5% | 38.9% | 6.63 |","sharpe_weekly":1.0264,"skew":0.6864,"weeks":1657}
+{"excess_kurtosis":5.3809,"row":"| 2026-11-24 19:18 | turbulence | turb-q75 | robustness | train | 1994-02-01 | 2025-11-09 | 0.89 | +3121.9% | 47.0% | 13.90 |","sharpe_weekly":0.8856,"skew":0.6185,"weeks":1657}
+{"excess_kurtosis":5.4847,"row":"| 2026-11-24 19:18 | turbulence | mag-match-q75 | baseline | train | 1994-02-01 | 2025-11-09 | 0.90 | +3347.3% | 48.7% | 15.38 |","sharpe_weekly":0.9011,"skew":0.5079,"weeks":1657}
+{"excess_kurtosis":2.3747,"row":"| 2026-11-24 19:18 | turbulence | turb@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.83 | +4444.8% | 22.1% | 8.45 |","sharpe_weekly":0.7574,"skew":-0.3195,"weeks":3331}
+{"excess_kurtosis":12.19,"row":"| 2026-11-24 19:18 | turbulence | corr@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.62 | +2101.7% | 25.7% | 17.55 |","sharpe_weekly":0.5833,"skew":-1.2956,"weeks":3331}
+{"excess_kurtosis":2.3365,"row":"| 2026-11-24 19:18 | turbulence | mag@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.84 | +4662.0% | 20.8% | 8.14 |","sharpe_weekly":0.7635,"skew":-0.318,"weeks":3331}
+{"excess_kurtosis":2.3224,"row":"| 2026-11-24 19:18 | turbulence | mag-match@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.82 | +4350.3% | 20.8% | 8.13 |","sharpe_weekly":0.7491,"skew":-0.3203,"weeks":3331}
+{"excess_kurtosis":2.3581,"row":"| 2026-11-24 19:18 | turbulence | mag-match-c@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.86 | +5126.9% | 20.7% | 8.34 |","sharpe_weekly":0.788,"skew":-0.2956,"weeks":3331}
 {"excess_kurtosis":7.89,"row":"| 2026-11-24 19:22 | halving-2 | bh@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.74 | +1695.7% | 93.0% | 4.49 |","sharpe_weekly":0.7176,"skew":1.5582,"weeks":605}
 {"excess_kurtosis":17.5903,"row":"| 2026-11-24 19:22 | halving-2 | tsmom12@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.62 | +765.7% | 92.0% | 5.61 |","sharpe_weekly":0.6037,"skew":2.5234,"weeks":605}
 {"excess_kurtosis":4.6317,"row":"| 2026-11-24 19:22 | halving-2 | alone-own@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 0.45 | +61.2% | 95.7% | 3.00 |","sharpe_weekly":0.4364,"skew":0.8737,"weeks":605}

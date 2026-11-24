@@ -3179,6 +3179,18 @@ Never edit or delete a row.
 | 2026-11-19 03:15 | cpc-revision | UNG next-session open-to-close on CPC 6-10/8-14 outlook revision (slope -0.076 pp/0.10, t -0.68, rank 36/41, gate fail) | screen | train | 2012-11-01 | 2025-03-31 | - | - | - | - |
 | 2026-11-19 03:04 | act-haven | GLD+TLT 4-week return on GPR acts z, from available-on date (b -0.137%/z, t -1.02, rank 21/41, gate fail) | screen | train | 2005-01-03 | 2025-10-06 | - | - | - | - |
 | 2026-11-19 03:04 | failure-premium | XLF 4-week return on ln(1 + FDIC failed assets) with past-return controls (b -0.059%/unit, t -0.48, rank 21/41, gate fail) | screen | train | 2000-01-07 | 2025-10-03 | - | - | - | - |
+| 2026-11-24 19:18 | turbulence | turb | variant | train | 1994-02-01 | 2025-11-09 | 0.95 | +6489.3% | 40.6% | 8.76 |
+| 2026-11-24 19:18 | turbulence | corr | variant | train | 1994-02-01 | 2025-11-09 | 0.97 | +10393.3% | 31.4% | 11.48 |
+| 2026-11-24 19:18 | turbulence | mag | baseline | train | 1994-02-01 | 2025-11-09 | 1.00 | +8214.7% | 45.0% | 8.51 |
+| 2026-11-24 19:18 | turbulence | mag-match | baseline | train | 1994-02-01 | 2025-11-09 | 0.99 | +8131.5% | 45.0% | 8.35 |
+| 2026-11-24 19:18 | turbulence | mag-match-c | baseline | train | 1994-02-01 | 2025-11-09 | 1.05 | +11449.5% | 38.9% | 6.63 |
+| 2026-11-24 19:18 | turbulence | turb-q75 | robustness | train | 1994-02-01 | 2025-11-09 | 0.89 | +3121.9% | 47.0% | 13.90 |
+| 2026-11-24 19:18 | turbulence | mag-match-q75 | baseline | train | 1994-02-01 | 2025-11-09 | 0.90 | +3347.3% | 48.7% | 15.38 |
+| 2026-11-24 19:18 | turbulence | turb@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.83 | +4444.8% | 22.1% | 8.45 |
+| 2026-11-24 19:18 | turbulence | corr@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.62 | +2101.7% | 25.7% | 17.55 |
+| 2026-11-24 19:18 | turbulence | mag@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.84 | +4662.0% | 20.8% | 8.14 |
+| 2026-11-24 19:18 | turbulence | mag-match@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.82 | +4350.3% | 20.8% | 8.13 |
+| 2026-11-24 19:18 | turbulence | mag-match-c@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.86 | +5126.9% | 20.7% | 8.34 |
 | 2026-11-24 19:22 | halving-2 | bh@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.74 | +1695.7% | 93.0% | 4.49 |
 | 2026-11-24 19:22 | halving-2 | tsmom12@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.62 | +765.7% | 92.0% | 5.61 |
 | 2026-11-24 19:22 | halving-2 | alone-own@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 0.45 | +61.2% | 95.7% | 3.00 |
