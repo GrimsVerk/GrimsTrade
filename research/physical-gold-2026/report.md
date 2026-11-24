@@ -38,7 +38,7 @@ marks anything no source in this run confirmed.
   1 January value per year** on wealth above the allowance (EUR 59,357 per person in 2026).
 - **Storage:** home-contents policies often **exclude** bullion or cap it at **EUR 500-7,500**
   (one insurer's top policy: EUR 200,000 only in a certified, anchored safe). One large bank is
-  ending safe-deposit boxes, and bank boxes are reachable only when the branch is open. Dealer vaults cost about
+  reported to be ending safe-deposit boxes (UNVERIFIED in its own page), and bank boxes are reachable only when the branch is open. Dealer vaults cost about
   0.5% a year, but access runs through the dealer's systems.
 - **Sizing, published general practice (not advice):** World Gold Council research 2-10% (about 5%
   base case); Dalio "All Weather" 7.5%; Browne "Permanent Portfolio" 25%; Dutch wealth planners
@@ -75,9 +75,9 @@ Terms seen:
 - Appointment: national dealers' offices are by appointment only, with stock in external vaults;
   ordering at an office does not mean taking the gold home that day. Pickup fees up to EUR 25.
 - Walk-in: a few shops sell from limited stock without appointment, sometimes with a small
-  over-the-counter surcharge on top of the webshop price and a minimum purchase. A
-  walk-in chain holds a small selection for direct cash or anonymous sales; other items are ordered
-  and collected.
+  over-the-counter surcharge on top of the webshop price and a minimum purchase. A walk-in chain
+  holds a small selection for direct cash or anonymous sales; other items are ordered and
+  collected.
 - Cash: caps of EUR 2,990-3,000 (some per person per month, some only with name recorded; one adds
   a 2% cash fee); one dealer accepts no cash since 1 Jan 2026 and takes a debit card at
   the counter. Several refuse EUR 200/500 notes.
@@ -120,7 +120,7 @@ Terms seen:
   2027** (art. 90). Precious-metal traders become obliged entities whatever the payment method
   (art. 3(3)(e)), with customer due diligence for occasional transactions of EUR 10,000 or more
   (art. 19(1)(b)); when a dealer buys, the seller counts as its customer (art. 19(6)(a)); art. 19(9)
-  lets lower thresholds be set for higher-risk sectors (none known yet).
+  lets lower thresholds be set for higher-risk sectors (none found in this run).
 - **Selling back:** Sr art. 437 lid 1(b) forbids a designated trader to acquire a used good without
   recording the seller's identifying details; the implementing decree names metals and precious
   stones; many municipalities require the police's Digitaal Opkopers Register. Whether a sealed
@@ -159,8 +159,8 @@ Maple Leaf cost +18.2% over spot at one dealer (VAT "marge of 21%" included), ag
 - The actual-return route (tegenbewijsregeling; in the tax return from 2025) counts unrealised gains and
   gives no allowance, so it helps only in flat or falling years
   ([Belastingdienst](https://www.belastingdienst.nl/wps/wcm/connect/nl/box-3/content/wat-is-mijn-werkelijk-rendement)).
-- The planned actual-return law aims at "uiterlijk 1 januari 2029" (Eerste Kamer pending, amended
-  by a novelle in autumn 2026); how it will tax physical gold is UNVERIFIED
+- The planned actual-return law aims at "uiterlijk 1 januari 2029" (Eerste Kamer pending; a novelle
+  in autumn 2026 per [a dealer's article](https://www.goldrepublic.com/nl-nl/nieuws/fysiek-edelmetaal-box-3-vermogenswinstbelasting)); how it will tax physical gold is UNVERIFIED
   ([Rijksoverheid](https://www.rijksoverheid.nl/onderwerpen/inkomstenbelasting/plannen-werkelijk-rendement-box-3)).
 
 ### 4.3 Storage and insurance
@@ -188,7 +188,7 @@ Maple Leaf cost +18.2% over spot at one dealer (VAT "marge of 21%" included), ag
 ### 4.4 Fakes
 
 No Dutch statistics on fake bullion were found (UNVERIFIED how common). The classic fake is
-gold-plated tungsten (density 19.3 vs 19.32 g/cm3), which passes weight and size checks
+gold-plated tungsten (density about 19.25 vs 19.32 g/cm3), which passes weight and size checks
 ([dealer explainer](https://www.hollandgold.nl/100-vragen-over-goud/kun-je-goud-vervalsen-met-wolfraam-tungsten/)).
 Established dealers buy from mints and LBMA-accredited refiners and sell small bars sealed with a
 serial number and certificate. Keeping the packaging matters at resale: dealers pay less for
@@ -250,7 +250,7 @@ premium) or 10 g bars (about EUR 1,150, +8-9%); a 1 oz coin costs about EUR 3,40
 | 31 Jan-2 Feb 2025 | Barclays (UK) | App and online login failed; many payments failed | About 3 days ([FStech](https://www.fstech.co.uk/fst/Top_UK_Banks_Accumulate_33_Days_Worth_Of_IT_Disruption_In_2_Years.php), secondary) |
 | 28 Feb 2025 | Lloyds/Halifax (UK), payday | Could not log in; payments delayed | A morning ([LBC](https://www.lbc.co.uk/tech/86737891928145b4b483f383fb4ed4a0/); end time UNVERIFIED) |
 | 28 Apr 2025 | Iberian power blackout | Card payments -55%, ATM withdrawals -34%; under 4% of ATMs had backup power | Afternoon to early next day ([Banco de España](https://www.bde.es/f/webbe/GAP/Secciones/Publicaciones/InformesBoletinesRevistas/RevistaEstabilidadFinanciera/25/3_FSR49_Apagon.pdf)) |
-| 4 Apr 2026 | Worldline (Belgium) | No ATM withdrawals nationwide | Afternoon, restored 17:53; length not stated ([VRT](https://www.vrt.be/vrtnws/nl/2026/04/04/problemen-geldautomaten-belgie/)) |
+| 4 Apr 2026 | Worldline (Belgium) | ATMs on Worldline's network failed nationwide | Afternoon, restored 17:53; length not stated ([VRT](https://www.vrt.be/vrtnws/nl/2026/04/04/problemen-geldautomaten-belgie/)) |
 | Jan 2023-Feb 2025 | Nine UK banks | 158+ incidents | 803+ hours in total ([GRIP](https://www.grip.globalrelay.com/major-uk-banks-had-803-hours-of-tech-system-outages-in-last-two-years)) |
 
 **What the evidence supports:** outages seen so far lasted hours to a few days. For those, cash
