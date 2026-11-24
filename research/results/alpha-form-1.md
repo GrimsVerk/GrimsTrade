@@ -6,8 +6,8 @@ draws, seed 20261124. Decision z = alpha / max(Newey-West SE, bootstrap SE).
 
 ## Inputs
 
-- Store rows: 1512. Register rows: 3854 (committed 
-  `tries.jsonl` + 724 rows of `research/tries.md` not in it).
+- Store rows: 1512. Register rows: 3855 (committed 
+  `tries.jsonl` + 725 rows of `research/tries.md` not in it).
 - Selectable register rows (variant/baseline, train) matched to a stored series: 
   454; distinct series among them: **399**.
 - Primary comparator: `baselines/tsmom12` (harness@512ae2ce13e2, from 1994-02-01, 

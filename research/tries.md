@@ -3899,3 +3899,4 @@ Never edit or delete a row.
 | 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.81 | +7486.9% | 50.8% | 4.53 |
 | 2026-11-24 19:49 | seasonal-20y | tsmom12 | baseline | train | 1994-02-01 | 2025-11-09 | 1.04 | +18044.5% | 37.4% | 2.81 |
 | 2026-11-24 19:49 | seasonal-20y | hold | baseline | train | 1994-02-01 | 2025-11-09 | 0.88 | +20054.9% | 68.8% | 1.46 |
+| 2026-11-24 20:17 | alpha-form | stored record re-scored in alpha form (residual IR on the same universe's `tsmom12`, NW/bootstrap z, best long-only mix): 341 distinct selectable series, 0 at z >= 4.69, 2 at >= 3.29 (fm-bolt-base-tilt 4.31: pretraining memory; merfx7 4.14: cash earns 0); median mix gain +0.010; a lens, no new try (research/alpha-form-1.md) | note | - | - | - | - | - | - | - |
