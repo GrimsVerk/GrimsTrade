@@ -1,27 +1,39 @@
 """The rate idle cash earns: the 13-week T-bill rate, stored append-only in `data/rates.csv`.
 
-Rules and why: docs/DECISIONS.md (2026-11-18, cash interest). A row is one session's `^IRX`
-close (percent) and the time it was stored (`seen`). `steps` turns rows into the `gym.Rates`
-the gym accrues with: in backtests a rate is known from its session's close, in the live record
-from the later of that and `seen`, so the live record never earns interest it could not have
-known about when it happened.
+Rules and why: docs/DECISIONS.md (2026-11-18, cash interest; 2026-11-24, second bill-rate
+source). A row is one session's 13-week bill discount rate (percent) and the time it was stored
+(`seen`): Yahoo's `^IRX` close, or for a session Yahoo lacks the US Treasury's published "13
+WEEKS BANK DISCOUNT" (`fetch`). Which source gave a row goes in `data/sources.jsonl`. `steps`
+turns rows into the `gym.Rates` the gym accrues with: in backtests a rate is known from its
+session's close, in the live record from the later of that and `seen`, so the live record never
+earns interest it could not have known about when it happened.
 """
 
 from __future__ import annotations
 
 import csv
+import io
 import math
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from grimstrade import gym, sources
-from grimstrade.data import ETF, close_time, ends_mid_line, settled
+from grimstrade.data import ETF, SETTLE, close_time, ends_mid_line, settled
 
 RATES = Path("data/rates.csv")
 FIELDS = ["date", "rate", "seen"]
 TICKER = "%5EIRX"  # ^IRX, URL-encoded: the 13-week T-bill discount rate, in percent
+# The US Treasury's Daily Treasury Bill Rates, one CSV per calendar year (keyless, public domain).
+TREASURY_URL = (
+    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/"
+    "daily-treasury-rates.csv/{year}/all?type=daily_treasury_bill_rates"
+)
+# The bank discount rate, the convention ^IRX quotes (not the coupon-equivalent yield beside it).
+TREASURY_COLUMN = "13 WEEKS BANK DISCOUNT"
+YAHOO, TREASURY = "yahoo", "treasury"  # source names in data/sources.jsonl
+SYMBOL = "rates"  # the "symbol" of the cash rate's lines in data/sources.jsonl
 # A stored rate outside this range (percent) is bad data: ^IRX has been 0.0 to 17.1 since 1960.
 LOW, HIGH = -5.0, 30.0
 
@@ -100,10 +112,76 @@ def _write(root: Path, rows: Sequence[Rate]) -> int:
     return len(rows)
 
 
-def fetch(since: date, now: datetime, get: sources.Get) -> list[Rate]:
+def yahoo(since: date, now: datetime, get: sources.Get) -> list[Rate]:
     """`^IRX` closes from `since` on, for sessions settled by `now` (Yahoo chart API, keyless)."""
     bars = settled(sources.yahoo(TICKER, since, get), ETF, now)
     return [Rate(b.date, b.close, now) for b in bars]
+
+
+def parse_treasury(body: bytes) -> dict[date, float]:
+    """The 13-week bank discount rate (percent) per day from one Daily Treasury Bill Rates CSV.
+    Columns are found by name (the set of maturities changes over the years); a blank cell is
+    no rate. Raises ValueError if the column is missing."""
+    reader = csv.reader(io.StringIO(body.decode("utf-8-sig")))
+    header = [h.strip().upper() for h in next(reader, [])]
+    if "DATE" not in header or TREASURY_COLUMN not in header:
+        raise ValueError(f"treasury bill rates: no {TREASURY_COLUMN!r} column in {header[:3]}...")
+    at, col = header.index("DATE"), header.index(TREASURY_COLUMN)
+    out = {}
+    for row in reader:
+        if len(row) <= max(at, col) or not row[col].strip():
+            continue
+        out[datetime.strptime(row[at].strip(), "%m/%d/%Y").date()] = float(row[col])
+    return out
+
+
+def treasury(since: date, now: datetime, get: sources.Get) -> list[Rate]:
+    """Treasury 13-week bank discount rates from `since` on, for sessions settled by `now` (one
+    CSV per calendar year). The Treasury publishes a day's rates in its afternoon; a day not
+    published yet is simply missing."""
+    out = []
+    for year in range(since.year, now.year + 1):
+        days = parse_treasury(get(TREASURY_URL.format(year=year)))
+        out += [
+            Rate(d, r, now)
+            for d, r in days.items()
+            if d >= since and close_time(ETF, d) + SETTLE <= now
+        ]
+    return sorted(out, key=lambda r: r.date)
+
+
+def _lacking(since: date, now: datetime, have: set[date]) -> list[date]:
+    """Weekdays from `since` on whose session has settled by `now` and that `have` lacks."""
+    out, d = [], since
+    while close_time(ETF, d) + SETTLE <= now:
+        if d.weekday() < 5 and d not in have:
+            out.append(d)
+        d += timedelta(days=1)
+    return out
+
+
+def fetch(
+    since: date, now: datetime, get: sources.Get
+) -> tuple[list[tuple[str, Rate]], list[str], bool]:
+    """The rates from `since` on, each with its source; what failed; whether any source answered.
+    Yahoo `^IRX` first; the Treasury only for settled weekdays Yahoo lacks (Yahoo down or late,
+    or a holiday). Yahoo's rate wins for a day both have."""
+    found: dict[date, tuple[str, Rate]] = {}
+    failed = []
+    answered = False
+    try:
+        found = {r.date: (YAHOO, r) for r in yahoo(since, now, get)}
+        answered = True
+    except Exception as e:  # noqa: BLE001 - the Treasury is there for exactly this
+        failed.append(f"yahoo ^IRX: {e}")
+    if _lacking(since, now, set(found)):
+        try:
+            for r in treasury(since, now, get):
+                found.setdefault(r.date, (TREASURY, r))
+            answered = True
+        except Exception as e:  # noqa: BLE001 - one bad answer must not stop the run
+            failed.append(f"treasury: {e}")
+    return sorted(found.values(), key=lambda x: x[1].date), failed, answered
 
 
 def steps(rows: Iterable[Rate], live: bool) -> gym.Rates:

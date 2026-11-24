@@ -205,14 +205,20 @@ def log_source(root: Path, symbol: str, source: str, bars: Sequence[Bar], seen: 
     """One line per run and symbol that stored bars: the source and the days it supplied. The
     sources are different exchanges and vendors (Kraken/Coinbase, Yahoo/Stooq) with slightly
     different prices; without this a mixed series cannot be recognised afterwards."""
-    if not bars:
+    log_days(root, symbol, source, [b.date for b in bars], seen)
+
+
+def log_days(root: Path, symbol: str, source: str, days: Sequence[date], seen: str) -> None:
+    """The line `log_source` writes, for stored rows that are not bars (the cash rate): `days`
+    are the stored days, in order, one source supplied in one run. Nothing for no days."""
+    if not days:
         return
     entry = {
         "symbol": symbol,
         "source": source,
-        "first": bars[0].date.isoformat(),
-        "last": bars[-1].date.isoformat(),
-        "rows": len(bars),
+        "first": days[0].isoformat(),
+        "last": days[-1].isoformat(),
+        "rows": len(days),
         "seen": seen,
     }
     path = root / SOURCES_LOG
