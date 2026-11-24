@@ -3245,3 +3245,4 @@ Never edit or delete a row.
 | 2026-11-24 19:22 | halving-2 | S2 alone-btc@LZ BTC-calendar placebos (Sharpe 1.23, rank 1/41, null SD 0.22) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | C2 LZ alt/BTC own window minus outside (+0.402/yr, rank 32/41 most negative; gate fail: BTC-beta) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | BTC alone-own placebos (rank 1/41, shown) | screen | train | 2011-07-19 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 20:25 | data-long-3 | data lane: keyless long rates/FX/commodity panel cached (US bonds 1962-, 9 foreign 10y 1955-89-, 9 FX with carry 1971-, 12 PPI commodity indices 1913-47-); bonds vs IEF/TLT/SHY corr 0.97-0.99, FX spot vs trusts 0.99, spot oil vs USO +10 pts/yr; no strategy run (research/data-long-3.md) | note | train | 1913-01-01 | 2025-10-31 | - | - | - | - |
