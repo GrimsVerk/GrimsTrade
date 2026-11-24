@@ -136,7 +136,7 @@ gain 0; a losing uncorrelated rule gets w* = 0; bootstrap SE near the NW SE on i
   variant). The one plain rule near the top is the `sma200@GSPC` baseline against
   `tsmom12@GSPC` (S&P 500 index from 1962, 31 years, IR +0.60, z 3.07): a different trend
   rule on one index, below 3.29.
-- **The record is close to what luck alone gives.** 28 series at z >= 2 (7.8 expected if all
+- **The record shows more than luck alone gives, explained by dependence and cash at 0.** 28 series at z >= 2 (7.8 expected if all
   341 were independent nulls), 61 at z >= 1.645 (17.0). The excess is expected: the series are
   not independent (about 100 `trend-tune-surface` near-copies, rho with `tsmom12` 0.9+) and
   every bond-like or cash-like slot gets a positive alpha from the cash-0 convention. The 2 at
@@ -197,8 +197,10 @@ cash earns 0. The 0.999 rule (fixed on the card) kept it out; had it been scored
 - **Cash at 0.** The store holds raw strategy returns and no T-bill series, so alpha is not
   measured above bills (the card said so). This inflates the alpha of every bond-like or
   cash-like slot (`merfx7`, `last4@LQD`, `constant@IEF`, `bill10@bills`) and the excess of
-  z >= 2 counts over luck. It cannot create a false negative for a rule that holds risky assets,
-  so it does not weaken the "nothing passes" finding. An above-bills alpha would need a weekly
+  z >= 2 counts over luck. It understates alpha only for a rule that is more in cash than beta x
+  `tsmom12`'s invested share, by about the bill rate times that gap (at most about 0.3-0.5% a
+  year), too small to move anything near the bar, so it does not weaken the "nothing passes"
+  finding (review of #154). An above-bills alpha would need a weekly
   bill-rate series added to the store (a strategy-like series: hold bills).
 - **Coverage.** Only series that are in the store and match a selectable register row: 399
   distinct (454 register rows) of the 1,072 selectable train rows in the register used here. Tries without a saved
