@@ -142,3 +142,15 @@ def test_leave_fall_out_and_premium(vc: ModuleType) -> None:
     assert vc.premium_vs(5.0, 10.0) == pytest.approx(0.5)
     assert vc.premium_vs(-5.0, 10.0) == pytest.approx(1.5)
     assert math.isinf(vc.premium_vs(1.0, 0.0))
+
+
+def test_vix_band(vc: ModuleType) -> None:
+    assert [vc.vix_band(v) for v in (11.8, 15.0, 15.1, 30.0, 47.7, 50.0, 82.7)] == [
+        "<=15",
+        "<=15",
+        "15-30",
+        "15-30",
+        "30-50",
+        "30-50",
+        ">50",
+    ]

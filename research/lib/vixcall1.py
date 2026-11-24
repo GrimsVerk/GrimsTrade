@@ -142,6 +142,17 @@ def premium_vs(g: float, s: float) -> float:
     return -(g - s) / s if s > 0 else math.inf
 
 
+def vix_band(v: float) -> str:
+    """VXTH's weight band for a VIX level: 0% at 15 or below, 1% to 30, 0.5% to 50, else 0%."""
+    if v <= 15:
+        return "<=15"
+    if v <= 30:
+        return "15-30"
+    if v <= 50:
+        return "30-50"
+    return ">50"
+
+
 # --- run ---
 
 
@@ -331,8 +342,9 @@ def main() -> None:
     vix = vix_closes()
 
     def vix_at(d: date) -> str:
+        """VIX close on or before d, as VXTH's weight band only (CBOE terms: no raw levels)."""
         ks = [x for x in vix if x <= d]
-        return f"{vix[max(ks)]:.1f}" if ks else "-"
+        return vix_band(vix[max(ks)]) if ks else "-"
 
     show = ["hold", "trend", "VXTH", "PPUT", "mix", "V1", "V2"] + [
         a for a in ("A1", "A2") if a in s
@@ -408,7 +420,7 @@ def main() -> None:
         "",
         *i3.fall_table(ff, show),
         "",
-        "Trend in at the peak, VIX close at the peak (diagnostic): "
+        "Trend in at the peak, VIX close at the peak as VXTH's band (diagnostic): "
         + ", ".join(f"{f.peak} {pos[idx[f.peak]]:.0f} / {vix_at(f.peak)}" for f in ff)
         + ".",
         "",

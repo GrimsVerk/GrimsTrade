@@ -10,7 +10,8 @@ before any number). Tables: [`results/vix-call-1.md`](results/vix-call-1.md). Co
 ## The answer on one screen
 
 **A VIX-call overlay covers the fast crashes trend misses (it is the best cover tested so far),
-but over 2006-2025 it paid for itself through one crash only. Take out 2020 and it costs about
+but over 2006-2025 it did not pay for itself even with 2020 (23 log pts behind trend, Sharpe d
+-0.09); 2020 is the only fall that comes near paying for it. Take out 2020 and it costs about
 4 points of growth a year against `tsmom12` (Sharpe d -0.31, z -2.32). By the card: "rests on
 one crash" (kill 4), for both forms. Not a pick (z -0.42 against the bar's 4.70).**
 
@@ -39,13 +40,14 @@ alone: in at the peak, share avoided below 0.5): 2010, 2011, 2018, 2020, 2022 H1
   2010 (trend -16%), 8% in 2025 (trend -17%), 13% in 2011 (trend -19%). It did not help in the
   slow 2022 bear (-18.5% against trend's -14.4%: no VIX spike, the calls bled). Kills 1, 2, 3 and
   5 do not fire.
-- **Cost: below what it adds only because of 2020.** Over the window V1 gave up 23 log points of
-  growth against trend (1.3 points of CAGR a year) while gaining 110 inside the falls: premium
-  against trend P_T 1.21 (above 1: it cost more outside the falls than it paid inside them, net).
-  The 2020 fall alone added +62 log points. Without it G is -85 log points (about -4.4 a year)
-  and the Sharpe difference -0.31 (z -2.32). Leaving out any other single fall changes G by
-  at most 20 points; leaving out 2020 changes it by 62. That is kill 4: the benefit rests on one
-  crash.
+- **Cost: above what it adds, even with 2020; far above without it.** Over the window V1 gave
+  up 23 log points of growth against trend (1.3 points of CAGR a year) while gaining 110 inside
+  the falls: premium against trend P_T 1.21 (above 1: it cost more outside the falls than it paid inside them, net).
+  The 2020 fall alone added +62 log points, and still did not close the gap. Without it G is
+  -85 log points (about -4.4 a year) and the Sharpe difference -0.31 (z -2.32). Leaving out any
+  other single fall changes G by at most 20 points; leaving out 2020 changes it by 62. That is
+  kill 4: what cover the overlay buys rests on one crash, and even that crash did not pay its
+  bill.
 - **V2** (calls only while trend is in) is the same story with a smaller bill and a smaller
   payoff: Sharpe 0.60 against trend's 0.61 (z -0.04), worst loss 19% (the smallest here), 2020
   +24%; without 2020, d -0.20 (z -2.02). Also kill 4.
@@ -62,10 +64,12 @@ alone: in at the peak, share avoided below 0.5): 2010, 2011, 2018, 2020, 2022 H1
 ## How sure
 
 - **One crash.** The window holds one named fast crash (2020) and six trend-missed falls in all,
-  of which 2020 is the only one where VIX went from a calm 14 to over 80. The card said this is
+  of which 2020 is the only one where VIX went from a calm level (15 or below at the peak, where
+  VXTH holds no calls) to above 50 within weeks. The card said this is
   kill-only; it is. The kill is robust in direction: with 2020 left out, every overlay form is
   behind trend by 69-185 log points.
-- **Post-hoc check (computed after the run, no row):** the cut of 2020 stops at the trough; the
+- **Post-hoc check (computed after the run, no row; `lib/vixcall1_posthoc.py` reproduces
+  it):** the cut of 2020 stops at the trough; the
   calls' fall in value after it is still counted. Extending the cut by 21 / 63 / 126 sessions
   after the trough moves V1's G without 2020 from -85.3 to -85.3 / -84.2 / -81.9: the result
   does not come from where the cut is placed. Also post hoc: the leg's log return was about
@@ -74,8 +78,13 @@ alone: in at the peak, share avoided below 0.5): 2010, 2011, 2018, 2020, 2022 H1
 - **Additive overlay.** V1 adds the leg to trend's daily return (a constant sleeve sized against
   the whole portfolio, held in bills too). Its growth cost (1.3 points a year against trend) is
   larger than VXTH's gap to holding (0.7): adding the leg to trend's returns is not the same as
-  holding VXTH in place of the index, and the difference was not decomposed. A real overlay
-  would be reset at each monthly VIX expiry rather than held as a daily sleeve; not measured.
+  holding VXTH in place of the index, and the difference was not decomposed. The obvious
+  candidate, the leg running while trend sits in bills (17% of sessions), does not fit the
+  post-hoc split (the leg earned +0.7 log points a year while trend was out, -2.5 while in).
+  Another candidate, not checked: VXTH's level ratio to the index includes a cross term (the leg
+  pays on days the index falls) that a sleeve added to trend's returns does not get in full. A
+  real overlay would be reset at each monthly VIX expiry rather than held as a daily sleeve; not
+  measured.
 - **VXTH is an index, and partly a backfill.** No fees, no bid-ask on the VIX calls (the
   0.50-point robustness is a rough allowance, not a model). Its weight bands (none above VIX 50)
   were set with knowledge of 2008; its launch date was not checked here.
@@ -87,7 +96,10 @@ alone: in at the peak, share avoided below 0.5): 2010, 2011, 2018, 2020, 2022 H1
   (also asserted on the real data in the run); changing every level after a decision Friday
   leaves the positions through the next Friday and the returns up to it unchanged.
 - **Order of steps.** Card pushed (5d349d1), then script and tests pushed (5ab2acc), then the
-  one run (017fc6f). The post-hoc check above was run after and is labelled so.
+  one run (017fc6f). The post-hoc check above was run after and is labelled so. Review fix
+  (after the run): the results file's VIX levels at each fall's peak are now shown as VXTH's
+  weight bands, not raw closes (CBOE terms); the script was re-run for that, every other line of
+  the results file is unchanged and no tries row was added.
 - **Data and terms.** As insure-3: raw CBOE and Yahoo levels stay in the git-ignored cache; only
   statistics are committed.
 
@@ -104,8 +116,9 @@ alone: in at the peak, share avoided below 0.5): 2010, 2011, 2018, 2020, 2022 H1
 
 Nothing changes (options are outside the paper broker in any case). The record can now say:
 VIX calls are the only insurance tested that covers the fast crashes trend misses better than
-holding less at the same cost, but in 2006-2025 they paid for themselves only in 2020; outside
-that one crash they cost about 4 points of growth a year on top of trend. Buying them is a bet
+holding less at the same cost, but in 2006-2025 they paid off only in the 2020 fall, and still
+cost about 1.3 points a year net over the window; outside that one crash they cost about 4
+points of growth a year on top of trend. Buying them is a bet
 on the next fast crash from a calm level, not an edge.
 
 ## Next (not started)
