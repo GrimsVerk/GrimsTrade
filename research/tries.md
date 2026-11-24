@@ -3179,6 +3179,25 @@ Never edit or delete a row.
 | 2026-11-19 03:15 | cpc-revision | UNG next-session open-to-close on CPC 6-10/8-14 outlook revision (slope -0.076 pp/0.10, t -0.68, rank 36/41, gate fail) | screen | train | 2012-11-01 | 2025-03-31 | - | - | - | - |
 | 2026-11-19 03:04 | act-haven | GLD+TLT 4-week return on GPR acts z, from available-on date (b -0.137%/z, t -1.02, rank 21/41, gate fail) | screen | train | 2005-01-03 | 2025-10-06 | - | - | - | - |
 | 2026-11-19 03:04 | failure-premium | XLF 4-week return on ln(1 + FDIC failed assets) with past-return controls (b -0.059%/unit, t -0.48, rank 21/41, gate fail) | screen | train | 2000-01-07 | 2025-10-03 | - | - | - | - |
+| 2026-11-24 19:35 | breadth-book-1 | six@2008 | baseline | train | 2008-01-02 | 2025-11-09 | 1.23 | +4272.3% | 37.6% | 2.87 |
+| 2026-11-24 19:35 | breadth-book-1 | four@2008 | baseline | train | 2008-01-02 | 2025-11-09 | 0.92 | +280.0% | 15.7% | 2.44 |
+| 2026-11-24 19:35 | breadth-book-1 | E-6@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.73 | +154.8% | 12.5% | 2.58 |
+| 2026-11-24 19:35 | breadth-book-1 | E-12@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.53 | +76.2% | 10.1% | 2.73 |
+| 2026-11-24 19:35 | breadth-book-1 | E-20@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.46 | +74.9% | 15.3% | 2.85 |
+| 2026-11-24 19:35 | breadth-book-1 | E-all@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.48 | +96.1% | 17.8% | 2.69 |
+| 2026-11-24 19:35 | breadth-book-1 | L-12@2008 | variant | train | 2008-01-02 | 2025-11-09 | 1.04 | +550.3% | 24.9% | 2.87 |
+| 2026-11-24 19:35 | breadth-book-1 | L-20@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.93 | +294.9% | 20.6% | 2.84 |
+| 2026-11-24 19:35 | breadth-book-1 | L-all@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.75 | +215.7% | 20.7% | 2.67 |
+| 2026-11-24 19:35 | breadth-book-1 | six-live-form@2008/ts_momentum | robustness | train | 2008-01-02 | 2025-11-09 | 1.39 | +1371.6% | 20.0% | 4.51 |
+| 2026-11-24 19:35 | breadth-book-1 | L-all-live-form@2008/ts_momentum | robustness | train | 2008-01-02 | 2025-11-09 | 0.68 | +164.1% | 15.7% | 5.64 |
+| 2026-11-24 19:35 | breadth-book-1 | C-2@2020 | baseline | train | 2020-01-01 | 2025-11-09 | 1.17 | +1814.1% | 57.4% | 2.29 |
+| 2026-11-24 19:35 | breadth-book-1 | C-5@2020 | variant | train | 2020-01-01 | 2025-11-09 | 0.91 | +733.7% | 62.7% | 4.44 |
+| 2026-11-24 19:35 | breadth-book-1 | C-10@2020 | variant | train | 2020-01-01 | 2025-11-09 | 0.78 | +400.8% | 60.7% | 4.42 |
+| 2026-11-24 19:35 | breadth-book-1 | six@2020 | baseline | train | 2020-01-01 | 2025-11-09 | 1.28 | +355.0% | 28.8% | 2.76 |
+| 2026-11-24 19:35 | breadth-book-1 | LC-all@2020 | variant | train | 2020-01-01 | 2025-11-09 | 0.84 | +107.3% | 25.8% | 2.93 |
+| 2026-11-24 19:35 | breadth-book-1 | LC-all-live-form@2020/ts_momentum | robustness | train | 2020-01-01 | 2025-11-09 | 1.03 | +73.1% | 15.2% | 5.40 |
+| 2026-11-24 19:35 | breadth-book-1 | six-live-form@2020/ts_momentum | robustness | train | 2020-01-01 | 2025-11-09 | 1.36 | +196.5% | 20.0% | 4.20 |
+| 2026-11-24 19:35 | breadth-book-1 | L-all@2020 | robustness | train | 2020-01-01 | 2025-11-09 | 0.84 | +60.7% | 18.9% | 2.77 |
 | 2026-11-24 19:29 | congress-workload | SPY 4-week return on Anscombe roll-call count (session dummy, past-return controls) (b -0.009%/unit, t -0.19, rank 25/41, gate fail) | screen | train | 1994-02-04 | 2025-10-03 | - | - | - | - |
 | 2026-11-24 19:29 | refund-runoff | QQQ+IWM+BTC+ETH 4-week return on Nash-cascade runoff of the IRS individual-refund surprise (b +0.281%/unit, t +1.44, rank 7/41, gate fail) | screen | train | 2008-01-04 | 2025-10-03 | - | - | - | - |
 | 2026-11-24 19:18 | turbulence | turb | variant | train | 1994-02-01 | 2025-11-09 | 0.95 | +6489.3% | 40.6% | 8.76 |
