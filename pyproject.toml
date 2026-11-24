@@ -29,6 +29,8 @@ packages = ["src/grimstrade"]
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+# One-off calculation scripts kept next to a written report, not package code.
+extend-exclude = ["research/nl-brokers-2026/model.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
