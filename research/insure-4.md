@@ -41,7 +41,7 @@ alone +0.06 (z +0.70), against holding -0.03 (z -0.26): no difference shown.
   against 1.05 and 1.60). Per unit of loss avoided it is about 7 times dearer than trend alone.
   Net of the year after each low it is no better than trend (mean -0.1 against +0.3 log points).
 - **Why the prior was wrong.** The card expected the put bill to scale with the time in the
-  market (about 75% here, measured 82%), i.e. roughly 2 points a year. It cost more: CAGR
+  market (70-75% by the card, measured 82%), i.e. roughly 2 points a year. It cost more: CAGR
   3.29 points behind holding, 2.9 behind `tsmom12`, slightly more than PPUT held always (3.14).
   Diagnostic (computed after the run, no row): PPUT's log return minus holding's was -2.67
   points a year on sessions when trend was in and only -0.20 on sessions when it was out. The
@@ -90,7 +90,7 @@ alone +0.06 (z +0.70), against holding -0.03 (z -0.26): no difference shown.
 ## For the live rule
 
 Nothing changes. Options are outside the paper broker anyway. The record can now say: adding
-puts to trend's in-market time fixes trend's fast-crash gap (1987, 2020) and halves its worst
+puts to trend's in-market time fixes trend's fast-crash gap (1987, 2020) and cuts its worst
 loss, but costs nearly the full put premium (about 2.9 points a year against trend), because
 the puts' payoffs come mostly in bear markets where trend is already in cash. It is a risk
 preference with a lower Sharpe, not an edge.
