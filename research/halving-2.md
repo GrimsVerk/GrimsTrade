@@ -1,7 +1,9 @@
 # halving-2: does the halving phase rule transfer to other halving coins?
 
-Status: **card only (2026-11-24 19:20 UTC), written and pushed before any price of the coins
-below was read.** Branch `halving-2`. Research only: fake money, cached keyless data, no change
+Status: **done on train (2026-11-24). Verdict: BTC-beta. The rule does not transfer on the
+coins' own halving dates; with BTC's dates it works on every coin tested.** The card below was
+written and pushed (commit c8d7b09) before any price of these coins was read; the result
+follows it. Branch `halving-2`, PR #137. Research only: fake money, cached keyless data, no change
 to the gym, the daily runner or the live strategies. Train data only (no bar after 2025-11-10).
 
 ## Card
@@ -158,7 +160,75 @@ would not change the trial count or the bar. A fail (either kind) means the lead
 beyond the three BTC cycles the window was taken from: treat it as a BTC-only coincidence and
 stop spending tests on the halving family until the forward window is in.
 
-## Result
+## Result (2026-11-24, one run)
 
-Pending: script `research/lib/halving2.py` (core `research/lib/halving2_core.py`, tests
-`tests/test_halving2.py`), one dry run (counts only), then one real run.
+Run: `uv run python -I research/lib/halving2.py` after the look-ahead tests
+(`tests/test_halving2.py`, 5 tests) and one dry run that printed counts only (bars, window days,
+placebo shift ranges, a plumbing run on random prices). Full tables: `results/halving-2.md`.
+28 harness rows (`baseline` / `robustness`, idea `halving-2`) and 4 `screen` rows in `tries.md`.
+Nothing differs from the card.
+
+### The judged test: LZ = Litecoin + Zcash, 2014-04-02..2025-11-09
+
+| Variant | Sharpe | vs `bh` (z) | vs `tsmom12` (z) | Max DD | Placebo rank |
+|---|---:|---:|---:|---:|---:|
+| `bh` (the coins' buy-and-hold) | 0.74 | - | +0.12 | 93% | - |
+| `tsmom12` | 0.62 | -0.12 | - | 92% | - |
+| `alone-own` (own halving dates) | **0.45** | -0.29 (-1.62) | -0.16 (-0.56) | 96% | **40 of 41** |
+| `alone-btc` (BTC's dates) | **1.23** | +0.49 (+3.28) | +0.61 (+3.07) | 77% | **1 of 41** |
+| `and-own` (own window and trend, shown) | 0.13 | -0.61 | -0.49 | 97% | - |
+
+- **S1, own clock: rank 40 of 41.** The placebo null (own calendars moved 365-1,101 days) has
+  median 0.62, SD 0.14, 5-95% 0.48-0.92; the true own-clock rule is second worst. Own clock minus
+  BTC clock: -0.77 Sharpe (z -3.31).
+- **S2, BTC clock: rank 1 of 41.** Null median 0.54, SD 0.22, max 0.80; the true 1.23 is far
+  above every shifted BTC calendar.
+- **C2, own timing net of BTC: wrong sign.** Priced in BTC, LTC and ZEC gained +0.40 a year
+  (log) more inside their own windows than outside (predicted negative); rank 32 of 41 from the
+  negative end.
+- Pass bar: 1 FAIL (rank 40), 2 FAIL (-0.29), 3 FAIL (-0.16), 4 FAIL (-0.77; C2 +0.40). The
+  BTC-beta branch of the reading holds: `alone-btc@LZ` ranks 1 of 41 with z 3.28 against `bh`.
+
+### Shown, per coin
+
+| Coin | Own cuts vs BTC's | `bh` | `alone-own` (vs `bh`) | `alone-btc` (vs `bh`) | Own-clock placebo rank |
+|---|---|---:|---:|---:|---:|
+| LTC | 8.5-10.5 months before | 0.68 | 0.25 (-0.44) | 1.14 (+0.46) | 41 of 41 |
+| ZEC | 6-7 months after | 0.63 | 0.75 (+0.13) | 1.03 (+0.40) | 1 of 41 |
+| BCH | within 6 weeks | 0.45 | 0.68 (+0.23) | 0.92 (+0.48) | - |
+| BSV | within 6 weeks | 0.30 | 0.42 (+0.12) | 0.45 (+0.15) | - |
+| ETC (20% cuts) | unrelated | 0.55 | 0.58 (+0.03) | 0.86 (+0.31) | - |
+| BTC (replication, from 2011-07) | - | 1.19 | 1.57 (+0.39) | - | 1 of 41 |
+
+- **Litecoin is the clean test, and it fails hardest.** Its halvings lead BTC's by 9-10 months,
+  so its own windows (2017-02..2018-02, 2021-02..2022-02) sat in its two bull runs: the rule
+  sold LTC before its 2017 and 2021 tops and bought back into BTC's winters. Worst of 41.
+- **Zcash's one window looks good, but it is half BTC's window.** ZEC's only in-train window,
+  2022-05-20..2023-05-19, shares 174 days with BTC's 2021-11-10..2022-11-09. One episode,
+  overlapping the BTC clock; it cannot carry H1 against LTC's three.
+- BCH and BSV "work" on their own dates because their dates are BTC's (within six weeks); they
+  cannot separate the two clocks, as the card said. ETC's 20% cuts do nothing (+0.03).
+- With BTC's dates the rule helps every coin (5 of 5 above `bh`). That is the crypto market's
+  common cycle, not each coin's supply schedule.
+
+### What it means for `halving-alone`
+
+- **The supply-cut mechanism gets no support.** A coin's own halving does not time that coin:
+  where the own clock differs from BTC's by most of a year (LTC), it is the worst phase of 41;
+  net of BTC it has the wrong sign. The phase effect exists only on BTC's calendar.
+- **The BTC-clock success on the alts is not new evidence.** Alts move with BTC; their winters
+  are BTC's 2014-15, 2018 and 2022 winters, the same three episodes the folklore window was
+  read from (the window on BTC itself is also the best of 41 shifted windows, in-sample). The
+  alts add coins, not cycles: the independent-episode count stays at three.
+- **The z gap does not close.** `halving-alone` stays at +0.23, z about 3.2-3.6, below the bar
+  of 4.69 (`BAR.md`, N = 486), with no out-of-sample support from other halving schedules. Read
+  it as a BTC-cycle coincidence fitted on three winters. The gate was kill-only (about 3.75 own
+  windows); it killed the transfer reading.
+- What is left: only the forward record. BTC's own window opened 2025-10-19 and runs to
+  2026-10-18, inside the held-out year, which this lane did not look at. No more backtests of
+  the halving family are worth running before that window is scored once.
+
+Caveats: cash earns 0 (as in the original test); Coin Metrics reference prices, not one
+exchange's; the true own-clock rule had fewer window days than the extended placebos (exposure
+81% against 74% on average), which does not explain a rank of 40 of 41 (the 41st, the worst
+placebo, had 0.448 against the true 0.452).
