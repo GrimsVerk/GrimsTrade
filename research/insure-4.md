@@ -1,6 +1,6 @@
 # insure-4: put protection only while trend is in the market
 
-Lane insure-4, 2026-11-24 (night). Branch `insure-4`, draft PR #165. Research only: fake
+Lane insure-4, 2026-11-24 (night). Branch `insure-4`, PR #165. Research only: fake
 money, keyless public data (insure-3's cache, nothing new fetched), no change to the gym, the
 daily runner or the live strategies. Card: [`cards/insure-4.md`](cards/insure-4.md) (pushed
 before any number). Tables: [`results/insure-4.md`](results/insure-4.md). Code:
@@ -43,11 +43,12 @@ alone +0.06 (z +0.70), against holding -0.03 (z -0.26): no difference shown.
 - **Why the prior was wrong.** The card expected the put bill to scale with the time in the
   market (70-75% by the card, measured 82%), i.e. roughly 2 points a year. It cost more: CAGR
   3.29 points behind holding, 2.9 behind `tsmom12`, slightly more than PPUT held always (3.14).
-  Diagnostic (computed after the run, no row): PPUT's log return minus holding's was -2.67
-  points a year on sessions when trend was in and only -0.20 on sessions when it was out. The
-  puts pay off mainly in bear markets, which is when trend is already out; holding them only
-  while invested drops the sessions where they paid and keeps nearly all the sessions where
-  they bled. Trend and puts insure the same slow falls twice, and only the fast falls are not
+  Diagnostic (computed after the run, no row): PPUT's log return minus holding's was about
+  -3.3 points a year while trend was in and -1.1 while it was out (rates per year spent in each
+  state; as contributions to the full-period gap of -2.87 they are -2.67 and -0.20, review of
+  #165). The puts pay off mainly in bear markets, which is when trend is already out; holding
+  them only while invested keeps the time where they bleed fastest, while they bled less,
+  about a third the rate, while trend was out. Trend and puts insure the same slow falls twice, and only the fast falls are not
   doubled.
 - **What it buys.** Worst loss 19% (trend 33%, PPUT 42%, holding 55%) and CAGR / worst loss 0.42
   against trend's 0.33. That is a lower-risk profile, not a better one: the Sharpe is lower.
