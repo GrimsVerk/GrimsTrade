@@ -6,12 +6,14 @@ The rule, as risk-menu-3 ran it:
 1. `tsmom12`: every asset with a year of bars (365 for crypto, 252 for ETFs) gets an equal slot;
    the slot is held while the asset's 12-month return is positive, else it sits in cash.
    Decided on Fridays (the view at that Friday's DECIDE_AT); other days repeat it.
+   The decision's date is the day of the latest close it can see (the harness's `View.today`).
 2. sigma: the volatility of `tsmom12`'s own daily returns over the 52 complete Monday-Sunday
    weeks up to the month's previous day (weekly sums, sample std, x sqrt 52). None until all 52
    weeks lie after `tsmom12`'s first invested day.
-3. On each 1st, k solves mean(min(1, k / sigma_m)) = 70% over every monthly sigma known by then
-   (an expanding window: no later sigma is used); the month's share of `tsmom12` is
-   min(1, k / sigma). Capped at 100%: no leverage. The rest is cash.
+3. For the decisions dated in a month, k solves mean(min(1, k / sigma_m)) = 70% over every
+   monthly sigma known by its 1st (an expanding window: no later sigma is used), and the share
+   of `tsmom12` is min(1, k / sigma) with that month's sigma. Capped at 100%: no leverage. The
+   rest is cash.
 4. Warm-up: until 24 monthly sigmas exist, or while this month's sigma is unknown, the share is
    the target, 70%. A sigma of 0 (`tsmom12` all in cash a whole year) keeps the previous share.
 
@@ -68,16 +70,17 @@ class Sleeve:
         self.dates = {s: [b.date for b in history[s]] for s in self.syms}
         self.closes = {s: [b.close for b in history[s]] for s in self.syms}
         self.shut = {s: [close_time(UNIVERSE[s], d) for d in self.dates[s]] for s in self.syms}
-        self.as_of = max((ds[-1] for ds in self.dates.values()), default=None)
+        # The decision's date, as the research harness dates it: the day of the latest close.
+        self.today = max((ts[-1].date() for ts in self.shut.values()), default=None)
         self.fridays: list[date] = []
         self.weights: list[Weights] = []
         self.ret: dict[date, float] = {}
         self.start: date | None = None  # first Friday with money in `tsmom12`
-        if self.as_of is None:
+        if self.today is None:
             return
         first = min(ds[0] for ds in self.dates.values())
         f = first + timedelta(days=(FRIDAY - first.weekday()) % 7)
-        while f <= self.as_of:
+        while f <= self.today:
             w = self.on_friday(f)
             self.fridays.append(f)
             self.weights.append(w)
@@ -174,16 +177,16 @@ def own_vol(target: float, prior: tuple[tuple[str, float], ...]) -> Strategy:
     def decide(history: History) -> tuple[Weights, str]:
         sleeve = Sleeve(history)
         name = f"own-vol {target:.0%}"
-        if sleeve.as_of is None or not sleeve.fridays:
+        if sleeve.today is None or not sleeve.fridays:
             return {}, f"{name}: no stored bars before a Friday yet, stay in cash"
-        this = first_of(sleeve.as_of + timedelta(days=1))  # the month the next fills land in
+        this = first_of(sleeve.today)
         sigmas: dict[str, float | None] = {}
         m = first_of(min(ds[0] for ds in sleeve.dates.values()))
         while m <= this:
             sigmas[month(m)] = sleeve.sigma(m - timedelta(days=1))
             m = next_month(m)
         share, how = plan(sigmas, month(this), target, prior)
-        base = sleeve.held(sleeve.as_of)
+        base = sleeve.held(sleeve.today)
         weights = {s: share * w for s, w in base.items() if share * w > 0}
         held = ", ".join(f"{s} {w:.0%}" for s, w in sorted(weights.items())) or "all cash"
         return weights, f"{name}: share {share:.0%} ({how}) of tsmom12; {held}"

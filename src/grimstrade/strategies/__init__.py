@@ -49,6 +49,6 @@ NOTES: dict[str, str] = {
     "crypto_mean_reversion": "M1 classic: BTC/ETH RSI(2)<10 above 200d SMA, exit >5d SMA, Connors",
     "preset_careful": "risk preset Careful (risk map, run 3): trend + 20% vol cap, 5% per coin",
     "preset_middle": "risk preset Middle (risk map, run 3): trend rule, 10% per coin",
-    "own_vol_70": "risk level (owner C2): tsmom12 x min(1, k / own 52-week vol), k re-solved "
-    "monthly from known vols for a 70% mean share, no look-ahead (risk-menu-3, #110)",
+    "own_vol_70": "own-vol target 70% (owner C2): tsmom12 x min(1, k / its own 52-week vol), k "
+    "re-solved monthly from known vols for a 70% mean share, no look-ahead (risk-menu-3, #110)",
 }
