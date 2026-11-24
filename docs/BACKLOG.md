@@ -42,7 +42,8 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   honesty rules; only the horizon differs.
 - Where GPU models run (decide when M3 starts): small models are trained on the 5080 and their
   weights committed, so the Actions runner (no GPU) can use them. Big ones (a local news LLM)
-  run on the owner's PC and write a dated signal file before the 22:30 UTC run; if the PC is
+  run on the owner's PC and write a dated signal file before the daily run (scheduled 22:30 UTC,
+  started by GitHub at about 02:00-06:15 UTC the next day: DECISIONS 2026-11-24); if the PC is
   off, those strategies skip that day. "No LLM in the runner" is about Claude and about not
   needing the desktop, not about models in general.
 - Idea sources from the owner (2026-11-12), to read for hypotheses, never as truth:
