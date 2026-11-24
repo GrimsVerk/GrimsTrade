@@ -130,3 +130,27 @@ The rule, data, placebo family, gate, shown cells, power and guess are in
 [`cards/wide-20.md`](cards/wide-20.md), pushed before any number. Code:
 `research/lib/wide20_events.py` (pure functions, tested offline in `tests/test_wide20.py`) and
 `research/lib/wide20.py` (fetch and run). Results: `research/results/air-disaster-mood.md`.
+
+### Dry run (counts only, 2026-11-24) and one shown cell added before the real run
+
+Wikidata (one query, cached `wide-20/wikidata/2026-11-24/air.csv`; the service rate-limited
+the first two tries) gives 460 day-precision items with at least 50 deaths: 1950s 33, 1960s 80,
+1970s 106, 1980s 76, 1990s 70, 2000s 57, 2010s 20, 2020s 6. Gate window: SPY 4,488 daily
+returns 2008-01-02 .. 2025-10-31, **34 events**, 68 dosed days (mean dose 2.03); both extreme
+placebos keep 68 dosed days. GSPC 1950-2007: 14,591 returns, 414 events. QQQ, IWM, GLD, TLT
+34 events each; BTC 20 (from 2012), ETH 10 (from 2016-05).
+
+Two deviations from the card's letter, both mechanical: the window starts at SPY's first
+return bar 2008-01-02 (not 2008-01-01; no event falls on 2008-01-01), and the placebo wrap
+starts there too.
+
+**Coverage gap (seen in the event list, no return read).** The list has no event in 2018-2020
+and misses several well-known accidents of the window that I expected from memory (for
+example Lion Air 610 and Ethiopian 302, MH370, AirAsia 8501, PS752, Air India Express 812,
+Airblue 202): their Wikidata items are typed or dated differently. The gate runs as carded on
+the frozen query (a gate on the source as fixed). **Added now, before any return, as one shown
+cell (not gating): "list completed"**: the gate's events plus the items of a fixed list of
+English Wikipedia titles written now (`wide20.EXTRA_TITLES`), each resolved to its Wikidata item
+through the Wikipedia API and read for its own P585 date (day precision) and P1120 deaths
+(kept if >= 50 and not already in the list). Same rule, same placebo family (its own 40
+placebos, shown).
