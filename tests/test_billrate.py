@@ -110,6 +110,24 @@ def test_both_down_is_no_answer() -> None:
     assert not found and not answered and len(failed) == 2
 
 
+def test_a_new_year_with_nothing_published_yet_still_fills_the_old_years_days() -> None:
+    """The Treasury answers 200 with an empty body for a year with no rates yet (live, 2027)."""
+    asked: list[str] = []
+
+    def get(url: str) -> bytes:
+        asked.append(url)
+        if "%5EIRX" in url:
+            raise OSError("blocked")
+        return TREASURY_CSV if "/2026/" in url else b""
+
+    now = at(date(2027, 1, 1), 10, 0)
+    found, failed, answered = rates.fetch(MON, now, get)
+    assert answered and failed == ["yahoo ^IRX: blocked"]  # no treasury failure line
+    assert any("/2027/" in u for u in asked)
+    assert [r.date for _, r in found][-1] == date(2026, 11, 13) and len(found) == 9
+    assert rates.parse_treasury(b"") == {} and rates.parse_treasury(b"\r\n") == {}
+
+
 # --- the daily run ---
 
 

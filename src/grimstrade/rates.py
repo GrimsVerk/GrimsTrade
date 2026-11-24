@@ -122,6 +122,8 @@ def parse_treasury(body: bytes) -> dict[date, float]:
     """The 13-week bank discount rate (percent) per day from one Daily Treasury Bill Rates CSV.
     Columns are found by name (the set of maturities changes over the years); a blank cell is
     no rate. Raises ValueError if the column is missing."""
+    if not body.strip():  # a year with no published rates yet answers 200 with an empty body
+        return {}
     reader = csv.reader(io.StringIO(body.decode("utf-8-sig")))
     header = [h.strip().upper() for h in next(reader, [])]
     if "DATE" not in header or TREASURY_COLUMN not in header:
