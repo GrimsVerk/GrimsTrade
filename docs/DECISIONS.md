@@ -5,8 +5,8 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
 - 2026-11-24 (delayed schedule, owner-decisions D1, taken by default): the daily job is
   scheduled for 22:30 UTC (`cron: "30 22 * * *"` in `.github/workflows/daily.yml`, unchanged),
   but GitHub starts scheduled runs hours late. Observed (`gh run list --workflow daily.yml`,
-  all 12 scheduled runs so far, 2026-11-12 to 2026-11-24): every one started the next UTC day,
-  between 02:01 and 06:13 UTC; 11 of the 12 between 02:01 and 04:41 (earliest 02:01:45 on
+  all 13 scheduled runs so far, 2026-11-12 to 2026-11-24): every one started the next UTC day,
+  between 02:01 and 06:13 UTC; 12 of the 13 between 02:01 and 04:41 (earliest 02:01:45 on
   11-15, latest 04:40:42 on 11-17, then 06:13:08 on 11-24). Accepted as is; the schedule is not
   moved (moving the cron does not stop the delay). What it means:
   - No look-ahead: a live decision is stamped with the time it really ran (`now`) and counts
