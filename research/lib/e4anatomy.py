@@ -31,12 +31,15 @@ OUT = RESEARCH / "results" / "e4-anatomy-1.md"
 P2 = RESEARCH / "results" / "pooled-2.json"
 BLOCK, DRAWS, SEED = 12, 2000, 0
 VOL_K = 1.5
-READINGS = ("A", "B", "C", "W")
+READINGS = ("A", "B", "C", "W", "VA", "VB")
+LABELS = {"A": "A", "B": "B", "C": "C", "W": "W", "VA": "A", "VB": "B"}  # V: post hoc
 READING_TXT = {
     "A": "A, primary: zigzag 25% / 25%, whipsaw +-13 weeks",
     "B": f"B: zigzag {VOL_K} x the series' annual volatility, whipsaw +-13 weeks",
     "C": "C: insure-3's zigzag 15% / 15%, whipsaw +-13 weeks",
     "W": "W: zigzag 25% / 25%, whipsaw +-26 weeks",
+    "VA": "VA (post hoc, not on the card): against a volatility-matched `tsmom12`, labels A",
+    "VB": "VB (post hoc, not on the card): against a volatility-matched `tsmom12`, labels B",
 }
 EQ_GROUPS = ("EQ-US10", "EQ-DEV13", "EQ-WIDE10", "EQ-ETF8")
 NE_GROUPS = ("USB3", "GOV9", "FX9", "COM8")
@@ -113,16 +116,18 @@ def mean_dict(ds: list[dict[str, float]]) -> dict[str, float]:
     return {k: float(np.nanmean([d[k] for d in ds])) for k in ds[0]}
 
 
-def summarise(series: list[ec.Series], reading: str, mk: dict[str, np.ndarray]) -> dict[str, Any]:
-    ps = [ec.parts(s, reading) for s in series]
+def summarise(series: list[ec.Series], key: str, mk: dict[str, np.ndarray]) -> dict[str, Any]:
+    reading, vm = LABELS[key], key.startswith("V")
+    ps = [ec.parts(s, reading, vm) for s in series]
     res: dict[str, Any] = {"pools": {}, "series": []}
-    cal = ec.month_cells(series, reading, ps)
+    cal = ec.month_cells(series, reading, ps, vm)
     min_n = np.array([52 if s.freq == "w" else 12 for s in series], dtype=float)
     tot = ec.totals(cal)
     draws = ec.boot_draws(cal, min_n, BLOCK, DRAWS, SEED)
 
     def pool_point(m: np.ndarray) -> dict[str, Any]:
         sel = [p for p, ok in zip(ps, m, strict=True) if ok]
+        sel_s = [x for x, ok in zip(series, m, strict=True) if ok]
         reg = mean_dict([ec.merge_slow(p.by_regime) for p in sel])
         share = mean_dict([ec.merge_slow(p.share) for p in sel])
         return {
@@ -140,6 +145,15 @@ def summarise(series: list[ec.Series], reading: str, mk: dict[str, np.ndarray]) 
             "gap": mean_dict([ec.merge_slow_gap(p) for p in sel]),
             "var_share": mean_dict([ec.merge_slow(p.var_share) for p in sel]),
             "d_pos": int(sum(p.d > 0 for p in sel)),
+            "sr_ts": float(
+                np.mean(
+                    [
+                        p.mu_ts / p.sd_ts * math.sqrt(ec.PPY[s.freq])
+                        for p, s in zip(sel, sel_s, strict=True)
+                    ]
+                )
+            ),
+            "vol_ratio": float(np.mean([p.sd_ts / p.sd_e4 for p in sel])),
         }
 
     def merged_stats(X: dict[str, np.ndarray], m: np.ndarray) -> dict[str, Any]:
@@ -198,6 +212,38 @@ def carrying(v: float, se: float, D: float) -> str:
     return "**carrying**" if (se > 0 and v > 2 * se and D > 0 and v > D / 2) else ""
 
 
+def legs_section(R: dict[str, Any], title: str, cols: tuple[str, ...]) -> list[str]:
+    L = [
+        f"## Legs (reading {title})",
+        "",
+        "Each leg = (h_L - h_12) / 4 x market return, i.e. what replacing a quarter of `tsmom12`",
+        "by the L-month signal adds; cost = `e4`'s costs minus `tsmom12`'s; resid = weekly",
+        "compounding (0 on monthly series); scale (post hoc readings only) = (1 - k) x the",
+        "`tsmom12` return, k = sd(e4) / sd(tsmom12): what scaling `tsmom12` down to `e4`'s",
+        "volatility removes.",
+        "",
+        "| Pool | " + " | ".join(cols) + " | Sum |",
+        "|---|" + "---:|" * (len(cols) + 1),
+    ]
+    for k in POOLS + EQ_GROUPS + NE_GROUPS:
+        p = R["pools"][k]
+        lg = p["leg"]
+        L.append(f"| {k} | " + " | ".join(f3(lg[x]) for x in cols) + f" | {f3(p['ret'])} |")
+    L += ["", f"Leg x regime (reading {title}):", ""]
+    for k in ("equity", "judged", "COM8"):
+        L += [
+            f"**{k}**",
+            "",
+            "| Regime | " + " | ".join(cols) + " |",
+            "|---|" + "---:|" * len(cols),
+        ]
+        for r in ec.MERGED:
+            lr = R["pools"][k]["leg_regime"][r]
+            L.append(f"| {r} | " + " | ".join(f3(lr[x]) for x in cols) + " |")
+        L.append("")
+    return L
+
+
 def report(all_res: dict[str, dict[str, Any]], worst: float, thr: dict[str, float]) -> str:
     A = all_res["A"]
     L = [
@@ -237,6 +283,16 @@ def report(all_res: dict[str, dict[str, Any]], worst: float, thr: dict[str, floa
                 f"| {k} | {p['n']} | {f3(p['D'])} ({se['D']:.3f}) | {f3(p['risk'])} "
                 f"({se['risk']:.3f}) | {f3(p['ret'])} | " + " | ".join(cells) + " |"
             )
+        if rd == "A":
+            L += [
+                "",
+                "Risk part = Sharpe(`tsmom12`) x (sd(`tsmom12`) / sd(`e4`) - 1) per series:",
+                "",
+            ]
+            L += ["| Pool | mean Sharpe `tsmom12` | mean sd ratio |", "|---|---:|---:|"]
+            for k in POOLS + EQ_GROUPS + NE_GROUPS:
+                p = R["pools"][k]
+                L.append(f"| {k} | {p['sr_ts']:.3f} | {p['vol_ratio']:.3f} |")
         L += ["", "Time shares (mean over series):", ""]
         L += ["| Pool | " + " | ".join(ec.MERGED) + " |", "|---|" + "---:|" * len(ec.MERGED)]
         for k in POOLS:
@@ -266,8 +322,8 @@ def report(all_res: dict[str, dict[str, Any]], worst: float, thr: dict[str, floa
                 + f" | {m['reading'] if b == 'judged' else '(shown)'} |"
             )
         L.append("")
-        if rd == "A":
-            L += ["Groups (reading A):", ""]
+        if rd in ("A", "VA"):
+            L += [f"Groups (reading {rd}):", ""]
             L += [
                 "| Group | n | D | Risk | Return | " + " | ".join(ec.MERGED) + " |",
                 "|---|---:|---:|---:|---:|" + "---:|" * len(ec.MERGED),
@@ -289,40 +345,8 @@ def report(all_res: dict[str, dict[str, Any]], worst: float, thr: dict[str, floa
                 r6 = R["pools"][k]["regime6"]
                 L.append(f"| {k} | {f3(r6['slow-medium'])} | {f3(r6['slow-long'])} |")
             L.append("")
-    L += [
-        "## Legs (reading A)",
-        "",
-        "Each leg = (h_L - h_12) / 4 x market return, i.e. what replacing a quarter of `tsmom12`",
-        "by the L-month signal adds; cost = `e4`'s costs minus `tsmom12`'s; resid = weekly",
-        "compounding (0 on monthly series).",
-        "",
-        "| Pool | 1m | 3m | 6m | cost | resid | Return part |",
-        "|---|---:|---:|---:|---:|---:|---:|",
-    ]
-    for k in POOLS + EQ_GROUPS + NE_GROUPS:
-        p = A["pools"][k]
-        lg = p["leg"]
-        L.append(
-            f"| {k} | "
-            + " | ".join(f3(lg[x]) for x in ("1m", "3m", "6m", "cost", "resid"))
-            + f" | {f3(p['ret'])} |"
-        )
-    L += ["", "Leg x regime (reading A):", ""]
-    for k in ("equity", "judged", "COM8"):
-        L += [
-            f"**{k}**",
-            "",
-            "| Regime | 1m | 3m | 6m | cost | resid |",
-            "|---|---:|---:|---:|---:|---:|",
-        ]
-        for r in ec.MERGED:
-            lr = A["pools"][k]["leg_regime"][r]
-            L.append(
-                f"| {r} | "
-                + " | ".join(f3(lr[x]) for x in ("1m", "3m", "6m", "cost", "resid"))
-                + " |"
-            )
-        L.append("")
+    L += legs_section(A, "A", ("1m", "3m", "6m", "cost", "resid"))
+    L += legs_section(all_res["VA"], "VA, post hoc", ("1m", "3m", "6m", "cost", "resid", "scale"))
     L += [
         "## Exposure and variance by regime (reading A)",
         "",

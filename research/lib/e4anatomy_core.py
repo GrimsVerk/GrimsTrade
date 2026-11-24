@@ -280,13 +280,23 @@ def sharpe(x: np.ndarray, ppy: int) -> float:
     return float(x.mean() / sd * math.sqrt(ppy)) if sd > 0 else 0.0
 
 
-def parts(s: Series, reading: str) -> Parts:
+def vm_legs(s: Series) -> dict[str, np.ndarray]:
+    """Post hoc (not on the card): legs against `tsmom12` scaled to `e4`'s volatility,
+    k = sd_e4 / sd_ts. r_e4 - k r_ts = the card's legs + scale term (1 - k) r_ts."""
+    k = float(s.r_e4.std() / s.r_ts.std())
+    return {**s.legs, "scale": (1 - k) * s.r_ts}
+
+
+def parts(s: Series, reading: str, vm: bool = False) -> Parts:
+    """The card's split (vm False: return part + risk part), or post hoc against the
+    volatility-matched twin (vm True: d = sum over periods of (r_e4 - k r_ts), no risk part)."""
     P = PPY[s.freq]
     T = len(s.r_e4)
     mu_e, mu_t = float(s.r_e4.mean()), float(s.r_ts.mean())
     sd_e, sd_t = float(s.r_e4.std()), float(s.r_ts.std())
     sc = math.sqrt(P) / sd_e / T
-    dr = s.r_e4 - s.r_ts
+    legs_ = vm_legs(s) if vm else s.legs
+    dr = s.r_e4 - s.r_ts if not vm else s.r_e4 - (sd_e / sd_t) * s.r_ts
     lab = s.labels[reading]
     by_regime, share, var_share, gap = {}, {}, {}, {}
     leg_regime: dict[str, dict[str, float]] = {}
@@ -298,11 +308,13 @@ def parts(s: Series, reading: str) -> Parts:
         share[nm] = float(m.mean())
         var_share[nm] = float(dv[m].sum() / vtot) if vtot != 0 else math.nan
         gap[nm] = float(s.gap[m].mean()) if m.any() else math.nan
-        leg_regime[nm] = {k: float(v[m].sum() * sc) for k, v in s.legs.items()}
+        leg_regime[nm] = {k: float(v[m].sum() * sc) for k, v in legs_.items()}
     ret = (mu_e - mu_t) / sd_e * math.sqrt(P)
     risk = mu_t * (1 / sd_e - 1 / sd_t) * math.sqrt(P)
     d = sharpe(s.r_e4, P) - sharpe(s.r_ts, P)
-    by_leg = {k: float(v.sum() * sc) for k, v in s.legs.items()}
+    if vm:
+        ret, risk = ret + risk, 0.0
+    by_leg = {k: float(v.sum() * sc) for k, v in legs_.items()}
     if abs(sum(by_regime.values()) - ret) > 1e-9 or abs(ret + risk - d) > 1e-9:
         raise AssertionError(f"{s.name}: decomposition does not add up")
     if abs(sum(by_leg.values()) - ret) > 1e-9:
@@ -410,9 +422,12 @@ class Cal:
     X: dict[str, np.ndarray]
 
 
-def month_cells(series: Sequence[Series], reading: str, fixed: Sequence[Parts]) -> Cal:
+def month_cells(
+    series: Sequence[Series], reading: str, fixed: Sequence[Parts], vm: bool = False
+) -> Cal:
     """Channels: n (periods), n_<regime> (periods in regime), c_<regime> (dr scaled by the
-    full-sample sqrt(P) / sd_e4), ts (r_ts scaled by sqrt(P) x (1/sd_e4 - 1/sd_ts))."""
+    full-sample sqrt(P) / sd_e4), ts (r_ts scaled by sqrt(P) x (1/sd_e4 - 1/sd_ts)). With vm
+    (post hoc): dr = r_e4 - (sd_e4 / sd_ts) r_ts and ts = 0."""
     mi = [np.array([month_index(int(o)) for o in s.periods]) for s in series]
     lo = min(int(x.min()) for x in mi)
     hi = max(int(x.max()) for x in mi)
@@ -423,10 +438,11 @@ def month_cells(series: Sequence[Series], reading: str, fixed: Sequence[Parts]) 
         idx = mi[i] - lo
         P = PPY[s.freq]
         sc = math.sqrt(P) / p.sd_e4
-        dr = s.r_e4 - s.r_ts
+        dr = s.r_e4 - s.r_ts if not vm else s.r_e4 - (p.sd_e4 / p.sd_ts) * s.r_ts
         lab = s.labels[reading]
         np.add.at(X["n"][i], idx, 1.0)
-        np.add.at(X["ts"][i], idx, s.r_ts * math.sqrt(P) * (1 / p.sd_e4 - 1 / p.sd_ts))
+        if not vm:
+            np.add.at(X["ts"][i], idx, s.r_ts * math.sqrt(P) * (1 / p.sd_e4 - 1 / p.sd_ts))
         for c, r in enumerate(REGIMES):
             m = lab == c
             np.add.at(X[f"n_{r}"][i], idx[m], 1.0)
