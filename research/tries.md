@@ -4019,3 +4019,10 @@ Never edit or delete a row.
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.63 | +369.0% | 27.4% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-in-vxth-bills@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.74 | +357.9% | 18.7% | 11.56 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-x2@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.34 | +182.2% | 43.5% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-cost50@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.59 | +325.2% | 28.1% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-cash0+vxth-leg@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.61 | +344.9% | 29.9% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-delever-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.74 | +369.0% | 22.3% | 1.63 |
+| 2026-11-24 23:32 | vix-call-1 | mix-tsmom12-pput-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.65 | +377.6% | 42.0% | 13.63 |
