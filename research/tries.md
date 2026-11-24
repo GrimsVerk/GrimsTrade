@@ -3180,3 +3180,68 @@ Never edit or delete a row.
 | 2026-11-19 03:04 | act-haven | GLD+TLT 4-week return on GPR acts z, from available-on date (b -0.137%/z, t -1.02, rank 21/41, gate fail) | screen | train | 2005-01-03 | 2025-10-06 | - | - | - | - |
 | 2026-11-19 03:04 | failure-premium | XLF 4-week return on ln(1 + FDIC failed assets) with past-return controls (b -0.059%/unit, t -0.48, rank 21/41, gate fail) | screen | train | 2000-01-07 | 2025-10-03 | - | - | - | - |
 | 2026-11-24 19:38 | reconcile-1 | live paper record vs gym, 11 books, 2026-11-11..24: 0 bugs (c), 0 data (b); 9 books equal gym.backtest daily, risk_parity/xs_momentum differ by schedule (a, max 0.5%); scoreboard so far on old code 9b1c45e (d, moves once at next run) | note | - | 2026-11-11 | 2026-11-24 | - | - | - | - |
+| 2026-11-24 19:35 | breadth-book-1 | six@2008 | baseline | train | 2008-01-02 | 2025-11-09 | 1.23 | +4272.3% | 37.6% | 2.87 |
+| 2026-11-24 19:35 | breadth-book-1 | four@2008 | baseline | train | 2008-01-02 | 2025-11-09 | 0.92 | +280.0% | 15.7% | 2.44 |
+| 2026-11-24 19:35 | breadth-book-1 | E-6@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.73 | +154.8% | 12.5% | 2.58 |
+| 2026-11-24 19:35 | breadth-book-1 | E-12@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.53 | +76.2% | 10.1% | 2.73 |
+| 2026-11-24 19:35 | breadth-book-1 | E-20@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.46 | +74.9% | 15.3% | 2.85 |
+| 2026-11-24 19:35 | breadth-book-1 | E-all@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.48 | +96.1% | 17.8% | 2.69 |
+| 2026-11-24 19:35 | breadth-book-1 | L-12@2008 | variant | train | 2008-01-02 | 2025-11-09 | 1.04 | +550.3% | 24.9% | 2.87 |
+| 2026-11-24 19:35 | breadth-book-1 | L-20@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.93 | +294.9% | 20.6% | 2.84 |
+| 2026-11-24 19:35 | breadth-book-1 | L-all@2008 | variant | train | 2008-01-02 | 2025-11-09 | 0.75 | +215.7% | 20.7% | 2.67 |
+| 2026-11-24 19:35 | breadth-book-1 | six-live-form@2008/ts_momentum | robustness | train | 2008-01-02 | 2025-11-09 | 1.39 | +1371.6% | 20.0% | 4.51 |
+| 2026-11-24 19:35 | breadth-book-1 | L-all-live-form@2008/ts_momentum | robustness | train | 2008-01-02 | 2025-11-09 | 0.68 | +164.1% | 15.7% | 5.64 |
+| 2026-11-24 19:35 | breadth-book-1 | C-2@2020 | baseline | train | 2020-01-01 | 2025-11-09 | 1.17 | +1814.1% | 57.4% | 2.29 |
+| 2026-11-24 19:35 | breadth-book-1 | C-5@2020 | variant | train | 2020-01-01 | 2025-11-09 | 0.91 | +733.7% | 62.7% | 4.44 |
+| 2026-11-24 19:35 | breadth-book-1 | C-10@2020 | variant | train | 2020-01-01 | 2025-11-09 | 0.78 | +400.8% | 60.7% | 4.42 |
+| 2026-11-24 19:35 | breadth-book-1 | six@2020 | baseline | train | 2020-01-01 | 2025-11-09 | 1.28 | +355.0% | 28.8% | 2.76 |
+| 2026-11-24 19:35 | breadth-book-1 | LC-all@2020 | variant | train | 2020-01-01 | 2025-11-09 | 0.84 | +107.3% | 25.8% | 2.93 |
+| 2026-11-24 19:35 | breadth-book-1 | LC-all-live-form@2020/ts_momentum | robustness | train | 2020-01-01 | 2025-11-09 | 1.03 | +73.1% | 15.2% | 5.40 |
+| 2026-11-24 19:35 | breadth-book-1 | six-live-form@2020/ts_momentum | robustness | train | 2020-01-01 | 2025-11-09 | 1.36 | +196.5% | 20.0% | 4.20 |
+| 2026-11-24 19:35 | breadth-book-1 | L-all@2020 | robustness | train | 2020-01-01 | 2025-11-09 | 0.84 | +60.7% | 18.9% | 2.77 |
+| 2026-11-24 19:29 | congress-workload | SPY 4-week return on Anscombe roll-call count (session dummy, past-return controls) (b -0.009%/unit, t -0.19, rank 25/41, gate fail) | screen | train | 1994-02-04 | 2025-10-03 | - | - | - | - |
+| 2026-11-24 19:29 | refund-runoff | QQQ+IWM+BTC+ETH 4-week return on Nash-cascade runoff of the IRS individual-refund surprise (b +0.281%/unit, t +1.44, rank 7/41, gate fail) | screen | train | 2008-01-04 | 2025-10-03 | - | - | - | - |
+| 2026-11-24 19:18 | turbulence | turb | variant | train | 1994-02-01 | 2025-11-09 | 0.95 | +6489.3% | 40.6% | 8.76 |
+| 2026-11-24 19:18 | turbulence | corr | variant | train | 1994-02-01 | 2025-11-09 | 0.97 | +10393.3% | 31.4% | 11.48 |
+| 2026-11-24 19:18 | turbulence | mag | baseline | train | 1994-02-01 | 2025-11-09 | 1.00 | +8214.7% | 45.0% | 8.51 |
+| 2026-11-24 19:18 | turbulence | mag-match | baseline | train | 1994-02-01 | 2025-11-09 | 0.99 | +8131.5% | 45.0% | 8.35 |
+| 2026-11-24 19:18 | turbulence | mag-match-c | baseline | train | 1994-02-01 | 2025-11-09 | 1.05 | +11449.5% | 38.9% | 6.63 |
+| 2026-11-24 19:18 | turbulence | turb-q75 | robustness | train | 1994-02-01 | 2025-11-09 | 0.89 | +3121.9% | 47.0% | 13.90 |
+| 2026-11-24 19:18 | turbulence | mag-match-q75 | baseline | train | 1994-02-01 | 2025-11-09 | 0.90 | +3347.3% | 48.7% | 15.38 |
+| 2026-11-24 19:18 | turbulence | turb@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.83 | +4444.8% | 22.1% | 8.45 |
+| 2026-11-24 19:18 | turbulence | corr@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.62 | +2101.7% | 25.7% | 17.55 |
+| 2026-11-24 19:18 | turbulence | mag@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.84 | +4662.0% | 20.8% | 8.14 |
+| 2026-11-24 19:18 | turbulence | mag-match@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.82 | +4350.3% | 20.8% | 8.13 |
+| 2026-11-24 19:18 | turbulence | mag-match-c@idx | baseline | train | 1962-01-02 | 2025-11-09 | 0.86 | +5126.9% | 20.7% | 8.34 |
+| 2026-11-24 19:22 | halving-2 | bh@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.74 | +1695.7% | 93.0% | 4.49 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.62 | +765.7% | 92.0% | 5.61 |
+| 2026-11-24 19:22 | halving-2 | alone-own@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 0.45 | +61.2% | 95.7% | 3.00 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 1.23 | +323508.0% | 76.9% | 4.50 |
+| 2026-11-24 19:22 | halving-2 | and-own@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 0.13 | -62.4% | 96.7% | 4.59 |
+| 2026-11-24 19:22 | halving-2 | bh@LTC | baseline | train | 2014-04-02 | 2025-11-09 | 0.68 | +821.4% | 93.6% | 0.01 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@LTC | baseline | train | 2014-04-02 | 2025-11-09 | 0.39 | -9.4% | 97.0% | 2.39 |
+| 2026-11-24 19:22 | halving-2 | alone-own@LTC | robustness | train | 2014-04-02 | 2025-11-09 | 0.25 | -73.3% | 96.8% | 0.90 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@LTC | robustness | train | 2014-04-02 | 2025-11-09 | 1.14 | +162327.4% | 78.3% | 0.59 |
+| 2026-11-24 19:22 | halving-2 | bh@ZEC | baseline | train | 2017-10-30 | 2025-11-09 | 0.63 | +114.4% | 97.6% | 0.31 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@ZEC | baseline | train | 2017-10-30 | 2025-11-09 | 0.71 | +601.7% | 91.2% | 1.90 |
+| 2026-11-24 19:22 | halving-2 | alone-own@ZEC | robustness | train | 2017-10-30 | 2025-11-09 | 0.75 | +622.4% | 96.8% | 0.41 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@ZEC | robustness | train | 2017-10-30 | 2025-11-09 | 1.03 | +7015.6% | 78.6% | 1.65 |
+| 2026-11-24 19:22 | halving-2 | bh@BCH | baseline | train | 2018-08-02 | 2025-11-09 | 0.45 | -30.1% | 94.2% | 0.30 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@BCH | baseline | train | 2018-08-02 | 2025-11-09 | 0.44 | +47.0% | 74.9% | 1.89 |
+| 2026-11-24 19:22 | halving-2 | alone-own@BCH | robustness | train | 2018-08-02 | 2025-11-09 | 0.68 | +349.9% | 89.6% | 0.72 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@BCH | robustness | train | 2018-08-02 | 2025-11-09 | 0.92 | +2369.9% | 73.8% | 0.58 |
+| 2026-11-24 19:22 | halving-2 | bh@BSV | baseline | train | 2019-11-16 | 2025-11-09 | 0.30 | -79.4% | 95.3% | 0.21 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@BSV | baseline | train | 2019-11-16 | 2025-11-09 | 0.28 | -48.6% | 83.3% | 2.93 |
+| 2026-11-24 19:22 | halving-2 | alone-own@BSV | robustness | train | 2019-11-16 | 2025-11-09 | 0.42 | -40.5% | 84.0% | 0.54 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@BSV | robustness | train | 2019-11-16 | 2025-11-09 | 0.45 | -27.5% | 82.3% | 0.50 |
+| 2026-11-24 19:22 | halving-2 | bh@ETC | baseline | train | 2017-07-26 | 2025-11-09 | 0.55 | +11.7% | 91.9% | 0.09 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@ETC | baseline | train | 2017-07-26 | 2025-11-09 | 0.44 | +8.2% | 90.9% | 2.54 |
+| 2026-11-24 19:22 | halving-2 | alone-own@ETC | robustness | train | 2017-07-26 | 2025-11-09 | 0.58 | +125.7% | 91.9% | 0.96 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@ETC | robustness | train | 2017-07-26 | 2025-11-09 | 0.86 | +2251.4% | 73.1% | 0.60 |
+| 2026-11-24 19:22 | halving-2 | bh@BTC | baseline | train | 2011-07-19 | 2025-11-09 | 1.19 | +760764.5% | 85.0% | 0.00 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@BTC | baseline | train | 2011-07-19 | 2025-11-09 | 1.10 | +227428.8% | 85.0% | 0.41 |
+| 2026-11-24 19:22 | halving-2 | alone-own@BTC | robustness | train | 2011-07-19 | 2025-11-09 | 1.57 | +30148673.5% | 85.0% | 0.67 |
+| 2026-11-24 19:22 | halving-2 | S1 alone-own@LZ own-calendar placebos (Sharpe 0.45, rank 40/41, null SD 0.14, fail) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:22 | halving-2 | S2 alone-btc@LZ BTC-calendar placebos (Sharpe 1.23, rank 1/41, null SD 0.22) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:22 | halving-2 | C2 LZ alt/BTC own window minus outside (+0.402/yr, rank 32/41 most negative; gate fail: BTC-beta) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:22 | halving-2 | BTC alone-own placebos (rank 1/41, shown) | screen | train | 2011-07-19 | 2025-11-09 | - | - | - | - |

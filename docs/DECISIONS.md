@@ -2,6 +2,62 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-24 (own-vol 70% paper book, lane `ownvol70-1`; owner-decisions C2, answered by its
+  default): one new live paper book, `own_vol_70` (`src/grimstrade/strategies/own_vol.py`),
+  next to the presets; no live strategy changed. What: `tsmom12` (equal slots over the assets
+  with a year of bars, a slot held while its 12-month return is positive, decided on Fridays)
+  times a monthly share min(1, k / sigma), the rest in cash. sigma = `tsmom12`'s own volatility
+  over the 52 complete weeks before the month; k solves mean(min(1, k / sigma_m)) = 70% over
+  every monthly sigma known by the month's 1st (expanding window); share 70% until 24 sigmas
+  exist or while the month's sigma is unknown; a sigma of 0 keeps the previous share; capped at
+  100% (no leverage). This is exactly the no-look-ahead rule of risk-menu-3 (PR #110,
+  `research/cards/risk-menu-3.md`, `research/lib/riskmenu3_run.py` `vt_expanding`); tests check
+  the Friday weights, sigma and monthly share against that code on a fixture. Why: C2's default
+  ("keep the presets, add one own-vol 70% book, no-look-ahead form"); the research form with
+  look-ahead (k fitted on the whole window) is not used. Not an edge: on 1994-2025 its Sharpe
+  lead over `tsmom12` (+0.10) is about one paired SE; it is a risk level (2007-2025: realised
+  share 0.61, worst loss 15.7% against 24.6% for `tsmom12` at a fixed 70%,
+  `research/risk-menu.md`).
+  - Start window (assumption): the stored bars begin 2024-12, so the book's own sigma first
+    exists for 2027-01 and the 24-sigma warm-up would hold it at a fixed 70% until about 2029,
+    which would make it C2's option 2, not 3. So the expanding window starts with the research
+    run's 362 monthly sigmas 1995-03..2025-10 (`PRIOR`, from `research/lib/ownvol_prior.py`,
+    rounded to 6 decimals; k on them 0.083779, `vt_expanding`'s own last k on this checkout; the
+    0.083859 risk-menu-3 printed predates the fee-tier and dividend gym changes). All of them
+    come from bars that closed before 2025-11, so no decision sees past itself. Until 2027-01
+    the book holds `tsmom12` at 70% ("no sigma yet"); from then the live sigmas join the window.
+  - Small differences from the research harness: the live sigma uses close-to-close returns of
+    the stored bars, without costs or the T-bill rate (the research sleeve was costed, measured
+    over bills, on dividend-adjusted prices); a month's share is used from the first decision
+    dated in that month, its date being the day of the latest close it sees (the harness's
+    `View.today`): the late run due on the month's last day (02:00-06:13 UTC on the 1st, entry
+    below) already uses the new share; a Friday's weights count once its ETF close is stored, so
+    the late run due Thursday keeps the week before's (tests cover both); between resets the gym
+    holds share x weights (1% band) instead of letting the share drift.
+- 2026-11-24 (second bill-rate source; #61 open question 3, decisions-1 A2c): The cash rate gets
+  a fallback: the US Treasury's Daily Treasury Bill Rates (home.treasury.gov, keyless, public
+  domain, one CSV per year: `daily-treasury-rates.csv/<year>/all?type=daily_treasury_bill_rates`),
+  column "13 WEEKS BANK DISCOUNT". The bank discount rate, not the coupon-equivalent column
+  beside it, because that is what `^IRX` quotes (the cash-interest entry below relies on the
+  discount rate being the cautious side). Rules (`rates.fetch`):
+  - Yahoo `^IRX` stays primary. The Treasury is asked only when Yahoo's answer lacks a settled
+    weekday since the newest stored rate (Yahoo down or late, or a holiday), and fills only the
+    days Yahoo lacks; for a day both have, Yahoo's rate is stored. Same settling and append-only
+    rules as before; a stored row is never replaced by the other source's rate.
+  - The store keeps its format (`date,rate,seen`; no new column, so no stored row or header is
+    rewritten). Which source gave each stored row goes in `data/sources.jsonl`, one line per run
+    and run of consecutive rows from one source, `"symbol":"rates"`, `"source":"yahoo"` or
+    `"treasury"`. Rows stored before this change have no line there: all of them are Yahoo's.
+  - Problem lines: only when no source answered (both failed, or Yahoo failed with nothing for
+    the Treasury to fill) is it `rates not fetched: ...`, and the last rate carries forward as
+    before. Yahoo failing while the Treasury answers is a stderr line only: the rate is not
+    missing, and the Treasury is the official source.
+  - How the two agree (fetched 2026-11-24, 721 sessions both have, 2024-01-02 to 2026-11-23):
+    Yahoo minus Treasury mean -0.012 percentage points, 95% of days within 0.03, largest 0.08.
+    Treasury-only days are bond-market days the stock market was closed (2025-01-09, Good Friday
+    2026-04-03), so the fallback stores a rate for them too; harmless (a real rate, a weekday).
+    Yahoo-only days are Columbus Day and Veterans Day (bond market closed).
+
 - 2026-11-24 (delayed schedule, owner-decisions D1, taken by default): the daily job is
   scheduled for 22:30 UTC (`cron: "30 22 * * *"` in `.github/workflows/daily.yml`, unchanged),
   but GitHub starts scheduled runs hours late. Observed (`gh run list --workflow daily.yml`,
