@@ -1,0 +1,6 @@
+# Machine-specific settings for GrimsTrade agents. Copy to `local.toml` (gitignored) and edit.
+
+# Folder with this project's private files, kept outside this public repo (a relative path is
+# relative to this file). It holds `yt-channels.toml`, the YouTube idea-source list: run
+# GrimsVerk/YT-Harvest with `--channels <private_dir>/yt-channels.toml`.
+private_dir = "/path/to/private/grimstrade"
