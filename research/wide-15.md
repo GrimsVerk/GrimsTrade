@@ -160,3 +160,124 @@ fetches, then the higher prior. X8 needs one static CSV (already fetched for the
 X1 one keyless endpoint, a few pages; X11 several primary-dealer files with format breaks.
 **Gated: X8 as W27 `congress-workload`, then X1 as W28 `refund-runoff`.** X11 and X9 stay parked
 (not counted). X2-X4, X6, X7, X10 are filtered or score under 3.
+
+## Step 3. W27 `congress-workload` gate (rule fixed and pushed before any number)
+
+**Data.** Voteview's roll-call file `HSall_rollcalls.csv` (keyless static file, every recorded
+roll call of the House and Senate with its date; fetched 2026-11-24 into the shared cache
+`wide-15/voteview/2026-11-24/`, read as untrusted data with `python -I`). Roll calls dated after
+2025-11-10 are never read. One row is one roll call; `chamber` is House or Senate.
+
+**Dose.** Weeks run Saturday F - 6 .. Friday F. n(F) = number of roll calls in both chambers
+dated in the week. x(F) = 2 sqrt(n(F) + 3/8) (Anscombe's variance-stabilising transform of a
+count); s(F) = 1 if n(F) > 0 (in session), else 0. The regression carries both, so b, the slope
+on x, is identified only by the variation **within** session weeks; the calendar effect of
+sitting or not (Ferguson and Witte) sits in s's coefficient and is shown, not gated. Predicted
+sign of b: positive (policy-risk premium).
+
+**Available on (no look-ahead).** Roll calls are public the day they are taken (clerks' tallies).
+Entry at the close of SPY's first bar dated >= F + 3 (the Monday after the week; a Friday vote
+after the close is then public), exit at the close of the first bar dated >= F + 31. y(F) =
+ln(exit / entry), dividend-adjusted closes (`harness.load_history("train")`, adjusted where the
+cache has it). The row is dropped if either bar is missing, the exit bar is dated after F + 38,
+or after 2025-11-10.
+
+**Controls (F2), every horizon up to a year.** r_h(F) = ln(close of SPY's last bar <= F / close
+of the last bar <= F - h days), h = 28, 91, 182, 364 (Congress legislates in crises, which follow
+market falls).
+
+**Statistic.** One asset, OLS y = a + b x + c s + g4 r4 + g13 r13 + g26 r26 + g52 r52; t of b
+with Newey-West (Bartlett) 4 lags over the week index (the Driscoll-Kraay function of wide-11/13
+with one row a week: same code path for every cell).
+
+**Placebo null (the decider).** The dose can answer prices (crisis legislation), so by
+`gate-null.md` step 1 only **earlier** doses are used: (x_k, s_k)(F) = (x, s)(F - 7k days), the
+outcome and controls stay put, k in {27, 29, 31, ..., 105} (every odd week: **40 placebos**,
+never a whole year). Every placebo dose ends at least 26 weeks before its outcome starts.
+
+**Gate. Pass only if both hold** (Fridays 1994-02-04 .. 2025-10-03; SPY from 1993-01, its
+52-week control from 1994-01):
+1. b > 0 with t >= 2.
+2. The true t ranks among the 2 highest of 41 (empirical one-sided p = rank / 41 <= 0.049).
+
+**Kill-only (gate-null step 7).** The smallest p this design can show is 1/41 = 0.024, above
+the family bar (0.00115) and the register's (1.0e-4). About 64 sessions in 32 years. A fail
+kills the idea; a pass only says "not dead yet".
+
+**Shown, not gating:** without the controls; QQQ and IWM instead of SPY; close votes only (roll
+calls with |yea - nay| / (yea + nay) < 0.10) as n; House only; Senate only; the years after
+Pastor-Veronesi, Fridays 2011-01-07 .. 2025-10-03; the 1-week horizon (exit at the first bar
+>= F + 10, 1 lag); the calendar cell (c, the in-session coefficient, from the gate fit); the F2
+feedback check (x on SPY's past 4/13/26/52-week return alone, session weeks only, NW 4 lags);
+the placebo null's width.
+
+**Power, written before any number.** SPY's 4-week sd is about 4.5%. About 1,100 session weeks,
+overlapping by 3 weeks (about 275 effective); if x's sd within session weeks is about 3 units,
+the standard error of b is about 4.5% / (3 x sqrt(275)), near 0.09% per unit. A premium of
+0.2% per unit (about 0.6% per 4 weeks per sd of workload, 7% a year) is needed for t 2: only a
+large premium passes.
+
+**My guess before any number.** b near zero, t between -1.5 and +1.5, rank in the middle;
+placebo t sd 1.0-1.4. The calendar cell c negative (Ferguson-Witte) but |t| < 2 after 2004.
+Feedback weak. Chance of a pass: 1%.
+
+**On a pass:** no card in this run; "not dead yet", a new design with more independent episodes
+(other countries' parliaments) would be needed. **On a fail:** dead, one `screen` row.
+
+## Step 4. W28 `refund-runoff` gate (rule fixed and pushed before any number)
+
+**Data.** Treasury Daily Statement table `income_tax_refunds_issued`
+(`api.fiscaldata.treasury.gov`, keyless, daily from 2005-10-03; fetched 2026-11-24 into the
+shared cache `wide-15/dts-refunds/2026-11-24/`, rows dated after 2025-11-10 never read). Daily
+individual refunds D(day) = sum of `tax_refund_today_amt` (millions of USD) over the rows whose
+type names individual refunds (checks and EFT; one combined "Individual" row before the format
+change, two rows after).
+
+**Dose.** Weeks run Saturday F - 6 .. Friday F. R(F) = sum of D over the week. Baseline B(F) =
+median of R at the same ISO week number in the three previous ISO years (at least two present;
+ISO week 53 has no baseline). T(y) = sum of D over calendar year y. Surprise d(F) = 100 (R(F) -
+B(F)) / T(year(F) - 1), in percent of last year's refunds (NaN without a full prior year).
+Runoff (the hydrology): a Nash cascade unit hydrograph h(tau) = tau exp(-tau), tau in weeks
+(gamma, shape 2, mean 2 weeks), carries refund cash into retail purchases. The share of week
+F - i's refunds that the kernel delivers inside the outcome window (days F + 5 .. F + 33 =
+weeks i + 5/7 .. i + 33/7 after that week) is w_i = integral of h over that span; the dose is
+u(F) = sum over i = 0..7 of w_i d(F - 7i) (NaN if any term is missing). Predicted sign: positive.
+
+**Available on (no look-ahead).** The statement for a day is published at 4 pm Eastern the next
+business day, so Friday's figure is public on Monday afternoon (Tuesday after a Monday holiday).
+Entry at the close of the asset's first bar dated >= F + 5 (Wednesday), exit at the close of the
+first bar dated >= F + 33. y(F) = ln(exit / entry), dividend-adjusted where cached. Row dropped
+if a bar is missing, the exit bar is dated after F + 40, or after 2025-11-10.
+
+**Panel and statistic.** Gate assets QQQ, IWM, BTC, ETH (the retail-heavy ones in the cache;
+coins from their first cached day). Pooled OLS y = a_asset + b u, no controls (F2 passes
+outright). t of b with Driscoll-Kraay standard errors (scores summed per Friday, Newey-West 4
+lags over the week index).
+
+**Placebo null (the decider).** IRS processing does not answer asset prices, so shifts both ways
+are allowed (`gate-null.md` step 1): u_k(F) = u(F - 7k days), k in +-{27, 31, ..., 103} (odd,
+step 4, the wide-11/12/13 family): **40 placebos**, rows with a missing u_k dropped from that
+placebo only.
+
+**Gate. Pass only if both hold** (Fridays 2008-01-04 .. 2025-10-03):
+1. b > 0 with t >= 2.
+2. The true t ranks among the 2 highest of 41.
+
+**Kill-only.** About 18 refund seasons; smallest p 1/41 = 0.024 > 0.00115.
+
+**Shown, not gating:** SPY alone; QQQ and IWM alone; BTC and ETH alone; the raw weekly surprise
+d(F) instead of the runoff u(F); seasons from 2017 (after the PATH Act hold); with each asset's
+past 4/13/26/52-week returns as controls; the 1-week horizon (exit at the first bar >= F + 12,
+1 lag); the F2 feedback check (u on each asset's past return, pooled, DK 4 lags); the null's
+width.
+
+**Power, written before any number.** Step 2's size check: an expected t near 0.1 if 2% of the
+surprise reaches these assets. Only a flow share far above what the household-finance
+literature reports could pass.
+
+**My guess before any number.** b of either sign, |t| < 1.5, middle rank, placebo t sd 1.0-1.3
+(the dose is seasonal and the kernel smooths it, so neighbouring weeks are correlated). Chance
+of a pass: 0.3%.
+
+**On a pass:** "not dead yet" only; a design with more seasons or other countries' refunds
+would be needed. **On a fail:** dead, one `screen` row.
