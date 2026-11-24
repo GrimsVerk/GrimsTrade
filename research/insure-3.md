@@ -79,11 +79,11 @@ per log point saved inside them; 1.0 = break even.
   markets trend sat out. Since 2010 (no deep bear market) trend trails holding by 3.2 points a
   year against 3.4 for PPUT (diagnostic re-score, no row): in a decade without a deep bear
   market the two cost about the same growth.
-- **Not reconciled:** since 2002 trend trails holding here by 0.7 (cash at bills) to 1.0 (cash
-  at 0) log points a year on the S&P 500 total return, against the 2.2 that insure-2 reports
-  for the French US market over 2002-2025. Different index (S&P 500 against all US stocks) and
-  a different definition (insure-2's era split of its calm and rebound terms) may explain it;
-  not checked tonight. The record's "about 2 points a year" should be read as an upper end.
+- **Gap to holding since 2002:** trend trails holding on the S&P 500 total return by 0.7 (cash
+  at bills) to 1.0-1.1 (cash at 0) points a year. insure-2's 2.2 (SUMMARY's "about 2 points")
+  is the mean over the French market and 10 value-weighted industries with cash at 0, not the
+  market alone; industries whip trend around more. For the broad US index SUMMARY's figure
+  looks about twice too high; not reconciled per series tonight (review of #160).
 - **PPUT is an index, not a fund.** No fees, no bid-ask on the puts; a real put buyer pays
   more, so the puts' cost here is a lower bound. Trend carries 2 bps a side.
 - **The trend rule is the record's** (`trend_tune.paper`): the tests check that its positions
@@ -123,8 +123,9 @@ preference, not an edge; options are outside the paper broker in any case.
 
 ## Next (not started)
 
-1. Reconcile the gap to holding since 2002: insure-2's 2.2 log points a year (French US
-   market) against 0.7-1.0 here (S&P 500 total return).
+1. Reconcile the gap to holding since 2002 per series: insure-2's 2.2 points a year is the mean
+   over the French market and 10 industries (cash at 0); here 0.7-1.1 on the S&P 500 total
+   return. Then correct SUMMARY's "about 2 points" for the broad index if it holds.
 2. Put protection only while trend is in the market (puts when exposed, nothing in cash): a
    new rule, needs its own card; the side table suggests it would target exactly trend's
    fast-crash gap. Would be a variant against the bar, and options cannot be paper-traded here.
