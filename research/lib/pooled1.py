@@ -32,6 +32,7 @@ PRE = date(1994, 2, 1)  # the primary test's first day
 PRE_MIN_WEEKS = 260
 BLOCK, DRAWS, SEED = 52, 2000, 0
 CHECK_BLOCKS = (13, 104)
+NULL_REPS = 100
 Z_BAR, Z_PROJ, KILL_HI = 2.50, 4.69, 0.03
 RESEARCH = Path(__file__).resolve().parents[1]
 OUT = RESEARCH / "results" / "pooled-1.md"
@@ -114,6 +115,44 @@ def randomise(
         lr = rng.normal(0.06 / 252, 0.18 / math.sqrt(252), len(days))
         lr[0] = 0.0
         out.append((n, g, days, 100 * np.exp(np.cumsum(lr))))
+    return out
+
+
+def drift_matched(
+    raw: list[tuple[str, str, list[date], np.ndarray]], seed: int
+) -> list[tuple[str, str, list[date], np.ndarray]]:
+    """Amendment 1: i.i.d. normal walk with each market's own daily log-return mean and sd."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for n, g, days, px in raw:
+        real = np.diff(np.log(px))
+        lr = rng.normal(real.mean(), real.std(), len(days))
+        lr[0] = 0.0
+        out.append((n, g, days, 100 * np.exp(np.cumsum(lr))))
+    return out
+
+
+def run_all(
+    raw: list[tuple[str, str, list[date], np.ndarray]], quiet: bool = False
+) -> list[pc.Market]:
+    markets = []
+    for n, g, days, px in raw:
+        if days[-1] > LAST:
+            raise AssertionError(f"{n}: a day after {LAST}")
+        d = np.array([x.toordinal() for x in days], dtype=np.int64)
+        markets.append(pc.run_market(n, g, d, px))
+        if not quiet:
+            print(f"  {n}: {days[0]}..{days[-1]}, {len(days)} sessions", file=sys.stderr)
+    return markets
+
+
+def null_D(raw: list[tuple[str, str, list[date], np.ndarray]], reps: int = NULL_REPS) -> np.ndarray:
+    """D[variant, replication] under the drift-matched null (point estimates)."""
+    out = np.zeros((len(pc.VARIANTS), reps))
+    for b in range(reps):
+        p = pc.panel(run_all(drift_matched(raw, 1000 + b), quiet=True))
+        out[:, b] = np.nanmean(pc.diffs_of(*pc.sums(p.R)), axis=1)
+        print(f"  null {b + 1}/{reps}", file=sys.stderr)
     return out
 
 
@@ -222,6 +261,7 @@ def report(res: dict, title: str) -> str:  # type: ignore[type-arg]
         "Group cells: D (SE). Before 1994: weeks before 1994-02-01, markets with at least "
         f"{PRE_MIN_WEEKS} scored weeks there.",
         "",
+        *null_table(res),
         "## Per market: `tsmom12` and d of each variant",
         "",
         "| Market | Group | Scored from | Weeks | `tsmom12` Sharpe | Max DD | "
@@ -249,6 +289,26 @@ def report(res: dict, title: str) -> str:  # type: ignore[type-arg]
     return "\n".join(L) + "\n"
 
 
+def null_table(res: dict) -> list[str]:  # type: ignore[type-arg]
+    if not all("null" in r for r in res["variants"].values()):
+        return []
+    out = [
+        "",
+        f"## Drift-matched null (amendment 1; {NULL_REPS} random walks with each market's own "
+        "drift and volatility)",
+        "",
+        "| Variant | D | Null mean | Null 5% / 95% | D beyond drift | Verdict | Reading |",
+        "|---|---:|---:|---|---:|---|---|",
+    ]
+    for v, r in res["variants"].items():
+        nl = r["null"]
+        out.append(
+            f"| `{v}` | {f2(r['all']['D'])} | {f2(nl['mean'])} | {f2(nl['q5'])} / "
+            f"{f2(nl['q95'])} | {f2(r['beyond_drift'])} | {r['verdict']} | {r['reading']} |"
+        )
+    return [*out, ""]
+
+
 def log_tries(res: dict) -> int:  # type: ignore[type-arg]
     tries = RESEARCH / "tries.md"
     text = tries.read_text()
@@ -260,7 +320,7 @@ def log_tries(res: dict) -> int:  # type: ignore[type-arg]
         a = r["all"]
         name = (
             f"{v}@pooled-41 (pooled dSharpe vs tsmom12 {a['D']:+.3f}, SE {a['se']:.3f}, "
-            f"z {a['z']:+.2f}; weekly Sharpe; {r['verdict']})"
+            f"z {a['z']:+.2f}; weekly Sharpe; {r['verdict']}; {r.get('reading', '-')})"
         )
         mean_sh = float(np.mean([m["stats"][v][0] for m in res["markets"]]))
         if f"| {IDEA} | {v}@pooled-41 " not in text:
@@ -289,18 +349,23 @@ def main() -> None:
     raw = load_all()
     if random_mode:
         raw = randomise(raw)
-    markets = []
-    for n, g, days, px in raw:
-        d = np.array([x.toordinal() for x in days], dtype=np.int64)
-        if days[-1] > LAST:
-            raise AssertionError(f"{n}: a day after {LAST}")
-        markets.append(pc.run_market(n, g, d, px))
-        print(f"  {n}: {days[0]}..{days[-1]}, {len(days)} sessions", file=sys.stderr)
-    res = analyse(markets)
+    res = analyse(run_all(raw))
     if random_mode:
         OUT_PLUMB.write_text(report(res, "pooled-1 plumbing run: random-walk prices (not data)"))
         print(f"wrote {OUT_PLUMB}")
         return
+    nd = null_D(raw)
+    for v, name in enumerate(pc.VARIANTS):
+        r = res["variants"][name]
+        q5, q95 = (float(x) for x in np.percentile(nd[v], [5, 95]))
+        r["null"] = {"mean": float(nd[v].mean()), "q5": q5, "q95": q95}
+        r["beyond_drift"] = r["all"]["D"] - r["null"]["mean"]
+        if r["verdict"] in ("real small edge", "selectable candidate") and r["all"]["D"] <= q95:
+            r["reading"] = "exposure, not timing"
+        elif r["verdict"] == "killed" and q5 <= r["all"]["D"] <= q95:
+            r["reading"] = "no timing effect either way"
+        else:
+            r["reading"] = "-"
     OUT.write_text(report(res, "pooled-1: eight near-miss variants, pooled over 41 markets"))
     OUT.with_suffix(".json").write_text(json.dumps(res, indent=1) + "\n")
     print(f"wrote {OUT}")
