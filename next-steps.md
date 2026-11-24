@@ -40,12 +40,17 @@ Merged tonight, each after a fresh review agent (fixes applied where it asked): 
 then merge in this order, each with `gh pr merge --merge`, then re-push the head branch, see
 below): #149 gymreplay-1 (one simulator loop; review MERGE, CI green on the branch), #153
 reconcile-daily-1 (daily live==gym check; review MERGE + try/finally fix applied), #155
-scoreboard-note-1 (timing note; review wording fix applied). A reviewer merged all three locally
-in every order: no conflicts, 826 tests pass, dry run 0 problems.
+scoreboard-note-1 (timing note; review wording fix applied), #161 runner-faults-1 (fault tests;
+a half-written row now refuses the run with exit 2 naming the file and line instead of crashing;
+review MERGE: the stricter check passes on the whole real record). Reviewers merged all four
+locally: no conflicts, 892 tests pass, dry run exit 0 with 0 reconcile problems. #161's two open
+findings (Kraken answering from a later day blocks the Coinbase fallback; duplicate same-day bars
+in one answer, last wins) are strict xfails: next engineering lane.
 
-Running at the time of writing: `register-7` (register2.py dead source branch; live-series
-duplicates; store budget policy), `pooled-2` (e4 / vt-own-70-x on the data-long-3 non-equity
-panel).
+Also merged after ~20:45: #154, #156, #152, #157, #159, #160, #158 (register-7: `--ref`, live
+series keyed by code version; the next register regeneration must run `live` then `export` and
+commit `research/register/returns/live.csv.gz`). Running at ~21:30 UTC: `gap-2002-1`
+(per-series gap to holding since 2002; corrects SUMMARY's "But it has a price" line).
 
 **Repo setting:** GitHub auto-deletes merged head branches (`delete_branch_on_merge`), against
 the rule above; the owner was asked to turn it off. Until then, re-push each lane branch right
