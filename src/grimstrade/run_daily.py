@@ -23,6 +23,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from itertools import groupby
 from pathlib import Path
+from typing import Any
 
 from grimstrade import (
     data,
@@ -103,6 +104,17 @@ def fingerprint(decide: gym.Strategy) -> str:
     return hashlib.sha256(text.encode()).hexdigest()[:12]
 
 
+def state_row(r: gym.Result) -> dict[str, Any]:
+    """One book's row in `state/portfolio.json`."""
+    return {
+        "cash": round(r.cash, 2),
+        "positions": {s: q for s, q in r.positions.items() if q},
+        "equity": round(r.equity[-1][1], 2) if r.equity else gym.START_CASH,
+        "marked_on": r.equity[-1][0].isoformat() if r.equity else None,
+        "fills": len(r.fills),
+    }
+
+
 def run(
     root: Path, now: datetime, get: sources.Get = sources.http_get, repo: Path = Path(".")
 ) -> list[str]:
@@ -160,16 +172,7 @@ def run(
 
     ledger.record_research(root, repo, now)
     results = report.live_results(root, history)
-    state = {
-        name: {
-            "cash": round(r.cash, 2),
-            "positions": {s: q for s, q in r.positions.items() if q},
-            "equity": round(r.equity[-1][1], 2) if r.equity else gym.START_CASH,
-            "marked_on": r.equity[-1][0].isoformat() if r.equity else None,
-            "fills": len(r.fills),
-        }
-        for name, r in results.items()
-    }
+    state = {name: state_row(r) for name, r in results.items()}
     state_path = root / "state" / "portfolio.json"
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
@@ -180,9 +183,7 @@ def run(
     checked += reconcile.check_lines(new_lines, data.load_all(root), LIVE)
     for line in checked:
         print(f"FAILED {line}", file=sys.stderr)
-    print(
-        f"reconcile: {len(results)} books, {len(new_lines)} new ledger lines, {len(checked)} problems"
-    )
+    print(f"reconcile: {len(results)} books, {len(new_lines)} new lines, {len(checked)} problems")
     problems += checked
     ledger.record_problems(root, now, problems)
     reports = root / "reports"
