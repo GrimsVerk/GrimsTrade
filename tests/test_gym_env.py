@@ -328,3 +328,10 @@ def test_daily_runner_does_not_import_the_env() -> None:
         "assert not bad, bad"
     )
     subprocess.run([sys.executable, "-c", code], check=True)
+
+
+def test_passes_the_gymnasium_env_checker() -> None:
+    from gymnasium.utils.env_checker import check_env
+
+    with pytest.warns(UserWarning):  # only the unbounded observation Box is warned about
+        check_env(TradingEnv(make_history(), start=date(2023, 6, 1)), skip_render_check=True)
