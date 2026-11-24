@@ -2,6 +2,16 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-24 (lane `daily-nodev-1`): the daily job installs only the runtime dependencies
+  (`uv sync --locked --no-dev`, and `uv run --no-dev` for both run steps, since a plain `uv run`
+  syncs `dev` back in). Why: `grimstrade.run_daily` and `grimstrade.intraday` use only the
+  standard library (pyproject `dependencies = []`), and every dev package (mypy, numpy,
+  scikit-learn, gymnasium, ...) is one more way for the unattended run to fail on install. CI
+  (`ci.yml`) still installs `dev` for the checks. `tests/test_daily_deps.py` keeps it true: it
+  fails on any import reachable from the two entry points that is neither stdlib nor in
+  `dependencies`, imports both under `python -S` (no site-packages), and checks the workflow
+  flags. A runtime dependency added later goes in `dependencies`, not `dev`.
+
 - 2026-11-24 (own-vol 70% paper book, lane `ownvol70-1`; owner-decisions C2, answered by its
   default): one new live paper book, `own_vol_70` (`src/grimstrade/strategies/own_vol.py`),
   next to the presets; no live strategy changed. What: `tsmom12` (equal slots over the assets
