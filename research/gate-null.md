@@ -31,6 +31,8 @@ shows how wide the real null is:
 | Next-quarter return of TLT/IEF on SPF 10-year inflation-dispersion z, Driscoll-Kraay 1 lag, 124 rows (wide-12, W24) | 40 calendars moved k = 7-45 quarters | 0.90 | 0% | non-overlapping quarters, short placebo samples (36-124 rows): narrower than normal |
 | 4-week return of GLD/TLT on GPR acts z from its available-on date, Driscoll-Kraay 4 lags, 2,166 rows (wide-13, W25) | 40 calendars moved k = 27-103 weeks (earlier-dose half only, per review-2: 20) | 1.11 (0.97) | 12% (5%) | index shares slow regimes with safe havens: centred below zero (median -0.96; earlier-only -0.26) |
 | 4-week return of XLF on ln(1 + FDIC failed assets), four price controls, Newey-West 4 lags, 1,344 weeks (wide-13, W26) | 40 calendars moved k = 27-103 weeks (earlier-dose half only: 20) | 1.63 (0.48) | 25% (0%) | failures follow XLF at 52 weeks (t -3.87): later-dose shifts carry the whole negative tail (to -4.37), review-2 point (1); about two episodes, kill-only |
+| 4-week return of SPY on Anscombe roll-call count, session dummy and four price controls, Newey-West 4 lags, 1,653 weeks (wide-15, W27) | 40 earlier-dose calendars, k = 27-105 weeks (odd) | 1.08 | 5% | weekly count with no price feedback found (t <= 1.01): near normal |
+| 4-week return of QQQ/IWM/BTC/ETH on the runoff of the IRS refund surprise, Driscoll-Kraay 4 lags, 2,999 rows (wide-15, W28) | 40 calendars moved k = 27-103 weeks, both ways | **1.92** | **32%** | dose large only about 15 weeks a year, four co-moving assets: about one independent draw per season (about 18) |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -169,6 +171,8 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W25 `act-haven` (wide-13) | k = 27..103 weeks; earlier half also reported | yes, weakly (26-52-week link) | t -1.02, wrong sign | no |
 | W26 `failure-premium` (wide-13) | k = 27..103 weeks; earlier half also reported | **yes**: failures follow XLF (t -3.87) | t -0.48, wrong sign | no |
 | weather-1 (#116) | 40 derangements of winters | no: weather | t -0.29, rank 19 | no |
+| W27 `congress-workload` (wide-15) | k = 27..105 weeks, earlier only | not used (earlier only, as step 1 asks) | t -0.19, wrong sign, rank 25 | no |
+| W28 `refund-runoff` (wide-15) | k = 27..103 weeks, both ways | no: refunds do not answer prices (feedback t -1.20 .. +1.08) | t +1.44, rank 7 | no: t < 2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
