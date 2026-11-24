@@ -297,8 +297,9 @@ def freeze(path: Path, row: Mapping[str, Any], now: datetime) -> dict[str, Any]:
 
 def freeze_times(path: Path) -> dict[str, datetime | None]:
     """When each rule counts as frozen: the later of its `frozen_at` and the first commit on
-    HEAD's first-parent chain that holds its line (on main: the merge, dated by GitHub, not a
-    side commit whose date its author chose); None while the line is not committed."""
+    HEAD's first-parent chain that holds its line (on main: the merge, never older than main's
+    previous tip, not a side commit whose date its author chose; branch protection keeps merges
+    to PRs); None while the line is not committed."""
     ledger.check_append_only(path)
     rows = read(path)
     at = ledger.recorded_at(path, first_parent=True)

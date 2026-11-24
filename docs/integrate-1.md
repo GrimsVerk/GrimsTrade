@@ -31,7 +31,7 @@ xfail is audit G2, which #29 fixes).
 | 9 | #15 ingest-2 | `268412a` | `8ee5735` | run_daily.py imports, next-steps, DECISIONS | 290 passed |
 | 10 | `main` (#127, #128: BACKLOG without the channel list, `local.toml.example`) | `df9bf01` | `3e80558` | `.gitignore` (both entries kept) | 290 passed |
 
-Every pushed step was green: ruff, format and mypy clean, no failing test. Final: **290 passed**.
+Every pushed step was green: ruff, format and mypy clean, no failing test. Final: **290 passed** (291 after the landing review fixes).
 
 Why this order:
 
@@ -160,8 +160,9 @@ on this branch before the merge.
 ## Owner questions, answered by default (agent calls, 2026-11-24)
 
 The items below were open for the owner. Under the rule "agents merge" (owner 2026-11-24) the
-lead took each recommended default (`research/owner-decisions.md`, A1-A3); any of them can be
-reversed by a later PR.
+lead took the recommended defaults for A1 and A2 of `research/owner-decisions.md` (lands with
+the research archive, #118; until then on branch `decisions-1`); A3 landed early (item 4). Any of
+them can be reversed by a later PR.
 
 
 1. #61, open question 1: credit the full 13-week bill rate (assumes cash sits in a bill fund),
