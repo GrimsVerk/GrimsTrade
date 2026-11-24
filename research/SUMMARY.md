@@ -17,8 +17,11 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   every era and market, but statistically shown only for 1927-1961 and the developed-market
   price indices; since 2002 not shown (p 0.19).
 - **But it has a price.** It buys back late, so the year after the low hands most of the gain
-  back: since 2002 about 2 points of growth a year behind holding as the mean over the US market and 10 industries (insure-2), about 0.7-1.1 on the S&P 500 total return (insure-3). It fails in fast crashes of
-  three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
+  back, and it trails a little in calm markets too. Since 2002 that left it about 1 point of
+  growth a year behind holding on the broad US index (S&P 500 total return 0.7 with idle cash
+  at bills, 1.0 with cash at 0; the French US market 1.1-1.4) and about 2 on single industries
+  (mean of 10: 1.6-2.0; from about 1 ahead to 4 behind by industry) (#162). It fails in fast
+  crashes of three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
   just like the bottom (#94, #96, #103).
 - **Gaining in a crash needs shorts (bets on falls) across many markets.** That is how real
   trend funds gain in crashes (#83). Added to `tsmom12` without leverage, such a book gained in
@@ -119,7 +122,8 @@ None of the rows is a proven edge.
 
 ## Where to read more
 
-- Crash insurance: #87, #90 (`research/insure-2.md`); buy-back: #94, #96, #103.
+- Crash insurance: #87, #90 (`research/insure-2.md`); its gap to holding per series since 2002:
+  #162 (`research/gap-2002-1.md`); buy-back: #94, #96, #103.
 - Risk levels: #101, #105, #110 (`research/risk-menu.md`); own-vol paper book: #135.
 - Is the edge real? #74 (`research/dsr-1.md`), #78; live funds #91 (`research/survey-6.md`).
 - The bar: #92, #100, #108, #111 (`research/register/BAR.md`); what could reach it: #150.
