@@ -109,7 +109,7 @@ def load_bonds() -> list[Spec]:
         y = [(d, v) for d, v in y if d.toordinal() >= bd[0]]
         r = lx.bond_returns(y, mat)
         lv = [100.0]
-        for (d0, _), (d1, x) in zip(y, r, strict=True):
+        for (d0, _), (d1, x) in zip(y[:-1], r, strict=True):
             b = bv[int(np.searchsorted(bd, d0.toordinal(), side="right")) - 1]
             lv.append(lv[-1] * (1.0 + x - b / 100.0 * (d1 - d0).days / 365.0))
         days = [d for d, _ in y]
