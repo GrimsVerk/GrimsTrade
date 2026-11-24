@@ -13,6 +13,8 @@ offline command (design: `docs/forward-registry.md`).
   first-parent chain that holds its line (`ledger.recorded_at(..., first_parent=True)`): a line
   merged from a side branch counts from the merge, whatever date the side commit claims. An
   uncommitted line is not frozen: nothing proves when it was written.
+- `research/forward/obs/<id>.jsonl`: observations, append-only like the registry (`read_obs`
+  runs the same history check: a committed line changed or removed stops the score).
 - Observations (`{"start", "end", "value", "rule_hash"}`, one per bar or event) are scored only if
   their holding period starts at or after that time and they carry the frozen `rule_hash`.
   Anything else is refused, not skipped: a pre-freeze bar in a forward file means someone mixed
@@ -62,6 +64,11 @@ class LookAhead(ForwardError):
 
 class NotFrozen(ForwardError):
     """The rule has no committed freeze line, so there is no proven freeze time."""
+
+
+class MissingFreezeTime(ForwardError):
+    """A registry line has no valid `frozen_at`: it was not written by `freeze` (a proposal
+    copied in, or a hand edit), so nothing says when it was meant to count from."""
 
 
 # --- the test written down at freeze, and the sample it needs ---
@@ -217,12 +224,20 @@ def rule_hash(code: Mapping[str, str], params: Mapping[str, Any], data: Mapping[
 
 
 def read(path: Path) -> list[dict[str, Any]]:
-    """Every line, checked: unique ids, and each line's `rule_hash` agrees with its own code,
-    params and data (a line edited before its commit shows here)."""
+    """Every line, checked: unique ids, a `frozen_at` UTC time on each (only `freeze` writes
+    registry lines; a proposal pasted in has none), and each line's `rule_hash` agrees with its
+    own code, params and data (a line edited before its commit shows here)."""
     text = path.read_text() if path.exists() else ""
     rows = [json.loads(line) for line in text.splitlines() if line.strip()]
     seen: set[str] = set()
-    for r in rows:
+    for n, r in enumerate(rows, 1):
+        try:
+            ledger.parse_time(r["frozen_at"])
+        except (KeyError, TypeError, ValueError):
+            raise MissingFreezeTime(
+                f"{path}: line {n} ({r.get('id', '?')}) has no valid frozen_at "
+                "(YYYY-MM-DDTHH:MM:SSZ); registry lines come only from `freeze`"
+            ) from None
         if r["id"] in seen:
             raise AlreadyFrozen(f"{r['id']}: frozen twice in {path}")
         seen.add(r["id"])
@@ -335,6 +350,11 @@ class Obs:
 
 
 def read_obs(path: Path) -> list[Obs]:
+    """A rule's observations. The file is append-only like the registry: an observation
+    committed once and later changed or removed raises `ledger.LedgerTampered` (a dropped loss
+    or an edited value would bias the verdict), and so does a file on disk that does not start
+    with its committed content."""
+    ledger.check_append_only(path)  # raises LedgerTampered
     if not path.exists():
         return []
     out = []
