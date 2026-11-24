@@ -423,6 +423,35 @@ Shared rules for all three:
 - Test once from an Actions runner whether `data.binance.vision`, `api.hyperliquid.xyz` and
   `www.deribit.com` answer from US IPs (a tiny `workflow_dispatch` job); this doc could not.
 
+## 11. Long non-equity histories (data-long-3, 2026-11-24)
+
+Lane `data-long-3` (record `research/data-long-3.md`, code `research/lib/long_x*.py`). Keyless,
+cached under `<cache_root>/data-long-3/`, nothing raw committed.
+
+- **ALFRED graph CSV works where FRED's does not.** `alfred.stlouisfed.org/graph/alfredgraph.csv?
+  id=<ID>&vintage_date=2025-11-10` answered for 80+ series; `fred.stlouisfed.org/graph/fredgraph.csv`
+  reset or timed out (as on 2026-11-18). The St. Louis Fed CDN reset requests with browser-like or
+  "research script" User-Agents and answered urllib's default one. A fixed `vintage_date` gives
+  the series as known that day: nothing from the held-out year, no later revision.
+- **Rates:** Fed H.15 constant maturity daily `DGS1..DGS30` (1962 on; 2y 1976, 30y 1977), monthly
+  averages `GS*` (1953), bills `DTB3`/`TB3MS` (1954/1934); OECD MEI monthly 3-month interbank,
+  call money and long-term government rates for JP, GB, CH, CA, DE, EZ, AU, NZ, SE, NO, US
+  (1955-2002 on); IMF IFS T-bill and discount rates as gap fillers (1950s on). US public domain
+  (Fed); OECD and IMF under their own terms (attribution; keep out of git).
+- **Currencies:** Fed H.10 daily noon rates, 8 G10 currencies from 1971-01, euro from 1999-01.
+  The daily mark (`DEXGEUS`) is not on ALFRED and not in the Fed's H.10 package; only the monthly
+  average `EXGEUS` (1971-2001). H.10 is a weekly release: a day's rate is public the next Monday.
+- **Commodities:** BLS PPI commodity indices (all commodities 1913, groups 1926/1947, natural
+  gas 1967): mid-month point prices, revised 4 months after release; WTI monthly average
+  `WTISPLC` (1946) and daily `DCOILWTICO` (1986); IMF commodity prices from 1990.
+- **Blocked for scripts:** World Bank Pink Sheet xlsx (HTTP 403; CC BY 4.0, monthly from 1960;
+  download by hand in a browser, the parser exists), Bundesbank API (JavaScript bot check), LBMA
+  gold JSON (403).
+- **Validation:** bonds rebuilt from yields match IEF/TLT/SHY at monthly correlation 0.97-0.99
+  (2002-2025); currency spot matches the CurrencyShares trusts at 0.99; spot oil beat a
+  front-month futures fund (USO) by 10 points a year (2006-2025): commodity spot is not an
+  investable return.
+
 ## Status
 
 - **Done (2026-11-12):** read AGENTS/VISION/DESIGN/BACKLOG; ~35 keyless probes across all six

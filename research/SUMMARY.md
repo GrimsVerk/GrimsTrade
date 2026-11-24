@@ -17,7 +17,7 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   every era and market, but statistically shown only for 1927-1961 and the developed-market
   price indices; since 2002 not shown (p 0.19).
 - **But it has a price.** It buys back late, so the year after the low hands most of the gain
-  back: since 2002 about 2 points of growth a year behind holding. It fails in fast crashes of
+  back: since 2002 about 2 points of growth a year behind holding as the mean over the US market and 10 industries (insure-2), about 0.7-1.1 on the S&P 500 total return (insure-3). It fails in fast crashes of
   three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
   just like the bottom (#94, #96, #103).
 - **Gaining in a crash needs shorts (bets on falls) across many markets.** That is how real

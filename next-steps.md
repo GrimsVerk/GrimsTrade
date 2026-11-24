@@ -30,10 +30,37 @@ branches; the leads' night log is on branch `summary-1` (closed PR #28, branch k
 - Owner decisions brief (`research/owner-decisions.md`): every item answered by its default as
   an agent call (section "Answers"); no owner question left.
 
+## Night lead 2026-11-24 (in flight; rewritten at handoff)
+
+Merged tonight, each after a fresh review agent (fixes applied where it asked): #136, #133, #138,
+#137, #134, #135, #140, #139, #143, #141, #147, #142, #148, #145, #144, #150, #154, #156, #152,
+#157. Verdicts are in `research/SUMMARY.md` (night 4, #156).
+
+**Held until after the 2026-11-25 daily run** (first run on tonight's new main; check it passed,
+then merge in this order, each with `gh pr merge --merge`, then re-push the head branch, see
+below): #149 gymreplay-1 (one simulator loop; review MERGE, CI green on the branch), #153
+reconcile-daily-1 (daily live==gym check; review MERGE + try/finally fix applied), #155
+scoreboard-note-1 (timing note; review wording fix applied). A reviewer merged all three locally
+in every order: no conflicts, 826 tests pass, dry run 0 problems.
+
+Running at the time of writing: `register-7` (register2.py dead source branch; live-series
+duplicates; store budget policy), `pooled-2` (e4 / vt-own-70-x on the data-long-3 non-equity
+panel).
+
+**Repo setting:** GitHub auto-deletes merged head branches (`delete_branch_on_merge`), against
+the rule above; the owner was asked to turn it off. Until then, re-push each lane branch right
+after merging it (`git push origin refs/heads/<lane>:refs/heads/<lane>`). AGENTS.md's
+"`gh pr merge --rebase --delete-branch`" line conflicts with that rule too (owner/CoS to settle).
+
+**Privacy (CoS):** commit with `TZ=UTC`; neutral framing (no country of residence, national tax
+rules, or banks/brokers as "ours"); a history rewrite follows after the night run.
+
 ## Lane queue (each from `main`)
 
-1. Second bill-rate source (US Treasury keyless CSV) when Yahoo `^IRX` fails (BACKLOG; A2c).
-2. One own-vol 70% paper book next to the presets, no-look-ahead form (owner-decisions C2).
-3. Record the delayed schedule in DECISIONS (runs fire 02:00-04:40 UTC, not 22:30; D1).
-4. Forward registry: obs files get the append-only check; `read()` requires `frozen_at`
-   (review notes on #67).
+1. After the first daily run on new main (~02:00-06:00 UTC on 2026-11-25): check it passed,
+   rerun `research/lib/reconcile1.py` (from #141) and confirm the one-time replay change it
+   predicts; then merge #149, #153, #155 (above).
+2. From pooled-1/pooled-2 and power-map-1: further Sharpe-edge searches on the six assets cannot
+   reach the bar; pre-register any new edge search on pooled long history (equity + data-long-3).
+3. Optional (review of #153): reuse `gym.cash_rate` / `gym.interest` inside `reconcile.py`.
+4. Register: once `register-7` lands, rerun the register so BAR.md picks up the last rows.
