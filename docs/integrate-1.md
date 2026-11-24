@@ -1,13 +1,15 @@
 # Integration preview 1 (branch `integrate-1`, draft PR #115)
 
-A review aid, not a PR to merge. It merges the open engineering PRs into one tree, one merge commit
-each (`git merge --no-ff`), to show that they can all land, in which order, with every conflict
-resolved and the full checks green. Land the individual PRs in the order below. After each one
-lands, rebase the next onto `main`; where it conflicts, copy the resolution from the merge commit
-named here (`git show <commit>` shows the resolved hunks).
+Landed as one merge (2026-11-24, GrimsTrade lead; owner rule "agents merge"). It merges the
+open engineering PRs into one tree, one merge commit each (`git merge --no-ff`), in the order
+below, with every conflict resolved and the full checks green. Merging this branch into `main`
+lands PRs #13, #27, #29, #30, #32, #61, #67, #14 and #15 at once (GitHub marks each merged: its
+head is in `main`); rebasing each one separately would have replayed the same resolutions nine
+times. `git show <merge commit>` shows each resolved hunk.
 
-Base: `main` at `9b1c45e`. Checks after every step: `uv run ruff check .`,
-`uv run ruff format --check .`, `uv run mypy`, `uv run pytest` (the CI set, see `AGENTS.md`).
+Base: `main` at `9b1c45e`, then current `main` (`df9bf01`) merged in (row 10). Checks after every
+step: `uv run ruff check .`, `uv run ruff format --check .`, `uv run mypy`, `uv run pytest` (the
+CI set, see `AGENTS.md`).
 
 ## Baseline
 
@@ -27,6 +29,7 @@ xfail is audit G2, which #29 fixes).
 | 7 | #67 forward-1 | `59eb2d7` | `83be626` | next-steps, DECISIONS | 275 passed |
 | 8 | #14 ingest-1 | `28e36b5` | `fb30505` | next-steps | 281 passed |
 | 9 | #15 ingest-2 | `268412a` | `8ee5735` | run_daily.py imports, next-steps, DECISIONS | 290 passed |
+| 10 | `main` (#127, #128: BACKLOG without the channel list, `local.toml.example`) | `df9bf01` | `3e80558` | `.gitignore` (both entries kept) | 290 passed |
 
 Every pushed step was green: ruff, format and mypy clean, no failing test. Final: **290 passed**.
 
@@ -136,18 +139,45 @@ files). So they do not block anything here. They are left out because:
   set. It reads `research/tries.md` from the research branches through git, so it does not need
   #70.
 
-## For the owner to decide
+## Landing review fixes (2026-11-24, before the merge into `main`)
+
+Three fresh review agents read the gym PRs, the ingest/workflow PRs and the rest. Required
+fixes, applied in one commit on this branch:
+
+1. Forward registry (#67): a rule's freeze time is now dated along HEAD's first-parent chain
+   (`ledger.recorded_at(path, first_parent=True)`). Before, a registry line committed on a side
+   branch with an old date and merged into `main` counted from the side commit's date. Test:
+   `test_a_back_dated_side_branch_counts_from_its_merge`.
+2. One example config: `local.example.toml` (#14) folded into `local.toml.example` (main), so
+   `local.toml` has one template (`private_dir`, `[cache]`, `[alpaca]`, `[fred]`).
+3. `docs/data-sources.md` and the honesty audit no longer say where the probes ran from (only
+   "a local test machine, not a GitHub runner").
+4. This file's header (landed as one merge, not PR by PR).
+
+A dry run of the daily job (`run_daily --root <copy of paper-trail>`, then `--intraday`) passed
+on this branch before the merge.
+
+## Owner questions, answered by default (agent calls, 2026-11-24)
+
+The items below were open for the owner. Under the rule "agents merge" (owner 2026-11-24) the
+lead took each recommended default (`research/owner-decisions.md`, A1-A3); any of them can be
+reversed by a later PR.
+
 
 1. #61, open question 1: credit the full 13-week bill rate (assumes cash sits in a bill fund),
    or a spread or haircut below it? The integration uses the full rate, as #61 does. Changing it
    later is one number in `rates.steps` or `gym.cash_rate`, and every score replays.
+   **Taken: full rate.**
 2. #61, open question 2: scoreboard Sharpe is now above the bill rate, while research logs
    Sharpe against 0. Switch the research harness too? (Mixing only widens the deflated Sharpe's
-   spread, the cautious direction.)
+   spread, the cautious direction.) **Taken: yes for new research rows; logged rows stay.**
 3. #61, open question 3: a second, official source for the bill rate when Yahoo fails (until then
-   the last rate carries forward).
+   the last rate carries forward). **Taken: yes, as a follow-up PR (BACKLOG).**
 4. #15 changes `.github/workflows/daily.yml` (best-effort steps after the record push, and
    `actions: read`); the schedule is unchanged. Merging it changes what the live job does.
+   **Taken: landed with the rest** (decisions-1 A3 suggested a week later; the dry run of both
+   the record and the intraday steps passed, and every intraday step is best effort after the
+   record push).
 5. Each gym PR (#29, #30, #32, #61) changes every replayed score once. Landing all four in one
    day means one combined jump in the record instead of four.
 6. G2 tops up to within the 1% band, not to the exact target (conflict 2 above). Fine as

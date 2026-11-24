@@ -1,8 +1,8 @@
 # Data sources for GrimsTrade
 
 Data scout run `data-search-1`, 2026-11-12. Every "probe" line is a real fetch made that day from
-the owner's PC (a non-US IP). GitHub Actions runners have US IPs; where that matters
-it says so. No keys, accounts or payments were used.
+a local test machine, not a GitHub runner. GitHub Actions runners have US IPs; where that
+matters it says so. No keys, accounts or payments were used.
 
 ## Summary for the owner (read this first)
 
@@ -56,7 +56,7 @@ be committed raw (size and terms). Owner's call if you want to change the curren
 - **Licence:** Binance Terms of Use; local research use is the intended use, re-publishing raw data
   is not granted. **Do not commit raw.**
 - **US runner:** **unknown.** The archive is S3/CloudFront, not `api.binance.com` (which returns 451
-  to US IPs). Not testable from here. Not needed: backfill is a one-off on the owner's PC.
+  to US IPs). Not testable from here. Not needed: backfill is a one-off local run.
 - **Reliability:** high; files are immutable, with checksums.
 - **Probe 2026-11-12:** `HEAD .../spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2017-08.zip` -> 200,
   595,271 bytes, AmazonS3.
@@ -124,13 +124,13 @@ be committed raw (size and terms). Owner's call if you want to change the curren
 ### 1.6 Bybit public archive (public.bybit.com)
 - **What:** daily trade CSVs for Bybit perps/spot since 2019-2020.
 - **Probe 2026-11-12:** `HEAD /trading/BTCUSDT/BTCUSDT2020-03-25.csv.gz` -> 200, 121 KB.
-- **US runner:** no (Bybit blocks US IPs). Owner's PC only.
+- **US runner:** no (Bybit blocks US IPs). Local runs only.
 - **Verdict: SKIP for now** (Binance archive covers the same ground, larger).
 
 ### 1.7 BitMEX public archive and API
 - **Probe 2026-11-12:** `public.bitmex.com/data/trade/...` -> 302 to the home page;
-  `www.bitmex.com/api/v1/funding` -> 403 "Request blocked" (CloudFront geo-block from this IP).
-- **Verdict: SKIP** (blocked here; would have had funding since 2016).
+  `www.bitmex.com/api/v1/funding` -> 403 "Request blocked".
+- **Verdict: SKIP** (the API refused the probe; would have had funding since 2016).
 
 ## 2. Longer and wider daily history
 

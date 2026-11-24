@@ -177,6 +177,21 @@ def test_freeze_counts_from_its_commit_when_that_is_later(repo: Path) -> None:
     assert forward.freeze_times(reg(repo))["r@1"] == late
 
 
+def test_a_back_dated_side_branch_counts_from_its_merge(repo: Path) -> None:
+    # A side branch from the old base, committed with an old date, then merged into main: the
+    # line counts from the merge on main's first-parent chain, not from the side commit's date.
+    base = git(repo, "rev-parse", "HEAD")
+    (repo / "other.txt").write_text("main moves on\n")
+    commit(repo, T0 + timedelta(days=40))
+    git(repo, "checkout", "-q", "-b", "side", base)
+    forward.freeze(reg(repo), row(repo), T0 - timedelta(hours=1))
+    commit(repo, T0 - timedelta(hours=1))  # back-dated, just after its base
+    git(repo, "checkout", "-q", "main")
+    merged = T0 + timedelta(days=41)
+    git(repo, "merge", "-q", "--no-ff", "-m", "m", "side", when=merged)
+    assert forward.freeze_times(reg(repo))["r@1"] == merged
+
+
 # --- scoring ---
 
 

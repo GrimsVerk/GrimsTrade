@@ -68,7 +68,7 @@ cat $ROOT/pids/*.pid                 # is it still running? ps -p <PID>
 ## How to run the backfills (any computer)
 
 ```sh
-cp local.example.toml local.toml     # set [cache] root
+cp local.toml.example local.toml     # set [cache] root
 uv sync
 uv run python -I scripts/snapshot_rolling.py
 # each family detached, logging into the cache (example for binance):

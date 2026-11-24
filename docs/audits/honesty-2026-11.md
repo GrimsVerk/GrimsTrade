@@ -466,8 +466,7 @@ running it before it was fixed.
 ### G3. Crypto trades were charged less than any real fee (medium)
 
 - **What:** the gym charged 25 basis points per crypto trade, plus 5 of slippage. A fill at the
-  open is a market order and pays the taker fee. Kraken Pro's fee page on 2026-11-12 (read twice,
-  as served outside the US) lists taker 0.80% for an account that traded under 2,500 USD in the
+  open is a market order and pays the taker fee. Kraken Pro's fee page on 2026-11-12 (read twice) lists taker 0.80% for an account that traded under 2,500 USD in the
   last 30 days, 0.60% from 2,500, 0.38% from 10,000, 0.35% from 25,000 and 0.30% from 50,000.
   25 was below every one of them.
 - **Size:** the busiest live crypto strategy, `crypto_mean_reversion`, turned its book over 10.6

@@ -9,9 +9,10 @@ offline command (design: `docs/forward-registry.md`).
   advance: metric, one-sided alpha, power, the effect assumed true, observations per year, and
   the minimum sample that effect needs (`min_sample`). A frozen id is never frozen again; a
   changed rule is a new id.
-- A rule counts as frozen from the later of its own `frozen_at` and the commit that first holds
-  its line (`ledger.recorded_at`), as decisions do (`ledger.in_force`). An uncommitted line is not
-  frozen: nothing proves when it was written.
+- A rule counts as frozen from the later of its own `frozen_at` and the first commit on HEAD's
+  first-parent chain that holds its line (`ledger.recorded_at(..., first_parent=True)`): a line
+  merged from a side branch counts from the merge, whatever date the side commit claims. An
+  uncommitted line is not frozen: nothing proves when it was written.
 - Observations (`{"start", "end", "value", "rule_hash"}`, one per bar or event) are scored only if
   their holding period starts at or after that time and they carry the frozen `rule_hash`.
   Anything else is refused, not skipped: a pre-freeze bar in a forward file means someone mixed
@@ -295,11 +296,12 @@ def freeze(path: Path, row: Mapping[str, Any], now: datetime) -> dict[str, Any]:
 
 
 def freeze_times(path: Path) -> dict[str, datetime | None]:
-    """When each rule counts as frozen: the later of its `frozen_at` and the commit that first
-    holds its line; None while the line is not committed."""
+    """When each rule counts as frozen: the later of its `frozen_at` and the first commit on
+    HEAD's first-parent chain that holds its line (on main: the merge, dated by GitHub, not a
+    side commit whose date its author chose); None while the line is not committed."""
     ledger.check_append_only(path)
     rows = read(path)
-    at = ledger.recorded_at(path)
+    at = ledger.recorded_at(path, first_parent=True)
     if len(at) != len(rows):
         raise ForwardError(f"{path}: lines and commit times disagree")
     out: dict[str, datetime | None] = {}

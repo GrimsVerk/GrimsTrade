@@ -1,6 +1,6 @@
 """Local raw-data cache (git-ignored, outside the repo): write-once files plus a manifest.
 
-The cache root comes from `local.toml` (git-ignored; copy `local.example.toml`). Every file is
+The cache root comes from `local.toml` (git-ignored; copy `local.toml.example`). Every file is
 written once through a temp file and a rename, never edited, and gets a manifest line with its
 fetch time, source URL, size and SHA-256. See docs/data-sources.md section 9 and
 docs/data-inventory.md.
@@ -24,7 +24,7 @@ MANIFEST = "manifest.jsonl"
 def cache_root(config: Path = LOCAL_CONFIG) -> Path:
     """Cache root from the local config (`[cache] root = "~/data/grimstrade"`)."""
     if not config.exists():
-        raise SystemExit(f"{config} missing: copy local.example.toml to local.toml and edit it")
+        raise SystemExit(f"{config} missing: copy local.toml.example to local.toml and edit it")
     with config.open("rb") as f:
         root = tomllib.load(f)["cache"]["root"]
     return Path(os.path.expanduser(str(root)))

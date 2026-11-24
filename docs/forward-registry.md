@@ -44,9 +44,10 @@ Observations, one file per rule (`research/forward/obs/<id>.jsonl`), one line pe
 ## Rules of scoring (all enforced by `forward.py`, all tested)
 
 1. **Freeze time is the commit.** A rule counts as frozen from the later of its `frozen_at` and
-   the commit that first holds its line (`ledger.recorded_at`), exactly as decisions count from
-   their commit (`ledger.in_force`). An uncommitted line is not frozen: `score` raises
-   `NotFrozen`. Commit dates can be forged by whoever pushes; GitHub's push log stays the outside
+   the first commit on HEAD's first-parent chain that holds its line (`ledger.recorded_at` with
+   `first_parent`): on `main` that is the merge, not a side commit whose date its author chose
+   (the registry lives on a branch with merges; the decisions ledger has none). An uncommitted
+   line is not frozen: `score` raises `NotFrozen`. Commit dates can be forged by whoever pushes; GitHub's push log stays the outside
    witness, as for the ledger (audit L1).
 2. **Only bars that start after the freeze.** An observation whose holding period (or event
    window) starts before the freeze time is refused with `LookAhead`, not dropped: a pre-freeze
