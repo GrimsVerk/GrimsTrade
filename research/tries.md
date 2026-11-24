@@ -3179,3 +3179,35 @@ Never edit or delete a row.
 | 2026-11-19 03:15 | cpc-revision | UNG next-session open-to-close on CPC 6-10/8-14 outlook revision (slope -0.076 pp/0.10, t -0.68, rank 36/41, gate fail) | screen | train | 2012-11-01 | 2025-03-31 | - | - | - | - |
 | 2026-11-19 03:04 | act-haven | GLD+TLT 4-week return on GPR acts z, from available-on date (b -0.137%/z, t -1.02, rank 21/41, gate fail) | screen | train | 2005-01-03 | 2025-10-06 | - | - | - | - |
 | 2026-11-19 03:04 | failure-premium | XLF 4-week return on ln(1 + FDIC failed assets) with past-return controls (b -0.059%/unit, t -0.48, rank 21/41, gate fail) | screen | train | 2000-01-07 | 2025-10-03 | - | - | - | - |
+| 2026-11-24 19:22 | halving-2 | bh@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.74 | +1695.7% | 93.0% | 4.49 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@LZ | baseline | train | 2014-04-02 | 2025-11-09 | 0.62 | +765.7% | 92.0% | 5.61 |
+| 2026-11-24 19:22 | halving-2 | alone-own@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 0.45 | +61.2% | 95.7% | 3.00 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 1.23 | +323508.0% | 76.9% | 4.50 |
+| 2026-11-24 19:22 | halving-2 | and-own@LZ | robustness | train | 2014-04-02 | 2025-11-09 | 0.13 | -62.4% | 96.7% | 4.59 |
+| 2026-11-24 19:22 | halving-2 | bh@LTC | baseline | train | 2014-04-02 | 2025-11-09 | 0.68 | +821.4% | 93.6% | 0.01 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@LTC | baseline | train | 2014-04-02 | 2025-11-09 | 0.39 | -9.4% | 97.0% | 2.39 |
+| 2026-11-24 19:22 | halving-2 | alone-own@LTC | robustness | train | 2014-04-02 | 2025-11-09 | 0.25 | -73.3% | 96.8% | 0.90 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@LTC | robustness | train | 2014-04-02 | 2025-11-09 | 1.14 | +162327.4% | 78.3% | 0.59 |
+| 2026-11-24 19:22 | halving-2 | bh@ZEC | baseline | train | 2017-10-30 | 2025-11-09 | 0.63 | +114.4% | 97.6% | 0.31 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@ZEC | baseline | train | 2017-10-30 | 2025-11-09 | 0.71 | +601.7% | 91.2% | 1.90 |
+| 2026-11-24 19:22 | halving-2 | alone-own@ZEC | robustness | train | 2017-10-30 | 2025-11-09 | 0.75 | +622.4% | 96.8% | 0.41 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@ZEC | robustness | train | 2017-10-30 | 2025-11-09 | 1.03 | +7015.6% | 78.6% | 1.65 |
+| 2026-11-24 19:22 | halving-2 | bh@BCH | baseline | train | 2018-08-02 | 2025-11-09 | 0.45 | -30.1% | 94.2% | 0.30 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@BCH | baseline | train | 2018-08-02 | 2025-11-09 | 0.44 | +47.0% | 74.9% | 1.89 |
+| 2026-11-24 19:22 | halving-2 | alone-own@BCH | robustness | train | 2018-08-02 | 2025-11-09 | 0.68 | +349.9% | 89.6% | 0.72 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@BCH | robustness | train | 2018-08-02 | 2025-11-09 | 0.92 | +2369.9% | 73.8% | 0.58 |
+| 2026-11-24 19:22 | halving-2 | bh@BSV | baseline | train | 2019-11-16 | 2025-11-09 | 0.30 | -79.4% | 95.3% | 0.21 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@BSV | baseline | train | 2019-11-16 | 2025-11-09 | 0.28 | -48.6% | 83.3% | 2.93 |
+| 2026-11-24 19:22 | halving-2 | alone-own@BSV | robustness | train | 2019-11-16 | 2025-11-09 | 0.42 | -40.5% | 84.0% | 0.54 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@BSV | robustness | train | 2019-11-16 | 2025-11-09 | 0.45 | -27.5% | 82.3% | 0.50 |
+| 2026-11-24 19:22 | halving-2 | bh@ETC | baseline | train | 2017-07-26 | 2025-11-09 | 0.55 | +11.7% | 91.9% | 0.09 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@ETC | baseline | train | 2017-07-26 | 2025-11-09 | 0.44 | +8.2% | 90.9% | 2.54 |
+| 2026-11-24 19:22 | halving-2 | alone-own@ETC | robustness | train | 2017-07-26 | 2025-11-09 | 0.58 | +125.7% | 91.9% | 0.96 |
+| 2026-11-24 19:22 | halving-2 | alone-btc@ETC | robustness | train | 2017-07-26 | 2025-11-09 | 0.86 | +2251.4% | 73.1% | 0.60 |
+| 2026-11-24 19:22 | halving-2 | bh@BTC | baseline | train | 2011-07-19 | 2025-11-09 | 1.19 | +760764.5% | 85.0% | 0.00 |
+| 2026-11-24 19:22 | halving-2 | tsmom12@BTC | baseline | train | 2011-07-19 | 2025-11-09 | 1.10 | +227428.8% | 85.0% | 0.41 |
+| 2026-11-24 19:22 | halving-2 | alone-own@BTC | robustness | train | 2011-07-19 | 2025-11-09 | 1.57 | +30148673.5% | 85.0% | 0.67 |
+| 2026-11-24 19:22 | halving-2 | S1 alone-own@LZ own-calendar placebos (Sharpe 0.45, rank 40/41, null SD 0.14, fail) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:22 | halving-2 | S2 alone-btc@LZ BTC-calendar placebos (Sharpe 1.23, rank 1/41, null SD 0.22) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:22 | halving-2 | C2 LZ alt/BTC own window minus outside (+0.402/yr, rank 32/41 most negative; gate fail: BTC-beta) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:22 | halving-2 | BTC alone-own placebos (rank 1/41, shown) | screen | train | 2011-07-19 | 2025-11-09 | - | - | - | - |
