@@ -28,6 +28,7 @@ PLAIN: dict[str, str] = {
     "crypto_mean_reversion": "Buy sharp crypto dips in an uptrend",
     "preset_careful": "Careful preset: trend, calmed when wild, 5% per coin",
     "preset_middle": "Middle preset: trend, 10% per coin",
+    "own_vol_70": "Trend, sized by its own swings (aims at 70% in)",
 }
 
 
