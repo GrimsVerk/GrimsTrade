@@ -8,6 +8,7 @@ refusal, exit 2).
 """
 
 import json
+import re
 from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
@@ -248,3 +249,64 @@ def test_a_kraken_answer_cut_short_at_the_end_is_said_and_caught_up_next_run(
     got = [b.date for b in data.load(tmp_path, "BTC")]
     assert got[-1] == later.date() - timedelta(days=1)
     assert all(b - a == timedelta(days=1) for a, b in zip(got, got[1:], strict=False))
+
+
+# --- a write cut short ---
+
+CUT = {
+    "a bar row": ("data/bars/SPY.csv", b"2026-11-03,100.0,10", "SPY.csv line"),
+    "a bar row, whole fields": ("data/bars/BTC.csv", b"2026-11-02,100.0,101.0", "BTC.csv line"),
+    "a cash rate row": ("data/rates.csv", b"2026-11-03,4.0", "rates.csv line"),
+    "a dividend row": (
+        "data/dividends.csv",
+        b"symbol,ex_date,amount\nSPY,2026-10-0",
+        "dividends.csv line 2",
+    ),  # fmt: skip
+    "a decision": (
+        "ledger/decisions.jsonl",
+        b'{"strategy":"buy_hold_btc","wei',
+        "ledger/decisions.jsonl line 13",
+    ),  # fmt: skip
+    "a try": ("ledger/tries.jsonl", b'{"na', "ledger/tries.jsonl line 13"),
+    "a problem line": (
+        "ledger/problems.jsonl",
+        b'{"problems":["BTC',
+        "ledger/problems.jsonl line 1",
+    ),
+    "a revision": ("data/revisions.jsonl", b'{"symbol":"BTC"', "data/revisions.jsonl line 1"),
+    "a header": ("data/bars/QQQ.csv", None, "QQQ.csv: the header is ['date', 'op']"),
+}
+
+
+@pytest.mark.parametrize(("rel", "tail", "said"), CUT.values(), ids=CUT)
+def test_a_row_cut_short_is_refused_in_words_before_anything_is_written(
+    tmp_path: Path, rel: str, tail: bytes | None, said: str
+) -> None:
+    """A job killed in mid-write (or a full disk) can leave a last row cut short, and the commit
+    step (`if: always()`) commits it. The row then stays for good: removing it is a rewrite. Each
+    later run crashed on it with a bare TypeError or JSONDecodeError (for the ledger files after
+    storing that day's bars and before any decision), every day. Now the record check refuses it
+    by name, before anything is written (exit 2: a person has to look)."""
+    assert run_daily.run(tmp_path, FIRST, market(), tmp_path) == []
+    path = tmp_path / rel
+    if tail is None:
+        path.write_bytes(b"date,op")
+    elif tail.startswith(b"symbol,") or not path.exists():
+        path.write_bytes(tail)
+    else:
+        path.write_bytes(path.read_bytes() + tail)
+    before = snapshot(tmp_path)
+    with pytest.raises(ledger.LedgerTampered, match="^" + re.escape(said)):
+        run_daily.run(tmp_path, FIRST + timedelta(days=1), market(), tmp_path)
+    assert snapshot(tmp_path) == before
+
+
+def test_a_lost_newline_alone_is_no_cut_row(tmp_path: Path) -> None:
+    """A last row that is whole but lost its newline (a hand edit) is completed by the next
+    write, as before: refused is only a row with fields missing."""
+    assert run_daily.run(tmp_path, FIRST, market(), tmp_path) == []
+    for rel in ("data/bars/BTC.csv", "data/rates.csv", "ledger/decisions.jsonl"):
+        path = tmp_path / rel
+        path.write_bytes(path.read_bytes().rstrip(b"\n"))
+    assert run_daily.run(tmp_path, FIRST + timedelta(days=1), market(), tmp_path) == []
+    assert len(data.load(tmp_path, "BTC")) == 33

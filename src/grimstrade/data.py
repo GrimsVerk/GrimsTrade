@@ -7,6 +7,7 @@ or before T; an order decided at T fills at the open of the first bar that opens
 from __future__ import annotations
 
 import csv
+import io
 import json
 import math
 from collections.abc import Iterable, Mapping, Sequence
@@ -99,6 +100,27 @@ def ends_mid_line(path: Path) -> bool:
         return f.read(1) != b"\n"
 
 
+def read_rows(path: Path, fields: Sequence[str]) -> list[dict[str, str]]:
+    """The rows of a stored CSV file (none for an empty one). Raises ValueError on a header that
+    is not `fields` or a row with a field too few or too many: what a write cut short (a killed
+    job, a full disk) leaves behind. Such a row stays for good, as the file is append-only, and
+    must stop every reader with a message rather than a crash halfway through a run."""
+    with path.open(newline="") as f:
+        reader = csv.DictReader(f)
+        rows = []
+        for r in reader:
+            if None in r or None in r.values():
+                raise ValueError(
+                    f"{path.name} line {reader.line_num}: not {len(fields)} fields (a write cut "
+                    "short?)"
+                )
+            rows.append(r)
+        header = reader.fieldnames  # read lazily: inside the `with`, for an empty file too
+    if header is not None and list(header) != list(fields):
+        raise ValueError(f"{path.name}: the header is {header}, not {list(fields)}")
+    return rows
+
+
 def bars_path(root: Path, symbol: str) -> Path:
     return root / "data" / "bars" / f"{symbol}.csv"
 
@@ -107,18 +129,17 @@ def load(root: Path, symbol: str) -> list[Bar]:
     path = bars_path(root, symbol)
     if not path.exists():
         return []
-    with path.open(newline="") as f:
-        bars = [
-            Bar(
-                date=date.fromisoformat(r["date"]),
-                open=float(r["open"]),
-                high=float(r["high"]),
-                low=float(r["low"]),
-                close=float(r["close"]),
-                volume=float(r["volume"]),
-            )
-            for r in csv.DictReader(f)
-        ]
+    bars = [
+        Bar(
+            date=date.fromisoformat(r["date"]),
+            open=float(r["open"]),
+            high=float(r["high"]),
+            low=float(r["low"]),
+            close=float(r["close"]),
+            volume=float(r["volume"]),
+        )
+        for r in read_rows(path, FIELDS)
+    ]
     # Rows no run writes, and that a pure append can add by hand: a second row for a stored day
     # (it would silently replace that day's prices), an ETF bar on a weekend.
     for before, b in zip(bars, bars[1:], strict=False):
@@ -176,20 +197,29 @@ def append(root: Path, symbol: str, new_bars: Iterable[Bar]) -> int:
         if jump:
             raise ValueError(jump)
         return 0
-    path.parent.mkdir(parents=True, exist_ok=True)
-    write_header = not path.exists() or path.stat().st_size == 0
-    with path.open("a", newline="") as f:
-        if ends_mid_line(path):  # never glue a new row onto a last row that lost its newline
-            f.write("\n")
-        w = csv.writer(f, lineterminator="\n")
-        if write_header:
-            w.writerow(FIELDS)
-        for b in rows:
-            w.writerow([b.date.isoformat(), _num(b.open), _num(b.high), _num(b.low),
-                        _num(b.close), _num(b.volume)])  # fmt: skip
+    lines = [[b.date.isoformat(), _num(b.open), _num(b.high), _num(b.low), _num(b.close),
+              _num(b.volume)] for b in rows]  # fmt: skip
+    append_rows(path, FIELDS, lines)
     if jump:
         raise ValueError(jump)
     return len(rows)
+
+
+def append_rows(path: Path, fields: Sequence[str], rows: Iterable[Sequence[str]]) -> None:
+    """Append CSV `rows` to `path` (with the `fields` header if it is new or empty) in one
+    write: a job killed part way through a run then leaves each file with all of this run's rows
+    or none of them, not a row cut in half (which would stay: see `read_rows`). Never glues a
+    row onto a last row that lost its newline."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    text = io.StringIO()
+    if ends_mid_line(path):
+        text.write("\n")
+    w = csv.writer(text, lineterminator="\n")
+    if not path.exists() or path.stat().st_size == 0:
+        w.writerow(fields)
+    w.writerows(rows)
+    with path.open("a", newline="") as f:
+        f.write(text.getvalue())
 
 
 def _num(x: float) -> str:
@@ -315,16 +345,15 @@ def load_dividends(root: Path) -> dict[str, list[Dividend]]:
     if not path.exists():
         return {}
     out: dict[str, list[Dividend]] = {}
-    with path.open(newline="") as f:
-        for r in csv.DictReader(f):
-            sym, d = r["symbol"], Dividend(date.fromisoformat(r["ex_date"]), float(r["amount"]))
-            if UNIVERSE.get(sym) != ETF:
-                raise ValueError(f"dividend for {sym!r}: only the ETFs pay distributions")
-            if not (math.isfinite(d.amount) and d.amount > 0):
-                raise ValueError(f"{sym} {d.ex_date}: dividend amount {d.amount} is not positive")
-            if any(o.ex_date == d.ex_date for o in out.get(sym, [])):
-                raise ValueError(f"{sym}: a second dividend row for {d.ex_date}")
-            out.setdefault(sym, []).append(d)
+    for r in read_rows(path, DIVIDEND_FIELDS):
+        sym, d = r["symbol"], Dividend(date.fromisoformat(r["ex_date"]), float(r["amount"]))
+        if UNIVERSE.get(sym) != ETF:
+            raise ValueError(f"dividend for {sym!r}: only the ETFs pay distributions")
+        if not (math.isfinite(d.amount) and d.amount > 0):
+            raise ValueError(f"{sym} {d.ex_date}: dividend amount {d.amount} is not positive")
+        if any(o.ex_date == d.ex_date for o in out.get(sym, [])):
+            raise ValueError(f"{sym}: a second dividend row for {d.ex_date}")
+        out.setdefault(sym, []).append(d)
     return {s: sorted(ds, key=lambda d: d.ex_date) for s, ds in out.items()}
 
 
@@ -363,15 +392,6 @@ def append_dividends(
         rows.append(d)
     if not rows:
         return 0, problems
-    path = root / DIVIDENDS
-    path.parent.mkdir(parents=True, exist_ok=True)
-    write_header = not path.exists() or path.stat().st_size == 0
-    with path.open("a", newline="") as f:
-        if ends_mid_line(path):
-            f.write("\n")
-        w = csv.writer(f, lineterminator="\n")
-        if write_header:
-            w.writerow(DIVIDEND_FIELDS)
-        for d in rows:
-            w.writerow([symbol, d.ex_date.isoformat(), _num(d.amount)])
+    lines = [[symbol, d.ex_date.isoformat(), _num(d.amount)] for d in rows]
+    append_rows(root / DIVIDENDS, DIVIDEND_FIELDS, lines)
     return len(rows), problems
