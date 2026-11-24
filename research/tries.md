@@ -3622,6 +3622,14 @@ Never edit or delete a row.
 | 2026-11-24 19:22 | halving-2 | S2 alone-btc@LZ BTC-calendar placebos (Sharpe 1.23, rank 1/41, null SD 0.22) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | C2 LZ alt/BTC own window minus outside (+0.402/yr, rank 32/41 most negative; gate fail: BTC-beta) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | BTC alone-own placebos (rank 1/41, shown) | screen | train | 2011-07-19 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:48 | cost-band | band05 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +22368.9% | 32.5% | 2.06 |
+| 2026-11-24 19:48 | cost-band | band05/bills | robustness | train | 1994-02-01 | 2025-11-09 | 1.13 | +26578.8% | 31.1% | 2.04 |
+| 2026-11-24 19:48 | cost-band | band02 | variant | train | 1994-02-01 | 2025-11-09 | 1.06 | +19426.3% | 36.1% | 2.44 |
+| 2026-11-24 19:48 | cost-band | band02/bills | robustness | train | 1994-02-01 | 2025-11-09 | 1.09 | +22485.7% | 35.2% | 2.43 |
+| 2026-11-24 19:48 | cost-band | band05@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.56 | +234.6% | 91.7% | 3.27 |
+| 2026-11-24 19:48 | cost-band | band02@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.53 | +165.3% | 92.5% | 4.09 |
+| 2026-11-24 19:52 | cost-band | ceiling: `tsmom12` with coin fills free (not tradable; step 1b, `lib/wide16_ceiling.py`): +0.0103, SE 0.0017, z 6.0; drift costs only +0.0085, z 10.0 | note | train | 1994-02-01 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:52 | cost-band | post hoc split (`lib/wide16_posthoc.py`, not a try): band05 +0.049 = drift bet +0.054 (coin fills free) + fees/tiers -0.005; coin share while held 0.274 vs 0.273 | note | train | 1994-02-01 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:48 | seasonal-20y | seasonal-20y-overlay@US-ind10 | robustness | train | 1945-07-25 | 2025-11-09 | 0.83 | +5654.2% | 19.1% | 5.31 |
 | 2026-11-24 19:48 | seasonal-20y | seasonal-20y-alone@US-ind10 | robustness | train | 1945-07-25 | 2025-11-09 | 0.73 | +16610.6% | 35.3% | 5.47 |
 | 2026-11-24 19:48 | seasonal-20y | tsmom12@US-ind10 | robustness | train | 1945-07-25 | 2025-11-09 | 0.98 | +190644.3% | 30.1% | 2.73 |
