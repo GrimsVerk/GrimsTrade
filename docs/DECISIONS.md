@@ -2,6 +2,35 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-24 (delayed schedule, owner-decisions D1, taken by default): the daily job is
+  scheduled for 22:30 UTC (`cron: "30 22 * * *"` in `.github/workflows/daily.yml`, unchanged),
+  but GitHub starts scheduled runs hours late. Observed (`gh run list --workflow daily.yml`,
+  all 12 scheduled runs so far, 2026-11-12 to 2026-11-24): every one started the next UTC day,
+  between 02:01 and 06:13 UTC; 11 of the 12 between 02:01 and 04:41 (earliest 02:01:45 on
+  11-15, latest 04:40:42 on 11-17, then 06:13:08 on 11-24). Accepted as is; the schedule is not
+  moved (moving the cron does not stop the delay). What it means:
+  - No look-ahead: a live decision is stamped with the time it really ran (`now`) and counts
+    from its commit (`ledger.in_force`); it sees only bars closed by then and fills at each
+    asset's first open after it (DESIGN, "Timing rules"). A late run sees more, never fills
+    earlier (`docs/audits/honesty-2026-11.md`, "A late run cannot cheat").
+  - Which bars a run at 02:00-06:13 UTC on day D+1 (the run due D 22:30) sees and fills at:
+    ETF bar D (closed 21:00 UTC on D), filled at the next ETF open (13:30 UTC on D+1 on a
+    weekday), as at 22:30; crypto bar D too (closed 00:00 UTC on D+1, one bar more than a 22:30
+    run sees), filled at the open of D+2 (00:00 UTC), about 18-22 hours after the decision
+    instead of 1.5. In bars the crypto lag is the same as in backtests (`gym.DECIDE_AT` =
+    22:30): a signal from bar d fills at the open of d+2 either way (entry of 2026-11-12). What
+    differs from a backtest: the ETF leg now fills about 10.5 hours before the crypto leg
+    instead of 13.5 hours after it, so an ETF buy paid for by a crypto sale waits for that sale
+    (unpaid buys wait for cash, entry of 2026-11-17, audit G2) and fills at a later ETF open;
+    and each live decision pairs ETF bars through D with crypto bars through D, which no 22:30
+    backtest decision does. The gym is tested at both decision times
+    (`tests/test_audit_gym.py`, cases `22:30` and `late-cron-03:00`).
+  - The ordering holds while a run starts after 00:15 UTC (crypto bar D stored) and before
+    13:30 UTC (the next ETF open). A run that ever starts on time (before 00:00 UTC) sees one
+    crypto bar fewer and fills crypto a day earlier; a dispatched run can too. Compare the live
+    record with backtests with this gap in mind; it is not a reason to rerun anything.
+  - A second, crypto-only run just after 00:00 UTC stays in BACKLOG.
+
 - 2026-11-18 (PROPOSED by lane forward-1, not yet decided by the owner): a forward-only shadow
   registry (`docs/forward-registry.md`, `src/grimstrade/forward.py`). A candidate rule is frozen
   as an append-only line in `research/forward/registry.jsonl`: sha256 of its code files,
@@ -243,7 +272,9 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   AFP 2012) is not copied. The gym's 1% band is the only damping (more turnover, more whipsaw near
   a zero signal). `xs_momentum` still forms cohorts at month ends. Why: one daily decision time
   for all strategies keeps the runner simple; changing it would be a new try.
-- 2026-11-12: Execution timing. Decisions run once a day at 22:30 UTC and fill at the next open.
+- 2026-11-12: Execution timing. Decisions run once a day, scheduled for 22:30 UTC (in practice
+  GitHub starts them at about 02:00-06:15 UTC the next day: entry of 2026-11-24), and fill at
+  the next open.
   Crypto daily bars close at 00:00 UTC, so a crypto signal from bar d is filled at the open of
   d+2: about one day later than Connors' close-of-signal execution. `crypto_mean_reversion` is
   therefore "RSI(2) with one-day-delayed execution"; this costs it some edge and is the honest
