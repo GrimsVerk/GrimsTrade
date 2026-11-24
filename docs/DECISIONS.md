@@ -2,6 +2,37 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-24 (own-vol 70% paper book, lane `ownvol70-1`; owner-decisions C2, answered by its
+  default): one new live paper book, `own_vol_70` (`src/grimstrade/strategies/own_vol.py`),
+  next to the presets; no live strategy changed. What: `tsmom12` (equal slots over the assets
+  with a year of bars, a slot held while its 12-month return is positive, decided on Fridays)
+  times a monthly share min(1, k / sigma), the rest in cash. sigma = `tsmom12`'s own volatility
+  over the 52 complete weeks before the month; k solves mean(min(1, k / sigma_m)) = 70% over
+  every monthly sigma known by the month's 1st (expanding window); share 70% until 24 sigmas
+  exist or while the month's sigma is unknown; a sigma of 0 keeps the previous share; capped at
+  100% (no leverage). This is exactly the no-look-ahead rule of risk-menu-3 (PR #110,
+  `research/cards/risk-menu-3.md`, `research/lib/riskmenu3_run.py` `vt_expanding`); tests check
+  the Friday weights, sigma and monthly share against that code on a fixture. Why: C2's default
+  ("keep the presets, add one own-vol 70% book, no-look-ahead form"); the research form with
+  look-ahead (k fitted on the whole window) is not used. Not an edge: on 1994-2025 its Sharpe
+  lead over `tsmom12` (+0.10) is about one paired SE; it is a risk level (2007-2025: realised
+  share 0.61, worst loss 15.7% against 24.6% for `tsmom12` at a fixed 70%,
+  `research/risk-menu.md`).
+  - Start window (assumption): the stored bars begin 2024-12, so the book's own sigma first
+    exists for 2027-01 and the 24-sigma warm-up would hold it at a fixed 70% until about 2029,
+    which would make it C2's option 2, not 3. So the expanding window starts with the research
+    run's 362 monthly sigmas 1995-03..2025-10 (`PRIOR`, from `research/lib/ownvol_prior.py`,
+    rounded to 6 decimals; k on them 0.083779, `vt_expanding`'s own last k on this checkout; the
+    0.083859 risk-menu-3 printed predates the fee-tier and dividend gym changes). All of them
+    come from bars that closed before 2025-11, so no decision sees past itself. Until 2027-01
+    the book holds `tsmom12` at 70% ("no sigma yet"); from then the live sigmas join the window.
+  - Small differences from the research harness: the live sigma uses close-to-close returns of
+    the stored bars, without costs or the T-bill rate (the research sleeve was costed, measured
+    over bills, on dividend-adjusted prices); a month's share is used from the first decision
+    dated in that month (with the 22:30 UTC decision the reset fills on the 2nd, a day after the
+    research reset); between resets the gym holds share x weights (1% band) instead of letting
+    the share drift.
+
 - 2026-11-18 (PROPOSED by lane forward-1, not yet decided by the owner): a forward-only shadow
   registry (`docs/forward-registry.md`, `src/grimstrade/forward.py`). A candidate rule is frozen
   as an append-only line in `research/forward/registry.jsonl`: sha256 of its code files,
