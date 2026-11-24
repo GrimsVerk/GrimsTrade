@@ -18,8 +18,10 @@ import hashlib
 import inspect
 import json
 import sys
+from collections import Counter
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
+from itertools import groupby
 from pathlib import Path
 
 from grimstrade import data, gym, intraday, ledger, rates, report, signals, sources, weekly
@@ -191,9 +193,11 @@ def _dividends(root: Path, get: sources.Get) -> list[str]:
 
 
 def _rates(root: Path, now: datetime, get: sources.Get) -> list[str]:
-    """Append the T-bill rates (`^IRX`) not stored yet: from the first stored bar on the first
-    run, then from the day after the newest stored rate. A failure is a problem line; the gym
-    carries the last known rate forward meanwhile (DECISIONS, 2026-11-18, cash interest)."""
+    """Append the T-bill rates not stored yet: from the first stored bar on the first run, then
+    from the day after the newest stored rate. Yahoo `^IRX` first, the Treasury for sessions
+    Yahoo lacks (DECISIONS, 2026-11-24, second bill-rate source); each stored row's source goes
+    in `data/sources.jsonl`. Only when no source answered is it a problem line; the gym carries
+    the last known rate forward meanwhile (DECISIONS, 2026-11-18, cash interest)."""
     stored = rates.load(root)
     if stored:
         since = stored[-1].date + timedelta(days=1)
@@ -201,11 +205,23 @@ def _rates(root: Path, now: datetime, get: sources.Get) -> list[str]:
         firsts = [b[0].date for b in data.load_all(root).values() if b]
         since = min(firsts) if firsts else now.date() - timedelta(days=BOOTSTRAP_DAYS)
     try:
-        added, refused = rates.append(root, rates.fetch(since, now, get))
+        found, failed, answered = rates.fetch(since, now, get)
+        for f in failed:
+            print(f"rates: FAILED {f}", file=sys.stderr)
+        if not answered:
+            return [f"rates not fetched: {'; '.join(failed)}"]
+        source_of = {r.date: src for src, r in found}
+        try:
+            added, refused = rates.append(root, [r for _, r in found])
+        finally:  # append may store some rows and then refuse the rest: log what got in
+            new = rates.load(root)[len(stored) :]
+            for src, run in groupby(new, key=lambda r: source_of[r.date]):
+                data.log_days(root, rates.SYMBOL, src, [r.date for r in run], ledger.iso(now))
     except Exception as e:  # noqa: BLE001 - one bad answer must not stop the run
         print(f"rates: FAILED {e}", file=sys.stderr)
         return [f"rates not fetched: {e}"]
-    print(f"rates: +{added} (yahoo ^IRX)")
+    by = Counter(source_of[r.date] for r in new)
+    print(f"rates: +{added} ({', '.join(f'{n} {s}' for s, n in sorted(by.items())) or 'none new'})")
     return refused
 
 

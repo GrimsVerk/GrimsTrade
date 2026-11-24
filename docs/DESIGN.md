@@ -22,7 +22,8 @@ keeps score per strategy against the benchmarks.
   fractional units, 10,000 USD start. `backtest()` makes historical decisions with the same rules.
 - `strategies/`: one file per strategy, `decide(history) -> (weights, reason)`. `LIVE` lists the ones
   the runner calls.
-- `rates.py`: the cash rate (13-week T-bill, Yahoo `^IRX`), `data/rates.csv`, append-only.
+- `rates.py`: the cash rate (13-week T-bill, Yahoo `^IRX`, US Treasury bill rates for sessions
+  Yahoo lacks), `data/rates.csv`, append-only.
 - `ledger.py`: `ledger/decisions.jsonl` (one line per decision) and `ledger/tries.jsonl` (one line
   per strategy ever tried, for the deflated Sharpe).
 - `report.py`: scoreboard (return, Sharpe, max drawdown, turnover) per strategy.

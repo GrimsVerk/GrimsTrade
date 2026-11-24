@@ -159,6 +159,26 @@ def test_a_doctored_min_sample_is_refused(repo: Path) -> None:
         forward.freeze(reg(repo), r, T0)
 
 
+def test_a_registry_line_without_frozen_at_is_refused(repo: Path) -> None:
+    # A proposal (an `entry` row) pasted into the registry by hand: no freeze time, refused.
+    forward.freeze(reg(repo), row(repo), T0)
+    ledger._append(reg(repo), row(repo, "pasted@1"))
+    with pytest.raises(forward.MissingFreezeTime, match="pasted@1"):
+        forward.read(reg(repo))
+    with pytest.raises(forward.MissingFreezeTime):
+        forward.freeze(reg(repo), row(repo, "r@2"), T0 + timedelta(hours=1))
+
+
+def test_a_malformed_frozen_at_is_refused(repo: Path) -> None:
+    ledger._append(reg(repo), {**row(repo), "frozen_at": "2026-11-19 12:00"})
+    with pytest.raises(forward.MissingFreezeTime):
+        forward.read(reg(repo))
+    reg(repo).write_text("")
+    ledger._append(reg(repo), {**row(repo), "frozen_at": None})
+    with pytest.raises(forward.MissingFreezeTime):
+        forward.read(reg(repo))
+
+
 # --- freeze time ---
 
 
@@ -257,6 +277,68 @@ def test_sharpe_and_mean_scores(repo: Path) -> None:
         assert s.p is not None and 0 < s.p < 0.5
 
 
+# --- observation files are append-only ---
+
+
+def obs_file(repo: Path, rule_id: str = "r@1") -> Path:
+    return repo / "research/forward/obs" / f"{rule_id}.jsonl"
+
+
+def write_obs(path: Path, r: dict[str, Any], starts: list[datetime], values: list[float]) -> None:
+    for o in obs(r, starts, values):
+        ledger._append(
+            path,
+            {
+                "start": ledger.iso(o.start),
+                "end": ledger.iso(o.end),
+                "value": o.value,
+                "rule_hash": o.rule_hash,
+            },
+        )
+
+
+def test_appending_observations_passes(repo: Path) -> None:
+    r, frozen = committed(repo)
+    path = obs_file(repo)
+    assert forward.read_obs(path) == []  # no file yet
+    start = frozen + timedelta(days=1)
+    write_obs(path, r, days(start, 3), [1.0, -1.0, 1.0])
+    commit(repo, T0 + timedelta(days=7))
+    write_obs(path, r, days(start + timedelta(days=6), 2), [1.0, 1.0])  # uncommitted append
+    assert len(forward.read_obs(path)) == 5
+    commit(repo, T0 + timedelta(days=14))
+    got = forward.read_obs(path)
+    assert [o.value for o in got] == [1.0, -1.0, 1.0, 1.0, 1.0]
+    assert forward.score(r, frozen, got).n == 5
+
+
+def test_an_edited_committed_observation_is_refused(repo: Path) -> None:
+    r, frozen = committed(repo)
+    path = obs_file(repo)
+    write_obs(path, r, days(frozen + timedelta(days=1), 3), [1.0, -1.0, 1.0])
+    commit(repo, T0 + timedelta(days=7))
+    path.write_text(path.read_text().replace('"value":-1.0', '"value":1.0'))  # a loss turned win
+    with pytest.raises(ledger.LedgerTampered):
+        forward.read_obs(path)
+    commit(repo, T0 + timedelta(days=8))  # committing the edit does not launder it
+    with pytest.raises(ledger.LedgerTampered):
+        forward.read_obs(path)
+
+
+def test_a_removed_committed_observation_is_refused(repo: Path) -> None:
+    r, frozen = committed(repo)
+    path = obs_file(repo)
+    write_obs(path, r, days(frozen + timedelta(days=1), 3), [1.0, -1.0, 1.0])
+    commit(repo, T0 + timedelta(days=7))
+    lines = path.read_text().splitlines(keepends=True)
+    path.write_text(lines[0] + lines[2])  # the loss dropped
+    with pytest.raises(ledger.LedgerTampered):
+        forward.read_obs(path)
+    path.unlink()  # the whole file deleted
+    with pytest.raises(ledger.LedgerTampered):
+        forward.read_obs(path)
+
+
 # --- the frozen code ---
 
 
@@ -284,6 +366,8 @@ def test_proposals_are_not_frozen_and_their_numbers_are_the_calculators() -> Non
         assert r["rule_hash"] == forward.rule_hash(r["code"], r["params"], r["data"])
         assert r["min_sample"] == forward.min_sample(forward.plan_of(r))
         assert r["years_needed"] == round(forward.years_needed(forward.plan_of(r)), 1)
+    with pytest.raises(forward.MissingFreezeTime):  # a proposal is not a registry
+        forward.read(CANDIDATES)
 
 
 def test_table_lists_each_rule() -> None:
