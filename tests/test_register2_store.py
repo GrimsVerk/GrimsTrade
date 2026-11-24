@@ -86,6 +86,39 @@ def test_estimate_counts_each_live_strategy_once(
     assert r2.pick_live(one, {"x": old}) == one  # the store as committed: unchanged
 
 
+def test_pick_live_prefers_the_current_code_under_another_simulator(
+    r2: ModuleType, capsys: pytest.CaptureFixture[str]
+) -> None:
+    # register-8 (review of #158): with several stored versions and none exactly current,
+    # the one whose `code-<c>` is the current code_hash wins over leaving the strategy out.
+    old = "live@0123456789ab"
+    a1, a2 = "live@code-aaaa-sim-1111", "live@code-aaaa-sim-2222"
+    b1 = "live@code-bbbb-sim-1111"
+    now = "live@code-aaaa-sim-9999"  # current code aaaa, a simulator not in the store
+
+    def s(src: str, name: str) -> Any:
+        return series(r2, src, "live", name, 0.0004)
+
+    lives = [s(old, "x"), s(a1, "x"), s(b1, "x")]  # one of the current code
+    lives += [s(b1, "y"), s(a2, "y"), s(a1, "y")]  # two of it: the first tag in sorted order
+    lives += [s(old, "z"), s(b1, "z")]  # none of it: the only versioned one, as before
+    lives += [s(b1, "w"), s("live@code-cccc-sim-1111", "w")]  # none of it, two versions: none
+    lives += [s("live@code-unknown-sim-1111", "u"), s("live@code-unknown-sim-2222", "u")]
+    current = {"x": now, "y": now, "z": now, "w": now, "u": "live@code-unknown-sim-9999"}
+    picked = r2.pick_live(lives, current)
+    assert [(p.variant, p.source) for p in picked] == [("x", a1), ("y", a1), ("z", b1)]
+    err = capsys.readouterr().err
+    assert "of the current code but another simulator (2): x, y" in err
+    assert "not of the current code (1): z" in err
+    assert "none current (2): w, u" in err  # an unknown code hash matches nothing
+    # Order of the input does not change the pick.
+    assert [(p.variant, p.source) for p in r2.pick_live(lives[::-1], current)] == [
+        ("z", b1), ("y", a1), ("x", a1),
+    ]  # fmt: skip
+    assert r2.code_of(a2) == "aaaa" and r2.code_of(old) is None
+    assert r2.code_of("harness@x") is None and r2.code_of("live@code-unknown-sim-1") is None
+
+
 def test_live_tags_follow_the_strategy_code_and_the_simulator(r2: ModuleType) -> None:
     from grimstrade import run_daily
     from grimstrade.strategies import LIVE
