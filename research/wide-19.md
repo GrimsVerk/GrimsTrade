@@ -57,3 +57,80 @@ descriptive and is left for later. The two that survive are both credibility est
 A2): they change only *when* `tsmom12` is in, they have no free parameter (the weight on the
 asset's own year is estimated from the data each Friday), and they shrink toward two different
 complements, the book now (A1) or the asset's long-run rate (A2). Both are expected to fail.
+
+## Step 2. The test (card `cards/wide-19.md`, pushed before any number)
+
+See the card. Two variants, both against `tsmom12` on the primary test, both cash conventions;
+out-of-universe signs on the 8 ETFs and the four price indexes.
+
+Order: candidates and card f1cf2a4 (23:43 UTC; the card says "about 23:50", a slip: it was
+pushed at 23:43), script and tests 68cf51b (23:45), one dry run (last 120 days, nothing logged;
+it showed end-of-window Z values of 0.00 for `cred-xs` and 0.02-0.16 for `cred-lr` on the two
+other sets, plumbing only, after the card), then the one real run (23:45).
+
+## Step 3. Result (one real run, 2026-11-24 23:45 UTC): both fail
+
+Tables: [`results/wide-19.md`](results/wide-19.md) (`uv run --with numpy python
+research/lib/wide19.py`).
+
+| Primary test, 1994-02-01 .. 2025-10-31 | Sharpe | dSharpe vs `tsmom12` | Paired SE | z | corr | Edge it needed (4.70 SE) | Max DD | Slot flips/yr | Z (median) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `tsmom12` | 1.044 | - | - | - | - | - | 37.4% | 7.2 | (1) |
+| `cred-xs` | 1.091 | +0.047 | 0.049 | **+0.95** | 0.95 | +0.23 | 39.9% | 3.7 | 0.00 |
+| `cred-xs`, above bills | 0.977 | +0.046 | 0.049 | +0.94 | | | | | |
+| `cred-lr` | 0.948 | -0.097 | 0.091 | **-1.06** | 0.88 | +0.43 | 48.6% | 2.4 | 0.19 |
+| `cred-lr`, above bills | 0.833 | -0.098 | 0.091 | -1.07 | | | | | |
+
+| Out of universe (signs) | `cred-xs` dSharpe (z) | `cred-lr` dSharpe (z) |
+|---|---:|---:|
+| 8 ETFs, 2001-2025 | +0.026 (+0.28) | -0.070 (-0.54) |
+| 4 price indexes, 1962-2025 | -0.024 (-0.44) | -0.065 (-0.82) |
+
+**Verdict: both fail the card's bar** (z >= 4.70 in both cash conventions and positive on both
+other sets). Nothing goes to the paper book.
+
+- **The data give a year of one asset's drift almost no credibility.** For `cred-xs` the
+  estimated between-asset variance of true drifts was below zero on almost every Friday (the
+  cross-sectional spread of one-year drifts, 0.78 V on the six, 0.71 V on the ETFs and 0.59 V
+  on the indexes at the end, is smaller than the sampling noise V = 1/52 alone), so Z = 0 and
+  the rule became a book-level switch: every eligible asset in while the book's average drift
+  is positive. That book is +0.047 on the six (z 0.95; eras -0.02, +0.09, +0.14, -0.01, +0.09),
+  half the flips, more exposure (0.82 vs 0.76) and a deeper worst loss (40% vs 37%); +0.026 on
+  the ETFs, -0.024 on the indexes. A tie, on the side of `breadth-gate`'s untested hint.
+- **`cred-lr` leans to holding and loses where holding loses.** Its Z (median 0.19 on the six,
+  0.01 on the ETFs, 0.24 on the indexes) moves the estimate only a fifth of the way from the
+  asset's long-run rate to the year's drift, so it held through most falls: 2000-09 -0.21 and
+  2022-25 -0.23 on the six, 2000-09 -0.58 on the indexes, worst loss 49-52%. It led only in the
+  2010s bull markets.
+- **Post hoc (not a try, `lib/wide19_posthoc.py`).** Buhlmann's estimator assumes independent
+  risks; with correlated assets the noise part of the cross-sectional variance is V (1 - rho),
+  not V, so Z = 0 is biased low. Corrected at the last Friday (mean pairwise rho of weekly
+  returns 0.15 / 0.33 / 0.60), Z is 0.00 on the six, 0.03 on the ETFs and 0.16 on the indexes:
+  the conclusion stands. The 1994-99 era (SPY alone, so Z plays no part) differs by -0.022:
+  the 52-week Friday grid is 364 days, not `tsmom12`'s 365, a small timing difference, not the
+  method.
+- **The power statement held**: |z| stayed within 1.1; both expected fails.
+
+## What this says about the fields
+
+- **Most ideas from forecasting, insurance and OR are tested records in other words**: 9 of 12
+  candidates (calibrated soft slots, persistence/climatology blends, lookback ensembles,
+  reinsurance stops, experience-rating ladders, re-entry stopping rules, robust lookback sets,
+  and evaluations the project already ran as IC tables, insure-1 and power-map-1).
+- **Credibility theory's honest-evaluation answer**: as an estimate of an asset's drift, one
+  year of its own returns earns a credibility of 0 to about 0.2, both against the book and
+  against its own history. That fits the project's reading that `tsmom12` is not a drift
+  forecast but crash insurance (insure-1/2): it pays in the tails, which a mean-squared-error
+  method cannot see. Shrinking the drift toward a complement therefore either changes little
+  (the book switch) or gives the insurance back (toward holding).
+- **Left open**: M2 `rev-costloss` (relative economic value of the exit for each cost/loss
+  ratio) as a descriptive reframing of insure-1; `cred-xs` as a book-level switch is a tie that
+  a pooled design (pooled-1's 41 markets) could judge, if a later lane wants it.
+
+## Count
+
+This run adds **2 mechanisms tested by a strategy (`cred-xs`, `cred-lr`; 2 variants, 6
+robustness rows), 1 new descriptive idea (`rev-costloss`) and 9 killed as overlaps (note rows
+in `tries.md`, not counted as tries, as wide-16/18 did), none passed**. On wide-18's count: 92
+mechanisms, 23 strategy tests, 22 gates, none passed (not counting wide-17's, which runs in
+parallel).
