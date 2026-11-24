@@ -22,7 +22,7 @@ most of the calm-market damage; the 6-month leg costs least.**
 
 **The gap between stocks and other markets is not regime mix. By the card's rule (reading B)
 it is the risk part: +0.052 of the +0.053 gap. The return parts are equal (-0.024 against
--0.025). `e4`'s part positions cut volatility by about 15% everywhere. That is worth more
+-0.025). `e4`'s part positions cut volatility by 12-15% in every class. That is worth more
 Sharpe where `tsmom12` itself earns more per unit of risk: stocks 0.48, bonds and currencies
 0.29.** With rebound falls scaled to each series' volatility, bonds and currencies gain about
 as much in rebounds as stocks (+0.088 against +0.108, post hoc). They lose it again in calm
@@ -142,7 +142,7 @@ at bonds+FX rates) + rates + risk part, in both orders:
   the order, rates +0.049 or +0.013. Rebounds are about as profitable on bonds and currencies
   as on stocks (+0.088 against +0.108). Stocks keep more of it in calm markets (-0.046 against
   -0.060) and in whipsaw (+0.028 against +0.013).
-- Commodities (shown, not judged) are behind stocks by +0.082: mix +0.042 to +0.085 (B / VB),
+- Commodities (shown, not judged) are behind stocks by +0.082: mix +0.023 to +0.085 (B and VB, both orders),
   risk part +0.040. Commodity spot spends more time in slow bears (0.32), where `e4` loses
   against the matched twin.
 
