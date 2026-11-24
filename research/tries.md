@@ -3899,3 +3899,4 @@ Never edit or delete a row.
 | 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.81 | +7486.9% | 50.8% | 4.53 |
 | 2026-11-24 19:49 | seasonal-20y | tsmom12 | baseline | train | 1994-02-01 | 2025-11-09 | 1.04 | +18044.5% | 37.4% | 2.81 |
 | 2026-11-24 19:49 | seasonal-20y | hold | baseline | train | 1994-02-01 | 2025-11-09 | 0.88 | +20054.9% | 68.8% | 1.46 |
+| 2026-11-24 20:01 | power-map | power map of strategy classes vs the bar (z 4.69): edge needed at 80% power C1 six assets +0.51, US 1927 +0.29, 13 markets pooled (Y_eff 191) +0.21, C2 +0.79 (ETFs/coins), +0.34 (Ken French at the long-only rho 0.84; long-short near rho 0: +0.85), C3 daily +0.72, C4 +0.43, C5 +3.03; alpha form IR 0.43-2.40; chance a top-plausible edge passes <= 0.02 where known; forward d +0.10 needs 72+ years; no backtest (research/power-map-1.md) | note | - | - | - | - | - | - | - |
