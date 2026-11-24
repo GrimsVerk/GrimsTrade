@@ -4019,6 +4019,27 @@ Never edit or delete a row.
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
+| 2026-11-24 23:31 | wide-18 | vclock12 | variant | train | 1994-02-01 | 2025-10-31 | 0.88 | +6123.2% | 48.3% | 3.32 |
+| 2026-11-24 23:31 | wide-18 | vclock12/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.91 | +7410.6% | 47.5% | 3.30 |
+| 2026-11-24 23:31 | wide-18 | huber52 | variant | train | 1994-02-01 | 2025-10-31 | 1.04 | +20286.7% | 40.1% | 3.68 |
+| 2026-11-24 23:31 | wide-18 | huber52/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.07 | +23383.1% | 36.5% | 3.66 |
+| 2026-11-24 23:31 | wide-18 | vclock12@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.56 | +227.1% | 23.3% | 2.87 |
+| 2026-11-24 23:31 | wide-18 | huber52@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.56 | +251.1% | 27.5% | 3.29 |
+| 2026-11-24 23:31 | wide-18 | vclock12@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.68 | +3839.4% | 39.6% | 2.77 |
+| 2026-11-24 23:31 | wide-18 | huber52@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.62 | +3436.0% | 34.7% | 2.44 |
+| 2026-11-24 23:32 | wide-18 | hann12: tapered FIR trend filter (killed in step 1: sma200 / e4 / trend-tune overlap; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | kalman-llt: local-linear-trend Kalman slope (killed: per-asset lookback, wf-asset; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | cusum-exit: CUSUM / SPRT drift-change exit (killed: changepoint-momentum, coin-fast-exit, drawdown-control; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | pd-trend: derivative action on the 12-month return (killed: turning-points, e4, fast-reentry; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | gain-schedule: volatility-scheduled lookback (merged into vclock12; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | perm-entropy: permutation-entropy / Lempel-Ziv gate (killed: hurst-entropy-gate parked; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | ib-soft: rate-distortion soft slot (killed: kelly-shrunk, ml-sizing; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | mst-length: correlation-network MST length trigger (killed: absorption-ratio, turbulence; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | spillover: Diebold-Yilmaz connectedness (killed: absorption-ratio, transfer-entropy; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | centrality-tilt: weight peripheral assets (killed: multi-signal BAB wrong sign; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | tail-index: Hill exponent crash warning (killed: critical-slowing, volatility in disguise; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | irreversibility: Zumbach time-reversal asymmetry for sizing (killed: a volatility target; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | post hoc (not a try): vclock12 window by asset (lib/wide18_posthoc.py); median 1.22-1.30 y on BTC, ETH, QQQ, GLD, 0.92-0.94 on SPY, TLT | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
 | 2026-11-24 23:34 | xs-century-1 | tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12) | baseline | train | 1928-07-01 | 2025-10-31 | 0.55 | +49427.7% | 44.3% | - |
 | 2026-11-24 23:34 | xs-century-1 | book (primary): alpha vs tsmom12 IR +0.31 z +2.75 (monthly excess x sqrt12) | variant | train | 1928-07-01 | 2025-10-31 | 0.40 | +501.1% | 29.3% | - |
 | 2026-11-24 23:34 | xs-century-1 | R1 gross: alpha vs tsmom12 IR +0.88 z +7.39 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.96 | +9139.5% | 18.8% | - |
