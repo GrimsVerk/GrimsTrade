@@ -48,7 +48,8 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   needing the desktop, not about models in general.
 - Idea sources from the owner (2026-11-12), to read for hypotheses, never as truth:
   - Finance YouTube channels, fetched with GrimsVerk/YT-Harvest (the channel list is kept
-    outside this repo; transcripts stay local, never in git; cite video + timestamp on each card).
+    outside this repo: `yt-channels.toml` in `private_dir` from `local.toml`, see
+    `local.toml.example`; transcripts stay local, never in git; cite video + timestamp on each card).
   - FOSS trading repos (from one repo-review video): TauricResearch/TradingAgents,
     ZhuLinsen/daily_stock_analysis, HKUDS/Vibe-Trading, anthropics/financial-services,
     freqtrade/freqtrade, Jakeschincariol/day-trader-skill, virattt/ai-hedge-fund,
