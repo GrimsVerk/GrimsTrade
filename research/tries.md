@@ -4040,6 +4040,13 @@ Never edit or delete a row.
 | 2026-11-24 23:32 | wide-18 | tail-index: Hill exponent crash warning (killed: critical-slowing, volatility in disguise; not run) | note | train | - | - | - | - | - | - |
 | 2026-11-24 23:32 | wide-18 | irreversibility: Zumbach time-reversal asymmetry for sizing (killed: a volatility target; not run) | note | train | - | - | - | - | - | - |
 | 2026-11-24 23:32 | wide-18 | post hoc (not a try): vclock12 window by asset (lib/wide18_posthoc.py); median 1.22-1.30 y on BTC, ETH, QQQ, GLD, 0.92-0.94 on SPY, TLT | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.63 | +369.0% | 27.4% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-in-vxth-bills@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.74 | +357.9% | 18.7% | 11.56 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-x2@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.34 | +182.2% | 43.5% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-cost50@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.59 | +325.2% | 28.1% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-cash0+vxth-leg@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.61 | +344.9% | 29.9% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-delever-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.74 | +369.0% | 22.3% | 1.63 |
+| 2026-11-24 23:32 | vix-call-1 | mix-tsmom12-pput-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.65 | +377.6% | 42.0% | 13.63 |
 | 2026-11-24 23:34 | xs-century-1 | tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12) | baseline | train | 1928-07-01 | 2025-10-31 | 0.55 | +49427.7% | 44.3% | - |
 | 2026-11-24 23:34 | xs-century-1 | book (primary): alpha vs tsmom12 IR +0.31 z +2.75 (monthly excess x sqrt12) | variant | train | 1928-07-01 | 2025-10-31 | 0.40 | +501.1% | 29.3% | - |
 | 2026-11-24 23:34 | xs-century-1 | R1 gross: alpha vs tsmom12 IR +0.88 z +7.39 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.96 | +9139.5% | 18.8% | - |
