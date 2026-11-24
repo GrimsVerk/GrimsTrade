@@ -148,7 +148,7 @@
     }
   },
   "generated_by": "uv run --with numpy python research/register2.py all",
-  "harness_ref": "origin/summary-2",
+  "harness_ref": "512ae2ce13e2",
   "harness_series": 39,
   "harness_series_matched": 36,
   "k_max": 60,
