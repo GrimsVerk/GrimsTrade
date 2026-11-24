@@ -57,7 +57,7 @@ ceiling is measured on the baseline alone: `tsmom12` replayed with zero cost on 
 (not a rule anyone can trade; no new configuration of a rule). If even removing every coin fee
 cannot reach z 4.69, no rule of this kind can pass on the primary test, and the card says so.
 
-## Step 1b. The size of the prize (baseline only, 2026-11-24 ~20:15 UTC)
+## Step 1b. The size of the prize (baseline only, 2026-11-24 about 19:43 UTC; first written as "~20:15", a slip)
 
 `uv run --with numpy python research/lib/wide16_ceiling.py`: `tsmom12` through the gym, once
 with its costs (Sharpe 1.045, the logged 1.05) and once with coin fills free. No rule, no try
@@ -65,9 +65,16 @@ with its costs (Sharpe 1.045, the logged 1.05) and once with coin fills free. No
 
 | Coin fills from 2015 (10.9 years) | Fills a year | Volume, x equity a year | Fee, % of equity a year | Slip |
 |---|---:|---:|---:|---:|
-| Entries | 1.7 | 0.27 | 0.106% | 0.013% |
-| Exits | 1.5 | 0.25 | 0.088% | 0.012% |
-| Drift top-ups and trims | **76.1** | **1.06** | **0.378%** | 0.053% |
+| Entries | 1.6 | 0.27 | 0.106% | 0.013% |
+| Exits | 1.4 | 0.23 | 0.081% | 0.012% |
+| Drift top-ups and trims | **59.4** | **0.75** | **0.242%** | 0.038% |
+
+Erratum (after the real run, 2026-11-24 19:50 UTC): the first version of this table, the one
+the card quotes, counted coin fills from BTC's first eligible year (2013) but divided by the
+10.9 years from 2015, so it read 1.7 / 1.5 / 76.1 fills a year and drift costs 0.378% + 0.053%.
+Fixed in `wide16_ceiling.py` (date filter); the rows above are the corrected ones and match
+the run's own count (59.4 drift fills, 0.279% a year for `tsmom12`). The ceilings below never
+used the per-year table and do not change. The card's band does not depend on these numbers.
 
 | Ceiling (not tradable) | dSharpe vs `tsmom12` | Paired SE | z |
 |---|---:|---:|---:|
@@ -81,3 +88,91 @@ so its z is high. A rule that kept the book and stopped paying for drift could c
 the question is how much tracking noise the saving brings with it. The card
 (`cards/cost-band.md`) states the power before any run: the noise allowed is about 0.16 s % a
 year, the expected noise 1-2% a year, so the expected result is a fail.
+
+## Step 2. The pick: `cost-band` (card `cards/cost-band.md`, pushed before any run)
+
+C1 + B4: `tsmom12`'s weights unchanged, only the gym's rebalance band widened, so a held slot
+is traded back to 1/n only once it is `b` of equity away. `band05` (primary): b = 0.05, the
+cube-root law's no-trade half-width for a 1/6 coin slot at the gym's zero-volume coin cost
+(0.85%) and risk aversion 2. `band02` (secondary): b = 0.02. Pass = z >= 4.69 on the primary
+test in both cash conventions (cash 0 and above bills), dSharpe > 0 on the 6-coin set, max
+drawdown at most 1 point worse. Power stated in the card before the run: the bar is reachable
+(drift costs alone are worth z 10 at zero tracking error), but the tracking error allowed is
+about 0.16% a year x the share of the cost saved; expected z 0.5-1.5, expected fail.
+
+Order: card 0320cf7 (19:45 UTC), script and tests 0c76dca (19:48), one dry run (see the card's
+disclosure: it printed the last 120 days' pass lines by mistake), then one real run (19:48).
+
+## Step 3. Result (one real run, 2026-11-24 19:48 UTC): fails the bar, nearest miss on this design
+
+Tables: [`results/cost-band.md`](results/cost-band.md) (`uv run --with numpy python
+research/lib/wide16.py`).
+
+| Primary test, 1994-2025 | Sharpe | dSharpe vs `tsmom12` | Paired SE | z | One-sided p | Max DD | Turnover | Coin drift fills/yr (cost) | Tracking error |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `tsmom12` (b = 0.01) | 1.045 | - | - | - | - | 37.4% | 2.81 | 59.4 (0.28%) | - |
+| `band05` | 1.093 | **+0.049** | 0.018 | **2.76** | 0.001 | 32.5% | 2.06 | 6.2 (0.16%) | 1.48% |
+| `band05`, above bills | 0.982 | +0.051 | 0.017 | 3.04 | 0.001 | | | | |
+| `band02` | 1.058 | +0.014 | 0.006 | 2.35 | 0.007 | 36.1% | 2.44 | 22.7 (0.21%) | 0.56% |
+| `band02`, above bills | 0.943 | +0.012 | 0.006 | 2.13 | 0.013 | | | | |
+
+| 6 other coins, 2017-08..2025 | Sharpe | dSharpe | SE | z |
+|---|---:|---:|---:|---:|
+| `tsmom12` | 0.520 | - | - | - |
+| `band05@coin` | 0.559 | +0.039 | 0.016 | 2.47 |
+| `band02@coin` | 0.527 | +0.007 | 0.006 | 1.08 |
+
+Per era (`band05` minus `tsmom12`): 1994-99 0.000, 2000-09 -0.004, 2010-16 +0.079, 2017-21
++0.133, 2022-25 +0.007. The gain sits in the coin years, mostly the 2017 and 2020-21 runs.
+
+**Verdict: both fail the project bar** (z 2.76 and 2.35 against 4.69, in both cash
+conventions); conditions 2 and 3 hold (coins positive, drawdown 4.9 points smaller). Even
+the family bar of wide-15's count (p < 0.00115, z about 3.05) is not met; the above-bills
+reading of `band05` (z 3.04) sits right at it. Nothing goes to the paper book.
+
+**It is not the fee (post hoc, not a try: `lib/wide16_posthoc.py`, coin fills set free in
+both books).** The card's mechanism was the fee saving; the run says otherwise:
+
+- Total coin costs fall only from 0.55% to 0.44% of equity a year (2013-2025): coin volume
+  falls 40%, but the fee per dollar rises from 0.41% to 0.55% because fewer fills mean less
+  30-day volume and a dearer Kraken tier.
+- With coin fills free in both books, `band05` still leads by **+0.054** (`band02` +0.015); the
+  fee and tier part is about zero (-0.005 on the six, +0.008 on the coins).
+- The mean coin share of the book while coins are held is unchanged (0.274 against 0.273), so
+  it is not "more coin". It is *when*: a coin slot left to run above 1/6 after a rise, instead
+  of being trimmed back daily, earned more in the coin bull runs. That is a short-horizon trend
+  bet inside the slot (daily trimming of a rising coin is anti-momentum), found here after the
+  fact, on the data that found it.
+
+**The power statement was wrong in its expectation, not in its arithmetic.** The card
+expected z 0.5-1.5 from a fee saving drowned by tracking noise. The tracking error was as
+predicted (1.5% and 0.6% a year), but the drift itself earned a return, which the card had
+named as the only way to a pass and called implausible. It earned enough for z 2.8, not 4.7.
+
+## What this says about the kind
+
+- **Sizing and building ideas from other fields mostly are tested ideas in other words**:
+  14 of 16 candidates map onto a tested record (blends with holding, Kelly and soft signals,
+  constant scale, breadth, class slots, volatility targets, lookback ensembles, slower
+  entries/exits, order budgets, drawdown floors).
+- **Where the bar is reachable.** On the primary test the bar can be met only by a gain that
+  is nearly riskless relative to `tsmom12`: the whole coin cost budget is worth z 6.0, the
+  drift costs z 10 at zero tracking error. Any rule that changes exposure has a paired SE of
+  0.006 (2-point band) to 0.1 (own-vol) and needs +0.03 to +0.5 Sharpe. A close rule (corr
+  0.9962 here) brings the bar in Sharpe units down to about +0.08, but nothing in the book's
+  costs is worth that; only a return effect is.
+- **The one lead.** `coin-drift-run` (`ideas.md`): let held coin slots drift. Seen post hoc,
+  two bull runs carry it (2017, 2020-21), and no untouched data exist to test it (the 6-coin
+  set from 2017 is the only other coin history and was already run: +0.039). Weak; a card
+  would have to be a forward test on the paper trail.
+
+## Count
+
+wide-15's count was 87 mechanisms (if both of its gates are counted), 22 gates, none passed.
+This run adds **1 mechanism tested by a strategy (`cost-band`, 2 variants), 14 killed as
+overlaps (not counted, as wide-12/13 did for the scored-but-parked), none passed**: 88
+mechanisms, 19 strategy tests, 22 gates, none passed.
+
+Rows in `tries.md` (idea `cost-band`): `band05`, `band02` (variant); `band05/bills`,
+`band02/bills`, `band05@coin`, `band02@coin` (robustness); two `note` rows (the step-1b
+ceiling and the post-hoc split, neither a try). The held-out year was not read.

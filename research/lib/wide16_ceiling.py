@@ -70,12 +70,14 @@ def main() -> None:
         d = f.time.date()
         eqd = eq_by_day.get(d) or next(v for k, v in reversed(base.equity) if k <= d)
         val = abs(f.qty) * f.price
+        if kind == "drift":
+            drift_cost.append((d, (f.fee + val * gym.COSTS[CRYPTO].slip) / eqd))
+        if d < COIN_ERA:  # the per-year table covers 2015 on (fixed after the first run)
+            continue
         fees[kind] += f.fee / eqd
         slip[kind] += val * gym.COSTS[CRYPTO].slip / eqd
         vol[kind] += val / eqd
         n[kind] += 1
-        if kind == "drift":
-            drift_cost.append((d, (f.fee + val * gym.COSTS[CRYPTO].slip) / eqd))
     years = (six.end - COIN_ERA).days / 365.25
     print(f"\ncoin fills from 2015 (cost as share of equity, per year over {years:.1f} years)")
     for k in ("entry", "exit", "drift"):

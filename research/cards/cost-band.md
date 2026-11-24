@@ -1,6 +1,6 @@
 # cost-band: a cost-sized tolerance band for rebalancing `tsmom12`'s held slots
 
-Lane wide-16, written 2026-11-24 (about 20:20 UTC), **before any return of the rule below was
+Lane wide-16, written 2026-11-24 (card commit 0320cf7 at 19:45 UTC; first written as "about 20:20 UTC", a slip), **before any return of the rule below was
 computed**. Field: stochastic control with proportional costs (the no-trade region; Magill and
 Constantinides 1976, Davis and Norman 1990; width by the cube-root law, Rogers 2001, Janecek
 and Shreve 2004 `[memory]`), read through Shannon's demon (rebalancing a volatile slot pumps,
@@ -102,3 +102,10 @@ The dry run (`DRY=1`, the last 120 days of train, 2025-07..11, nothing logged) w
 print counts only, but the script's pass-bar lines printed that window's numbers: dSharpe z
 -1.6 / -1.5 for `band05` / `band02` on the six, coin dSharpe +0.027 / +0.003. A 120-day window
 says nothing about a 32-year test; nothing in the card was changed after seeing it.
+
+## Erratum (after the real run)
+
+The step-1b per-year coin numbers quoted above (76 drift fills, 0.38% + 0.05%) had a date-filter
+bug (fills from 2013 over years from 2015). Corrected: 59.4 drift fills a year, 0.24% fee +
+0.04% slip, entries and exits 0.21%. The ceilings (z 6.0 and 10.0) and the frozen rule are not
+affected. See `wide-16.md`, step 1b.
