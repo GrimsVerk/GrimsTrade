@@ -120,8 +120,11 @@ def to_run(book: str, variant: str, decs: list[Decision], hist: History) -> harn
     return harness.Run(book, variant, "train", sc, days, equity, exposure, decs)
 
 
-def align(a: harness.Run, b: harness.Run) -> tuple[np.ndarray, np.ndarray]:
-    lo, hi = max(a.days[0], b.days[0]), min(a.days[-1], b.days[-1])
+def align(a: harness.Run, b: harness.Run, burn: int = 0) -> tuple[np.ndarray, np.ndarray]:
+    """Daily returns of two runs on their common days, the first `burn` days dropped (the
+    first entry into the market, which a later first decision delays once)."""
+    lo = max(a.days[0], b.days[0]) + timedelta(days=burn)
+    hi = min(a.days[-1], b.days[-1])
     return a.rets_between(lo, hi), b.rets_between(lo, hi)
 
 
@@ -167,7 +170,7 @@ class BookResult:
     pairs: dict[str, dict[str, float]]  # "a|b" -> paired stats of a minus b
 
 
-def one_book(book: str, period: str, dry: bool) -> BookResult:
+def one_book(book: str, period: str, dry: bool, burn: int = 0) -> BookResult:
     hist = harness.load_history("train")
     start, end = PERIODS[period]
     if dry:
@@ -197,7 +200,7 @@ def one_book(book: str, period: str, dry: bool) -> BookResult:
                 ("dsharpe", "se", "lo", "hi", "dcagr", "clo", "chi"), 0.0
             )
         else:
-            pairs[f"{a}|{b}"] = paired(*align(got[a], got[b]))
+            pairs[f"{a}|{b}"] = paired(*align(got[a], got[b], burn))
     return BookResult(book, period, start, end, runs, same, metrics, pairs)
 
 
@@ -280,6 +283,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--jobs", type=int, default=3)
     ap.add_argument("--books", default="")
+    # Re-score only (rows already logged by the first run): paired statistics from day `burn`.
+    ap.add_argument("--burn", type=int, default=0)
+    ap.add_argument("--no-log", action="store_true")
     args = ap.parse_args()
     dry = bool(os.environ.get("DRY"))
     from grimstrade.strategies import LIVE
@@ -287,7 +293,9 @@ def main() -> None:
     books = args.books.split(",") if args.books else list(LIVE)
     jobs = [(b, p) for p in PERIODS for b in books]
     with ProcessPoolExecutor(max_workers=args.jobs) as ex:
-        results = list(ex.map(one_book, *zip(*jobs, strict=True), [dry] * len(jobs)))
+        results = list(
+            ex.map(one_book, *zip(*jobs, strict=True), [dry] * len(jobs), [args.burn] * len(jobs))
+        )
     text = [
         "# lagcost-1: what execution lag costs each live book",
         "",
@@ -306,7 +314,7 @@ def main() -> None:
     ]
     for br in results:
         text += table(br)
-        if not dry:
+        if not dry and not args.no_log:
             for v, run in br.runs.items():
                 tag = v if br.period == "primary" else f"{v}@coin"
                 harness._log(
@@ -318,7 +326,15 @@ def main() -> None:
                     br.start,
                     br.end,
                 )  # fmt: skip
-    path = harness.RESEARCH / "results" / ("lagcost-1.dry.md" if dry else "lagcost-1.md")
+    stem = "lagcost-1" + (f"-burn{args.burn}" if args.burn else "") + (".dry" if dry else "")
+    if args.burn:
+        text.insert(
+            3,
+            f"Re-score of the logged runs: paired statistics from day {args.burn + 1} "
+            "of the common days (the first entry dropped); levels as in lagcost-1.md.",
+        )
+        text.insert(4, "")
+    path = harness.RESEARCH / "results" / f"{stem}.md"
     path.write_text("\n".join(text).rstrip() + "\n")
     print("\n".join(text))
     if any(math.isnan(m["sharpe"]) for br in results for m in br.metrics.values()):
