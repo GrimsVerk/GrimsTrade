@@ -30,10 +30,23 @@ branches; the leads' night log is on branch `summary-1` (closed PR #28, branch k
 - Owner decisions brief (`research/owner-decisions.md`): every item answered by its default as
   an agent call (section "Answers"); no owner question left.
 
+## Night lead 2026-11-24 (in flight; this section is rewritten at handoff)
+
+Merged tonight, each after a fresh review agent: #136 (ruff exclude for a one-off script),
+#133 (forward registry hardening; delayed schedule in DECISIONS), #138 (Treasury bill-rate
+fallback), #137 (halving-2: `halving-alone` does not transfer to other halving coins; BTC-beta),
+#134 (turbulence-1: dead, the volatility part does all the work), #135 (`own_vol_70` paper book),
+#140 (Gymnasium env wrapper, `docs/gym-env.md`), #139 (wide-15: two gates, both fail; 87
+mechanisms, 22 gates). Under review: #141 (reconcile-1: live record == gym), #143
+(breadth-book-1: more markets lowered `tsmom12`'s Sharpe). Running: `pooled-1`, `lagcost-1`,
+`wide-16`, `daily-nodev-1`, `seasonal-1`.
+
 ## Lane queue (each from `main`)
 
-1. Second bill-rate source (US Treasury keyless CSV) when Yahoo `^IRX` fails (BACKLOG; A2c).
-2. One own-vol 70% paper book next to the presets, no-look-ahead form (owner-decisions C2).
-3. Record the delayed schedule in DECISIONS (runs fire 02:00-04:40 UTC, not 22:30; D1).
-4. Forward registry: obs files get the append-only check; `read()` requires `frozen_at`
-   (review notes on #67).
+1. After the first daily run on new main (tonight ~02:00-06:00 UTC): rerun
+   `research/lib/reconcile1.py` (from #141) and check the one-time replay change it predicts.
+2. Regenerate `research/register/BAR.md` with tonight's tries rows (register + register2), then
+   refresh `research/SUMMARY.md` with tonight's verdicts.
+3. `Replay` in `src/grimstrade/gym_env.py` copies `gym.simulate`'s loop: rewrite `simulate` as
+   `Replay` + a decision loop so there is one copy (touches the runner path: needs a daily dry
+   run). Add a test for the no-event-day interest catch-up.
