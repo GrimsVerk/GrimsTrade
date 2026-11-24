@@ -3176,3 +3176,4 @@ Never edit or delete a row.
 | 2026-11-18 22:23 | combo-2 | blend-ws cash@idx | robustness | train | 1962-01-02 | 2025-11-09 | 0.85 | +9251.6% | 25.6% | 2.28 |
 | 2026-11-18 22:27 | combo-2 | cofall-dbc | variant | train | 1994-02-01 | 2025-11-09 | 1.07 | +20836.7% | 35.6% | 2.83 |
 | 2026-11-19 02:42 | hdd-gas | UNG next-week on HDD surprise (slope -0.036 pp/10DD, t -0.29, rank 19/41, gate fail) | screen | train | 2007-11-02 | 2025-03-28 | - | - | - | - |
+| 2026-11-19 03:15 | cpc-revision | UNG next-session open-to-close on CPC 6-10/8-14 outlook revision (slope -0.076 pp/0.10, t -0.68, rank 36/41, gate fail) | screen | train | 2012-11-01 | 2025-03-31 | - | - | - | - |
