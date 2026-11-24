@@ -154,3 +154,8 @@ English Wikipedia titles written now (`wide20.EXTRA_TITLES`), each resolved to i
 through the Wikipedia API and read for its own P585 date (day precision) and P1120 deaths
 (kept if >= 50 and not already in the list). Same rule, same placebo family (its own 40
 placebos, shown).
+
+Extra list fetched (Wikipedia pageprops, then Wikidata `wbgetentities`, both keyless, cached
+under `wide-20/`): 15 of the 18 titles resolved to items; three titles were wrong as written
+(`2015 Medan Hercules crash`, `2021 Philippine Air Force Lockheed C-130 crash`, `2024 Belgorod
+Ilyushin Il-76 crash`) and are left out rather than corrected, so the list stays as fixed.

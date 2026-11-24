@@ -118,3 +118,41 @@ def null_spread(placebo: Sequence[float]) -> tuple[float, float, float, float, f
     a = np.asarray(placebo, dtype=float)
     q5, q50, q95 = (float(v) for v in np.quantile(a, [0.05, 0.5, 0.95]))
     return float(a.std(ddof=1)), float(np.mean(np.abs(a) >= 2)), q5, q50, q95
+
+
+def parse_entity(entity: dict[str, object]) -> Event | None:
+    """(earliest day-precision P585, largest P1120) of one wbgetentities entity, or None."""
+    claims = entity.get("claims")
+    if not isinstance(claims, dict):
+        return None
+
+    def values(prop: str) -> list[dict[str, object]]:
+        out = []
+        for c in claims.get(prop, []):
+            dv = c.get("mainsnak", {}).get("datavalue", {}).get("value")
+            if isinstance(dv, dict):
+                out.append(dv)
+        return out
+
+    days = []
+    for v in values("P585"):
+        if v.get("precision") == 11:
+            try:
+                days.append(date.fromisoformat(str(v.get("time", "")).lstrip("+")[:10]))
+            except ValueError:
+                continue
+    deaths = []
+    for v in values("P1120"):
+        try:
+            deaths.append(float(str(v.get("amount", "nan"))))
+        except ValueError:
+            continue
+    deaths = [d for d in deaths if math.isfinite(d)]
+    if not days or not deaths:
+        return None
+    return (min(days), max(deaths))
+
+
+def items_in(text: str) -> set[str]:
+    """Wikidata ids (Q...) of the rows of the query CSV."""
+    return {(r.get("item") or "").rsplit("/", 1)[-1] for r in csv.DictReader(io.StringIO(text))}

@@ -12,6 +12,7 @@ Output: research/results/air-disaster-mood.md
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 import urllib.parse
@@ -40,6 +41,30 @@ UA = "research-script/0.1 (offline statistics)"
 GATE = ("SPY", date(2008, 1, 1), LAST)
 LONG = ("GSPC", date(1950, 1, 1), date(2007, 12, 31))
 OTHERS = ["QQQ", "IWM", "GLD", "TLT", "BTC", "ETH"]
+# Shown cell "list completed" (wide-20.md, dry-run addendum, written before any return):
+# accidents of the gate window with >= 50 deaths that the frozen query missed, by memory.
+EXTRA_TITLES = [
+    "Ethiopian Airlines Flight 409",
+    "Air India Express Flight 812",
+    "Airblue Flight 202",
+    "Malaysia Airlines Flight 370",
+    "Indonesia AirAsia Flight 8501",
+    "2015 Medan Hercules crash",
+    "Saratov Airlines Flight 703",
+    "Iran Aseman Airlines Flight 3704",
+    "US-Bangla Airlines Flight 211",
+    "2018 Algerian Air Force Ilyushin Il-76 crash",
+    "Cubana de Aviación Flight 972",
+    "Lion Air Flight 610",
+    "Ethiopian Airlines Flight 302",
+    "Ukraine International Airlines Flight 752",
+    "Pakistan International Airlines Flight 8303",
+    "2021 Philippine Air Force Lockheed C-130 crash",
+    "Yeti Airlines Flight 691",
+    "2024 Belgorod Ilyushin Il-76 crash",
+]
+REL_WP = f"wide-20/wikipedia/{SNAP}/pageprops.json"
+REL_WD = f"wide-20/wikidata/{SNAP}/extra-entities.json"
 
 
 def fetch() -> None:
@@ -52,6 +77,39 @@ def fetch() -> None:
         data: bytes = r.read()
     cache.write_once(root, REL, data, URL)
     print("fetched", len(data), "bytes into", root / REL)
+
+
+def fetch_extra() -> None:
+    """Resolve EXTRA_TITLES to Wikidata items (Wikipedia API), then read their claims."""
+    root = dw.cache_root()
+    if not (root / REL_WP).exists():
+        q = {"action": "query", "prop": "pageprops", "ppprop": "wikibase_item"}
+        q |= {"redirects": "1", "format": "json", "titles": "|".join(EXTRA_TITLES)}
+        url = "https://en.wikipedia.org/w/api.php?" + urllib.parse.urlencode(q)
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=120) as r:
+            cache.write_once(root, REL_WP, r.read(), url)
+    pages = json.loads((root / REL_WP).read_text())["query"]["pages"].values()
+    ids = sorted({p["pageprops"]["wikibase_item"] for p in pages if "pageprops" in p})
+    missing = [p.get("title") for p in pages if "pageprops" not in p]
+    print("resolved", len(ids), "of", len(EXTRA_TITLES), "titles; unresolved:", missing)
+    if not (root / REL_WD).exists():
+        q = {"action": "wbgetentities", "props": "claims", "format": "json", "ids": "|".join(ids)}
+        url = "https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(q)
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=120) as r:
+            cache.write_once(root, REL_WD, r.read(), url)
+
+
+def load_extra(known: set[str]) -> list[ev.Event]:
+    ents = json.loads((dw.cache_root() / REL_WD).read_text())["entities"]
+    out = []
+    for qid, ent in ents.items():
+        e = ev.parse_entity(ent)
+        if qid in known or e is None or e[1] < ev.MIN_DEATHS or e[0] > LAST:
+            continue
+        out.append(e)
+    return sorted(out)
 
 
 def load_events() -> list[ev.Event]:
@@ -169,6 +227,12 @@ def main() -> None:
     for a in OTHERS:
         s = Series(hist[a], lo, hi)
         out.append(cell(f"{a} from {s.lo}", s, ev.in_window(events, s.lo, s.hi)))
+    known = ev.items_in((dw.cache_root() / REL).read_text(encoding="utf-8", errors="replace"))
+    extra = ev.in_window(load_extra(known), spy.lo, spy.hi)
+    full = sorted(gate_ev + extra)
+    out.append(cell(f"List completed (+{len(extra)} items, wide-20.md addendum)", spy, full))
+    ct = fit(spy, full)[1]
+    cplac = placebos(spy, full)
     g = Series(hist[LONG[0]], LONG[1], LONG[2])
     g_ev = ev.in_window(events, g.lo, g.hi)
     gb, gt, _ = fit(g, g_ev)
@@ -183,6 +247,11 @@ def main() -> None:
         f"GSPC 1950-2007 with its own 40 placebos (shown): t {gt:+.2f}, rank"
         f" {ev.rank_lowest(gt, gplac)} of 41 (1 = lowest). {null_line(gplac)}",
         "",
+        f"List completed with its own 40 placebos (shown): t {ct:+.2f}, rank"
+        f" {ev.rank_lowest(ct, cplac)} of 41. {null_line(cplac)} Added events: "
+        + ", ".join(f"{e} {d:.0f}" for e, d in extra)
+        + ".",
+        "",
         "Largest events in the gate window (date, deaths): "
         + ", ".join(f"{e} {d:.0f}" for e, d in sorted(gate_ev, key=lambda e: -e[1])[:5])
         + ".",
@@ -196,5 +265,7 @@ def main() -> None:
 if __name__ == "__main__":
     if sys.argv[1:] == ["fetch"]:
         fetch()
+    elif sys.argv[1:] == ["fetch-extra"]:
+        fetch_extra()
     else:
         main()

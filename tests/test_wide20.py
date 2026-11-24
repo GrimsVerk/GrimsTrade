@@ -82,3 +82,24 @@ def test_ols_hc1_recovers_slope_and_rank_counts_ties_against() -> None:
     assert ev.rank_lowest(-2.0, [-3.0, -2.0, 1.0]) == 3
     sd, share, _, med, _ = ev.null_spread([-2.5, 0.0, 2.5])
     assert math.isclose(sd, 2.5) and math.isclose(share, 2 / 3) and med == 0.0
+
+
+def test_parse_entity_takes_day_precision_date_and_largest_toll() -> None:
+    ev = _ev()
+
+    def snak(v: object) -> dict[str, object]:
+        return {"mainsnak": {"datavalue": {"value": v}}}
+
+    ent = {
+        "claims": {
+            "P585": [
+                snak({"time": "+2018-10-29T00:00:00Z", "precision": 11}),
+                snak({"time": "+2018-00-00T00:00:00Z", "precision": 9}),
+            ],
+            "P1120": [snak({"amount": "+189"}), snak({"amount": "+188"})],
+        }
+    }
+    assert ev.parse_entity(ent) == (date(2018, 10, 29), 189.0)
+    assert ev.parse_entity({"claims": {"P1120": [snak({"amount": "+5"})]}}) is None
+    text = "item,date,precision,deaths\nhttp://www.wikidata.org/entity/Q42,2010-01-01,11,60\n"
+    assert ev.items_in(text) == {"Q42"}
