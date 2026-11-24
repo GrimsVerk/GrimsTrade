@@ -390,7 +390,19 @@ class Cal:
     min_n: np.ndarray  # [series] minimum periods for a series to enter a draw
 
 
+def influence(x: np.ndarray, P: int) -> np.ndarray:
+    """Delta-method influence of each period on the annualised Sharpe (mean zero, scale-free)."""
+    mu, sd = x.mean(), x.std()
+    if sd == 0:
+        return np.zeros(len(x))
+    dx = x - mu
+    return (dx - mu / (2 * sd * sd) * (dx * dx - sd * sd)) / sd * math.sqrt(P)  # type: ignore[no-any-return]
+
+
 def month_cells(series: Sequence[Series]) -> Cal:
+    """Per-month sums of each term's per-period value x T. M and R use the exact terms (sds
+    held fixed); E uses the Sharpe influence of F minus that of `tsmom12`, which is scale-free
+    (the exact E term with fixed sds is not, since F is a scaled `tsmom12`)."""
     li = label_index()
     lo = min(int(s.month.min()) for s in series)
     hi = max(int(s.month.max()) for s in series)
@@ -403,7 +415,7 @@ def month_cells(series: Sequence[Series]) -> Cal:
         idx = s.month - lo
         np.add.at(N[i], idx, 1.0)
         for a, k in enumerate(TERMS):
-            v = t[k] * T
+            v = influence(s.f, s.P) - influence(s.s, s.P) if k == "E" else t[k] * T
             np.add.at(C[i, a, 0], idx, v)
             for j, (p, lab) in enumerate(li[1:], start=1):
                 code = PARTS[p].index(lab)

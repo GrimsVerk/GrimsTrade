@@ -4019,3 +4019,4 @@ Never edit or delete a row.
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
+| 2026-11-24 23:47 | ownvol-anatomy-1 | re-score (not a try): vt-own-70-x minus tsmom12 split into exposure E (fixed-share twin), mean channel M and risk channel R; equity 41 d +0.022 = E +0.001 + M -0.003 + R +0.024; judged 21 d -0.010 = E +0.000 + M -0.015 + R +0.005; FX9 d -0.052 = E +0.000 + M -0.056 + R +0.004; COM8 d +0.056 = E -0.001 + M -0.018 + R +0.075; six d +0.101 = E +0.003 + M -0.153 + R +0.251 (research/ownvol-anatomy-1.md) | note | train | 1913-01-01 | 2025-10-31 | - | - | - | - |
