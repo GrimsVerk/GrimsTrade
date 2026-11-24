@@ -2,7 +2,7 @@
 
 The live rule is `tsmom12`: hold an asset only while its price is above where it was a year ago,
 otherwise cash. "Sharpe" below means return per unit of risk (higher is better). Agents now merge
-and run this repo; 5 pull requests are open (listed under "Still open").
+and run this repo; 7 pull requests are open (listed under "Still open").
 
 ## What we know now
 
@@ -32,8 +32,8 @@ and run this repo; 5 pull requests are open (listed under "Still open").
 - **Live funds agree: no family beat its plain index after fees.** 15 strategy families, 60
   real funds. The published effects kept about a quarter of their paper Sharpe after
   publication (median about 28% over six factors), and long-only funds built on them matched
-  their index after fees (#91). Our own tests of published effects: 0 for 5, and tonight two
-  more published ideas failed (turbulence #134, seasonality #148).
+  their index after fees (#91). Our own tests of published effects: 0 for 7 (tonight's two:
+  turbulence #134, seasonality #148).
 - **The bar for a new rule is measured, and rebuilds on any computer.** 3,855 tries logged
   (725 new since the count of 19 November, 660 of them robustness checks), worth between 11 and
   500 independent shots depending on how they are counted; the bar uses the cautious 500. A new
@@ -43,12 +43,14 @@ and run this repo; 5 pull requests are open (listed under "Still open").
   committed, so `BAR.md` regenerates from a clean checkout (#108, #111). The closest results
   stay below it: `halving-alone` +0.23 (z about 3.2-3.6, #137), about at the 3.25 the bar would
   be if tries were counted by clusters, and the coin rebalance band (z 2.76, #145).
-- **The bar is out of reach for most kinds of rule** (#150, pending review). With edges of the
-  size the records show, no strategy class we can test has a realistic chance to clear the bar.
-  Power depends on years of data, not on bar frequency. Forward paper scoring cannot confirm an
-  edge: +0.10 over `tsmom12` needs 72 years of record even when judged alone (356 at the bar).
-  The only case where a pass is not absurd: a long-short style book on about 100 years of data,
-  judged against its own style (needs shorts and data the gym cannot trade).
+- **The bar is out of reach for every class we can test** (#150). With edges of the size the
+  records show, no strategy class we can test has a realistic chance to clear the bar. Power
+  depends on years of data, not on bar frequency. Forward paper scoring cannot confirm an edge:
+  +0.10 over `tsmom12` by a book correlated 0.95 with it needs 72 years of record at 80% power
+  even when registered alone (356 at the bar). The only case where a pass is not absurd: a
+  long-short style book on about 100 years of data, scored under an alpha comparator (does it
+  add to `tsmom12`?), which needs shorts, data the gym cannot trade and a comparator change the
+  project has not adopted.
 - **Borrowed ideas: 88 mechanisms listed, 19 tested by a strategy, 22 gates, none passed** (many
   gates can only kill an idea, never pass one, by design: few independent episodes; #124). New
   candidates must pass two filters first: not announced, not driven by price (#109).
@@ -75,7 +77,9 @@ and run this repo; 5 pull requests are open (listed under "Still open").
   4.69). Post hoc the gain is not the fee but letting coin slots run in rallies
   (`coin-drift-run`, new, weak).
 - Execution lag (#144): barely matters for ten of the 11 books (all under 0.075 Sharpe); an
-  earlier crypto-only run is not worth building.
+  earlier crypto-only run is not worth building. Its rule 2 triggered on `buy_hold_btc` (+0.92
+  CAGR points a year from a one-day-later first coin entry), so the scoreboard carries a
+  live-start-delay note (#155).
 - Live record against the gym (#141): **live equals the gym** for 9 of 11 books every day; the
   other 2 differ only by the schedule (at most 0.5%). No bugs, no data errors. Every run so far
   used the code from before tonight's merges, so the next run moves four coin books once (3 to
@@ -86,10 +90,16 @@ and run this repo; 5 pull requests are open (listed under "Still open").
 
 ## Still open or running
 
-- Pending review: one replay engine for the gym and the learning environment (#149, to merge
-  after the 2026-11-25 daily run), the power map above (#150).
-- Work in progress: keyless long histories for rates, FX and commodities (#152), the daily run
-  reconciling its own record (#153, after the 2026-11-25 run), the night lead's notes (#146).
+- Re-scoring the stored record in alpha form against `tsmom12` (#154): 341 stored series, 0
+  reach the bar of 4.70; the 2 above 3.29 are known artefacts (`fm-1` memorisation, `merfx7`
+  with cash at 0).
+- Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
+  environment (#149), the daily run reconciling its own record (#153), the scoreboard's
+  live-start-delay note (#155).
+- Work in progress: keyless long histories for rates, FX and commodities (#152), the night
+  lead's notes (#146), this summary (#156).
+- Lane `register-7` is fixing `register2.py`'s dead source-branch reference and its rule for
+  duplicate live series (the store keeps old copies when the live code changes).
 - Leads still open: `e4` and own-vol 70% pooled (#142); `coin-drift-run` (#145, post hoc); the
   halving window's one forward score (#137).
 - Live: 11 books trade fake money daily; `own_vol_70` joins on its first run (#135). The record
