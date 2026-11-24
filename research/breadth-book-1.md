@@ -9,6 +9,10 @@ was not loaded. Research only: the live runner and the paper books are untouched
 ## In plain words
 
 **No. On a mechanically chosen universe, more markets made `tsmom12` worse, not better.**
+(Review note: the pool is 33 ETFs, about 70% equity sectors and countries, not a diversified
+futures set. The fall of the six-plus-ETFs books is mainly coin dilution plus the hindsight in
+the live six; the ETF-only books are the breadth test, and among the mechanical sets alone
+Sharpe still falls, 0.61 with 6 ETFs to 0.37 with all 33.)
 Adding ETFs to the six live assets lowered the Sharpe ratio (return per unit of risk) at every
 size, from 1.19 to 0.96 (12 assets), 0.83 (20) and 0.65 (all 35), above T-bills, 2008-2025.
 The worst loss fell (37.6% to 21-25%), but only because each extra slot shrinks the coins'
