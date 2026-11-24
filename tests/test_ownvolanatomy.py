@@ -2,22 +2,25 @@
 
 from __future__ import annotations
 
+import importlib
 import sys
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
-import ownvolanatomy_core as oc  # noqa: E402
-import pooled1_core as pc  # noqa: E402
-import pooled2_core as qc  # noqa: E402
+oc: Any = importlib.import_module("ownvolanatomy_core")
+pc: Any = importlib.import_module("pooled1_core")
+qc: Any = importlib.import_module("pooled2_core")
 
 
 def _market(n: int = 2600, seed: int = 3) -> tuple[np.ndarray, np.ndarray]:
     rng = np.random.default_rng(seed)
-    days, d = [], date(1990, 1, 1)
+    days: list[int] = []
+    d = date(1990, 1, 1)
     while len(days) < n:
         if d.weekday() < 5:
             days.append(d.toordinal())
@@ -55,7 +58,7 @@ def test_monthly_replay_equals_frozen() -> None:
     assert np.array_equal(o, frozen)
 
 
-def _series(o: np.ndarray, f: np.ndarray, s: np.ndarray) -> oc.Series:
+def _series(o: np.ndarray, f: np.ndarray, s: np.ndarray) -> Any:
     n = len(o)
     sr = oc.Series("x", "g", "w", o, f, s, np.arange(n) // 4)
     rng = np.random.default_rng(0)
