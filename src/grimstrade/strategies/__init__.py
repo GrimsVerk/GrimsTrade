@@ -11,6 +11,7 @@ from grimstrade.strategies import (
     buy_hold_spy,
     crypto_mean_reversion,
     equal_weight,
+    own_vol,
     presets,
     risk_parity,
     sixty_forty,
@@ -32,6 +33,7 @@ LIVE: dict[str, Strategy] = {
     "crypto_mean_reversion": crypto_mean_reversion.decide,
     "preset_careful": presets.careful,
     "preset_middle": presets.middle,
+    "own_vol_70": own_vol.decide,
 }
 
 # The yardsticks every other strategy must beat after costs.
@@ -47,4 +49,6 @@ NOTES: dict[str, str] = {
     "crypto_mean_reversion": "M1 classic: BTC/ETH RSI(2)<10 above 200d SMA, exit >5d SMA, Connors",
     "preset_careful": "risk preset Careful (risk map, run 3): trend + 20% vol cap, 5% per coin",
     "preset_middle": "risk preset Middle (risk map, run 3): trend rule, 10% per coin",
+    "own_vol_70": "own-vol target 70% (owner C2): tsmom12 x min(1, k / its own 52-week vol), k "
+    "re-solved monthly from known vols for a 70% mean share, no look-ahead (risk-menu-3, #110)",
 }
