@@ -251,8 +251,9 @@ def years_of_patience(trials: Trials) -> str:
 def footnote(trials: Trials) -> str:
     return (
         f"Strategies tried so far (the record's plus the research lane's): {trials.count}. "
-        "Sharpe: daily, 365 days/yr, zero risk-free rate, with its standard error (±): the true "
-        "value lies within about two of those, 19 times in 20. Deflated Sharpe: how confident we "
+        "Sharpe: daily, 365 days/yr, above what idle cash earned (the 13-week T-bill rate), "
+        "with its standard error (±): the true value lies within about two of those, 19 times "
+        "in 20. Deflated Sharpe: how confident we "
         "can be that the Sharpe beats the best that luck alone would give across all the "
         f"strategies tried (Bailey & López de Prado 2014). Both are shown after {MIN_DAYS_FOR_DSR} "
         "days; before that they mean nothing. The deflated Sharpe is strict: "
