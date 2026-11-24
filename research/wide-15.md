@@ -281,3 +281,127 @@ of a pass: 0.3%.
 
 **On a pass:** "not dead yet" only; a design with more seasons or other countries' refunds
 would be needed. **On a fail:** dead, one `screen` row.
+
+## What came out (one dry run, then one real run, 2026-11-24)
+
+**Dry run first** (`DRY=1`, counts only): Voteview 112,878 roll calls read (none after
+2025-11-10); 1,653 gate Fridays, 1,151 of them in session; 1,653 SPY rows with outcome and all
+four controls (QQQ 1,335, IWM 1,272); every one of the 40 earlier-dose placebos keeps all 1,653
+dose weeks. Daily statement: 5,051 refund days 2005-10-03 .. 2025-11-10, full-year totals for
+2006-2024; 942 surprise weeks, 914 runoff weeks; 903 of the 927 gate Fridays have a dose (the 24
+missing are the eight Fridays after each ISO week 53 of 2009, 2015 and 2020, which has no
+baseline); rows with outcome and dose: QQQ 903, IWM 903, BTC 707, ETH 486, SPY 903; placebos keep
+805 to 882 dose weeks. Refund rows matched: "IRS Tax Refunds Individual" (2005-2019 format),
+"Individual" (to 2022) and "Taxes - Individual Tax Refunds (Checks / EFT)" (from 2023); Economic
+Impact Payments and advance child tax credits are separate rows and are **not** counted (X2 is
+filtered). Then one real run each, as carded. Tables: `results/congress-workload.md`,
+`results/refund-runoff.md`.
+
+### W27 `congress-workload`: fails
+
+**One more unit of Anscombe-transformed roll calls in a session week goes with -0.009% on SPY
+over the next 4 weeks, with SPY's past 4/13/26/52-week returns as controls (t -0.19, 1,653
+weeks, 1994-02 .. 2025-10): the wrong sign; the true t ranks 25 of 41 (empirical one-sided p
+0.61). Dead by the gate: no card, no strategy.** Held-out year untouched.
+
+| Cut (SPY 4-week return unless named) | b, % per unit of x | t | Rows |
+|---|---:|---:|---:|
+| **Gate: x with session dummy, four controls** | **-0.009** | **-0.19** | 1,653 |
+| Without the controls | -0.012 | -0.24 | 1,653 |
+| QQQ / IWM instead | +0.059 / -0.058 | +0.74 / -0.81 | 1,335 / 1,272 |
+| Close votes only (margin < 10%) | -0.033 | -0.44 | 1,653 |
+| House only / Senate only | -0.062 / +0.092 | -0.87 / +1.21 | 1,653 |
+| After Pastor-Veronesi, 2011-01 .. 2025-10 | -0.071 | -1.07 | 770 |
+| 1-week horizon | +0.013 | +0.55 | 1,653 |
+| Calendar cell: in-session dummy c, % per 4 weeks | +0.337 | +0.69 | 1,653 |
+
+- **No policy-risk premium after busy legislative weeks**, in either chamber, for close votes
+  or after the premium paper's sample. The workload premium a pass needed (about 0.2% per unit)
+  is ruled out at about two standard errors: the estimate is -0.01 with a standard error near
+  0.05.
+- **Ferguson and Witte's calendar effect does not show forward either**: the in-session dummy
+  is +0.34% per 4 weeks (t +0.69), the opposite sign to their "lower returns while Congress
+  sits" (their finding is contemporaneous and to 2004; this cell is the next 4 weeks from 1994,
+  so it is not a replication, only a look).
+- **F2 feedback is weak**: workload on SPY's past returns, t +0.16 to +1.01 at 4-52 weeks (crisis
+  legislation is real but rare enough not to show in weekly counts).
+- **Null width: SD of placebo t 1.08, 5% with |t| >= 2**, quantiles 5/50/95% -1.48 / +0.03 /
+  +1.98, extremes -1.67 / +2.68 (k = 81). Earlier-dose placebos only, as the card fixed; a
+  near-normal null, as for an unclustered weekly dose.
+- My guess (t -1.5 to +1.5, middle rank, placebo sd 1.0-1.4, calendar cell negative, feedback
+  weak, pass 1%) held on t, rank, width and feedback; the calendar cell came out positive.
+
+### W28 `refund-runoff`: fails
+
+**One unit of refund runoff (about one percent of last year's refunds arriving in the window
+beyond the usual) goes with +0.281% on QQQ, IWM, BTC and ETH over the next 4 weeks (t +1.44,
+2,999 rows, 2008-01 .. 2025-10): the predicted sign, but t below 2 and the true t ranks 7 of 41
+(empirical one-sided p 0.17). Dead by the gate: no card, no strategy.** Held-out year untouched.
+
+| Cut (4-week return, QQQ+IWM+BTC+ETH unless named) | b, % per unit of u | t | Rows |
+|---|---:|---:|---:|
+| **Gate: runoff u, no controls** | **+0.281** | **+1.44** | 2,999 |
+| SPY alone | +0.182 | +1.58 | 903 |
+| QQQ and IWM | +0.309 | +2.67 | 1,806 |
+| BTC and ETH | +0.247 | +0.72 | 1,193 |
+| Raw weekly surprise d instead of u | +0.208 | +1.25 | 3,062 |
+| Seasons from 2017 (PATH Act hold) | +0.403 | +2.05 | 1,796 |
+| With past 4/13/26/52-week returns | +0.318 | +1.64 | 2,886 |
+| 1-week horizon | +0.051 | +0.46 | 2,993 |
+
+- **The null is wide, so a t of 1.44 is ordinary: SD of placebo t 1.92, 32% with |t| >= 2**,
+  quantiles 5/50/95% -3.51 / -0.67 / +2.80, extremes -4.61 / +3.47. Six placebos beat the true
+  t (k = +27: +3.47, -59: +3.45, -51: +2.76, -55: +1.79, +31: +1.73, +63: +1.46), three earlier
+  doses and three later, so the width is not the one-sided lean of review-2's point (1)
+  (earlier-dose mean -0.44, sd 1.73; later-dose mean -0.77, sd 2.12). The width comes from the
+  design: a dose that is large only in about 15 weeks a year, in a panel of four assets that
+  move together, has about 18 seasons of independent information. Shifted refund seasons land
+  on other months' common moves and "predict" them as well as the true one.
+- **The shown cells with t above 2 are noted only, not a lead** (`gate-null.md` step 6): QQQ
+  and IWM together (+2.67) and the post-2017 seasons (+2.05) are 2 of 7 shown cells in a design
+  whose placebo SD is 1.92; both sit inside the placebo range (95% quantile +2.80, largest
+  +3.47). Coins, where the retail story is strongest, show the weakest cell (t +0.72).
+- **The size check of step 2 still stands**: a slope of 0.28% per percent of last year's refunds
+  would mean that USD 2-3 bn of surprise refund cash moves four markets worth trillions by a
+  quarter of a percent, a price multiplier hundreds of times the inelastic-markets estimate. An
+  effect of that size is more likely a seasonal coincidence of the refund calendar with returns
+  than a flow, which is what the placebo null says.
+- **F2 holds**: the runoff dose does not follow past returns (t -1.20 to +1.08).
+- My guess (either sign, |t| < 1.5, middle rank, placebo sd 1.0-1.3, pass 0.3%) held on t; the
+  rank (7) was better than the middle and the null was much wider than guessed (1.92, not
+  1.0-1.3): the seasonal concentration of the dose matters more than the kernel's smoothing.
+
+Labels: both gates are **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the
+family bar 0.00115 and the register's 1.0e-4); W28 also by its episode count (about 18 seasons).
+Both are kills.
+
+## Family count and status
+
+Two mechanisms added and closed by their gates (W27 `congress-workload`, W28 `refund-runoff`; W
+numbers follow wide-13's W26; weather-1 and weather-2 had none). The ten others (X2-X7, X9-X12)
+are parked or filtered and are **not counted**, as wide-12 and wide-13 did.
+
+**Count: 87 mechanisms (85 carried in + W27 + W28), 18 tested by a strategy, none passed; 22
+gates, all failed.** The next strategy test is read at **p < 0.10 / 87 = 0.00115** (family) and
+the register's bar (N_eff 486: z >= 4.69, +0.30 to +0.56 Sharpe over `tsmom12`, Bonferroni p <=
+1.0e-4). Published effects after publication: still 0 for 10 (neither gate tested a published
+claim as stated: W27's dose is not Ferguson-Witte's session calendar and its forward premium cut
+is not Pastor-Veronesi's test; W28 has no literature).
+
+Rows logged in `tries.md`: 2 (`congress-workload`, `refund-runoff`, kind `screen`).
+
+## Next
+
+1. **Parked, scored 5 and 4: X11 `settlement-fails`, X9 `rule-intensity`.** X11 needs the NY Fed
+   primary-dealer fails files (several formats); X9 the Federal Register API's weekly counts. Both
+   are premia with slow price feedback (controls needed). Neither is more likely than the 22 that
+   died; a lane that runs them should expect a kill.
+2. **Seasonal doses give wide nulls.** W28's placebo SD (1.92) is the widest of a design with an
+   exogenous dose so far: a dose concentrated in one season of the year, read in a panel of
+   correlated assets, has about one independent draw per season. A future card with a seasonal
+   dose should say so before any number and plan for kill-only (as W28's did).
+3. **The flow-size check belongs in the score.** Every flow story that died (W15, W20, W21, W23,
+   W26, W28) moved a sum far below what a detectable price move needs at any published price
+   multiplier. A lane that wants to change the rule could add a sixth filter, "flow at least
+   0.1% of the asset's market value per window", fixed before scoring; this run did not change
+   the rule.
