@@ -5,7 +5,9 @@ Owner decision C2 (`research/owner-decisions.md`): keep the presets, add this on
 The rule, as risk-menu-3 ran it:
 1. `tsmom12`: every asset with a year of bars (365 for crypto, 252 for ETFs) gets an equal slot;
    the slot is held while the asset's 12-month return is positive, else it sits in cash.
-   Decided on Fridays (the view at that Friday's DECIDE_AT); other days repeat it.
+   Decided on Fridays (the view at that Friday's DECIDE_AT); other days repeat it. A Friday
+   counts once a bar that closed at or after its ETF close is stored (on a market-holiday
+   Friday the research counted it from 22:30, the live book from Saturday's first close).
    The decision's date is the day of the latest close it can see (the harness's `View.today`).
 2. sigma: the volatility of `tsmom12`'s own daily returns over the 52 complete Monday-Sunday
    weeks up to the month's previous day (weekly sums, sample std, x sqrt 52). None until all 52
@@ -36,7 +38,7 @@ import math
 from datetime import UTC, date, datetime, timedelta
 from functools import lru_cache
 
-from grimstrade.data import UNIVERSE, History, close_time
+from grimstrade.data import ETF_CLOSE_UTC, UNIVERSE, History, close_time
 from grimstrade.gym import DECIDE_AT, Strategy
 from grimstrade.signals import BARS_PER_YEAR
 
@@ -71,16 +73,20 @@ class Sleeve:
         self.closes = {s: [b.close for b in history[s]] for s in self.syms}
         self.shut = {s: [close_time(UNIVERSE[s], d) for d in self.dates[s]] for s in self.syms}
         # The decision's date, as the research harness dates it: the day of the latest close.
-        self.today = max((ts[-1].date() for ts in self.shut.values()), default=None)
+        clock = max((ts[-1] for ts in self.shut.values()), default=None)
+        self.today = clock.date() if clock else None
         self.fridays: list[date] = []
         self.weights: list[Weights] = []
         self.ret: dict[date, float] = {}
         self.start: date | None = None  # first Friday with money in `tsmom12`
-        if self.today is None:
+        if clock is None:
             return
         first = min(ds[0] for ds in self.dates.values())
         f = first + timedelta(days=(FRIDAY - first.weekday()) % 7)
-        while f <= self.today:
+        # A Friday counts once its ETF close is in: a late run early on Friday (the one due
+        # Thursday 22:30) keeps the week before's weights, and Friday's are not computed from
+        # half a Friday.
+        while datetime.combine(f, ETF_CLOSE_UTC, tzinfo=UTC) <= clock:
             w = self.on_friday(f)
             self.fridays.append(f)
             self.weights.append(w)

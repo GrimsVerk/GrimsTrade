@@ -111,6 +111,15 @@ def test_the_share_is_fixed_for_the_month_and_the_weights_for_the_week() -> None
     assert sleeve.held(date(2023, 6, 14)) == sleeve.on_friday(date(2023, 6, 9))
 
 
+def test_a_late_run_gives_the_decision_the_on_time_run_gives() -> None:
+    fri = date(2023, 6, 9)
+    late = datetime(2023, 6, 10, 3, 0, tzinfo=UTC)  # the run due Friday 22:30, hours late
+    assert BOOK(visible_history(H, late))[0] == BOOK(visible_history(H, at(fri)))[0]
+    early = own_vol.Sleeve(visible_history(H, datetime(2023, 6, 9, 3, 0, tzinfo=UTC)))
+    assert early.today == fri and early.fridays[-1] == fri - timedelta(days=7)  # no half Friday
+    assert early.held(fri) == own_vol.Sleeve(H).on_friday(fri - timedelta(days=7))
+
+
 # --- the research harness's sizing ---
 
 
