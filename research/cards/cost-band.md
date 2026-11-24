@@ -95,3 +95,10 @@ fraction of those costs, and so raise Sharpe by close to the drift cost.
 - The gym's band semantics are tested on synthetic bars: a 1/2 slot that drifts 3 points is
   topped up at b = 0.01, untouched at b = 0.05; a full exit always trades.
 - One dry run (`DRY=1`, last 120 days, nothing logged), then one real run.
+
+## Disclosure added with the script (before the real run)
+
+The dry run (`DRY=1`, the last 120 days of train, 2025-07..11, nothing logged) was meant to
+print counts only, but the script's pass-bar lines printed that window's numbers: dSharpe z
+-1.6 / -1.5 for `band05` / `band02` on the six, coin dSharpe +0.027 / +0.003. A 120-day window
+says nothing about a 32-year test; nothing in the card was changed after seeing it.

@@ -49,7 +49,9 @@ def main() -> None:
     days, e0 = daily(base)
     _, e1 = daily(zero)
     r0, r1 = e0[1:] / e0[:-1] - 1, e1[1:] / e1[:-1] - 1
-    print(f"tsmom12 Sharpe {stats.sharpe(r0):.3f} (logged 1.05); coin costs 0: {stats.sharpe(r1):.3f}")
+    print(
+        f"tsmom12 Sharpe {stats.sharpe(r0):.3f} (logged 1.05); no coin costs {stats.sharpe(r1):.3f}"
+    )
 
     # classify coin fills: entry (from zero), exit (to zero), drift (anything else)
     pos: dict[str, float] = defaultdict(float)
