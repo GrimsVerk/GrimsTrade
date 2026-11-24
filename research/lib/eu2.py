@@ -1,4 +1,4 @@
-"""eu-2: `tsmom12` for a Dutch retail account (card cards/eu-2.md).
+"""eu-2: `tsmom12` for a euro-area retail account (card cards/eu-2.md).
 
     uv run --with numpy python research/lib/eu2.py fees    # amendment 1: fixed fees, book, band
     uv run --with numpy python research/lib/eu2.py hedge   # amendment 2: EUR-hedged US equity
@@ -32,7 +32,7 @@ from grimstrade.data import CRYPTO, ETF, UNIVERSE
 
 IDEA = "eu-2"
 W_START = eu1.W_START
-SLIP = 0.0005  # ETF half-spread + slippage a side, as eu-1's `nl`
+SLIP = 0.0005  # ETF half-spread + slippage a side, as eu-1's `retail`
 CURRENCY_YEARLY = 2.50  # DEGIRO connectivity fee, Xetra, EUR per calendar year
 
 
@@ -55,7 +55,7 @@ LOSS_MAX = 0.10  # card: fee loss <= 0.10 Sharpe
 GAP_TOL = 0.15  # card: tsmom12 - EW gap within 0.15 of the gap at `slip`
 
 COSTS = {ETF: gym.Costs(fee=0.0, slip=SLIP), CRYPTO: gym.COSTS[CRYPTO]}
-NL = eu1.COSTS["nl"]
+RETAIL = eu1.COSTS["retail"]
 
 
 @dataclass
@@ -314,14 +314,14 @@ DRAG = 0.06  # eu-1's currency part of euw's gap (usw-eur -0.10 vs usw -0.04)
 
 def go2(
     variant: str, strategy: c.ResearchStrategy, syms: Sequence[str], kind: str
-) -> Run:  # the eu-1 path (`nl` percentage costs, house band), logged under eu-2
+) -> Run:  # the eu-1 path (`retail` percentage costs, house band), logged under eu-2
     hist, pan = eu1.panel_for(syms)
     saved = harness.DATA / "runs" / IDEA / f"{variant}.train.csv"
     log = not saved.exists() and not c.DRY
     start = date(2023, 11, 1) if c.DRY else W_START
     run = harness.run(
         IDEA, variant, strategy, kind=kind, period="train", panel=pan, history=hist,
-        start=start, end=TRAIN_END, costs=NL, log=log,
+        start=start, end=TRAIN_END, costs=RETAIL, log=log,
     )  # fmt: skip
     print(f"{'logged' if log else 're-scored'} {variant}", flush=True)
     return run
@@ -342,7 +342,7 @@ def hedge_report() -> None:
     out = ["# eu-2 results, amendment 2: EUR-hedged US equity", ""]
     out += [
         "Train period only, window W (decisions 2012-01-02 .. 2025-11-09). Total-return prices; "
-        "EUR books at Dutch percentage costs (`nl`: ETFs 0.10% + 0.05%), US books at the gym's, "
+        "EUR books at percentage costs (`retail`: ETFs 0.10% + 0.05%), US books at the gym's, "
         "coins 0.25% + 0.05%; house band 1%. Sharpe on calendar days, zero risk-free rate. "
         "`IUSEL` = IUSE, iShares S&P 500 EUR Hedged (London EUR line); `XAD1` = Xtrackers "
         "Physical Gold EUR Hedged. Rows from eu-1 are re-scored from its saved runs (no new "
@@ -352,9 +352,9 @@ def hedge_report() -> None:
     books = {k: b for k, b in [
         ("usw", eu1.Book("usw", eu1.USW, "gym")),
         ("usw-eur", eu1.Book("usw-eur", eu1.USW_EUR, "gym")),
-        ("euw", eu1.Book("euw", eu1.EUW, "nl")),
+        ("euw", eu1.Book("euw", eu1.EUW, "retail")),
         ("us6", eu1.Book("us6", eu1.US6, "gym")),
-        ("eu6", eu1.Book("eu6", eu1.EU6, "nl")),
+        ("eu6", eu1.Book("eu6", eu1.EU6, "retail")),
     ]}  # fmt: skip
     old = {k: eu1.pair(b, W_START) for k, b in books.items()}
     new = {
@@ -368,7 +368,7 @@ def hedge_report() -> None:
             go2(f"tsmom12@{sym}", eu1.TSMOM, [sym], "robustness"),
             go2(f"hold@{sym}", c.weekly(c.hold(sym)), [sym], "baseline"),
         )
-    for sym, costs in (("SPY", "gym"), ("SXR8", "nl"), ("4GLD", "nl"), ("GLD", "gym")):
+    for sym, costs in (("SPY", "gym"), ("SXR8", "retail"), ("4GLD", "retail"), ("GLD", "gym")):
         singles[sym] = (
             eu1.go(f"tsmom12@{sym}", eu1.TSMOM, [sym], costs, "robustness", W_START),
             eu1.go(f"hold@{sym}", c.weekly(c.hold(sym)), [sym], costs, "baseline", W_START),

@@ -3,7 +3,7 @@
   "family_cap": {
     "cap": 10,
     "card": "research/register-3.md",
-    "families": 59,
+    "families": 64,
     "largest_families_uncapped": [
       97,
       27,
@@ -14,134 +14,134 @@
     "rule": "at most CAP series per family (Idea), first by sha256(idea/variant/start)",
     "sensitivity_caps": {
       "1": {
-        "cluster_sharpe_mean": 1.1411,
-        "cluster_sharpe_var": 0.2043,
+        "cluster_sharpe_mean": 1.1581,
+        "cluster_sharpe_var": 0.1839,
         "cluster_sharpes": [
-          1.4607,
-          0.8216
+          0.8549,
+          1.4614
         ],
         "cluster_sharpes_minvar_in_sample_diagnostic": [
-          1.4961,
-          0.5897
+          0.4785,
+          1.4102
         ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          50,
-          9
+          54,
+          10
         ],
-        "participation_ratio": 1.74,
-        "rho_mean": 0.6982,
-        "rho_median": 0.8135,
-        "series": 59,
+        "participation_ratio": 1.77,
+        "rho_mean": 0.6942,
+        "rho_median": 0.8069,
+        "series": 64,
         "to": "2025-11-07",
         "weeks": 722
       },
       "20": {
-        "cluster_sharpe_mean": 1.1851,
-        "cluster_sharpe_var": 0.1405,
+        "cluster_sharpe_mean": 1.1865,
+        "cluster_sharpe_var": 0.1337,
         "cluster_sharpes": [
-          1.4502,
-          0.9201
+          1.4451,
+          0.9279
         ],
         "cluster_sharpes_minvar_in_sample_diagnostic": [
-          4.9324,
-          1.3812
+          4.7838,
+          1.3313
         ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          131,
-          82
+          148,
+          91
         ],
-        "participation_ratio": 2.67,
-        "rho_mean": 0.5226,
-        "rho_median": 0.4323,
-        "series": 213,
+        "participation_ratio": 2.62,
+        "rho_mean": 0.5315,
+        "rho_median": 0.465,
+        "series": 239,
         "to": "2025-11-07",
         "weeks": 722
       },
       "5": {
-        "cluster_sharpe_mean": 1.1544,
-        "cluster_sharpe_var": 0.1776,
+        "cluster_sharpe_mean": 1.171,
+        "cluster_sharpe_var": 0.1495,
         "cluster_sharpes": [
-          1.4524,
-          0.8564
+          1.4444,
+          0.8976
         ],
         "cluster_sharpes_minvar_in_sample_diagnostic": [
-          4.853,
-          0.2084
+          4.8869,
+          0.2626
         ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          102,
-          41
+          113,
+          48
         ],
-        "participation_ratio": 2.31,
-        "rho_mean": 0.5689,
-        "rho_median": 0.6744,
-        "series": 143,
+        "participation_ratio": 2.27,
+        "rho_mean": 0.578,
+        "rho_median": 0.6905,
+        "series": 161,
         "to": "2025-11-07",
         "weeks": 722
       }
     },
     "sensitivity_register_weighted": {
-      "families": 59,
-      "rho_mean": 0.4914,
-      "series": 297
+      "families": 64,
+      "rho_mean": 0.4957,
+      "series": 323
     },
     "windows": {
       "1994-2025": {
-        "cluster_sharpe_mean": 0.8432,
-        "cluster_sharpe_var": 0.1537,
+        "cluster_sharpe_mean": 0.8629,
+        "cluster_sharpe_var": 0.1258,
         "cluster_sharpes": [
-          0.566,
-          1.1204
+          0.6121,
+          1.1137
         ],
         "cluster_sharpes_minvar_in_sample_diagnostic": [
-          0.5518,
-          5.147
+          0.5179,
+          5.1422
         ],
         "from": "1994-02-04",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          100,
-          18
+          110,
+          23
         ],
         "participation_ratio": 1.86,
-        "rho_mean": 0.6881,
-        "rho_median": 0.7748,
-        "series": 118,
+        "rho_mean": 0.6887,
+        "rho_median": 0.7755,
+        "series": 133,
         "to": "2025-11-07",
         "weeks": 1657
       },
       "2012-2025": {
-        "cluster_sharpe_mean": 1.1978,
-        "cluster_sharpe_var": 0.1358,
+        "cluster_sharpe_mean": 1.1986,
+        "cluster_sharpe_var": 0.1281,
         "cluster_sharpes": [
-          0.9372,
-          1.4585
+          1.4517,
+          0.9455
         ],
         "cluster_sharpes_minvar_in_sample_diagnostic": [
-          1.0282,
-          4.851
+          4.7696,
+          0.9374
         ],
         "from": "2012-01-06",
         "onc_k": 2,
         "onc_k_at_cap": false,
         "onc_sizes": [
-          115,
-          63
+          132,
+          72
         ],
-        "participation_ratio": 2.58,
-        "rho_mean": 0.5291,
-        "rho_median": 0.4629,
-        "series": 178,
+        "participation_ratio": 2.54,
+        "rho_mean": 0.539,
+        "rho_median": 0.5203,
+        "series": 204,
         "to": "2025-11-07",
         "weeks": 722
       }
@@ -173,96 +173,96 @@
       20
     ]
   ],
-  "rows_backfilled": 1213,
+  "rows_backfilled": 1547,
   "rows_backfilled_by_source": {
     "curve": 1126,
     "harness": 87,
     "live": 11,
-    "logged": 0
+    "logged": 334
   },
-  "rows_backfilled_selectable": 413,
-  "sample_series": 368,
+  "rows_backfilled_selectable": 456,
+  "sample_series": 411,
   "seed": 20261118,
   "sensitivity_one_per_family": {
-    "cluster_sharpe_mean": 1.0833,
-    "cluster_sharpe_var": 0.2838,
+    "cluster_sharpe_mean": 1.0794,
+    "cluster_sharpe_var": 0.278,
     "cluster_sharpes": [
-      1.46,
+      1.4522,
       0.7066
     ],
     "cluster_sharpes_minvar_in_sample_diagnostic": [
-      4.8888,
+      4.8028,
       0.1001
     ],
     "from": "2012-01-06",
     "onc_k": 2,
     "onc_k_at_cap": false,
     "onc_sizes": [
-      50,
+      55,
       8
     ],
-    "participation_ratio": 1.71,
-    "rho_mean": 0.7099,
-    "rho_median": 0.8112,
-    "series": 58,
+    "participation_ratio": 1.68,
+    "rho_mean": 0.7184,
+    "rho_median": 0.8158,
+    "series": 63,
     "to": "2025-11-07",
     "weeks": 722
   },
   "shape": {
-    "excess_kurtosis_median": 9.061,
-    "excess_kurtosis_p90": 17.422,
-    "series": 424,
-    "skew_median": -0.092,
-    "skew_p10": -1.057
+    "excess_kurtosis_median": 8.966,
+    "excess_kurtosis_p90": 17.427,
+    "series": 467,
+    "skew_median": -0.041,
+    "skew_p10": -1.032
   },
   "windows": {
     "1994-2025": {
-      "cluster_sharpe_mean": 0.8577,
-      "cluster_sharpe_var": 0.1189,
+      "cluster_sharpe_mean": 0.8659,
+      "cluster_sharpe_var": 0.1085,
       "cluster_sharpes": [
-        1.1015,
-        0.6139
+        1.0988,
+        0.633
       ],
       "cluster_sharpes_minvar_in_sample_diagnostic": [
-        5.4118,
-        0.5567
+        5.3812,
+        0.5466
       ],
       "from": "1994-02-04",
       "onc_k": 2,
       "onc_k_at_cap": false,
       "onc_sizes": [
-        185,
-        33
+        197,
+        36
       ],
-      "participation_ratio": 1.71,
-      "rho_mean": 0.7227,
-      "rho_median": 0.8187,
-      "series": 218,
+      "participation_ratio": 1.72,
+      "rho_mean": 0.7207,
+      "rho_median": 0.8171,
+      "series": 233,
       "to": "2025-11-07",
       "weeks": 1657
     },
     "2012-2025": {
-      "cluster_sharpe_mean": 1.168,
-      "cluster_sharpe_var": 0.1438,
+      "cluster_sharpe_mean": 1.1733,
+      "cluster_sharpe_var": 0.1324,
       "cluster_sharpes": [
-        1.4361,
-        0.8998
+        1.4305,
+        0.916
       ],
       "cluster_sharpes_minvar_in_sample_diagnostic": [
-        5.3807,
-        1.3476
+        5.1081,
+        1.2832
       ],
       "from": "2012-01-06",
       "onc_k": 2,
       "onc_k_at_cap": false,
       "onc_sizes": [
-        209,
-        88
+        225,
+        98
       ],
-      "participation_ratio": 2.26,
-      "rho_mean": 0.5815,
-      "rho_median": 0.6867,
-      "series": 297,
+      "participation_ratio": 2.27,
+      "rho_mean": 0.5834,
+      "rho_median": 0.6852,
+      "series": 323,
       "to": "2025-11-07",
       "weeks": 722
     }
