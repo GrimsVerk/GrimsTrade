@@ -113,7 +113,7 @@ Legend: [E] engineering change to `main`, [R] research record, [O] waits on an o
                       - #58 `evo-2` [R] **tip**: evo-2: calibrated plant found 1/3: gate fails. Evo line CLOSED.
                     - #46 `micro-1` [R] **tip**: micro-1: minute-bar features do not forecast weekly. Closed.
                     - #48 `data-long-1` [R]: data-long-1: free long bond and gold histories verified; loader.
-                      - #50 `research/exit-1` [R] **tip**: exit-1: exit research (exit rules, parking cash, re-entry); review FINAL.
+                      - #50 `research/exit-1` [R] **tip**: exit-1: exit-rule and re-entry research; review FINAL.
                       - #51 `data-long-2` [R] **tip**: data-long-2: gold loader; trend-where closed on bonds/gold.
           - #20 `ideas-1` [R] **tip**: ideas-1: eight video-sourced rules, all fail.
   - #13 `data-search-1` [E]: Data-source catalogue (`docs/data-sources.md`), docs only.

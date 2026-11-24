@@ -51,14 +51,14 @@ instrument; they are descriptive.
 
 ## Costs (fixed)
 
-- **retail** (`retail`): UCITS ETFs/ETCs 0.10% fee + 0.05% slippage a side. Basis: DEGIRO charges
+- **retail**: UCITS ETFs/ETCs 0.10% fee + 0.05% slippage a side. Basis: DEGIRO charges
   about EUR 1 (core selection) to EUR 4 (other ETFs on Xetra/Euronext) per order; on the
   EUR 1,000-5,000 orders a EUR 10,000-50,000 book places that is 0.02-0.4%, 0.10% in the middle.
   Half-spreads of these liquid iShares lines and Xetra-Gold are a few basis points. Coins in EUR:
   the gym's crypto costs (0.25% + 0.05%), about a European exchange's taker fee.
 - **gym**: the house costs (ETFs 0 + 0.02%, coins 0.25% + 0.05%).
 - **harsh** (robustness): ETFs 0.25% + 0.15%.
-- No taxes: left out of every book alike.
+- No taxes: none is modelled in any book, so the comparison is like for like.
 
 ## Runs (all that will be run; every one a row in `tries.md`, idea `eu-1`)
 

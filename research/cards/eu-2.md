@@ -105,7 +105,7 @@ the US behaviour back, and what does the hedge cost (about the USD-EUR short-rat
 - **XAD1**: Xtrackers Physical Gold EUR Hedged ETC (Xetra), from 2010-06-15.
 - NQSE (Nasdaq 100 EUR Hedged) starts 2018-09: too late for W, not used. SXRV stays unhedged.
 
-### Runs (all; window W; retail percentage costs `retail` as in eu-1, so eu-1's rows compare
+### Runs (all; window W; percentage costs (`retail`) as in eu-1, so eu-1's rows compare
 directly; idea `eu-2`)
 
 1. `euw-h` = `euw` with IUSE in place of SXR8: `tsmom12` and `equal-weight` (2 rows). Primary.

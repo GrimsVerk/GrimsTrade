@@ -7,7 +7,7 @@ before any test or number of this card.
 
 ## Citation check (2026-11-18, before the card)
 
-- Journal, volume, issue, pages, DOI and authors: confirmed on the research portal of an author's university
+- Journal, volume, issue, pages, DOI and authors: confirmed on the the authors' institutional repository
   (the publication record) and a search summary of the JFE page `[abstract]`.
 - Abstract, as paraphrased by the portal: a "cross-asset time series momentum" in 20 countries;
   past bond returns predict future equity returns positively, past equity returns predict future

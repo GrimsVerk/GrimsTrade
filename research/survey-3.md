@@ -11,7 +11,7 @@ year unspent.
 
 Pitkäjärvi, Suominen and Vaittinen, "Cross-asset signals and time series momentum", Journal of
 Financial Economics 136(1), 2020, pp. 63-85, DOI 10.1016/j.jfineco.2019.02.011: confirmed
-(research portal of an author's university, search summary of the JFE page). Survey-2's citation was right.
+(the authors' institutional repository, search summary of the JFE page). Survey-2's citation was right.
 
 - Abstract (paraphrased by the portal): 20 countries; past bond returns predict stock returns
   positively, past stock returns predict bond returns negatively; the diversified cross-asset
