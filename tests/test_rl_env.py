@@ -89,6 +89,12 @@ def random_weights(rng: random.Random, syms: list[str], live: set[str]) -> dict[
     return {s: x / tot for s, x in raw.items() if tot > 0 and x > 0}
 
 
+@pytest.mark.xfail(
+    strict=False,
+    reason="research archive: rl_sim re-implements the gym as it was for the RL lanes; main's gym "
+    "now has waiting buys (G2), dividends (G4), fee tiers and cash interest (#115). The RL lanes "
+    "are closed and their logged results stand; see docs/research-archive-1.md.",
+)
 @pytest.mark.parametrize("seed", [1, 2, 3])
 def test_batch_sim_equals_gym(lib: dict[str, ModuleType], seed: int) -> None:
     np: Any = pytest.importorskip("numpy")

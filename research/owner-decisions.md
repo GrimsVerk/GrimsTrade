@@ -479,3 +479,31 @@ optional trend-tune note (#34, a 2.5-5% band).
 - Every number is quoted from the files above; where review-2 corrected one, the corrected
   number is used. The defaults are this lane's reading of the evidence; none is settled until the
   owner says so.
+
+## Answers (2026-11-24, GrimsTrade lead)
+
+The owner ruled on 2026-11-24 that agents merge and run this repo. Every item above is an
+engineering or research call, so the lead took the recommended default for each; none needed
+the owner (no intent, money or account question is left). Any answer can be reversed by a later
+PR that says why.
+
+| Id | Answer | Done where |
+|---|---|---|
+| A1 | Yes: all nine landed together as one merge of `integrate-1` (#115), so the gym PRs share one day | #115 |
+| A2 | (a) full bill rate; (b) above cash for new research rows, logged rows stay; (c) second source as a BACKLOG item | #115, `docs/BACKLOG.md` |
+| A3 | Landed with the rest, not a week later: dry runs of the record and the intraday steps passed, and the intraday steps are best effort after the record push | #115 |
+| A4 | Option A: this archive (#118), refreshed on the new `main` | #118 |
+| A5 | Yes: contained PRs closed as "landed via #118", branches kept | after #118 |
+| B1 | Yes: the register and the measured bar land (register chain, one merge), with review-2's bar wording | register landing PR |
+| B2 | Adopt the forward registry; freeze nothing now | #115 |
+| B3 | No freeze of `turn-of-year-losers@1` (8% power) | - |
+| B4 | Keep `common.weekly`; documented here | - |
+| B5 | W18 gates on 2006-2024 only; the held-out year stays unread | - |
+| B6 | No perpetual futures in the paper gym | - |
+| B7 | No shorts now; revisit after C2 | - |
+| C1 | Yes: `tsmom12` is read as a risk choice (crash insurance with a price), not an edge | - |
+| C2 | Keep the three presets; add one own-vol 70% paper book (no-look-ahead form) as a new lane from `main` | lane queue |
+| C3 | No coin stop rule; coin size is the risk budget | - |
+| C4 | No euro-fund paper book now; keep the 1% band | - |
+| D1 | Accept the delayed schedule; record it in DECISIONS; compare live with backtests with the gap in mind | lane queue |
+| D2-D7 | As the table above says (no, or no decision needed) | - |
