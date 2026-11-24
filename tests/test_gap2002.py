@@ -17,13 +17,17 @@ from types import ModuleType
 
 import pytest
 
+from grimstrade import data
+
 LIB = Path(__file__).resolve().parents[1] / "research" / "lib"
 
 
 @pytest.fixture(scope="module")
 def gap() -> Iterator[ModuleType]:
     pytest.importorskip("numpy")
+    saved_universe = dict(data.UNIVERSE)
     saved_path = list(sys.path)
+    saved_mods = {n: sys.modules.get(n) for n in ("stats", "harness", "gap2002")}
     sys.path.insert(0, str(LIB))
     mod = None
     for name in ("stats", "harness", "gap2002"):
@@ -34,7 +38,14 @@ def gap() -> Iterator[ModuleType]:
         spec.loader.exec_module(mod)
     assert mod is not None
     yield mod
+    data.UNIVERSE.clear()
+    data.UNIVERSE.update(saved_universe)
     sys.path[:] = saved_path
+    for n, m in saved_mods.items():
+        if m is None:
+            sys.modules.pop(n, None)
+        else:
+            sys.modules[n] = m
 
 
 def _days(n: int, first: date = date(2001, 1, 1)) -> list[date]:
