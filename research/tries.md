@@ -3912,3 +3912,13 @@ Never edit or delete a row.
 | 2026-11-24 20:30 | coin-drift-run | band05@cm placebo P2 (median of 40 shuffles; mean Sharpe 0.50) | control | train | 2019-04-07 | 2025-11-10 | 0.59 | +202.1% | 57.7% | 5.33 |
 | 2026-11-24 20:32 | coin-drift-run | costs-at-zero split (same run, not a try): band05@cm net +0.033 (z 1.80) = drift with all coin costs zero +0.014 (z 0.71) + fees and tiers +0.019; band02@cm +0.011 = +0.005 + 0.006; excess over placebo P1 +0.009 (z 0.83) / +0.002 (z 0.62), over P2 +0.009 (z 0.54) / -0.001 (z -0.35); Turnover/yr in this idea's rows = traded value x equity a year, both sides | note | train | 2019-04-07 | 2025-11-10 | - | - | - | - |
 | 2026-11-24 20:25 | data-long-3 | data lane: keyless long rates/FX/commodity panel cached (US bonds 1962-, 9 foreign 10y 1955-89-, 9 FX with carry 1971-, 12 PPI commodity indices 1913-47-); bonds vs IEF/TLT/SHY corr 0.97-0.99, FX spot vs trusts 0.99, spot oil vs USO +10 pts/yr; no strategy run (research/data-long-3.md) | note | train | 1913-01-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 20:57 | insure-3 | hold-spx-tr@insure3 | baseline | train | 1986-06-30 | 2025-10-31 | 0.67 | +6242.2% | 55.3% | - |
+| 2026-11-24 20:57 | insure-3 | tsmom12-spx-tr-bills@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.80 | +5457.0% | 33.0% | 1.12 |
+| 2026-11-24 20:57 | insure-3 | tsmom12-spx-tr-cash0@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.76 | +4452.0% | 34.3% | 1.12 |
+| 2026-11-24 20:57 | insure-3 | cboe-pput@insure3 | baseline | train | 1986-06-30 | 2025-10-31 | 0.63 | +1952.2% | 42.0% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | mix50-tsmom12-pput-bills@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.77 | +3388.5% | 28.6% | - |
+| 2026-11-24 20:57 | insure-3 | mix50-tsmom12-pput-cash0@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +3057.1% | 29.1% | - |
+| 2026-11-24 20:57 | insure-3 | cboe-put@insure3 | baseline | train | 2007-01-31 | 2025-10-31 | 0.54 | +245.6% | 37.1% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | cboe-bxm@insure3 | baseline | train | 2002-03-28 | 2025-10-31 | 0.48 | +278.2% | 40.1% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | cboe-cll@insure3 | baseline | train | 2008-08-29 | 2025-10-31 | 0.58 | +210.6% | 25.5% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | cboe-vxth@insure3 | baseline | train | 2006-03-31 | 2025-10-31 | 0.67 | +580.8% | 43.3% | 12.00 |
