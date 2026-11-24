@@ -84,8 +84,13 @@ the 15th decimal (+0.0629480, +0.0216657).
 - One run of the pre-registered evaluation. Card, code, tests and the plumbing run were pushed
   before any real number, and the card was not amended. Plumbing (zero-drift random walks): D
   -0.010 / -0.000, |z| <= 0.6.
-- The rules are pooled-1's code. With zero lag the weekly engine equals `pooled1_core.decide` /
-  `own_vol` exactly (tests). The equity re-run reproduces pooled-1's D exactly.
+- On the 11 daily-data markets the rules are pooled-1's code (with zero lag the weekly engine
+  equals `pooled1_core.decide` / `own_vol` exactly, tests). The 10 monthly markets (GOV9,
+  FX-EUR) use the card's monthly versions, which are new code: `e4` on 1/3/6/12-month changes,
+  own-vol with a 36-month sigma instead of 52 weeks (chosen in the card, not tested against
+  alternatives). Split of the judged D: `e4` weekly +0.003 / monthly +0.018; `vt-own-70-x`
+  weekly -0.038 / monthly +0.022, so the kill comes from pooled-1's own code on currencies
+  (review of #159). The equity re-run reproduces pooled-1's D exactly.
 - Rebuilt series, not traded ones. Bonds are constant-maturity par bonds; foreign bonds come
   from monthly averages (smoothed, half a month late); carry uses interbank rates (an upper
   estimate); PPI is a mid-month producer price with revisions. These affect each variant and its
