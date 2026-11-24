@@ -10,6 +10,7 @@ dependencies = []
 [dependency-groups]
 # Keep ruff in step with the rev in .pre-commit-config.yaml.
 dev = [
+    {include-group = "rl"},
     "mypy~=2.3",
     "numpy>=2.5.4",
     "pre-commit~=4.0",
@@ -17,6 +18,12 @@ dev = [
     "ruff~=0.15.22",
     "scikit-learn>=1.9.1",
     "xlrd>=2.0.1",
+]
+# The Gymnasium environment (`grimstrade.gym_env`, docs/gym-env.md). The daily runner never
+# imports it; `dev` includes it so the checks run its tests.
+rl = [
+    "gymnasium>=1.2",
+    "numpy>=2.5.4",
 ]
 
 [build-system]
