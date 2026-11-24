@@ -34,7 +34,7 @@ from pathlib import Path
 from typing import Any
 
 from grimstrade import data, gym, ledger, report
-from grimstrade.data import UNIVERSE, History, close_time, open_time, visible_history
+from grimstrade.data import UNIVERSE, History, open_time, visible_history
 from grimstrade.gym import Decision, Result
 
 # --- tolerance (research/reconcile-1.md: "floating point only") ---
@@ -211,8 +211,9 @@ def compare_days(
         else:
             cls, why = SCHEDULE, "decision time only"
         out.by_class[cls] = out.by_class.get(cls, 0) + 1
-        out.findings.append(Finding(book, d.isoformat(), "day", cls,
-                                    f"{why}: {describe_gap(lv[d], bt[d])}"))  # fmt: skip
+        out.findings.append(
+            Finding(book, d.isoformat(), "day", cls, f"{why}: {describe_gap(lv[d], bt[d])}")
+        )
     return out
 
 
@@ -240,7 +241,9 @@ def check_fills(
     out: list[Finding] = []
     if any(g != 0 for g in res.cash_growth):
         raise ValueError("check_fills does not model cash interest (the trail has no rates)")
-    opens = {(s, open_time(UNIVERSE[s], b.date)): b.open for s, bars in history.items() for b in bars}
+    opens = {
+        (s, open_time(UNIVERSE[s], b.date)): b.open for s, bars in history.items() for b in bars
+    }
     for i, f in enumerate(res.fills):
         day = f.time.date().isoformat()
         cls = UNIVERSE[f.symbol]
@@ -259,8 +262,11 @@ def check_fills(
         if not same(f.price, want_px):
             bad(f"price {f.price!r}, rules give {want_px!r}")
         since = f.time - gym.VOLUME_WINDOW
-        volume = sum(abs(g.qty) * g.price for g in res.fills[:i]
-                     if since < g.time < f.time and UNIVERSE[g.symbol] == cls)  # fmt: skip
+        volume = sum(
+            abs(g.qty) * g.price
+            for g in res.fills[:i]
+            if since < g.time < f.time and UNIVERSE[g.symbol] == cls
+        )
         want_fee = abs(f.qty) * f.price * c.fee_at(volume)
         if not same(f.fee, want_fee):
             bad(f"fee {f.fee!r}, rules give {want_fee!r}")
@@ -309,8 +315,10 @@ def snapshot_gaps(written: SnapshotRow, computed: SnapshotRow) -> list[str]:
         if not same_cents(written[key], computed[key]):
             gaps.append(f"{key} {written[key]} vs {computed[key]:.4f}")
     if written["fills"] != computed["fills"] or written["marked_on"] != computed["marked_on"]:
-        gaps.append(f"fills/marked {written['fills']}/{written['marked_on']} vs "
-                    f"{computed['fills']}/{computed['marked_on']}")  # fmt: skip
+        gaps.append(
+            f"fills/marked {written['fills']}/{written['marked_on']} vs "
+            f"{computed['fills']}/{computed['marked_on']}"
+        )
     wp, cp = written["positions"], computed["positions"]
     for s in sorted(set(wp) | set(cp)):
         if not same(wp.get(s, 0.0), cp.get(s, 0.0)):
@@ -348,7 +356,9 @@ print(json.dumps(out))
 
 
 def git(cwd: Path, *args: str) -> str:
-    return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True).stdout
+    return subprocess.run(
+        ["git", *args], cwd=cwd, check=True, capture_output=True, text=True
+    ).stdout
 
 
 def code_src(repo: Path, commit: str, work: Path) -> Path:
@@ -356,8 +366,9 @@ def code_src(repo: Path, commit: str, work: Path) -> Path:
     dest = work / f"code-{commit[:12]}"
     if not dest.exists():
         dest.mkdir(parents=True)
-        tar = subprocess.run(["git", "archive", commit, "src"], cwd=repo, check=True,
-                             capture_output=True).stdout  # fmt: skip
+        tar = subprocess.run(
+            ["git", "archive", commit, "src"], cwd=repo, check=True, capture_output=True
+        ).stdout
         tmp = dest / "src.tar"
         tmp.write_bytes(tar)
         with tarfile.open(tmp) as t:
@@ -367,8 +378,12 @@ def code_src(repo: Path, commit: str, work: Path) -> Path:
 
 
 def old_snapshot(src: Path, root: Path) -> dict[str, Any]:
-    out = subprocess.run([sys.executable, "-c", OLD_CODE_SCRIPT, str(src), str(root)],
-                         check=True, capture_output=True, text=True).stdout  # fmt: skip
+    out = subprocess.run(
+        [sys.executable, "-c", OLD_CODE_SCRIPT, str(src), str(root)],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
     result: dict[str, Any] = json.loads(out)
     return result
 
@@ -379,8 +394,9 @@ def code_of_run(repo: Path, rows: Sequence[Mapping[str, Any]], run_at: datetime)
     codes = {r["code"] for r in rows if r.get("code")}
     if len(codes) == 1:
         return codes.pop()
-    return git(repo, "rev-list", "-1", "--first-parent", f"--before={run_at.isoformat()}",
-               "origin/main").strip()  # fmt: skip
+    return git(
+        repo, "rev-list", "-1", "--first-parent", f"--before={run_at.isoformat()}", "origin/main"
+    ).strip()
 
 
 Strategies = Mapping[str, Callable[[History], tuple[dict[str, float], str]]]
@@ -405,8 +421,9 @@ def run(repo: Path, work: Path, ref: str, live: Strategies) -> dict[str, Any]:
             if root.exists():
                 shutil.rmtree(root)
             root.mkdir()
-            tar = subprocess.run(["git", "archive", commit], cwd=clone, check=True,
-                                 capture_output=True).stdout  # fmt: skip
+            tar = subprocess.run(
+                ["git", "archive", commit], cwd=clone, check=True, capture_output=True
+            ).stdout
             (work / "root0.tar").write_bytes(tar)
             with tarfile.open(work / "root0.tar") as t:
                 t.extractall(root, filter="data")
@@ -431,8 +448,16 @@ def run(repo: Path, work: Path, ref: str, live: Strategies) -> dict[str, Any]:
         by_main = {n: snapshot_of(r) for n, r in report.live_results(root, history).items()}
         for book, row in sorted(written.items()):
             cls, gaps = classify_snapshot(row, by_old.get(book), by_main[book])
-            snapshots.append({"commit": commit[:10], "run": run_at.isoformat(), "book": book,
-                              "code": old_src.parent.name[5:], "class": cls, "gaps": gaps})  # fmt: skip
+            snapshots.append(
+                {
+                    "commit": commit[:10],
+                    "run": run_at.isoformat(),
+                    "book": book,
+                    "code": old_src.parent.name[5:],
+                    "class": cls,
+                    "gaps": gaps,
+                }
+            )
             if cls:
                 findings.append(Finding(book, run_at.isoformat(), "snapshot", cls, "; ".join(gaps)))
     # The record as it stands, every line committed.
@@ -441,7 +466,9 @@ def run(repo: Path, work: Path, ref: str, live: Strategies) -> dict[str, Any]:
     history = data.load_all(clone)
     counted, late_lines = ledger.in_force(clone)
     late = late_bars(history, stored_at)
-    findings += [Finding(s, d, "bars", DATA, f"visible at run {t}, stored later") for t, s, d in late]
+    findings += [
+        Finding(s, d, "bars", DATA, f"visible at run {t}, stored later") for t, s, d in late
+    ]
     live_res = report.live_results(clone, history)
     books: dict[str, Any] = {}
     for book in sorted(live_res):
@@ -451,8 +478,10 @@ def run(repo: Path, work: Path, ref: str, live: Strategies) -> dict[str, Any]:
         first, last = due_day(mine[0][0]), due_day(ledger.parse_time(mine[-1][1]["time"]))
         bt_decs = gym.backtest(strat, history, first, last)
         bt_by_day = {d.time.date(): d.weights for d in bt_decs}
-        now_w = {r["time"]: dict(strat(visible_history(history, ledger.parse_time(r["time"])))[0])
-                 for _, r in mine}  # fmt: skip
+        now_w = {
+            r["time"]: dict(strat(visible_history(history, ledger.parse_time(r["time"])))[0])
+            for _, r in mine
+        }
         weight_classes: dict[datetime, str] = {}
         per_due: dict[date, tuple[datetime, dict[str, Any]]] = {}
         for t, r in mine:
@@ -466,16 +495,24 @@ def run(repo: Path, work: Path, ref: str, live: Strategies) -> dict[str, Any]:
         w_days, w_match, w_class = 0, 0, {}
         for d, (_, r) in sorted(per_due.items()):
             w_days += 1
-            c = classify_weights(r["weights"], at_run[(book, r["time"])], now_w[r["time"]],
-                                 bt_by_day.get(d))  # fmt: skip
+            c = classify_weights(
+                r["weights"], at_run[(book, r["time"])], now_w[r["time"]], bt_by_day.get(d)
+            )
             if c is None:
                 w_match += 1
             else:
                 w_class[c] = w_class.get(c, 0) + 1
                 if c == SCHEDULE:
                     gap = weight_gap(now_w[r["time"]], bt_by_day[d])
-                    findings.append(Finding(book, d.isoformat(), "weights", c,
-                                            f"live run saw crypto bar {d}: gap {gap:.3g}"))  # fmt: skip
+                    findings.append(
+                        Finding(
+                            book,
+                            d.isoformat(),
+                            "weights",
+                            c,
+                            f"live run saw crypto bar {d}: gap {gap:.3g}",
+                        )
+                    )
         same_t = gym.simulate([Decision(t, now_w[r["time"]]) for t, r in mine], history)
         bt = gym.simulate(bt_decs, history)
         days = compare_days(book, live_res[book], same_t, bt, weight_classes)
