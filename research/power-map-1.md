@@ -259,5 +259,12 @@ S&P 500 fund 2012-2025), +0.71 (z 2.9, `halving-2` on Litecoin) and +0.19 (z 1.6
 - The bootstrap SE uses 52-week blocks; slow rules whose difference returns persist for years
   would need longer blocks and would make k larger, so the edges needed would be larger.
 - Event-count rows assume independent events; overlapping windows reduce them further.
+- **Store snapshot.** All tables are measured on the store at `f1d2da5` (1,237 series, the
+  one the card was written against); the script reads it from git. Merging later `main`
+  brought 1,512 series (new families such as `seasonal-20y`, `cost-band` and per-book variant
+  files). On that store (sensitivity section of the results): k 1.05; C1 median rho 0.83, so
+  the six-asset edge needed at 80% power is +0.59 and the 13-market pooled one +0.24; C3
+  median rho 0.67 (coin-universe variants of risk parity), so +1.41 for daily crypto. The
+  largest chance to pass in the difference form is 0.008; no conclusion changes.
 
 Tries rows: one `note` row (`power-map`), no selectable try.
