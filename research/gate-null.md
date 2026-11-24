@@ -27,6 +27,8 @@ shows how wide the real null is:
 | 4-week return of GLD/TLT/SPY/QQQ on hedging-pressure z, Driscoll-Kraay 4 lags, 1,484 rows (wide-11, W22) | 40 calendars moved k = 27-103 weeks | 1.13 | 8% | persistent dose that follows price at 6-12 months: future-dose shifts lean positive (95% +2.22, max +3.41) |
 | 4-week return of TLT/IEF on foreign official custody-flow z, four price controls, Driscoll-Kraay 4 lags, 1,644 rows (wide-12, W23) | 40 calendars moved k = 27-103 weeks | 1.19 | 10% | persistent dose, symmetric null (5/95% -2.07/+1.89): same family as W22, same width |
 | Next-quarter return of TLT/IEF on SPF 10-year inflation-dispersion z, Driscoll-Kraay 1 lag, 124 rows (wide-12, W24) | 40 calendars moved k = 7-45 quarters | 0.90 | 0% | non-overlapping quarters, short placebo samples (36-124 rows): narrower than normal |
+| 4-week return of GLD/TLT on GPR acts z from its available-on date, Driscoll-Kraay 4 lags, 2,166 rows (wide-13, W25) | 40 calendars moved k = 27-103 weeks (earlier-dose half only, per review-2: 20) | 1.11 (0.97) | 12% (5%) | index shares slow regimes with safe havens: centred below zero (median -0.96; earlier-only -0.26) |
+| 4-week return of XLF on ln(1 + FDIC failed assets), four price controls, Newey-West 4 lags, 1,344 weeks (wide-13, W26) | 40 calendars moved k = 27-103 weeks (earlier-dose half only: 20) | 1.63 (0.48) | 25% (0%) | failures follow XLF at 52 weeks (t -3.87): later-dose shifts carry the whole negative tail (to -4.37), review-2 point (1); about two episodes, kill-only |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
