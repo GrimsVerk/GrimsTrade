@@ -310,3 +310,44 @@ def test_a_lost_newline_alone_is_no_cut_row(tmp_path: Path) -> None:
         path.write_bytes(path.read_bytes().rstrip(b"\n"))
     assert run_daily.run(tmp_path, FIRST + timedelta(days=1), market(), tmp_path) == []
     assert len(data.load(tmp_path, "BTC")) == 33
+
+
+# --- open findings (reproductions; the fix is left to a later lane, see PR #161) ---
+
+
+@pytest.mark.xfail(strict=True, reason="open: the first source's gap is not filled from the second")
+def test_a_kraken_answer_missing_the_first_day_asked_is_filled_from_coinbase(
+    tmp_path: Path,
+) -> None:
+    """Kraken answers, but from a day later than asked (it lacks 2026-11-02). `fetch_from` takes
+    any non-empty answer from the first source, and `data.append` then refuses the whole answer
+    (a crypto day skipped could never be added later). Coinbase, which has the day, is never
+    asked, so BTC stores nothing for as long as Kraken lacks the day (a problem line each run,
+    then the overdue line). Wanted: an answer that does not continue the stored series counts as
+    a failed source, and the next one is asked."""
+    run_daily.run(tmp_path, FIRST, market(), tmp_path)
+    assert data.load(tmp_path, "BTC")[-1].date == date(2026, 11, 1)
+    gap = body(kraken_rows([d for d in DAYS if d >= date(2026, 11, 3)]))
+    later = FIRST + timedelta(days=3)
+    problems = run_daily.run(tmp_path, later, market(kraken=gap), tmp_path)
+    assert not any(p.startswith("BTC") for p in problems), problems
+    assert data.load(tmp_path, "BTC")[-1].date == date(2026, 11, 4)
+
+
+@pytest.mark.xfail(strict=True, reason="open: a self-contradicting answer is stored, last row wins")
+def test_an_answer_with_two_different_bars_for_one_day_is_not_stored_silently(
+    tmp_path: Path,
+) -> None:
+    """One answer lists 2026-10-05 twice with different prices. `data.append` keeps whichever
+    comes last and says nothing; the other version is lost. Wanted: such an answer counts as a
+    failed source (try the next one), like a nonsense bar."""
+    days = DAYS[:10]
+    rows = json.loads(kraken_rows(days))
+    twin = list(rows["result"]["XXBTZUSD"][4])
+    twin[1:5] = [str(float(x) * 1.05) for x in twin[1:5]]
+    rows["result"]["XXBTZUSD"].append(twin)
+    problems = run_daily.run(tmp_path, FIRST, market(kraken=body(json.dumps(rows).encode())),
+                             tmp_path)  # fmt: skip
+    stored = data.load(tmp_path, "BTC")
+    assert stored and stored[4].close == 100.5 + 4  # the first source's other bars or Coinbase's
+    assert not any(p.startswith("BTC") for p in problems)
