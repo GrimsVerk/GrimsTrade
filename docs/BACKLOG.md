@@ -44,14 +44,10 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   off, those strategies skip that day. "No LLM in the runner" is about Claude and about not
   needing the desktop, not about models in general.
 - Idea sources from the owner (2026-11-12), to read for hypotheses, never as truth:
-  - YouTube channels, fetched with GrimsVerk/YT-Harvest (transcripts stay local, never in git;
-    cite video + timestamp on each card): Andrei Jikh (@AndreiJikh), Bravos Research
-    (@bravosresearch), Real Vision (UCGXWKlq1Oxr3ddEtmKhAkPg), Raoul Pal The Journey Man
-    (UCVFSzL3VuZKP3cN9IXdLOtw), EC Krown (@ECKrown, @ECKrown4), EllioTrades
-    (@elliotrades_official), George Gammon (@GeorgeGammon), Mark Tilbury (@marktilbury), MoneyZG
-    (@MoneyZG), New Money (@NewMoneyYouTube), How Money Works (@HowMoneyWorks), Miles Deutscher
-    Finance (@milesdeutscher1357; reviews FOSS trading repos).
-  - FOSS trading repos (from Miles Deutscher's video yuckuVqd01k): TauricResearch/TradingAgents,
+  - Finance YouTube channels, fetched with GrimsVerk/YT-Harvest (the channel list is kept
+    outside this repo: `yt-channels.toml` in `private_dir` from `local.toml`, see
+    `local.toml.example`; transcripts stay local, never in git; cite video + timestamp on each card).
+  - FOSS trading repos (from one repo-review video): TauricResearch/TradingAgents,
     ZhuLinsen/daily_stock_analysis, HKUDS/Vibe-Trading, anthropics/financial-services,
     freqtrade/freqtrade, Jakeschincariol/day-trader-skill, virattt/ai-hedge-fund,
     LuckyOne7777/LLM-Trading-Lab. Read code and docs for ideas; never run their code here.
