@@ -18,7 +18,10 @@ so the same series give the same bytes everywhere. One CSV row per series:
   `first_friday` (the first return ends there), as integers in millionths (rounded to 1e-6),
   space separated; `nan`, `inf` and `-inf` as such.
 
-Only strategy returns: never prices or other market data. Stdlib only.
+Only weekly strategy returns, never raw bars. Buy-and-hold baselines are strategies too, so their
+series are a coarse weekly index of one asset; accepted (2026-11-24): the live six's daily bars
+are already public on `paper-trail`, and the other series are public index data (Ken French,
+Shiller) or fund prices at weekly resolution. Stdlib only.
 
 register-5: the research harness (`research/lib/harness.py`, `_log`) adds a train try's series
 here itself when it logs the row (`of_equity`, then `add`), so no saved curve is needed; the

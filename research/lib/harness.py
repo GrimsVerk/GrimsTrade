@@ -338,7 +338,10 @@ def _log(run: Run, kind: str, start: date, end: date) -> None:
     with TRIES.open("a") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
         f.write(row)
-    tryshape.log(SHAPES, row, run.days, [float(e) for e in run.equity])
+    try:  # a failure only warns: the row is logged, as in `_store`
+        tryshape.log(SHAPES, row, run.days, [float(e) for e in run.equity])
+    except (OSError, ValueError) as e:
+        print(f"harness: try shape not logged ({e})", file=sys.stderr)
     if run.period == "train":
         _store(run, sharpe)
 

@@ -192,12 +192,13 @@ def _research_texts(repo: Path, rel: str) -> list[str]:
     """`rel` from the working tree and every branch (`research_refs`), each distinct text once."""
     texts = []
     if (repo / rel).exists():
-        texts.append((repo / rel).read_text())
+        texts.append((repo / rel).read_text(errors="replace"))
     refs = research_refs(repo)
     try:
         # Branches share files through their history: read each distinct version once.
         blobs = {b for b, _ in _blobs(repo, refs, rel).values() if b} if refs else set()
-        texts += [_git(repo, "cat-file", "blob", b).decode() for b in sorted(blobs)]
+        # Any branch is read, so a stray non-UTF-8 byte must not stop the daily run.
+        texts += [_git(repo, "cat-file", "blob", b).decode(errors="replace") for b in sorted(blobs)]
     except (subprocess.CalledProcessError, FileNotFoundError):
         pass
     return list(dict.fromkeys(texts))

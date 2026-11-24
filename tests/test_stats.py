@@ -217,6 +217,20 @@ def test_research_tries_read_every_branch_whatever_its_name(tmp_path: Path) -> N
     assert sorted(ledger.research_sharpes(tmp_path)) == [0.7, 0.7, 0.7]
 
 
+def test_a_branch_with_a_non_utf8_tries_file_does_not_stop_the_count(tmp_path: Path) -> None:
+    """Every branch is read, so one stray byte on any of them must not stop the daily run."""
+    git(tmp_path, "init", "-q", "-b", "main")
+    git(tmp_path, "commit", "-q", "--allow-empty", "-m", "start")
+    _branch_with_tries(tmp_path, "carry-2", _table("carry | band"))
+    git(tmp_path, "checkout", "-q", "-b", "stray", "main")
+    (tmp_path / "research").mkdir(exist_ok=True)
+    (tmp_path / "research" / "tries.md").write_bytes(b"\xff\xfe not utf-8\n")
+    git(tmp_path, "add", "-A")
+    git(tmp_path, "commit", "-qm", "stray")
+    git(tmp_path, "checkout", "-q", "main")
+    assert ledger.research_tries(tmp_path) == 1
+
+
 def test_the_record_branch_is_not_a_research_branch(tmp_path: Path) -> None:
     git(tmp_path, "init", "-q", "-b", "main")
     git(tmp_path, "commit", "-q", "--allow-empty", "-m", "start")

@@ -1,2 +1,3 @@
 # The tries register only grows; lines are independent, so two regenerations merge by union.
 research/register/tries.jsonl merge=union
+research/tries-shape.jsonl merge=union
