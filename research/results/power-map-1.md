@@ -119,6 +119,8 @@ Against zero (a book's own Sharpe S, alpha form uses the same row with IR for S)
 
 ## M6. Simulation checks
 
+Draws per cell: 1,000 (400 at 98 years; the card said 2,000).
+
 | rho | Years | Formula SE at the true Sharpes | Monte Carlo SD of d (t(4)) | Ratio | Detection at the formula's MDE80, z 4.69 |
 |---:|---:|---:|---:|---:|---:|
 | 0.00 | 6 | 0.603 | 0.696 | 1.15 | 78% |
@@ -138,4 +140,4 @@ Against zero (a book's own Sharpe S, alpha form uses the same row with IR for S)
 | 0.93 | 32 | 0.067 | 0.070 | 1.04 | 78% |
 | 0.93 | 98 | 0.038 | 0.042 | 1.09 | 79% |
 
-Frequency check (32 years, true annual Sharpe 1.0, normal, 400 draws): SD of the estimated annual Sharpe daily 0.171, weekly 0.171, monthly 0.172; 1/sqrt(32) = 0.177.
+Frequency check (32 years, true annual Sharpe 1.0, normal, 2,000 draws): SD of the estimated annual Sharpe daily 0.176, weekly 0.176, monthly 0.179; formula sqrt((1 + SR^2 / (2 q)) / Y): daily 0.177, weekly 0.178, monthly 0.180.

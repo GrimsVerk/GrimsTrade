@@ -430,6 +430,8 @@ def forward_tables(series: list[Series], primary: Series, k: float) -> tuple[lis
 def simulate() -> list[str]:
     rng = np.random.default_rng(SEED + 1)
     out = [
+        "Draws per cell: 1,000 (400 at 98 years; the card said 2,000).",
+        "",
         "| rho | Years | Formula SE at the true Sharpes | Monte Carlo SD of d (t(4)) | Ratio "
         "| Detection at the formula's MDE80, z 4.69 |",
         "|---:|---:|---:|---:|---:|---:|",
@@ -458,17 +460,22 @@ def simulate() -> list[str]:
     # frequency check: same 32 years, daily / weekly / monthly sampling of one random walk
     yrs, per_year = 32, 252
     sds = defaultdict(list)
-    for _ in range(400):
-        x = rng.standard_normal(yrs * per_year) * 0.01 + 1.0 / per_year * 0.01
+    for _ in range(2000):
+        x = rng.standard_normal(yrs * per_year) * 0.01 + 0.01 / math.sqrt(per_year)
         for name, step in (("daily", 1), ("weekly", 5), ("monthly", 21)):
             agg = x[: len(x) // step * step].reshape(-1, step).sum(1)
             sds[name].append(agg.mean() / agg.std(ddof=1) * math.sqrt(per_year / step))
     out += [
         "",
-        "Frequency check (32 years, true annual Sharpe 1.0, normal, 400 draws): SD of the "
+        "Frequency check (32 years, true annual Sharpe 1.0, normal, 2,000 draws): SD of the "
         "estimated annual Sharpe "
         + ", ".join(f"{n} {np.std(v, ddof=1):.3f}" for n, v in sds.items())
-        + f"; 1/sqrt(32) = {1 / math.sqrt(32):.3f}.",
+        + "; formula sqrt((1 + SR^2 / (2 q)) / Y): "
+        + ", ".join(
+            f"{n} {math.sqrt((1 + 1 / (2 * per_year / st)) / yrs):.3f}"
+            for n, st in (("daily", 1), ("weekly", 5), ("monthly", 21))
+        )
+        + ".",
     ]
     return out
 

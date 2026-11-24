@@ -130,22 +130,24 @@ and numbers quoted from the records.
 
 - **No kind of strategy we can test has a realistic chance of passing the bar.** For every
   class where the records give a plausible size, a true edge at the top of that range would
-  clear z 4.69 with a probability between 1 in 40,000 and about 1 in 50 (table below). For
+  clear z 4.69 with a probability between about 2e-5 and 0.02 in the bar's difference form,
+  and at most 0.026 (1 in 38, Ken French portfolios) in the alpha form (table below). For
   high-frequency crypto and perp carry the size is unknown; even an assumed residual IR of 1.5
   would pass only 11-24% of the time. The search did not fail for
   lack of ideas: with this data, the bar cannot be reached by edges of the size that exist.
-- **Power depends on years of data, not on how many bars.** Daily, weekly and monthly
-  sampling of the same 32 years give the same SE of the annual Sharpe (0.171 each in the
-  simulation). Minute bars only help a strategy whose true Sharpe is high because it makes
+- **Power depends on years of data, not on how many bars** (iid simulation, given return
+  process). Daily, weekly and monthly sampling of the same 32 years give the same SE of the
+  annual Sharpe at a true Sharpe of 1.0 (0.176 / 0.176 / 0.179 in the simulation, against
+  0.177 / 0.178 / 0.180 from the formula). Minute bars only help a strategy whose true Sharpe is high because it makes
   many bets; they do not lower the bar.
 - **The two levers that move the numbers are more years and a different comparator.** Pooling
   13 developed markets 1966-2025 gives about 191 effective years (the difference series of a
   rule against each market's `tsmom12` correlate only 0.26 across markets), which brings the
   edge needed for a trend-like rule down to +0.18 (from +0.44 on the six assets at the
   store's median correlation 0.88). Still about twice the largest plausible edge (+0.10).
-  For a rule uncorrelated with `tsmom12`, the bar's difference form asks a standalone Sharpe
-  of 2.3 at 32 years; an alpha (spanning) test asks a residual IR of 0.90, which is +0.34 on
-  the best mix.
+  For a rule uncorrelated with `tsmom12`, at 32 years and 80% power, the bar's difference
+  form asks a standalone Sharpe of 2.55; an alpha (spanning) test asks a residual IR of 1.06,
+  which is +0.44 on the best mix (at 50% power: 2.3 against IR 0.90, +0.33).
 - **The only combination where an honest pass is not absurd:** a long-short, multi-asset
   style book (the one live family with a positive, uncorrelated record, survey-6: Sharpe 0.50
   over 12 years) tested on about 100 years of data under the alpha form, where the bar is
@@ -175,7 +177,7 @@ true edge at the **top** of the plausible range clears z 4.69 (difference form; 
 | C1 slow trend, US 1927-2025 | S&P / Ken French | 98 | 0.88 | +0.25 / +0.29 | 0.60 | same | 2.5e-3; 4.6e-4 | **no** |
 | C1 slow trend, 13 markets pooled | 1966-2025 | 191 | 0.88 | +0.18 / +0.21 | 0.43 | same | 0.02; 2.8e-3 | **no** (closest; tests "works across markets", not "better on our six") |
 | C2 cross-sectional, ETFs / coins | about 2007-2025 | 18 | 0.84 | +0.67 / +0.79 | 1.41 | IR 0 to 0.30; survey-6: momentum funds live IR -0.03, long-only factor funds matched their index | 3.4e-5; 2.2e-4 | **no** |
-| C2 cross-sectional, long-short, 1927- | Ken French portfolios (research only) | 98 | 0.84 | +0.29 / +0.34 | 0.60 | IR up to 0.30 post-publication (UMD 0.26); style premia live 0.50 | 1.2e-3; 0.03 (at IR 0.50: about 0.45) | **only here, and only in the alpha form; needs B7** |
+| C2 cross-sectional, 1927- | Ken French portfolios (research only), at the long-only class rho 0.84; a long-short book near rho 0 needs about +0.85 at 80% power in the difference form | 98 | 0.84 | +0.29 / +0.34 | 0.60 | IR up to 0.30 post-publication (UMD 0.26); style premia live 0.50 | 1.2e-3; 0.03 (at IR 0.50: about 0.45) | **only here, and only in the alpha form; needs B7** |
 | C3 crypto, daily bets | BTC daily 2014-2025 | 11 | 0.92 | +0.61 / +0.72 | 1.78 | **unknown**; the project's coin lanes found no edge that survived (cointop-1, rl-6, halving-2 z <= 3.1) | 8.5e-3; 0.06 at an assumed IR 1.0 | **unlikely**; needs a net 40 bps a day per bet |
 | C3 crypto, hourly bets | Binance 1-minute 2017-08..2025-11 (own collectors: days) | 8 | 0.1 (assumed) | +2.37 / +2.79 | 2.08 | **unknown**; costs of 10-30 bps a round trip are 5-16x the net edge an hourly bet needs | 2.1e-5; 0.24 at an assumed IR 1.5 | **unknown, cost-bound** |
 | C4 event studies | events 1994-2025 | 32 | 0.92 | +0.36 / +0.43 | 1.06 | IR 0.05-0.15 live (gate-power yardstick); 0 of 19 gates; FOMC drift gone after publication (ann-1) | 2.6e-5; 4.7e-5 | **no** (sparse designs kill-only) |
@@ -204,7 +206,7 @@ Against zero, a book's own Sharpe S at z 1.645: S 0.5 needs 29 years, 1.0 needs 
 (`crypto_mean_reversion`) to 0.95 (`preset_middle`), their d from -0.08 (`equal_weight`) to
 -1.13.
 
-Checks (M6): with Student-t(4) shocks the Monte Carlo SD of d is 1.02-1.19 times the formula
+Checks (M6; 1,000 draws per cell, 400 at 98 years, not the card's 2,000): with Student-t(4) shocks the Monte Carlo SD of d is 1.02-1.19 times the formula
 (fatter tails, shorter samples: more); the store's own k is 1.08 (median). Detection at the
 formula's MDE80 came out 76-81%. So the tables are roughly right and, if anything, slightly
 kind.
@@ -235,8 +237,9 @@ S&P 500 fund 2012-2025), +0.71 (z 2.9, `halving-2` on Litecoin) and +0.19 (z 1.6
    should first measure the realistic cost per round trip on a paper venue; if costs are
    above about 10 bps, hourly bets cannot pass.
 4. **Event studies: run only with a power check first.** Before a card, compute the per-event
-   Sharpe needed (table M3). Designs with fewer than about 200 independent events need a
-   per-event Sharpe above 0.37 and are kill-only; that matches gate-power's partial result.
+   Sharpe needed (table M3). A design with 254 independent events (FOMC days since 1994)
+   needs a per-event Sharpe of 0.37, one with 200 needs 0.42, and 18-20 episodes need more
+   than 1.3 (kill-only); that matches gate-power's partial result.
    A rule for cards: if a true effect at the top of the plausible range has under 5% chance
    to pass, label the test kill-only or skip it.
 5. **Perp carry: closed** (blocked by B6/B7, 6 years of funding, needs an alpha IR of 2.4).
