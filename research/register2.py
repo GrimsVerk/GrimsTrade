@@ -422,20 +422,37 @@ def live_tags() -> dict[str, str]:
     }
 
 
+def code_of(source: str) -> str | None:
+    """The `code_hash` in a live tag `live@code-<code_hash>-sim-<sim hash>` (register-7); None
+    for an older `live@<commit>` tag, another kind of source, or an unknown code hash."""
+    if not source.startswith(LIVE_PREFIX) or "-sim-" not in source:
+        return None
+    code = source.removeprefix(LIVE_PREFIX).rsplit("-sim-", 1)[0]
+    return code if code and code != "unknown" else None
+
+
 def pick_live(lives: list[Series], current: dict[str, str]) -> list[Series]:
     """One series per live strategy (register-7): the current code's version if stored; else
-    its only stored version; else its only versioned one (newer than a pre-register-7
-    `live@<commit>` tag); else none (no order to pick by). Warns for each fallback. Keeps the
-    canonical order."""
+    one with the current `code-<code_hash>` under another simulator hash (register-8; the
+    strategy's code is what the series records; with several, the first source tag in
+    sorted order); else its only stored version; else its only versioned one (newer than a
+    pre-register-7 `live@<commit>` tag); else none (no order to pick by). Warns for each
+    fallback. Keeps the canonical order."""
     by_name: dict[str, list[Series]] = {}
     for s in lives:
         by_name.setdefault(s.variant, []).append(s)
-    picked, stale, left_out = set(), [], []
+    picked, other_sim, stale, left_out = set(), [], [], []
     for name, ss in by_name.items():
         cur = [s for s in ss if s.source == current.get(name)]
         versioned = [s for s in ss if s.source.startswith(LIVE_PREFIX)]
         if cur:
             picked.add(id(cur[0]))
+            continue
+        code = code_of(current.get(name, ""))
+        same_code = [s for s in versioned if code is not None and code_of(s.source) == code]
+        if same_code:
+            picked.add(id(min(same_code, key=lambda s: s.source)))
+            other_sim.append(name)
             continue
         if len(ss) == 1 or len(versioned) == 1:
             picked.add(id(ss[0] if len(ss) == 1 else versioned[0]))
@@ -444,6 +461,7 @@ def pick_live(lives: list[Series], current: dict[str, str]) -> list[Series]:
             left_out.append(name)
     missing = sorted(set(current) - set(by_name))
     for what, names in (
+        ("series of the current code but another simulator", other_sim),
         ("series not of the current code", stale),
         ("left out: several stored code versions, none current", left_out),
         ("no stored series", missing),
