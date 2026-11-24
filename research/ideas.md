@@ -88,7 +88,7 @@ seen. Sharpe on the six assets, 1994-2025: `tsmom12` 1.05, equal weight 0.88.
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
 | ensemble-tsmom | Trend | new | - | Weight = share of 1/3/6/12-month returns that are positive (part 1) |
-| turbulence | Statistics | new | - | Mahalanobis distance of the six returns; test only against a volatility trigger (part 4) |
+| turbulence | Statistics | dead (tested) | [card](cards/turbulence.md) | turbulence-1 (2026-11-24, PR #134): as a crash overlay on `tsmom12` it is volatility in disguise. Against a magnitude-only twin out of the market just as often: -0.04 Sharpe on the six assets (p 0.84), +0.01 on the four indexes; trigger days overlap 70-80% (post hoc). The correlation part alone is worse (-0.07, and -0.24 on the indexes) and misses crashes (in a crash assets move the usual way). Both are behind `tsmom12` itself (z -1.1 and -1.4; the project bar needs z >= 4.69). [write-up](turbulence-1.md), [result](results/turbulence-1.md) |
 | vol-shift | Volatility | new | - | Risk assets to cash when SPY's 20-day volatility jumps 1 sd above its 1-year norm. Was the plain twin of absorption-ratio and beat equal weight there (1.17 vs 1.04, not significant). Needs its own card |
 
 ## Cards for run macro-1: macro phases (all six failed their bar; none used the held-out year)
@@ -103,7 +103,7 @@ Written before any test (`protocol.md` "Macro tests"). Sharpe on the six assets,
 | yield-curve | Macro / term structure | dead (tested) | [card](cards/yield-curve.md) | A year out after an inversion: 1.13 / 1.17; the gain is the dot-com bust and a lucky covid call; wrong sign out of universe. [result](results/yield-curve.md) |
 | liquidity | Macro / money supply | dead (tested) | [card](cards/liquidity.md) | Real M2 below zero: 0.95 / 1.11. Fed balance sheet shrinking: 0.95 / 1.09. [result](results/liquidity.md) |
 | credit-spread | Macro / credit | dead (tested) | [card](cards/credit-spread.md) | Baa spread half a point above its yearly low: 0.99 / 1.06. No earlier than the price trend. [result](results/credit-spread.md) |
-| halving | Crypto cycle | failed bar; not believed | [card](cards/halving.md) | Coins out 18-30 months after a halving: 1.20 / 1.42, but three winters, a window taken from folklore that saw them, and gone when moved six months. [result](results/halving.md), [shifted](results/halving-shift.md) |
+| halving | Crypto cycle | failed bar; not believed; transfer test failed (halving-2) | [card](cards/halving.md) | Coins out 18-30 months after a halving: 1.20 / 1.42, but three winters, a window taken from folklore that saw them, and gone when moved six months. On other halving coins' own dates it fails (Litecoin + Zcash: Sharpe 0.45 vs buy-and-hold 0.74, rank 40 of 41 placebos); with BTC's dates it works on every coin (1.23, rank 1 of 41): the market's BTC cycle, the same three winters, no new episodes. Only the forward window (2025-10..2026-10) is left. [result](results/halving.md), [shifted](results/halving-shift.md), [halving-2](halving-2.md) |
 
 ## Run rl-1: reinforcement learning (all five failed their bar; none used the held-out year)
 
