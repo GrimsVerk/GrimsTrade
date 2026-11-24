@@ -10,6 +10,7 @@ dependencies = []
 [dependency-groups]
 # Keep ruff in step with the rev in .pre-commit-config.yaml.
 dev = [
+    {include-group = "rl"},
     "mypy~=2.3",
     "numpy>=2.5.4",
     "pre-commit~=4.0",
@@ -17,6 +18,12 @@ dev = [
     "ruff~=0.15.22",
     "scikit-learn>=1.9.1",
     "xlrd>=2.0.1",
+]
+# The Gymnasium environment (`grimstrade.gym_env`, docs/gym-env.md). The daily runner never
+# imports it; `dev` includes it so the checks run its tests.
+rl = [
+    "gymnasium>=1.2",
+    "numpy>=2.5.4",
 ]
 
 [build-system]
@@ -29,8 +36,6 @@ packages = ["src/grimstrade"]
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-# One-off calculation scripts kept next to a written report, not package code.
-extend-exclude = ["research/nl-brokers-2026/model.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]

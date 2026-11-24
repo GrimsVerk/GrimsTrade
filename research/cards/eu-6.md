@@ -6,7 +6,7 @@ number for the new runs below existed.
 
 ## Question
 
-A euro investor in the Netherlands with a small coin-free book (EUR 5k-25k, fixed per-order fees
+A euro-area investor with a small coin-free book (EUR 5k-25k, fixed per-order fees
 of EUR 1, 2 or 3) can run the house trend rule on the seven `euw` funds, or simply hold the seven
 funds, or hold a plain stock/bond mix. Which is better, for which kind of investor? Trend's known
 value is crash insurance (a smaller worst fall), not Sharpe. This card fixes, before any new

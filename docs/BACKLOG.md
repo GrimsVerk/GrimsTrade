@@ -2,7 +2,6 @@
 
 Ideas not started yet. Move one to `next-steps.md` when you start it; delete it when done.
 
-- Gymnasium env wrapper around `gym.py` (for RL, M3).
 - More universe: a few more liquid crypto (SOL, ...) and ETFs (IWM, EFA, ...).
 - Crypto funding-rate carry (long spot, short perpetual, collect funding). Needs a short-perp leg
   and funding cash flows in the gym first. Keyless source: Kraken Futures
@@ -30,9 +29,10 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   Bar to beat: the 12-month trend rule, which already reacts to these cycles with a lag. FRED
   csv downloads (`fredgraph.csv?id=...`) are keyless.
 - Own reinforcement-learning trading agent (owner's main interest, 2026-11-12). Train it on the
-  5080 in the gym; the classic strategies are the baselines it must beat, and their data is its
-  training data. Daily bars are thin for RL (about 30 years of ETFs, 12 of crypto), so better
-  data comes first (next item). Ladder rung 4 in `docs/DESIGN.md`.
+  5080 in the gym (environment: `grimstrade.gym_env`, docs/gym-env.md); the classic strategies
+  are the baselines it must beat, and their data is its training data. Daily bars are thin for
+  RL (about 30 years of ETFs, 12 of crypto), so better data comes first (next item). Ladder
+  rung 4 in `docs/DESIGN.md`.
 - Data search lane (owner, 2026-11-12, "we really really need"): hunt for more and better data:
   longer history, more assets, intraday bars, order books, crypto funding, on-chain, macro, news,
   sentiment. Free and keyless first. Paid only if very, very cheap: list it with its price for the

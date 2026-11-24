@@ -30,6 +30,8 @@ keeps score per strategy against the benchmarks.
 - `register.py`: the project-wide tries register and its bar (`research/register/`; not used by
   the daily runner, which only reads the register through `ledger.py`).
 - `run_daily.py`: the entry point, `uv run python -m grimstrade.run_daily --root trail`.
+- `gym_env.py`: a Gymnasium environment for RL agents over the same replay, train data only by
+  default (`docs/gym-env.md`; optional `rl` dependency group, never imported by the runner).
 
 ## Timing rules (no look-ahead)
 
