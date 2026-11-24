@@ -127,7 +127,9 @@ def test_delayed_runs_differ_only_by_schedule(rc: Any, tmp_path: Path) -> None:
         trend(visible_history(h, at(d + timedelta(days=1), 3))),
         trend(visible_history(h, at(d, 22, 30))),
     )
-    assert rc.classify_weights(late[0], late[0], late[0], on_time[0]) in ("a", None)
+    assert late[0] != on_time[0]  # BTC alternates up and down: the extra bar flips the weight
+    assert rc.classify_weights(late[0], late[0], late[0], on_time[0]) == "a"
+    assert rc.classify_weights(late[0], late[0], late[0], late[0]) is None
 
 
 def test_wrong_ledger_weights_are_a_bug(rc: Any, tmp_path: Path) -> None:

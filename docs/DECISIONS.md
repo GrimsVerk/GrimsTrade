@@ -2,6 +2,21 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-24 (lane `reconcile-daily-1`): every daily run reconciles the record it just wrote
+  (`grimstrade.reconcile`, a light permanent form of `research/reconcile-1.md`). (1) Every book,
+  whole record: each fill of the replay is at the open of a stored bar of its asset, after a
+  decision that counts (`ledger.in_force`), at open x (1 +/- slippage), with the tier fee; and
+  `state/portfolio.json` as stored is rebuilt from those fills at the rule prices and fees, the
+  stored distributions and cash rate: cash and equity to the cent, units, fill count, never below
+  zero. (2) Each ledger line this run appended holds what its strategy returns on the bars stored
+  now, visible at the line's time. A failure is a problem line (`ledger/problems.jsonl`, exit 1,
+  the record is still committed), one per broken fill or gap, at most 3 per book and check plus
+  a count; never an exception. Why: research assumes live == gym and reconcile-1 showed it once;
+  without a standing check a later runner or gym bug would corrupt the record silently. It
+  re-derives the rules (cost table, interest, distributions) rather than calling
+  `gym.simulate`, so a rule change in the gym needs the same change here, or every run reports
+  it. Cost on the record of 2026-11-24: about 0.05 s.
+
 - 2026-11-24 (lane `daily-nodev-1`): the daily job installs only the runtime dependencies
   (`uv sync --locked --no-dev`, and `uv run --no-dev` for both run steps, since a plain `uv run`
   syncs `dev` back in). Why: `grimstrade.run_daily` and `grimstrade.intraday` use only the
