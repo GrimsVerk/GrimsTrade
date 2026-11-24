@@ -2,8 +2,29 @@
 
 All research lanes in one merge into `main`, so the owner can land the research record with one
 review instead of 90. Built by lane `archive-1` of the night-3 usage run (2026-11-19), following
-option A of `research/pr-map.md` (section 4). **Proposal only: do not merge without an owner
-decision.** Nothing was merged into `main`, no PR was closed, no branch deleted.
+option A of `research/pr-map.md` (section 4). Landed 2026-11-24 by the GrimsTrade lead (owner
+rule "agents merge"), after the refresh below.
+
+## Refresh before landing (2026-11-24)
+
+- Merged the research tips opened after the first build: #117 `weather-2`, #125 `gate-power`
+  (holds #120 `wide-13`), #121 `decisions-1` and #122 `fix-2` (both hold #119 `review-2`),
+  #123 `risk-menu-4`, #124 `gate-null-2`, #28 `summary-1` (the leads' log; its `next-steps.md`
+  stays on the branch).
+- Merged `main` after #115 (the nine engineering PRs), then #75 `combo-2` itself (its #61 is on
+  `main` now), so combo-2 is contained too.
+- Conflicts: `next-steps.md` (rewritten as one short current log); `research/tries.md`,
+  `research/gate-null.md`, `research/wide-1.md` (append-only: both sides kept; tries rows
+  checked: none lost, none doubled).
+- `tests/test_rl_env.py::test_batch_sim_equals_gym` marked xfail: the RL lanes' batch simulator
+  copies the gym as it was; `main`'s gym now has waiting buys, dividends, fee tiers and cash
+  interest. The RL line is closed and its logged results stand.
+- `research/owner-decisions.md`: section "Answers" (each item's default taken as an agent call).
+- Checks: ruff, format, mypy clean; pytest 646 passed, 4 xfailed. `docs/BACKLOG.md` is main's.
+- Not in the archive: the register chain (#74 holds research, #79-#126 change `ledger.py` and
+  `run_daily.py`); it lands as its own engineering merge.
+
+The rest of this file describes the first build (2026-11-19).
 
 ## In one screen
 

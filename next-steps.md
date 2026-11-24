@@ -1,82 +1,35 @@
 # Next steps
 
-## Research archive (branch `research-archive-1`, draft PR #118): owner decision
+Running log of what is in flight on GrimsTrade. Lane logs before 2026-11-24 stay on their own
+branches; the leads' night log is on branch `summary-1` (closed PR #28, branch kept).
 
-This branch brings every research lane's record into `main` in one merge (89 of the 90 research
-PRs; engineering PRs are not in it). Start at `research/SUMMARY.md` (what the research found),
-then `research/pr-map.md` (every PR and the owner questions O1-O18) and
-`docs/research-archive-1.md` (how the archive was built, checks, which PRs could close after a
-merge). Each lane's own status log stays on its branch; the leads' running log is on `summary-1`.
+## Rules since 2026-11-24 (owner: "agents merge")
 
-- [ ] Owner: merge the archive (option A) or keep it as a branch (option B), pr-map section 4.
-- [ ] `combo-2` (#75) is in as cherry-picks only; merge #75 itself after cash interest (#61, O9).
+- Every lane branches from current `main` and opens a PR to `main`. No lane on an unmerged lane.
+- The GrimsTrade lead merges (rebase; a merge commit for long-diverged branches) when the checks
+  pass and a fresh review agent finds no required fix. Changes to the daily runner, scoreboard or
+  workflows also need a passing dry run of the daily job
+  (`uv run python -m grimstrade.run_daily --root <copy of paper-trail>`, then `--intraday <dir>`).
+- Research records land when the result is written, negative ones too.
+- Never: push to `main` or `paper-trail`, rewrite `main`, delete a lane branch (the tries
+  register counts branches).
+- Public repo: no personal detail about the owner in files, commits or PR texts.
 
-## Waiting for review: honesty audit 1 (branch `audit-1`, PR #5, ready for review, not merged)
+## Landing lead 1 (2026-11-24): clear the PR backlog
 
-Adversarial audit of the record's honesty. Report with a half-screen summary, all findings
-ranked, and a Status section: `docs/audits/honesty-2026-11.md`. Tests: `tests/test_audit_*.py`.
+- DONE #115: engineering PRs #13 #27 #29 #30 #32 #61 #67 #14 #15 landed in one merge
+  (`docs/integrate-1.md`; 291 tests; daily dry run passed).
+- IN PROGRESS #118: research archive (all research lanes; `docs/research-archive-1.md`), then
+  close each contained research PR as "landed via #118".
+- NEXT: register chain (#74 dsr-1 .. #126 register-6) as one merge onto `main` (touches
+  `ledger.py`, `run_daily.py`: tests, review and a daily dry run first).
+- Owner decisions brief (`research/owner-decisions.md`): every item answered by its default as
+  an agent call (section "Answers"); no owner question left.
 
-- [ ] Owner (needs admin): ruleset on `paper-trail` blocking force pushes and deletion (L3).
-- [ ] Owner: decide what "graduation" means; six months cannot prove skill (S2).
-- [ ] After merging: read the first daily run's log; the "Ask GitHub" step must say "GitHub's
-      activity log agrees with the paper-trail history", not "rewrite check skipped" (the job's
-      own token was never tried against the activity log).
-- [ ] After merging: tell the research lane that the crypto fee is 60 bps now (was 25; G3,
-      DECISIONS). Their logged Sharpes used the old fee; new backtests will be a little worse.
-- [ ] After merging: bring `research-1`, `research-2` and `m1-wrapup` up to `main` or delete
-      them, and never re-run an old Daily run: old workflow files have no guards (L13).
-- [ ] Next audit pass: attack `ledger.py`, `run_daily.check_record` and the two scripts in
-      `scripts/` again; three passes each found something.
-- [ ] Build next from the audit: GitHub's arrival time for accepted commits, passed to the run
-      directly, not through a file in the record (L14).
-- [ ] Open findings to build next: credit dividends (G4); a second ETF source, Stooq is dead
-      (D6, needs a key: owner's call); keep an unfilled buy pending (G2); crypto fee by volume
-      tier (BACKLOG).
+## Lane queue (each from `main`)
 
-## M0 status: built, not yet proven live
-
-Done: template scaffold, data ingest (BTC, ETH, SPY, QQQ, GLD, TLT, append-only CSV), gym
-(next-open fills, fees, slippage, long-only, 10,000 USD), 4 benchmark strategies, append-only
-ledger + tries counter + git-history integrity check, daily runner + `.github/workflows/daily.yml`,
-scoreboard (`python -m grimstrade.report --root trail [--backtest]`), owner README, MIT license.
-
-## To finish M0 (needs someone with GitHub access)
-
-- [ ] Merge this branch to `main` (via PR), then run "Daily paper trading" once by hand
-      (workflow_dispatch). Unverified live: Kraken/Coinbase/Yahoo/Stooq formats are from docs,
-      tested only on fixtures (dev container can't reach them). Yahoo may 429 from Actions; Stooq is
-      the fallback. Check the first run creates the `paper-trail` branch and pushes to it.
-- [ ] Check the Actions settings allow GITHUB_TOKEN write (contents: write is requested).
-- [ ] If the `protect-main` ruleset is ever widened to all branches, exempt `paper-trail`
-      (the bot pushes there directly).
-
-## Assumptions (see docs/DECISIONS.md)
-
-- CSV + stdlib only (no parquet/pandas). Raw prices; dividends not credited yet.
-- Bot commits to orphan branch `paper-trail` because `main` requires PRs.
-- Costs: crypto 60 bps fee (was 25 until the audit, G3) + 5 bps slip; ETFs 0 fee + 2 bps slip; 1% rebalance band.
-- Decisions at ~22:30 UTC see crypto bars through yesterday (today's still open) and ETFs through
-  today. Fills show up a day later, once the fill bar has closed and been stored.
-- A run with no new data since a strategy's last decision writes no new decision.
-- Gymnasium env wrapper deferred (BACKLOG).
-
-## M1: done (merged 2026-11-12, PR #3)
-
-Brief: chief-of-staff/briefs/grimstrade-m1.md. The details are in PR #3 and docs/DECISIONS.md.
-
-- Live in paper (they start at the next daily run, 22:30 UTC): `ts_momentum`, `xs_momentum`,
-  `vol_target_spy`, `risk_parity`, `crypto_mean_reversion`, next to the four M0 yardsticks.
-  Funding-rate carry is in BACKLOG.
-- Scoreboard has a deflated Sharpe column (after 30 days). N counts the research lane's tries,
-  each recorded by identity in `ledger/research_tries.jsonl` on paper-trail.
-- `reports/weekly.md` (owner, plain language) and `reports/backtest.md` (hindsight, kept apart)
-  are written every run.
-- Reviews by Fable: DSR maths, each strategy against its paper, and the final PR review; all
-  findings fixed and re-verified.
-- Worth watching after the first M1 run (2026-11-12 22:30 UTC): the daily job is green, 9
-  strategies in `ledger/tries.jsonl`, and `weekly.md` reads well.
-- Merging `audit-1` may conflict in `ledger.py`/`gym.py` (M1 added the research-try functions,
-  the `APPEND_ONLY` tuple and a finite-weights check in `validate`).
-
-PR #3 merged (rebase) 2026-11-12 01:48 UTC; CI on main green; 114 tests pass. Owner: merge the
-small docs PR that brings this section to main (branch `m1-wrapup`).
+1. Second bill-rate source (US Treasury keyless CSV) when Yahoo `^IRX` fails (BACKLOG; A2c).
+2. One own-vol 70% paper book next to the presets, no-look-ahead form (owner-decisions C2).
+3. Record the delayed schedule in DECISIONS (runs fire 02:00-04:40 UTC, not 22:30; D1).
+4. Forward registry: obs files get the append-only check; `read()` requires `frozen_at`
+   (review notes on #67).
