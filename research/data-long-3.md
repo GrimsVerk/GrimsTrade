@@ -68,7 +68,7 @@ Not done here: any trend rule or strategy statistic on these series.
 1976/1977), 9 foreign 10-year government bonds (monthly averages, 1955-1989 on), 9 G10
 currencies against USD with carry (daily spot from 1971) and 12 BLS commodity price indices
 (monthly, 1913/1926/1947 on). The bond rebuild matches the real ETFs closely (monthly
-correlation 0.97-0.99, mean gap within 0.4 points a year: the plan's bar is met), the currency
+correlation 0.97-0.99, mean gap within 0.6 points a year: the plan's bar is met), the currency
 spot matches the CurrencyShares trusts (0.99), the carry is approximate (about 1 point a year
 richer than the trusts). Commodities are spot prices: a futures fund on oil (USO) earned about
 10 points a year less than spot oil did, 2006-2025, so commodity series answer "does the price
@@ -91,7 +91,7 @@ use a value before that day.
 
 | Source (all keyless) | Series | Span in the cache (to 2025-10) | Freq | Available | Revised? | Terms |
 |---|---|---|---|---|---|---|
-| ALFRED, Fed H.15 | `DGS1/2/5/7/10/20/30`, `DTB3` | 1962-01 (2y 1976-06, 30y 1977-02 with a 2002-02..2006-02 gap, 20y gap 1987-1993), bills 1954 | daily | next business day | no (rare corrections) | US public domain |
+| ALFRED, Fed H.15 | `DGS1/2/5/7/10/20/30`, `DTB3` | 1962-01 (2y 1976-06, 30y 1977-02 (no gap in the cached vintage: 2002-02..2006-02 has values), 20y gap 1987-1993), bills 1954 | daily | next business day | no (rare corrections) | US public domain |
 | ALFRED, Fed H.15 | `GS1/2/5/7/10/20/30`, `TB3MS` | 1953-04 (bills 1934) | monthly average | first business day of next month | no | US public domain |
 | ALFRED, Fed H.10 | `DEXJPUS`, `DEXUSUK`, `DEXSZUS`, `DEXCAUS`, `DEXUSAL`, `DEXUSNZ`, `DEXSDUS`, `DEXNOUS` (1971-01), `DEXUSEU` (1999-01) | 1971-01-04 | daily (noon New York buying rates) | the Monday after the week (H.10 is weekly) | no | US public domain |
 | ALFRED, Fed H.10 | `EXGEUS` (mark per USD) | 1971-01..2001-12 | monthly average | as above | no | US public domain |
@@ -231,7 +231,7 @@ pooled-1 left `e4` (+0.063, z 1.55) and `vt-own-70-x` (+0.022, z 1.37) open and 
 markets with their own crash calendar could add power. The panel above is that input. What the
 next lane's card must settle before any number:
 
-1. **Bar and comparator.** Quote `BAR.md` (3,130 tries, N = 486, z >= 4.69) and pooled-1's own
+1. **Bar and comparator.** Quote the current `BAR.md` (at the time of writing 3,855 tries, N_eff 500, z >= 4.70) and pooled-1's own
    bar (Bonferroni z >= 2.50 over its 8 rules; here 2 rules, so z >= 1.96 one-sided at 0.025 or
    keep 2.50 to stay comparable: decide in the card). Twin `tsmom12` on the same series and
    months.
@@ -245,7 +245,7 @@ next lane's card must settle before any number:
 3. **Gaps for averages and publication.** Averaged series (`averaged=True` in `panel()`) need
    the one-month gap between the last return a signal sees and the first it trades
    (data-long-2). PPI of month m (priced near the 13th) is public about the 16th of m+1: a
-   position over the PPI change from m to m+1 can use PPI up to m-1. Use `lx.available()`.
+   position over the PPI change from m to m+1 can use PPI up to m-2: PPI of m-1 is public about the 16th of m, after the mid-month price that starts the m→m+1 change; check with `lx.available()`.
 4. **Excess returns and cash.** Compare rules on returns over the US bill (bond total return
    minus bill; currencies are already excess; commodity spot has no collateral), with cash
    earning the bill, or keep cash at 0 for every series and say why. Without this, bonds' 5-7%
