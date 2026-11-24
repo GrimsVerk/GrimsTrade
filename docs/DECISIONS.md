@@ -2,6 +2,30 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-24 (second bill-rate source; #61 open question 3, decisions-1 A2c): The cash rate gets
+  a fallback: the US Treasury's Daily Treasury Bill Rates (home.treasury.gov, keyless, public
+  domain, one CSV per year: `daily-treasury-rates.csv/<year>/all?type=daily_treasury_bill_rates`),
+  column "13 WEEKS BANK DISCOUNT". The bank discount rate, not the coupon-equivalent column
+  beside it, because that is what `^IRX` quotes (the cash-interest entry below relies on the
+  discount rate being the cautious side). Rules (`rates.fetch`):
+  - Yahoo `^IRX` stays primary. The Treasury is asked only when Yahoo's answer lacks a settled
+    weekday since the newest stored rate (Yahoo down or late, or a holiday), and fills only the
+    days Yahoo lacks; for a day both have, Yahoo's rate is stored. Same settling and append-only
+    rules as before; a stored row is never replaced by the other source's rate.
+  - The store keeps its format (`date,rate,seen`; no new column, so no stored row or header is
+    rewritten). Which source gave each stored row goes in `data/sources.jsonl`, one line per run
+    and run of consecutive rows from one source, `"symbol":"rates"`, `"source":"yahoo"` or
+    `"treasury"`. Rows stored before this change have no line there: all of them are Yahoo's.
+  - Problem lines: only when no source answered (both failed, or Yahoo failed with nothing for
+    the Treasury to fill) is it `rates not fetched: ...`, and the last rate carries forward as
+    before. Yahoo failing while the Treasury answers is a stderr line only: the rate is not
+    missing, and the Treasury is the official source.
+  - How the two agree (fetched 2026-11-24, 721 sessions both have, 2024-01-02 to 2026-11-23):
+    Yahoo minus Treasury mean -0.012 percentage points, 95% of days within 0.03, largest 0.08.
+    Treasury-only days are bond-market days the stock market was closed (2025-01-09, Good Friday
+    2026-04-03), so the fallback stores a rate for them too; harmless (a real rate, a weekday).
+    Yahoo-only days are Columbus Day and Veterans Day (bond market closed).
+
 - 2026-11-18 (PROPOSED by lane forward-1, not yet decided by the owner): a forward-only shadow
   registry (`docs/forward-registry.md`, `src/grimstrade/forward.py`). A candidate rule is frozen
   as an append-only line in `research/forward/registry.jsonl`: sha256 of its code files,
