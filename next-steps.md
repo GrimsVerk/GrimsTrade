@@ -62,10 +62,25 @@ rules, or banks/brokers as "ours"); a history rewrite follows after the night ru
 
 ## Lane queue (each from `main`)
 
-1. After the first daily run on new main (~02:00-06:00 UTC on 2026-11-25): check it passed,
-   rerun `research/lib/reconcile1.py` (from #141) and confirm the one-time replay change it
-   predicts; then merge #149, #153, #155 (above).
-2. From pooled-1/pooled-2 and power-map-1: further Sharpe-edge searches on the six assets cannot
-   reach the bar; pre-register any new edge search on pooled long history (equity + data-long-3).
-3. Optional (review of #153): reuse `gym.cash_rate` / `gym.interest` inside `reconcile.py`.
-4. Register: once `register-7` lands, rerun the register so BAR.md picks up the last rows.
+1. **After the 2026-11-25 daily run** (fires ~02:00-06:13 UTC): check it passed (Actions run
+   green, `paper-trail` got the new rows, `reports/scoreboard.md` updated, `dividends.csv` and
+   `rates.csv` created). Rerun `research/lib/reconcile1.py --work <scratch>` and confirm the
+   one-time replay change it predicts (reconcile-1 table). Then merge #149, #153, #155, #161 one
+   at a time (`gh pr merge --merge`, re-push the head branch after each). If the run fires after
+   the 04:20 UTC hold, leave the merges for the next lead/day.
+2. Engineering, after #161: fix its two strict xfails (Kraken answering from a later day must
+   fall back to Coinbase; duplicate same-day bars in one answer must be refused or logged), and
+   the smaller notes in #161's PR body (rate gap with no problem line; no overall fetch time cap).
+3. Register: run `register2.py live` then `export`, commit `research/register/returns/live.csv.gz`
+   (register-7 follow-up), regenerate BAR.md. Consider the review's `pick_live` fallback
+   (prefer the stored version whose `code-<c>` equals the current `code_hash`).
+4. Optional: `reconcile.py` reuses `gym.cash_rate` / `gym.interest` (review of #153).
+5. Research, DEEPER: `e4` is the only open lead (pooled-1 +0.063 on 41 equity markets; pooled-2
+   +0.010 on bonds+FX; combined +0.045, z 1.43). Do not retune it. If tested again, pre-register
+   on new independent data only.
+6. Research, WIDER: fast-crash cover. insure-3: puts beat trend in fast crashes; insure-4 (running
+   at ~21:45 UTC, check its PR) tests puts only while trend is in. Next: VIX-call overlays (VXTH
+   was the only option index near trend's cost) on keyless CBOE data, statistics only (CBOE
+   terms).
+7. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
+   manual browser download if wanted (data-long-3, insure-3).
