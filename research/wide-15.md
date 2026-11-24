@@ -63,7 +63,7 @@ Computational maths brought to each (the cross-pollination): the Nash-cascade un
 test (X3), a Kalman nowcast (X4), variance-stabilised counts (Anscombe) with an in-session
 indicator (X8), peaks over a threshold from flood-frequency analysis (X11).
 
-## Step 2. Twelve mechanisms, scored (2026-11-24 19:40 UTC, before any price was read)
+## Step 2. Twelve mechanisms, scored (2026-11-24 19:21 UTC, 84ae796, before any price was read)
 
 Scoring exactly as wide-13: wide-11's filters F1 (not announced: an unscheduled flow (a), or a
 premium (b)) and F2 (not price-driven; passing only with controls costs 1 point), then wide-10's
