@@ -79,3 +79,8 @@ reporting does not answer prices).
 | Reaction: SPY over the dose week itself (premium story: negative) | +0.017 (+1.05) | 1082 |
 
 Dose: 3162 reports to 2025-10-31; x sd over the gate weeks 2.34; weeks with no report 317 of 1082.
+**Erratum after review (2026-11-24).** WHO's API dates are partly website migration dates:
+about 812 archive items (1996-2003 reports among them) are dated 2021-06-07/08, with more bulk
+dates in 2021-06 and 2024-03, and 2020 has no item. The week 2021-06-11 (814 items, x 54.8)
+dominates the fit above. On Fridays 2005-01 .. 2019-12 only: b +0.082%, t +0.48, rank 21 of 41,
+placebo SD 1.16. The kill stands; see `research/wide-17.md`, "Erratum after review".

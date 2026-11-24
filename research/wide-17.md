@@ -49,7 +49,8 @@ long enough for the power point. `[memory]` marks a literature fact not checked 
 **Disclosure.** Before this table two dose sources were probed for format only (no price, no
 return, no statistic): NASA GISTEMP v4 `GLB.Ts+dSST.csv` (header and the 1880-1881 rows) and
 the WHO Disease Outbreak News API (`www.who.int/api/news/diseaseoutbreaknews`: the three oldest
-titles, first dated 2004-01-05, and the item count, 3,209).
+titles, first dated 2004-01-05, and the item count, 3,209). Read after review: the oldest
+*dates* are 2004, but the API's dates are not all original publication dates (erratum below).
 
 ### The mechanisms (real-world cause story each)
 
@@ -196,9 +197,9 @@ so one sd goes with +0.36% a month.
 **One unit of outbreak activity above its trailing year (Anscombe count of WHO Disease
 Outbreak News reports) goes with +0.065% on SPY over the next 4 weeks (t +1.68, 1,082 weeks,
 2005-01 .. 2025-09): the predicted sign, but t below 2 and the true t ranks 9 of 41 (empirical
-one-sided p 0.22). Dead by the gate: no card, no strategy.** Held-out year untouched. x's sd is
-2.34 units, so one sd goes with +0.15% per 4 weeks (about 2% a year), against the 0.55% per sd
-the power note said a pass needed.
+one-sided p 0.22). Dead by the gate: no card, no strategy.** Held-out year untouched. (x's sd
+over the gate weeks, 2.34 units, is driven by one re-dated website week, erratum below; it is
+not a usable scale for the effect.)
 
 | Cut (SPY 4-week return unless named) | b, % per unit of x | t | Rows |
 |---|---:|---:|---:|
@@ -215,17 +216,58 @@ the power note said a pass needed.
 - **Not a premium pattern either.** The dose week's own SPY return has the wrong sign for a
   disaster premium (+0.017, t +1.05; a premium needs prices to fall when the news lands), safe
   havens do not move (GLD -0.06, TLT +0.04), and the health-care sector, where Donadelli et
-  al. found same-day gains, shows nothing forward (t +0.40). Without the trailing-year
-  detrending the slope vanishes (t +0.40): what slope there is comes from short bursts against
-  the recent norm, i.e. from a handful of outbreak episodes.
+  al. found same-day gains, shows nothing forward (t +0.40). The cells from 2015 and with
+  controls carry the same re-dated weeks as the gate (erratum below).
 - **The null is wider than guessed: SD of placebo t 1.64, 22% with |t| >= 2**, quantiles 5/50/95%
   -3.38 / +0.27 / +2.17, extremes -3.64 / +2.58. Eight placebos beat the true t, five of them
   later doses (k = -63: +2.58, -39: +2.26, -59: +2.16, -87: +1.94, -51: +1.87) and four earlier
-  (+83: +2.06, +71: +1.94, +91: +1.90, +99: +1.64). The detrended count still clusters in
-  outbreak episodes, so shifted calendars land on other months' common moves.
+  (+83: +2.06, +71: +1.94, +91: +1.90, +99: +1.64). The width is not outbreak clustering: one
+  re-dated website week (2021-06-11, 814 items, x 54.8, about 23 sd) dominates every fit it
+  enters, true or shifted. On the clean years 2005-2019 the placebo SD is 1.16 (7% with
+  |t| >= 2), near a weekly count's 1.08 (W27) (erratum below).
 - QQQ's +2.21 is noted only (one of 10 shown cells; placebo SD 1.64, 95% quantile +2.17).
-- My guess (b near zero, |t| < 1.5, middle rank, placebo sd 1.0-1.3, pass 0.5%) was wrong on
-  the width (1.64, not 1.0-1.3): outbreak reports are not independent weekly draws.
+- My guess (b near zero, |t| < 1.5, middle rank, placebo sd 1.0-1.3, pass 0.5%): on the
+  clean 2005-2019 sample it held (t +0.48, rank 21, placebo SD 1.16); the carded run's wider
+  null (1.64) is the data artefact below, not a property of outbreak reports.
+
+### Erratum after review (W30's data, 2026-11-24 23:47 UTC)
+
+The card (lines on W30's data) says the API "starts in 2004-01; the 1996-2003 archive is not in
+it". **That is false.** The archive is in the API, re-dated to the website's migration days:
+about 812 items, among them the 2000 Ebola outbreak in Uganda and the SARS reports of 2003, carry
+`PublicationDate` 2021-06-07 or 2021-06-08 (531 and 281 items; 92 more on 2021-06-04, 72 on
+2021-06-03); further bulk dates are 2024-03-05 (40) and 2024-03-13 (85), and 2022-07-28 (61).
+The year 2020 has no item at all, although WHO did publish outbreak news that year (on the
+novel coronavirus in January 2020, for one `[memory]`); those items appear to sit among the
+re-dated ones. Items per year in the API: 2004-2019 between 36 and 186, 2021
+1,088, 2024 278. So the dose is not a real-time count from 2020 on: the largest dose week,
+2021-06-11 (814 items, x 54.8), is a website event, not an outbreak. The card stays unchanged;
+the kill stands, and is stronger on clean data. Checked by the reviewer and re-run by this lane
+(the same carded fit and placebo family, one `screen` row each in `tries.md`; not tries of a
+new rule):
+
+| Sample (gate fit, SPY 4-week return on x) | b, % per unit | t | Rank of 41 | Placebo SD | Share \|t\| >= 2 |
+|---|---:|---:|---:|---:|---:|
+| As carded, Fridays 2005-01 .. 2025-09 | +0.065 | +1.68 | 9 | 1.64 | 22% |
+| Without the 6 weeks with >= 60 items (2021-03-05, 2021-06-04, 2021-06-11, 2022-07-29, 2024-03-08, 2024-03-15) | +0.159 | +1.11 | 12 | 1.64 | 22% |
+| Fridays 2005-01 .. 2019-12 only (before the re-dated years) | +0.082 | +0.48 | 21 | 1.16 | 7% |
+
+Dropping only the six bulk weeks leaves the shifted placebos still landing on them, so its null
+stays wide; the 2005-2019 sample is the clean one. A future lane using this API must take dates
+from the report pages or the item's own text, not `PublicationDate`.
+
+### Notes added after review (W29, counts)
+
+- **GISTEMP release delays.** In federal shutdowns the monthly update came late: December 2018's
+  value was posted about 6 February 2019 (reviewer's check), while the rule used it from the
+  close of 31 January 2019. About one row of 393 used a value before it was public; the card's
+  "around the 10th-15th" release date is not always true.
+- **Near placebos share the baseline.** d(m) uses months m-131..m, so placebos at k = +-13
+  months share most of the ten-year baseline with the true dose: the nearest shifts are partly
+  copies of it. The rank (9) does not hinge on them (the eight placebos above the true t are at
+  |k| >= 41).
+- **Counts after wide-18 merged** into `main`: 92 mechanisms, 21 tested by a strategy, 24
+  gates; family bar p < 0.10 / 92 = 0.00109. The card's closing count (90) stays as written.
 
 Labels: both gates are **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the
 family bar 0.0011 and the register's 1.0e-4; about 8-10 temperature swings, 10-20 outbreak
@@ -238,7 +280,8 @@ Two mechanisms added and closed by their gates (W29 `temperature-premium`, W30
 and are **not counted**, as wide-12 .. wide-15 did.
 
 **Count: 90 mechanisms (88 carried in + W29 + W30), 19 tested by a strategy, none passed; 24
-gates, all failed.** The next strategy test is read at **p < 0.10 / 90 = 0.0011** (family) and
+gates, all failed** (92, 21 and 24 after wide-18's merge; family bar 0.10 / 92 = 0.00109: notes
+above). The next strategy test is read at **p < 0.10 / 90 = 0.0011** (family) and
 the register's bar (N_eff 500: z >= 4.70, +0.31 to +0.56 Sharpe over `tsmom12`, Bonferroni
 p <= 1.0e-4). Published effects after publication: still 0 for 10 (neither gate tested a
 published claim as stated: the temperature papers price the risk in the cross-section, not as a

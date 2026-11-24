@@ -34,7 +34,7 @@ shows how wide the real null is:
 | 4-week return of SPY on Anscombe roll-call count, session dummy and four price controls, Newey-West 4 lags, 1,653 weeks (wide-15, W27) | 40 earlier-dose calendars, k = 27-105 weeks (odd) | 1.08 | 5% | weekly count with no price feedback found (t <= 1.01): near normal |
 | 4-week return of QQQ/IWM/BTC/ETH on the runoff of the IRS refund surprise, Driscoll-Kraay 4 lags, 2,999 rows (wide-15, W28) | 40 calendars moved k = 27-103 weeks, both ways | **1.92** | **32%** | dose large only about 15 weeks a year, four co-moving assets: about one independent draw per season (about 18) |
 | SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade, Newey-West 3 lags, 393 months (wide-17, W29) | 40 calendars moved k = 13-89 months, both ways | 1.47 | 22% | persistent dose with a few ENSO-paced swings; far shifts carry the upper tail (to +3.11) |
-| SPY 4-week return on detrended Anscombe count of WHO outbreak reports, Newey-West 4 lags, 1,082 weeks (wide-17, W30) | 40 calendars moved k = 27-103 weeks, both ways | **1.64** | **22%** | reports cluster in outbreak episodes even after detrending: wider than a weekly count's 1.08 (W27) |
+| SPY 4-week return on detrended Anscombe count of WHO outbreak reports, Newey-West 4 lags, 1,082 weeks (wide-17, W30) | 40 calendars moved k = 27-103 weeks, both ways | **1.64** | **22%** | one website re-dating week (2021-06-11, 814 items, x about 23 sd) dominates; 2005-2019 alone SD 1.16, 7% (wide-17 erratum) |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.

@@ -4021,3 +4021,5 @@ Never edit or delete a row.
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
 | 2026-11-24 23:35 | temperature-premium | SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade (b +3.25%/deg C, t +1.63, rank 9/41, gate fail) | screen | train | 1993-02-01 | 2025-10-31 | - | - | - | - |
 | 2026-11-24 23:35 | outbreak-premium | SPY 4-week return on detrended Anscombe count of WHO Disease Outbreak News reports (b +0.065%/unit, t +1.68, rank 9/41, gate fail) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit without the 6 weeks with >= 60 WHO items (re-dated archive weeks) (b +0.159%/unit, t +1.11, rank 12/41, placebo SD 1.64) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit on Fridays 2005-01..2019-12 only, before the re-dated years (b +0.082%/unit, t +0.48, rank 21/41, placebo SD 1.16) | screen | train | 2005-01-07 | 2020-01-27 | - | - | - | - |
