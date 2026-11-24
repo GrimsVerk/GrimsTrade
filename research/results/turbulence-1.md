@@ -182,3 +182,33 @@ First day the trigger is on after the peak (business days; share of the fall on)
 | 2020 | idx | -3.8% | -3.8% | -21.8% | +0.0% | +0.0% |
 
 `turb` lost less than `mag-match` in the fall in 2 of 6 episodes; mean (fall + rebound) difference -0.5%. Card's reading (at least 5 of 6 and not worse on average): **does not help**.
+
+## Post hoc, after the run
+
+Computed after the logged run (`lib/turbulence1_posthoc.py`), descriptive only: no backtest, no `tries.md` rows. Forward returns are overlapping windows, so the rows are far from independent.
+
+### `six`, 1994-02-01..2025-11-09
+
+Trigger days: `turb` 811, `mag-match` 811, both 669 (Jaccard 0.70); `turb` only 142, `mag-match` only 142; `corr` 627 (with `turb` 61).
+
+| Days | n | Next 20 grid days, mean log return of the set's assets |
+|---|---:|---:|
+| all | 7,997 | +1.30% |
+| `turb` on | 811 | +1.27% |
+| `mag-match` on | 811 | +1.21% |
+| `turb` only | 142 | +0.95% |
+| `mag-match` only | 142 | +0.62% |
+| `corr` on | 627 | +2.13% |
+
+### `idx`, 1962-01-02..2025-11-09
+
+Trigger days: `turb` 1,663, `mag-match` 1,664, both 1,482 (Jaccard 0.80); `turb` only 181, `mag-match` only 182; `corr` 1,800 (with `turb` 91).
+
+| Days | n | Next 20 grid days, mean log return of the set's assets |
+|---|---:|---:|
+| all | 16,072 | +0.55% |
+| `turb` on | 1,663 | +0.71% |
+| `mag-match` on | 1,664 | +0.77% |
+| `turb` only | 181 | +0.93% |
+| `mag-match` only | 182 | +1.43% |
+| `corr` on | 1,800 | +0.69% |

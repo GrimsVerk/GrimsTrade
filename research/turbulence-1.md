@@ -26,7 +26,7 @@ zero: a plain cross-asset volatility measure), its percentile set so it is on ju
 | `corr` (C = T / M alone, 90th) | 0.97 | 0.62 |
 | **`corr` - its matched twin** | **-0.07 (p 0.78)** | **-0.24 (p 0.99, z -2.4)** |
 | `turb` - `tsmom12` | -0.09 (z -1.1) | +0.11 (z +1.4) |
-| Trigger days shared by `turb` and `mag-match` (Jaccard) | 0.70 | 0.80 |
+| Trigger days shared by `turb` and `mag-match` (Jaccard, post hoc) | 0.70 | 0.80 |
 
 - **Pass bar: both variants fail** (`turb`: 2 of 6 checks, `corr`: 2 of 6; both pass only the
   drawdown and equal-weight lines). Project bar (`register/BAR.md`, 3,130 tries, N 486
@@ -51,13 +51,16 @@ trough. `idx` decides where both sets have the episode (the only set with 1987).
 | 2020 (02-19..03-23), idx | -21.8% | -3.8% | -3.8% | -21.8% | 0.0 |
 | 2020, six assets | -21.5% | +0.8% | -2.1% | -20.6% | -3.2 |
 
-- **Turbulence against its twin: 2 of 6 episodes better in the fall** (the card's reading needs
-  5), mean fall + rebound -0.5 points. In 2015, 2018-Q4 and 2020 the two triggers fire on the
-  same days (identical results); 1987 and 1998 favour the twin, 2011 favours turbulence. With
-  six clustered episodes this is kill-only (`gate-null.md` step 7), and it kills.
+- **Turbulence against its twin: 1 clean win in the fall of 6 episodes** (2011; the script
+  counts 2 because 2015 is a +0.0% tie; the card's reading needs 5), mean fall + rebound -0.5
+  points. In 2018-Q4 and 2020 on `idx` the results are identical; in 2015 the fall is the same
+  (-9.4%) but turbulence gets more of the rebound (+4.1% against +1.4%); 1987 and 1998 favour
+  the twin. With six clustered episodes this is kill-only (`gate-null.md` step 7), and it
+  kills.
 - **The volatility overlay itself does cut the fast-crash falls.** Both `mag-match` and `turb`
-  were out 3-4 business days after the 2020 peak and stayed out for 88% of the fall (-22% ->
-  about -4% on both sets), and in 1987 the trigger fired 36-37 business days after the August
+  were out 3-4 business days after the 2020 peak and stayed out for most of the fall (on `idx`
+  both on 88% of it, -21.8% -> -3.8%; on the six `mag-match` 88%, fall +0.8%, `turb` 83%, fall
+  -2.1%, against `tsmom12`'s -21.5%), and in 1987 the trigger fired 36-37 business days after the August
   peak, days before 19 October (-24% -> -7% / -11%). That is the plain volatility part, not
   co-movement. It is not free: on the six assets the same overlay costs Sharpe overall (`mag`
   -0.05 against `tsmom12`, behind it in 4 of 5 eras, turnover 8.5 a year against 2.8), because
@@ -75,15 +78,16 @@ trough. `idx` decides where both sets have the episode (the only set with 1987).
    correlate 0.96 (six) and 0.98 (`idx`). On the six assets the signal had one asset on 19% of
    days (SPY alone until QQQ's first year, 1994-2000; turbulence is then exactly magnitude) and
    4+ on 63%. The days the two triggers disagree (142 of 811 on the six, 181 of 1,663 on
-   `idx`) are not worse days: the next 20 days of the set returned +0.95% / +0.93% after
+   `idx`; post hoc, see below) are not worse days: the next 20 days of the set returned +0.95% / +0.93% after
    turbulence-only days against +0.62% / +1.43% after magnitude-only days, no consistent sign
    (descriptive, no backtest).
 2. **A crash moves assets the usual way.** Equities fall together and (since about 2000) bonds
    and gold hold up: that pattern is inside the trailing covariance, so the correlation
-   surprise stays low exactly when `tsmom12` needs help. `corr` was on for 0-15% of each fall
-   (0% of 2020 on the indexes, 8% on the six) and lost about what `tsmom12` lost. It fires on
-   days when assets move apart, which were followed by better than average returns on the six
-   (+2.13% over the next 20 days against +1.30% for all days), so it steps out of good weeks;
+   surprise stays low exactly when `tsmom12` needs help. `corr` was on for 0-21% of each fall
+   (21% of 1987 and 0% of 2020 on the indexes, 8% of 2020 on the six) and lost about what
+   `tsmom12` lost. It fires on days when assets move apart, which were followed by better than
+   average returns on the six (+2.13% over the next 20 days against +1.30% for all days; post
+   hoc; on `idx` +0.69% against +0.55%), so it steps out of good weeks;
    turnover 11.5 (six) and 17.5 (`idx`) a year.
 3. **The first big day moves everything.** In a fast crash the magnitude part crosses its
    threshold on the same day as the full distance; there is no head start for co-movement to
@@ -94,6 +98,10 @@ trough. `idx` decides where both sets have the episode (the only set with 1987).
 
 - One run, all 12 configurations fixed in the card. A plumbing dry run (`DRY=1`: last 120
   days, nothing logged; only its last line, an empty crash table, was looked at) came before it.
+- Computed after the logged run, not in the card: the trigger-day overlap (Jaccard) and the
+  20-day forward returns after trigger days (`lib/turbulence1_posthoc.py`, train only, no
+  backtest, no rows; output under "Post hoc, after the run" in `results/turbulence-1.md`).
+  Overlapping windows: description, not evidence.
 - The matched twins set their percentile on the whole train window (90.14 for `turb`'s share
   on the six): controls, not rules anyone could have run. The same-percentile twin `mag` (a
   runnable rule) gives the same answer (`turb` - `mag` -0.05 / -0.01).
