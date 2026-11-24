@@ -5,7 +5,7 @@ pushed branch's `research/tries.md`; do not edit by hand. The dedup rule is in t
 of `src/grimstrade/register.py`. Convention (PROPOSED): every card quotes the
 project-wide count and the bar below, next to its own family bar (`docs/DESIGN.md`).
 
-Rows through 2026-11-24 20:01. Remote branches with a `research/tries.md`: 59.
+Rows through 2026-11-24 20:01. Remote branches with a `research/tries.md`: 61.
 
 ## Counts
 
@@ -54,7 +54,7 @@ From `research/register/trials.json` and `research/register/moments.jsonl`, writ
 Tries with a measured record length, skew and kurtosis: 1,547 rows (456 of the 1,072 selectable) and 11 live strategies,
 from the shape the harness logs with each row (`research/tries-shape.jsonl`), the
 research harness (baselines re-simulated, each matching its logged Sharpe) and the
-equity curves the harness saved when the try was logged. Their weekly returns are committed in `research/register/returns/` (1,355 series, 69 family files, 4.6 MB; card `research/register-4.md`), so `register2.py estimate` rebuilds both files on any checkout.
+equity curves the harness saved when the try was logged. Their weekly returns are committed in `research/register/returns/` (1,512 series, 80 family files, 4.8 MB; card `research/register-4.md`), so `register2.py estimate` rebuilds both files on any checkout.
 
 Correlation sample: 204 distinct selectable or live return series that cover every week 2012-01-06..2025-11-07 (722 weekly returns), at most 10 per family (64 families; first by SHA-256 of idea/variant/start, card `research/register-3.md`; uncapped: 323).
 
