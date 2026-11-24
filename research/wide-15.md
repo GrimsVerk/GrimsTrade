@@ -317,7 +317,7 @@ weeks, 1994-02 .. 2025-10): the wrong sign; the true t ranks 25 of 41 (empirical
 
 - **No policy-risk premium after busy legislative weeks**, in either chamber, for close votes
   or after the premium paper's sample. The workload premium a pass needed (about 0.2% per unit)
-  is ruled out at about two standard errors: the estimate is -0.01 with a standard error near
+  is ruled out at about four standard errors: the estimate is -0.01 with a standard error near
   0.05.
 - **Ferguson and Witte's calendar effect does not show forward either**: the in-session dummy
   is +0.34% per 4 weeks (t +0.69), the opposite sign to their "lower returns while Congress
@@ -396,8 +396,8 @@ Rows logged in `tries.md`: 2 (`congress-workload`, `refund-runoff`, kind `screen
    primary-dealer fails files (several formats); X9 the Federal Register API's weekly counts. Both
    are premia with slow price feedback (controls needed). Neither is more likely than the 22 that
    died; a lane that runs them should expect a kill.
-2. **Seasonal doses give wide nulls.** W28's placebo SD (1.92) is the widest of a design with an
-   exogenous dose so far: a dose concentrated in one season of the year, read in a panel of
+2. **Seasonal doses give wide nulls.** W28's placebo SD (1.92) is among the widest measured (wide-8's
+   turn-of-year windows 2.18, W19's ENSO 1.74, W26 1.63): a dose concentrated in one season of the year, read in a panel of
    correlated assets, has about one independent draw per season. A future card with a seasonal
    dose should say so before any number and plan for kill-only (as W28's did).
 3. **The flow-size check belongs in the score.** Every flow story that died (W15, W20, W21, W23,
