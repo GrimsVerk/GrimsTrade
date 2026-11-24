@@ -7,8 +7,8 @@ before any test or number of this card.
 
 ## Citation check (2026-11-18, before the card)
 
-- Journal, volume, issue, pages, DOI and authors: confirmed on the VU Amsterdam research portal
-  (`research.vu.nl`, the publication record) and a search summary of the JFE page `[abstract]`.
+- Journal, volume, issue, pages, DOI and authors: confirmed on the research portal of an author's university
+  (the publication record) and a search summary of the JFE page `[abstract]`.
 - Abstract, as paraphrased by the portal: a "cross-asset time series momentum" in 20 countries;
   past bond returns predict future equity returns positively, past equity returns predict future
   bond returns negatively; a diversified cross-asset portfolio has a Sharpe ratio about 45%

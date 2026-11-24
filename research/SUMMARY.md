@@ -80,7 +80,7 @@ Then, in "For the owner" in [`next-steps.md`](../next-steps.md) (numbered O1-O18
 - Risk levels: #101, #105, #110 (`research/risk-menu.md`).
 - Is the edge real? #74 (`research/dsr-1.md`), #78; live funds #91 (`research/survey-6.md`).
 - The bar: #92, #100, #108, #111 (`research/register/BAR.md`).
-- Shorts: #83, #89. Coins: #69, #82. Euro investor: #59, #62, #63, #68, #73, #77, #80, #85.
+- Shorts: #83, #89. Coins: #69, #82. Euro books: #59, #62, #63, #68, #73, #77, #80, #85.
 - Corrections after the independent review (#119): [`errata-2.md`](errata-2.md).
 - Earlier runs (machine learning, macro, carry, papers): [`README.md`](README.md) and this
   file's git history.

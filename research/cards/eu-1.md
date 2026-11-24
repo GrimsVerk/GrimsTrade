@@ -12,7 +12,7 @@ number).
 `tsmom12` (each eligible asset holds its equal slot when its 365-day return is positive, else
 that slot is cash; decided on Fridays) keeps its character when the US-listed ETFs are replaced
 by European-listed UCITS funds covering the same asset classes and everything is measured in
-euros, with a Dutch retail broker's costs.
+euros, with a European retail broker's costs.
 
 ## Why it might not
 
@@ -40,10 +40,10 @@ when they have a year of bars (BTC 2013, ETH 2017), the same in every coin book.
 |---|---|---|---|
 | `us6` | SPY, QQQ, GLD, TLT, BTC, ETH (the live six) | USD | gym |
 | `us6-eur` | the same six converted to EUR | EUR | gym |
-| `eu6` | SXR8, SXRV, 4GLD, IBGL, BTC-EUR, ETH-EUR | EUR | Dutch |
+| `eu6` | SXR8, SXRV, 4GLD, IBGL, BTC-EUR, ETH-EUR | EUR | retail |
 | `usw` | SPY, EFA, EEM, IEF, TLT, GLD, DBC (US asset classes) | USD | gym |
 | `usw-eur` | the same seven in EUR | EUR | gym |
-| `euw` | SXR8, EXSA, IQQE, IBGS, IBGL, 4GLD, EXXY (1:1 with `usw`) | EUR | Dutch |
+| `euw` | SXR8, EXSA, IQQE, IBGS, IBGL, 4GLD, EXXY (1:1 with `usw`) | EUR | retail |
 
 Pairs judged: **A** = `eu6` vs `us6` (can the live book be copied), **B** = `euw` vs `usw`
 (the asset classes, no coins). `us6-eur` and `usw-eur` split the change into currency and
@@ -51,14 +51,14 @@ instrument; they are descriptive.
 
 ## Costs (fixed)
 
-- **Dutch** (`nl`): UCITS ETFs/ETCs 0.10% fee + 0.05% slippage a side. Basis: DEGIRO charges
+- **retail** (`retail`): UCITS ETFs/ETCs 0.10% fee + 0.05% slippage a side. Basis: DEGIRO charges
   about EUR 1 (core selection) to EUR 4 (other ETFs on Xetra/Euronext) per order; on the
   EUR 1,000-5,000 orders a EUR 10,000-50,000 book places that is 0.02-0.4%, 0.10% in the middle.
   Half-spreads of these liquid iShares lines and Xetra-Gold are a few basis points. Coins in EUR:
-  the gym's crypto costs (0.25% + 0.05%), about a Dutch exchange's (e.g. Bitvavo) taker fee.
+  the gym's crypto costs (0.25% + 0.05%), about a European exchange's taker fee.
 - **gym**: the house costs (ETFs 0 + 0.02%, coins 0.25% + 0.05%).
 - **harsh** (robustness): ETFs 0.25% + 0.15%.
-- No taxes: Dutch box-3 tax is on wealth, not on trades, so it does not change the comparison.
+- No taxes: left out of every book alike.
 
 ## Runs (all that will be run; every one a row in `tries.md`, idea `eu-1`)
 
@@ -66,13 +66,13 @@ On W:
 
 1. `tsmom12` and `equal-weight` on each of the six books (12 rows; `tsmom12` rows are
    `robustness`, `equal-weight` rows `baseline`).
-2. Buy-and-hold IWDA (world equity, EUR, Dutch costs) and buy-and-hold SPY (USD, gym):
+2. Buy-and-hold IWDA (world equity, EUR, retail costs) and buy-and-hold SPY (USD, gym):
    `baseline`, 2 rows.
 3. Costs: `tsmom12` on `eu6` and `euw` at gym and at harsh costs (4 rows).
 4. `eu6` with IS04 (US Treasuries 20+, EUR-hedged, from 2015) in place of IBGL: `tsmom12` and
    `equal-weight` (2 rows; IS04 joins in 2016).
 5. Single assets, the four ETF slots of the six: `tsmom12` and buy-and-hold on SXR8, SXRV, 4GLD,
-   IBGL (Dutch) and SPY, QQQ, GLD, TLT (USD, gym): 16 rows, descriptive.
+   IBGL (retail) and SPY, QQQ, GLD, TLT (USD, gym): 16 rows, descriptive.
 
 Longer windows, robustness only:
 
@@ -80,7 +80,7 @@ Longer windows, robustness only:
    `tsmom12` and `equal-weight`, and the same two on `usw` (USD, gym) from the same day
    (4 rows).
 7. Splices, decisions 2000-01-03 .. 2025-11-09 (the ECB rate starts 1999): `eu6-S` (SXR8-S,
-   SXRV-S, 4GLD-S, IBGL-S, BTC-EUR, ETH-EUR; Dutch costs) and `us6` in USD on the same window:
+   SXRV-S, 4GLD-S, IBGL-S, BTC-EUR, ETH-EUR; retail costs) and `us6` in USD on the same window:
    `tsmom12` and `equal-weight` each (4 rows). Before 2008-2010 `-S` series are US ETFs in
    euros.
 

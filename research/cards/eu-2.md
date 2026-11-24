@@ -1,6 +1,6 @@
 # eu-2: amendments to the eu-1 card (small-account costs, currency hedge)
 
-Field: robustness of the house rule for a Dutch retail investor (not a new rule, not a
+Field: robustness of the house rule for a euro-area retail investor (not a new rule, not a
 selection). Lane `eu-2` (DEEPER), night of 2026-11-18, branch `eu-2` from `eu-1`. Everything in
 `cards/eu-1.md` stays as written; these amendments add runs. Each amendment was committed and
 pushed before any of its numbers existed. Seen before: everything in `eu-1.md` and
@@ -10,24 +10,24 @@ pushed before any of its numbers existed. Seen before: everything in `eu-1.md` a
 
 ### Failure mode
 
-eu-1 charged a Dutch broker as a percentage (0.10% fee + 0.05% slippage a side). Real Dutch
+eu-1 charged a retail broker as a percentage (0.10% fee + 0.05% slippage a side). Real retail
 brokers charge a fixed amount per order. On a small book a fixed fee is a large share of each
 order, and the house rule also places small drift trades (weekly decisions, 1% rebalance band):
 a 1%-of-equity top-up on a EUR 5,000 book is a EUR 50 order, and a EUR 3 fee is 6% of it.
 
 ### Fee schedules (public pages, read 2026-11-18)
 
-- DEGIRO NL, `degiro.nl/tarieven` ("Peildatum: 01.10.2025"): ETF core selection ("Kernselectie")
-  EUR 0 commission + EUR 1 handling fee per order; other ETFs ("ETF Wereldwijd") EUR 2 + EUR 1
+- DEGIRO, public fee page (as of 2025-10-01): ETF core selection
+  EUR 0 commission + EUR 1 handling fee per order; other ETFs EUR 2 + EUR 1
   = EUR 3 per order. Exchange connectivity fee: 0.25% of the portfolio, at most EUR 2.50 per
-  calendar year per exchange outside Euronext Amsterdam/Brussels (here: Xetra).
-- Trade Republic (operates in NL; its own fee page did not load, source: curvo.eu article of
+  calendar year per exchange outside the broker's home exchanges (here: Xetra).
+- Trade Republic (its own fee page did not load, source: curvo.eu article of
   2026-09-18): EUR 1 per order when Trade Republic is the counterparty ("Best Price"), EUR 2 per
   order routed to an exchange of your choice ("Direct Price", since July 2026); savings plans
   free. No connectivity fee.
 
 Which of our lines are in DEGIRO's core selection is not checked line by line, so EUR 1 and
-EUR 3 bracket DEGIRO. Schedules (ETF orders; coins always pay 0.25% + 0.05%, a Dutch exchange's
+EUR 3 bracket DEGIRO. Schedules (ETF orders; coins always pay 0.25% + 0.05%, a European exchange's
 percentage taker fee, as in eu-1):
 
 | Schedule | Fixed fee per ETF order | Yearly fee | Slippage a side |
@@ -100,12 +100,12 @@ the US behaviour back, and what does the hedge cost (about the USD-EUR short-rat
 
 - **IUSE**: iShares S&P 500 EUR Hedged (Acc), the EUR line on London (`IUSE.L`), from
   2010-09-30, so eligible for all of W. Same fund as IBCF on Xetra (`IBCF.DE`, from
-  2011-03-24; daily difference sd 0.14%); IUSE.AS (Amsterdam) is not on Yahoo. A Dutch investor
+  2011-03-24; daily difference sd 0.14%); IUSE.AS (Euronext Amsterdam) is not on Yahoo. A euro-area investor
   would buy IUSE on Euronext Amsterdam or IBCF on Xetra; the London line is the price source.
 - **XAD1**: Xtrackers Physical Gold EUR Hedged ETC (Xetra), from 2010-06-15.
 - NQSE (Nasdaq 100 EUR Hedged) starts 2018-09: too late for W, not used. SXRV stays unhedged.
 
-### Runs (all; window W; Dutch percentage costs `nl` as in eu-1, so eu-1's rows compare
+### Runs (all; window W; retail percentage costs `retail` as in eu-1, so eu-1's rows compare
 directly; idea `eu-2`)
 
 1. `euw-h` = `euw` with IUSE in place of SXR8: `tsmom12` and `equal-weight` (2 rows). Primary.

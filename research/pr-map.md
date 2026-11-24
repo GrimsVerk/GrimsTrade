@@ -113,7 +113,7 @@ Legend: [E] engineering change to `main`, [R] research record, [O] waits on an o
                       - #58 `evo-2` [R] **tip**: evo-2: calibrated plant found 1/3: gate fails. Evo line CLOSED.
                     - #46 `micro-1` [R] **tip**: micro-1: minute-bar features do not forecast weekly. Closed.
                     - #48 `data-long-1` [R]: data-long-1: free long bond and gold histories verified; loader.
-                      - #50 `research/exit-1` [R] **tip**: exit-1: exit-plan research (selling by a fixed date, parking cash, re-entry); review FINAL.
+                      - #50 `research/exit-1` [R] **tip**: exit-1: exit research (exit rules, parking cash, re-entry); review FINAL.
                       - #51 `data-long-2` [R] **tip**: data-long-2: gold loader; trend-where closed on bonds/gold.
           - #20 `ideas-1` [R] **tip**: ideas-1: eight video-sourced rules, all fail.
   - #13 `data-search-1` [E]: Data-source catalogue (`docs/data-sources.md`), docs only.
@@ -285,7 +285,7 @@ commit dates the protocol relies on: "card committed before numbers").
 
 ## 6. Lines closed vs still open
 
-**Closed during night 2 (2026-11-18/19):** exit-plan research (#50, review FINAL); evolved
+**Closed during night 2 (2026-11-18/19):** exit research (#50, review FINAL); evolved
 rules (#58); RL / perps (#52); `trend-where` (#51); run-up flag (#55, not a candidate); blends
 (#75); euro-book variants (#85); coin rules (parked: #69, #82; risk preference only); crash
 insurance / faster re-entry (#96, #103); volatility timing as an edge (#98); narrow short

@@ -1,6 +1,6 @@
 # reentry: when to buy back in after selling into a suspected bubble
 
-Written 2026-11-18 ~18:45 UTC (committed at 18:49 UTC; the time first written here, 19:20, was a mistake), lane `reentry` of the exit-plan-2026 run, before any number of
+Written 2026-11-18 ~18:45 UTC (committed at 18:49 UTC; the time first written here, 19:20, was a mistake), lane `reentry` of the exit-1 run, before any number of
 this test was computed. Seen before: public history of US bear markets (1929, 1973-74, 2000-02,
 2007-09, 2020, 2022), the published claims that a 10-month-SMA re-entry comes late, and the
 header and last rows of Shiller's `ie_data.xls` (CAPE 39.4 on 2026-11-12). No backtest of any
@@ -102,5 +102,4 @@ no case.
 
 Run once (tries rows 2026-11-18 18:52). No rule passed: in sample B at 10 years no rule had
 median R > 1 with share >= 55% in both halves (pre-1972 the drawdown rules passed, from 1972 none
-did). Numbers and discussion: `research/exit-plan-2026/lanes/reentry.md`, raw output
-`research/exit-plan-2026/lanes/reentry-rules.txt`.
+did). Numbers and discussion: moved out of the public repo.
