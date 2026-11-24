@@ -3,8 +3,6 @@
 Ideas not started yet. Move one to `next-steps.md` when you start it; delete it when done.
 
 - Gymnasium env wrapper around `gym.py` (for RL, M3).
-- Second source for the 13-week bill rate: the US Treasury's keyless daily bill-rate CSV, used
-  when Yahoo `^IRX` fails (today the last rate carries forward; #61, decisions-1 A2c).
 - More universe: a few more liquid crypto (SOL, ...) and ETFs (IWM, EFA, ...).
 - Crypto funding-rate carry (long spot, short perpetual, collect funding). Needs a short-perp leg
   and funding cash flows in the gym first. Keyless source: Kraken Futures
@@ -42,7 +40,8 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   honesty rules; only the horizon differs.
 - Where GPU models run (decide when M3 starts): small models are trained on the 5080 and their
   weights committed, so the Actions runner (no GPU) can use them. Big ones (a local news LLM)
-  run on the owner's PC and write a dated signal file before the 22:30 UTC run; if the PC is
+  run on the owner's PC and write a dated signal file before the daily run (scheduled 22:30 UTC,
+  started by GitHub at about 02:00-06:15 UTC the next day: DECISIONS 2026-11-24); if the PC is
   off, those strategies skip that day. "No LLM in the runner" is about Claude and about not
   needing the desktop, not about models in general.
 - Idea sources from the owner (2026-11-12), to read for hypotheses, never as truth:

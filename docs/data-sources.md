@@ -280,6 +280,8 @@ be committed raw (size and terms). Owner's call if you want to change the curren
 - **Probe 2026-11-12:** 1990 CSV from home.treasury.gov -> 200, 14 KB, `12/31/1990 ... 8.08` (10y).
 - **Licence:** public domain. **US runner:** yes.
 - **Verdict: LATER** (FRED's `DGS*` series carry the same numbers more simply).
+- **Daily Treasury Bill Rates** (same site, `type=daily_treasury_bill_rates`): **USED** since
+  2026-11-24 as the cash rate's fallback for sessions Yahoo `^IRX` lacks (DECISIONS, 2026-11-24).
 
 ### 5.4 Philadelphia Fed Real-Time Data Set
 - **What:** quarterly vintages of GDP, etc. since 1965, as Excel.
