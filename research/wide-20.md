@@ -159,3 +159,79 @@ Extra list fetched (Wikipedia pageprops, then Wikidata `wbgetentities`, both key
 under `wide-20/`): 15 of the 18 titles resolved to items; three titles were wrong as written
 (`2015 Medan Hercules crash`, `2021 Philippine Air Force Lockheed C-130 crash`, `2024 Belgorod
 Ilyushin Il-76 crash`) and are left out rather than corrected, so the list stays as fixed.
+
+## What came out (one real run, 2026-11-24 about 23:50 UTC)
+
+### W29 `air-disaster-mood`: fails
+
+**One more unit of log2(deaths / 25) on the two sessions after a large aviation accident goes
+with -0.038% a day on SPY (a typical 100-death accident: about -0.15% over two days; t -0.59,
+4,488 days, 34 events, 2008-01 .. 2025-10): the predicted sign, but t far from -2, and the true
+t ranks 10 of 41 shifted calendars (empirical one-sided p 0.24). Dead by the gate: no card for
+a strategy.** Held-out year untouched. Table: `results/air-disaster-mood.md`.
+
+| Cut (SPY daily return, days 0-1, unless named) | Events | b, % a day per unit | t |
+|---|---:|---:|---:|
+| **Gate: dose log2(deaths / 25)** | **34** | **-0.038** | **-0.59** |
+| Binary indicator | 34 | -0.139 | -1.04 |
+| Days 0-2 | 34 | -0.063 | -1.13 |
+| Reversal, days 2-4 (predicted > 0) | 34 | +0.000 | +0.01 |
+| Only >= 100 deaths | 16 | +0.014 | +0.20 |
+| Three largest removed | 31 | -0.066 | -0.93 |
+| QQQ / IWM | 34 | -0.022 / +0.036 | -0.30 / +0.40 |
+| GLD / TLT | 34 | +0.112 / -0.061 | +1.96 / -0.94 |
+| BTC (from 2012) / ETH (from 2016-05) | 20 / 10 | -0.072 / -0.297 | -0.25 / -0.85 |
+| List completed (+13 accidents, addendum) | 47 | -0.027 | -0.57 |
+| GSPC 1950-2007 (the paper's span, in-sample for it) | 414 | -0.027 | -1.52 |
+| GSPC 1950-2007, binary | 414 | -0.075 | -2.05 |
+| GSPC 1950-2007, reversal days 2-4 | 414 | -0.015 | -1.23 |
+| GSPC 1950-2025 | 448 | -0.027 | -1.57 |
+
+- **No post-sample mood effect on US stocks.** The dose slope is a sixth of what a pass needed
+  and the larger accidents show nothing (>= 100 deaths: +0.01, t +0.20), which is the opposite
+  of a salience story. Adding the 13 accidents the query missed changes nothing (t -0.57, rank
+  11 of 41 with its own placebos).
+- **No reversal**, the only form a long-only daily book could trade (days 2-4: t +0.01).
+- **The event list sees only a faint version of the published effect even in the paper's own
+  years**: GSPC 1950-2007, 414 accidents, dose t -1.52 (rank 8 of 41 with its own placebos;
+  binary -2.05), and no reversal there either (-1.23, the wrong sign). This list is not the
+  paper's (its criteria are unknown here, and it used CRSP, not a price index), so this is a
+  look, not a failed replication.
+- **Shown cells with |t| near 2 are noted only**: GLD +1.96 (a flight-to-gold reading) is 1 of
+  13 shown cells; TLT, the other safe haven, has the wrong sign (-0.94).
+- **Null width: SD of placebo t 0.91, 2% with |t| >= 2**, quantiles 5/50/95% -1.59 / +0.11 /
+  +1.26, extremes -2.04 / +1.47: about normal, as expected for unscheduled, nearly independent
+  daily events (like W20's 0.99).
+- My guess (either sign, t between -1.5 and +1.0, middle rank, placebo SD 0.9-1.2, pass 2%)
+  held on all four.
+
+Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the family bar
+0.0011 and the register's 1.0e-4; 34 events). A kill.
+
+## Family count and status
+
+One mechanism added and closed by its gate (W29 `air-disaster-mood`; number provisional, see
+the card). The eleven others are parked, filtered or dead in the literature and are **not
+counted**, as in wide-12/13/15; each has a `note` row in `tries.md` (no number computed) and a
+line in `ideas.md`.
+
+**Count: 88 mechanisms (87 carried in + W29), 18 tested by a strategy, none passed; 23 gates,
+all failed** (before any gates other lanes post tonight). Published effects tested after
+publication: 1 more (Kaplanski-Levy's aviation mood effect, with this run's own event list):
+dead.
+
+Rows logged in `tries.md`: 1 `screen` (`air-disaster-mood`) and 11 `note` rows (one per
+candidate scored but not gated).
+
+## Next
+
+1. **The mood-shock class is now weak.** Of the two mood candidates, P1 died post-sample and
+   P4 (mass shootings) is the same channel with fewer events; W18 `elimination-mood` (sport) is
+   the last untested one and still needs a keyless match list. A lane that runs it should
+   expect a kill.
+2. **P2 `jackpot-substitution` is the only scored-5 candidate left**, blocked by data only.
+   If a keyless per-draw jackpot (or winner-count) history turns up, its design is clean
+   (random rollovers), but the size check predicts t near 0.
+3. **Wikidata as an event source**: good coverage before 2018, patchy after (13 of about 47
+   window events missing, mostly 2018-2020). A future event gate built on Wikidata should
+   check coverage by year in its dry run, as this one did.
