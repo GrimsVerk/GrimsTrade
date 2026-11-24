@@ -56,3 +56,28 @@ forecast. That is also its weakness: the gain cannot exceed what the drift trade
 ceiling is measured on the baseline alone: `tsmom12` replayed with zero cost on coin trades
 (not a rule anyone can trade; no new configuration of a rule). If even removing every coin fee
 cannot reach z 4.69, no rule of this kind can pass on the primary test, and the card says so.
+
+## Step 1b. The size of the prize (baseline only, 2026-11-24 ~20:15 UTC)
+
+`uv run --with numpy python research/lib/wide16_ceiling.py`: `tsmom12` through the gym, once
+with its costs (Sharpe 1.045, the logged 1.05) and once with coin fills free. No rule, no try
+(one `note` row in `tries.md`).
+
+| Coin fills from 2015 (10.9 years) | Fills a year | Volume, x equity a year | Fee, % of equity a year | Slip |
+|---|---:|---:|---:|---:|
+| Entries | 1.7 | 0.27 | 0.106% | 0.013% |
+| Exits | 1.5 | 0.25 | 0.088% | 0.012% |
+| Drift top-ups and trims | **76.1** | **1.06** | **0.378%** | 0.053% |
+
+| Ceiling (not tradable) | dSharpe vs `tsmom12` | Paired SE | z |
+|---|---:|---:|---:|
+| All coin costs zero, 1994-2025 | +0.0103 | 0.0017 | 6.0 |
+| All coin costs zero, from 2015 | +0.0175 | 0.0038 | 4.6 |
+| Only the drift fills' costs added back, 1994-2025 (approximate) | +0.0085 | 0.0008 | 10.0 |
+| Same, from 2015 | +0.0134 | 0.0010 | 14.1 |
+
+Reading: the whole coin cost budget is worth about +0.01 Sharpe, but it is a steady stream,
+so its z is high. A rule that kept the book and stopped paying for drift could clear z 4.69;
+the question is how much tracking noise the saving brings with it. The card
+(`cards/cost-band.md`) states the power before any run: the noise allowed is about 0.16 s % a
+year, the expected noise 1-2% a year, so the expected result is a fail.
