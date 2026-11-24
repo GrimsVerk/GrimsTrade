@@ -24,7 +24,18 @@ from datetime import UTC, datetime, timedelta
 from itertools import groupby
 from pathlib import Path
 
-from grimstrade import data, gym, intraday, ledger, rates, report, signals, sources, weekly
+from grimstrade import (
+    data,
+    gym,
+    intraday,
+    ledger,
+    rates,
+    reconcile,
+    report,
+    signals,
+    sources,
+    weekly,
+)
 from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
@@ -130,6 +141,7 @@ def run(
     history = data.load_all(root)
     seen = data.visible_history(history, now)
     through = {s: b[-1].date.isoformat() for s, b in seen.items() if b}
+    lines_before = len(ledger.decisions(root))
     for name, decide in LIVE.items():
         ledger.register_try(root, name, NOTES[name], now)
         previous = ledger.decisions(root, name)
@@ -147,7 +159,6 @@ def run(
         print(f"{name}: {weights} ({reason})")
 
     ledger.record_research(root, repo, now)
-    ledger.record_problems(root, now, problems)
     results = report.live_results(root, history)
     state = {
         name: {
@@ -162,6 +173,18 @@ def run(
     state_path = root / "state" / "portfolio.json"
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
+    # The record just written, checked against the rules (`grimstrade.reconcile`): a failure is a
+    # problem line like a failed source, so the run exits 1 and the record is still committed.
+    new_lines = ledger.decisions(root)[lines_before:]
+    checked = reconcile.check_state(root, results)
+    checked += reconcile.check_lines(new_lines, data.load_all(root), LIVE)
+    for line in checked:
+        print(f"FAILED {line}", file=sys.stderr)
+    print(
+        f"reconcile: {len(results)} books, {len(new_lines)} new ledger lines, {len(checked)} problems"
+    )
+    problems += checked
+    ledger.record_problems(root, now, problems)
     reports = root / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "scoreboard.md").write_text(report.render(root, history, repo))
