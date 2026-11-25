@@ -16,7 +16,7 @@ Kill rule K2 is hit: the managed book adds less to `tsmom12` than the unmanaged
 `xs-century-1` book on the same months (z 2.46 out of paper). Market-volatility management of
 the style book is dead.** Outside the paper's 1977-2020 window the conditioning does nothing:
 the rule's net Sharpe is 0.38 against 0.37 for its own unconditional twin (+1%, t 1.2), and
-0.00 apart in 1939-1976.
+0.00 apart in 1938-07..1976-12.
 
 - **The method, verified in the paper** (DeMiguel, Martin-Utrera and Uppal, JF 79(6) 2024,
   section I.B-C): weights theta_k,t = a_k + b_k / sigma_t, with sigma_t the SD of the daily
@@ -43,9 +43,9 @@ Out of paper = 1938-07..1976-12 plus 2021-01..2025-10 (520 months, 43 years). Ki
 
 1. **The paper's gain shows up inside its own window and nowhere else.** CMV over UMV: +9%
    net Sharpe in 1977-2020 (the paper's +13% is on nine equity factors with netting), +0% in
-   1939-1976, and the two are equal to two decimals in every decade from the 1940s to the
+   1938-07..1976-12, and the two are equal to two decimals in every decade from the 1940s to the
    1970s: before 1977 the optimiser, with costs in its objective, finds no market-volatility
-   timing worth paying for and in effect sets b to 0. Gross (R1) the same pattern: CMV over UMV
+   timing worth paying for and sets b to 0 (in all 462 months; review note 2). Gross (R1) the same pattern: CMV over UMV
    +12% on the full sample, 0% out of paper (both 1.09). This is the outcome the pre/post
    split was built to catch; it is consistent with the conditioning being fitted to 1977-2020.
 2. **The optimiser costs more than the timing earns.** Both mean-variance books (CMV, UMV) lose
@@ -88,6 +88,24 @@ Out of paper = 1938-07..1976-12 plus 2021-01..2025-10 (520 months, 43 years). Ki
   comparator, the unmanaged book on the same months), 11 `robustness` (R1-R4 and the sample
   splits). The bar was not lowered for the comparator or for this being the second try in the
   family after a near miss.
+
+## Review notes (added after the run, 2026-11-25 UTC; card unchanged)
+
+1. **Not all 520 "out-of-paper" months are free of the paper's data.** DMU's sample starts in
+   1967-01 and 1967-01..1976-12 was their first estimation window, so 120 of the 520 months
+   (1967-1976) are data the paper fitted on, though not data it scored. The cleanly unseen
+   part is 1938-07..1966-12 (342 months) and 2021-01..2025-10 (58 months). The card's split is
+   kept as fixed; this narrows how much it can claim.
+2. **The fitted b is 0 in every one of the 462 months 1938-07..1976-12** (checked after the run:
+   CMV's weights equal UMV's to 1e-9 in all 462 months; a diagnostic of the same run, not a new
+   try). In 1977-2020 b is 0 in 44 of 528 months, in 2021-2025 in 2 of 58. So the out-of-paper
+   CMV-vs-UMV comparison (K1, rule 3) rests on the 58 months from 2021 alone. Before 1977 the
+   managed book *is* the unmanaged one, so "+0% in 1938-1976" says the method found nothing to
+   time there, not that timing was tried and failed. The fail and K2 do not depend on this: they
+   come from the alpha z against `tsmom12` and against the unmanaged book.
+3. **Labels.** Out of sample starts in 1938-07, so the sample called "pre 1939-1976" in
+   `results/vm-style-1.md` and in the `tries.md` rows (left as generated; rows are never edited)
+   covers 1938-07..1976-12 (462 months). The write-up and `ideas.md` use the corrected label.
 
 ## Logged
 
