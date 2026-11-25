@@ -138,3 +138,28 @@ lead may renumber). The replication **R37** is fixed in the same card before any
 the same design on BTC with the **other** events (thefts from centralised exchanges, 2012-2025),
 so it adds independent events, as gate-null's replication step asks. C2 (5) has no event list;
 C4 and C8 score 5 only with cause 0 and fail their reach. No second gate (W38 is not used).
+
+## Step 3. W37 `hack-drift` gate
+
+The rule, data, placebo family, gate, the replication R37 (run only after a pass), shown cells,
+power and guess are in [`cards/wide-23.md`](cards/wide-23.md), pushed before any number (commit
+4277803, 21:32 UTC). Code: `research/lib/wide23_events.py` (pure functions, tested offline in
+`tests/test_wide23.py`) and `research/lib/wide23.py` (fetch and run). Results:
+`research/results/hack-drift.md`.
+
+**A slip in the card, found while writing the tests (before any number), not edited:** the card
+says the placebo step of 23 days "is not a multiple of a week". The step is not, but five of the
+40 shifts (k = 7, 14, ..., 35, i.e. 161 .. 805 days) are whole weeks and keep each event's
+weekday. The dose has no weekly clock, so this only matters if weekday return patterns line up
+with hack days; the shift set is used as written.
+
+### Dry run (counts only, 2026-11-25 21:34 UTC)
+
+Hack list fetched once (`wide-23/defillama/2026-11-25/hacks.json`, 0.8 MB, 1,377 rows): events
+of USD 10 m or more dated to 2025-10-31: **114 gate events (G, not `CEX`), 54 replication
+events (X, `CEX`)**. ETH closes 3,452 (2016-05-18 .. 2025-10-31); **gate rows 3,412 days,
+2016-06-21 .. 2025-10-23, no gaps, 109 event days in the rows.** The 30-day control window
+means the first row is 2016-06-21, so the frozen rule leaves out the one G event before it
+(the DAO theft, listed 2016-06-17, USD 60 m): a consequence of the card's rows, not changed.
+R37 (not run unless W37 passes): BTC 5,050 closes, 4,976 rows 2012-01-30 .. 2025-10-23, one gap,
+54 event days.
