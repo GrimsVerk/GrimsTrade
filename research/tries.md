@@ -4184,3 +4184,14 @@ Never edit or delete a row.
 | 2026-11-25 02:14 | paris-law-credit | wide-21 candidate, scored before any price, no number computed: S11, filtered F1: quarterly credit statistics are public news | note | train | - | - | - | - | - | - |
 | 2026-11-25 02:14 | chemical-accident-mood | wide-21 candidate, scored before any price, no number computed: S12, filtered: mood-shock class dead (W31) | note | train | - | - | - | - | - | - |
 | 2026-11-25 09:20 | solar-max-recession | renumber at merge (not a try): wide-21's W34 = W35 (panic-words-1 merged first and keeps W34); the replication R34 = R35; the row above stays as written | note | - | - | - | - | - | - | - |
+| 2026-11-25 21:05 | fx-value-real-1 | sleeve real-rate value (primary 1): alpha vs tsmom12 IR +0.28 z +1.71 (monthly excess x sqrt12) | variant | train | 1980-09-01 | 2025-10-31 | 0.33 | +266.7% | 36.8% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | book with real-rate FX value (primary 2): alpha vs tsmom12 IR +0.31 z +2.74 (monthly excess x sqrt12) | variant | train | 1928-07-01 | 2025-10-31 | 0.40 | +489.1% | 30.1% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | S1 sleeve gross: alpha vs tsmom12 IR +0.31 z +1.91 (monthly excess x sqrt12) | robustness | train | 1980-09-01 | 2025-10-31 | 0.36 | +329.4% | 35.7% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | S2 sleeve FX cost x2: alpha vs tsmom12 IR +0.24 z +1.50 (monthly excess x sqrt12) | robustness | train | 1980-09-01 | 2025-10-31 | 0.29 | +213.1% | 41.6% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | S3 sleeve point-to-point 60m: alpha vs tsmom12 IR +0.26 z +1.63 (monthly excess x sqrt12) | robustness | train | 1980-04-01 | 2025-10-31 | 0.31 | +235.5% | 36.6% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | S4 sleeve 1994-01..2025-10: alpha vs tsmom12 IR +0.11 z +0.57 (monthly excess x sqrt12) | robustness | train | 1994-01-01 | 2025-10-31 | 0.14 | +36.0% | 36.8% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | S5 sleeve vs six-asset tsmom12: alpha vs tsmom12 IR +0.10 z +0.52 (monthly excess x sqrt12) | robustness | train | 1994-03-01 | 2025-10-31 | 0.14 | +35.4% | 36.8% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | B1 book gross: alpha vs tsmom12 IR +0.89 z +7.38 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.97 | +8974.2% | 18.8% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | B2 book UMD cost 0.34%/mo: alpha vs tsmom12 IR +0.51 z +4.43 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.60 | +1409.8% | 25.5% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | B3 bonds + FX only: alpha vs tsmom12 IR +0.44 z +2.65 (monthly excess x sqrt12) | robustness | train | 1962-04-01 | 2025-10-31 | 0.46 | +264.4% | 23.2% | - |
+| 2026-11-25 21:05 | fx-value-real-1 | C1 proxy sleeve (spot reversal, #170): alpha vs tsmom12 IR +0.30 z +1.89 (monthly excess x sqrt12) | control | train | 1980-09-01 | 2025-10-31 | 0.37 | +349.1% | 30.9% | - |

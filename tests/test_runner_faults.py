@@ -7,6 +7,7 @@ rest of the run still happens, and the failure is said in words (a problem line,
 refusal, exit 2).
 """
 
+import inspect
 import json
 import re
 import urllib.request
@@ -504,7 +505,9 @@ def test_the_fetch_cap_is_a_command_line_option(
 
 
 class Trickle:
-    """A response that sends a few bytes per read, each read taking 20 s of a fake clock."""
+    """A response trickling two bytes every 20 s of a fake clock. Like `http.client`'s, its
+    `read1` returns what has arrived; its `read(n)` waits for all n bytes (or the end), so a
+    cap checked between `read` calls would only see the time after the whole body came."""
 
     def __init__(self, clock: FakeClock, reads: int) -> None:
         self.clock, self.left = clock, reads
@@ -515,15 +518,21 @@ class Trickle:
     def __exit__(self, *exc: object) -> None:
         return None
 
-    def read(self, n: int) -> bytes:
+    def read1(self, n: int) -> bytes:
         self.clock.t += 20
         if self.left == 0:
             return b""
         self.left -= 1
         return b"ab"
 
+    def read(self, n: int) -> bytes:
+        out = b""
+        while len(out) < n and (chunk := self.read1(n)):
+            out += chunk
+        return out
 
-@pytest.mark.parametrize(("reads", "ok"), [(3, True), (100, False)])
+
+@pytest.mark.parametrize(("reads", "ok"), [(3, True), (100_000, False)])
 def test_a_trickling_answer_is_cut_off_at_the_request_cap(
     monkeypatch: pytest.MonkeyPatch, reads: int, ok: bool
 ) -> None:
@@ -536,4 +545,11 @@ def test_a_trickling_answer_is_cut_off_at_the_request_cap(
     else:
         with pytest.raises(TimeoutError, match="no whole answer within 90 s"):
             sources.http_get("https://example.invalid/", cap=90, clock=clock)
-        assert clock.t <= 90 + 20
+        assert clock.t <= 90 + 20  # stopped at the cap, not after the whole (long) body
+    # Without a cap (scripts with large downloads) the whole body is read, however slow.
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout: Trickle(clock, reads))
+    assert sources.http_get("https://example.invalid/", clock=clock) == b"ab" * reads
+
+
+def test_the_runner_caps_each_request_by_default() -> None:
+    assert inspect.signature(run_daily.run).parameters["get"].default is sources.runner_get

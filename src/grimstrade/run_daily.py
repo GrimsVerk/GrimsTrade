@@ -128,7 +128,7 @@ def state_row(r: gym.Result) -> dict[str, Any]:
 def run(
     root: Path,
     now: datetime,
-    get: sources.Get = sources.http_get,
+    get: sources.Get = sources.runner_get,
     repo: Path = Path("."),
     fetch_cap: float | None = FETCH_CAP,
     clock: Callable[[], float] = time.monotonic,

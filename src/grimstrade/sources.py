@@ -23,26 +23,36 @@ Get = Callable[[str], bytes]
 
 USER_AGENT = "grimstrade/0.1 (paper trading research)"
 # `urlopen`'s timeout limits each socket operation, not a request: a server that sends a few
-# bytes every so often would hold a request open for ever. A whole request gets this long
-# (seconds) at most; the answers here are small and normally take a second or two.
+# bytes every so often would hold a request open for ever. The daily runner's requests
+# (`runner_get`) get this long (seconds) for the body; its answers are small and normally take a
+# second or two. Scripts with large downloads call `http_get` without a cap.
 REQUEST_CAP = 90.0
 SOCKET_TIMEOUT = 30.0
 
 
 def http_get(
-    url: str, cap: float = REQUEST_CAP, clock: Callable[[], float] = time.monotonic
+    url: str, cap: float | None = None, clock: Callable[[], float] = time.monotonic
 ) -> bytes:
-    """The body at `url`. Raises TimeoutError once the request has taken more than `cap`
-    seconds (checked between reads, so at most `cap` plus one socket timeout)."""
-    deadline = clock() + cap
+    """The body at `url`. With a `cap` (seconds), raises TimeoutError once the request has
+    taken longer than that: the time is checked after each `read1`, which returns as soon as
+    some bytes arrive (`read(n)` would wait for all n of them), so a body trickled byte by byte
+    stops at the cap, plus at most one socket timeout if the server then goes silent. Not
+    covered: a server trickling the status line or headers; `urlopen` reads those before this
+    can check, under the per-operation socket timeout only."""
+    deadline = None if cap is None else clock() + cap
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=SOCKET_TIMEOUT) as resp:
         chunks = []
-        while chunk := resp.read(1 << 16):
+        while chunk := resp.read1(1 << 16):
             chunks.append(chunk)
-            if clock() > deadline:
+            if deadline is not None and clock() > deadline:
                 raise TimeoutError(f"no whole answer within {cap:g} s")
         return b"".join(chunks)
+
+
+def runner_get(url: str) -> bytes:
+    """`http_get` with the daily runner's per-request cap, REQUEST_CAP."""
+    return http_get(url, cap=REQUEST_CAP)
 
 
 class Budget:
@@ -50,7 +60,7 @@ class Budget:
     every further call raises TimeoutError without asking anyone. The run then goes on with what
     it has (the failed fetches are problem lines; the next run catches up), instead of being
     killed by the job's own timeout halfway through. A call already under way is limited by
-    `http_get`'s own cap."""
+    `http_get`'s own cap (`runner_get`)."""
 
     def __init__(self, get: Get, seconds: float, clock: Callable[[], float] = time.monotonic):
         self.get, self.seconds, self.clock = get, seconds, clock
@@ -265,10 +275,10 @@ def fetch_from(
             check_sane(bars)
         except Exception as e:  # noqa: BLE001 - any failure means: try the next source
             errors.append(f"{source.__name__}: {e}")
-            print(f"{symbol}: {source.__name__} not used: {e}", file=sys.stderr)
+            print(f"{symbol}: {source.__name__} failed: {e}", file=sys.stderr)
             continue
         if skip := skipped_day(symbol, since, bars, continues):
-            print(f"{symbol}: {source.__name__} not used: {skip}", file=sys.stderr)
+            print(f"{symbol}: {source.__name__} set aside: {skip}", file=sys.stderr)
             gapped = gapped or (source.__name__, bars)
             continue
         if bars:

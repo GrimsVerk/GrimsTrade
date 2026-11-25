@@ -2,7 +2,7 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
-- 2026-11-26 (lane `runner-faults-2`, fixing PR #161's open findings): how the daily run
+- 2026-11-25 (lane `runner-faults-2`, fixing PR #161's open findings): how the daily run
   treats a source answer that is data but cannot all be stored. (1) A crypto answer that leaves
   out a day (it starts after the day after the newest stored bar, or skips a day inside) is not
   used while the next source may have the day (`sources.skipped_day`, `fetch_from`): BTC/ETH go
@@ -10,23 +10,44 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   broken one taken, as before: the days before the hole are stored and the rest is a problem
   line (the store can never hold a crypto gap). The bars stored then come from Coinbase
   (`data/sources.jsonl` says so); Kraken's own hole still shows as "kraken lists no such day"
-  in the revision check. (2) An answer that lists one day twice with different numbers is
+  in the revision check. Trade-off on a first run (nothing stored yet): only a gap inside an
+  answer counts, but a Kraken hole there sends the run to Coinbase, which serves about 300 days
+  instead of Kraken's 700. (2) An answer that lists one day twice with different numbers is
   **refused** (`check_sane`: like a nonsense bar, the next source is asked; if every source
   does it, nothing is stored and it is one "all sources failed" line). Why refuse rather than
   store one version and log the other: stored rows are never rewritten, so a wrong pick stays
   for good, and nothing in the answer says which version is right (first, last, or neither);
   the answer contradicts itself, so the rest of it is not trusted either. A refused fetch costs
   one day's delay at worst (the next run asks again; the overdue line names it), a wrong row
-  costs the record. The same bar listed twice is harmless and stored once, as before. (3) A
+  costs the record. But a source that keeps sending the same twin every day (with the other
+  source down) stalls that symbol until a person acts; the daily problem line and then the
+  overdue line show it. The same bar listed twice is harmless and stored once, as before. (3) A
   cash-rate session with no row before the newest stored one, while the Treasury request
   failed, is a problem line ("a holiday, or a gap that stays"): with the Treasury down a
   holiday and a hole in Yahoo's answer look the same, and the gap would otherwise be silent.
   (4) All fetching in one run is capped at `run_daily.FETCH_CAP` = 600 s (`--fetch-cap
   SECONDS`; `sources.Budget`): later calls fail without being sent, as problem lines, and the
   run still decides on what is stored, instead of the 20-minute job timeout killing it between
-  the bars and the decisions. Each request is also capped at `sources.REQUEST_CAP` = 90 s
-  (`http_get` reads in chunks; `urlopen`'s 30 s timeout is per socket operation, so a server
-  trickling bytes was unbounded). A normal run fetches in well under a minute.
+  the bars and the decisions. The runner's requests (`sources.runner_get`, the default of
+  `run_daily.run`) also get `sources.REQUEST_CAP` = 90 s each for the body: `http_get(cap=...)`
+  reads with `read1` (returns as soon as some bytes arrive) and checks the time between reads,
+  so a body trickled byte by byte stops at the cap plus at most one socket timeout (30 s, if
+  the server then goes silent). `urlopen`'s 30 s timeout alone is per socket operation, so a
+  trickled body was unbounded. Not covered: a server trickling the status line or headers
+  (only the per-operation socket timeout applies there; the overall cap stops further calls).
+  Scripts and the intraday step call `http_get` without a cap, as before (large downloads). A
+  normal run fetches in well under a minute.
+
+- 2026-11-25 (lane `reconcile-reuse-1`, review of #153): the daily reconcile takes each
+  day's cash rate and its interest from `gym.cash_rate` and `gym.interest` instead of its own
+  copies, so a deliberate change to the rate lookup (carry forward, floor at 0) or the day count
+  (rate / 365) cannot make every run report problems. Which days accrue (from the first
+  decision's day, the marked day not yet) and the rest of the rebuild (fills, distributions,
+  costs) stay re-derived in `reconcile.py`, so it still checks the gym's event loop. The cost is
+  that a bug in those two small functions would no longer be seen by reconcile; both are
+  tested in `test_cash_interest.py` (`cash_rate` directly, `interest` through the replay).
+  No behaviour change: `tests/test_reconcile_pin.py` pins the rebuilt state to the bit, taken
+  before the change, and a daily dry run on a copy of `paper-trail` still reports 0 problems.
 
 - 2026-11-25 (lane `forward-se-1`; fixed before any live verdict: the forward registry holds no
   frozen line): the forward registry's `mean` and `sharpe` verdicts use a dependence-robust
@@ -75,7 +96,8 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   without a standing check a later runner or gym bug would corrupt the record silently. It
   re-derives the rules (cost table, interest, distributions) rather than calling
   `gym.simulate`, so a rule change in the gym needs the same change here, or every run reports
-  it. Cost on the record of 2026-11-24: about 0.05 s.
+  it (since `reconcile-reuse-1` the day's cash rate and its interest are the gym's own
+  functions). Cost on the record of 2026-11-24: about 0.05 s.
 
 - 2026-11-24 (lane `daily-nodev-1`): the daily job installs only the runtime dependencies
   (`uv sync --locked --no-dev`, and `uv run --no-dev` for both run steps, since a plain `uv run`
