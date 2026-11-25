@@ -24,7 +24,8 @@ test enter the count.
 Project-wide bar (`research/register/BAR.md`, rows through 2026-11-25 01:16): **4,126 tries,
 N 1,116 for a new pick; measured rho 0.55 gives N_eff 506: a new rule needs z >= 4.70 against
 `tsmom12`, Bonferroni p <= 9.9e-5.** Family bar with this run's gate: p < 0.10 / 106 = 0.00094
-relative to `main` (0.10 / 108 = 0.00093 if #210 lands first).
+relative to `main` (0.10 / 108 = 0.00093 if #210 lands first; it did, at 22:38 UTC, see the
+count below).
 
 Method as wide-21 .. wide-23: wide-11's filters F1 (not announced: an unscheduled flow (a) or
 a premium (b)) and F2 (not price-driven; passing only with controls costs 1 point), then
@@ -232,11 +233,12 @@ One mechanism added and closed by its gate (W40 `quake-drift`). The twelve other
 filtered or dead by size, power or channel and are **not counted**, as in wide-12 .. wide-23;
 each has a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
 
-**Count relative to `main` (94bbbd0): 106 mechanisms (105 + W40), 29 tested by a strategy, none
-passed; 34 gates (33 + W40), two kill-only passes (W32, W36), each killed by its replication
-(R32, R36).** Family bar p < 0.10 / 106 = 0.00094. **If #210 (W38, W39) lands first: 108
-mechanisms, 29 tested by a strategy, 36 gates, bar 0.10 / 108 = 0.00093**; W40 keeps its id
-either way (W38 and W39 are #210's). Published effects tested after publication: 1 more (the
+**Count: 108 mechanisms, 29 tested by a strategy, none passed; 36 gates, two kill-only passes
+(W32, W36), each killed by its replication (R32, R36).** Family bar p < 0.10 / 108 = 0.00093.
+This is after #210 (W38, W39), which merged into `main` at 22:38 UTC during this lane (`main`
+then 6533d7b, merged into this branch): 107 / 29 / 35 there, plus W40. Relative to the `main`
+this lane started from (94bbbd0) it would have been 106 / 29 / 34. W40 is the next free id, so
+the card's provisional id stands. Published effects tested after publication: 1 more (the
 earthquake abnormal returns of Scholtens and Voorhorst 2013, as a drift after the first two
 sessions, 2012-2025): dead.
 
