@@ -201,3 +201,32 @@ control.
 - **Does not hold:** the insurance claim should not be extended to bonds on annual data.
 - **Too few falls:** the JST annual bond data cannot answer the question at any rung.
 - No outcome changes the live rule.
+
+## Amendment A: fall counts and the chosen threshold (2026-11-25 ~23:35 UTC)
+
+Computed by `uv run python -I research/lib/insurejstbonds1.py counts` on the holding indices
+only, before any rule position, insurance, share or rule return of this lane was read (the code
+builds positions inside `insure1870.segments`, but the counts mode prints none). Primary: 40
+segments in 14 countries (no US, no Norway: all their years overlap), 1,352 scored
+country-years.
+
+| Sample | d | Episodes | Multi-year | Anchored clusters | Linked clusters | Unfinished falls | Countries with a fall |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| primary | 25.0% | 2 | 2 | 2 | 2 | 1 | 1 |
+| primary | 20.0% | 4 | 4 | 3 | 3 | 0 | 2 |
+| primary | 15.0% | 6 | 6 | 4 | 4 | 0 | 3 |
+| primary | 10.0% | 23 | 13 | 12 | 12 | 3 | 12 |
+| primary | 7.5% | 44 | 19 | 21 | 19 | 4 | 12 |
+| primary | 5.0% | 66 | 26 | 24 | 21 | 4 | 13 |
+| overlap | 25.0% | 4 | 4 | 4 | 4 | 0 | 2 |
+| overlap | 20.0% | 5 | 5 | 4 | 4 | 0 | 2 |
+| overlap | 15.0% | 8 | 7 | 5 | 5 | 0 | 4 |
+| overlap | 10.0% | 33 | 16 | 15 | 15 | 3 | 14 |
+| overlap | 7.5% | 63 | 25 | 22 | 20 | 4 | 15 |
+| overlap | 5.0% | 97 | 34 | 24 | 21 | 4 | 16 |
+
+("Multi-year": trough at least two year-ends after the peak.) By the card's rule **d = 10%**
+(fall 10%, rise 10%): 12 anchored and 12 linked clusters. Check 5 uses 15% (4 clusters: will
+read "Too few falls" by construction) and 7.5%. Ten of the 23 primary episodes are one-year
+falls, where a once-a-year rule that was in loses exactly what holding loses (a tie), so the
+headline share is biased down as the card says. Nothing else on the card changes.
