@@ -9,7 +9,7 @@ Card: `research/cards/jst-gates-1.md`. Statistics only (JST R6, CC BY-NC-SA 4.0;
 - Shift null (20 earlier doses, k = 4..23): SD 1.06, share |t| >= 2 5%, 5/50/95% -2.00 / -0.10 / +1.39, extremes -2.29 / +1.82.
 - Bootstrap under H0 (B 199): p 0.045; SD 1.32, share |t| >= 2 14%, 5/50/95% -1.69 / +0.34 / +2.46, extremes -3.41 / +5.01.
 - Phase surrogates (40, shown): rank 4 of 41; SD 1.49, share |t| >= 2 20%, 5/50/95% -2.01 / +0.35 / +2.50, extremes -2.69 / +2.57.
-- Dose pooled lag-1 acf +0.51; PR #207's proposed rule (does not apply: acf >= 0.8 needed) would fail the rank-and-t part in both families.
+- Dose pooled lag-1 acf +0.51: PR #207's proposed rule does not apply (acf < 0.8); rank <= 2 and t <= -2 in both the shift and the phase family: no.
 - Halves: -0.0300 (t -2.33, 131 rows) and -0.0266 (t -1.78, 224 rows); without suspect periods -0.0227 (t -1.63, 333 rows).
 - Shift placebo t by k: 4 -0.53, 5 -0.02, 6 -0.67, 7 -0.97, 8 -0.22, 9 -0.17, 10 -1.54, 11 +0.69, 12 +1.37, 13 +0.19, 14 +0.53, 15 +1.82, 16 +0.34, 17 -2.29, 18 -0.02, 19 +0.94, 20 +0.14, 21 -0.62, 22 -1.30, 23 -1.99.
 - **Verdict by the card: FAIL (not a clean kill; not supported).**
@@ -35,7 +35,7 @@ Shown, not gating:
 - Shift null (40 earlier doses, k = 5..44): SD 1.09, share |t| >= 2 12%, 5/50/95% -1.04 / +0.23 / +2.16, extremes -1.17 / +2.37.
 - Bootstrap under H0 (B 199): p 0.580; SD 1.09, share |t| >= 2 7%, 5/50/95% -1.60 / -0.01 / +1.96, extremes -2.95 / +3.05.
 - Phase surrogates (40, shown): rank 28 of 41; SD 0.89, share |t| >= 2 0%, 5/50/95% -1.62 / -0.18 / +1.39, extremes -1.68 / +1.75.
-- Dose pooled lag-1 acf +0.88; PR #207's proposed rule (applies: acf >= 0.8 needed) would fail the rank-and-t part in both families.
+- Dose pooled lag-1 acf +0.88: PR #207's proposed rule applies (acf >= 0.8); rank <= 2 and t <= -2 in both the shift and the phase family: no.
 - Halves: -0.0122 (t -1.21, 509 rows) and +0.0216 (t +0.87, 776 rows); without suspect periods +0.0031 (t +0.21, 1171 rows).
 - Shift placebo t by k: 5 +0.15, 6 -0.57, 7 -0.73, 8 -0.64, 9 +0.18, 10 +0.38, 11 +0.72, 12 +0.55, 13 +0.28, 14 +0.19, 15 +0.03, 16 -0.14, 17 +0.36, 18 +0.78, 19 +1.45, 20 +2.37, 21 +2.33, 22 +1.81, 23 +1.83, 24 +2.15, 25 +2.08, 26 +1.27, 27 +1.88, 28 +1.69, 29 +2.02, 30 +1.47, 31 +1.23, 32 +0.99, 33 +0.14, 34 -0.76, 35 -0.05, 36 -0.37, 37 -1.04, 38 -1.08, 39 -0.93, 40 -1.17, 41 -0.52, 42 -0.64, 43 -0.69, 44 -0.44.
 - **Verdict by the card: KILL (clean): b >= 0.**

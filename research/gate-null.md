@@ -202,7 +202,7 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W36 `grid-load-premium` (wide-22) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t -2.31, rank 1, post-sample b < 0: **pass (kill-only)** | killed by its replication R36 (1926-1955: t -0.32, rank 13) |
 | R36, replication of W36 (wide-22, `cards/wide-22b.md`) | k = 25..103 months, earlier only | not used | t -0.32 (predicted < 0), rank 13 | no: t > -2; W36 dead (low power: see `wide-22.md`) |
 | W37 `hack-drift` (wide-23) | k = 23..920 days, earlier only | not used (earlier only, as step 1 asks: the loot scales with prices) | t +0.68 (predicted < 0), rank 38; post hoc without LuBian (USD 3.5 bn, not public at its listed date) t -0.01, rank 31 | no: t near 0 (the positive sign is one event) |
-| W38 `consumption-cycle` (jst-gates-1) | k = 4..23 years, earlier only | not used (earlier only, as step 1 asks) | t -1.88, rank 3 of 21, bootstrap p 0.045 | no: t > -2 and rank 3; a near miss, not a clean kill (`jst-gates-1.md`) |
+| W38 `consumption-cycle` (jst-gates-1) | k = 4..23 years, earlier only | not used (earlier only, as step 1 asks) | t -1.88, rank 3 of 21 | no: fails t and rank; the predicted sign shows only for the same-year dose, which a real-time reader could not have had (dose of year t-1: t -0.57) |
 | W39 `bank-capital-premium` (jst-gates-1) | k = 5..44 years, earlier only | not used | t +0.17 (predicted < 0), rank 19 | no: wrong sign |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
@@ -276,13 +276,16 @@ verdict (ranks 27 and 30). One gate does not say when the families disagree; gat
 unmerged; #205 then landed with W37, so W38/W39 stand).** Two more mechanisms and two more
 gates, no replication (neither gate passed): **107 mechanisms, 29 tested by a strategy, 35
 gates, still two kill-only passes (W32, W36), each killed by its replication**. Family bar p <
-0.10 / 107 = 0.00093. W38 is a pooled annual JST gate before 1966; W39 spans both sides of it. Per jst-autocorr-2, the shift family keeps the returns' own and common
-autocorrelation, because the outcome is the real one. It does not keep a shifted dose's
-same-year link to returns. The card therefore added a returns-side AR(1) bootstrap under H0 (a
-pass condition) and phase surrogates with shared phases (shown). W38 (`consumption-cycle`, t
--1.88, rank 3 of 21) is a near miss with the predicted sign. It fails t and rank, and with
-about 60-70 effective years it is a weak kill of the published size. W39 (`bank-capital-
-premium`, t +0.17) fails on its sign.
+0.10 / 107 = 0.00093. W38 is a pooled annual JST gate before 1966; W39 spans both sides of it.
+Per jst-autocorr-2, the shift family keeps the returns' own and common autocorrelation (the
+outcome is the real one) but not a shifted dose's same-year link to returns, so the card added
+a returns-side AR(1) bootstrap under H0 (a pass condition) and phase surrogates with shared
+phases (shown). W38 (`consumption-cycle`) fails: t -1.88 and rank 3 of 21. That t holds only
+for the same-year dose, which a reader at the start of year t+1 could not have had (annual
+consumption is published after the year, and these values are later reconstructions); the
+dose of year t-1 gives t -0.57 (lags 2 and 3: -0.04, -0.10). A full pass would still only
+have been kill-only (p >= 0.048 against 0.00093). W39 (`bank-capital-premium`, t +0.17) fails
+on its sign.
 
 ## Cyclic doses need another placebo family (wide-21, 2026-11-25)
 
@@ -296,3 +299,32 @@ into the rule a family that keeps the phase relation random rather than systemat
 phase-randomised surrogate of the dose (same spectrum, random phases; Theiler et al. 1992
 `[memory]`) or a permutation of whole cycles, and keep t >= 2 as a necessary condition.
 
+
+## Proposed rule, not adopted: a second placebo family for persistent doses (gate-null-2, 2026-11-25)
+
+**PROPOSED, for the lead to adopt or reject; no verdict above changes.** `gate-null-2.md`
+simulated known nulls. For a dose with lag-1 autocorrelation phi >= 0.8, the shifted-calendar
+rank alone is too liberal: P(rank <= 2 of 41) is 5.4-19% against 4.9%, because neighbouring
+shifts are near-copies. At phi 0.8 it is 5.4-7.5%, three of four cells under the 7.3% mis-size
+line; it is 7.5-10.7% at 0.9 and 13-19% at 0.98-0.99. The t >= 2 condition keeps the full
+gate's false passes at 1-3% with GARCH-t or real returns; with a slow premium in returns they
+reach 5.5%. Phase-randomised surrogates stay at 4.0-6.0%.
+
+Proposed: for a dose with lag-1 autocorrelation >= 0.8 at its own step, or with its own cycle,
+the rule also names 40 phase-randomised surrogates of the dose (IAAFT if skewed or mostly
+zeros). For a near-unit-root dose, detrend or end-match the dose first, or use IAAFT. A pass
+then needs t >= 2 and rank <= 2 in both families. The cost is 2-3 points of power at phi
+0.9-0.95 and 5-8 at 0.98-0.99.
+
+**Caveats, from the write-up.**
+
+- The 0.8 threshold rests on one cell (7.5% against the 7.3% line, about 0.3 SE).
+- "Both" was chosen over the surrogate family alone by a margin within noise. The paired power
+  gap at R^2 1%, T 600 is 4.79 points (SE 0.17), 1.2 SE under the card's 5-point line. That
+  averages phi 0.9-0.99, an averaging the card did not fix; with phi 0.8 the gap is 4.4, and at
+  phi 0.98-0.99 alone it is 5-8 points.
+- The card's rule governs, so the recommendation stands, adopted by a margin within noise.
+
+Re-scored on main, no verdict changes: W32 ranks 1 in every family, and the other gates fail
+their own t. Surrogates centre the off-centre nulls of W33 and W35. W36 (wide-22, #202; not
+re-scored here) had phase rank 3 in its own write-up, so it would have failed "both".

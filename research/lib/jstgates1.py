@@ -326,9 +326,10 @@ def phase_panel(
     z: Panel, countries: Sequence[str], g0: int, g1: int, m: int, seed: int
 ) -> list[Panel]:
     """m multivariate phase surrogates (Prichard-Theiler): each country's own Fourier transform on
-    the grid g0..g1 (gaps linearly filled for the transform, ends held), the same random phase
-    ADDED to every country's own phases, so amplitudes and cross-country phase differences
-    stay; the surrogate keeps only the country's real dose years."""
+    the grid g0..g1 (gaps linearly filled for the transform; np.interp holds the edge value
+    before a country's first dose year, e.g. BEL and PRT in W39: diagnostic only), the same
+    random phase ADDED to every country's own phases, so amplitudes and cross-country phase
+    differences stay; the surrogate keeps only the country's real dose years."""
     grid = np.arange(g0, g1 + 1)
     n = len(grid)
     nf = n // 2 + 1
@@ -638,9 +639,10 @@ def main(argv: Sequence[str]) -> None:
             f"- Bootstrap under H0 (B {len(r.boot_t)}): p {r.boot_p:.3f}; {spread(r.boot_t)}.",
             f"- Phase surrogates ({N_SURR}, shown): rank {r.phase_rank} of {N_SURR + 1}; "
             f"{spread(r.phase_t)}.",
-            f"- Dose pooled lag-1 acf {r.acf:+.2f}; PR #207's proposed rule "
-            f"({'applies' if r.acf >= 0.8 else 'does not apply'}: acf >= 0.8 needed) would "
-            f"{'pass' if both else 'fail'} the rank-and-t part in both families.",
+            f"- Dose pooled lag-1 acf {r.acf:+.2f}: PR #207's proposed rule "
+            f"{'applies (acf >= 0.8)' if r.acf >= 0.8 else 'does not apply (acf < 0.8)'}; "
+            f"rank <= 2 and t <= -2 in both the shift and the phase family: "
+            f"{'yes' if both else 'no'}.",
             f"- Halves: {r.halves[0].b:+.4f} (t {r.halves[0].t:+.2f}, {r.halves[0].n} rows) and "
             f"{r.halves[1].b:+.4f} (t {r.halves[1].t:+.2f}, {r.halves[1].n} rows); without "
             f"suspect periods {r.nosus.b:+.4f} (t {r.nosus.t:+.2f}, {r.nosus.n} rows).",

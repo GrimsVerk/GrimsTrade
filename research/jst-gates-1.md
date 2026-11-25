@@ -17,27 +17,33 @@ W38 and 0.024 for W39, far above the family bar of 0.00093), so even a pass woul
 
 | Gate | b per 1 sd of dose | DK t | Shift rank | Bootstrap p (H0) | Phase rank (shown) | Card verdict |
 |---|---:|---:|---:|---:|---:|---|
-| W38 `consumption-cycle`, 14 countries, 355 rows, 1904-1947 | -0.024 | -1.88 | 3 of 21 | 0.045 | 4 of 41 | **fail, not a clean kill** (t > -2, rank 3) |
+| W38 `consumption-cycle`, 14 countries, 355 rows, 1904-1947 | -0.024 | -1.88 | 3 of 21 | 0.045 | 4 of 41 | **fail** (t > -2, rank 3) |
 | W39 `bank-capital-premium`, 16 countries, 1,285 rows, 1925-2020 | +0.002 | +0.17 | 19 of 41 | 0.580 | 28 of 41 | **clean kill** (wrong sign) |
 
-- **W38 is a near miss with the predicted sign, and it does not pass.** Consumption below its
-  own Hamilton trend is followed by a higher equity excess return the next year, about 2.4 log
-  points per standard deviation of the dose. The sign holds:
+- **W38 fails.** With the card's same-year dose, consumption below its own Hamilton trend is
+  followed by a higher equity excess return the next year, about 2.4 log points per standard
+  deviation of the dose. The sign holds:
   - in both halves (1904-1913: -0.030, t -2.33; 1920-1938 plus 1947: -0.027, t -1.78);
   - without the suspect periods (-0.023, t -1.63);
   - in 10 of 14 countries taken one at a time.
 
   It fails two of the card's pass conditions. The t is -1.88, short of -2. The shift rank is 3
-  of 21, outside the top 2: two placebo doses (k = 17 and 23 years) did better. The
-  returns-side bootstrap alone would have passed it (p 0.045).
+  of 21, outside the top 2: two placebo doses (k = 17 and 23 years) did better. The bootstrap
+  p of 0.045 met its own condition, but that null is centred at +0.34 (lenient for a negative
+  t) and does not model the measured lagged feedback (z(t) on y(t-1), t +3.40), so it is no
+  support.
+- **The t -1.88 holds only for a dose no real-time reader had.** The card's "dose known at the
+  end of year t" is wrong for a trader at the start of year t+1: annual consumption is
+  published after the year, and these values are later reconstructions. The dose of year t-1
+  gives t -0.57; lags 2 and 3 give -0.04 and -0.10 (post hoc, after review; the reviewer's
+  re-run, confirmed here, no tries row by the lead's instruction). And a full pass would still
+  only have been kill-only (p >= 0.048 against the family bar 0.00093).
 - **What weakens W38 beyond the verdict (shown cells, not gating):**
-  - Using the dose of year t-1 (the lag a real-time reader would have; Melone uses the second
-    lag) gives t -0.57. Whatever is there sits on the first lag only.
   - The dose follows the previous year's stock return strongly (z(t) on y(t-1): t +3.40), so it
     is partly a lagged wealth effect. The controls cover the trailing 1- and 3-year returns.
   - The alternative dose (log consumption minus its trailing 10-year mean) shows t -2.71 and
-    shift rank 1. It is not the card's dose, and choosing it after seeing both would be a forking
-    path. It is reported, not used.
+    shift rank 1. It is a shown cell, not the card's dose, and not a lead: choosing it after
+    seeing both would be a forking path, and it shares the same-year timing problem.
 - **W39 is dead.** The slope has the wrong sign (+0.002, t +0.17, rank 19 of 41). The halves
   disagree (1925-1970: -0.012, t -1.21; 1971-2020: +0.022, t +0.87), and no variant gets near
   the bar (every shown t is between -0.30 and +0.81). Thin bank capital does not foretell
@@ -70,7 +76,9 @@ the returns' own and common lag-1 autocorrelation. The card used three families.
    to every country's own phases (Prichard-Theiler), so the cross-country co-movement of the
    dose stays.
    - W38: SD 1.49, wider than both other families, true t rank 4 of 41.
-   - W39: SD 0.89, rank 28.
+   - W39: SD 0.89, rank 28. BEL and PRT have no dose before 1930: `np.interp` holds their first
+     value over the earlier grid years for the transform (masked out of the regression). This
+     slightly distorts their surrogate spectra; diagnostic only.
    - Dose lag-1 acf: W38 +0.51, below #207's threshold, so its "both families" rule would not
      apply. W39 +0.88, so it would apply, and both families fail W39.
    - Under #207's rule as written, neither verdict changes.
@@ -82,10 +90,11 @@ tails, so the verdict does not depend on it.
 ## How sure
 
 - **Power.** As the card wrote, W38 has about 60-70 effective years: t about sqrt(R2 x 68). At
-  t -1.88, the data are consistent with an R2 of about 5%. That is inside the published range
-  (AMP 2.4% a quarter, Melone 4-12% a year), so the fail is **not** a strong kill of the
-  published size. It is a fail by the pre-set rule and leaves the idea unsupported on unseen
-  data, not refuted. W39's wrong sign over 88 years is a firmer kill.
+  t -1.88 the same-year dose is consistent with an R2 of about 5%, inside the published range
+  (AMP 2.4% a quarter, Melone 4-12% a year), so on power alone the fail would be a weak kill.
+  But the real-time dose (year t-1) shows t -0.57, and Melone's own real-time evidence uses the
+  second lag: nothing survives in the form a reader could use. W39's wrong sign over 88 years
+  is a firmer kill.
 - **Rows lost to missing controls.** `eq_dp` is missing for NLD 1919-1937 and CHE 1926-1946,
   so those rows drop by the card's rule (NLD keeps 10 rows in W38, CHE 17). The no-controls
   cell uses the same rows.
