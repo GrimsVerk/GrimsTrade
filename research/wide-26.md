@@ -152,3 +152,20 @@ and enough episodes (H2 and H14 share its channel). **Gated: H1 as W43 `drought-
 takes W41/R41 and W42). The replication **R43** is fixed in the same card: the same rule on dose
 months 1931-06 .. 1959-09 (the 1930s and 1950s droughts, no overlap with the gate's outcome
 months). No second gate (W44 not used).
+
+## Step 3. W43 `drought-food-margin` gate
+
+The rule, data, placebo families, gate, the replication R43 (run only after a pass), shown
+cells, power and guess are in [`cards/wide-26.md`](cards/wide-26.md), pushed before any number
+(commit 0bf2770, 23:20 UTC). Code: `research/lib/wide26_events.py` (pure functions, tested
+offline in `tests/test_wide26.py`) and `research/lib/wide26.py` (load and run). Results:
+`research/results/drought-food-margin.md`.
+
+### Dry run (counts only, 2026-11-25 23:33 UTC)
+
+Corn Belt PDSI (nClimDiv 361): 1,570 months, 1895-01 .. 2025-10, no gap. **Gate rows 786 dose
+months (1960-01 .. 2025-06**; 2025-07 drops because its outcome would end after 2025-10); R43
+rows 340. **Dose lag-1 autocorrelation 0.940**: above 0.8, so gate-null-2's "both families"
+rule applies, as the card expected (pass needs rank <= 2 of 41 in the shifted calendars and in
+the phase surrogates). Gate-row dose SD 2.48 PDSI units (the card's power guess used 2.5); 77
+dose months at PDSI <= -2 and 27 at PDSI <= -4.
