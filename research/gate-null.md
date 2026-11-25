@@ -252,3 +252,19 @@ into the rule a family that keeps the phase relation random rather than systemat
 phase-randomised surrogate of the dose (same spectrum, random phases; Theiler et al. 1992
 `[memory]`) or a permutation of whole cycles, and keep t >= 2 as a necessary condition.
 
+
+## Proposed rule, not adopted: a second placebo family for persistent doses (gate-null-2, 2026-11-25)
+
+**PROPOSED, for the lead to adopt or reject; no verdict above changes.** `gate-null-2.md`
+simulated known nulls. For a dose with lag-1 autocorrelation phi >= 0.8, the shifted-calendar
+rank alone is too liberal: P(rank <= 2 of 41) is 7.5-19% against 4.9%, because neighbouring
+shifts are near-copies. The t >= 2 condition keeps the full gate's false passes at 1-3%.
+Phase-randomised surrogates stay at 4.0-6.0%.
+
+Proposed: for a dose with lag-1 autocorrelation >= 0.8 at its own step, or with its own cycle,
+the rule also names 40 phase-randomised surrogates of the dose (IAAFT if skewed or mostly
+zeros). A pass then needs t >= 2 and rank <= 2 in both families. The cost is 2-3 points of power
+at phi 0.9-0.95 and 5-8 at 0.98-0.99.
+
+Re-scored on main, no verdict changes: W32 ranks 1 in every family, and the other gates fail
+their own t. Surrogates centre the off-centre nulls of W33 and W35.
