@@ -2,7 +2,7 @@
 
 The live rule is `tsmom12`: hold an asset only while its price is above where it was a year ago,
 otherwise cash. "Sharpe" below means return per unit of risk (higher is better). Agents now merge
-and run this repo; 8 pull requests are open (listed under "Still open").
+and run this repo; 7 pull requests are open (listed under "Still open").
 
 ## What we know now
 
@@ -15,10 +15,12 @@ and run this repo; 8 pull requests are open (listed under "Still open").
   industry-only falls are added, 37 under strict grouping). In 13 other developed markets since
   1966: 17 of 18, not independent of the US falls (#90). It is cheaper than simply holding less
   in direction in every era and market, but statistically shown only for 1927-1961 and the
-  developed-market price indices; since 2002 not shown (p 0.19). On the S&P 500 since 1986 it
-  was far cheaper insurance than buying puts (#160). Scored as a crash warning, the exit has
-  real skill on US stocks since 1927 (hit rate 0.49, false-alarm rate 0.21; Peirce score +0.28
-  against -0.01 for the same warnings at random dates) and none on gold, bonds or coins (#182).
+  developed-market price indices; since 2002 not shown (p 0.19). Out of sample on annual data
+  for 1870-1965 it holds, narrowly on timing and in slow falls only (#186). On the S&P 500 since
+  1986 it was far cheaper insurance than buying puts (#160). Scored as a crash warning, the exit
+  has real skill on US stocks since 1927 (hit rate 0.49, false-alarm rate 0.21; Peirce score
+  +0.28 against -0.01 for the same warnings at random dates) and none on gold, bonds or coins
+  (#182).
 - **But it has a price.** It buys back late, so the year after the low hands most of the gain
   back, and it trails holding in calm markets too, by about 2 points a year. Since 2002 the fall
   gain and the late buy-back about cancelled, so the calm drag is most of the cost: it left it
@@ -163,6 +165,21 @@ and run this repo; 8 pull requests are open (listed under "Still open").
 - An Omori-law aftershock clock for re-entry (#187): **not run**, killed before any number as
   a tested record in other words: its fitted large-move rate is a volatility measure, so the
   rule is a vol-calm re-entry (`bear-legs` #103, `arm3-12`, `vol-calm`).
+- Trend's crash insurance on annual data the project had never used (Jorda-Schularick-Taylor:
+  US 1873-1926, 15 countries 1871-1965; #186): **holds, narrowly on timing.** The annual rule
+  lost less than holding in 9 of 9 effective falls of 25% or more (about 7 independent world
+  events): all 31 multi-year falls and 1 of 7 one-year falls; the US contributes one fall, a
+  tie. A fixed 62% exposure also scores 9 of 9, so the timing evidence is the share of each fall
+  avoided, 0.73 against 0.51 fixed and 0.47 at random dates (p 0.020, 2 of 93 offsets), and the
+  premium, 1.17 against 2.23 for holding less. Caveat: lag-1 autocorrelation of 0.19 in the
+  early sample (possible index smoothing) would bias the share avoided up.
+- An anytime-valid sequential (e-value) test for the forward registry (#184, simulation): it
+  **does not change power-map-1's answer**; its median stop is about the fixed test's 80%-power
+  horizon, and plausible edges stay out of reach within 100 years. On the store's own serial
+  dependence the e-processes over-reject. Side finding: the registry's read-once test rejects
+  4.2-6.6% at a nominal 2.5% against `tsmom12` (8-9% against zero), so its p-values are
+  optimistic for trend-like books. Recommendation: fix the verdict's standard error for
+  dependence (lane `forward-se-1` running); do not adopt an e-process as the verdict.
 - The `tsmom12` exit as a crash warning (#182, descriptive): **a real but narrow warning**,
   worth about nothing to a plain holder on the US market and pooled sets (SPY/QQQ +0.17 / +0.20
   of a perfect warning, -0.05 / +0.05 in money); see "What we know now".
@@ -186,9 +203,8 @@ z -1.67).
 - Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
   environment (#149), the daily run reconciling its own record (#153), the scoreboard's
   live-start-delay note (#155), daily-run robustness tests for misbehaving sources (#161).
-- Tonight's lanes still open: an anytime-valid sequential test for the forward registry (#184),
-  trend's crash insurance on 1870-1965 annual data (#186), the night lead's handoff (#185), this
-  summary (#183).
+- Tonight's lanes still open: gates for two parked candidates, drought-inflation and
+  margin-susceptibles (#188), the night lead's handoff (#185), this summary (#183).
 - Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168, #178); the halving
   window's one forward score (#137). `coin-drift-run` is closed: not confirmed (#157).
 - Live: 11 books trade fake money daily; `own_vol_70` joins on its first run (#135). The record
@@ -216,8 +232,8 @@ None of the rows is a proven edge.
 - The bar: #92, #100, #108, #111 (`research/register/BAR.md`); what could reach it: #150, #170.
 - Tonight: `research/xs-century-1.md`, `vm-style-1.md`, `vix-call-1.md`, `hedge-books-1.md`,
   `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `rev-costloss-1.md`,
-  `tick-tier-1.md`, `omori-1.md`, `breadth-anatomy-1.md`, `wide-17.md` to `wide-20.md`,
-  `survey-7b.md`, `data-long-4.md`.
+  `tick-tier-1.md`, `omori-1.md`, `insure-1870-1.md`, `evalue-forward-1.md`,
+  `breadth-anatomy-1.md`, `wide-17.md` to `wide-20.md`, `survey-7b.md`, `data-long-4.md`.
 - Shorts: #83, #89. Coins: #69, #82. Euro books: #59, #62, #63, #68, #73, #77, #80, #85.
 - Corrections after the independent review (#119): [`errata-2.md`](errata-2.md).
 - Earlier runs (machine learning, macro, carry, papers): [`README.md`](README.md) and this

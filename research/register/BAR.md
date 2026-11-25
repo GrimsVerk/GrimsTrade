@@ -9,7 +9,7 @@ re-run is not added, changed live code is a new series (the old one stays as its
 record) and the estimate uses one series per live strategy; robustness-only curves are
 not stored by default (`research/register/README.md`, register-7).
 
-Rows through 2026-11-25 00:50. Remote branches with a `research/tries.md`: 90.
+Rows through 2026-11-25 00:50. Remote branches with a `research/tries.md`: 92.
 
 ## Counts
 
