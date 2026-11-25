@@ -53,8 +53,11 @@ handoff (#185) is itself unmerged: read it from branch `lead-next-1125`.
 **Open PRs at handoff (all unmerged by the CoS's no-merge decision; merge in the daytime once
 the merge-commit offset is fixed):** #185 (this handoff), #149, #153, #155, #161 (held for the
 daily run), #192 jst-autocorr-1 (review result in its PR or the night log), and the last lanes'
-PRs: #194 wide-21 (W34 solar-max-recession fails; NOT yet reviewed: usage limit) and
-panic-words-1 if it finished (check `gh pr list`; each needs a fresh review first unless the
+PRs: #194 wide-21 (W34 solar-max-recession fails) and #193 panic-words-1 (W34 panic-words
+fails). Both used gate id W34 and both count 102/29/29: whichever merges second becomes W35
+and the count 103/29/30 (bar 0.10/103). A review of both was started at 02:52 UTC; its verdict
+is in the night log if it finished. #193's raw text cache (~30 GB, CC-BY newspaper text) sits
+in the local data cache `panic-words-1/` and can be deleted; monthly counts are committed (check `gh pr list`; each needs a fresh review first unless the
 night log says "review: MERGE"). #192 review: MERGE (no required fixes).
 
 **SUMMARY correction needed after #192 merges:** #186's "holds, narrowly on timing" must say
