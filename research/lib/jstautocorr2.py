@@ -154,13 +154,15 @@ class Piece:
     raw: np.ndarray  # demeaned log total return
 
 
-def pieces(segs: Sequence[ins.Seg]) -> list[Piece]:
-    """Each segment split into maximal runs of one source period; demeaned per run."""
+def pieces(segs: Sequence[ins.Seg], sub: dict[int, float] | None = None) -> list[Piece]:
+    """Each segment split into maximal runs of one source period; demeaned per run. With `sub`,
+    the year's value in `sub` (e.g. the cross-country mean) is subtracted first."""
     out = []
     for j, s in enumerate(segs):
         ys = np.array(s.years[1:])
-        xb = np.log1p(s.r) - np.log1p(s.b)
-        xr = np.log1p(s.r)
+        w = np.array([sub[int(y)] for y in ys]) if sub is not None else np.zeros(len(ys))
+        xb = np.log1p(s.r) - np.log1p(s.b) - w
+        xr = np.log1p(s.r) - w
         srcs = [source(s.iso, int(y)) for y in ys]
         start = 0
         for i in range(1, len(ys) + 1):
@@ -375,15 +377,20 @@ def pair_label(pr: Pairs, f: Callable[[str, int], str]) -> np.ndarray:
     return np.where(a == b, a, "mixed")
 
 
-def world_acf(segs: Sequence[ins.Seg], y0: int, y1: int) -> tuple[float, int]:
-    """Lag-1 acf of the equal-weighted cross-country mean log return over bills, by year."""
+def world_mean(segs: Sequence[ins.Seg]) -> dict[int, float]:
+    """Equal-weighted cross-country mean log return over bills, by year."""
     by: dict[int, list[float]] = {}
     for s in segs:
         for y, r, b in zip(s.years[1:], s.r, s.b, strict=True):
-            if y0 <= y <= y1:
-                by.setdefault(y, []).append(math.log1p(r) - math.log1p(b))
-    ys = sorted(by)
-    x = np.array([np.mean(by[y]) for y in ys])
+            by.setdefault(y, []).append(math.log1p(r) - math.log1p(b))
+    return {y: float(np.mean(v)) for y, v in by.items()}
+
+
+def world_acf(segs: Sequence[ins.Seg], y0: int, y1: int) -> tuple[float, int]:
+    """Lag-1 acf of the equal-weighted cross-country mean log return over bills, by year."""
+    wm = world_mean(segs)
+    ys = [y for y in sorted(wm) if y0 <= y <= y1]
+    x = np.array([wm[y] for y in ys])
     ok = np.array([ys[i] == ys[i - 1] + 1 for i in range(1, len(ys))])
     u, v = (x[:-1] - x.mean())[ok], (x[1:] - x.mean())[ok]
     return corr(u, v), len(u)
@@ -410,8 +417,8 @@ def uk_rows(path: Path) -> list[str]:
     alt = jac.norway_annual(mon)  # Dec-Dec and annual-average changes of a monthly index
     jj = {}
     for y in {y for y, _ in mon}:
-        if (y - 1, 1) in mon and (y, 1) in mon:
-            jj[y] = mon[(y, 1)] / mon[(y - 1, 1)] - 1
+        if (y, 1) in mon and (y + 1, 1) in mon:  # January y to January y+1
+            jj[y] = mon[(y + 1, 1)] / mon[(y, 1)] - 1
     alts = {"Dec-Dec": alt["Dec-Dec"], "Jan-Jan": jj, "annual average": alt["annual average"]}
     out = []
     for y0, y1, lab in [(1871, 1907, "Grossman"), (1908, 1963, "Barclays top-30"),
@@ -482,6 +489,20 @@ def main(argv: Sequence[str]) -> None:
     src_rows, tally = per_source_rows(full, dkeys, hyper)
     w1, wn1 = world_acf(segs, 1872, 1965)
     w2, wn2 = world_acf(full, 1966, 2020)
+    weras = {
+        lab: world_acf(segs, a, b)
+        for lab, (a, b) in {
+            "1872-1913": (1872, 1913),
+            "1919-1938": (1919, 1938),
+            "1946-1965": (1946, 1965),
+        }.items()
+    }
+    # common vs idiosyncratic: subtract the year's cross-country mean before pairing
+    ipr = pairs(pieces(segs, world_mean(segs)))
+    ia, ina = acf(ipr)
+    ia_u, ina_u = acf(ipr, ~f_dis.on(ipr))
+    ia_t, ina_t = acf(ipr, f_thin.on(ipr))
+    ia_r, ina_r = acf(ipr, ~f_all.on(ipr))
 
     L = [
         "# jst-autocorr-2: where does the autocorrelation of early JST annual equity returns "
@@ -496,7 +517,12 @@ def main(argv: Sequence[str]) -> None:
         f"- Lag-1 acf over bills A0 {a0:+.3f} ({n0} pairs); lag-2 {a2_0:+.3f} ({n2_0} pairs). "
         f"1966-2020 on the same pairing: {a_late:+.3f} ({n_late} pairs).",
         f"- Equal-weighted cross-country mean return, lag-1 acf: 1872-1965 {w1:+.2f} ({wn1} "
-        f"pairs), 1966-2020 {w2:+.2f} ({wn2} pairs).\n",
+        f"pairs), 1966-2020 {w2:+.2f} ({wn2} pairs); by era (description): "
+        + ", ".join(f"{k} {a:+.2f} ({n})" for k, (a, n) in weras.items())
+        + ".",
+        "- Idiosyncratic part (each country's return minus the year's cross-country mean, same "
+        f"pairing; description, not on the card): all {ia:+.3f} ({ina} pairs), undisrupted "
+        f"{ia_u:+.3f} ({ina_u}), thin {ia_t:+.3f} ({ina_t}), no flag {ia_r:+.3f} ({ina_r}).\n",
         "### Flag tests (card rule)\n",
         f"Permutation: {PERMS:,} draws, seed {SEED}; source-level flags shuffled across the "
         f"{len(ps)} source runs, year-level flags circularly shifted within each segment. "
