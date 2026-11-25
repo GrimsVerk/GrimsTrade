@@ -30,35 +30,37 @@ branches; the leads' night log is on branch `summary-1` (closed PR #28, branch k
 - Owner decisions brief (`research/owner-decisions.md`): every item answered by its default as
   an agent call (section "Answers"); no owner question left.
 
-## Night lead 2026-11-24 (in flight; rewritten at handoff)
+## Night lead 2026-11-24/25 (handoff, lead 2; window 23:20-04:20 UTC)
 
-Merged tonight, each after a fresh review agent (fixes applied where it asked): #136, #133, #138,
-#137, #134, #135, #140, #139, #143, #141, #147, #142, #148, #145, #144, #150, #154, #156, #152,
-#157. Verdicts are in `research/SUMMARY.md` (night 4, #156).
+Lead 1 (19:20-22:00 UTC) merged 26 PRs (#133-#165); lead 2 (23:20 UTC on) merged #166-#182 and
+more (list below), each after a fresh review agent, review fixes applied before merging, head
+branch re-pushed after each merge. Verdicts: `research/SUMMARY.md` (night 5, #183).
+
+Lead 2 merged: #166 register-8, #167 vix-call-1, #168 e4-anatomy-1, #169 wide-18, #170
+xs-century-1, #171 wide-17, #172 ownvol-anatomy-1, #173 wide-19, #174 data-long-4, #175
+hedge-books-1, #176 wide-20, #177 survey-7b, #178 reentry-reconcile-1, #179 vm-style-1, #180
+breadth-anatomy-1, #182 rev-costloss-1. LATE (see end of night log in this section).
 
 **Held until after the 2026-11-25 daily run** (first run on tonight's new main; check it passed,
-then merge in this order, each with `gh pr merge --merge`, then re-push the head branch, see
-below): #149 gymreplay-1 (one simulator loop; review MERGE, CI green on the branch), #153
-reconcile-daily-1 (daily live==gym check; review MERGE + try/finally fix applied), #155
-scoreboard-note-1 (timing note; review wording fix applied), #161 runner-faults-1 (fault tests;
-a half-written row now refuses the run with exit 2 naming the file and line instead of crashing;
-review MERGE: the stricter check passes on the whole real record). Reviewers merged all four
-locally: no conflicts, 892 tests pass, dry run exit 0 with 0 reconcile problems. #161's two open
-findings (Kraken answering from a later day blocks the Coinbase fallback; duplicate same-day bars
-in one answer, last wins) are strict xfails: next engineering lane.
+then merge in this order, each with `gh pr merge --merge`, then re-push the head branch): #149
+gymreplay-1, #153 reconcile-daily-1, #155 scoreboard-note-1, #161 runner-faults-1. Reviewers
+merged all four locally: no conflicts, dry run exit 0 with 0 reconcile problems. Main moved a lot
+since (research files only, nothing in `src/`): expect clean merges, but re-run the checks.
+#161's two open findings are strict xfails (next engineering lane, queue item 2).
 
-Also merged after ~20:45: #154, #156, #152, #157, #159, #160, #158 (register-7: `--ref`, live
-series keyed by code version; the next register regeneration must run `live` then `export` and
-commit `research/register/returns/live.csv.gz`). Running at ~21:30 UTC: `gap-2002-1`
-(per-series gap to holding since 2002; corrects SUMMARY's "But it has a price" line).
+**Repo setting:** GitHub auto-deletes merged head branches (`delete_branch_on_merge`); until the
+owner turns it off, re-push each lane branch right after merging it
+(`git push origin <sha>:refs/heads/<lane>`). AGENTS.md's "`gh pr merge --rebase --delete-branch`"
+line conflicts with that (owner/CoS to settle).
 
-**Repo setting:** GitHub auto-deletes merged head branches (`delete_branch_on_merge`), against
-the rule above; the owner was asked to turn it off. Until then, re-push each lane branch right
-after merging it (`git push origin refs/heads/<lane>:refs/heads/<lane>`). AGENTS.md's
-"`gh pr merge --rebase --delete-branch`" line conflicts with that rule too (owner/CoS to settle).
+**Privacy (CoS):** commit with `TZ=UTC`; all dates in files and PR text in UTC; neutral framing.
 
-**Privacy (CoS):** commit with `TZ=UTC`; neutral framing (no country of residence, national tax
-rules, or banks/brokers as "ours"); a history rewrite follows after the night run.
+**Notes for the owner/CoS (not acted on):**
+- `research/lib/long_x_fetch._get` (on main, older) sends a browser-like user agent to Yahoo;
+  review of #174 flagged it as at odds with the no-evasion rule. Decide whether to change it.
+- data-long-4 cached the JST Macrohistory R6 file (CC BY-NC-SA) from a plain script fetch made
+  before the site began to 403 scripts; local cache only, nothing committed; the loader now
+  treats it as a hand download (`--jst <path>`).
 
 ## Lane queue (each from `main`)
 
@@ -72,12 +74,20 @@ rules, or banks/brokers as "ours"); a history rewrite follows after the night ru
    fall back to Coinbase; duplicate same-day bars in one answer must be refused or logged), and
    the smaller notes in #161's PR body (rate gap with no problem line; no overall fetch time cap).
 3. Optional: `reconcile.py` reuses `gym.cash_rate` / `gym.interest` (review of #153).
-4. Research, DEEPER: `e4` is the only open lead (pooled-1 +0.063 on 41 equity markets; pooled-2
-   +0.010 on bonds+FX; combined +0.045, z 1.43). Do not retune it. If tested again, pre-register
-   on new independent data only.
-5. Research, WIDER: fast-crash cover. insure-3: puts beat trend in fast crashes; insure-4 (running
-   at ~21:45 UTC, check its PR) tests puts only while trend is in. Next: VIX-call overlays (VXTH
-   was the only option index near trend's cost) on keyless CBOE data, statistics only (CBOE
-   terms).
-6. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
+4. Research, DEEPER: `e4` stays the only open lead (+0.063 on 41 stock markets, z 1.55). Its lead
+   is explained (#168, #178): a graded buy-back after the low plus earlier partial exits; per fall
+   its buy-back leaks like the old re-entry rules. Do not retune it; test again only on new
+   independent data, pre-registered. The "legs agree" buy-back (+0.022/+0.028 in #178) is a
+   diagnostic, not a lead, unless carded on independent data.
+5. Research: fast-crash cover is closed for now (puts #160, puts-while-in #165, VIX calls #167:
+   all a net cost). The century long-short style book (#170) is the closest thing to the bar
+   (gross z 7.39, net 2.75; variance management #179 does not help). With data-long-4's real
+   exchange rates (#174), a pre-registered rerun with the published currency-value definition
+   would be a new counted try, not a fix: only if someone writes the card first and accepts it
+   is close to retesting a failed book.
+6. Survey-7b's other lead: tick-size split of trend (#181 tick-tier-1: by asset class the
+   deciding statistic is inconclusive; against holding the paper's pattern is clear).
+7. Evaluation: #184 evalue-forward-1 (anytime-valid sequential test for the forward registry):
+   if it recommends adoption, an engineering lane implements it in `research/forward/`.
+8. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
    manual browser download if wanted (data-long-3, insure-3).
