@@ -1,6 +1,6 @@
 # reentry-reconcile-1: why does `e4` gain after the low when faster re-entry rules did not?
 
-Lane `reentry-reconcile-1`, 2026-11-25 (night). Branch `reentry-reconcile-1`, PR #178.
+Lane `reentry-reconcile-1`, 2026-11-25. Branch `reentry-reconcile-1`, PR #178.
 Research only: fake money, files already in the data cache (read-only), no change to the gym,
 the daily runner or the live strategies. Train data only: pooled-1's loaders stop at
 2025-10-31. A **descriptive reconciliation** of finished tries (e4-anatomy-1 #168, pooled-1
@@ -12,7 +12,8 @@ any number, not amended): `cards/reentry-reconcile-1.md`. Tables:
 
 ## The answer on one screen
 
-**Both hold, because `e4` does not buy back better. It also sells sooner.** Split `e4`'s
+**Both hold. Per fall, `e4`'s buy-back leaks like the old rules; it also sells sooner.**
+In Sharpe, though, its graded, smaller buy-back carries most of its lead. Split `e4`'s
 position gap to `tsmom12` exactly into a **buy-back part** (what it holds while `tsmom12` is
 out) and a **trim part** (what it holds less while `tsmom12` is in):
 
@@ -20,7 +21,8 @@ out) and a **trim part** (what it holds less while `tsmom12` is in):
   markets it gains +6.3 log points in the year after the low and gives back 4.4 inside the
   fall. It keeps 31% of its rebound gain; `or3-12` keeps 23% and `arm3-12` 26%. The old
   finding holds for `e4`'s legs too: early rallies look like the bottom. In e4-anatomy's
-  Sharpe split the buy-back's rebound term is +0.134, exactly `or3-12`'s.
+  Sharpe split the buy-back's rebound term is the same as `or3-12`'s (0.1344 against 0.1340,
+  before costs).
 - **The trim part is what the re-entry rules lack.** The 1/3/6-month legs also cut the
   position before `tsmom12` exits. That gains +5.6 points per fall and pays for the bear-market
   rallies the buy-back buys. In slow bears the trims give +0.069 Sharpe and the buy-back
@@ -32,7 +34,7 @@ out) and a **trim part** (what it holds less while `tsmom12` is in):
   `or3-12` and `arm3-12` scaled to the same mean buy-back size by +0.022 and +0.028 Sharpe
   (paired SE 0.010 and 0.014). The reason: a buy-back on one leg is a quarter slot, and it
   grows only as more legs agree. Per fall this still keeps only 31% of the rebound gain,
-  against 25% for the size-matched `or3-12`.
+  against 25% for the size-matched `or3-12`. From a diagnostic comparison (one of 10 sleeves, one sample): not a lead without a fresh card on independent data (the `arm3-12` gap is 2.01 SE, at the edge).
 
 The card's explanations, judged by its rules:
 
@@ -42,14 +44,17 @@ The card's explanations, judged by its rules:
 | (b) sample | **rejected** | On the 41 markets the 3-month rules repeat the US result: dB +8.4 / dI -6.5 (`or3-12`) against fast-reentry's US +8.4 / -6.9; K 0.23 and 0.26. |
 | (c) definitions / metric | **does not carry** | Same zigzag and rebound window by construction. Per fall `e4` keeps 1.53 times its rebound gain (dN +5.4 against dB +3.5): that is its trims, not a different measure. |
 | (d) exits | **carries** | Trim terms in falls +0.098 against the buy-back's slow-bear cost -0.065. |
-| (d) signals | **carry, small** | `e4-re` beats the size-matched sleeves by +0.022 / +0.028 (beyond 2 paired SE). Rebound gain per unit of slow-bear cost: 2.05 against 1.81 / 1.89. |
+| (d) signals | **carry, small** | `e4-re` beats the size-matched sleeves by +0.022 / +0.028 (paired SE 0.010 / 0.014). Rebound gain per unit of slow-bear cost: 2.05 against 1.81 / 1.89. From a diagnostic comparison (one of 10 sleeves, one sample): not a lead without a fresh card on independent data (the `arm3-12` gap is 2.01 SE, at the edge). |
 
 **So the summary line "faster buy-back rules did not fix this: early rallies look just like
-the bottom" stays true, `e4` included.** `e4` does not fix the late buy-back. It offsets the
-cost of an earlier, leaky buy-back with earlier, partial exits. In Sharpe terms neither half
-does much alone (`e4-re` +0.045, `e4-trim` +0.014). Together they make `e4`'s +0.063, still
-not shown (z 1.55, pooled-1). The lead over the 3-month rules is +0.044 / +0.048 with paired SE
-0.025 / 0.026: within noise.
+the bottom" stays true per fall, `e4` included.** Per fall, in log points, `e4` does not fix
+the late buy-back: it offsets the cost of an earlier, leaky buy-back with earlier, partial
+exits. In Sharpe the weights are the other way round. `e4-re` alone (no trims) gives +0.045,
+about 70% of `e4`'s +0.063. `e4-trim` alone gives +0.014. `e4-re` beats `or3-12` by +0.027
+(paired SE 0.016) and `arm3-12` by +0.030 (SE 0.016); adding the trims on top adds +0.018
+(SE 0.021). So in Sharpe the graded, smaller buy-back carries most of `e4`'s D, and the trims
+matter less. `e4`'s D is still not shown (z 1.55, pooled-1). Its lead over the 3-month rules
+is +0.044 / +0.048 with paired SE 0.025 / 0.026: within noise.
 
 ## Numbers behind it
 
@@ -98,9 +103,10 @@ small (+0.022), because fast falls are 1% of the time.
   52-week block bootstrap (2,000 draws, seed 0), a description.
 - Regimes are labelled with hindsight (the zigzag needs the later recovery). A rule cannot use
   them.
-- The "signals" edge (+0.022 / +0.028) passes the card's rule and is beyond 2 paired SE. It is
-  still small, from one sample whose markets fall together, and it does not change K much
-  (0.31 against 0.25).
+- The "signals" edge (+0.022 / +0.028, paired SE 0.010 / 0.014) passes the card's rule. It is
+  from a diagnostic comparison (one of 10 sleeves, one sample whose markets fall together): not
+  a lead without a fresh card on independent data. The `arm3-12` gap is 2.01 SE, at the edge.
+  It does not change K much (0.31 against 0.25).
 - The diagnostic sleeves (`e4-re`, `e4-trim`, `or3-12 x w`, `arm3-12 x w`, w in 0.25, 0.5,
   0.75, w*) are mechanism checks, not candidates. A later card that wants any of them as a
   rule must count these 10 configurations (note row in `tries.md`).
@@ -110,8 +116,9 @@ small (+0.022), because fast falls are 1% of the time.
 - "No real conflict, K about equal": **wrong** by the card's letter. `e4` keeps far more per
   fall (K 1.53). The reason is its trims; its buy-back alone is like the old rules (0.31).
 - "The lead over the 3-month rules is mostly the trims and lower volatility, not a better
-  buy-back signal": **mostly right**. The trims carry most of it, but a smaller graded-buy-back
-  edge passes the card's rule too.
+  buy-back signal": **right per fall, in log points; wrong in Sharpe.** Per fall the trims
+  carry most of it. In Sharpe the buy-back part carries more (`e4-re` +0.045 of +0.063), and a
+  graded-buy-back edge passes the card's rule (diagnostic, see "How sure").
 - "(a) at most partly": **rejected**, weaker than expected. "(b) rejected": **right**.
 
 ## For the live rule and the summary
@@ -119,10 +126,11 @@ small (+0.022), because fast falls are 1% of the time.
 Nothing changes. `tsmom12` stays the rule. `e4` stays "unsettled, leaning positive". The
 re-entry line stays closed: this lane re-opens nothing. The held-out year is unspent.
 
-A suggested reading for `SUMMARY.md` (the lead decides): "`e4` does not fix the late buy-back
-either: its buy-back part gives back about 70% of its rebound gain inside falls, like the
-3-month rules. Its lead comes from also selling sooner (partial exits while `tsmom12` is still
-in), which pays for the bear-market rallies it buys (#178)."
+A suggested reading for `SUMMARY.md` (the lead decides): "Per fall, in log points, `e4` does
+not fix the late buy-back either: its buy-back part gives back about 70% of its rebound gain
+inside falls, like the 3-month rules, and selling sooner (partial exits while `tsmom12` is
+still in) pays for the bear-market rallies it buys. In Sharpe its graded, smaller buy-back
+matters about as much (#178)."
 
 ## Logged
 
