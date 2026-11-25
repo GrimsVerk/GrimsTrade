@@ -2,6 +2,17 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-25 (lane `reconcile-reuse-1`, review of #153): the daily reconcile takes each
+  day's cash rate and its interest from `gym.cash_rate` and `gym.interest` instead of its own
+  copies, so a deliberate change to the rate lookup (carry forward, floor at 0) or the day count
+  (rate / 365) cannot make every run report problems. Which days accrue (from the first
+  decision's day, the marked day not yet) and the rest of the rebuild (fills, distributions,
+  costs) stay re-derived in `reconcile.py`, so it still checks the gym's event loop. The cost is
+  that a bug in those two small functions would no longer be seen by reconcile; both are
+  tested in `test_cash_interest.py` (`cash_rate` directly, `interest` through the replay).
+  No behaviour change: `tests/test_reconcile_pin.py` pins the rebuilt state to the bit, taken
+  before the change, and a daily dry run on a copy of `paper-trail` still reports 0 problems.
+
 - 2026-11-25 (lane `forward-se-1`; fixed before any live verdict: the forward registry holds no
   frozen line): the forward registry's `mean` and `sharpe` verdicts use a dependence-robust
   standard error. Rule (`forward.hac_t`, `forward.lag`, recorded as `"se": "bartlett-1y"` on each
@@ -49,7 +60,8 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   without a standing check a later runner or gym bug would corrupt the record silently. It
   re-derives the rules (cost table, interest, distributions) rather than calling
   `gym.simulate`, so a rule change in the gym needs the same change here, or every run reports
-  it. Cost on the record of 2026-11-24: about 0.05 s.
+  it (since `reconcile-reuse-1` the day's cash rate and its interest are the gym's own
+  functions). Cost on the record of 2026-11-24: about 0.05 s.
 
 - 2026-11-24 (lane `daily-nodev-1`): the daily job installs only the runtime dependencies
   (`uv sync --locked --no-dev`, and `uv run --no-dev` for both run steps, since a plain `uv run`
