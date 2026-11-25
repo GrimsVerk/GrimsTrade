@@ -45,7 +45,7 @@ returns, cash 0, where "perfect" is out exactly in event weeks. Holder's C/L: C 
 return in weeks with no event, L = C minus the mean in event weeks.)
 
 - **Skill: yes, on stocks; none on gold, bonds and coins.** On every US stock set and era the
-  Peirce score is 0.13-0.37 and above all random-date shifts' 95th percentile (p 0.000-0.015).
+  Peirce score is 0.13-0.34 and above all random-date shifts' 95th percentile (p 0.000-0.015).
   That is the warning form of insure-1's "0.50 of each fall against 0.27 at random dates". On
   GLD, TLT, BTC and ETH the score is about 0 (p 0.24-0.57): as a 10% (or 20%, coins) crash
   warning the exit is no better than its own warnings at random dates. Pooled, the six reach
@@ -55,14 +55,16 @@ return in weeks with no event, L = C minus the mean in event weeks.)
   0.05 V is -0.90 (cheap protection: always protect, because the exit misses half the falls),
   at 0.50 V is -0.70 (dear protection: never protect, because about 7 in 10 warnings are false). The
   card's expectation ("V > 0 from a few percent up to about 0.5") was too wide.
-- **For a holder it is worth about nothing, in both framings.** The holder's own ratio (0.26-0.29
-  on US stocks) falls inside the band, near its top: V +0.06 (market), +0.01 (11 series). The
+- **For a holder it is worth about nothing, in both framings.** The holder's own ratio (0.26-0.32
+  on US stocks: 0.26-0.30 on the French sets and eras, SPY 0.26, QQQ 0.32) falls inside the
+  band, near its top: V +0.06 (market), +0.01 (11 series). The
   money version, which weights each week by its actual return, is -0.01 and -0.04. Both say
   what gap-2002-1 measured: the fall gain about cancels the rebound lag plus the calm drag.
   By era the two agree in sign before 2002 (1927-61 +0.15 / +0.14, 1962-2001 -0.10 / -0.14);
   since 2002 the binary score is slightly positive (+0.08) while money is -0.11: the
   binary table counts every missed or caught 10% fall the same, while money also charges the
-  size of the rebound missed after the low.
+  size of the rebound missed after the low. SPY and QQQ show the same: V at the holder's ratio
+  +0.17 and +0.20, money V -0.05 and +0.05 (the card's "binary score flatters" reading).
 - **Bigger falls are forecast better, but the holder's ratio leaves the band.** For a 20% fall
   within 13 weeks the US market's Peirce score rises to 0.37 (hit rate 0.60), but the band
   shrinks to C/L 0.025-0.105 while a holder's ratio for that event is 0.15: V there -0.29, money
@@ -73,9 +75,10 @@ return in weeks with no event, L = C minus the mean in event weeks.)
   themselves (weeks out with no further 10% drop to come). The rule is out in 68% of fall weeks,
   58% of rebound weeks and 8% of calm weeks. The rebound share is the warning form of
   insure-2's "handed back in the rebound"; the calm share is the calm drag. Misses: 49% in calm
-  markets (10% drops without a 25% fall),, 44% inside 25% falls.
+  markets (10% drops without a 25% fall), 44% inside 25% falls.
 - **Fast falls are the blind spot, as known.** Hit rate on event weeks inside US market falls
-  of 92 days or less 0.35 (only 26 weeks: 1987, 2020 and a few more), 93-365 days 0.61, over a
+  of 92 days or less 0.35 (only 26 event weeks, overlapping
+  Fridays from about 2-3 independent episodes such as 1987 and 2020), 93-365 days 0.61, over a
   year 0.71; outside any 25% fall 0.21. Pooled over the 11 series 0.47 / 0.55 / 0.69 / 0.21;
   the four ETFs 0.46 / 0.58 / 0.72 / 0.13.
 - **The whole event grid** (5/10/20% within 4/13/26 weeks, results file) gives the same picture
@@ -95,10 +98,9 @@ choice, not an edge).
 
 ## How sure, and what was chosen
 
-- Card pushed before any number (commit cc5a8ae, 2026-11-25 00:19 UTC; the card's own header says 00:30, written ahead). One run of the
-  script; a first run had a bug in one row only ("Four ETFs, pooled" took BTC, ETH, SPY and
-  QQQ instead of SPY, QQQ, GLD and TLT); fixed and re-run before anything was committed, no
-  other row changed. A lint-only refactor afterwards reproduced the file byte for byte.
+- Card pushed before any number (commit cc5a8ae, 2026-11-25 00:19 UTC; the card's own header says 00:30, written ahead). Two runs, both after the card push; the first had a bug in one
+  row (the pooled ETF set: "Four ETFs, pooled" took BTC, ETH, SPY and QQQ instead of SPY, QQQ,
+  GLD and TLT); fixed before the results commit, no other row changed. A lint-only refactor afterwards reproduced the file byte for byte.
 - Defaults not fixed by the card: for the six, the random-date shift uses one common fraction
   of each series' length (the series have different lengths); event closes on the six are the
   dividend-adjusted closes (the project's total-return convention). The fall-speed and part
