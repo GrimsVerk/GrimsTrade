@@ -316,16 +316,24 @@ def parse_aqr_comlr(rows: Sequence[Sequence[object]], col: int = 1) -> Monthly:
 
 
 def parse_boe_long_csv(
-    text: str, prefix: str, asset: str, market: str = "GBR", *, yield_: bool = False
+    text: str,
+    prefix: str,
+    asset: str,
+    market: str = "GBR",
+    *,
+    yield_: bool = False,
+    drop: Iterable[int] = (),
 ) -> Monthly:
     """Bank of England 'A millennium of macroeconomic data' monthly sheet in the long CSV form
-    (period, year, month, variable_id, ..., value)."""
+    (period, year, month, variable_id, ..., value). Months in `drop` (documented data errors)
+    are left out; the source data are not changed."""
     pts = []
     name = prefix
+    skip = set(drop)
     for r in csv.DictReader(io.StringIO(text)):
         if r["variable_id"].startswith(prefix):
             v = _num(r["value"])
-            if v is not None:
+            if v is not None and ym(int(r["year"]), int(r["month"])) not in skip:
                 pts.append((ym(int(r["year"]), int(r["month"])), v))
                 name = r["variable"]
     if yield_:

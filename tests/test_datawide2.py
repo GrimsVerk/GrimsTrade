@@ -207,3 +207,16 @@ def test_excel_serials_before_march_1900() -> None:
     assert dw.parse_labelled_columns([[1.0, 2.0], [32.0, 3.0]], 1) == [
         (dw.ym(1900, 1), 2.0), (dw.ym(1900, 2), 3.0)
     ]  # fmt: skip
+
+
+def test_boe_drop_leaves_out_documented_errors() -> None:
+    dw = _dw()
+    text = (
+        "period,year,month,variable_id,variable,value\n"
+        "1857M09,1857,9,usd-gbp-exchange-rate,$/£,4.876\n"
+        "1857M10,1857,10,usd-gbp-exchange-rate,$/£,8.924\n"
+        "1857M11,1857,11,usd-gbp-exchange-rate,$/£,4.843\n"
+    )
+    s = dw.parse_boe_long_csv(text, "usd-gbp-exchange-rate", "fx", drop=[dw.ym(1857, 10)])
+    assert s.months == [dw.ym(1857, 9), dw.ym(1857, 11)]
+    assert len(dw.parse_boe_long_csv(text, "usd-gbp-exchange-rate", "fx").months) == 3

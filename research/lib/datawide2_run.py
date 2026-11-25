@@ -24,6 +24,11 @@ import datawide2 as dw  # noqa: E402
 
 OUT = dw.ROOT / "research" / "results"
 
+# Documented data errors left out of the counts (the cached source is not changed).
+# BoE $/£ (M15) 1857-10 reads 8.924 between 4.876 (1857-09) and 4.843 (1857-11): a one-month
+# spike found in the fx-peg-1 review. With it, the counts held a 48% "fall" 1857-10..1861-01.
+BOE_USD_BAD = [dw.ym(1857, 10)]
+
 
 def load_all() -> dict[str, list[dw.Monthly]]:
     root = dw.cache_root()
@@ -121,7 +126,7 @@ def load_all() -> dict[str, list[dw.Monthly]]:
         dw.parse_boe_long_csv(t, "spliced-monthly-share-price-index", "stock"),
         dw.parse_boe_long_csv(t, "long-term-consols-yield", "bond", yield_=True),
         dw.parse_boe_long_csv(t, "monthly-corporate-bond-yields", "bond", "GBR-corp", yield_=True),
-        dw.parse_boe_long_csv(t, "usd-gbp-exchange-rate", "fx", "GBR"),
+        dw.parse_boe_long_csv(t, "usd-gbp-exchange-rate", "fx", "GBR", drop=BOE_USD_BAD),
     ]
     return src
 

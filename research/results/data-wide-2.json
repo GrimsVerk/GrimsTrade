@@ -36,13 +36,13 @@
   {
    "source": "BoE millennium monthly sheet",
    "series": 4,
-   "months": 11526,
+   "months": 11525,
    "new_market_years": 707,
    "new_calendar_years": 262,
-   "falls_new": 7,
-   "falls_all": 18,
+   "falls_new": 6,
+   "falls_all": 17,
    "new_pre1927": 540,
-   "falls_pre1927": 5
+   "falls_pre1927": 4
   },
   {
    "source": "Yale IMM common stocks, 3+ quotes a month",
@@ -3130,13 +3130,13 @@
     "market": "GBR",
     "first": "1791-01",
     "last": "2017-01",
-    "months": 2713,
+    "months": 2712,
     "new_years": 180,
     "new_calendar_years": 180,
-    "falls_new": 2,
-    "falls_all": 3,
+    "falls_new": 1,
+    "falls_all": 2,
     "new_pre1927": 136,
-    "falls_pre1927": 2
+    "falls_pre1927": 1
    }
   ]
  }
