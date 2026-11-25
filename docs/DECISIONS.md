@@ -2,6 +2,40 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-25 (lane `registry-moments-1`; before any freeze, the registry holds no line): two
+  follow-ups to `registry-lrv-1`. (1) **A line is sized with an upper value of the measured
+  lrv, not its estimate.** `measure_lrv` keeps the estimate (ratio / c) as `point` and sets
+  `lrv` = max(1, point nu / chi2_nu(1 - `LRV_LEVEL`)), nu = 1.5 / b from `_ref` (the verdict's
+  fixed-b degrees of freedom), Wilson-Hilferty quantile (`lrv_upper`); with no lags `lrv` is 1.
+  `LRV_LEVEL` = 0.65, sized by a deterministic simulation (`research/registrymoments1.py`,
+  numpy PCG64 from SeedSequence per cell): the smallest level on a 0.05 grid at which the
+  expected power, averaged over the train record's measurement noise, reaches the plan's 0.80
+  in every weekly AR(1) cell (phi 0, 0.2, 1/3, 0.5, 0.6; five and ten years; 4,000 records).
+  With the point estimate it was 0.70-0.77 for every dependent cell (a power target met only
+  on average across lines, the review of #200); with 0.65 it is 0.81-0.84. The level is a
+  tuning value, not a coverage (the value is below the truth in 35-39% of records). The
+  intended effect: dependent lines now wait on average 1.16-1.36 times the sample their true
+  lrv needs (was 0.94-1.04 times). Why an
+  upper value and not shrinkage toward a prior: shrinking pulls the high measurements down,
+  which is the direction that under-sizes the dependent lines; and no prior for the next rule's
+  lrv is known well enough (the store's variance ratios run 1 to 3.3). Cost: a line with no
+  dependence waits about 21% (five years of train) or 12% (ten) longer than before. Sized at
+  power 0.80; a plan at 0.90 is not checked. Still short: 8 events a year with strong
+  dependence (0.77 at phi 0.5) and dependence slower than a year (0.57), which no noise rule
+  fixes; there the caller must set a larger `lrv`. (2) **Skew and kurtosis are measured on the
+  train record for `sharpe` lines** (`measure_moments`, kept under `moments_train` with the
+  same sha256 as `lrv_train`). Direction: a plan whose Mertens factor k = 1 - skew sr +
+  (kurtosis - 1) / 4 sr^2, at the plan's own effect, is below the measured pair's k is
+  optimistic; `entry` replaces the pair by the measured one, a larger k stays, and `freeze`
+  refuses a line without the measurement, from other values, or with a smaller k
+  (`MomentsNotMeasured`). k, not skew and kurtosis one by one, because only k enters the sample
+  and a pair can be worse in one and better in the other. No upper value for k: its sampling
+  sd is 0.02-0.10 on a crash-prone weekly record (skew -1, kurtosis 6.5), a few percent of the
+  sample. `mean` (sized by `sd`) and `win_rate` (exact sign test) measure no moments; `Plan`
+  now refuses a raw kurtosis below 1 + skew^2 (impossible). Old lines without the new fields
+  read and score as before (skew 0, kurtosis 3, lrv 1). The daily runner does not import
+  `grimstrade.forward`.
+
 - 2026-11-25 (lane `runner-faults-2`, fixing PR #161's open findings): how the daily run
   treats a source answer that is data but cannot all be stored. (1) A crypto answer that leaves
   out a day (it starts after the day after the newest stored bar, or skips a day inside) is not
