@@ -17,7 +17,7 @@ country-year once per asset class; `results/data-wide-2.md`):
 |---|---:|---:|
 | Government bonds (77 sovereigns in London 1869-1929; UK consols 1753-; Norway 1820-; Swiss 1943-) | 2,946 | 88 |
 | Stocks (London-listed country indices 1869-1929; UK 1709-1866; US 1815-1870; Russia 1865-1917) | 1,620 | 94 |
-| Currencies (USD/GBP 1791-1970; NOK 1819-1970) | 367 | 5 |
+| Currencies (USD/GBP 1791-1970; NOK 1819-1970) | 379 (was 367 before the #PRNUM date fix) | 5 |
 | Commodity futures (AQR aggregate 1877-1912) | 36 | 2 |
 
 What decides the ranking:
@@ -63,7 +63,8 @@ What decides the ranking:
 4. BoE millennium monthly sheet: 707 new market-years, 540 of them before 1927, and 262 new
    calendar years. Cached; Open Government Licence.
 5. Norges Bank government bond yields from 1820 (96 new years, 46 new calendar years) and
-   exchange rates from 1819 (187 and 140). End of month, clean. Fetched.
+   exchange rates from 1819 (199 and 152; were 187 and 140 before the #PRNUM date fix). End of
+   month to 1914, monthly averages after. Fetched.
 6. Yale NYSE 1815-1925 (56 new years, 52 new calendar years) and St Petersburg 1865-1917
    (50). Fetched; owner decision needed.
 7. IMF IFS exchange rates (about 217 currencies from the 1950s, mostly long pegs) and OECD
@@ -235,3 +236,12 @@ allowed (total < 3 GB), with a loader in `research/lib/` and an offline test on 
   kept (3 s between its 3 calls). About 10 calls per host in all.
 - Review fixes (22:00-22:20 UTC): `SEEN` extended with the JST annual equity coverage that
   insure-1870-1 scored, DBnomics and Riksbank data removed, counts regenerated.
+- Date fix (dw2-dates-1, #PRNUM, found by fx-peg-1): the label parser read Excel serial dates
+  only above 10,000 (1927-05-18), so Norges Bank Table A2 (NOK in USD) lost its 1914-01..1927-04
+  rows and started in 1927-05. It now reads serials of any size (and Excel's 1900 leap-day
+  quirk for serials below 60). Every other sheet the module reads (Norges Bank stocks, bonds
+  A1, FX A1; SNB; AQR; the BoE long CSV) has text labels or its own year/month columns and was
+  unchanged. With the fix the USD series starts 1914-09 (the USD column is blank 1914-01..08):
+  +152 months, +12 new market-years and new calendar years (1915-1926), no new falls. Moved:
+  currencies union 367 -> 379; Norges Bank FX 187 -> 199 new market-years, 96 -> 108 before
+  1927, 140 -> 152 new calendar years, 2,232 -> 2,384 months.

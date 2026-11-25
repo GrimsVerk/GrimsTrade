@@ -5,6 +5,9 @@ no strategy). A market-year counts with at least 6 monthly points; 'new' = not i
 (`research/lib/datawide2.py`); falls are peak-to-trough >= 25% of the monthly level, one per
 episode, counted when the trough falls in a new year. Months after 2025-10 are dropped.
 
+The "(was X before the #PRNUM date fix)" markers were added by hand after the run (dw2-dates-1);
+a rerun of the script drops them. The .json holds the fixed numbers only.
+
 | Source | Series | Months | New market-years | of which before 1927 | New calendar years | Falls 25%+ in new years | of which before 1927 | Falls 25%+ all years |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Yale IMM government bonds 1869-1929 | 77 | 32,175 | 2,666 | 2,463 | 2 | 84 | 82 | 88 |
@@ -12,7 +15,7 @@ episode, counted when the trough falls in a new year. Months after 2025-10 are d
 | Yale IMM government bonds, 3+ quotes a month | 49 | 15,402 | 1,271 | 1,162 | 2 | 33 | 32 | 34 |
 | BoE millennium monthly sheet | 4 | 11,526 | 707 | 540 | 262 | 7 | 5 | 18 |
 | Yale IMM common stocks, 3+ quotes a month | 23 | 8,606 | 579 | 540 | 0 | 25 | 22 | 28 |
-| Norges Bank exchange rates 1819- | 2 | 2,232 | 187 | 96 | 140 | 3 | 2 | 3 |
+| Norges Bank exchange rates 1819- | 2 | 2,384 (was 2,232 before the #PRNUM date fix) | 199 (was 187) | 108 (was 96) | 152 (was 140) | 3 | 2 | 3 |
 | Norges Bank government bond yields 1820- | 1 | 1,142 | 96 | 96 | 46 | 2 | 2 | 2 |
 | Yale NYSE 1815-1925 | 1 | 1,331 | 56 | 56 | 52 | 2 | 2 | 6 |
 | Yale St Petersburg SE 1865-1917 | 1 | 597 | 50 | 50 | 2 | 4 | 4 | 5 |
@@ -27,7 +30,7 @@ Union across sources (a country-year counted once per asset class; markets by fi
 |---|---:|---:|
 | bond | 2,946 | 88 |
 | commodity | 36 | 2 |
-| fx | 367 | 5 |
+| fx | 379 (was 367 before the #PRNUM date fix) | 5 |
 | stock | 1,620 | 94 |
 
 ## Per series (sources with up to 60 series; the full list is in the .json)
@@ -197,8 +200,8 @@ Union across sources (a country-year counted once per asset class; markets by fi
 
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
+| NOK in USD 1914- (monthly average) | NOR-USD | 1914-09 (was 1927-05 before the #PRNUM date fix) | 2017-07 | 1235 (was 1083) | 103 (was 91) | 1 / 1 |
 | NOK in GBP 1819-1914 (Oslo, end of month) | NOR | 1819-04 | 1914-12 | 1149 | 96 | 2 / 2 |
-| NOK in USD 1914- (monthly average) | NOR-USD | 1927-05 | 2017-07 | 1083 | 91 | 1 / 1 |
 
 ### SNB Swiss equity 1924-1997
 

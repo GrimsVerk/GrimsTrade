@@ -58,12 +58,12 @@
   {
    "source": "Norges Bank exchange rates 1819-",
    "series": 2,
-   "months": 2232,
-   "new_market_years": 187,
-   "new_calendar_years": 140,
+   "months": 2384,
+   "new_market_years": 199,
+   "new_calendar_years": 152,
    "falls_new": 3,
    "falls_all": 3,
-   "new_pre1927": 96,
+   "new_pre1927": 108,
    "falls_pre1927": 2
   },
   {
@@ -3022,14 +3022,14 @@
     "name": "NOK in USD 1914- (monthly average)",
     "asset": "fx",
     "market": "NOR-USD",
-    "first": "1927-05",
+    "first": "1914-09",
     "last": "2017-07",
-    "months": 1083,
-    "new_years": 91,
-    "new_calendar_years": 44,
+    "months": 1235,
+    "new_years": 103,
+    "new_calendar_years": 56,
     "falls_new": 1,
     "falls_all": 1,
-    "new_pre1927": 0,
+    "new_pre1927": 12,
     "falls_pre1927": 0
    }
   ],
