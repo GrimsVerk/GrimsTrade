@@ -4080,6 +4080,30 @@ Never edit or delete a row.
 | 2026-11-24 23:50 | wide-19 | stop-reentry: optimal-stopping re-entry, real-options band (killed: fast-reentry, bear-legs, eu-4 dz25; not run) | note | train | - | - | - | - | - | - |
 | 2026-11-24 23:50 | wide-19 | robust-lookback: worst-case lookback set, minimax regret, newsvendor size (killed: ensemble-tsmom, wf-pooled, ib-soft; not run) | note | train | - | - | - | - | - | - |
 | 2026-11-24 23:50 | wide-19 | post hoc (not a try): Z at 2025-10-31 with the noise term corrected for correlation, V (1 - rho): six 0.00, etf 0.03, idx 0.16 (lib/wide19_posthoc.py) | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:55 | hedge-books-1 | book/buy_hold_btc | robustness | train | 1994-02-01 | 2025-10-31 | 0.87 | +2384778.8% | 84.9% | 0.00 |
+| 2026-11-24 23:55 | hedge-books-1 | book/buy_hold_spy | robustness | train | 1994-02-01 | 2025-10-31 | 0.63 | +2398.0% | 55.2% | 0.01 |
+| 2026-11-24 23:55 | hedge-books-1 | book/sixty_forty | robustness | train | 1994-02-01 | 2025-10-31 | 0.77 | +1126.1% | 30.5% | 0.47 |
+| 2026-11-24 23:55 | hedge-books-1 | book/equal_weight | robustness | train | 1994-02-01 | 2025-10-31 | 1.01 | +57602.8% | 66.7% | 1.51 |
+| 2026-11-24 23:55 | hedge-books-1 | book/ts_momentum | robustness | train | 1994-02-01 | 2025-10-31 | 1.10 | +6236.9% | 28.4% | 4.38 |
+| 2026-11-24 23:55 | hedge-books-1 | book/xs_momentum | robustness | train | 1994-02-01 | 2025-10-31 | 0.94 | +582644.9% | 77.5% | 3.57 |
+| 2026-11-24 23:55 | hedge-books-1 | book/vol_target_spy | robustness | train | 1994-02-01 | 2025-10-31 | 0.74 | +864.0% | 33.4% | 3.94 |
+| 2026-11-24 23:55 | hedge-books-1 | book/risk_parity | robustness | train | 1994-02-01 | 2025-10-31 | 0.83 | +3688.5% | 62.0% | 0.58 |
+| 2026-11-24 23:55 | hedge-books-1 | book/crypto_mean_reversion | robustness | train | 1994-02-01 | 2025-10-31 | 0.13 | +28.1% | 51.7% | 7.05 |
+| 2026-11-24 23:55 | hedge-books-1 | book/preset_careful | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +1606.2% | 22.0% | 4.78 |
+| 2026-11-24 23:55 | hedge-books-1 | book/preset_middle | robustness | train | 1994-02-01 | 2025-10-31 | 1.04 | +6760.6% | 30.9% | 4.91 |
+| 2026-11-24 23:55 | hedge-books-1 | book/own_vol_70 | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +4300.6% | 27.7% | 1.86 |
+| 2026-11-24 23:55 | hedge-books-1 | book/tsmom12 | baseline | train | 1994-02-01 | 2025-10-31 | 1.05 | +18641.3% | 37.0% | 2.80 |
+| 2026-11-24 23:55 | hedge-books-1 | book/halving-alone | robustness | train | 1994-02-01 | 2025-10-31 | 1.29 | +70158.9% | 29.5% | 2.57 |
+| 2026-11-24 23:55 | hedge-books-1 | book/where-vol | robustness | train | 1994-02-01 | 2025-10-31 | 1.07 | +24569.7% | 35.4% | 1.89 |
+| 2026-11-24 23:55 | hedge-books-1 | book/stop-0.25 | robustness | train | 1994-02-01 | 2025-10-31 | 1.09 | +9925.7% | 28.9% | 3.84 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge16 | variant | train | 1994-02-01 | 2025-10-31 | 1.13 | +20836.8% | 33.5% | 2.96 |
+| 2026-11-24 23:55 | hedge-books-1 | ew16 | baseline | train | 1994-02-01 | 2025-10-31 | 1.16 | +15095.3% | 33.0% | 3.19 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge-pair | variant | train | 1994-02-01 | 2025-10-31 | 1.05 | +9239.2% | 32.9% | 2.34 |
+| 2026-11-24 23:55 | hedge-books-1 | ew-pair | baseline | train | 1994-02-01 | 2025-10-31 | 1.05 | +9073.0% | 32.8% | 2.31 |
+| 2026-11-24 23:55 | hedge-books-1 | book/tsmom12/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +18290.3% | 37.4% | 2.81 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.12 | +20488.7% | 33.5% | 2.94 |
+| 2026-11-24 23:55 | hedge-books-1 | ew16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.15 | +14775.1% | 33.0% | 3.19 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge-pair/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +9021.0% | 33.2% | 2.33 |
 | 2026-11-24 23:50 | air-disaster-mood | SPY daily return on log2(deaths/25) of Wikidata aviation accidents >= 50 deaths, days 0-1, HC1 (b -0.038%/day/unit, t -0.59, rank 10/41, gate fail) | screen | train | 2008-01-02 | 2025-10-31 | - | - | - | - |
 | 2026-11-24 23:55 | jackpot-substitution | wide-20 candidate, scored before any price, no number computed: P2, score 5, parked: no keyless jackpot history | note | train | - | - | - | - | - | - |
 | 2026-11-24 23:55 | panic-words | wide-20 candidate, scored before any price, no number computed: P3, score 4, parked: about 2,000 Chronicling America calls | note | train | - | - | - | - | - | - |
