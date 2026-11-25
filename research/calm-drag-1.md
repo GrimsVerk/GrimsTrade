@@ -26,21 +26,26 @@ timing of the calm exits, and the parts of each out-spell.
   stock, bond and gold series (2 bps a side, about one calm flip a year).
 - **It is not a late buy-back after real falls.** Out-spells that touch a fall or rebound
   contribute nothing to C (E-pre, E-mid, E-post are 0.00 everywhere, S&P -0.04): by the time
-  the rebound year ends the rule is back in. All of C comes from out-spells that live entirely
-  in calm markets: exits on dips that never became 25% falls.
+  the rebound year ends the rule is back in. This is mostly by construction: the rebound
+  window (365 days) equals the rule's 12-month lookback, so at trough + 365 days the signal
+  compares the price with the trough itself and is at or above it; that is also why the
+  card's expectation of a sizeable E-post was wrong. All of C comes from out-spells that live
+  entirely in calm markets: exits on dips that never became 25% falls.
 - **Inside those spells the re-entry costs about twice what the exit saves** (1.7 times on
   GLD, 4.5 on QQQ). From exit to the spell's low the rule avoids +0.6 to +1.9 a year (G);
-  from the low to re-entry it misses -2.2 to -4.2 (L). Nearly every such spell ends with the rule buying back above where it sold
-  (W- is about all of C, W+ is +0.0 to +0.2). This is partly built in: a dip that kept falling
+  from the low to re-entry it misses -2.2 to -4.2 (L). Nearly every such spell ends with the
+  rule buying back above where it sold (W- is about all of C, W+ is +0.0 to +0.2). This is partly built in: a dip that kept falling
   would have become a 25% fall and left the calm label, so "calm-only spell" means, by
   hindsight, "false alarm".
 - **Premium against timing depends on the era and the asset.**
   - US market 1927-2001: all premium, no bad timing (French market 1927-1961 P -0.97, T +0.01;
     1962-2001 P -1.15, T -0.03): the rule is out about 8-9% of calm time and gives up the calm
     equity premium for that time, no more.
-  - US stocks since 2002: mostly timing (French market P -0.47, T -1.66; QQQ P -0.40, T
-    -1.66; S&P 500 TR P -0.83, T -0.80; SPY since 1994 P -0.77, T -0.72). The calm exits sat
-    out better-than-average calm days: short dips followed by fast recoveries.
+  - US stocks since 2002: timing is half (S&P 500 TR 2002-2025 P -0.83, T -0.80; SPY since
+    1994 P -0.77, T -0.72) to three quarters (French market P -0.47, T -1.66; QQQ P -0.40, T
+    -1.66) of the out-time drag. The calm exits sat out better-than-average calm days: short
+    dips followed by fast recoveries. The split is sensitive to the 25% cut-off (see How
+    sure: 2022 is a fall on the French index and calm on the S&P).
   - Bonds and gold: mostly premium from long time out (TLT out 25% of calm time, P -1.68, T
     -0.56; GLD out 20%, P -2.45, T +1.05: gold's calm exits were well timed, but it is out so
     often that the premium outweighs it).
@@ -98,7 +103,7 @@ Read from the table, not tested:
   year.
 - **The one plausible target is the short whipsaw on stocks since 2002**: one- or two-Friday
   flips around a 12-month return near zero, -1.4 to -2.1 a year of the drag on the US stock
-  series, mostly as bad timing. But it is a weak lead: (1) it is concentrated in one era (the
+  series, half to three quarters of it as bad timing. But it is a weak lead: (1) it is concentrated in one era (the
   timing part is about zero in 1927-2001), so it may be the V-shaped dips of the 2010s rather
   than a property of the rule; (2) the obvious reducers (two-Friday confirmation, a dead zone
   around zero, holding only after four Fridays on) have been tried: they cut flips without
@@ -120,6 +125,13 @@ Read from the table, not tested:
   by construction the cost of the false alarms, and its split into whipsaw losses and saved
   dips (W- / W+) is close to tautological. G and L are exact, but they also condition on the
   dip having recovered.
+- **The premium/timing split is sensitive to the 25% fall cut-off.** The 2021-11..2022-10
+  drop is 25.6% on the French index (a fall) but under 25% on the S&P 500 TR (calm), so the
+  S&P's 11-month out-spell 2022-06-06..2023-05-05 (231 sessions, plus a 20-session spell in
+  May 2022) sits in its calm drag, while the French market's 2022-04-25..2023-05-05 spell sits
+  in the fall and rebound parts. That is why the S&P's calm out share since 2002 is 0.082
+  against the French market's 0.046, and why their P/T splits differ. One episode near the
+  cut-off moves the split by tenths of a point a year.
 - The premium P assumes the counterfactual of being out on random calm days with the same
   count; T is everything else. Both are exact parts of the same sum, not causal effects.
 - **Deviations from the card, disclosed.** (1) The card split edge spells into before and
@@ -134,6 +146,10 @@ Read from the table, not tested:
   opens already in the market, so its first position is taken from the second session. (4)
   The coin section with a 50% zigzag is post hoc, chosen after seeing that the coins have no
   calm sessions at 25%.
+- The rebuild check of the French series at bills is circular (their bills series is built
+  in `load_french` from the same repaired positions); the cash-0 check against the paper
+  series carries the weight there. The S&P and the coins/ETFs at bills are checked the same
+  way; their cash-0 checks are against the projects' own paper series.
 - The window divisor Y counts from the first eligible session (or the window start); the
   2002-2025 rows use gap-2002-1's divisor exactly.
 - Bar for scale (BAR.md, rows through 2026-11-25 01:16): 4,126 distinct tries, N for a new
@@ -148,4 +164,5 @@ Nothing changes. For SUMMARY's "But it has a price" bullet (the lead's call): th
 not costs and not the late buy-back; it is the price of calm exits that turn out to be false
 alarms, re-entered higher. On the long US record it is the calm premium given up for the time
 out (about 1 point a year); on US stocks since 2002 it is mostly short one- or two-week
-whipsaws that sat out fast recoveries; on bonds and gold it is long time out.
+whipsaws, and half (S&P, SPY) to three quarters (French market, QQQ) of the out-time drag is
+bad timing (they sat out fast recoveries); on bonds and gold it is long time out.

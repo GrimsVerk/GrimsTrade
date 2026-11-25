@@ -84,7 +84,14 @@ def parse_vw(lines: Sequence[str], last: date = LAST) -> tuple[list[str], dict[d
 
 
 def infer_pos(ret: np.ndarray, bar: np.ndarray, cost: float) -> np.ndarray:
-    """The paper series' position from its returns: ret = pos * bar - cost * flip."""
+    """The paper series' position from its returns: ret = pos * bar - cost * flip.
+
+    Known limitation (calm-drag-1): on a flip day whose return is 0 or exactly the cost both
+    positions fit, and the old position is kept, so the flip is dated one session late (the
+    cost lands on the next day). `calmdrag1.repair` fixes it. Other merged users: insure-1's
+    bills series (d_tb), gap-2002-1's bills series, rev-costloss-1's `french()`, insure-2's
+    geo indices; the effect is negligible (one day per affected flip).
+    """
     pos = np.zeros(len(ret))
     for i in range(1, len(ret)):
         fit1 = min(abs(ret[i] - bar[i]), abs(ret[i] - bar[i] + cost)) < 1e-12

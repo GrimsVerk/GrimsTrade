@@ -249,6 +249,8 @@ def load_french() -> list[Ser]:
         hold[1:] = s.px[1:] / s.px[:-1] - 1
         ok = np.ones(len(hold), dtype=bool)
         pos = repair(s.pos, hold, s.paper, 0.0002)
+        # the bills series is built from these positions, so its check is circular; the
+        # cash-0 check against the paper series carries the weight
         out.append(Ser(nm, s.days, hold, pos, ok, s.rf, 0.0002, s.paper,
                        s.paper + (1 - pos) * s.rf))  # fmt: skip
     return out
