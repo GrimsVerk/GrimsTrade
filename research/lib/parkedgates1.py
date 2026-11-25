@@ -268,6 +268,13 @@ def margin_susceptibles(px: dict[str, e13.Closes]) -> None:
     met = [b > 0 and t >= 2, rank <= 2]
     early = [m for m in months if m <= e17.month_index(date(1994, 12, 1))]
     late = [m for m in months if m > e17.month_index(date(1994, 12, 1))]
+    # Added after the dry run, before the real run: Z.1 is annual before 1952, so s starts
+    # 1961-12 and placebos up to k = 103 lack rows before 1970-10. Same rows for all 41 fits:
+    same = [m for m in months if m >= e17.month_index(date(1970, 10, 1))]
+    b_s, t_s, n_s = fit(["GSPC"], same, y, regs(s3), 3)
+    p_s = [fit(["GSPC"], same, y, regs(s3, k), 3)[1] for k in ev.SHIFTS_W33]
+    rank_s = e11.rank_highest(t_s, p_s)
+    sd_s, share_s = e11.null_spread(p_s)
     out = [
         "# Margin credit as the susceptible stock of a crash (parked-gates-1, W33"
         " `margin-susceptibles`)",
@@ -310,6 +317,10 @@ def margin_susceptibles(px: dict[str, e13.Closes]) -> None:
         cell("Months 1995-01..2025-09", fit(["GSPC"], late, y, regs(s3), 3), 1),
         cell("Main effect b1 (F)", fit(["GSPC"], months, y, regs(s3), 3, j=1), 1),
         cell("Main effect b2 (s)", fit(["GSPC"], months, y, regs(s3), 3, j=2), 1),
+        "",
+        f"Same rows for all 41 fits (months 1970-10..2025-09, added after the dry run): b3"
+        f" {b_s:+.3f} (t {t_s:+.2f}), {n_s} rows, rank {rank_s} of 41; placebo SD {sd_s:.2f},"
+        f" share |t| >= 2 {share_s:.0%}.",
         "",
         f"s sd over the gate months: {np.std([s3[m] for m in months if m in s3]):.3f};"
         f" months with a fall below -5%: {sum(r('GSPC', m) < -0.05 for m in months)}.",
