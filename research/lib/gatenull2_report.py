@@ -184,7 +184,7 @@ def decide(lines: list[str], size: dict[tuple[str, str, int], dict[str, Any]],
             lines.append(f"- {name}: not mis-sized at any phi.")
     for f in (2, 3, 4, 5):
         ok = all(
-            3.4 / 100 <= size[(r, d, n)]["r2"][f] <= 6.4 / 100 and size[(r, d, n)]["gate"][f] <= NOM2
+            0.034 <= size[(r, d, n)]["r2"][f] <= 0.064 and size[(r, d, n)]["gate"][f] <= NOM2
             for r in ("garch-t", "real") for n in sim.TS for d in ar
         )  # fmt: skip
         worst = max(
@@ -243,8 +243,9 @@ def rescore_table(lines: list[str]) -> None:
         " family; 'pass' = predicted sign, |t| >= 2 and rank <= 2. Null width: SD of the 40"
         " placebo t and their median. Dose acf1 / N_eff over the series that was surrogated.",
         "",
-        "| Gate | True t (stored) | Shift rank (stored / rerun) | Shift SD, median | Phase rank"
-        " | Phase SD, median | IAAFT rank | IAAFT SD, median | Dose acf1 | N_eff | Verdict change |",
+        "| Gate | True t (stored) | Shift rank (stored / rerun) | Shift SD, median"
+        " | Phase rank | Phase SD, median | IAAFT rank | IAAFT SD, median | Dose acf1 | N_eff"
+        " | Verdict change |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
     skipped = []
