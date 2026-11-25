@@ -16,12 +16,18 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   not independent of the US falls (#90). It is cheaper than simply holding less in direction in
   every era and market, but statistically shown only for 1927-1961 and the developed-market
   price indices; since 2002 not shown (p 0.19). On the S&P 500 since 1986 it was far cheaper
-  insurance than buying puts (#160).
+  insurance than buying puts (#160). Scored as a crash warning, the exit has real skill on US
+  stocks since 1927 (hit rate 0.49, false alarms 0.21, against about 0 at random dates) and none
+  on gold, bonds or coins (#182).
 - **But it has a price.** It buys back late, so the year after the low hands most of the gain
   back, and it trails holding in calm markets too, by about 2 points a year. Since 2002 the fall gain and the late buy-back about cancelled, so the calm drag is most of the cost: it left it about 1 point of
   growth a year behind holding on the broad US index (S&P 500 total return 0.7 with idle cash
   at bills, 1.0 with cash at 0; the French US market 1.1-1.4) and about 2 on single industries
-  (mean of 10: 1.6-2.0; from about 1 ahead to 4 behind by industry) (#162). It fails in fast
+  (mean of 10: 1.6-2.0; from about 1 ahead to 4 behind by industry) (#162). As a warning it
+  pays only for someone whose protection costs about a tenth to a third of the loss it
+  prevents; a plain holder sits at the top edge of that band, where it is worth about nothing
+  (value +0.06 of a perfect warning; in money -0.01), and the largest block of false alarms is
+  the rebound after the low (#182). It fails in fast
   crashes of three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
   just like the bottom (#94, #96, #103; per fall `e4` too, #178).
 - **Fast-crash cover can be bought, but it has not paid.** Puts while trend is in cost about 2.9
@@ -131,7 +137,7 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   (z -2.18), `huber52` (a robust trend estimate) -0.001 (z -0.01).
 - Meteorology, actuarial and operations-research ideas (#173): two credibility rules **fail**:
   `cred-xs` +0.047 (z 0.95; its credibility factor came out 0, so it became a book-level
-  switch), `cred-lr` -0.097 (z -1.06). One new descriptive idea, `rev-costloss` (now #182).
+  switch), `cred-lr` -0.097 (z -1.06). One new descriptive idea, `rev-costloss` (run as #182).
 - Biology, ecology, epidemiology and climate (#171): two premium gates **fail**, temperature
   and disease-outbreak news (each rank 9 of 41 placebos, t +1.63 and +1.68). In both the
   reaction had the same sign as the forward return: a regime coincidence, not a premium.
@@ -140,6 +146,8 @@ and run this repo; 7 pull requests are open (listed under "Still open").
 - 2024-2026 literature (#177): 11 new mechanisms listed, none tested by the survey. Its top 1,
   `vm-style-book`, failed tonight (#179); its top 2, the post-2009 trend break by asset class,
   is #181 (open).
+- The `tsmom12` exit as a crash warning (#182, descriptive): **a real but narrow warning**,
+  worth about nothing to a plain holder; see "What we know now".
 - Data (#174): keyless monthly consumer prices for 11 economies (from 1913-1954; annual back to
   1661 for one), country equity yields from 1975 and policy rates from 1946-1960. A real
   exchange rate can now replace the spot-reversal proxy for currency value (own card needed).
@@ -159,8 +167,8 @@ z -1.67).
 - Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
   environment (#149), the daily run reconciling its own record (#153), the scoreboard's
   live-start-delay note (#155), daily-run robustness tests for misbehaving sources (#161).
-- Tonight's lanes still open: the post-2009 trend break by asset class (#181), the `tsmom12` exit scored as a crash
-  warning by relative economic value (#182, draft), this summary (#183).
+- Tonight's lanes still open: the post-2009 trend break by asset class (#181), an anytime-valid
+  sequential test for the forward registry (#184), this summary (#183).
 - Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168, #178); the halving
   window's one forward score (#137). `coin-drift-run` is closed: not confirmed (#157).
 - Live: 11 books trade fake money daily; `own_vol_70` joins on its first run (#135). The record
@@ -187,7 +195,7 @@ None of the rows is a proven edge.
 - Is the edge real? #74 (`research/dsr-1.md`), #78; live funds #91 (`research/survey-6.md`).
 - The bar: #92, #100, #108, #111 (`research/register/BAR.md`); what could reach it: #150, #170.
 - Tonight: `research/xs-century-1.md`, `vm-style-1.md`, `vix-call-1.md`, `hedge-books-1.md`,
-  `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `breadth-anatomy-1.md`, `wide-17.md` to
+  `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `rev-costloss-1.md`, `breadth-anatomy-1.md`, `wide-17.md` to
   `wide-20.md`, `survey-7b.md`, `data-long-4.md`.
 - Shorts: #83, #89. Coins: #69, #82. Euro books: #59, #62, #63, #68, #73, #77, #80, #85.
 - Corrections after the independent review (#119): [`errata-2.md`](errata-2.md).
