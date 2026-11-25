@@ -262,8 +262,10 @@ def main() -> None:
         dh = worst(*books["equal-weight"][:3], lo, LAST)
         dt = worst(*books["tsmom12"][:3], lo, LAST)
         dx = worst(*books["tsmom12"][:3], lo, LAST, at=(dh.peak, dh.trough))
+        dy = worst(*books["equal-weight"][:3], lo, LAST, at=(dt.peak, dt.trough))  # not on card
         for lab, dr in (("without timing (`equal-weight`)", dh), ("with timing (`tsmom12`)", dt),
-                        ("`tsmom12` over the `equal-weight` dates", dx)):  # fmt: skip
+                        ("`tsmom12` over the `equal-weight` dates", dx),
+                        ("`equal-weight` over the `tsmom12` dates (side row)", dy)):  # fmt: skip
             tot = sum(dr.contrib.values())
             cells = " | ".join(
                 f"{100 * dr.contrib[s]:+.1f} ({dr.contrib[s] / tot:.0%})" if tot else "0"
