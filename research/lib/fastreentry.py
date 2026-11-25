@@ -225,8 +225,9 @@ def set_section(ss: SetScore, eras: Sequence[tuple[str, date, date]]) -> tuple[l
     def row(label: str, f: F, fmt: str = "+.1f") -> str:
         a, b = cvals(ss, f, False), cvals(ss, f, True)
         d = [y - x for x, y in zip(a, b, strict=True)]
+        up, n_ = sum(x >= i1.TIE for x in d), sum(abs(x) >= i1.TIE for x in d)  # ties left out
         return (f"| {label} | {np.mean(a):{fmt}} | {np.mean(b):{fmt}} | {np.mean(d):{fmt}} | "
-                f"{sum(x > 0 for x in d)} of {sum(x != 0 for x in d)} |")  # fmt: skip
+                f"{up} of {n_} |")  # fmt: skip
 
     out = [
         f"### {ss.label}",
@@ -240,8 +241,8 @@ def set_section(ss: SetScore, eras: Sequence[tuple[str, date, date]]) -> tuple[l
         row("B, the year after the low", reb),
         row("**N = I + B**", net),
         row("S, share of the fall avoided", share, "+.2f"),
-        f"| N > 0 (falls) | {sum(v > 0 for v in cvals(ss, net, False))} of {n} | "
-        f"{sum(v > 0 for v in cvals(ss, net, True))} of {n} | | |",
+        f"| N > 0 (falls) | {sum(v >= i1.TIE for v in cvals(ss, net, False))} of {n} | "
+        f"{sum(v >= i1.TIE for v in cvals(ss, net, True))} of {n} | | |",
         "",
         f"Test of the difference in N (H1: `or3-12` higher): sign test {k} of {m_}, "
         f"p {p_sign:.2g}; "
@@ -289,7 +290,7 @@ def set_section(ss: SetScore, eras: Sequence[tuple[str, date, date]]) -> tuple[l
         dn = [a + b for a, b in zip(di, db, strict=True)]
         out.append(
             f"| {label} | {len(ee)} | {np.mean(di):+.1f} | {np.mean(db):+.1f} | "
-            f"{np.mean(dn):+.1f} | {sum(x > 0 for x in dn)} | "
+            f"{np.mean(dn):+.1f} | {sum(x >= i1.TIE for x in dn)} | "
             f"{np.mean([e.net for e in ee]):+.1f} | "
             f"{np.mean([ss.twin[id(e)].net for e in ee]):+.1f} |"
         )

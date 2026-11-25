@@ -98,3 +98,37 @@ def test_random_paths_are_read_back_exactly(i1: ModuleType) -> None:
         got = i1.infer_pos(paper(p, bar), bar, COST)
         assert np.allclose(paper(got, bar), paper(p, bar), atol=1e-15)
         assert got.tolist() == p.tolist()
+
+
+# --- ties: a rule that stays in through a fall (insure-bonds-1, #219) ---
+
+
+def held_series(i1: ModuleType) -> Any:
+    """A rule that holds every session of a path with two falls of 25% or more. As in
+    `insure1.build`, the rule's returns come from the closes and the holding from the closes
+    rescaled, so the two differ at rounding size (about 1e-14 log points per fall)."""
+    import numpy as np
+
+    legs = [(120, 1.004), (90, 0.9955), (150, 1.0037), (80, 0.9951), (200, 1.0021)]
+    steps = np.concatenate([np.full(n, g) * (1 + 1e-4 * np.sin(np.arange(n))) for n, g in legs])
+    close = 37.3 * np.concatenate([[1.0], np.cumprod(steps)])
+    px = close / close[0]
+    days = [i1.date(1990, 1, 1) + i1.timedelta(days=i) for i in range(len(px))]
+    rule = np.zeros(len(px))
+    rule[1:] = close[1:] / close[:-1] - 1
+    ones = np.ones(len(px))
+    return i1.Series("held", days, px, rule, rule.copy(), ones, np.zeros(len(px)))
+
+
+def test_a_rule_in_through_a_fall_has_no_insurance_and_no_rebound(i1: ModuleType) -> None:
+    sc = i1.score(held_series(i1), 0.25, 0.25)
+    assert len(sc.eps) == 2
+    for e in sc.eps:
+        assert (e.ins, e.rebound, e.ins_tb, e.net_tb, e.net) == (0.0, 0.0, 0.0, 0.0, 0.0)
+    assert i1.sign_test([e.ins for e in sc.eps]) == (0, 0, 1.0)
+
+
+def test_a_rounding_sized_value_is_a_tie_in_the_sign_test(i1: ModuleType) -> None:
+    """A value within TIE of 0 is left out like an exact 0, not counted as a win or a loss."""
+    assert i1.sign_test([1e-14, -3e-13, 2.0, -1.0, 0.5]) == (2, 3, 0.5)
+    assert i1.sign_test([i1.TIE * 2, -i1.TIE * 2]) == (1, 2, 0.75)

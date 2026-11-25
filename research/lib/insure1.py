@@ -42,6 +42,10 @@ FAST, MEDIUM = 92, 365  # calendar days peak -> trough
 REBOUND = 365
 DRAWS, SEED = 10_000, 0
 RUNS = harness.DATA / "runs" / "trend-1926"
+# |value| below this (log points) is a tie: a rule in the market through a whole fall leaves
+# I at rounding size (about 1e-14), which a sign test would otherwise count as a win or a loss
+# at random (insure-bonds-1, #219; fixed in eng-nits-1, #218).
+TIE = 1e-9
 OUT = harness.RESEARCH / "results" / "insure-1.md"
 ERAS = (
     ("1927-1961", date(1927, 7, 2), date(1961, 12, 31)),
@@ -250,6 +254,11 @@ class Scored:
     in_mask: np.ndarray = field(default_factory=lambda: np.zeros(0, dtype=bool))
 
 
+def tie0(x: float) -> float:
+    """0 for a rounding-sized value (|x| < TIE), else x."""
+    return 0.0 if abs(x) < TIE else x
+
+
 def score(s: Series, down: float, up: float, rule: np.ndarray | None = None) -> Scored:
     r = s.rule if rule is None else rule
     hold_lr = np.zeros(len(s.px))
@@ -269,11 +278,11 @@ def score(s: Series, down: float, up: float, rule: np.ndarray | None = None) -> 
         if j + 1 < len(pairs):
             e = min(e, pairs[j + 1][0])
         hold = 100 * math.log(s.px[b] / s.px[a])
-        ins = float(cum[b] - cum[a])
+        ins = tie0(float(cum[b] - cum[a]))
         eps.append(Episode(
             s.name, s.days[a], s.days[b], 1 - s.px[b] / s.px[a], hold, hold + ins, ins,
-            float(cum[e] - cum[b]), float(cum_tb[b] - cum_tb[a]), float(cum_tb[e] - cum_tb[a]),
-            idx=(a, b, e),
+            tie0(float(cum[e] - cum[b])), tie0(float(cum_tb[b] - cum_tb[a])),
+            tie0(float(cum_tb[e] - cum_tb[a])), idx=(a, b, e),
         ))  # fmt: skip
         mask[a + 1 : e + 1] = True
     calm_d, calm_tb_d = np.where(mask, 0.0, d), np.where(mask, 0.0, d_tb)
@@ -324,7 +333,8 @@ def market_anchored(eps: Sequence[Episode], market: str) -> list[list[Episode]]:
 
 
 def sign_test(vals: Sequence[float]) -> tuple[int, int, float]:
-    v = [x for x in vals if x != 0]
+    """Values above 0 (k) of those not tied with 0 (n, |x| >= TIE), one-sided sign-test p."""
+    v = [x for x in vals if abs(x) >= TIE]
     n, k = len(v), sum(1 for x in v if x > 0)
     p = sum(math.comb(n, j) for j in range(k, n + 1)) / 2**n if n else 1.0
     return k, n, p

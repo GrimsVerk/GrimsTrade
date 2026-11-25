@@ -53,15 +53,15 @@ Per series and year (98.3 years): insurance paid out +7.75, rebound -7.04, calm 
 
 | Test | Clusters (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p | 90% range |
 |---|---:|---:|---:|---:|---:|---|
-| I, market-anchored | 50 | 48 | 1.1e-12 | +25.1 | 0.000 | +20.3 to +30.2 |
-| I, linked | 37 | 36 | 2.8e-10 | +19.8 | 0.000 | +15.4 to +24.5 |
-| N = I + B, market-anchored | 50 | 16 | 1 | -0.3 | 0.558 | -3.9 to +3.3 |
-| N = I + B, linked | 37 | 9 | 1 | -3.7 | 0.974 | -7.0 to -0.6 |
-| Share avoided S, market-anchored | 50 | 48 | 1.1e-12 | +0.5 | 0.000 | +0.4 to +0.6 |
-| I with T-bill, market-anchored | 50 | 48 | 1.1e-12 | +26.7 | 0.000 | +21.7 to +32.1 |
-| N with T-bill, market-anchored | 50 | 20 | 0.94 | +2.3 | 0.149 | -1.4 to +6.1 |
-| Market alone, I (its own episodes) | 21 | 20 | 1e-05 | +32.9 | 0.000 | +25.2 to +40.7 |
-| Market alone, N | 21 | 12 | 0.33 | +5.9 | 0.061 | -0.4 to +12.4 |
+| I, market-anchored | 48 | 47 | 1.7e-13 | +25.1 | 0.000 | +20.3 to +30.2 |
+| I, linked | 36 | 35 | 5.4e-10 | +19.8 | 0.000 | +15.4 to +24.5 |
+| N = I + B, market-anchored | 48 | 15 | 1 | -0.3 | 0.558 | -3.9 to +3.3 |
+| N = I + B, linked | 36 | 8 | 1 | -3.7 | 0.974 | -7.0 to -0.6 |
+| Share avoided S, market-anchored | 48 | 47 | 1.7e-13 | +0.5 | 0.000 | +0.4 to +0.6 |
+| I with T-bill, market-anchored | 48 | 47 | 1.7e-13 | +26.7 | 0.000 | +21.7 to +32.1 |
+| N with T-bill, market-anchored | 48 | 20 | 0.9 | +2.3 | 0.149 | -1.4 to +6.1 |
+| Market alone, I (its own episodes) | 20 | 20 | 9.5e-07 | +32.9 | 0.000 | +25.2 to +40.7 |
+| Market alone, N | 20 | 12 | 0.25 | +5.9 | 0.061 | -0.4 to +12.4 |
 
 Episodes: 270; market-anchored clusters: 50; linked clusters: 37. The share avoided S is a fraction (shown x 1, not log points).
 
@@ -79,7 +79,7 @@ Episodes: 270; market-anchored clusters: 50; linked clusters: 37. The share avoi
 | 6 | 1931-10-20 | 1932-07-08 | 13 | Mkt, Durbl, Enrgy, HiTec, Hlth, Manuf, NoDur, Other, Shops, Utils | 52% | +77 | +1.00 | -65 | +12 | 2 |
 | 7 | 1932-09-07 | 1933-04-04 | 12 | Mkt, Durbl, Enrgy, HiTec, Hlth, Manuf, NoDur, Other, Shops, Utils | 37% | +42 | +0.90 | -20 | +22 | 3 |
 | 8 | 1933-06-12 | 1933-12-26 | 2 | Hlth, Utils | 43% | +17 | +0.23 | -25 | -7 | 4 |
-| 9 | 1933-07-17 | 1933-10-21 | 7 | Mkt, Durbl, HiTec, Manuf, Other, Shops | 32% | -0 | -0.00 | -0 | -0 | 4 |
+| 9 | 1933-07-17 | 1933-10-21 | 7 | Mkt, Durbl, HiTec, Manuf, Other, Shops | 32% | +0 | +0.00 | +0 | +0 | 4 |
 | 10 | 1934-02-05 | 1935-03-14 | 7 | Mkt, Durbl, Enrgy, HiTec, Manuf, Other, Utils | 36% | +24 | +0.48 | -25 | -1 | 5 |
 | 11 | 1936-11-09 | 1938-03-31 | 15 | Mkt, Durbl, Enrgy, HiTec, Hlth, Manuf, NoDur, Other, Shops, Telcm, Utils | 43% | +39 | +0.69 | -37 | +1 | 6 |
 | 12 | 1938-07-23 | 1939-08-24 | 5 | Durbl, Enrgy, HiTec, Manuf, Other | 29% | +3 | +0.10 | -17 | -14 | 7 |
@@ -168,8 +168,8 @@ Linked clusters (conservative): spans
 
 | Peak to trough | Episodes | Mean depth | Mean I | I > 0 | Mean S | Mean B | Mean N | N > 0 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 63 | 34% | +19.5 | 51 | +0.46 | -26.1 | -6.6 | 15 |
-| medium, 93-365 | 127 | 37% | +30.8 | 115 | +0.57 | -28.1 | +2.7 | 62 |
+| fast, <= 92 days | 63 | 34% | +19.5 | 45 | +0.46 | -26.1 | -6.6 | 12 |
+| medium, 93-365 | 127 | 37% | +30.8 | 109 | +0.57 | -28.1 | +2.7 | 58 |
 | slow, > 365 | 80 | 42% | +40.5 | 79 | +0.67 | -30.1 | +10.5 | 52 |
 
 ## The market's episodes
@@ -182,7 +182,7 @@ Linked clusters (conservative): spans
 | 1931-06-27 | 1931-10-05 | 100 | 42% | -54 | +0 | +54 | +1.00 | -26 | +28 | +54 | 9 |
 | 1931-11-09 | 1932-07-08 | 242 | 57% | -84 | +0 | +84 | +1.00 | -70 | +14 | +85 | 12 |
 | 1932-09-07 | 1933-02-27 | 173 | 36% | -45 | +0 | +45 | +1.00 | -10 | +36 | +45 | 11 |
-| 1933-07-18 | 1933-10-21 | 95 | 29% | -34 | -34 | -0 | -0.00 | -0 | -0 | -0 | 6 |
+| 1933-07-18 | 1933-10-21 | 95 | 29% | -34 | -34 | +0 | +0.00 | +0 | +0 | +0 | 6 |
 | 1934-02-05 | 1934-07-26 | 171 | 25% | -29 | -14 | +15 | +0.51 | -15 | -0 | +15 | 6 |
 | 1937-03-10 | 1938-03-31 | 386 | 51% | -71 | -25 | +47 | +0.65 | -41 | +6 | +47 | 14 |
 | 1940-04-08 | 1940-06-10 | 63 | 26% | -30 | -29 | +1 | +0.03 | -17 | -16 | +1 | 6 |
@@ -202,26 +202,26 @@ Linked clusters (conservative): spans
 
 | Fall / rise | Set | Episodes | Clusters (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p | 90% range |
 |---|---|---:|---:|---:|---:|---:|---:|---|
-| 25% / 25% | I, anchored | 270 | 50 | 48 | 1.1e-12 | +25.1 | 0.000 | +20.3 to +30.2 |
-| 25% / 25% | I, linked | 270 | 37 | 36 | 2.8e-10 | +19.8 | 0.000 | +15.4 to +24.5 |
-| 25% / 25% | N, anchored | 270 | 50 | 16 | 1 | -0.3 | 0.558 | -3.9 to +3.3 |
+| 25% / 25% | I, anchored | 270 | 48 | 47 | 1.7e-13 | +25.1 | 0.000 | +20.3 to +30.2 |
+| 25% / 25% | I, linked | 270 | 36 | 35 | 5.4e-10 | +19.8 | 0.000 | +15.4 to +24.5 |
+| 25% / 25% | N, anchored | 270 | 48 | 15 | 1 | -0.3 | 0.558 | -3.9 to +3.3 |
 | 25% / 25% | premium P | 270 | 1.07 | | | | | |
-| 20% / 20% | I, anchored | 388 | 70 | 66 | 8.3e-16 | +19.6 | 0.000 | +16.5 to +22.9 |
-| 20% / 20% | I, linked | 388 | 47 | 44 | 1.2e-10 | +15.5 | 0.000 | +12.4 to +18.8 |
-| 20% / 20% | N, anchored | 388 | 70 | 24 | 1 | -2.2 | 0.941 | -4.4 to +0.1 |
+| 20% / 20% | I, anchored | 388 | 62 | 62 | 2.2e-19 | +19.6 | 0.000 | +16.5 to +22.9 |
+| 20% / 20% | I, linked | 388 | 42 | 42 | 2.3e-13 | +15.5 | 0.000 | +12.4 to +18.8 |
+| 20% / 20% | N, anchored | 388 | 65 | 20 | 1 | -2.2 | 0.941 | -4.4 to +0.1 |
 | 20% / 20% | premium P | 388 | 1.06 | | | | | |
-| 40% / 25% | I, anchored | 102 | 23 | 21 | 3.3e-05 | +44.1 | 0.000 | +36.4 to +51.5 |
-| 40% / 25% | I, linked | 102 | 17 | 15 | 0.0012 | +38.1 | 0.000 | +29.6 to +46.0 |
-| 40% / 25% | N, anchored | 102 | 23 | 15 | 0.11 | +7.7 | 0.025 | +1.3 to +14.2 |
+| 40% / 25% | I, anchored | 102 | 22 | 21 | 5.5e-06 | +44.1 | 0.000 | +36.4 to +51.5 |
+| 40% / 25% | I, linked | 102 | 16 | 15 | 0.00026 | +38.1 | 0.000 | +29.6 to +46.0 |
+| 40% / 25% | N, anchored | 102 | 22 | 15 | 0.067 | +7.7 | 0.025 | +1.3 to +14.2 |
 | 40% / 25% | premium P | 102 | 1.11 | | | | | |
 
 ## Robustness: 30 industries (paper series), market episodes as anchors
 
 | Test | Clusters (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p | 90% range |
 |---|---:|---:|---:|---:|---:|---|
-| I, market-anchored | 62 | 58 | 1.3e-13 | +25.3 | 0.000 | +21.6 to +29.3 |
-| I, linked | 38 | 36 | 2.7e-09 | +22.6 | 0.000 | +18.5 to +26.8 |
-| N, market-anchored | 63 | 23 | 0.99 | -0.5 | 0.627 | -3.1 to +2.2 |
+| I, market-anchored | 60 | 58 | 1.6e-15 | +25.3 | 0.000 | +21.6 to +29.3 |
+| I, linked | 37 | 36 | 2.8e-10 | +22.6 | 0.000 | +18.5 to +26.8 |
+| N, market-anchored | 60 | 21 | 0.99 | -0.5 | 0.627 | -3.1 to +2.2 |
 
 Industry episodes: 961; market-anchored clusters: 63; linked: 39. Premium P pooled over the 30: 1.06 (sum I +30209, sum B -28553, C -3499).
 
