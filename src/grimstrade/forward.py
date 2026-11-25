@@ -22,6 +22,10 @@ offline command (design: `docs/forward-registry.md`).
 - The verdict is read once, on exactly the first `min_sample` observations. Before that the
   score is "waiting"; later observations are shown but never change the verdict (no peeking until
   the p-value looks good).
+- The `mean` and `sharpe` verdicts use a dependence-robust standard error (`SE_RULE`, DECISIONS
+  2026-11-25): Bartlett long-run variance over one year of lags, p-value from a Student-t
+  approximation to its fixed-b distribution. Weekly strategy returns are serially dependent; an
+  iid standard error rejected a true null 4-9% of the time at nominal 2.5% (evalue-forward-1).
 """
 
 from __future__ import annotations
@@ -31,7 +35,7 @@ import hashlib
 import json
 import math
 import subprocess
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -43,6 +47,7 @@ from grimstrade import ledger, stats
 REGISTRY = Path("research/forward/registry.jsonl")
 CANDIDATES = Path("research/forward/candidates.jsonl")
 METRICS = ("sharpe", "mean", "win_rate")
+SE_RULE = "bartlett-1y"  # recorded on each new line; the rule lives in `hac_t` and `lag`
 _N = NormalDist()
 
 
@@ -92,6 +97,7 @@ class Plan:
     sd: float | None = None
     skew: float = 0.0
     kurtosis: float = 3.0  # raw, 3 for a normal distribution
+    lrv: float = 1.0  # long-run variance / variance assumed true (train record's, at least 1)
 
     def __post_init__(self) -> None:
         if self.metric not in METRICS:
@@ -106,10 +112,129 @@ class Plan:
             raise ValueError("a win rate to detect must be between 1/2 and 1")
         if self.metric != "win_rate" and self.effect <= 0:
             raise ValueError("the effect to detect must be positive (one-sided test)")
+        if not self.lrv >= 1:
+            raise ValueError("lrv (long-run variance ratio) must be at least 1; write 1 if lower")
 
 
 def _z(alpha: float, power: float) -> float:
     return _N.inv_cdf(1 - alpha) + _N.inv_cdf(power)
+
+
+# --- the dependence-robust test (DECISIONS 2026-11-25, card research/cards/forward-se-1.md) ---
+
+
+def _betacf(a: float, b: float, x: float) -> float:
+    """Continued fraction of the incomplete beta function (modified Lentz)."""
+    tiny = 1e-300
+    c, d = 1.0, 1 - (a + b) * x / (a + 1)
+    d = 1 / (d if abs(d) > tiny else tiny)
+    h = d
+    for m in range(1, 10_000):
+        for num in (
+            m * (b - m) * x / ((a + 2 * m - 1) * (a + 2 * m)),
+            -(a + m) * (a + b + m) * x / ((a + 2 * m) * (a + 2 * m + 1)),
+        ):
+            d = 1 + num * d
+            d = 1 / (d if abs(d) > tiny else tiny)
+            c = 1 + num / c
+            c = c if abs(c) > tiny else tiny
+            h *= d * c
+        if abs(d * c - 1) < 1e-15:
+            break
+    return h
+
+
+def _betainc(a: float, b: float, x: float) -> float:
+    """Regularised incomplete beta I_x(a, b)."""
+    if x <= 0:
+        return 0.0
+    if x >= 1:
+        return 1.0
+    log_front = (
+        math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b) + a * math.log(x) + b * math.log1p(-x)
+    )
+    if x < (a + 1) / (a + b + 2):
+        return math.exp(log_front) * _betacf(a, b, x) / a
+    return 1 - math.exp(log_front) * _betacf(b, a, 1 - x) / b
+
+
+def t_sf(t: float, nu: float) -> float:
+    """P(T > t) for Student's t with `nu` (> 0, not necessarily whole) degrees of freedom."""
+    if nu > 1e7:
+        return 1 - _N.cdf(t)
+    tail = 0.5 * _betainc(nu / 2, 0.5, nu / (nu + t * t))
+    return tail if t >= 0 else 1 - tail
+
+
+def t_ppf(q: float, nu: float) -> float:
+    """The `q` quantile of Student's t (bisection on `t_sf`), q in (0.5, 1)."""
+    lo, hi = 0.0, 1.0
+    while t_sf(hi, nu) > 1 - q:
+        hi *= 2
+    for _ in range(100):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if t_sf(mid, nu) > 1 - q else (lo, mid)
+    return (lo + hi) / 2
+
+
+def lag(n: int, per_year: float) -> int:
+    """Bartlett lags for a window of `n` observations: one year of them, at most n / 4."""
+    q = max(1, round(per_year))
+    return max(0, min(q - 1, n // 4))
+
+
+def _ref(n: int, lags: int) -> tuple[float, float]:
+    """(c, nu): T * sqrt(c) is about Student-t with nu degrees of freedom. Fixed-b (Kiefer and
+    Vogelsang 2005): the Bartlett estimator's mean is c = 1 - b + b^2 / 3 of the true long-run
+    variance at b = lags / n, its variance 4b / 3 (Andrews 1991), so nu = 1.5 / b."""
+    if lags == 0:
+        return 1.0, n - 1.0
+    b = lags / n
+    return 1 - b + b * b / 3, 1.5 / b
+
+
+def long_run_variance(values: Sequence[float], lags: int) -> float:
+    """Bartlett (Newey-West) long-run variance, scaled by n / (n - 1): with 0 lags it is the
+    sample variance."""
+    n = len(values)
+    mean = math.fsum(values) / n
+    d = [v - mean for v in values]
+    w = math.fsum(x * x for x in d) / n
+    for j in range(1, lags + 1):
+        w += 2 * (1 - j / (lags + 1)) * math.fsum(d[t] * d[t - j] for t in range(j, n)) / n
+    return w * n / (n - 1)
+
+
+def hac_t(values: Sequence[float], per_year: float) -> tuple[float, float] | None:
+    """(T, one-sided p) for "mean > 0" with the Bartlett one-year long-run variance; None under 2
+    values or with no variation."""
+    n = len(values)
+    if n < 2:
+        return None
+    lags = lag(n, per_year)
+    w = long_run_variance(values, lags)
+    if not w > 0:
+        return None
+    t = (math.fsum(values) / n) / math.sqrt(w / n)
+    c, nu = _ref(n, lags)
+    return t, t_sf(t * math.sqrt(c), nu)
+
+
+def critical(n: int, per_year: float, alpha: float) -> float:
+    """The value T must exceed at `n` observations for p < alpha."""
+    c, nu = _ref(n, lag(n, per_year))
+    return t_ppf(1 - alpha, nu) / math.sqrt(c)
+
+
+def _smallest(need: Callable[[int], float], start: int) -> int:
+    """Smallest n >= 2 with n >= need(n), for `need` falling in n (n at or above `start` ok)."""
+    lo, hi = 2, max(start, 2)
+    while hi < need(hi):
+        lo, hi = hi, hi * 2
+    while lo < hi:
+        mid = (lo + hi) // 2
+        lo, hi = (lo, mid) if mid >= need(mid) else (mid + 1, hi)
+    return lo
 
 
 def min_periods_sharpe(
@@ -119,19 +244,39 @@ def min_periods_sharpe(
     power: float = 0.8,
     skew: float = 0.0,
     kurtosis: float = 3.0,
+    lrv: float = 1.0,
 ) -> int:
-    """Periods needed so a one-sided test of "Sharpe > 0" finds an annual Sharpe of `sharpe`
-    with the given power. Same variance as `stats.probabilistic_sharpe` (Mertens 2002):
-    z = sr * sqrt(n - 1) / sqrt(1 - skew * sr + (kurtosis - 1) / 4 * sr^2), sr per period."""
+    """Periods needed so the verdict's one-sided test of "Sharpe > 0" finds an annual Sharpe of
+    `sharpe` with the given power. Mertens' (2002) variance under the alternative (as in
+    `stats.probabilistic_sharpe`) times the assumed long-run variance ratio `lrv`, and the
+    dependence-robust test's critical value at that n instead of z(1 - alpha):
+    n = 1 + lrv k ((cv(n) + z_power) / sr)^2, k = 1 - skew sr + (kurtosis - 1) / 4 sr^2."""
     sr = sharpe / math.sqrt(per_year)
     k = 1 - skew * sr + (kurtosis - 1) / 4 * sr**2
-    return math.ceil(1 + k * (_z(alpha, power) / sr) ** 2)
+    zp = _N.inv_cdf(power)
+
+    def need(n: int) -> float:
+        return 1 + lrv * k * ((critical(n, per_year, alpha) + zp) / sr) ** 2
+
+    return _smallest(need, math.ceil(1 + lrv * k * (_z(alpha, power) / sr) ** 2))
 
 
-def min_events_mean(effect: float, sd: float, alpha: float = 0.025, power: float = 0.8) -> int:
-    """Events needed so a one-sided test of "mean > 0" finds a true mean of `effect` (normal
-    approximation to the t-test)."""
-    return math.ceil((_z(alpha, power) * sd / effect) ** 2)
+def min_events_mean(
+    effect: float,
+    sd: float,
+    alpha: float = 0.025,
+    power: float = 0.8,
+    per_year: float = 1.0,
+    lrv: float = 1.0,
+) -> int:
+    """Events needed so the verdict's one-sided test of "mean > 0" finds a true mean of `effect`:
+    n = lrv ((cv(n) + z_power) sd / effect)^2, cv(n) the test's critical value at n."""
+    zp = _N.inv_cdf(power)
+
+    def need(n: int) -> float:
+        return lrv * ((critical(n, per_year, alpha) + zp) * sd / effect) ** 2
+
+    return _smallest(need, math.ceil(lrv * (_z(alpha, power) * sd / effect) ** 2))
 
 
 def binom_tail(k: int, n: int, p: float) -> float:
@@ -175,11 +320,13 @@ def min_trials_win_rate(
 def min_sample(plan: Plan) -> int:
     if plan.metric == "sharpe":
         return min_periods_sharpe(
-            plan.effect, plan.per_year, plan.alpha, plan.power, plan.skew, plan.kurtosis
+            plan.effect, plan.per_year, plan.alpha, plan.power, plan.skew, plan.kurtosis, plan.lrv
         )
     if plan.metric == "mean":
         assert plan.sd is not None  # checked in Plan
-        return min_events_mean(plan.effect, plan.sd, plan.alpha, plan.power)
+        return min_events_mean(
+            plan.effect, plan.sd, plan.alpha, plan.power, plan.per_year, plan.lrv
+        )
     return min_trials_win_rate(plan.effect, plan.alpha, plan.power)
 
 
@@ -272,6 +419,8 @@ def entry(
         "sd": plan.sd,
         "skew": plan.skew,
         "kurtosis": plan.kurtosis,
+        "lrv": plan.lrv,
+        "se": SE_RULE if plan.metric != "win_rate" else "exact sign test",
         "per_year": plan.per_year,
         "alpha": plan.alpha,
         "power": plan.power,
@@ -292,6 +441,7 @@ def plan_of(row: Mapping[str, Any]) -> Plan:
         sd=row.get("sd"),
         skew=row.get("skew", 0.0),
         kurtosis=row.get("kurtosis", 3.0),
+        lrv=row.get("lrv", 1.0),
     )
 
 
@@ -383,24 +533,24 @@ class Score:
 
 
 def _stat(metric: str, values: Sequence[float], per_year: float) -> tuple[float, float] | None:
+    """(estimate, one-sided p). `mean` and `sharpe` share the dependence-robust test of
+    "mean > 0" (`hac_t`; at the null Sharpe 0, Lo's (2002) variance of the Sharpe ratio is the
+    long-run variance of the mean over sigma^2); `sharpe` shows the annualised sample Sharpe."""
     n = len(values)
     if metric == "win_rate":
         if n == 0:
             return None
         wins = sum(v > 0 for v in values)
         return wins / n, binom_tail(wins, n, 0.5)
+    got = hac_t(values, per_year)
+    if got is None:
+        return None
     if metric == "sharpe":
         m = stats.moments(values)
         if m is None:
             return None
-        return m.sharpe * math.sqrt(per_year), 1 - stats.probabilistic_sharpe(m, 0.0)
-    if n < 2:
-        return None
-    mean = math.fsum(values) / n
-    sd = math.sqrt(math.fsum((v - mean) ** 2 for v in values) / (n - 1))
-    if sd == 0:
-        return None
-    return mean, 1 - _N.cdf(mean / (sd / math.sqrt(n)))
+        return m.sharpe * math.sqrt(per_year), got[1]
+    return math.fsum(values) / n, got[1]
 
 
 def score(row: Mapping[str, Any], frozen: datetime | None, obs: Iterable[Obs]) -> Score:
@@ -449,7 +599,9 @@ def table(rows: Iterable[Mapping[str, Any]], alt_alpha: float = 0.10) -> str:
     ]
     for r in rows:
         t = plan_of(r)
-        alt = Plan(t.metric, t.effect, t.per_year, alt_alpha, t.power, t.sd, t.skew, t.kurtosis)
+        alt = Plan(
+            t.metric, t.effect, t.per_year, alt_alpha, t.power, t.sd, t.skew, t.kurtosis, t.lrv
+        )
         out.append(
             f"| `{r['id']}` | {t.metric} | {t.effect:g} | {t.per_year:g} | {t.alpha:g} | "
             f"{min_sample(t)} | {years_needed(t):.1f} | {min_sample(alt)} | "

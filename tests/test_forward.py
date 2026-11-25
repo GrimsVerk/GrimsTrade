@@ -80,12 +80,17 @@ def days(first: datetime, n: int) -> list[datetime]:
 
 
 def test_sharpe_sample_matches_the_closed_form_and_rl6() -> None:
-    """A true annual Sharpe of 0.79 on weekly bars: ~7 years at alpha 0.10 (rl-6's number),
-    ~12.6 at 0.025. Normal returns: n = 1 + ((z_a + z_b) / sr)^2, sr per period."""
+    """A true annual Sharpe of 0.79 on weekly bars: the iid closed form n = 1 + ((z_a + z_b) /
+    sr)^2 gives ~7 years at alpha 0.10 (rl-6's number) and ~12.6 at 0.025; the one-year HAC
+    test's wider critical value (fixed-b, b = 51 / n) adds 1-2 years."""
     n10 = forward.min_periods_sharpe(0.79, 52, alpha=0.10, power=0.8)
     n025 = forward.min_periods_sharpe(0.79, 52, alpha=0.025, power=0.8)
-    assert 7.0 < n10 / 52 < 7.5
-    assert 12.4 < n025 / 52 < 12.8
+    sr = 0.79 / 52**0.5
+    iid10 = 1 + ((forward._z(0.10, 0.8)) / sr) ** 2
+    iid025 = 1 + ((forward._z(0.025, 0.8)) / sr) ** 2
+    assert 7.0 < iid10 / 52 < 7.5 and 12.4 < iid025 / 52 < 12.8
+    assert iid10 < n10 < 1.25 * iid10 and iid025 < n025 < 1.2 * iid025
+    assert n025 == forward.min_periods_sharpe(0.79, 52, alpha=0.025) == 750
     fat = forward.min_periods_sharpe(0.79, 52, alpha=0.10, power=0.8, skew=-1, kurtosis=8)
     assert fat > n10  # fat tails and negative skew need more data, never less
 
@@ -94,7 +99,9 @@ def test_mean_sample_scales_with_the_square_of_noise_over_effect() -> None:
     small = forward.min_events_mean(12, 107, alpha=0.10)
     big = forward.min_events_mean(24, 107, alpha=0.10)
     assert abs(small / big - 4) < 0.1
-    assert forward.min_events_mean(10, 100, alpha=0.05, power=0.5) == 271  # (1.645 * 10)^2
+    # (1.645 * 10)^2 = 271 with a normal critical value; with no lags (per_year 1) the test is
+    # the t-test, whose t(272) critical value 1.6505 asks for 273
+    assert forward.min_events_mean(10, 100, alpha=0.05, power=0.5) == 273
 
 
 def test_win_rate_sample_is_the_first_n_with_enough_exact_power() -> None:
@@ -374,3 +381,122 @@ def test_table_lists_each_rule() -> None:
     rows = [json.loads(x) for x in CANDIDATES.read_text().splitlines() if x.strip()]
     out = forward.table(rows)
     assert all(f"`{r['id']}`" in out for r in rows)
+
+
+# --- the dependence-robust standard error (DECISIONS 2026-11-25, forward-se-1) ---
+
+
+def lcg_normals(n: int, seed: int) -> list[float]:
+    """Deterministic approximately normal values (sum of 12 uniforms from a fixed LCG)."""
+    x, out = seed, []
+    for _ in range(n):
+        s = 0.0
+        for _ in range(12):
+            x = (1103515245 * x + 12345) % 2**31
+            s += x / 2**31
+        out.append(s - 6)
+    return out
+
+
+def ar1(e: list[float], phi: float) -> list[float]:
+    out, prev = [], 0.0
+    for v in e:
+        prev = phi * prev + v
+        out.append(prev)
+    return out
+
+
+def iid_t(values: list[float]) -> float:
+    n = len(values)
+    m = sum(values) / n
+    sd = (sum((v - m) ** 2 for v in values) / (n - 1)) ** 0.5
+    return m / (sd / n**0.5)
+
+
+def test_the_lag_rule_is_one_year_of_observations_capped_at_a_quarter_of_the_window() -> None:
+    assert forward.lag(520, 52) == 51
+    assert forward.lag(5200, 52) == 51
+    assert forward.lag(625, 8) == 7
+    assert forward.lag(100, 52) == 25  # n / 4 cap
+    assert forward.lag(1000, 1.6) == 1
+    assert forward.lag(1000, 1) == 0
+
+
+def test_t_distribution_matches_known_values() -> None:
+    assert forward.t_ppf(0.975, 9) == pytest.approx(2.2622, abs=1e-4)
+    assert forward.t_ppf(0.95, 1) == pytest.approx(6.3138, abs=1e-4)
+    assert forward.t_sf(0.0, 4) == pytest.approx(0.5)
+    assert forward.t_sf(2.0, 3) == pytest.approx(0.069663, abs=1e-6)
+    assert forward.t_sf(-1.2, 7) == pytest.approx(1 - forward.t_sf(1.2, 7))
+    assert forward.t_sf(1.96, 1e8) == pytest.approx(0.025, abs=1e-4)
+
+
+def test_fixed_b_critical_value_matches_kiefer_vogelsang() -> None:
+    """Kiefer and Vogelsang (2005) Bartlett 97.5% critical value 1.96 + 2.9694 b + 0.4160 b^2
+    - 0.5324 b^3: within 1% at b = 0.1 and 0.01; with no lags, the t quantile."""
+    for n in (520, 5200):
+        b = 51 / n
+        kv = 1.96 + 2.9694 * b + 0.4160 * b**2 - 0.5324 * b**3
+        assert forward.critical(n, 52, 0.025) == pytest.approx(kv, rel=0.01)
+    assert forward.critical(30, 1, 0.025) == pytest.approx(forward.t_ppf(0.975, 29))
+
+
+def test_on_iid_data_the_verdict_is_the_old_one() -> None:
+    """Independent values: the HAC statistic is the iid t within a few per cent and the p-value
+    within 0.01 of the old normal-approximation p."""
+    for seed in (1, 2, 3):
+        x = [v + 0.08 for v in lcg_normals(5200, seed)]
+        t, p = forward.hac_t(x, 52)  # type: ignore[misc]
+        old_t = iid_t(x)
+        assert t == pytest.approx(old_t, rel=0.08)
+        assert p == pytest.approx(1 - forward._N.cdf(old_t), abs=0.01)
+    x = lcg_normals(400, 7)
+    t0, p0 = forward.hac_t(x, 1)  # type: ignore[misc]
+    assert t0 == pytest.approx(iid_t(x))  # no lags: exactly the t-test
+    assert p0 == pytest.approx(forward.t_sf(iid_t(x), 399))
+
+
+def test_dependent_data_get_a_wider_standard_error() -> None:
+    """AR(1) phi 0.5 (long-run variance 4 times the variance) and 52-week blocks of a shared
+    level: the HAC standard error is wider than the iid one, by about the theory's factor."""
+    x = ar1(lcg_normals(5200, 11), 0.5)
+    t, _ = forward.hac_t(x, 52)  # type: ignore[misc]
+    ratio = iid_t(x) / t  # = SE_hac / SE_iid
+    assert 1.5 < ratio < 2.0  # sqrt((1 + phi) / (1 - phi)) = 1.73; Bartlett at 51 lags 1.71
+    levels = lcg_normals(100, 12)
+    noise = lcg_normals(5200, 13)
+    blocks = [levels[i // 52] * 0.3 + noise[i] for i in range(5200)]
+    tb, _ = forward.hac_t(blocks, 52)  # type: ignore[misc]
+    assert iid_t(blocks) / tb > 1.5  # lrv about 1 + 52 * 0.09 = 5.7 times the variance
+    # the same data read as a monthly series (11 lags) see less of the dependence
+    tm, _ = forward.hac_t(blocks, 12)  # type: ignore[misc]
+    assert abs(tm) > abs(tb)
+
+
+def test_a_dependent_record_that_the_iid_test_passes_can_fail(repo: Path) -> None:
+    """The score itself uses the robust p: a positive-drift AR(1) record whose iid p is below
+    alpha but whose HAC p is not gets "fail"."""
+    plan = forward.Plan("mean", effect=0.1, per_year=52, alpha=0.025, sd=1.0)
+    forward.freeze(reg(repo), row(repo, "m@1", plan), T0)
+    commit(repo, T0 + timedelta(minutes=5))
+    r = forward.read(reg(repo))[0]
+    frozen = forward.freeze_times(reg(repo))["m@1"]
+    need = r["min_sample"]
+    x = [v + 0.11 for v in ar1(lcg_normals(need, 21), 0.6)]
+    assert 1 - forward._N.cdf(iid_t(x)) < 0.025  # the old verdict would pass
+    s = forward.score(r, frozen, obs(r, days(T0 + timedelta(days=1), need), x))
+    assert s.p is not None and s.p > 0.025 and s.verdict == "fail"
+
+
+def test_lrv_scales_the_sample_and_is_recorded() -> None:
+    base = forward.Plan("sharpe", effect=1.0, per_year=52)
+    wide = forward.Plan("sharpe", effect=1.0, per_year=52, lrv=2.0)
+    n1, n2 = forward.min_sample(base), forward.min_sample(wide)
+    assert 1.7 < n2 / n1 < 2.0  # twice the variance, less fixed-b penalty at the larger n
+    with pytest.raises(ValueError):
+        forward.Plan("sharpe", effect=1.0, per_year=52, lrv=0.8)
+    e = forward.entry(
+        "x@1", code={"a.py": "0"}, code_ref="HEAD", params={}, data={}, plan=wide, source="t"
+    )
+    assert e["lrv"] == 2.0 and e["se"] == forward.SE_RULE and e["min_sample"] == n2
+    assert forward.plan_of({k: v for k, v in e.items() if k != "lrv"}).lrv == 1.0  # old lines
