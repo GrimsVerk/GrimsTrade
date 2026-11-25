@@ -49,7 +49,11 @@ PLAN = forward.Plan("win_rate", effect=0.9, per_year=4, alpha=0.10, power=0.8)
 
 
 def row(
-    repo: Path, rule_id: str = "r@1", plan: forward.Plan = PLAN, **params: Any
+    repo: Path,
+    rule_id: str = "r@1",
+    plan: forward.Plan = PLAN,
+    train: list[float] | None = None,
+    **params: Any,
 ) -> dict[str, Any]:
     return forward.entry(
         rule_id,
@@ -59,7 +63,14 @@ def row(
         data={"source": "test"},
         plan=plan,
         source="test",
+        train=train,
     )
+
+
+def flat_train() -> list[float]:
+    """A train record whose measured lrv floors at 1 (AR(1), phi -0.5), so plans keep the
+    sample sizes these tests were written for."""
+    return ar1(lcg_normals(260, 5), -0.5)
 
 
 def reg(repo: Path) -> Path:
@@ -272,8 +283,9 @@ def test_sharpe_and_mean_scores(repo: Path) -> None:
         "s@1": forward.Plan("sharpe", effect=1.0, per_year=52, alpha=0.10),
         "m@1": forward.Plan("mean", effect=0.01, per_year=52, alpha=0.10, sd=0.02),
     }
+    train = flat_train()
     for rule_id, plan in plans.items():
-        forward.freeze(reg(repo), row(repo, rule_id, plan), T0)
+        forward.freeze(reg(repo), row(repo, rule_id, plan, train), T0, train)
     commit(repo, T0 + timedelta(minutes=5))
     frozen = forward.freeze_times(reg(repo))
     values = [0.02, -0.01, 0.03, 0.0, 0.01, 0.02, -0.005, 0.015]
@@ -479,7 +491,8 @@ def test_a_dependent_record_that_the_iid_test_passes_can_fail(repo: Path) -> Non
     """The score itself uses the robust p: a positive-drift AR(1) record whose iid p is below
     alpha but whose HAC p is not gets "fail"."""
     plan = forward.Plan("mean", effect=0.1, per_year=52, alpha=0.025, sd=1.0)
-    forward.freeze(reg(repo), row(repo, "m@1", plan), T0)
+    train = flat_train()
+    forward.freeze(reg(repo), row(repo, "m@1", plan, train), T0, train)
     commit(repo, T0 + timedelta(minutes=5))
     r = forward.read(reg(repo))[0]
     frozen = forward.freeze_times(reg(repo))["m@1"]
@@ -502,3 +515,125 @@ def test_lrv_scales_the_sample_and_is_recorded() -> None:
     )
     assert e["lrv"] == 2.0 and e["se"] == forward.SE_RULE and e["min_sample"] == n2
     assert forward.plan_of({k: v for k, v in e.items() if k != "lrv"}).lrv == 1.0  # old lines
+
+
+# --- lrv measured on the train record at freeze (lane registry-lrv-1) ---
+
+
+def bartlett_mean(phi: float, lags: int) -> float:
+    """What a Bartlett window of `lags` lags sees of an AR(1)'s long-run variance ratio
+    (1 + phi) / (1 - phi): sum over |j| <= lags of (1 - |j| / (lags + 1)) phi^|j|."""
+    return 1 + 2 * sum((1 - j / (lags + 1)) * phi**j for j in range(1, lags + 1))
+
+
+def test_measured_lrv_recovers_a_known_ar1_ratio() -> None:
+    """AR(1), 400 years of weekly values: the measured ratio is the one-year Bartlett window's
+    share of the true (1 + phi) / (1 - phi), within sampling noise (about 6% per series)."""
+    for phi in (0.3, 0.5):
+        true = (1 + phi) / (1 - phi)
+        got = [forward.measure_lrv(ar1(lcg_normals(20800, s), phi), 52) for s in (1, 2, 3)]
+        assert all(m["lags"] == 51 and m["n"] == 20800 for m in got)
+        assert all(abs(m["lrv"] / true - 1) < 0.1 for m in got)
+        mean = sum(m["lrv"] for m in got) / 3
+        assert mean == pytest.approx(bartlett_mean(phi, 51), rel=0.05)
+
+
+def test_independent_or_negatively_dependent_records_measure_1() -> None:
+    """iid values measure about 1, and anything below 1 is floored at 1 (a seed whose raw
+    ratio falls below 1, and an AR(1) with phi -0.5, true ratio 1/3)."""
+    iid = [forward.measure_lrv(lcg_normals(20800, s), 52) for s in (1, 2, 3)]
+    assert all(0.9 < m["ratio"] < 1.1 and m["lrv"] == max(1.0, m["ratio"] / m["c"]) for m in iid)
+    assert iid[1]["ratio"] < 1 and iid[1]["lrv"] == 1.0
+    neg = forward.measure_lrv(ar1(lcg_normals(20800, 1), -0.5), 52)
+    assert neg["ratio"] == pytest.approx(1 / 3, rel=0.15) and neg["lrv"] == 1.0
+    assert forward.measure_lrv(flat_train(), 52)["lrv"] == 1.0
+    # with no lags (one observation a year) there is nothing to measure: exactly 1
+    yearly = forward.measure_lrv(ar1(lcg_normals(40, 4), 0.5), 1)
+    assert yearly["lags"] == 0 and yearly["ratio"] == pytest.approx(1.0)
+
+
+def test_the_fixed_b_factor_removes_most_of_a_short_records_bias() -> None:
+    """Five years of weekly values (b = 0.2): the raw Bartlett ratio sits well below the truth;
+    dividing by c = 1 - b + b^2 / 3 (the verdict's own fixed-b factor) brings it most of the way
+    back. Means over 100 records."""
+    for phi in (0.0, 0.5):
+        ms = [forward.measure_lrv(ar1(lcg_normals(260, 1000 + s), phi), 52) for s in range(100)]
+        raw = sum(m["ratio"] for m in ms) / 100
+        fixed = sum(m["ratio"] / m["c"] for m in ms) / 100
+        target = bartlett_mean(phi, 51)
+        assert raw < 0.85 * target
+        assert abs(fixed - target) < abs(raw - target) / 2
+
+
+def test_a_record_too_short_for_a_year_of_lags_is_refused() -> None:
+    with pytest.raises(ValueError, match="year of dependence"):
+        forward.measure_lrv(lcg_normals(203, 1), 52)  # 51 lags need 204 values
+    assert forward.measure_lrv(lcg_normals(204, 1), 52)["lags"] == 51
+    with pytest.raises(ValueError, match="no variation"):
+        forward.measure_lrv([0.01] * 300, 52)
+
+
+def test_entry_records_the_measured_lrv_and_its_sample() -> None:
+    """The line's lrv is the measured one (min_sample sized with it), never less; a caller may
+    ask for more. The measurement and the train record's hash stay on the line."""
+    train = ar1(lcg_normals(20800, 2), 0.5)
+    m = forward.measure_lrv(train, 52)
+    plan = forward.Plan("sharpe", effect=1.0, per_year=52)
+
+    def make(p: forward.Plan) -> dict[str, Any]:
+        return forward.entry(
+            "x@1",
+            code={"a.py": "0"},
+            code_ref="HEAD",
+            params={},
+            data={},
+            plan=p,
+            source="t",
+            train=train,
+        )
+
+    e = make(plan)
+    assert e["lrv"] == m["lrv"] > 2.5 and e["lrv_train"] == m
+    assert e["lrv_train"]["sha256"] == forward.train_hash(train)
+    assert e["min_sample"] == forward.min_sample(forward.Plan("sharpe", 1.0, 52, lrv=m["lrv"]))
+    assert e["min_sample"] > 2 * forward.min_sample(plan)
+    assert make(forward.Plan("sharpe", 1.0, 52, lrv=1.5))["lrv"] == m["lrv"]  # raised, not kept
+    assert make(forward.Plan("sharpe", 1.0, 52, lrv=5.0))["lrv"] == 5.0  # more is allowed
+    assert forward.plan_of(json.loads(json.dumps(e))).lrv == m["lrv"]
+    # the sign test does not use lrv: nothing measured, nothing recorded
+    w = forward.entry(
+        "w@1",
+        code={"a.py": "0"},
+        code_ref="HEAD",
+        params={},
+        data={},
+        plan=PLAN,
+        source="t",
+        train=train,
+    )
+    assert "lrv_train" not in w and w["lrv"] == 1.0
+
+
+def test_freeze_refuses_an_unmeasured_or_understated_lrv(repo: Path) -> None:
+    plan = forward.Plan("mean", effect=0.1, per_year=52, sd=1.0)
+    train = ar1(lcg_normals(520, 3), 0.5)
+    other = ar1(lcg_normals(520, 4), 0.5)
+    with pytest.raises(forward.LrvNotMeasured):
+        forward.freeze(reg(repo), row(repo, "m@1", plan), T0)  # a proposal: lrv assumed 1
+    with pytest.raises(forward.LrvNotMeasured):
+        forward.freeze(reg(repo), row(repo, "m@1", plan), T0, train)  # train only at freeze
+    with pytest.raises(forward.LrvNotMeasured):
+        forward.freeze(reg(repo), row(repo, "m@1", plan, train), T0)  # train not shown again
+    with pytest.raises(forward.LrvNotMeasured):
+        forward.freeze(reg(repo), row(repo, "m@1", plan, other), T0, train)  # another record
+    low = row(repo, "m@1", plan, train)
+    low_plan = forward.Plan("mean", effect=0.1, per_year=52, sd=1.0, lrv=1.0)
+    low |= {"lrv": 1.0, "min_sample": forward.min_sample(low_plan)}  # edited down, consistently
+    with pytest.raises(forward.LrvNotMeasured):
+        forward.freeze(reg(repo), low, T0, train)
+    assert not reg(repo).exists() or not reg(repo).read_text().strip()
+    line = forward.freeze(reg(repo), row(repo, "m@1", plan, train), T0, train)
+    assert line["lrv"] == forward.measure_lrv(train, 52)["lrv"] > 1
+    assert forward.read(reg(repo))[0]["lrv_train"]["sha256"] == forward.train_hash(train)
+    # a win_rate rule needs no train record
+    forward.freeze(reg(repo), row(repo, "w@1"), T0)

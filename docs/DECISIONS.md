@@ -2,6 +2,28 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-25 (lane `registry-lrv-1`; before any freeze, the registry holds no line): the
+  forward registry measures `lrv` on the train record at every freeze instead of assuming it.
+  `forward.measure_lrv(train, per_year)`: Bartlett long-run variance at the verdict's own lag
+  rule (`lag(n, per_year)`, one year) over the sample variance, divided by the fixed-b mean
+  factor c = 1 - b + b^2 / 3 that the verdict's p-value already assumes (`_ref`; at five years
+  of weekly bars c = 0.81, so the raw ratio would understate the truth by about a fifth and
+  under-size the sample), floored at 1. A record shorter than a year of lags needs (4 (round(
+  per_year) - 1) values) is refused rather than measured with fewer lags. `entry(...,
+  train=...)` keeps the measurement under `lrv_train` (n, lags, raw ratio, c, lrv, sha256 of
+  the values, so anyone with the record can re-check it) and sizes `min_sample` with
+  `lrv` = max(plan's lrv, measured); `freeze(..., train=...)` re-measures and refuses a `mean`
+  or `sharpe` line that lacks it, was measured on other values, or carries a smaller `lrv`
+  (`LrvNotMeasured`). **Caller-supplied lrv: allowed only at or above the measurement.** A
+  larger value stays (dependence longer than a year, which a one-year window cannot see:
+  forward-se-1's 104-week blocks rejected 6.5% at 10 years); a smaller one is raised to the
+  measurement in `entry`, and a line edited down is refused at `freeze`. Why not refuse the
+  smaller value in `entry`: the plan's default 1.0 cannot be told from an explicit 1.0, and
+  raising it is the point; the line shows both numbers. `win_rate` (exact sign test) does not
+  use `lrv`, so it needs no train record. Proposals (`candidates.jsonl`, no train values) keep
+  their lrv-1 numbers and are marked not frozen; their real samples are known only at freeze.
+  Old lines without `lrv` read as 1. The daily runner does not import `grimstrade.forward`.
+
 - 2026-11-25 (lane `reconcile-reuse-1`, review of #153): the daily reconcile takes each
   day's cash rate and its interest from `gym.cash_rate` and `gym.interest` instead of its own
   copies, so a deliberate change to the rate lookup (carry forward, floor at 0) or the day count
