@@ -23,7 +23,7 @@ chemistry (wide-21); energy systems (grid load, gas storage, blackouts), freight
 frost on crops (wide-22); cybercrime, courts, news novelty, cloud outages, influenza, soil
 moisture as food prices (wide-23); seismology as damage, supply networks, sport, mega-events,
 shipping, livestock epidemics, supply-chain pressure, critical minerals, extreme values
-(wide-24); and wide-25 (running in parallel, `origin/wide-25` read 2026-11-25 23:10 UTC):
+(wide-24); and wide-25 (running in parallel, `origin/wide-25` read 2026-11-25 23:04 UTC):
 comparative politics, air quality, software engineering, night lights, process safety, rail
 traffic, recalls, Beige Book tone, quantum risk. Mechanisms scored there are not scored again.
 
@@ -73,7 +73,7 @@ Schlenker, cocoa, hail, sea level, wind drought, 49 industries, Agric. Found:
 - **Fisheries**: wide-21 S4 `pdo-regime` mentions fisheries as a PDO effect (scored 3).
 - Snowpack, NDVI, salmon, wildfire, Schlenker, cocoa, hail, sea level, wind drought: nothing.
 
-## Step 2. Fourteen mechanisms, scored (2026-11-25 23:15 UTC, before any price was read)
+## Step 2. Fourteen mechanisms, scored (2026-11-25 23:08 UTC, before any price was read)
 
 **Disclosure.** Before this table, format only (no price, no return, no dose statistic): the
 nClimDiv state readme (region codes; NCEI robots.txt read first) and the column names and
@@ -157,11 +157,11 @@ months). No second gate (W44 not used).
 
 The rule, data, placebo families, gate, the replication R43 (run only after a pass), shown
 cells, power and guess are in [`cards/wide-26.md`](cards/wide-26.md), pushed before any number
-(commit 0bf2770, 23:20 UTC). Code: `research/lib/wide26_events.py` (pure functions, tested
+(commit 0bf2770, 23:10 UTC). Code: `research/lib/wide26_events.py` (pure functions, tested
 offline in `tests/test_wide26.py`) and `research/lib/wide26.py` (load and run). Results:
 `research/results/drought-food-margin.md`.
 
-### Dry run (counts only, 2026-11-25 23:33 UTC)
+### Dry run (counts only, 2026-11-25 23:12 UTC)
 
 Corn Belt PDSI (nClimDiv 361): 1,570 months, 1895-01 .. 2025-10, no gap. **Gate rows 786 dose
 months (1960-01 .. 2025-06**; 2025-07 drops because its outcome would end after 2025-10); R43
@@ -169,3 +169,59 @@ rows 340. **Dose lag-1 autocorrelation 0.940**: above 0.8, so gate-null-2's "bot
 rule applies, as the card expected (pass needs rank <= 2 of 41 in the shifted calendars and in
 the phase surrogates). Gate-row dose SD 2.48 PDSI units (the card's power guess used 2.5); 77
 dose months at PDSI <= -2 and 27 at PDSI <= -4.
+
+## What came out (one real run, 2026-11-25 23:13 UTC)
+
+### W43 `drought-food-margin`: fails (no effect)
+
+**One PDSI unit of Corn Belt drought goes with +0.009% for the US food industry's
+beta-adjusted return over the quarter m+2 .. m+4 (Newey-West t +0.07, 786 dose months,
+1960-2025), against the predicted negative sign; the true t ranks 22 of 41 shifted calendars
+and 23 of 41 phase surrogates. Dead by the gate: no card for a strategy. R43 is not run** (the
+card runs it only after a pass). Held-out year untouched.
+
+| Cell (beta-adjusted Food, m+2 .. m+4, NW 3, dose months 1960-01 .. 2025-06, unless named) | b, % per unit | t | Rows |
+|---|---:|---:|---:|
+| **Gate** | **+0.009** | **+0.07** | **786** |
+| Raw Food minus market (no beta) | -0.044 | -0.33 | 786 |
+| W32's dose: contiguous-US PDSI (code 110) | +0.053 | +0.41 | 786 |
+| Drying: PDSI(m-3) - PDSI(m), Corn Belt | -0.008 | -0.04 | 786 |
+| 12-month horizon (m+2 .. m+13), NW 12 | +0.086 | +0.20 | 777 |
+| Growing-season dose months only (Jun-Sep) | -0.121 | -0.49 | 261 |
+| Restaurants (Meals) | +0.006 | +0.04 | 786 |
+| Farms (Agric), no sign predicted | +0.103 | +0.61 | 786 |
+| Equal-weighted Food | -0.122 | -1.19 | 786 |
+| The market itself (Mkt-RF, m+2 .. m+4) | +0.246 | +1.59 | 786 |
+| After Hong-Li-Xu: dose months 2016-01 on | -0.327 | -2.02 | 114 |
+
+- **Nothing in the channel.** Every full-sample cell has |t| under 1.6; the signs split. The
+  equal-weighted cell (smaller food firms, less able to hedge) leans the predicted way, t -1.19,
+  within the null.
+- **The driest months go both ways.** The ten driest gate months (results file) are 1964-01..03
+  and 1977-02..07 and 2012-11: the quarter after is -2.8% .. +3.7% in 1964 and 1977, and
+  **+14.6%** after November 2012 (the 2012 drought), when food
+  stocks beat their beta handily instead of trailing it.
+- **The post-sample cell (t -2.02, 114 months) is noted only, not a lead** (gate-null step 6). It
+  rests on one episode: all 14 of its months at PDSI <= -2 lie in 2022-10 .. 2024-03. Run
+  through the same two families after the main run (descriptive, shown here because its t
+  crossed 2): rank 5 of 41 in the shifted calendars (null SD 1.49, 22% past |t| 2, min -3.99)
+  and 2 of 41 in the surrogates (SD 1.47, 22%). A one-episode subsample with that null width is
+  ordinary.
+- **The null.** Shifted calendars: SD 1.10, 8% past |t| 2, 5/50/95% -1.68 / +0.03 / +1.52,
+  extremes -2.28 / +2.02. Phase surrogates: SD 1.25, 15%, -2.13 / -0.07 / +2.06, extremes
+  -2.97 / +2.65. Both centred; the surrogates are wider, as gate-null-2 found for persistent
+  doses.
+- **The market cell** (drought then the market rises, t +1.59) is W32's other half seen from
+  stocks; noted only.
+- **Power, measured.** SE(b) is about 0.13% per unit (b / t of the raw cell; the gate's t is too
+  small to divide by), near the card's 0.14. A pass needed about -0.3% per unit, about -1.5% in
+  the quarter after a severe drought; the true slope is +0.01 with a 95% interval of about -0.25
+  .. +0.27. Effects as large as the size check allowed are unlikely; a 1% quarterly squeeze after
+  the worst droughts is not ruled out.
+- My guess (b near 0, t between -1.5 and +1, a middle rank, placebo SD 1.0-1.5, pass 3%) was
+  right on every count.
+
+Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024, above the family bar and
+the register's 9.8e-5). A kill on its own t (+0.07, wrong sign).
+Published effect tested after publication: Hong, Li and Xu (2019) `[memory]` in a US-only,
+industry-level form (their test is a cross-country panel of drought trends): not reproduced.
