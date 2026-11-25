@@ -7,6 +7,7 @@ Formats are from the providers' public docs; live fetching is proven on GitHub A
 from __future__ import annotations
 
 import csv
+import http.client
 import io
 import json
 import math
@@ -33,12 +34,15 @@ SOCKET_TIMEOUT = 30.0
 def http_get(
     url: str, cap: float | None = None, clock: Callable[[], float] = time.monotonic
 ) -> bytes:
-    """The body at `url`. With a `cap` (seconds), raises TimeoutError once the request has
-    taken longer than that: the time is checked after each `read1`, which returns as soon as
-    some bytes arrive (`read(n)` would wait for all n of them), so a body trickled byte by byte
-    stops at the cap, plus at most one socket timeout if the server then goes silent. Not
-    covered: a server trickling the status line or headers; `urlopen` reads those before this
-    can check, under the per-operation socket timeout only."""
+    """The whole body at `url`. Raises `http.client.IncompleteRead` for a body that ends
+    before its Content-Length (a connection dropped mid-answer: a CSV cut inside its newest row
+    could otherwise pass as data and be stored for good); a chunked body cut short raises too.
+    With a `cap` (seconds), also raises TimeoutError once the request has taken longer than
+    that: the time is checked after each `read1`, which returns as soon as some bytes arrive
+    (`read(n)` would wait for all n of them), so a body trickled byte by byte stops at the cap,
+    plus at most one socket timeout if the server then goes silent. Not covered: a server
+    trickling the status line or headers; `urlopen` reads those before this can check, under
+    the per-operation socket timeout only."""
     deadline = None if cap is None else clock() + cap
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=SOCKET_TIMEOUT) as resp:
@@ -47,7 +51,12 @@ def http_get(
             chunks.append(chunk)
             if deadline is not None and clock() > deadline:
                 raise TimeoutError(f"no whole answer within {cap:g} s")
-        return b"".join(chunks)
+        body = b"".join(chunks)
+        # `read1` ends on the closed connection without a word; `read()` used to raise here.
+        # Bytes still owed: > 0 after an early end, 0 after a whole one, None if chunked.
+        if missing := getattr(resp, "length", None):
+            raise http.client.IncompleteRead(body, missing)
+        return body
 
 
 def runner_get(url: str) -> bytes:

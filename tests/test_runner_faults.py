@@ -7,6 +7,7 @@ rest of the run still happens, and the failure is said in words (a problem line,
 refusal, exit 2).
 """
 
+import http.client
 import inspect
 import json
 import re
@@ -340,7 +341,7 @@ def test_an_answer_with_two_different_bars_for_one_day_is_not_stored_silently(
 ) -> None:
     """One answer lists 2026-10-05 twice with different prices. `data.append` kept whichever
     came last and said nothing; the other version was lost. Now such an answer counts as a failed
-    source (the next one is asked), like a nonsense bar (docs/DECISIONS.md, 2026-11-26)."""
+    source (the next one is asked), like a nonsense bar (docs/DECISIONS.md, 2026-11-25)."""
     days = DAYS[:10]
     rows = json.loads(kraken_rows(days))
     twin = list(rows["result"]["XXBTZUSD"][4])
@@ -549,6 +550,39 @@ def test_a_trickling_answer_is_cut_off_at_the_request_cap(
     # Without a cap (scripts with large downloads) the whole body is read, however slow.
     monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout: Trickle(clock, reads))
     assert sources.http_get("https://example.invalid/", clock=clock) == b"ab" * reads
+
+
+class Sized:
+    """A response with a Content-Length of 100 whose connection closes after `sent` bytes, as
+    `http.client` reports it: `read1` gives what came, then b"", and `length` keeps the bytes
+    still owed (0 after a whole body)."""
+
+    def __init__(self, sent: int) -> None:
+        self.length, self.left = 100, sent
+
+    def __enter__(self) -> "Sized":
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        return None
+
+    def read1(self, n: int) -> bytes:
+        out, self.left = b"x" * min(n, self.left, 30), self.left - min(n, self.left, 30)
+        self.length -= len(out)
+        return out
+
+
+@pytest.mark.parametrize("cap", [None, 90.0])
+def test_a_body_cut_short_is_an_error_not_a_shorter_answer(
+    monkeypatch: pytest.MonkeyPatch, cap: float | None
+) -> None:
+    """A CSV cut inside its newest row (a close 601.23 read as 601.2, a volume missing) would
+    pass every check and be stored for good."""
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout: Sized(50))
+    with pytest.raises(http.client.IncompleteRead):
+        sources.http_get("https://example.invalid/", cap=cap)
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout: Sized(100))
+    assert sources.http_get("https://example.invalid/", cap=cap) == b"x" * 100
 
 
 def test_the_runner_caps_each_request_by_default() -> None:
