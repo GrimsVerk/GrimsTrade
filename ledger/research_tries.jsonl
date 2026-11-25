@@ -3157,3 +3157,1081 @@
 {"idea":"yield-curve","seen":"2026-11-19T03:44:07Z","sharpe":null,"variant":"curve-and@gspc"}
 {"idea":"yield-curve","seen":"2026-11-19T03:44:07Z","sharpe":null,"variant":"curve-and@n225"}
 {"idea":"yield-curve","seen":"2026-11-19T03:44:07Z","sharpe":null,"variant":null}
+{"idea":"act-haven","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"gld+tlt 4-week return on gpr acts z, from available-on date (b -0.137%/z, t -1.02, rank 21/41, gate fail)"}
+{"idea":"adaptive-radiation, flickering","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"air-disaster-mood","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"spy daily return on log2(deaths/25) of wikidata aviation accidents >= 50 deaths, days 0-1, hc1 (b -0.038%/day/unit, t -0.59, rank 10/41, gate fail)"}
+{"idea":"air-disaster-mood","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"alpha-form","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stored record re-scored in alpha form (residual ir on the same universe's `tsmom12`, nw/bootstrap z, best long-only mix): 341 distinct selectable series, 0 at z >= 4.69, 2 at >= 3.29 (fm-bolt-base-tilt 4.31: pretraining memory; merfx7 4.14: cash earns 0); median mix gain +0.010; a lens, no new try (research/alpha-form-1.md)"}
+{"idea":"amo-hurricane","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s5, filtered: duplicate of dead channels (w15, w32)"}
+{"idea":"anomaly-market-timing","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"anomaly-time","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"ath","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 1 (#3); dead, nearest miss: +0.08 p=0.18, gain all from coins (4 btc episodes)"}
+{"idea":"bbwp","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 1 (#1); dead: -0.04 vs tsmom12, 0/5 eras"}
+{"idea":"bet-hedge-seedbank, phenotype-switching, demon-book-cash, portfolio-effect, functional-groups, taylor-law, k-of-n-lookbacks, slew-limit, tranching, leaky-bucket, s-s-inventory, cppi-floor, ideal-free, derating","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"breadth-anatomy-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): why breadth-book-1's wider tsmom12 books score lower (same bars, rule, universes; sharpe above bills 2008-01..2025-10). gap l-12/l-20/l-all - six -0.23/-0.36/-0.54 = etf breadth with coins at the six's weight (k - six) -0.17/-0.17/-0.17 (z -2.6 to -3.2) + coin dilution -0.06/-0.19/-0.37 (coin share 26/54/68%). coin-free: four 0.82 vs four+6/14/29 added 0.38/0.36/0.37. added sleeves' own tsmom12 sharpe mean 0.17 (six 0.65; fx -0.31, intl eq 0.04, cmdty 0.06); a-29 book 0.29 vs rho 0.38 x 1.19 = 0.45: marginal test fails, best weight 0 (vs four: rho 0.73). crisis rho(a-29, six) 0.66 vs 0.37. inverse-vol widens the gap (-0.81). 2008-09 gap -0.19, 2010-25 -0.54 (research/breadth-anatomy-1.md)"}
+{"idea":"breadth-anatomy-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.78,"variant":"c-10@2020"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"c-2@2020"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.91,"variant":"c-5@2020"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.53,"variant":"e-12@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.46,"variant":"e-20@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.73,"variant":"e-6@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.48,"variant":"e-all@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"four@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":1.04,"variant":"l-12@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.93,"variant":"l-20@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"l-all-live-form@2008/ts_momentum"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.75,"variant":"l-all@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"l-all@2020"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lc-all-live-form@2020/ts_momentum"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":0.84,"variant":"lc-all@2020"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"six-live-form@2008/ts_momentum"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"six-live-form@2020/ts_momentum"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"six@2008"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"six@2020"}
+{"idea":"breadth-book-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"brier-verify, mos-calibrate, damped-persistence, bma-lookbacks, xl-layer, bonus-malus, cred-forward, stop-reentry, robust-lookback","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"buy_hold_btc","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"buy_hold_btc","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"buy_hold_btc","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"buy_hold_btc","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"buy_hold_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"buy_hold_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"buy_hold_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"buy_hold_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"chemical-accident-mood","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s12, filtered: mood-shock class dead (w31)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"costs-at-zero split (same run, not a try): band05@cm net +0.033 (z 1.80) = drift with all coin costs zero +0.014 (z 0.71) + fees and tiers +0.019; band02@cm +0.011 = +0.005 + 0.006; excess over placebo p1 +0.009 (z 0.83) / +0.002 (z 0.62), over p2 +0.009 (z 0.54) / -0.001 (z -0.35); turnover/yr in this idea's rows = traded value x equity a year, both sides"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@cd2 (band 0.01; coin-drift-2's six coins to 2019-03)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band02@cm (band 0.12 of the slot)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band02@cm placebo p1 (median of 40 shuffles; mean sharpe 0.67)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band02@cm placebo p2 (median of 40 shuffles; mean sharpe 0.49)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band05@cd2 (band 0.05 of equity)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band05@cm (band 0.30 of the slot)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band05@cm placebo p1 (median of 40 shuffles; mean sharpe 0.68)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band05@cm placebo p2 (median of 40 shuffles; mean sharpe 0.50)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"coin-drift-2 split (same run, not a try): band05@cd2 net -0.014 (z -0.50); above bills +0.011 (z 0.40); coin fills free -0.019 (z -0.69); reading: killed: no support on unseen data"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"k06@cm (cointop-1 coin book, band 0.06 of the slot)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"k06@cm placebo p1 (median of 40 shuffles; mean sharpe 0.66)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"k06@cm placebo p2 (median of 40 shuffles; mean sharpe 0.47)"}
+{"idea":"coin-drift-run","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"coin-fast-exit","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"conception-lead","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p6, filtered (f1: births read as news)"}
+{"idea":"congress-workload","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"spy 4-week return on anscombe roll-call count (session dummy, past-return controls) (b -0.009%/unit, t -0.19, rank 25/41, gate fail)"}
+{"idea":"congress-workload","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"consumer-sentiment","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p10, filtered (f1 and f2)"}
+{"idea":"cosmic-ray-cloud","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s6, filtered: duplicate of w16 (forbush decreases coincide with storms)"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":1.06,"variant":"band02"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band02/bills"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band02@coin"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":1.09,"variant":"band05"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band05/bills"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"band05@coin"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"ceiling: `tsmom12` with coin fills free (not tradable; step 1b, `lib/wide16_ceiling.py`): +0.0103, se 0.0017, z 6.0; drift costs only +0.0085, z 10.0"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"post hoc split (`lib/wide16_posthoc.py`, not a try): band05 +0.049 = drift bet +0.054 (coin fills free) + fees/tiers -0.005; coin share while held 0.274 vs 0.273"}
+{"idea":"cost-band","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"cpc-revision","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"ung next-session open-to-close on cpc 6-10/8-14 outlook revision (slope -0.076 pp/0.10, t -0.68, rank 36/41, gate fail)"}
+{"idea":"cpc-revision","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"cred-lr","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"cred-xs","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1@coin"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2@coin"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5@coin"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"crypto_mean_reversion","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"data-long-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"data lane: keyless long rates/fx/commodity panel cached (us bonds 1962-, 9 foreign 10y 1955-89-, 9 fx with carry 1971-, 12 ppi commodity indices 1913-47-); bonds vs ief/tlt/shy corr 0.97-0.99, fx spot vs trusts 0.99, spot oil vs uso +10 pts/yr; no strategy run (research/data-long-3.md)"}
+{"idea":"drought-inflation","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r32 replication of w32: 10-year yield change end m+1..end m+4 on -pdsi, dose months 1962-01..2002-03, nw 3 lags (b -0.32 bp/unit, t -0.19, rank 21/41, gate fail: w32 dead)"}
+{"idea":"drought-inflation","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"w32: tlt log return months m+2..m+4 on -pdsi (contiguous us, noaa nclimdiv), nw 3 lags (b -0.784%/unit, t -3.71, rank 1/41, kill-only gate pass; killed by replication r32)"}
+{"idea":"drought-inflation","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"dst-sleep","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p7, filtered (f1: scheduled dates, no dose)"}
+{"idea":"e4-anatomy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"e4-anatomy-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): e4 minus tsmom12 sharpe per market split by regime and leg (pooled-1/pooled-2 series and code; d reproduced to 6e-16). card split, 25% zigzag: equity d +0.063 = risk part +0.087 + return part -0.024 (rebound +0.092, fast +0.022, slow +0.003, whipsaw +0.018, calm -0.159); bonds+fx +0.010 = +0.035 - 0.025. post hoc vs vol-matched tsmom12: equity rebound +0.117 (se 0.041, 39 of 41 markets > 0), slow bear -0.037, calm -0.043, fast +0.009. equity-vs-other gap +0.053 = risk part +0.052 (card reading b), not regime mix (research/e4-anatomy-1.md)"}
+{"idea":"eclipse-omen","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s7, filtered f1: scheduled, no dose"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1@coin"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2@coin"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5@coin"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"equal_weight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"evalue-forward","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"anytime-valid sequential test for the forward record (betting e-process ons, mixture sprt) vs fixed horizon: on iid data no faster (d +0.10 rho 0.95 alpha 0.025: fixed 78 y, e1 median 79 y, 11% by 20 y; d +0.30 median 10.5 y vs fixed 9 y); on the store's block-resampled null e1 rejects 13.5-14.1% at nominal 2.5% (serial dependence, 52-week variance ratio median 1.34), fixed iid t-test 4.2-6.6%; do not adopt; simulation only (research/evalue-forward-1.md)"}
+{"idea":"evalue-forward-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"experience-weighted","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p9, filtered (f2: weighted past returns)"}
+{"idea":"factor-zoo-timing","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"failure-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"xlf 4-week return on ln(1 + fdic failed assets) with past-return controls (b -0.059%/unit, t -0.48, rank 21/41, gate fail)"}
+{"idea":"fng","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 4 (#12, stand-in); dead: buy fear -0.10, sell greed -0.08"}
+{"idea":"fomc-dissent","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"forward-se","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"forward registry verdict se (engineering, not a try): one-year bartlett hac with fixed-b student-t p (b = (l + 1) / n), min_sample with lrv; null rejection at nominal 0.025 on 52-week block-resampled store paths, vs tsmom12 10 y 0.061-0.064 -> 0.043-0.058, 100 y 0.046-0.047 -> 0.031-0.036, tsmom12 vs 0 0.081/0.083 -> 0.010/0.023, gaussian 0.024-0.027 kept; card kill condition met (3 cells > 0.040), adopted by the night lead as a deviation; remainder is skew of yearly sums (research/forward-se-1.md)"}
+{"idea":"forward-se-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"gap","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 2, video 3 (#7); dead: -0.09 vs tsmom12"}
+{"idea":"gap-2002-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): tsmom12 minus holding 2002-01..2025-10, log pts a year, cash 0 / bills: s&p 500 tr -1.00 / -0.70, french us market -1.41 / -1.08, mean of 10 industries -2.02 / -1.60 (telcm +0.72 to hlth -3.92), 11-series mean -1.96 / -1.55 (insure-2's -2.19 by peak reproduced); by date fall +7.4, rebound lag -7.5, calm drag -1.9 (11-series mean, cash 0); s&p +4.9 / -4.3 / -1.7 (research/gap-2002-1.md)"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-btc@bch"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-btc@bsv"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-btc@etc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-btc@ltc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-btc@lz"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-btc@zec"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-own@bch"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-own@bsv"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-own@btc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-own@etc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-own@ltc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-own@lz"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"alone-own@zec"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"and-own@lz"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bh@bch"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bh@bsv"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bh@btc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bh@etc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bh@ltc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bh@lz"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bh@zec"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"btc alone-own placebos (rank 1/41, shown)"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"c2 lz alt/btc own window minus outside (+0.402/yr, rank 32/41 most negative; gate fail: btc-beta)"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"s1 alone-own@lz own-calendar placebos (sharpe 0.45, rank 40/41, null sd 0.14, fail)"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"s2 alone-btc@lz btc-calendar placebos (sharpe 1.23, rank 1/41, null sd 0.22)"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@bch"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@bsv"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@btc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@ltc"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@lz"}
+{"idea":"halving-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@zec"}
+{"idea":"hann12, kalman-llt, cusum-exit, pd-trend, gain-schedule, perm-entropy, ib-soft, mst-length, spillover, centrality-tilt, tail-index, irreversibility","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"harvest-cash","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"heat-labour","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/buy_hold_btc"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/buy_hold_spy"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/crypto_mean_reversion"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/equal_weight"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/halving-alone"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/own_vol_70"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/preset_careful"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/preset_middle"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/risk_parity"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/sixty_forty"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/stop-0.25"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/ts_momentum"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/tsmom12"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/tsmom12/gymcost"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/vol_target_spy"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/where-vol"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"book/xs_momentum"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"ew-pair"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"ew16"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"ew16/gymcost"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":1.05,"variant":"hedge-pair"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hedge-pair/gymcost"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":1.13,"variant":"hedge16"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hedge16/gymcost"}
+{"idea":"hedge-books-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"huber52","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"hurst-flood","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s8, filtered f2 (price statistic), dead in the literature (lo 1991)"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-aus"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-bel"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-che"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-check-cash0: check 4: cash at 0 when out; holds; i > 0 in 9 of 9 anchored falls, s 0.60 vs random 0.38 (p 0.020), p 2.49"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-check-full: check 1: full span 1870-2020; holds; i > 0 in 17 of 17 anchored falls, s 0.70 vs random 0.50 (p 0.024), p 1.27"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-check-nohyper: check 5: years with cpi > 50% dropped; holds; i > 0 in 9 of 9 anchored falls, s 0.76 vs random 0.44 (p 0.036), p 1.12"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-check-real: check 2: events on the real index; holds; i > 0 in 11 of 11 anchored falls, s 0.45 vs random 0.28 (p 0.000), p 1.19"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-check-t20: check 3a: 20% fall / 20% rise; holds; i > 0 in 14 of 15 anchored falls, s 0.73 vs random 0.48 (p 0.016), p 1.16"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-check-t40: check 3b: 40% fall / 25% rise; holds; i > 0 in 8 of 8 anchored falls, s 0.80 vs random 0.43 (p 0.014), p 1.26"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-deu"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-dnk"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-esp"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-fin"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-fra"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-gbr"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-ita"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-jpn"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-nld"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-nor"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-prt"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-swe"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12a@insure-1870-usa"}
+{"idea":"insure-1870-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cboe-bxm@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cboe-cll@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cboe-pput@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cboe-put@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cboe-vxth@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold-spx-tr@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mix50-tsmom12-pput-bills@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mix50-tsmom12-pput-cash0@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12-spx-tr-bills@insure3"}
+{"idea":"insure-3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12-spx-tr-cash0@insure3"}
+{"idea":"insure-4","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12-pput-bills-cost10@insure4"}
+{"idea":"insure-4","seen":"2026-11-25T04:58:08Z","sharpe":0.75,"variant":"tsmom12-pput-bills@insure4"}
+{"idea":"insure-4","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12-pput-cash0@insure4"}
+{"idea":"insure-4","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"jackpot-substitution","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p2, score 5, parked: no keyless jackpot history"}
+{"idea":"jst-autocorr-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"descriptive note on insure-1870-1 (not a try): per-episode s 0.80 vs 0.47 random (gap +0.32) on jst 1871-1965; ar(1) phi 0.19 alone gives median gap +0.20 (observed at 98th pct), full annual averaging +0.24 (94th pct; card reading 'smoothing could explain it', narrowly); random walk +0.06; checked sources are year-end (jst us = shiller dec-dec, jst norway 1921-65 = klovland dec-dec month-end, acf +0.23); origin of the 0.17-0.19 acf open (research/jst-autocorr-1.md)"}
+{"idea":"jst-autocorr-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"kaiser-felicity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s9, filtered f2: volatility and prior highs are prices"}
+{"idea":"long-vol-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"margin-susceptibles","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"w33: gspc month m+1 on min(r(m),0) x detrended ln(z.1 broker customer receivables / equities market value), controls, nw 3 lags (b3 +0.017, t +0.05, rank 41/41, gate fail)"}
+{"idea":"margin-susceptibles","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"mass-casualty-mood","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p4, score 4, parked: p1's channel, data terms unclear"}
+{"idea":"monsoon-gold","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"my-ratio","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p5, filtered (f1: age structure known decades ahead)"}
+{"idea":"oil","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 3 (#8); dead: +0.05 p=0.20, 3/5 eras, mixed out of universe"}
+{"idea":"omori-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"omori-clock: exit as tsmom12, re-enter when an omori fit k/(t+c)^p of post-peak large-move counts gives an expected rate below a fraction of the pre-crash rate (killed in step 1: a volatility-calm re-entry in other words; bear-legs volatility / vol ratio / duration auc 0.47-0.54, arm3-12, vol-calm, hawkes-clustering overlap; not run)"}
+{"idea":"omori-clock","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"outbreak-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"review check: w30 gate fit on fridays 2005-01..2019-12 only, before the re-dated years (b +0.082%/unit, t +0.48, rank 21/41, placebo sd 1.16)"}
+{"idea":"outbreak-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"review check: w30 gate fit without the 6 weeks with >= 60 who items (re-dated archive weeks) (b +0.159%/unit, t +1.11, rank 12/41, placebo sd 1.64)"}
+{"idea":"outbreak-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"spy 4-week return on detrended anscombe count of who disease outbreak news reports (b +0.065%/unit, t +1.68, rank 9/41, gate fail)"}
+{"idea":"outbreak-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"own-vol-target","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"ownvol-anatomy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"ownvol-anatomy-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): vt-own-70-x minus tsmom12 split into exposure e (fixed-share twin), mean channel m and risk channel r; equity 41 d +0.022 = e +0.001 + m -0.003 + r +0.024; judged 21 d -0.010 = e +0.000 + m -0.015 + r +0.005; fx9 d -0.052 = e +0.000 + m -0.056 + r +0.004; com8 d +0.056 = e -0.001 + m -0.018 + r +0.075; six d +0.101 = e +0.003 + m -0.153 + r +0.251 (research/ownvol-anatomy-1.md)"}
+{"idea":"panic-words","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"w34: us market (french daily, compounded) month m+1 on detrended ln share of newspaper articles with \"panic\" (american stories, 1926-1963), controls c1, c12, realised vol, nw 3 lags (b +1.38%/unit, t +1.19, rank 37/41, gate fail: dead)"}
+{"idea":"panic-words","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p3, score 4, parked: about 2,000 chronicling america calls"}
+{"idea":"panic-words","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"paris-law-credit","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s11, filtered f1: quarterly credit statistics are public news"}
+{"idea":"pdo-regime","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s4, score 3, parked: four or five regimes, enso and drought channels dead"}
+{"idea":"petro-recycling","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.49,"variant":"arm3-12@pooled-41 (pooled dsharpe vs tsmom12 +0.015, se 0.038, z +0.39; weekly sharpe; still open; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"arm3-12@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.54,"variant":"e4@pooled-41 (pooled dsharpe vs tsmom12 +0.063, se 0.041, z +1.55; weekly sharpe; still open; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.42,"variant":"fade-28@pooled-41 (pooled dsharpe vs tsmom12 -0.062, se 0.042, z -1.48; weekly sharpe; killed; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"fade-28@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.5,"variant":"or3-12@pooled-41 (pooled dsharpe vs tsmom12 +0.018, se 0.040, z +0.47; weekly sharpe; still open; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"or3-12@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.41,"variant":"stop-0.25@pooled-41 (pooled dsharpe vs tsmom12 -0.066, se 0.050, z -1.33; weekly sharpe; still open; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-0.25@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.48,"variant":"tv40@pooled-41 (pooled dsharpe vs tsmom12 +0.002, se 0.002, z +0.68; weekly sharpe; killed; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tv40@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.47,"variant":"vt-own-26-x@pooled-41 (pooled dsharpe vs tsmom12 -0.012, se 0.029, z -0.43; weekly sharpe; still open; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-26-x@wide10-taiwan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-australia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-austria"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-belgium"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-canada"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-france"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-germany"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-hongkong"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-japan"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-netherlands"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-singapore"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-spain"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-switzerland"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@dev13-uk"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-dbc"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-eem"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-efa"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-ief"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-iwm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-lqd"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-slv"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@etf8-vnq"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":0.5,"variant":"vt-own-70-x@pooled-41 (pooled dsharpe vs tsmom12 +0.022, se 0.016, z +1.37; weekly sharpe; still open; -)"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-durbl"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-enrgy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-hitec"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-hlth"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-manuf"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-nodur"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-other"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-shops"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-telcm"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@us10-us-utils"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-brazil"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-india"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-indonesia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-israel"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-italy"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-korea"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-malaysia"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-mexico"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-newzealand"}
+{"idea":"pooled-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@wide10-taiwan"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-gold"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-ppi-coal"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-ppi-crude"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-ppi-grains"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-ppi-livestock"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-ppi-natgas"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-ppi-prim-nonferrous"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@com8-ppi-steel"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-aud"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-cad"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-chf"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-eur"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-gbp"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-jpy"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-nok"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-nzd"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@fx9-fx-sek"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-au"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-ca"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-ch"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-de"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-gb"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-jp"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-no"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-nz"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@gov9-gov10-se"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":0.34,"variant":"e4@pooled2-com-8 (pooled dsharpe vs tsmom12 -0.019, se 0.022, z -0.86; killed (shown, not judged))"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":0.46,"variant":"e4@pooled2-combined-62 (pooled dsharpe vs tsmom12 +0.045, se 0.032, z +1.43; unsettled, leaning positive)"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":0.3,"variant":"e4@pooled2-nonequity-21 (pooled dsharpe vs tsmom12 +0.010, se 0.030, z +0.33; still open)"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@usb3-ust10"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@usb3-ust2"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"e4@usb3-ust30"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-gold"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-ppi-coal"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-ppi-crude"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-ppi-grains"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-ppi-livestock"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-ppi-natgas"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-ppi-prim-nonferrous"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@com8-ppi-steel"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-aud"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-cad"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-chf"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-eur"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-gbp"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-jpy"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-nok"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-nzd"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@fx9-fx-sek"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-au"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-ca"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-ch"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-de"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-gb"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-jp"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-no"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-nz"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@gov9-gov10-se"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@usb3-ust10"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@usb3-ust2"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@usb3-ust30"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-gold"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-ppi-coal"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-ppi-crude"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-ppi-grains"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-ppi-livestock"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-ppi-natgas"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-ppi-prim-nonferrous"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@com8-ppi-steel"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-aud"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-cad"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-chf"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-eur"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-gbp"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-jpy"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-nok"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-nzd"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@fx9-fx-sek"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-au"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-ca"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-ch"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-de"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-gb"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-jp"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-no"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-nz"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@gov9-gov10-se"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":0.42,"variant":"vt-own-70-x@pooled2-com-8 (pooled dsharpe vs tsmom12 +0.056, se 0.026, z +2.15; still open (shown, not judged))"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":0.42,"variant":"vt-own-70-x@pooled2-combined-62 (pooled dsharpe vs tsmom12 +0.011, se 0.012, z +0.89; equity-only at best)"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":0.28,"variant":"vt-own-70-x@pooled2-nonequity-21 (pooled dsharpe vs tsmom12 -0.010, se 0.017, z -0.57; killed)"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@usb3-ust10"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@usb3-ust2"}
+{"idea":"pooled-2","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vt-own-70-x@usb3-ust30"}
+{"idea":"power-map","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"power map of strategy classes vs the bar (z 4.69): edge needed at 80% power c1 six assets +0.51, us 1927 +0.29, 13 markets pooled (y_eff 191) +0.21, c2 +0.34..+0.79, c3 daily +0.72, c4 +0.43, c5 +3.03; alpha form ir 0.43-2.40; chance a top-plausible edge passes <= 0.02 where known; forward d +0.10 needs 72+ years; no backtest (research/power-map-1.md)"}
+{"idea":"power-map","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"power map of strategy classes vs the bar (z 4.69): edge needed at 80% power c1 six assets +0.51, us 1927 +0.29, 13 markets pooled (y_eff 191) +0.21, c2 +0.79 (etfs/coins), +0.34 (ken french at the long-only rho 0.84; long-short near rho 0: +0.85), c3 daily +0.72, c4 +0.43, c5 +3.03; alpha form ir 0.43-2.40; chance a top-plausible edge passes <= 0.02 where known; forward d +0.10 needs 72+ years; no backtest (research/power-map-1.md)"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5@coin"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"preset_careful","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5@coin"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"preset_middle","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"reconcile-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"live paper record vs gym, 11 books, 2026-11-11..24: 0 bugs (c), 0 data (b); 9 books equal gym.backtest daily, risk_parity/xs_momentum differ by schedule (a, max 0.5%); scoreboard so far on old code 9b1c45e (d, moves once at next run)"}
+{"idea":"reentry-reconcile","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"reentry-reconcile-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): e4, or3-12, arm3-12 minus tsmom12 on pooled-1's 41 equity markets (d reproduced exactly), e4's gap split into buy-back ((1-h12)h) and trims (h12(h-1)). card split, 25% zigzag: e4 buy-back rebound +0.134 = or3-12's +0.134, slow bear -0.065; trims slow bear +0.069, rebound -0.042, calm -0.157. per 25% fall (491, log pts): e4 di +1.88 db +3.54 (k 1.53); e4 buy-back alone -4.35 / +6.32 (k 0.31); or3-12 -6.48 / +8.43 (k 0.23); arm3-12 -5.75 / +7.78 (k 0.26). e4 does not buy back better; its trims pay for the bear rallies (research/reentry-reconcile-1.md)"}
+{"idea":"reentry-reconcile-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): e4, or3-12, arm3-12 minus tsmom12 on pooled-1's 41 equity markets (d reproduced exactly), e4's gap split into buy-back ((1-h12)h) and trims (h12(h-1)). card split, 25% zigzag: e4 buy-back rebound +0.134 = or3-12's +0.134, slow bear -0.065; trims slow bear +0.069, rebound -0.042, calm -0.157. per 25% fall (491, log pts): e4 di +1.88 db +3.54 (k 1.53); e4 buy-back alone -4.35 / +6.32 (k 0.31); or3-12 -6.48 / +8.43 (k 0.23); arm3-12 -5.75 / +7.78 (k 0.26). per fall, in log points, e4's buy-back leaks like the old rules and its trims pay for the bear rallies; in sharpe the graded, smaller buy-back matters about as much (e4-re +0.045 of e4's +0.063) (research/reentry-reconcile-1.md)"}
+{"idea":"reentry-reconcile-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"diagnostic sleeves (not tries, not selectable; a later card on any counts these 10): e4-re (h12 + (1-h12) e4) d +0.045, e4-trim (h12 e4) +0.014, or3-12 x 0.25/0.5/0.75/w* (w* 0.735) +0.015/+0.022/+0.023/+0.023, arm3-12 x 0.25/0.5/0.75/w* (w* 0.914) +0.012/+0.018/+0.019/+0.017, sharpe per market vs tsmom12 on 41 equity markets; e4-re minus size-matched sleeves +0.022 / +0.028 (paired se 0.010 / 0.014)"}
+{"idea":"refund-filtered-set","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"refund-runoff","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"qqq+iwm+btc+eth 4-week return on nash-cascade runoff of the irs individual-refund surprise (b +0.281%/unit, t +1.44, rank 7/41, gate fail)"}
+{"idea":"refund-runoff","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"rev-costloss","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"rev-costloss-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): tsmom12 exit as a binary crash warning (out = warn), event = 10% fall below the friday close within 13 weeks; us market 1927-2025 h 0.49 f 0.21 peirce +0.28 (random dates -0.01, p 0.000), v > 0 for c/l 0.105-0.290, holder's c/l 0.27, v there +0.06, money v -0.01; 11 french series peirce +0.23; spy +0.32, qqq +0.28, gld -0.00, tlt +0.06, btc -0.04, eth -0.03; grid 5/10/20% x 4/13/26 weeks in research/results/rev-costloss-1.md"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5@coin"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"risk_parity","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"river-freight","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s3, score 5, parked: fails its size check, inflation channel dead (w32/r32)"}
+{"idea":"sad-onset","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p8, filtered (f1: fixed calendar, no dose)"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-australia"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-austria"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-belgium"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-canada"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-france"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-germany"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-hongkong"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-japan"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-netherlands"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-singapore"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-spain"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-switzerland"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo-uk"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@geo13"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-durbl"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-enrgy"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-hitec"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-hlth"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-ind10"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-ind10-late"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-manuf"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-mkt"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-nodur"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-other"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-shops"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-telcm"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hold@us-utils"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":0.81,"variant":"seasonal-20y-alone"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-australia"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-austria"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-belgium"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-canada"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-france"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-germany"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-hongkong"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-japan"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-netherlands"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-singapore"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-spain"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-switzerland"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo-uk"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@geo13"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-durbl"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-enrgy"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-hitec"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-hlth"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-ind10"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-ind10-late"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-manuf"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-mkt"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-nodur"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-other"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-shops"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-telcm"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-alone@us-utils"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":0.87,"variant":"seasonal-20y-overlay"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-australia"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-austria"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-belgium"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-canada"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-france"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-germany"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-hongkong"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-japan"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-netherlands"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-singapore"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-spain"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-switzerland"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo-uk"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@geo13"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-durbl"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-enrgy"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-hitec"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-hlth"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-ind10"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-ind10-late"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-manuf"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-mkt"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-nodur"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-other"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-shops"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-telcm"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"seasonal-20y-overlay@us-utils"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-australia"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-austria"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-belgium"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-canada"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-france"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-germany"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-hongkong"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-japan"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-netherlands"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-singapore"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-spain"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-switzerland"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo-uk"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@geo13"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-durbl"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-enrgy"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-hitec"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-hlth"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-ind10"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-ind10-late"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-manuf"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-mkt"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-nodur"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-other"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-shops"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-telcm"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-utils"}
+{"idea":"seasonal-20y","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"sixty_forty","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"sixty_forty","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"sixty_forty","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"sixty_forty","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"skyscraper-index","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p11, score 0, dead (literature)"}
+{"idea":"skyscraper-index","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"smoke-cognition, winter-light, pollen-mood","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"solar-max-recession","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"w34: shiller s&p 500 total return p(m+1)..p(m+2) on trailing 12-month mean silso sunspot number / 100, dose months 1871-01..2023-07, nw 12 (b -0.162%/month/unit, t -0.87, rank 3/41, gate fail)"}
+{"idea":"solar-max-recession","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"spectral-trend","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"srsi","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 1 (#2); dead: -0.23 vs tsmom12, out ~half the time"}
+{"idea":"stress-corrosion-calm","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s10, filtered f1/f2: low volatility is a price, credit a published statistic"}
+{"idea":"strike-idleness","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-20 candidate, scored before any price, no number computed: p12, score 4, parked: bls refuses scripts"}
+{"idea":"temperature-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"spy next-but-one month return on gistemp 12-month anomaly minus prior decade (b +3.25%/deg c, t +1.63, rank 9/41, gate fail)"}
+{"idea":"temperature-premium","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"tick-tier-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"re-score (not a try): tsmom12/e4 sharpe above bills 1995-2008 vs 2009-2025-10 by asset class on pooled-1/pooled-2 series (65 eligible); tsmom12 class means eq +0.42->+0.22 / fx +0.36->-0.20 / bd +0.52->+0.28 / cm +0.28->+0.28; contrast c = (deq+dfx)/2 - dbd: tsmom12 -0.14 (se 0.36), timing part -0.77 (se 0.23), e4 +0.10 (se 0.40), e4 timing -0.53 (se 0.19); reading: inconclusive (research/tick-tier-1.md)"}
+{"idea":"tick-tier-trend","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"trend-after-drawdown","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"trend-barbell","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"trend3","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 2 (#10); dead: equals its twin (-0.01), it is sma200"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5@coin"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"ts_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":0.97,"variant":"corr"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"corr@idx"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mag"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mag-match"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mag-match-c"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mag-match-c@idx"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mag-match-q75"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mag-match@idx"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mag@idx"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":0.95,"variant":"turb"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"turb-q75"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"turb@idx"}
+{"idea":"turbulence","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"vclock12","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mix-tsmom12-pput-matched@vixcall1"}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12+vxth-leg-cost50@vixcall1"}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12+vxth-leg-x2@vixcall1"}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":0.63,"variant":"tsmom12+vxth-leg@vixcall1"}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12-cash0+vxth-leg@vixcall1"}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12-delever-matched@vixcall1"}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":0.74,"variant":"tsmom12-in-vxth-bills@vixcall1"}
+{"idea":"vix-call-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":0.34,"variant":"cmv (primary: theta = a + b / market vol): alpha vs tsmom12 full ir +0.31 z +2.40; out-of-paper ir +0.28 z +1.58 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cmv sample in-paper 1977-2020: alpha vs tsmom12 ir +0.33 z +1.85; cmv-umv sharpe +0.03 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cmv sample out-of-paper: alpha vs tsmom12 ir +0.28 z +1.58; cmv-umv sharpe +0.00 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cmv sample post 2021-2025: alpha vs tsmom12 ir -0.53 z -1.32; cmv-umv sharpe +0.02 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cmv sample pre 1939-1976: alpha vs tsmom12 ir +0.39 z +2.10; cmv-umv sharpe +0.00 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":0.28,"variant":"own-vol twin (theta = a + b / own vol): alpha vs tsmom12 full ir +0.27 z +2.08; out-of-paper ir +0.27 z +1.51 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r1 cmv gross: alpha vs tsmom12 full ir +1.00 z +8.00; out-of-paper ir +0.99 z +5.40 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r1 umv gross: alpha vs tsmom12 full ir +0.90 z +7.17; out-of-paper ir +0.99 z +5.84 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r2 cmv umd 0.34%/mo: alpha vs tsmom12 full ir +0.46 z +3.65; out-of-paper ir +0.48 z +2.87 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r2 umv umd 0.34%/mo: alpha vs tsmom12 full ir +0.45 z +3.59; out-of-paper ir +0.48 z +2.85 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r3a cmv kappa us 0.25%: alpha vs tsmom12 full ir +0.32 z +2.46; out-of-paper ir +0.29 z +1.59 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r3b cmv kappa us 1.0%: alpha vs tsmom12 full ir +0.27 z +2.09; out-of-paper ir +0.24 z +1.35 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r4 cmv market variance (1 / sigma^2): alpha vs tsmom12 full ir +0.28 z +2.23; out-of-paper ir +0.27 z +1.53 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":0.32,"variant":"umv (control: b = 0): alpha vs tsmom12 full ir +0.29 z +2.29; out-of-paper ir +0.28 z +1.56 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"xs-century-1 book (unmanaged, same months): alpha vs tsmom12 full ir +0.35 z +2.92; out-of-paper ir +0.38 z +2.46 (monthly excess x sqrt12)"}
+{"idea":"vm-style-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"vm-style-book","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"vol-target-extremes","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"vol-target-timing","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0@coin"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0@coin"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0@coin"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"vol_target_spy","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"volcanic-veil","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"wide-21 candidate, scored before any price, no number computed: s2, score 4, parked: six eruptions since 1871, food channel dead (w32/r32)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"centrality-tilt: weight peripheral assets (killed: multi-signal bab wrong sign; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cusum-exit: cusum / sprt drift-change exit (killed: changepoint-momentum, coin-fast-exit, drawdown-control; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"gain-schedule: volatility-scheduled lookback (merged into vclock12; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"hann12: tapered fir trend filter (killed in step 1: sma200 / e4 / trend-tune overlap; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":1.04,"variant":"huber52"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"huber52/bills"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"huber52@etf"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"huber52@idx"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"ib-soft: rate-distortion soft slot (killed: kelly-shrunk, ml-sizing; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"irreversibility: zumbach time-reversal asymmetry for sizing (killed: a volatility target; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"kalman-llt: local-linear-trend kalman slope (killed: per-asset lookback, wf-asset; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mst-length: correlation-network mst length trigger (killed: absorption-ratio, turbulence; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"pd-trend: derivative action on the 12-month return (killed: turning-points, e4, fast-reentry; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"perm-entropy: permutation-entropy / lempel-ziv gate (killed: hurst-entropy-gate parked; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"post hoc (not a try): vclock12 window by asset (lib/wide18_posthoc.py); median 1.22-1.30 y on btc, eth, qqq, gld, 0.92-0.94 on spy, tlt"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"spillover: diebold-yilmaz connectedness (killed: absorption-ratio, transfer-entropy; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tail-index: hill exponent crash warning (killed: critical-slowing, volatility in disguise; not run)"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":0.88,"variant":"vclock12"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vclock12/bills"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vclock12@etf"}
+{"idea":"wide-18","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"vclock12@idx"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bma-lookbacks: bma / lagged ensemble of lookbacks (killed: e4, wf-pooled, tranching; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"bonus-malus: exposure ladder by monthly outcome (killed: ensemble-tsmom, slew-limit, arm3-12; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"brier-verify: brier skill / murphy decomposition of the in/out signal (killed in step 1: multi-signal / info-1 ic, insure-1; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cred-forward: credibility of the forward record, esscher/wang premium (killed: power-map-1, insure-4; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":0.95,"variant":"cred-lr"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cred-lr/bills"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cred-lr@etf"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cred-lr@idx"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":1.09,"variant":"cred-xs"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cred-xs/bills"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cred-xs@etf"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"cred-xs@idx"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"damped-persistence: persistence/climatology blend (killed: combo-1 blend-iv, bet-hedge-seedbank; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"mos-calibrate: logistic mos soft slot (killed: kelly-shrunk, ml-linear, ml-sizing; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"post hoc (not a try): z at 2025-10-31 with the noise term corrected for correlation, v (1 - rho): six 0.00, etf 0.03, idx 0.16 (lib/wide19_posthoc.py)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"rev-costloss: relative economic value of the exit (new, descriptive; a reframing of insure-1; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"robust-lookback: worst-case lookback set, minimax regret, newsvendor size (killed: ensemble-tsmom, wf-pooled, ib-soft; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"stop-reentry: optimal-stopping re-entry, real-options band (killed: fast-reentry, bear-legs, eu-4 dz25; not run)"}
+{"idea":"wide-19","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"xl-layer: reinsurance layer / aggregate stop-loss (killed: drawdown-control, cppi-floor, stop-0.25; not run)"}
+{"idea":"wide-20-filtered-set","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"wide-21-filtered-set","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":0.4,"variant":"book (primary): alpha vs tsmom12 ir +0.31 z +2.75 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r1 gross: alpha vs tsmom12 ir +0.88 z +7.39 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r2 umd cost 0.34%/mo: alpha vs tsmom12 ir +0.51 z +4.44 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r3 bond/fx costs x2: alpha vs tsmom12 ir +0.25 z +2.22 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r4 + commodity spot: alpha vs tsmom12 ir +0.31 z +2.61 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r5 1994-01..2025-10: alpha vs tsmom12 ir +0.19 z +0.75 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r6 vs six-asset tsmom12: alpha vs tsmom12 ir +0.22 z +0.84 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"r7 bonds + fx only: alpha vs tsmom12 ir +0.43 z +2.63 (monthly excess x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12)"}
+{"idea":"xs-century-1","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":null}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c0@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c1@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c2@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e0-c5@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c0@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e1-c1"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c0@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e2-c2@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c0@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"lag-e5-c5@coin"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300"}
+{"idea":"xs_momentum","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"sched-0300@coin"}
+{"idea":"y10","seen":"2026-11-25T04:58:08Z","sharpe":null,"variant":"source video 3 (#9); dead: change -0.04, levels -0.07..-0.01"}
