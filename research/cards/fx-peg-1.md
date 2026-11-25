@@ -1,6 +1,6 @@
 # Card fx-peg-1: a real-time peg filter, then trend on floating currencies 1791-1970
 
-Lane `fx-peg-1`, written 2026-11-25 22:55-23:20 UTC, **before any return, fall, filter state,
+Lane `fx-peg-1`, written 2026-11-25 22:40-22:59 UTC (pushed 22:59, commit 1046ef7; an earlier draft of this line said "22:55-23:20", which was wrong), **before any return, fall, filter state,
 rule position or episode of the tested series was computed**. Branch `fx-peg-1`. Research
 only: fake money, keyless public data, no change to the gym, the daily runner or the live
 strategies. Train data only (nothing after 1970-12 is scored).
