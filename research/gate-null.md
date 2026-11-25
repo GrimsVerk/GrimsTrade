@@ -43,6 +43,7 @@ shows how wide the real null is:
 | 10-year yield change over the next quarter on -PDSI, Newey-West 3 lags, 483 months 1962-2002 (parked-gates-1, R32) | 40 calendars moved k = 13-89 months, both ways | 1.19 | 8% | same dose, 40 other years: wider than W32's |
 | GSPC next month on this month's fall x detrended ln(broker customer receivables / equity value), four controls, Newey-West 3 lags, 729 months (parked-gates-1, W33) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.58 | **30%** | **off-centre**: all 40 placebo t positive (median +1.70, 95% +3.06): an earlier-only family can be biased; the rank is the reference |
 | US market (French daily) next month on detrended ln share of newspaper articles with "panic", three price controls, Newey-West 3 lags, 438 months 1927-1963 (panic-words-1, W34) | 40 earlier-dose calendars, k = 25-103 months (odd) | 1.18 | 10% | earlier-only family, centred this time (median -0.10, 5/95% -2.03/+1.47); panic peaks cluster in 1929-1933 |
+| Shiller S&P 500 next month (monthly averages) on trailing 12-month mean sunspot number, Newey-West 12 lags, 1,831 months 1871-2023 (wide-21, W35) | 40 calendars moved k = 19-95 months, both ways | 1.16 | 25% | **off-centre** (median +1.25, 95% +2.83, max +3.11): a cyclic dose shifted 4-8 years becomes its own anti-phase, so the family repeats one weak pattern with the opposite sign; about 14 cycles |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -192,16 +193,18 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | R32, replication of W32 (parked-gates-1, `cards/parked-gates-1b.md`) | k = 13..89 months, both ways | no: drought does not answer prices | 10-year yield 1962-2002: t -0.19 (predicted > 0), rank 21 | no: t < 2; W32 dead |
 | W33 `margin-susceptibles` (parked-gates-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +0.05, rank 41 | no: t < 2 |
 | W34 `panic-words` (panic-words-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +1.19 (predicted < 0), rank 37 | no: wrong sign |
+| W35 `solar-max-recession` (wide-21) | k = +-19..95 months (step 4), both ways | no: the sun does not answer prices | t -0.87, rank 3 | no: t > -2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 
-The table holds all **28 gates** of the family count (`parked-gates-1.md`, "Family count";
-family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates, family
-bar p < 0.10 / 101 = 0.00099):
+The table holds all **30 gates** of the family count (`parked-gates-1.md`, "Family count";
+family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates;
+panic-words-1 adds W34 and wide-21 adds W35: **103 mechanisms, 29 tested by a strategy, 30
+gates, family bar p < 0.10 / 103 = 0.00097**):
 the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
-weather-1 and weather-2, W27-W33 and the replication R32 (summary-6 added the `seasonal-20y`,
+weather-1 and weather-2, W27-W35 and the replication R32 (summary-6 added the `seasonal-20y`,
 weather-2 and R32 rows from their write-ups, 2026-11-25). One passed (W32, kill-only), and its
 replication killed it.
 
@@ -212,7 +215,7 @@ the true t cleared 2 with the right sign and the rank alone failed. No gate is i
 every one failed on its own t (wrong sign or t < 2), except W32 (parked-gates-1), which passed
 outright and was killed by its replication R32. Where a null is widened instead (stricter
 placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
-W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 28 now, one kill-only pass) is weaker evidence against
+W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 30 now, one kill-only pass) is weaker evidence against
 borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
 
 ## First pass, and what the procedure did with it (parked-gates-1, 2026-11-25)
@@ -231,3 +234,21 @@ episodes. Keep the replication step for every future pass.
 above (summary-6, #191: 101 mechanisms, 29 tested by a strategy, 28 gates): **102 mechanisms, 29
 tested by a strategy, 29 gates**; W34 failed (wrong sign), so still one kill-only pass (W32,
 killed by R32) and every gated idea dead. Family bar p < 0.10 / 102 = 0.00098.
+
+**Count after W35 (wide-21, 2026-11-25; renumbered from W34 at merge, its card says W34
+(provisional)).** One more mechanism and gate: **103 mechanisms, 29 tested by a strategy, 30
+gates**; W35 failed (t -0.87 > -2), so still one kill-only pass (W32, killed by R32) and every
+gated idea dead. Family bar p < 0.10 / 103 = 0.00097.
+
+## Cyclic doses need another placebo family (wide-21, 2026-11-25)
+
+W35 (`solar-max-recession`) moved a dose with its own cycle (the sunspot cycle, about 132
+months) by k = +-19..95 months. Shifts of 4-8 years turn the dose into its own anti-phase, so
+those placebos repeat the true pattern with the opposite sign: placebo t median +1.25, 95%
++2.83, max +3.11, against a true t of -0.87 that still ranked 3 of 41. The family measured one
+weak cyclic pattern 40 times, not 40 nulls; only the t condition (step 4) kept the rank from
+deciding. For the next dose with its own clock (a cycle, a season of variable length), write
+into the rule a family that keeps the phase relation random rather than systematic: a
+phase-randomised surrogate of the dose (same spectrum, random phases; Theiler et al. 1992
+`[memory]`) or a permutation of whole cycles, and keep t >= 2 as a necessary condition.
+

@@ -354,6 +354,16 @@ New, not yet carded (from the failure atlas, [results/deep-1-atlas.md](results/d
 | rev-costloss | Forecast verification (relative economic value, cost-loss model; Richardson 2000) | described (descriptive re-score, no rule) | [card](cards/rev-costloss-1.md) | rev-costloss-1 (#182): as a warning of a 10% fall within 13 weeks the exit has skill on US stocks (1927-2025: H 0.49, F 0.21, Peirce +0.28 vs -0.01 at random dates; SPY +0.32, QQQ +0.28) and none on GLD, TLT, BTC, ETH; V > 0 only for C/L 0.105-0.290, and a holder's own C/L (0.27) sits at the band's top edge: V +0.06, money V -0.01, i.e. worth about nothing, matching gap-2002-1; 43% of false alarms are rebound weeks; `sma200` not run ([write-up](rev-costloss-1.md)) |
 | brier-verify, mos-calibrate, damped-persistence, bma-lookbacks, xl-layer, bonus-malus, cred-forward, stop-reentry, robust-lookback | Forecast verification and post-processing, ensemble forecasting, reinsurance, experience rating, credibility for evaluation, optimal stopping, robust optimisation | dead (overlap, not tested) | - | wide-19 step 1: each is a tested or measured record in other words (IC / insure-1, soft slots, blends with hold, lookback ensembles and walk-forward, drawdown floors and stops, re-entry rules, power-map-1 and insure-4) |
 
+## wide-21: hydrology, oceanography, astronomy / solar physics, chemistry, materials science (`wide-21.md`, card `cards/wide-21.md`)
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| solar-max-recession | Solar physics x Jevons' sunspot cycle (Gorbanev, MPRA 2012 / JSE 2015) | dead (gate W35, wide-21) | [card](cards/wide-21.md) | Trailing 12-month mean SILSO sunspot number on Shiller's S&P 500 next month, 1871-01 .. 2023-07: -0.16% a month per 100 sunspots (t -0.87), rank 3 of 41 shifted calendars (off-centre null: anti-phase shifts carry t up to +3.1); post-2012 +0.25 (t +0.52); 20%-fall-within-a-year cell t +0.40. Kill-only, a kill. [result](results/solar-max-recession.md) |
+| volcanic-veil | Atmospheric chemistry / volcanology (stratospheric aerosol) | new (scored 4, parked) | - | wide-21's S2: six large eruptions since 1871; the food-price link it needs was absent in W32/R32. |
+| river-freight | Hydrology (Mississippi stage, USGS 07010000 from 1861) | new (scored 5, parked) | - | wide-21's S3: fails its own size check (barge freight a few USD bn against a USD 30 tn economy); inflation channel dead (W32/R32). |
+| pdo-regime | Oceanography (Pacific Decadal Oscillation) | new (scored 3, parked) | - | wide-21's S4: four or five regimes since 1854; ENSO (W19) and drought (W32) channels dead. |
+| wide-21-filtered-set | Oceanography, solar physics, astronomy, hydrology method, materials science, chemistry | filtered (wide-21) | - | S5 `amo-hurricane` (dead channels W15/W32), S6 `cosmic-ray-cloud` (duplicate of W16), S7 `eclipse-omen` (F1: scheduled), S8 `hurst-flood` (F2; dead in the literature, Lo 1991), S9 `kaiser-felicity` (F2), S10 `stress-corrosion-calm` (F1/F2), S11 `paris-law-credit` (F1), S12 `chemical-accident-mood` (mood class dead, W31). |
+
 ### Run survey-7b: 2024-2026 literature on trend crashes, tail hedging, vol management, blending, decay (2026-11-24, UTC)
 
 Sources, filters (F1/F2, #109) and power scores (#150) in [survey-7b.md](survey-7b.md) (lane
