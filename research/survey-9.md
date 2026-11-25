@@ -56,8 +56,8 @@ Read-depth labels: `[pages read]` = the relevant sections of the full text read 
   longer-lag autocorrelation from thin or slow markets; the same paper argues data errors bias
   *towards* the null, which is wrong for averaging and staleness (they bias towards trend). On
   daily data, a one-day delay cut the best Brock-Lakonishok-LeBaron rule's mean return from
-  17.2% to 7.8% a year and its Sharpe criterion lost significance (Sullivan, Timmermann and
-  White 1999).
+  17.2% to 7.8% a year and its Sharpe criterion lost significance (the best mean-return rule
+  stays significant, Reality Check p < 0.002; Sullivan, Timmermann and White 1999).
 - **So the project's caution on pre-1966 timing is stricter than the literature, not at odds
   with it.** None of the century papers scores trend timing against an autocorrelation-matched
   null (AR(1) worlds, block bootstrap), as `insure-1709-1` did. MOP's own decomposition says
@@ -95,7 +95,7 @@ Read-depth labels: `[pages read]` = the relevant sections of the full text read 
 | 19 | Dao, Nguyen, Deremble, Lempérière, Bouchaud, Potters 2016, J. Investment Strategies (arXiv 1607.02410) `[abstract]` | futures | single-asset trend as a long-volatility position | trend's P&L is the gap between long-term and short-term variance; it has the long-term variance exposure of a strangle portfolio | no | not applicable | **Agrees in mechanism**: insurance-like convexity, paid for in calm markets |
 | 20 | Zarattini and Antonacci 2024, "A Century of Profitable Industry Trends" (SSRN/Concretum) `[secondary]` (CXO Advisory and search summaries); replication arXiv 2412.14361 `[abstract]` | 48 French-library US industries, 1926-2024 | long-only trend with channel breakouts and vol sizing across industries | **edge** claimed: 18.2% a year, Sharpe 1.39; the replication reports robustness problems in modern markets | benchmark not checked | not applicable (CRSP-based daily returns) | Disagrees on the face of it with `gap-2002-1` (10 industries 1.6-2.0 points a year behind holding since 2002), but it is a different, cross-industry, sized rule; numbers not checked |
 | 21 | Kurth, Eisler, Rej, Bouchaud 2026 `[prior lane: survey-7b, tested as #181]` | futures, 1960s-2025 | trend by asset class | trend broke down after 2009 in stocks and FX, not in bonds | tested by the project against holding: the pattern shows, cause not separable from regime (#181) | not applicable | Already in the record |
-| 22 | Brock, Lakonishok, LeBaron 1992; Sullivan, Timmermann, White 1999, JF 54(5) `[pages read]`; Fang, Jacobsen, Qin 2014, Rev. Financial Economics 23 `[abstract]`, `[secondary]` | DJIA daily 1897-1986 (BLL); 1897-1996 and S&P futures 1984-1996 (STW); DJIA 1987-2011 and 1885-1896 (FJQ) | moving-average and other daily rules, against cash or holding | **an in-sample edge that did not survive**: STW find the best rule significant 1897-1986 even after data snooping, but not 1987-1996 (p about 0.12) and not on S&P futures; FJQ find the 26 BLL rules dead both after 1986 and before 1897, an abrupt end that "probably" means bias | BLL/STW: against cash; FJQ: rule returns by signal | **STW, yes**: with a one-day signal delay (Ready 1997's slippage) the best mean-return rule fell from 17.2% to 7.8% a year, and the best Sharpe rule lost significance (p 0.26) | The clearest published case of a long-history "trend edge" shrinking once stale closes are lagged. Daily, not 12-month, so it says little about `tsmom12` itself |
+| 22 | Brock, Lakonishok, LeBaron 1992; Sullivan, Timmermann, White 1999, JF 54(5) `[pages read]`; Fang, Jacobsen, Qin 2014, Rev. Financial Economics 23 `[abstract]`, `[secondary]` | DJIA daily 1897-1986 (BLL); 1897-1996 and S&P futures 1984-1996 (STW); DJIA 1987-2011 and 1885-1896 (FJQ) | moving-average and other daily rules, against cash or holding | **an in-sample edge that did not survive**: STW find the best rule significant 1897-1986 even after data snooping, but not 1987-1996 (p about 0.12) and not on S&P futures; FJQ find the 26 BLL rules dead both after 1986 and before 1897, an abrupt end that "probably" means bias | BLL/STW: against cash; FJQ: rule returns by signal | **STW, yes**: with a one-day signal delay (Ready 1997's slippage) the best mean-return rule fell from 17.2% to 7.8% a year, and the best Sharpe rule lost significance (p 0.26); the delayed best mean-return rule stays significant (Reality Check p < 0.002) | The clearest published case of a long-history "trend edge" shrinking once stale closes are lagged. Daily, not 12-month, so it says little about `tsmom12` itself |
 
 ### The stale-price and averaging literature the trend papers rely on (or skip)
 
@@ -132,10 +132,11 @@ Read-depth labels: `[pages read]` = the relevant sections of the full text read 
    autocorrelation-matched null; one (Baltussen et al.) runs a one-month delay, which handles
    averaging but not genuine thin-market persistence; HOP and Zakamulin-Giner use or likely use
    averaged early series. Two facts point the same way as the project's caution: on daily US
-   data a one-day delay halved the best rule's return (STW), and cash-index autocorrelation is
+   data a one-day delay halved the best rule's return (STW; it stays significant), and cash-index autocorrelation is
    absent in the matching futures (Ahn et al.). Two facts point the other way: MOP and HOP find
-   trend in liquid futures after 1985, where staleness is small, and the effect has the same
-   size as in the early data (HOP, Lempérière), which is harder to square with a pure artefact.
+   trend in liquid futures after 1985, where staleness is small, and the effect is of a similar
+   order to the early data's (HOP; Lempérière's Sharpe 0.6 for 1800-1850 against 0.99 after 1950,
+   which they put down to more products), which is harder to square with a pure artefact.
    Plain reading: the trend effect itself is well documented after 1960 on clean data; how much
    of its pre-1960 strength is the data's construction is unknown, in the literature and here.
 5. **Power.** Zakamulin and Giner's 250 years for 80% power on one US index matches the
@@ -145,17 +146,21 @@ Read-depth labels: `[pages read]` = the relevant sections of the full text read 
    markets.
 
 What this survey does not show: that the literature's long-short edge is fake, or that
-`tsmom12` has hidden edge. Several key sources were read only as abstracts or summaries (rows
-4, 5, 8, 11, 12, 13, 17, 20); their numbers are quoted from those summaries and flagged.
+`tsmom12` has hidden edge. Several key sources were read only as abstracts, summaries or through prior lanes (rows
+4, 5, 7, 8, 10, 11, 12, 13, 15, 17, 19, 20, Fang-Jacobsen-Qin in row 22, and Ahn et al. and
+Portnaya in the second table); their numbers are quoted from those summaries and flagged.
 
 ## Checks the literature suggests on records the project already has (no new mechanism)
 
 These are artefact checks on existing results, not new strategies, so no `tries.md` rows are
 added. For the lead to pick from:
 
-- **Averaging check on 1885-1925 US stocks, with data already cached.** Shiller's monthly file
-  (Cowles-based before 1926, averaged; `data-long-4`) against the Dow Jones end-of-month index
-  (point-sampled; MeasuringWorth, `data-long-1`), same years, same `insure-2` statistic. If the
+- **Averaging check on 1885-1925 US stocks (point series not yet cached).** Shiller's monthly
+  file (Cowles-based before 1926, averaged; cached, `data-long-1`/`data-long-4`) against a
+  point-sampled 1885-1925 series that is not yet cached: Schwert's Dow Jones month-end splice
+  (NBER WP 2985 appendix, OCR needed) or MeasuringWorth's DJIA (web form, terms not checked);
+  Yale ICF NYSE (`data-wide-2` #3) is blocked until the owner rules on the Yale terms. Same years,
+  same `insure-2` statistic; few 25% falls lie in 1885-1925, so expect low power. If the
   averaged series shows more timing than the point-sampled one, the averaging artefact is
   measured directly. Schwert's own splice (row above) is the published precedent for preferring
   the Dow Jones month-end series.
@@ -173,7 +178,7 @@ added. For the lead to pick from:
 | Source | Named by | What | Keyless? | Note |
 |---|---|---|---|---|
 | Schwert's spliced US monthly returns 1802-1925 (appendix of NBER WP 2985) | Schwert 1990 | monthly index numbers; point-sampled 1802-1862 and 1885-1925 (Dow Jones month-end), Cowles/Macaulay 1863-1885 filtered for averaging | yes: `https://www.nber.org/system/files/working_papers/w2985/w2985.pdf` (www.nber.org robots.txt allows it) | scanned PDF, no text layer: needs OCR and a careful check of the digits; partly overlaps Yale ICF NYSE 1815-1925 (`data-wide-2` #3) |
-| NBER Macrohistory m11025a, Cowles Commission and S&P common stock price index, 1871-1956 | Schwert 1990 (as Cowles); Baltussen et al. (JST, GFD splices) | monthly, averaged prices (the averaged twin for the check above) | the file exists keyless (`data.nber.org/databases/macrohistory/rectdata/11/m11025a.dat`), **but data.nber.org's robots.txt says `User-agent: * Disallow: /`**; a FRED mirror probably exists `[series id not checked]` | **flag for the lead:** `data-wide-2` #8 and #9 point scripts at `data.nber.org` rectdata, which that robots.txt disallows; use FRED or a manual download instead. This lane made two requests to it (robots.txt, then the file's first lines, not saved) before reading the robots file |
+| NBER Macrohistory m11025a, Cowles Commission and S&P common stock price index, 1871-1956 | Schwert 1990 (as Cowles); Baltussen et al. (JST, GFD splices) | monthly, averaged prices (the averaged twin for the check above) | the file exists keyless (`data.nber.org/databases/macrohistory/rectdata/11/m11025a.dat`), **but data.nber.org's robots.txt says `User-agent: * Disallow: /`**; a FRED mirror probably exists `[series id not checked]` | data.nber.org's robots.txt says `Disallow: /`; already recorded (`data-wide-2`, next-steps: NBER files manual download only). The only remaining script pointer is `research/lib/e4indep1_data.py:29-30` (an earlier lane, already noted). **Disclosure:** this lane sent two requests to data.nber.org in one step (robots.txt and the first lines of m11025a.dat) before reading the robots.txt reply; nothing was saved |
 | Campbell, Grossman, Turner, British share market indices 1829-1929 (QUCEH WP 19-01; CEPR DP 13717) | found while checking the UK early indices | monthly UK share indices, 1829-1929 | `[not opened]`: both hosts sit behind a Cloudflare bot check | would cover 1866-1869, the gap between BoE's 1709-1866 index and the Yale IMM file (1869-1929) |
 | Jeremy Siegel's website | Baltussen et al. | long US return series | `[not probed]` | |
 
