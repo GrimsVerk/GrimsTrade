@@ -10,8 +10,8 @@ was computed on any data. Papers were read with WebSearch, WebFetch and, for PDF
 `insure-2`, `gap-2002-1`, `insure-1870-1`, `jst-autocorr-1`/`-2`, `rev-costloss-1`,
 `calm-drag-1`, `insure-1709-1`): `tsmom12` (long-only, unscaled, in or cash on the 12-month
 sign) is crash insurance, not an edge. It earns about what holding the same assets earns
-(2010-2025: Sharpe 1.11 each), loses less in slow falls of 25%+ (US since 1927: 20 of 21; 13
-developed markets since 1966: 17 of 18; JST 1870-1965: 9 of 9; UK 1709-1866: 7 of 7), fails in
+(2010-2025: Sharpe 1.11 each), loses less in slow falls of 25%+ (US since 1927: 20 of 21, 20 of 20 not tied; 13
+developed markets since 1966: 17 of 17 not tied (was 17 of 18 before #218); JST 1870-1965: 9 of 9; UK 1709-1866: 7 of 7), fails in
 fast crashes (1987, 2020, South Sea 1720), and trails in calm markets (about 2 points a year;
 since 2002 about 1 point behind on the S&P 500). Before 1966 its timing, beyond lower exposure
 and random dates, is not separable from the early data's own autocorrelation (JST: an AR(1) of
