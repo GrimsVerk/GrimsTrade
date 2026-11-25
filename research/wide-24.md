@@ -61,9 +61,13 @@ scandal, migration, strike, percolation, renewal, extreme value. Found:
 **Disclosure.** Before this table: the first and last dates, time zone and currency of the 24
 cached daily index files (`insure-2/raw-2026-11-18/yahoo`, 1965-2025) were printed, no price.
 The Natural Earth populated-places file (public domain, 7,342 places, fields `pop_max`,
-`iso_a2`, `latitude`, `longitude`) was fetched from `raw.githubusercontent.com` (no robots.txt:
+`adm0_a3`, `latitude`, `longitude`) was fetched from `raw.githubusercontent.com` (no robots.txt:
 404; GeoNames was checked first and its robots.txt disallows everything, so it was not used)
-and its field names printed. The cached USGS catalogue was not opened.
+and its field names printed (file `geojson/ne_10m_populated_places_simple.geojson` of the
+`nvkelso/natural-earth-vector` repository, default branch on 2026-11-25; SHA-256 of the copy
+used: `fd3fa867a320cbd5c5b6bb5bc550afeec2939fb2cef688e508007282a55ac42f`; `pop_max` changes
+between Natural Earth releases, so a rerun should check the hash). The cached USGS catalogue was
+not opened.
 
 ### The mechanisms (cause story each)
 
@@ -159,7 +163,7 @@ Cached ComCat (data-wide-1, 2026-11-19): **6,698 events of M >= 6.0 and depth <=
 above 0** over the whole span. Gate rows (1998-01-01 .. 2025-10-31): **168,901 rows in 25
 markets, 79 (event, market) pairs, sum of weights 70.8** (N225 17 pairs / 18.0, JKSE 18 / 15.7,
 TWII 9 / 13.5, NZ50 5 / 9.9, MXX 14 / 6.7, KLSE 1 / 5.2, the US 11 / 0.4, India 2 / 0.9, Italy
-1 / 0.4; 16 markets none). **Pooled lag-1 autocorrelation of the dose +0.008**: far under 0.8,
+1 / 0.4, Canada 1 / 0.0; 15 markets none). **Pooled lag-1 autocorrelation of the dose +0.008**: far under 0.8,
 so gate-null-2's proposed "both families" rule does not apply (as the card expected). Fewer
 pairs than the card's guess (79 against about 150): the power is lower than written (below).
 
@@ -213,12 +217,12 @@ strategy. R40 is not run** (the card runs it only after a pass). Held-out year u
   correction is needed (the hindsight-dating fault found in W37 does not arise: the dose uses
   origin time, place and magnitude only).
 - **A weakness of the frozen dose, seen in the list (not changed):** the radius rule gives an
-  offshore M 9.1 a 594 km radius, so the 2004 Sumatra-Andaman quake counts 35% of Malaysia's
+  offshore M 9.1 a 592 km radius, so the 2004 Sumatra-Andaman quake counts 35% of Malaysia's
   place population as exposed (Penang and the north-west coast), while the damage there was
   small. The fixed-radius cell (100 km for every magnitude) avoids that and is flat as well
   (t -0.03).
 - **Power, measured.** SE(b) is about 0.245% per unit (b / t), so a pass needed about -0.5% per
-  unit, e.g. -3% over a month after a Tohoku-size event and -1% after a Christchurch-size one.
+  unit, e.g. -3% over a month after a Tohoku-size event and about -1.6% after a Christchurch-size one.
   The card's guess of SE 0.21 assumed about 150 pairs; with 79 the gate detects a published-size
   drift on the large events with roughly even odds: a moderate kill, not a strong one.
 - My guess (b near 0, t between -1.5 and +1, a middle rank, placebo SD 0.9-1.2, pass 3%) was
@@ -252,8 +256,8 @@ cached (data-wide-1, insure-2, yahoo-1d).
 1. **The natural-disaster damage channel is closed at index level for the markets held.** With
    unscheduled events, a dose built only from what was public at the time, and a near-normal
    null, the hit index shows a small two-session reaction and nothing after it. Together with
-   W15 (catastrophe claims), W31 (air disasters), wide-22 E3 (blackouts) and W37 (thefts), the
-   record now has five unscheduled-shock gates, all dead: one-off shocks of this size are priced
+   W15 (catastrophe claims), W31 (air disasters) and W37 (thefts), the record now has four
+   unscheduled-shock gates, all dead (wide-22 E3 `blackout-cascade` was filtered, not gated): one-off shocks of this size are priced
    within a day or two, or not at all.
 2. **What a rerun would need:** the cached index set misses the markets with the most damaging
    quakes per unit of market value (Chile, Turkey, Greece, Peru, the Philippines). A keyless
