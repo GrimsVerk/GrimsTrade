@@ -195,7 +195,9 @@ W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the fac
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 
-The table holds all **28 gates** of the family count (`parked-gates-1.md`, "Family count"):
+The table holds all **28 gates** of the family count (`parked-gates-1.md`, "Family count";
+family after summary-6's correction: 101 mechanisms, 28 tested by a strategy, 28 gates, family
+bar p < 0.10 / 101 = 0.00099):
 the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
 weather-1 and weather-2, W27-W33 and the replication R32 (summary-6 added the `seasonal-20y`,
 weather-2 and R32 rows from their write-ups, 2026-11-25). One passed (W32, kill-only), and its

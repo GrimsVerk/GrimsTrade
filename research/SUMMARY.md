@@ -103,13 +103,18 @@ and run this repo; 6 pull requests are open (listed under "Still open").
   fails the bar (z 2.75, IR +0.31; momentum's cost decides). Since 1994 its alpha is
   insignificant (z 0.75), negative in the 2010s. Managing it by market volatility does not help
   (#179). It needs shorts in any case (B7).
-- **Borrowed ideas: 97 mechanisms listed, 23 tested by a strategy, none passed; 28 gates, one
+- **Borrowed ideas: 101 mechanisms listed, 28 tested by a strategy, none passed; 28 gates, one
   kill-only pass, killed by its own replication** (many gates can only kill an idea, never pass
   one, by design: few independent episodes; #124). The pass was W32 `drought-inflation`
   (t -3.71, rank 1 of 41 on TLT 2002-2025); its replication R32 on the 10-year yield 1962-2002
   showed nothing (t -0.19, rank 21) (#188). Tonight's wide-17 to wide-20 added 7 (#169, #171,
   #173, #176), parked-gates-1 2 mechanisms and 3 gates (#188); every gate is listed in
-  [`gate-null.md`](gate-null.md). New candidates must pass two
+  [`gate-null.md`](gate-null.md). A bookkeeping pass (#191) applied the rule the count states
+  (a mechanism enters once it gets a gate or a strategy test; descriptive re-scores do not) and
+  added five strategy tests the count had missed: `vm-style-book` (#179), the century style
+  book (#170), Hedge across the books (#175) and `coin-drift-run` (#157, #190), each a new
+  mechanism, and the strategy form of `seasonal-20y` (#148), a mechanism already counted by its
+  gate. Family bar for the next strategy test: p < 0.10 / 101 = 0.00099. New candidates must pass two
   filters first: not announced, not driven by price (#109). A literature survey listed 11 more
   from 2024-2026, none tested by it (#177).
 
@@ -196,8 +201,9 @@ and run this repo; 6 pull requests are open (listed under "Still open").
   Verdict as the R32 card fixed it: a one-period result. **W33 `margin-susceptibles` fails:**
   this month's fall times the stock of broker customer receivables over equity value has no
   slope on next month's S&P 500, 1965-2025 (t +0.05, rank 41 of 41; its earlier-dose placebo null
-  is off-centre, all 40 placebo t positive). Counts now 97 mechanisms, 23 tested by a strategy,
-  28 gates (R32 included).
+  is off-centre, all 40 placebo t positive). parked-gates-1 counted 97 mechanisms, 23 tested
+  by a strategy, 28 gates (R32 included); corrected by #191 to 101 / 28 / 28 (see "What we know
+  now").
 - A dependence-robust standard error for the forward registry's verdict (#189, engineering):
   **adopted as an improvement, not a fix.** The verdict's standard error now allows a year of
   serial dependence (Bartlett / Newey-West, one year of lags; p from Kiefer-Vogelsang fixed-b).
