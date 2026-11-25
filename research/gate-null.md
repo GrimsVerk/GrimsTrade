@@ -39,6 +39,7 @@ shows how wide the real null is:
 | TLT next-quarter return on -PDSI (contiguous US drought), Newey-West 3 lags, 276 months (parked-gates-1, W32) | 40 calendars moved k = 13-89 months, both ways | 0.94 | 0% | persistent dose, but placebo t stay inside -1.76 / +1.95; the true t -3.71 ranked 1 (the first pass), then failed its replication R32 |
 | 10-year yield change over the next quarter on -PDSI, Newey-West 3 lags, 483 months 1962-2002 (parked-gates-1, R32) | 40 calendars moved k = 13-89 months, both ways | 1.19 | 8% | same dose, 40 other years: wider than W32's |
 | GSPC next month on this month's fall x detrended ln(broker customer receivables / equity value), four controls, Newey-West 3 lags, 729 months (parked-gates-1, W33) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.58 | **30%** | **off-centre**: all 40 placebo t positive (median +1.70, 95% +3.06): an earlier-only family can be biased; the rank is the reference |
+| US market (French daily) next month on detrended ln share of newspaper articles with "panic", three price controls, Newey-West 3 lags, 438 months 1927-1963 (panic-words-1, W34) | 40 earlier-dose calendars, k = 25-103 months (odd) | 1.18 | 10% | earlier-only family, centred this time (median -0.10, 5/95% -2.03/+1.47); panic peaks cluster in 1929-1933 |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -184,6 +185,7 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W31 `air-disaster-mood` (wide-20) | 23k days wrapped, k = ±1..20, both ways | no: accidents do not answer prices | t -0.59, rank 10 | no: t > -2 |
 | W32 `drought-inflation` (parked-gates-1) | k = 13..89 months, both ways | no: drought does not answer prices | t -3.71, rank 1: **pass (kill-only)** | killed by its replication R32 (1962-2002: t -0.19, rank 21) |
 | W33 `margin-susceptibles` (parked-gates-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +0.05, rank 41 | no: t < 2 |
+| W34 `panic-words` (panic-words-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +1.19 (predicted < 0), rank 37 | no: wrong sign |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -210,3 +212,8 @@ higher food prices) was absent in both periods. So a persistent monthly dose pas
 20-year period on a narrow-looking null (placebo SD 0.94) and showed nothing in the 40 years
 before: a narrow placebo null does not make a 20-year sample of a slow dose rich in independent
 episodes. Keep the replication step for every future pass.
+
+**Count after W34 (panic-words-1, 2026-11-25).** One mechanism and one gate added: from #191's
+corrected count (101 mechanisms, 28 tested by a strategy, 28 gates) to **102 mechanisms, 29
+gates**; W34 failed (wrong sign), so still one kill-only pass (W32, killed by R32) and every
+gated idea dead. Family bar p < 0.10 / 102 = 0.00098.
