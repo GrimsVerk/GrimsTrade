@@ -924,13 +924,10 @@ def episode_rows(ev: Eval) -> list[str]:
     return out
 
 
-def open_rows(ev: Eval) -> list[str]:
-    """Falls still unfinished at a segment end (not counted by the card): peak, the lowest
-    month after it, depth, holding's log change and I to that low (description)."""
-    out = [
-        "| Market | Peak | Low | Segment end | Depth | Hold (log pts) | I | S |",
-        "|---|---|---|---|---:|---:|---:|---:|",
-    ]
+def open_falls(ev: Eval) -> list[tuple[str, int, int, int, float, float, float]]:
+    """Falls still unfinished at a segment end (not counted by the card): market, peak month,
+    the lowest month after it, segment end, depth, holding's log change and I to that low."""
+    out = []
     with cost_of(ev.spec.cost):
         for s in ev.segs:
             px = np.cumprod(1 + s.r)
@@ -942,12 +939,77 @@ def open_rows(ev: Eval) -> list[str]:
             d = np.log1p(rule) - np.log1p(s.r)
             ins = 100 * float(d[pk + 1 : lo + 1].sum())
             hold = 100 * math.log(px[lo] / px[pk])
-            out.append(
-                f"| {s.series} | {ym_str(s.months[pk])} | {ym_str(s.months[lo])} | "
-                f"{ym_str(s.months[-1])} | {1 - px[lo] / px[pk]:.0%} | {hold:+.1f} | "
-                f"{ins:+.1f} | {ins / abs(hold):+.2f} |"
-            )
+            out.append((s.series, s.months[pk], s.months[lo], s.months[-1],
+                        float(1 - px[lo] / px[pk]), hold, ins))  # fmt: skip
     return out
+
+
+def open_rows(ev: Eval) -> list[str]:
+    out = [
+        "| Market | Peak | Low | Segment end | Depth | Hold (log pts) | I | S |",
+        "|---|---|---|---|---:|---:|---:|---:|",
+    ]
+    for name, a, lo, end, depth, hold, ins in open_falls(ev):
+        out.append(
+            f"| {name} | {ym_str(a)} | {ym_str(lo)} | {ym_str(end)} | {depth:.0%} | "
+            f"{hold:+.1f} | {ins:+.1f} | {ins / abs(hold):+.2f} |"
+        )
+    return out
+
+
+SPIKE = (ym(1857, 10), ym(1857, 11))  # BoE M15: 4.876, 8.924, 4.843 $/GBP in 1857-09..11
+
+
+def all_pairs(d: Data, split: int | None = None) -> dict[str, list[tuple[str, str]]]:
+    """(filter state, reference) pairs for every market-month; keys 'all', or 'before' and
+    'after' the month `split`."""
+    out: dict[str, list[tuple[str, str]]] = {}
+    for mk in d.markets:
+        st = classify(mk.x)
+        for m, s in zip(mk.months, st, strict=True):
+            k = "all" if split is None else ("before" if m < split else "after")
+            out.setdefault(k, []).append((s, reference(mk, int(m), d)))
+    return out
+
+
+def caveat(d: Data) -> str:
+    ag = agreement(all_pairs(d)["all"])
+    if ag.agree >= 0.85:
+        return ""
+    return f"; caveat: filter disagrees with the chronology (agreement {ag.agree:.3f} < 0.85)"
+
+
+def spike_rows(d: Data) -> list[str]:
+    """Data note: the one-month spike in BoE M15 (1857-10) and what it does (description)."""
+    mk = next(m for m in d.markets if m.name == "GBP in USD")
+    i = [s - mk.start for s in SPIKE]
+    x = mk.x.copy()
+    a0, n0 = acf1(x)
+    x[i] = np.nan
+    a1, n1 = acf1(x)
+    return [
+        f"- BoE M15 ($/GBP) has a one-month spike: 4.876 (1857-09), 8.924 (1857-10), 4.843 "
+        f"(1857-11), i.e. monthly log changes {mk.x[i[0]]:+.3f} and {mk.x[i[1]]:+.3f}. It "
+        f"sets the GBP-in-USD lag-1 acf in the before-scoring table at {a0:+.3f} ({n0} pairs); "
+        f"without those two changes it is {a1:+.3f} ({n1} pairs). It also makes the spurious "
+        "48% fall 1857-10..1861-01 of the unfiltered and peg-only books (it starts at the "
+        "spike). The filtered (primary) book never scores 1857, so no verdict changes. The "
+        "card's data rules are unchanged (the spike is below the ln 10 break rule).",
+    ]
+
+
+def posthoc_rows(d: Data, prim: Eval) -> list[str]:
+    sp = all_pairs(d, IRR_FROM)
+    b, a = agreement(sp["before"]), agreement(sp["after"])
+    s = [ins / abs(hold) for *_, hold, ins in open_falls(prim)]
+    return [
+        f"- Agreement split at 1946: hand-coded list before 1946 {b.agree:.3f} on {b.n} "
+        f"market-months (kappa {b.kappa:+.2f}; filter float / list peg {b.ff_cp}, filter peg / "
+        f"list float {b.fp_cf}); IRR 1946-1970 {a.agree:.3f} on {a.n} (kappa {a.kappa:+.2f}; "
+        f"{a.ff_cp} / {a.fp_cf}).",
+        f"- Falls unfinished at a segment end, primary book: {len(s)}; the rule's S to the low "
+        f"median {float(np.median(s)):.2f}, range {min(s):.2f}..{max(s):.2f}.",
+    ]
 
 
 def spell_rows(ev: Eval) -> list[str]:
@@ -993,6 +1055,7 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
     v_ins = verdict(prim, p_ar)
     v_prem = premium_verdict(obs_ls, pp_iid, max(pp_ar, pp_bb))
     checks = [(n, evaluate(d.markets, sp)) for n, sp in CHECKS]
+    cav = caveat(d)
 
     def q(a: np.ndarray) -> str:
         v = a[np.isfinite(a)]
@@ -1032,12 +1095,20 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
         f"**p_AR_prem = {max(pp_ar, pp_bb):.3f}.** With own means kept (beyond drift, not "
         f"decisive): p {pp_drift:.3f}.",
         "",
-        f"**Insurance verdict: {v_ins}** ({qualifiers(prim)}).",
+        f"**Insurance verdict: {v_ins}** ({qualifiers(prim)}{cav}).",
         "",
-        f"**Premium verdict: {v_prem}.**",
+        f"**Premium verdict: {v_prem}**{cav}.",
         "",
         f"Unfiltered book by the same rules (description): {verdict(unf, math.nan)} "
         f"({qualifiers(unf)}); peg-only: {verdict(peg, math.nan)}.",
+        "",
+        "## Data note",
+        "",
+        *spike_rows(d),
+        "",
+        "## Post hoc (not on the card; description)",
+        "",
+        *posthoc_rows(d, prim),
         "",
         "## Checks (description)",
         "",

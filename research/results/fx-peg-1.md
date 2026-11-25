@@ -1,6 +1,6 @@
 # fx-peg-1 results
 
-Generated 2026-11-25 23:09 UTC by `research/lib/fxpeg1.py run` (card `research/cards/fx-peg-1.md`). Months to 1970-12. Holding = the foreign currency as quoted, price only, cash at 0.
+Generated 2026-11-25 23:26 UTC by `research/lib/fxpeg1.py run` (card `research/cards/fx-peg-1.md`). Months to 1970-12. Holding = the foreign currency as quoted, price only, cash at 0.
 
 ## Before scoring: sources, autocorrelation, filter and chronology
 
@@ -48,11 +48,20 @@ Segments dropped (< 12 months): filtered 15, unfiltered 0, peg-only 20. Unfinish
 - Timing gap G observed +0.0185. AR1 sieve (joint residuals): p 0.393 (1000 worlds with a fall; median +0.0067, 5-95% -0.0680..+0.0739). Joint block bootstrap: p 0.200 (1000; median -0.0188, 5-95% -0.0926..+0.0540). **p_AR = 0.393.**
 - LS mean observed +0.00348 a month (+4.17% a year, t +4.70, 1237 months). Demeaned worlds: AR1 p 0.057 (median +0.0021, 5-95% +0.0006..+0.0035), BB p 0.000 (median +0.0007, 5-95% -0.0006..+0.0021), iid p 0.000 (median +0.0000, 5-95% -0.0012..+0.0012). **p_AR_prem = 0.057.** With own means kept (beyond drift, not decisive): p 0.495.
 
-**Insurance verdict: Holds only as lower exposure** (at the claimed strength; kept; cheaper than holding less).
+**Insurance verdict: Holds only as lower exposure** (at the claimed strength; kept; cheaper than holding less; caveat: filter disagrees with the chronology (agreement 0.841 < 0.85)).
 
-**Premium verdict: Premium not separable from autocorrelation.**
+**Premium verdict: Premium not separable from autocorrelation**; caveat: filter disagrees with the chronology (agreement 0.841 < 0.85).
 
 Unfiltered book by the same rules (description): Too few falls (at the claimed strength; handed back in the rebound; cheaper than holding less); peg-only: Too few falls.
+
+## Data note
+
+- BoE M15 ($/GBP) has a one-month spike: 4.876 (1857-09), 8.924 (1857-10), 4.843 (1857-11), i.e. monthly log changes +0.604 and -0.611. It sets the GBP-in-USD lag-1 acf in the before-scoring table at -0.092 (2158 pairs); without those two changes it is +0.321 (2155 pairs). It also makes the spurious 48% fall 1857-10..1861-01 of the unfiltered and peg-only books (it starts at the spike). The filtered (primary) book never scores 1857, so no verdict changes. The card's data rules are unchanged (the spike is below the ln 10 break rule).
+
+## Post hoc (not on the card; description)
+
+- Agreement split at 1946: hand-coded list before 1946 0.931 on 6983 market-months (kappa +0.86; filter float / list peg 212, filter peg / list float 273); IRR 1946-1970 0.679 on 3879 (kappa +0.05; 0 / 1247).
+- Falls unfinished at a segment end, primary book: 22; the rule's S to the low median 0.87, range 0.14..1.00.
 
 ## Checks (description)
 

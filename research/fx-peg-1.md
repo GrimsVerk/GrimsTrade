@@ -13,7 +13,12 @@ Data, read locally (only statistics are committed):
 - Norges Bank Historical Monetary Statistics, exchange rates (Klovland 2004): Table A1 (end of
   month, 1819-1914) and Table A2 (monthly averages, from 1914);
 - the Ilzetzki-Reinhart-Rogoff de facto classification and anchors, stable versions, used
-  for the agreement check only.
+  for the agreement check only. Cite: Ilzetzki, Reinhart and Rogoff (2019), "Exchange
+  Arrangements Entering the Twenty-First Century: Which Anchor Will Hold?", *Quarterly Journal
+  of Economics* 134(2), 599-646, and (2021), "Rethinking Exchange Rate Regimes", *Handbook of
+  International Economics* vol. 5 (the classification files used here belong to both). The
+  band test behind the filter is Reinhart and Rogoff (2004), "The Modern History of Exchange
+  Rate Arrangements: A Reinterpretation", *QJE* 119(1), 1-48.
 
 ## The answer on one screen
 
@@ -60,10 +65,13 @@ month. Its p values come from demeaned worlds, i.e. worlds with no drift.)
   short-lag dependence produce, and nothing more.
 - **Where the autocorrelation comes from.** Most krone markets after 1914 are Table A2's
   monthly averages, whose lag-1 autocorrelation is +0.12 to +0.60 (the mark +0.60, the dollar
-  +0.41; Iceland aside, which is never scored). An average of daily quotes adds about +0.25 by construction (Working 1960). On the
-  end-of-month sources (the BoE rate and Table A1) the long/short book earns +2.2% a year (t
-  2.4, check 4, no null run). The timing gap there is +0.19 (p_rot 0.057, 8 clusters). This is
-  the most interesting reading in the checks, but it is a description on 9 falls, not a test.
+  +0.41; Iceland aside, which is never scored). An average of daily quotes adds about +0.25 by
+  construction (Working 1960). Check 4 keeps only the sources not documented as averages:
+  Table A1 (end of month) and the BoE rate (timing not stated). On those the long/short book
+  earns +2.2% a year (t 2.4, no null run) and the timing gap is +0.19 (p_rot 0.057, 8
+  clusters). This is a description on 9 falls, not a test, and the BoE rate may not be
+  end-of-month data: without the 1857 spike (data note below) its lag-1 autocorrelation is
+  +0.32, which looks more like an averaged or smoothed series than end-of-month quotes.
 - **What the filter changes (description).** It keeps 3,715 of 13,909 scored months (27%). The
   long/short return a year goes from +1.65 (unfiltered) to +4.17 (floats). The pegged months
   earn nothing (+0.01, t 0.03): a trend rule on a pegged rate scores noise. The pegs hold only
@@ -75,7 +83,7 @@ month. Its p values come from demeaned worlds, i.e. worlds with no drift.)
   p_rot 0.049) mixes pegged and floating months and was not put through the AR nulls.
 - **Unfinished falls (not counted by the card).** 22 more falls were still running when their
   floating spell ended. Most are the big one-way moves that ended in a return to gold in
-  1926-28 or in the gold bloc's end in 1935-36. There the rule avoided a median 0.88 of the
+  1926-28 or in the gold bloc's end in 1935-36. There the rule avoided a median 0.87 of the
   loss to the low (range 0.14-1.00). The card counts only confirmed troughs, and fixed
   exposure in those spells is also low, so this does not change the timing reading.
 
@@ -92,8 +100,13 @@ month. Its p values come from demeaned worlds, i.e. worlds with no drift.)
   per-currency regime list before 1946 (`fxpeg1.CHRONOLOGY`: metal standards, floats, pegs to
   another currency, controls and wars; month dates approximate, from Eichengreen, Bordo and
   Schwartz, Officer, Friedman and Schwartz, and Klovland). From 1946 it is the IRR fine codes
-  with anchors. Months within 3 months of a switch, silver against gold, controls and wars are
-  ambiguous and left out.
+  with anchors. Fine codes 1-4 count as a peg to the anchor. Codes 9-14 count as float: this
+  includes 9-12 (wide crawling bands, moving bands, managed floating) as well as free floats
+  and free falls (13-14). Codes 5-8 (narrow crawls) and 15 are ambiguous. Months within 3
+  months of a switch, silver against gold, controls and wars are ambiguous and left out. The
+  code applies the 3-month buffer to an anchor currency too, which goes slightly beyond the
+  card's "either currency": for the krone pegged to sterling in 1933-39, a switch of sterling
+  also makes the krone pairs ambiguous.
   - The two agree on **0.841** of 10,862 market-months (kappa +0.65), below the card's 0.85.
   - Most of the disagreement is one-sided: 1,520 months where the filter says peg and the
     reference says float, against 212 the other way.
@@ -160,7 +173,18 @@ month. Its p values come from demeaned worlds, i.e. worlds with no drift.)
 - **Data finding.** data-wide-2's label parser drops Excel serial dates below 10,000, so its
   Norges Bank Table A2 series start in 1927-05, not 1914 (its "NOK in USD 1914-" line has no
   1914-1927 months). `fxpeg1.label_month` reads them. data-wide-2's currency counts (367
-  market-years, 5 falls of 25%+) therefore miss 1914-1927 of the A2 series.
+  market-years, 5 falls of 25%+) therefore miss 1914-1927 of the A2 series, and the 5 falls
+  may include the spurious 1857 BoE fall (data note). The dw2-dates-1 lane is fixing
+  data-wide-2's parser; this lane does not edit data-wide-2's files.
+- **Data note: a one-month spike in BoE M15.** The $/GBP rate reads 4.876 (1857-09), 8.924
+  (1857-10) and 4.843 (1857-11): one month at almost twice its neighbours (log changes +0.604
+  and -0.611). It stays below the card's ln 10 break rule, so the card's data rules keep it.
+  - It sets the GBP-in-USD lag-1 autocorrelation in the before-scoring table at -0.092; without
+    those two changes it is +0.321.
+  - It creates a spurious 48% fall, 1857-10 to 1861-01, in the unfiltered book (cluster 3 of
+    its episode table) and an unfinished one in the peg-only book.
+  - The filtered (primary) book never scores 1857 (the filter calls it a peg), so no verdict
+    changes. `results/fx-peg-1.md` has the same note, regenerated by `fxpeg1.py run`.
 
 ## Kill rules applied
 
@@ -174,12 +198,15 @@ lost less in 10 of 11 clusters, through exposure, not timing.
 ## Logged
 
 `tries.md`, idea `fx-peg-1`:
-- 1 `note` row: the before-scoring table and the agreement;
+- 3 `note` rows: the before-scoring table and the agreement, the post-hoc agreement split,
+  and a correction (the first note says "23 FX markets"; it is 18 markets in 23
+  market-source rows);
 - 13 `insure-check` rows, variants `tsmom12m@fx-peg-1-*`: the filtered, unfiltered and
   peg-only books and 10 checks. Sharpe = mean / sd of monthly long/flat rule returns x
   sqrt(12). The Return column chains all segments end to end, so it is not a portfolio return.
 
 Rotations and synthetic worlds are re-scorings: no rows. Downloads: the two IRR workbooks
-(10.5 MB and 12.1 MB) from ilzetzki.com (robots.txt allows; the page asks for citation) into
-the local data cache, under `fx-peg-1/irr/`. The BoE workbook and the Norges Bank file were
+(10.5 MB and 12.1 MB) from ilzetzki.com into the local data cache, under `fx-peg-1/irr/`.
+robots.txt allows it (a copy is saved there as `robots.txt`); the page asks only for the
+citation above. The BoE workbook and the Norges Bank file were
 already cached by insure-1709-1 and data-wide-2. No gate id is used.
