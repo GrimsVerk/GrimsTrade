@@ -18,6 +18,7 @@ import hashlib
 import inspect
 import json
 import sys
+import time
 from collections import Counter
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
@@ -41,6 +42,10 @@ from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
 BOOTSTRAP_DAYS = 700
+# All fetching in one run stops after this many seconds (`sources.Budget`; `--fetch-cap`): the
+# job's timeout is 20 minutes, and a run killed by it would leave bars stored without the
+# decisions on them. A normal run fetches in well under a minute (about 25 calls).
+FETCH_CAP = 600.0
 
 
 WRITTEN_EACH_RUN = ("state/portfolio.json", "state/witness.txt", "reports/scoreboard.md",
@@ -121,13 +126,21 @@ def state_row(r: gym.Result) -> dict[str, Any]:
 
 
 def run(
-    root: Path, now: datetime, get: sources.Get = sources.http_get, repo: Path = Path(".")
+    root: Path,
+    now: datetime,
+    get: sources.Get = sources.runner_get,
+    repo: Path = Path("."),
+    fetch_cap: float | None = FETCH_CAP,
+    clock: Callable[[], float] = time.monotonic,
 ) -> list[str]:
     """One daily run. Returns the list of data problems (empty if all went well).
 
     `repo` is the code checkout, whose `research/` files (on every branch but the record's) count
-    towards the number of strategies tried."""
+    towards the number of strategies tried. `fetch_cap` (seconds by `clock`; None: no cap) limits
+    all fetching together: a fetch after it fails like a source that is down."""
     check_record(root, now)
+    if fetch_cap is not None:
+        get = sources.Budget(get, fetch_cap, clock)
 
     problems = []
     for sym in data.UNIVERSE:
@@ -138,7 +151,7 @@ def run(
             else now.date() - timedelta(days=BOOTSTRAP_DAYS)
         )
         try:
-            source, bars = sources.fetch_from(sym, since, now, get)
+            source, bars = sources.fetch_from(sym, since, now, get, continues=bool(stored))
             before = len(stored)
             try:
                 added = data.append(root, sym, bars)
@@ -255,6 +268,16 @@ def _rates(root: Path, now: datetime, get: sources.Get) -> list[str]:
         return [f"rates not fetched: {e}"]
     by = Counter(source_of[r.date] for r in new)
     print(f"rates: +{added} ({', '.join(f'{n} {s}' for s, n in sorted(by.items())) or 'none new'})")
+    # A session with no rate before the newest stored one stays a gap for good (only newer rows
+    # are appended). With the Treasury's answer it is a holiday (neither has it); without it,
+    # it may be a hole in Yahoo's answer, so it is said. The gym carries the previous rate over.
+    treasury_failed = [f for f in failed if f.startswith(rates.TREASURY)]
+    if treasury_failed and new:
+        missing = [d for d in rates.lacking(since, now, set(source_of)) if d < new[-1].date]
+        if missing:
+            listed = ", ".join(d.isoformat() for d in missing)
+            refused = [*refused, f"rates: no rate stored for {listed} (a holiday, or a gap that "
+                       f"stays: Yahoo lacks it and {treasury_failed[0]})"]  # fmt: skip
     return refused
 
 
@@ -368,12 +391,16 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--root", type=Path, default=Path("trail"))
     p.add_argument("--repo", type=Path, default=Path("."), help="code checkout (research/ files)")
     p.add_argument("--intraday", type=Path, help="only collect the finer data into this folder")
+    p.add_argument("--fetch-cap", type=float, default=FETCH_CAP, metavar="SECONDS",
+                   help=f"stop all fetching after this long (default {FETCH_CAP:g})")  # fmt: skip
     args = p.parse_args(argv)
+    if not args.fetch_cap > 0:
+        p.error("--fetch-cap must be a positive number of seconds")
     if args.intraday is not None:
         collect_intraday(args.intraday, args.root, datetime.now(UTC))
         return
     try:
-        problems = run(args.root, datetime.now(UTC), repo=args.repo)
+        problems = run(args.root, datetime.now(UTC), repo=args.repo, fetch_cap=args.fetch_cap)
     except ledger.LedgerTampered as e:
         print(f"REFUSING TO RUN: {e}", file=sys.stderr)
         sys.exit(2)
