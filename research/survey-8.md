@@ -293,8 +293,10 @@ keyless), Haddad-Muir (a prior, not a dose).
 **Count.** `SUMMARY.md`: 103 mechanisms, 29 tested by a strategy, 30 gates, none passed. This
 lane adds **11 listed, 0 tested, 0 gates**; by the #191 rule a listing does not enter the count,
 so the family bar for the next test stays **p < 0.10 / 103 = 0.00097**, and a card that runs
-row 1 or 2 would make it 104 (0.10 / 104 = 0.00096). Project bar unchanged: N_eff 506,
-z >= 4.70 (`BAR.md`).
+row 1 or 2 would make it 104 (0.10 / 104 = 0.00096). `fx-value-real-1` (#197) merged while
+this lane ran; if the lead counts it as a new strategy-tested mechanism, add one to each
+number here (104 now, 105 after a gate: 0.10 / 105 = 0.00095). Project bar unchanged: N_eff
+506, z >= 4.70 (`BAR.md`).
 
 **The honest summary.** Ten of the eleven are dead or parked before any data: they fail a
 filter, duplicate a dead try, do not apply to the six assets, or have under 30 unseen years for
