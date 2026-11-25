@@ -446,6 +446,39 @@ def _turnover(rows: Rows, sel: np.ndarray, p: np.ndarray) -> float:
     return float(d.sum() / (len(q) / 12))
 
 
+# --------------------------------------------------------------------------- tries rows
+
+
+def _row(when: str, idea: str, variant: str, kind: str, lo: str, hi: str, sh: str) -> str:
+    return f"| {when} | {idea} | {variant} | {kind} | train | {lo} | {hi} | {sh} | - | - | - |"
+
+
+def gate_rows(res: dict, when: str, lo: str) -> list[str]:  # type: ignore[type-arg]
+    hi = "1989-12-01"
+    ms, vs, g = res["mean_sharpe"], res["vs_tsmom12"], res["gate"]
+    out = [_row(when, "rl-7-control", "tsmom12@rl7-trainingcell (reference for the gate; 23 "
+                "train markets x before 1990, mean per-market Sharpe)", "control", lo, hi,
+                f"{ms['tsmom12']:.2f}")]  # fmt: skip
+    for ln in FITTERS:
+        for tag in ("none", "0.00", "0.05", "0.10"):
+            for ceil in ("", "-ceil"):
+                r = f"{ln}{ceil}@{tag}"
+                if r not in ms:
+                    continue
+                v = vs[r]
+                txt = f"{r} (planted gate, out of fold; vs tsmom12 D {v['D']:+.3f}, SE {v['se']:.3f}"
+                if tag in ("0.05", "0.10"):
+                    lift = g[ln][f"{'ceil' if ceil else 'lift'}_{tag}"]
+                    txt += f"; lift over @0.00 {lift['D']:+.3f}, z {lift['z']:+.2f}"
+                if tag == "0.10" and not ceil:
+                    txt += f"; gate {'PASSES' if g[ln]['passes'] else 'fails'}"
+                    txt += " (" + ", ".join(k for k in ("G1", "G2", "G3", "G4") if g[ln][k])
+                    txt += " met)"
+                out.append(_row(when, "rl-7-control", txt + ")", "control", lo, hi,
+                                f"{ms[r]:.2f}"))  # fmt: skip
+    return out
+
+
 # --------------------------------------------------------------------------- main
 
 
@@ -474,6 +507,11 @@ def main() -> None:
         res["split"] = {nm: bool(train[i]) for i, nm in enumerate(rows.names)}
         (out / "rl-7-gate.json").write_text(json.dumps(res, indent=1, default=float) + "\n")
         print(json.dumps(res["gate"], indent=1))
+    elif cmd == "gate-rows":
+        res = json.loads((out / "rl-7-gate.json").read_text())
+        cell = train[rows.market] & (rows.k < CUT_K)
+        lo = ed.month_of(int(rows.k[cell].min())).isoformat()
+        print("\n".join(gate_rows(res, sys.argv[2], lo)))
     elif cmd == "final":
         g = json.loads((out / "rl-7-gate.json").read_text())["gate"]
         passed = [ln for ln in FITTERS if g[ln]["passes"]]

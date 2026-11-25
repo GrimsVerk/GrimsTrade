@@ -4262,3 +4262,18 @@ Never edit or delete a row.
 | 2026-11-25 21:10 | prime-age-inflow | wide-22 candidate, scored before any price, no number computed: D1, filtered F1: age structure known decades ahead (duplicate of wide-20 P5 my-ratio) | note | train | - | - | - | - | - | - |
 | 2026-11-25 21:10 | frost-crop | wide-22 candidate, scored before any price, no number computed: H1, filtered: food-price channel dead (W32/R32); size tiny | note | train | - | - | - | - | - | - |
 | 2026-11-25 21:10 | habituation | wide-22 candidate, scored before any price, no number computed: B1, filtered F2: the dose is the market's own reaction to past shocks | note | train | - | - | - | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | tsmom12@rl7-trainingcell (reference for the gate; 23 train markets x before 1990, mean per-market Sharpe) | control | train | 1870-08-01 | 1989-12-01 | 0.49 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | lasso-sign@none (planted gate, out of fold; vs tsmom12 D -0.038, SE 0.039) | control | train | 1870-08-01 | 1989-12-01 | 0.46 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | lasso-sign@0.00 (planted gate, out of fold; vs tsmom12 D -0.039, SE 0.039) | control | train | 1870-08-01 | 1989-12-01 | 0.45 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | lasso-sign-ceil@0.00 (planted gate, out of fold; vs tsmom12 D -0.009, SE 0.013) | control | train | 1870-08-01 | 1989-12-01 | 0.48 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | lasso-sign@0.05 (planted gate, out of fold; vs tsmom12 D -0.032, SE 0.036; lift over @0.00 +0.007, z +0.58) | control | train | 1870-08-01 | 1989-12-01 | 0.46 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | lasso-sign-ceil@0.05 (planted gate, out of fold; vs tsmom12 D -0.010, SE 0.032; lift over @0.00 -0.002, z -0.06) | control | train | 1870-08-01 | 1989-12-01 | 0.48 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | lasso-sign@0.10 (planted gate, out of fold; vs tsmom12 D +0.009, SE 0.031; lift over @0.00 +0.048, z +2.15; gate fails (G3, G4 met)) | control | train | 1870-08-01 | 1989-12-01 | 0.50 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | lasso-sign-ceil@0.10 (planted gate, out of fold; vs tsmom12 D +0.020, SE 0.034; lift over @0.00 +0.028, z +0.95) | control | train | 1870-08-01 | 1989-12-01 | 0.51 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | pg-lin@none (planted gate, out of fold; vs tsmom12 D -0.028, SE 0.024) | control | train | 1870-08-01 | 1989-12-01 | 0.47 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | pg-lin@0.00 (planted gate, out of fold; vs tsmom12 D -0.028, SE 0.024) | control | train | 1870-08-01 | 1989-12-01 | 0.47 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | pg-lin-ceil@0.00 (planted gate, out of fold; vs tsmom12 D -0.026, SE 0.028) | control | train | 1870-08-01 | 1989-12-01 | 0.47 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | pg-lin@0.05 (planted gate, out of fold; vs tsmom12 D -0.014, SE 0.028; lift over @0.00 +0.014, z +1.91) | control | train | 1870-08-01 | 1989-12-01 | 0.48 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | pg-lin-ceil@0.05 (planted gate, out of fold; vs tsmom12 D -0.011, SE 0.031; lift over @0.00 +0.015, z +1.83) | control | train | 1870-08-01 | 1989-12-01 | 0.48 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | pg-lin@0.10 (planted gate, out of fold; vs tsmom12 D +0.019, SE 0.032; lift over @0.00 +0.047, z +3.37; gate PASSES (G1, G2, G3, G4 met)) | control | train | 1870-08-01 | 1989-12-01 | 0.51 | - | - | - |
+| 2026-11-25 21:58 | rl-7-control | pg-lin-ceil@0.10 (planted gate, out of fold; vs tsmom12 D +0.027, SE 0.035; lift over @0.00 +0.053, z +3.39) | control | train | 1870-08-01 | 1989-12-01 | 0.52 | - | - | - |
