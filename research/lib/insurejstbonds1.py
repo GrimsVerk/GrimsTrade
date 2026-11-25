@@ -19,9 +19,9 @@ from __future__ import annotations
 
 import math
 import sys
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
-from datetime import UTC, date, datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 import numpy as np
@@ -205,14 +205,42 @@ def pairs_of(r: np.ndarray, d: float, pi: np.ndarray | None = None) -> list[tupl
     return i1.zigzag(np.concatenate([[1.0], np.cumprod(g)]), d, d)[0]
 
 
+def ep_shares(r: np.ndarray, cash: np.ndarray, pos: np.ndarray, pairs: Sequence[tuple[int, int]],
+              pi: np.ndarray | None = None, cost: float = ins.COST) -> np.ndarray:  # fmt: skip
+    """S of each episode for each row of `pos` (K x n), as `jstautocorr.shares`, but with the
+    denominator on the index the episodes were found on (real when `pi` is given)."""
+    pos = np.atleast_2d(pos)
+    flips = np.abs(np.diff(pos, axis=1, prepend=pos[:, :1]))
+    rule = pos * r + (1 - pos) * cash - cost * flips
+    d = 100 * (np.log1p(rule) - np.log1p(r))
+    cum = np.concatenate([np.zeros((len(pos), 1)), np.cumsum(d, axis=1)], axis=1)
+    g = np.log1p(r) - (np.log1p(pi) if pi is not None else 0.0)
+    hold = np.concatenate([[0.0], np.cumsum(100 * g)])
+    a = np.array([p[0] for p in pairs], dtype=int)
+    b = np.array([p[1] for p in pairs], dtype=int)
+    return (cum[:, b] - cum[:, a]) / np.abs(hold[b] - hold[a])
+
+
 def gap_stats(rs: Sequence[np.ndarray], bs: Sequence[np.ndarray], poss: Sequence[np.ndarray],
-              pairs: Sequence[Sequence[tuple[int, int]]], ks: np.ndarray
+              pairs: Sequence[Sequence[tuple[int, int]]], ks: np.ndarray,
+              pis: Sequence[np.ndarray | None] | None = None
               ) -> tuple[float, float, float, int]:  # fmt: skip
-    st = ja.s_stats(rs, bs, poss, pairs, ks)
-    n = len(st.rule)
-    if not n:
+    """Mean episode S of the rule, mean over rotations of the mean episode S, mean episode S of
+    the fixed exposure, number of episodes (jst-autocorr-1's per-episode statistic)."""
+    rule, fix, per_rot = [], [], []
+    for j, (r, b, pos, pr) in enumerate(zip(rs, bs, poss, pairs, strict=True)):
+        if not pr:
+            continue
+        pi = pis[j] if pis is not None else None
+        rule.append(ep_shares(r, b, pos, pr, pi)[0])
+        fix.append(ep_shares(r, b, np.full(len(pos), pos.mean()), pr, pi, cost=0.0)[0])
+        rolled = np.array([np.roll(pos, int(k) % len(pos)) for k in ks])
+        per_rot.append(ep_shares(r, b, rolled, pr, pi))
+    if not rule:
         return math.nan, math.nan, math.nan, 0
-    return float(st.rule.mean()), float(st.rot_means.mean()), float(st.fixed.mean()), n
+    ru, fx = np.concatenate(rule), np.concatenate(fix)
+    rot = np.concatenate(per_rot, axis=1).mean(axis=1)
+    return float(ru.mean()), float(rot.mean()), float(fx.mean()), len(ru)
 
 
 def cash_of(s: ins.Seg, cash0: bool) -> np.ndarray:
@@ -223,7 +251,8 @@ def observed_gap(segs: Sequence[ins.Seg], d: float, real: bool, cash0: bool) -> 
     rng_ks = np.random.default_rng(SEED).integers(1, max(len(s.pos) for s in segs), size=OBS_ROT)
     pairs = [pairs_of(s.r, d, s.pi if real else None) for s in segs]
     rule, rot, fix, n = gap_stats([s.r for s in segs], [cash_of(s, cash0) for s in segs],
-                                  [s.pos for s in segs], pairs, rng_ks)  # fmt: skip
+                                  [s.pos for s in segs], pairs, rng_ks,
+                                  [s.pi for s in segs] if real else None)  # fmt: skip
     return rule, rot, fix, rule - rot, n
 
 
@@ -271,7 +300,8 @@ def null_gaps(segs: Sequence[ins.Seg], d: float, kind: str, lag: int = 1, real: 
             bs.append(cash_of(s, cash0))
             poss.append(ja.signal(x[:n]))
             pairs.append(pairs_of(r, d, s.pi if real else None))
-        rule, rot, _, k = gap_stats(rs, bs, poss, pairs, rng.integers(1, lmax, size=SIM_ROT))
+        ks = rng.integers(1, lmax, size=SIM_ROT)
+        rule, rot, _, k = gap_stats(rs, bs, poss, pairs, ks, [s.pi for s in segs] if real else None)
         if k:
             out[w] = rule - rot
     return out
@@ -377,8 +407,10 @@ def run(label: str, segs: list[ins.Seg], anchors: list[ins.Seg], d: float, real:
 
 def judge(r: Result) -> None:
     nonzero = sum(1 for v in ins.cvals(r.anch, lambda e: e.ins) if v != 0)
-    ins_ok = bool(r.anch) and ins.ok(ins.cvals(r.anch, lambda e: e.ins)) and ins.ok(
-        ins.cvals(r.linked, lambda e: e.ins)
+    ins_ok = (
+        bool(r.anch)
+        and ins.ok(ins.cvals(r.anch, lambda e: e.ins))
+        and ins.ok(ins.cvals(r.linked, lambda e: e.ins))
     )
     pn = r.p_null
     if nonzero < TOO_FEW:
@@ -537,8 +569,17 @@ def per_country_tries(r: Result) -> list[str]:
         sh = rr.mean() / rr.std() if rr.std() > 0 else 0.0
         mdd = i1.maxdd(np.concatenate([[1.0], eq]))
         flips = sum(float(np.abs(np.diff(s.pos)).sum()) for s in ss) / len(rr)
-        rows.append(tries_row(f"tsmom12a@insure-jstbonds-{iso}", ss[0].years[1], ss[-1].years[-1],
-                              f"{sh:.2f}", f"{eq[-1] - 1:+.1%}", f"{mdd:.1%}", f"{flips:.2f}"))
+        rows.append(
+            tries_row(
+                f"tsmom12a@insure-jstbonds-{iso}",
+                ss[0].years[1],
+                ss[-1].years[-1],
+                f"{sh:.2f}",
+                f"{eq[-1] - 1:+.1%}",
+                f"{mdd:.1%}",
+                f"{flips:.2f}",
+            )
+        )
     return rows  # fmt: skip
 
 
@@ -566,8 +607,11 @@ def log_tries(rows: Sequence[str]) -> int:
 
 
 def counts_table(jst: Jst) -> list[str]:
-    L = ["| Sample | d | Episodes | Multi-year | Anchored clusters | Linked clusters | "
-         "Unfinished falls | Countries with a fall |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
+    L = [
+        "| Sample | d | Episodes | Multi-year | Anchored clusters | Linked clusters | "
+        "Unfinished falls | Countries with a fall |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
+    ]
     for cfg in (CONFIGS[0], CONFIGS[1]):
         segs = build(cfg, jst)
         cs = fall_counts(segs, anchor_segs(cfg, jst))
@@ -577,8 +621,11 @@ def counts_table(jst: Jst) -> list[str]:
         if cfg.key == "primary":
             j = choose(cs)
             n_years = sum(len(s.pos) for s in segs)
-            L.insert(0, f"Primary: {len(segs)} segments, {len({s.iso for s in segs})} countries, "
-                        f"{n_years} scored country-years. **Chosen d = {LADDER[j]:.1%}.**\n")
+            L.insert(
+                0,
+                f"Primary: {len(segs)} segments, {len({s.iso for s in segs})} countries, "
+                f"{n_years} scored country-years. **Chosen d = {LADDER[j]:.1%}.**\n",
+            )
     return L  # fmt: skip
 
 
@@ -633,7 +680,7 @@ def main(argv: Sequence[str]) -> None:
             "|---|---|---:|---:|---:|---:|---:|---|---:|---:|",
         ]
         for c in rows:
-            ss = (f"{c.s_rule:.2f} / {c.s_fix:.2f} / {c.s_rot:.2f}" if c.eps else "-")
+            ss = f"{c.s_rule:.2f} / {c.s_fix:.2f} / {c.s_rot:.2f}" if c.eps else "-"
             L.append(f"| {NAMES[c.iso]} | {c.years} | {c.n_years} | {c.acf:+.2f} | {c.eps} | "
                      f"{c.wins} | {c.ties} | {ss} | {c.gap:+.3f} | {c.p_ar:.3f} |")  # fmt: skip
         L.append("")
