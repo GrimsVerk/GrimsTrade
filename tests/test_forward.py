@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import subprocess
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -409,8 +410,8 @@ def ar1(e: list[float], phi: float) -> list[float]:
 def iid_t(values: list[float]) -> float:
     n = len(values)
     m = sum(values) / n
-    sd = (sum((v - m) ** 2 for v in values) / (n - 1)) ** 0.5
-    return m / (sd / n**0.5)
+    sd = math.sqrt(sum((v - m) ** 2 for v in values) / (n - 1))
+    return m / (sd / math.sqrt(n))
 
 
 def test_the_lag_rule_is_one_year_of_observations_capped_at_a_quarter_of_the_window() -> None:
