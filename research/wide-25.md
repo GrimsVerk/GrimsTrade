@@ -70,7 +70,7 @@ barge, PHMSA, derail, wildfire, air quality, smog, PM2.5, Beige Book, docket. Fo
 - Strikes: wide-20 P12 `strike-idleness` (parked: BLS asks for a contact e-mail).
 - Beige Book, dockets, derailments, wildfires, protests: nothing.
 
-## Step 2. Fourteen mechanisms, scored (2026-11-25 23:10 UTC, before any price was read)
+## Step 2. Fourteen mechanisms, scored (2026-11-25 23:00 UTC, before any price was read)
 
 **Disclosure.** Before this table, format and coverage only (no price, no return, no statistic
 involving a price): the ParlGov cabinet table (`view_cabinet.csv`, 1.8 MB; field names, and per
@@ -152,4 +152,29 @@ JST returns, 1921-1959 (years before the gate's), 15 countries. No second gate (
 
 ## Step 3. W41 `cabinet-collapse` gate
 
-(Filled after the dry run and the real run.)
+The rule, data, placebo family, gate, the replication R41 (run only after a pass), shown cells,
+power and guess are in [`cards/wide-25.md`](cards/wide-25.md), pushed before any number (commit
+6b25042, 23:01 UTC). Code: `research/lib/wide25.py` (pure functions tested offline in
+`tests/test_wide25.py`; load and run). Results: `research/results/cabinet-collapse.md`.
+
+### Dry run (counts only, 2026-11-25 23:03 UTC)
+
+ParlGov: 180 mid-term cabinet starts in the 18 countries, 1976-01 .. 2022-12 (17 of them
+caretaker cabinets). **Gate rows 9,300 country-months (1976-01 .. 2022-12), 171 event months**
+(France 22, Italy 27, Japan 22, Belgium 18, Finland 10, Norway 10, Austria 9, the Netherlands
+and Sweden 8, Britain 7, New Zealand 6, Australia, Denmark and Ireland 5, Canada and Spain 3,
+Germany 2, Switzerland 1). **Pooled lag-1 autocorrelation of the dose -0.007**: far under 0.8,
+so gate-null-2's proposed "both families" rule does not apply (as the card expected). Spot
+check of the British events: 1976-04 (Callaghan), 1990-11 (Major), 2007-06 (Brown), 2016-07
+(May), 2019-07 (Johnson), 2022-09 (Truss), 2022-10 (Sunak): all right.
+
+**A weakness of the frozen event rule, found in the dry run (before any number), not changed:**
+ParlGov codes a caretaker cabinet that starts on election day and carries the new election's
+date; the government formed after the negotiation then has the same election date as that
+caretaker and counts as a "mid-term" start. 13 of the 180 events are such post-election
+formations (Belgium 2007, 2011, 2014; Germany 2018; Spain 2016; the Netherlands 1977, 2017;
+Austria 2000, 2003, 2020; Ireland 2020; Sweden 2019; Belgium 1992). The rule runs as written;
+one shown cell (added now, before any number, not gating) drops events whose previous cabinet
+is a caretaker that started on its own election day. Events after a non-caretaker cabinet that
+started on election day (Britain 1976 and 1990, Norway, Sweden 1986 and 1990) are real
+mid-term changes and stay in.
