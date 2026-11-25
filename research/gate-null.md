@@ -24,13 +24,16 @@ shows how wide the real null is:
 | SPY new- minus full-moon days (wide-6, W3) | 28 phase shifts | 1.34 * | 11% * | adjacent shifts overlap; a smooth wave, not independent draws |
 | GLD festival runs minus their month's mean (wide-7, W13) | 14 weekly shifts | 0.59 * | 0% * | few placebos |
 | ETH minus BTC, ten days into and after 15 upgrades, one-sample t (wide-9, W17) | 40 calendars moved by k x 30 days | **1.05** | **2%** | non-overlapping, roughly independent events: the normal null is right |
+| Same-month spread (top fifth minus bottom fifth of 20-year same-month averages), 23 assets, Friday clock, 106 months 2017-2025 (survey-7, `seasonal-20y`) | 40 month-index shifts off the annual cycle (lags 13 months or more) | 0.79 | 2% | non-overlapping monthly spreads: about normal; median +0.58 (every placebo lag carries the assets' long-run mean) |
 | TLT open-to-close on the day's Fed purchase dose, HC1, 2,983 days (wide-10, W20) | 40 calendars moved k trading days | 0.99 | 2% | daily, nearly independent days: normal null about right |
 | BTC/ETH next-week return on weekly stablecoin issuance, HC1, 339 weeks (wide-10, W21) | 40 calendars moved k weeks | 1.24 | **28%** | persistent dose, high in bull markets: shifted doses share the regime (median +0.85) |
 | 4-week return of GLD/TLT/SPY/QQQ on hedging-pressure z, Driscoll-Kraay 4 lags, 1,484 rows (wide-11, W22) | 40 calendars moved k = 27-103 weeks | 1.13 | 8% | persistent dose that follows price at 6-12 months: future-dose shifts lean positive (95% +2.22, max +3.41) |
 | 4-week return of TLT/IEF on foreign official custody-flow z, four price controls, Driscoll-Kraay 4 lags, 1,644 rows (wide-12, W23) | 40 calendars moved k = 27-103 weeks | 1.19 | 10% | persistent dose, symmetric null (5/95% -2.07/+1.89): same family as W22, same width |
 | Next-quarter return of TLT/IEF on SPF 10-year inflation-dispersion z, Driscoll-Kraay 1 lag, 124 rows (wide-12, W24) | 40 calendars moved k = 7-45 quarters | 0.90 | 0% | non-overlapping quarters, short placebo samples (36-124 rows): narrower than normal |
+| UNG next-week return on the gas-weighted 7-day HDD surprise, HC1, 389 weeks, winters 2007-08..2024-25 (weather-1, `hdd-gas`) | 40 winter derangements | 1.12 | 10% | non-overlapping weeks, whole-winter permutation: close to N(0, 1), slightly wide |
 | 4-week return of GLD/TLT on GPR acts z from its available-on date, Driscoll-Kraay 4 lags, 2,166 rows (wide-13, W25) | 40 calendars moved k = 27-103 weeks (earlier-dose half only, per review-2: 20) | 1.11 (0.97) | 12% (5%) | index shares slow regimes with safe havens: centred below zero (median -0.96; earlier-only -0.26) |
 | 4-week return of XLF on ln(1 + FDIC failed assets), four price controls, Newey-West 4 lags, 1,344 weeks (wide-13, W26) | 40 calendars moved k = 27-103 weeks (earlier-dose half only: 20) | 1.63 (0.48) | 25% (0%) | failures follow XLF at 52 weeks (t -3.87): later-dose shifts carry the whole negative tail (to -4.37), review-2 point (1); about two episodes, kill-only |
+| UNG open-to-close on the change of a gas-weighted CPC 6-10/8-14 day cold-outlook index, HC1, 1,327 sessions, 13 winters (weather-2, `cpc-revision`) | 40 winter derangements | 0.95 | 10% | centred above zero (median +0.78): calendar structure shared across winters; 13 winters, kill-only |
 | 4-week return of SPY on Anscombe roll-call count, session dummy and four price controls, Newey-West 4 lags, 1,653 weeks (wide-15, W27) | 40 earlier-dose calendars, k = 27-105 weeks (odd) | 1.08 | 5% | weekly count with no price feedback found (t <= 1.01): near normal |
 | 4-week return of QQQ/IWM/BTC/ETH on the runoff of the IRS refund surprise, Driscoll-Kraay 4 lags, 2,999 rows (wide-15, W28) | 40 calendars moved k = 27-103 weeks, both ways | **1.92** | **32%** | dose large only about 15 weeks a year, four co-moving assets: about one independent draw per season (about 18) |
 | SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade, Newey-West 3 lags, 393 months (wide-17, W29) | 40 calendars moved k = 13-89 months, both ways | 1.47 | 22% | persistent dose with a few ENSO-paced swings; far shifts carry the upper tail (to +3.11) |
@@ -170,6 +173,7 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W16 `geomagnetic-storm` (wide-8) | k x 61 days, both ways | no: solar activity | t +2.46, wrong sign | no |
 | W17 `fork-premium` (wide-9) | k x 30 days, both ways | no: scheduled upgrades | t +0.23 | no |
 | W19 `enso-commodity` (wide-9) | k = 2..41 years, earlier only | no | t -0.92 | no |
+| `seasonal-20y` (survey-7) | 40 month-index shifts off the annual cycle, lags 13 months or more | no: earlier lags only | t +0.19, rank 31 | no: t < 2 |
 | W20 Fed purchase dose (wide-10) | k = 3..27 days, both ways | judged no: purchases follow a schedule announced ahead | t +0.37, rank 11 | no: t < 2 |
 | W21 stablecoin issuance (wide-10) | k = 3..22 weeks, both ways | **yes**: issuance runs high in bull markets (placebo median +0.85) | t +1.06, rank 17 | no: t < 2 |
 | W22 hedging pressure (wide-11) | k = 27..103 weeks, both ways | **yes** (above) | t +0.49 | no: t < 2 |
@@ -177,19 +181,29 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W24 inflation dispersion (wide-12) | k = 7..45 quarters, both ways | possible (survey dispersion may follow yields) | t -0.75, wrong sign | no |
 | W25 `act-haven` (wide-13) | k = 27..103 weeks; earlier half also reported | yes, weakly (26-52-week link) | t -1.02, wrong sign | no |
 | W26 `failure-premium` (wide-13) | k = 27..103 weeks; earlier half also reported | **yes**: failures follow XLF (t -3.87) | t -0.48, wrong sign | no |
-| weather-1 (#116) | 40 derangements of winters | no: weather | t -0.29, rank 19 | no |
+| weather-1 `hdd-gas` (#116) | 40 derangements of winters | no: weather | t -0.29, rank 19 | no |
+| weather-2 `cpc-revision` (#117) | 40 derangements of 13 winters | no: weather forecasts | t -0.68, wrong sign, rank 36 | no |
 | W27 `congress-workload` (wide-15) | k = 27..105 weeks, earlier only | not used (earlier only, as step 1 asks) | t -0.19, wrong sign, rank 25 | no |
 | W28 `refund-runoff` (wide-15) | k = 27..103 weeks, both ways | no: refunds do not answer prices (feedback t -1.20 .. +1.08) | t +1.44, rank 7 | no: t < 2 |
 | W29 `temperature-premium` (wide-17) | k = 13..89 months, both ways | no: temperature does not answer prices | t +1.63, rank 9 | no: t < 2 |
 | W30 `outbreak-premium` (wide-17) | k = 27..103 weeks, both ways | no: WHO reporting does not answer prices | t +1.68, rank 9 | no: t < 2 |
 | W31 `air-disaster-mood` (wide-20) | 23k days wrapped, k = ±1..20, both ways | no: accidents do not answer prices | t -0.59, rank 10 | no: t > -2 |
 | W32 `drought-inflation` (parked-gates-1) | k = 13..89 months, both ways | no: drought does not answer prices | t -3.71, rank 1: **pass (kill-only)** | killed by its replication R32 (1962-2002: t -0.19, rank 21) |
+| R32, replication of W32 (parked-gates-1, `cards/parked-gates-1b.md`) | k = 13..89 months, both ways | no: drought does not answer prices | 10-year yield 1962-2002: t -0.19 (predicted > 0), rank 21 | no: t < 2; W32 dead |
 | W33 `margin-susceptibles` (parked-gates-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +0.05, rank 41 | no: t < 2 |
 | W34 `panic-words` (panic-words-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +1.19 (predicted < 0), rank 37 | no: wrong sign |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
+
+The table holds all **28 gates** of the family count (`parked-gates-1.md`, "Family count";
+family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates, family
+bar p < 0.10 / 101 = 0.00099):
+the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
+weather-1 and weather-2, W27-W33 and the replication R32 (summary-6 added the `seasonal-20y`,
+weather-2 and R32 rows from their write-ups, 2026-11-25). One passed (W32, kill-only), and its
+replication killed it.
 
 **No verdict can flip, and dead ideas stay dead.** A gate passes only if the true t is at least
 2 with the predicted sign *and* ranks among the top 2 of 41. Removing contaminated placebos can
@@ -198,7 +212,7 @@ the true t cleared 2 with the right sign and the rank alone failed. No gate is i
 every one failed on its own t (wrong sign or t < 2), except W32 (parked-gates-1), which passed
 outright and was killed by its replication R32. Where a null is widened instead (stricter
 placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
-W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" is weaker evidence against
+W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 28 now, one kill-only pass) is weaker evidence against
 borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
 
 ## First pass, and what the procedure did with it (parked-gates-1, 2026-11-25)

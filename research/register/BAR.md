@@ -9,23 +9,23 @@ re-run is not added, changed live code is a new series (the old one stays as its
 record) and the estimate uses one series per live strategy; robustness-only curves are
 not stored by default (`research/register/README.md`, register-7).
 
-Rows through 2026-11-25 00:50. Remote branches with a `research/tries.md`: 92.
+Rows through 2026-11-25 01:16. Remote branches with a `research/tries.md`: 93.
 
 ## Counts
 
 | What | Count |
 |---|---:|
-| Distinct tries, project-wide (`research/register/tries.jsonl`) | **4,119** |
-| Families (the `Idea` column) | 207 |
-| Tries without a Sharpe | 501 |
-| Selectable tries (`variant` or `baseline`, period `train`) | 1,104 |
+| Distinct tries, project-wide (`research/register/tries.jsonl`) | **4,126** |
+| Families (the `Idea` column) | 210 |
+| Tries without a Sharpe | 506 |
+| Selectable tries (`variant` or `baseline`, period `train`) | 1,105 |
 | Live strategies | 11 (lines of `ledger/tries.jsonl` on the remote `paper-trail`) |
-| **N for a new pick** (selectable + live) | **1,115** |
-| Tries whose shape the harness logged (`research/tries-shape.jsonl`) | 374 (52 selectable) |
+| **N for a new pick** (selectable + live) | **1,116** |
+| Tries whose shape the harness logged (`research/tries-shape.jsonl`) | 376 (53 selectable) |
 
-By kind: robustness 2,033, variant 660, control 516, baseline 466, screen 247, insure-check 90, note 63, replication 25, live-check 19.
+By kind: robustness 2,034, variant 660, control 516, baseline 467, screen 250, insure-check 90, note 65, replication 25, live-check 19.
 
-## The bar for a new pick at N = 1,115
+## The bar for a new pick at N = 1,116
 
 Deflated Sharpe, difference form (Bailey and Lopez de Prado 2014, as in
 `research/dsr-1.md`): a new rule's Sharpe edge d over the current bar (`tsmom12`), with
@@ -35,11 +35,11 @@ Correlated trials count as N_eff = rho + (1 - rho) N (appendix A.3); rho and the
 
 | Trials counted as | N | DSR 0.95: z needed | Edge, close rule (SE 0.065) | Edge, far rule (SE 0.12) | Bonferroni: p below | Bonferroni: z |
 |---|---:|---:|---:|---:|---:|---:|
-| independent | 1,115 | 4.93 | +0.32 | +0.59 | 4.5e-05 | 3.92 |
+| independent | 1,116 | 4.93 | +0.32 | +0.59 | 4.5e-05 | 3.92 |
 | measured rho 0.55 (A.3, at most 10 per family) | 506 | 4.70 | +0.31 | +0.56 | 9.9e-05 | 3.72 |
 | ONC 2 clusters in 208, scaled to N | 11 | 3.25 | +0.21 | +0.39 | 4.7e-03 | 2.60 |
 | ONC 2 clusters, sample only | 2.0 | 2.16 | +0.14 | +0.26 | 2.5e-02 | 1.96 |
-| uncapped sample of 328: rho 0.59 (A.3, register-2) | 460 | 4.67 | +0.30 | +0.56 | 1.1e-04 | 3.70 |
+| uncapped sample of 328: rho 0.59 (A.3, register-2) | 461 | 4.67 | +0.30 | +0.56 | 1.1e-04 | 3.70 |
 
 SE: a rule close to `tsmom12` on the primary test (six assets,
 1994-02-01..2025-11-09), and a far one (review-1's SE against equal weight).
@@ -55,10 +55,10 @@ uncorrelated) and uses the z column (review-2, section 1a).
 
 From `research/register/trials.json` and `research/register/moments.jsonl`, written by
 `uv run --with numpy python research/register2.py all` (card `research/register-2.md`).
-Tries with a measured record length, skew and kurtosis: 1,587 rows (465 of the 1,104 selectable) and 12 live strategies,
+Tries with a measured record length, skew and kurtosis: 1,589 rows (466 of the 1,105 selectable) and 12 live strategies,
 from the shape the harness logs with each row (`research/tries-shape.jsonl`), the
 research harness (baselines re-simulated, each matching its logged Sharpe) and the
-equity curves the harness saved when the try was logged. Their weekly returns are committed in `research/register/returns/` (1,533 series, 83 family files, 4.9 MB; card `research/register-4.md`), so `register2.py estimate` rebuilds both files on any checkout.
+equity curves the harness saved when the try was logged. Their weekly returns are committed in `research/register/returns/` (1,534 series, 84 family files, 4.9 MB; card `research/register-4.md`), so `register2.py estimate` rebuilds both files on any checkout.
 
 Correlation sample: 208 distinct selectable or live return series that cover every week 2012-01-06..2025-11-07 (722 weekly returns), at most 10 per family (66 families; first by SHA-256 of idea/variant/start, card `research/register-3.md`; uncapped: 328).
 
@@ -100,11 +100,11 @@ returns; fat tails need more):
 
 | Trials counted as | N | Luck alone, SR0 | Needed, 32 years | 10 years | 5 years |
 |---|---:|---:|---:|---:|---:|
-| independent | 1,115 | 1.02 | 1.31 | 1.56 | 2.21 |
+| independent | 1,116 | 1.02 | 1.31 | 1.56 | 2.21 |
 | measured rho 0.55 (A.3, at most 10 per family) | 506 | 0.95 | 1.24 | 1.49 | 2.10 |
 | ONC 2 clusters in 208, scaled to N | 11 | 0.50 | 0.79 | 1.03 | 1.46 |
 | ONC 2 clusters, sample only | 2.0 | 0.16 | 0.45 | 0.68 | 0.97 |
-| uncapped sample of 328: rho 0.59 (A.3, register-2) | 460 | 0.94 | 1.23 | 1.48 | 2.09 |
+| uncapped sample of 328: rho 0.59 (A.3, register-2) | 461 | 0.94 | 1.23 | 1.48 | 2.09 |
 
 ## Spread per test window
 
