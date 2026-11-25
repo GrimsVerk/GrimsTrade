@@ -218,7 +218,8 @@ live code versions (#166).
 - Open pull requests, no verdict yet: a ranking of keyless data sources by new independent
   market-years (#206); a study of the shifted-calendar placebo family for persistent doses and a
   proposed phase-surrogate second family (#207); a learned monthly policy against `tsmom12`
-  (#209).
+  (#209); kill-only JST gates for survey-8's two candidates, `consumption-cycle` and
+  `bank-capital-premium` (#210).
 - Leads still open: the halving window's one forward score (#137). `e4` is closed as a lead
   (#198); `coin-drift-run` is dead (#157, #190).
 - Live: 12 books trade fake money daily, `own_vol_70` included (#135). The record is days old:
