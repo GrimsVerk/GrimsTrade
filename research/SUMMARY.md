@@ -2,7 +2,7 @@
 
 The live rule is `tsmom12`: hold an asset only while its price is above where it was a year ago,
 otherwise cash. "Sharpe" below means return per unit of risk (higher is better). Agents now merge
-and run this repo; 8 pull requests are open (listed under "Still open").
+and run this repo; 7 pull requests are open (listed under "Still open").
 
 ## What we know now
 
@@ -23,22 +23,26 @@ and run this repo; 8 pull requests are open (listed under "Still open").
   at bills, 1.0 with cash at 0; the French US market 1.1-1.4) and about 2 on single industries
   (mean of 10: 1.6-2.0; from about 1 ahead to 4 behind by industry) (#162). It fails in fast
   crashes of three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
-  just like the bottom (#94, #96, #103).
+  just like the bottom (#94, #96, #103; per fall `e4` too, #178).
 - **Fast-crash cover can be bought, but it has not paid.** Puts while trend is in cost about 2.9
   points of growth a year against `tsmom12` (#165). VIX calls are the best cover tested for the
   falls trend misses (21.9 log points avoided per fall, against trend's 6.9), but over 2006-2025
   they were a net cost even with 2020 (Sharpe d -0.09 against `tsmom12`); 2020 is the only fall
   that comes near paying for them, and without it they cost about 4 points of growth a year
   (d -0.31, z -2.32) (#167). Buying them is a bet on the next fast crash from a calm level.
-- **`e4`'s lead is a faster buy-back** (#168, descriptive). `e4` (an ensemble of 1/3/6/12-month
-  signals) leads `tsmom12` mostly in the year after a market's low, where its faster legs buy
-  back earlier (+0.092 Sharpe a stock market by the card's split; positive on all 39 stock
-  markets with a 25% fall). Post hoc, against a `tsmom12` scaled to `e4`'s volatility, it gives
-  part of that back in slow bear markets (it buys bear-market rallies) and in calm dips; fast
-  crashes add little. Its smaller lead outside stocks is, by the card's rule, the risk part
-  (part positions cut volatility, worth more where `tsmom12` earns more per unit of risk), not
-  regime mix. This describes the known lead, it is not a test: `e4` stays "unsettled, leaning
-  positive" (pooled +0.045, z 1.43; on bonds and currencies +0.010, z 0.33; #159).
+- **`e4`'s lead is a graded buy-back plus earlier partial exits** (#168, #178, descriptive).
+  `e4` (an ensemble of 1/3/6/12-month signals) leads `tsmom12` mostly in the year after a
+  market's low, where its faster legs buy back earlier (+0.092 Sharpe a stock market by the
+  card's split; positive on all 39 stock markets with a 25% fall); fast crashes add little. Per
+  fall, in log points, its buy-back leaks like the old re-entry rules (it keeps 31% of its
+  rebound gain; `or3-12` 23%), so "early rallies look like the bottom" holds for `e4` too; its
+  partial exits while `tsmom12` is still in pay for the bear-market rallies it buys, and cost
+  in calm markets. In Sharpe the graded, smaller buy-back carries most of the lead (a diagnostic
+  without the exits gives +0.045 of +0.063). Its smaller lead outside stocks is, by the card's
+  rule, the risk part (part positions cut volatility, worth more where `tsmom12` earns more per
+  unit of risk), not regime mix. These describe the known lead, they are not tests: `e4` stays
+  "unsettled, leaning positive" (pooled +0.045, z 1.43; on bonds and currencies +0.010, z 0.33;
+  #159).
 - **Gaining in a crash needs shorts (bets on falls) across many markets.** That is how real
   trend funds gain in crashes (#83). Added to `tsmom12` without leverage, such a book gained in
   2008, 2020 and 2022, but cut Sharpe from 1.21 to 0.97 (#89). A risk choice, not an edge; the
@@ -116,8 +120,10 @@ and run this repo; 8 pull requests are open (listed under "Still open").
   `tsmom12` and `own_vol_70` alone stays at 50/50 to 52/48: the equal split of the two. Post
   hoc, not a pick: the equal split's +0.106 (z 1.78) is flattered by three books chosen on
   this window.
-- Where `e4`'s lead comes from (#168) and where own-vol's lead or loss comes from (#172), both
-  descriptive re-scores: see "What we know now". Neither moves the verdicts on `e4` or own-vol.
+- Where `e4`'s lead comes from (#168), why it gains after the low when faster re-entry rules
+  did not (#178), and where own-vol's lead or loss comes from (#172), all descriptive
+  re-scores: see "What we know now". None moves the verdicts on `e4` or own-vol; the re-entry
+  line stays closed.
 - Why breadth lowers Sharpe (#180, descriptive): the added markets' low trend Sharpe, plus coin
   dilution; see "What we know now".
 - Physics, signal processing and control ideas (#169): of 13 candidates 11 were already tested
@@ -153,10 +159,9 @@ z -1.67).
 - Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
   environment (#149), the daily run reconciling its own record (#153), the scoreboard's
   live-start-delay note (#155), daily-run robustness tests for misbehaving sources (#161).
-- Tonight's lanes still open: why `e4` gains after the low when faster re-entry rules did not
-  (#178), the post-2009 trend break by asset class (#181), the `tsmom12` exit scored as a crash
+- Tonight's lanes still open: the post-2009 trend break by asset class (#181), the `tsmom12` exit scored as a crash
   warning by relative economic value (#182, draft), this summary (#183).
-- Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168); the halving
+- Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168, #178); the halving
   window's one forward score (#137). `coin-drift-run` is closed: not confirmed (#157).
 - Live: 11 books trade fake money daily; `own_vol_70` joins on its first run (#135). The record
   is days old: description only.
@@ -182,7 +187,7 @@ None of the rows is a proven edge.
 - Is the edge real? #74 (`research/dsr-1.md`), #78; live funds #91 (`research/survey-6.md`).
 - The bar: #92, #100, #108, #111 (`research/register/BAR.md`); what could reach it: #150, #170.
 - Tonight: `research/xs-century-1.md`, `vm-style-1.md`, `vix-call-1.md`, `hedge-books-1.md`,
-  `e4-anatomy-1.md`, `ownvol-anatomy-1.md`, `breadth-anatomy-1.md`, `wide-17.md` to
+  `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `breadth-anatomy-1.md`, `wide-17.md` to
   `wide-20.md`, `survey-7b.md`, `data-long-4.md`.
 - Shorts: #83, #89. Coins: #69, #82. Euro books: #59, #62, #63, #68, #73, #77, #80, #85.
 - Corrections after the independent review (#119): [`errata-2.md`](errata-2.md).
