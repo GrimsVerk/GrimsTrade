@@ -365,6 +365,19 @@ New, not yet carded (from the failure atlas, [results/deep-1-atlas.md](results/d
 | pdo-regime | Oceanography (Pacific Decadal Oscillation) | new (scored 3, parked) | - | wide-21's S4: four or five regimes since 1854; ENSO (W19) and drought (W32) channels dead. |
 | wide-21-filtered-set | Oceanography, solar physics, astronomy, hydrology method, materials science, chemistry | filtered (wide-21) | - | S5 `amo-hurricane` (dead channels W15/W32), S6 `cosmic-ray-cloud` (duplicate of W16), S7 `eclipse-omen` (F1: scheduled), S8 `hurst-flood` (F2; dead in the literature, Lo 1991), S9 `kaiser-felicity` (F2), S10 `stress-corrosion-calm` (F1/F2), S11 `paris-law-credit` (F1), S12 `chemical-accident-mood` (mood class dead, W31). |
 
+## wide-22: energy systems, queueing / reliability, network contagion, information theory, game theory, transport, demography, agronomy, neuroscience (`wide-22.md`, cards `cards/wide-22.md`, `cards/wide-22b.md`)
+
+Count after this run: 104 mechanisms, 29 tested by a strategy, 32 gates, two kill-only passes (W32, W36), each killed by its replication; family bar p < 0.10 / 104 = 0.00096 (ids W36 / R36 provisional).
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| grid-load-premium | Energy systems x counter-cyclical risk premium (Da, Huang and Yun, JFQA 2017) | dead (gate W36 passed kill-only, replication R36 failed; wide-22) | [card](cards/wide-22.md), [R36](cards/wide-22b.md) | French Mkt-RF of month m+3 on yoy growth of EIA industrial electricity sales, 1974-2025: -0.098% a month per point (t -2.31), rank 1 of 41 earlier-dose calendars, post-sample 2011-2025 -0.225 (t -2.53): pass (kill-only). Post hoc: 1993-2010 t -0.08; 2011-2025 without 2020-21 t -1.27. R36 on spliced NBER utility production 1926-1955: -0.027 (t -0.32), rank 13: W36 dead (R36 low-powered, about 20% at W36's size). Phase-surrogate rank of W36 was 3. [result](results/grid-load-premium.md), [R36](results/grid-load-premium-r36.md) |
+| storage-premium | Energy systems x theory of storage (Gorton, Hayashi and Rouwenhorst 2013) | new (scored 5, parked) | - | wide-22's E2: natural gas storage deficit vs its five-year norm as a UNG premium; about five deficit episodes since 2007 (power 0), F2 cost. Pool several storable commodities if ever tested. |
+| freight-gauge | Transport / logistics (freight volumes as an output-gap meter) | parked (duplicate of grid-load-premium) | - | wide-22's T1: same premium channel, another meter; shares W36/R36's verdict. A cross-country test of the class is the open route. |
+| rate-distortion-attention | Information theory (rational inattention; news pressure) | parked (data, size) | - | wide-22's I1: Eisensee-Stromberg news pressure is not keyless; Peress and Schmidt (2020) find effects on retail volume, not index returns. |
+| expansion-hazard | Reliability engineering (Weibull duration dependence of expansions) | dead (literature) | - | wide-22's R1: no positive duration dependence in post-war US expansions (Diebold and Rudebusch 1990; Rudebusch 2016) `[memory]`. |
+| wide-22-filtered-set | Power-grid networks, queueing, network contagion, game theory, mechanism design, demography, agronomy, neuroscience | filtered (wide-22) | - | E3 `blackout-cascade` (mood class dead, W31), Q1 `kingman-bottleneck` (F1 / duplicate of E1's channel), N1 `epidemic-threshold` (F2: graph from return correlations), G1 `debt-ceiling-attrition` (F1: X-dates published), G2 `auction-winners-curse` (F1: sizes announced), D1 `prime-age-inflow` (F1: duplicate of wide-20 P5), H1 `frost-crop` (food channel dead W32/R32; size), B1 `habituation` (F2). |
+
 ### Run survey-7b: 2024-2026 literature on trend crashes, tail hedging, vol management, blending, decay (2026-11-24, UTC)
 
 Sources, filters (F1/F2, #109) and power scores (#150) in [survey-7b.md](survey-7b.md) (lane
