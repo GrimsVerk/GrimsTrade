@@ -2,7 +2,7 @@
 
 Card: `cards/fast-reentry.md`. Written by `lib/fastreentry.py`. Log points = 100 x natural log; I, B, N are rule minus holding; differences are `or3-12` minus `tsmom12` (dI, dB, dN). Both rules as paper series (Friday decisions, 2 bps a side, cash at 0), scored on the same 25% episodes; clusters as insure-1 (US, market-anchored) and insure-2 (non-US, anchored on the US market's falls).
 
-**Verdict by the card: In between.** US mean dN +1.5 (sign test 30 of 50, p 0.1; bootstrap p 0.186); non-US mean dN +4.7; premium US 1.07 -> 0.97, non-US 1.11 -> 0.97; share avoided US 0.50 -> 0.35.
+**Verdict by the card: In between.** US mean dN +1.5 (sign test 29 of 47, p 0.072; bootstrap p 0.186); non-US mean dN +4.7; premium US 1.07 -> 0.97, non-US 1.11 -> 0.97; share avoided US 0.50 -> 0.35.
 
 ### US: market + 10 industries, 1927-2025 (decides)
 
@@ -10,13 +10,13 @@ Effective falls (clusters): 50; episodes: 270.
 
 | Mean over effective falls | `tsmom12` | `or3-12` | Difference | Falls where `or3-12` is higher |
 |---|---:|---:|---:|---:|
-| I, loss avoided peak -> trough | +25.1 | +18.2 | -6.9 | 8 of 48 |
-| B, the year after the low | -25.4 | -17.0 | +8.4 | 41 of 49 |
-| **N = I + B** | -0.3 | +1.2 | +1.5 | 30 of 50 |
-| S, share of the fall avoided | +0.50 | +0.35 | -0.15 | 9 of 49 |
-| N > 0 (falls) | 18 of 50 | 21 of 50 | | |
+| I, loss avoided peak -> trough | +25.1 | +18.2 | -6.9 | 3 of 40 |
+| B, the year after the low | -25.4 | -17.0 | +8.4 | 40 of 45 |
+| **N = I + B** | -0.3 | +1.2 | +1.5 | 29 of 47 |
+| S, share of the fall avoided | +0.50 | +0.35 | -0.15 | 3 of 40 |
+| N > 0 (falls) | 16 of 50 | 21 of 50 | | |
 
-Test of the difference in N (H1: `or3-12` higher): sign test 30 of 50, p 0.1; cluster bootstrap mean +1.5, p 0.186, 90% range -1.3 to +4.2.
+Test of the difference in N (H1: `or3-12` higher): sign test 29 of 47, p 0.072; cluster bootstrap mean +1.5, p 0.186, 90% range -1.3 to +4.2.
 
 | Full period | `tsmom12` | `or3-12` |
 |---|---:|---:|
@@ -37,8 +37,8 @@ Test of the difference in N (H1: `or3-12` higher): sign test 30 of 50, p 0.1; cl
 
 | Peak to trough (episode level) | Episodes | Mean dI | Mean dB | Mean dN | dN > 0 | `tsmom12` N | `or3-12` N |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 63 | -4.9 | +6.5 | +1.7 | 38 | -6.5 | -4.8 |
-| medium, 93-365 | 127 | -6.7 | +7.8 | +1.1 | 69 | +2.7 | +3.7 |
+| fast, <= 92 days | 63 | -4.9 | +6.5 | +1.7 | 30 | -6.5 | -4.8 |
+| medium, 93-365 | 127 | -6.7 | +7.8 | +1.1 | 63 | +2.7 | +3.7 |
 | slow, > 365 | 80 | -9.4 | +11.5 | +2.1 | 43 | +10.5 | +12.6 |
 
 Effective falls, largest |dN| first (10):
@@ -62,10 +62,10 @@ Effective falls (clusters): 19; episodes: 109.
 
 | Mean over effective falls | `tsmom12` | `or3-12` | Difference | Falls where `or3-12` is higher |
 |---|---:|---:|---:|---:|
-| I, loss avoided peak -> trough | +27.0 | +22.4 | -4.5 | 2 of 18 |
+| I, loss avoided peak -> trough | +27.0 | +22.4 | -4.5 | 0 of 15 |
 | B, the year after the low | -27.9 | -18.6 | +9.3 | 18 of 19 |
 | **N = I + B** | -0.9 | +3.8 | +4.7 | 12 of 19 |
-| S, share of the fall avoided | +0.49 | +0.41 | -0.09 | 2 of 18 |
+| S, share of the fall avoided | +0.49 | +0.41 | -0.09 | 0 of 15 |
 | N > 0 (falls) | 7 of 19 | 10 of 19 | | |
 
 Test of the difference in N (H1: `or3-12` higher): sign test 12 of 19, p 0.18; cluster bootstrap mean +4.7, p 0.002, 90% range +1.9 to +7.8.
@@ -88,7 +88,7 @@ Test of the difference in N (H1: `or3-12` higher): sign test 12 of 19, p 0.18; c
 
 | Peak to trough (episode level) | Episodes | Mean dI | Mean dB | Mean dN | dN > 0 | `tsmom12` N | `or3-12` N |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 23 | -0.2 | +7.6 | +7.4 | 18 | -15.0 | -7.6 |
+| fast, <= 92 days | 23 | -0.2 | +7.6 | +7.4 | 15 | -15.0 | -7.6 |
 | medium, 93-365 | 40 | -5.4 | +9.1 | +3.6 | 21 | +3.1 | +6.8 |
 | slow, > 365 | 46 | -7.9 | +10.3 | +2.5 | 25 | +9.7 | +12.2 |
 
@@ -102,7 +102,7 @@ Effective falls, largest |dN| first (10):
 | 2007-05-23 | 2009-03-09 | 12 | 52% | +16 | +28 | -13 | +25 | +12 |
 | 1989-08-29 | 1991-01-16 | 5 | 34% | -3 | +8 | -4 | +14 | +11 |
 | 1991-03-18 | 1992-08-18 | 1 | 47% | +29 | +22 | -9 | +1 | -7 |
-| 1987-07-16 | 1987-11-11 | 3 | 39% | -16 | -9 | +0 | +7 | +7 |
+| 1987-07-16 | 1987-11-11 | 3 | 39% | -16 | -9 | -0 | +7 | +7 |
 | 1994-01-04 | 1995-10-23 | 4 | 33% | -7 | +0 | -5 | +11 | +7 |
 | 2017-05-05 | 2020-03-23 | 13 | 38% | -14 | -8 | -0 | +7 | +7 |
 | 1996-02-06 | 1998-10-09 | 14 | 39% | -4 | +2 | -3 | +9 | +6 |
@@ -113,13 +113,13 @@ Effective falls (clusters): 13; episodes: 25.
 
 | Mean over effective falls | `tsmom12` | `or3-12` | Difference | Falls where `or3-12` is higher |
 |---|---:|---:|---:|---:|
-| I, loss avoided peak -> trough | +30.1 | +23.0 | -7.1 | 2 of 13 |
-| B, the year after the low | -29.7 | -18.6 | +11.1 | 12 of 13 |
-| **N = I + B** | +0.4 | +4.5 | +4.0 | 7 of 13 |
-| S, share of the fall avoided | +0.53 | +0.38 | -0.14 | 2 of 13 |
+| I, loss avoided peak -> trough | +30.1 | +23.0 | -7.1 | 2 of 10 |
+| B, the year after the low | -29.7 | -18.6 | +11.1 | 12 of 12 |
+| **N = I + B** | +0.4 | +4.5 | +4.0 | 7 of 12 |
+| S, share of the fall avoided | +0.53 | +0.38 | -0.14 | 2 of 10 |
 | N > 0 (falls) | 8 of 13 | 7 of 13 | | |
 
-Test of the difference in N (H1: `or3-12` higher): sign test 7 of 13, p 0.5; cluster bootstrap mean +4.0, p 0.138, 90% range -1.7 to +10.3.
+Test of the difference in N (H1: `or3-12` higher): sign test 7 of 12, p 0.39; cluster bootstrap mean +4.0, p 0.138, 90% range -1.7 to +10.3.
 
 | Full period | `tsmom12` | `or3-12` |
 |---|---:|---:|
@@ -139,7 +139,7 @@ Test of the difference in N (H1: `or3-12` higher): sign test 7 of 13, p 0.5; clu
 
 | Peak to trough (episode level) | Episodes | Mean dI | Mean dB | Mean dN | dN > 0 | `tsmom12` N | `or3-12` N |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 2 | -0.0 | +2.3 | +2.3 | 1 | -19.7 | -17.4 |
+| fast, <= 92 days | 2 | +0.0 | +2.3 | +2.3 | 1 | -19.7 | -17.4 |
 | medium, 93-365 | 10 | -5.0 | +10.5 | +5.5 | 6 | -1.1 | +4.4 |
 | slow, > 365 | 13 | -7.9 | +9.5 | +1.5 | 7 | +2.0 | +3.5 |
 

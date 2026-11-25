@@ -9,18 +9,18 @@ Card: `cards/insure-era.md`. Same 11 series, insure-1's 25% episodes, market-anc
 | Window | Clusters | Episodes | Rule S | Fixed S | Rotations S | p (S) | Rule P | Fixed P | Fixed P (whole-span x) | Rotations P | p (P) | Mean x | Verdict |
 |---|---:|---:|---:|---:|---|---:|---:|---:|---:|---|---:|---:|---|
 | 1927-1961 | 22 | 138 | 0.55 | 0.32 | +0.29 (+0.20 to +0.43) | 0.000 | 0.85 | 1.38 | 1.38 | +1.63 (+1.09 to +2.88) | 0.000 | 70% | Timing, not just exposure |
-| 1962-2001 | 15 | 72 | 0.47 | 0.26 | +0.25 (+0.17 to +0.39) | 0.002 | 1.38 | 2.15 | 2.17 | +2.60 (+1.56 to +4.62) | 0.013 | 75% | Timing, not just exposure |
-| 2002-2025 | 13 | 60 | 0.45 | 0.34 | +0.30 (+0.20 to +0.43) | 0.032 | 1.34 | 1.53 | 1.60 | +1.91 (+1.07 to +3.54) | 0.191 | 75% | In between |
-| 1962-2025 | 28 | 132 | 0.46 | 0.28 | +0.26 (+0.17 to +0.36) | 0.000 | 1.36 | 1.88 | 1.90 | +2.20 (+1.45 to +3.87) | 0.020 | 75% | Timing, not just exposure |
+| 1962-2001 | 15 | 72 | 0.47 | 0.26 | +0.25 (+0.17 to +0.39) | 0.002 | 1.38 | 2.15 | 2.17 | +2.60 (+1.56 to +4.63) | 0.013 | 75% | Timing, not just exposure |
+| 2002-2025 | 13 | 60 | 0.45 | 0.34 | +0.30 (+0.20 to +0.43) | 0.032 | 1.34 | 1.53 | 1.60 | +1.90 (+1.07 to +3.54) | 0.191 | 75% | In between |
+| 1962-2025 | 28 | 132 | 0.46 | 0.28 | +0.26 (+0.17 to +0.36) | 0.000 | 1.36 | 1.88 | 1.90 | +2.20 (+1.45 to +3.87) | 0.022 | 75% | Timing, not just exposure |
 
 Detail per window: the rule's sums (log points, paper series), the net N, and a sign test of the rule's cluster I (only with at least 10 clusters).
 
 | Window | Sum I | Sum B | C | Rule N | Fixed N | Rotations N | p (N) | Rule I > 0 (sign test) | Clusters where rule S > fixed S | Rule minus holding per series-year, log pts |
 |---|---:|---:|---:|---:|---:|---|---:|---|---|---:|
-| 1927-1961 | +4768 | -3872 | -204 | +4.2 | +3.9 | +2.6 (-1.9 to +8.2) | 0.260 | 21 of 22 (p 5.5e-06) | 16 of 22 | +1.82 |
-| 1962-2001 | +1915 | -1957 | -692 | -2.3 | +2.8 | +2.0 (-2.7 to +6.4) | 0.935 | 15 of 15 (p 3.1e-05) | 12 of 15 | -1.67 |
-| 2002-2025 | +1703 | -1784 | -492 | -5.5 | -0.3 | -1.7 (-7.4 to +2.5) | 0.912 | 12 of 13 (p 0.0017) | 8 of 13 | -2.19 |
-| 1962-2025 | +3618 | -3741 | -1184 | -3.8 | +1.5 | +0.4 (-4.3 to +4.4) | 0.919 | 27 of 28 (p 1.1e-07) | 20 of 28 | -1.86 |
+| 1927-1961 | +4768 | -3872 | -204 | +4.2 | +3.9 | +2.6 (-1.9 to +8.2) | 0.261 | 21 of 21 (p 4.8e-07) | 16 of 22 | +1.82 |
+| 1962-2001 | +1915 | -1957 | -692 | -2.3 | +2.8 | +2.0 (-2.7 to +6.4) | 0.934 | 15 of 15 (p 3.1e-05) | 12 of 15 | -1.67 |
+| 2002-2025 | +1703 | -1784 | -492 | -5.5 | -0.3 | -1.7 (-7.4 to +2.5) | 0.912 | 11 of 12 (p 0.0032) | 8 of 13 | -2.19 |
+| 1962-2025 | +3618 | -3741 | -1184 | -3.8 | +1.5 | +0.4 (-4.3 to +4.4) | 0.919 | 26 of 27 (p 2.1e-07) | 20 of 28 | -1.86 |
 
 Fixed exposure's S is about 1 - x in every episode (it holds x of each fall); the last column counts clusters where the rule's S beats it.
 
@@ -54,21 +54,21 @@ Premium by era (episodes by peak, calm by date): before 2002 1.12 (44 episodes; 
 
 | Test | Clusters (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p | 90% range |
 |---|---:|---:|---:|---:|---:|---|
-| I, anchored on US falls | 18 | 17 | 7.2e-05 | +27.0 | 0.000 | +19.9 to +34.3 |
-| I, linked (strict) | 15 | 14 | 0.00049 | +25.1 | 0.000 | +17.7 to +33.1 |
+| I, anchored on US falls | 17 | 17 | 7.6e-06 | +27.0 | 0.000 | +19.9 to +34.3 |
+| I, linked (strict) | 14 | 14 | 6.1e-05 | +25.1 | 0.000 | +17.7 to +33.1 |
 | N = I + B, anchored | 19 | 7 | 0.92 | -0.9 | 0.614 | -6.2 to +4.7 |
 | N = I + B, linked | 16 | 4 | 0.99 | -2.2 | 0.736 | -7.6 to +3.7 |
-| Share avoided S, anchored | 18 | 17 | 7.2e-05 | +0.5 | 0.000 | +0.4 to +0.6 |
+| Share avoided S, anchored | 17 | 17 | 7.6e-06 | +0.5 | 0.000 | +0.4 to +0.6 |
 
 Episodes 109; anchored clusters (effective episodes) 19; linked 16. Verdict by card 1's rule: **Insurance real, handed back in the rebound**.
 
 | Peak to trough | Episodes | Mean depth | Mean I | I > 0 | Mean S | Mean N | N > 0 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 23 | 34% | +14.6 | 20 | +0.35 | -15.0 | 3 |
+| fast, <= 92 days | 23 | 34% | +14.6 | 18 | +0.35 | -15.0 | 1 |
 | medium, 93-365 | 40 | 37% | +33.2 | 40 | +0.64 | +3.1 | 16 |
 | slow, > 365 | 46 | 45% | +42.4 | 45 | +0.63 | +9.7 | 32 |
 
-Sensitivity (anchored): 20% falls: 36 clusters, I > 0 in 32 of 34 (p 3.5e-08), mean N -2.9, premium 1.09; 40% falls: 11 clusters, I > 0 in 11 of 11 (p 0.00049), mean N +9.2, premium 1.18.
+Sensitivity (anchored): 20% falls: 36 clusters, I > 0 in 28 of 28 (p 3.7e-09), mean N -2.9, premium 1.09; 40% falls: 11 clusters, I > 0 in 11 of 11 (p 0.00049), mean N +9.2, premium 1.18.
 
 Card 2's controls (rotations by one common calendar offset, 1,000, median and 5-95%):
 
@@ -77,7 +77,7 @@ Card 2's controls (rotations by one common calendar offset, 1,000, median and 5-
 | `tsmom12` | +0.49 | -0.9 | 1.11 |
 | Fixed exposure (mean x 66%) | +0.36 | +6.3 | 1.33 |
 | Random timing | +0.34 (+0.25 to +0.45) | +4.5 (+0.5 to +8.7) | +1.52 (+1.19 to +2.09) |
-| p: rotations at least as good | 0.000 | 0.989 | 0.009 |
+| p: rotations at least as good | 0.000 | 0.989 | 0.008 |
 
 Verdict by card 2's rule: **Timing, not just exposure**.
 
@@ -88,7 +88,7 @@ Anchored clusters:
 | 1 | 1973-01-24 | 1974-10-09 | 1 | 37% | +25 | +0.53 | -0 | Japan |
 | 2 | 1980-11-28 | 1982-07-08 | 1 | 44% | +51 | +0.88 | +14 | Canada |
 | 3 | 1987-07-16 | 1987-11-11 | 3 | 39% | +5 | +0.08 | -16 | Australia, Canada, UK |
-| 4 | 1989-05-15 | 1989-06-05 | 1 | 37% | -0 | -0.00 | -23 | HongKong |
+| 4 | 1989-05-15 | 1989-06-05 | 1 | 37% | +0 | +0.00 | -23 | HongKong |
 | 5 | 1989-08-29 | 1991-01-16 | 5 | 34% | +22 | +0.51 | -3 | Australia, Canada, Germany, Japan, Singapore |
 | 6 | 1991-03-18 | 1992-08-18 | 1 | 47% | +60 | +0.93 | +29 | Japan |
 | 7 | 1994-01-04 | 1995-10-23 | 4 | 33% | +19 | +0.48 | -7 | Austria, France, HongKong, Japan |
@@ -118,11 +118,11 @@ Premium by era (episodes by peak, calm by date): before 2002 0.91 (11 episodes; 
 
 | Test | Clusters (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p | 90% range |
 |---|---:|---:|---:|---:|---:|---|
-| I, anchored on US falls | 13 | 12 | 0.0017 | +30.1 | 0.000 | +20.0 to +40.8 |
-| I, linked (strict) | 11 | 10 | 0.0059 | +24.9 | 0.000 | +16.1 to +34.4 |
-| N = I + B, anchored | 13 | 8 | 0.29 | +0.4 | 0.433 | -5.8 to +6.2 |
-| N = I + B, linked | 11 | 6 | 0.5 | -1.1 | 0.585 | -8.1 to +5.5 |
-| Share avoided S, anchored | 13 | 12 | 0.0017 | +0.5 | 0.000 | +0.4 to +0.6 |
+| I, anchored on US falls | 12 | 12 | 0.00024 | +30.1 | 0.000 | +20.0 to +40.8 |
+| I, linked (strict) | 10 | 10 | 0.00098 | +24.9 | 0.000 | +16.1 to +34.4 |
+| N = I + B, anchored | 12 | 8 | 0.19 | +0.4 | 0.433 | -5.8 to +6.2 |
+| N = I + B, linked | 10 | 6 | 0.38 | -1.1 | 0.585 | -8.1 to +5.5 |
+| Share avoided S, anchored | 12 | 12 | 0.00024 | +0.5 | 0.000 | +0.4 to +0.6 |
 
 Episodes 25; anchored clusters (effective episodes) 13; linked 11. Verdict by card 1's rule: **Insurance real, handed back in the rebound**.
 
@@ -132,7 +132,7 @@ Episodes 25; anchored clusters (effective episodes) 13; linked 11. Verdict by ca
 | medium, 93-365 | 10 | 34% | +25.9 | 9 | +0.55 | -1.1 | 5 |
 | slow, > 365 | 13 | 40% | +32.3 | 12 | +0.55 | +2.0 | 8 |
 
-Sensitivity (anchored): 20% falls: 21 clusters, I > 0 in 20 of 21 (p 1e-05), mean N -2.8, premium 1.18; 40% falls: 5 clusters, I > 0 in 5 of 5 (p 0.031), mean N +17.8, premium 1.39.
+Sensitivity (anchored): 20% falls: 21 clusters, I > 0 in 18 of 18 (p 3.8e-06), mean N -2.8, premium 1.18; 40% falls: 5 clusters, I > 0 in 5 of 5 (p 0.031), mean N +17.8, premium 1.39.
 
 Card 2's controls (rotations by one common calendar offset, 1,000, median and 5-95%):
 
@@ -140,8 +140,8 @@ Card 2's controls (rotations by one common calendar offset, 1,000, median and 5-
 |---|---:|---:|---:|
 | `tsmom12` | +0.53 | +0.4 | 1.23 |
 | Fixed exposure (mean x 66%) | +0.36 | +5.5 | 1.40 |
-| Random timing | +0.33 (+0.18 to +0.51) | +4.0 (-8.8 to +15.4) | +1.60 (+0.95 to +2.83) |
-| p: rotations at least as good | 0.035 | 0.692 | 0.238 |
+| Random timing | +0.33 (+0.18 to +0.51) | +4.0 (-8.8 to +15.4) | +1.60 (+0.95 to +2.82) |
+| p: rotations at least as good | 0.034 | 0.691 | 0.239 |
 
 Verdict by card 2's rule: **In between**.
 
@@ -150,7 +150,7 @@ Anchored clusters:
 | # | First peak | Last trough | Non-US episodes | Mean depth | Mean I | Mean S | Mean N | Series |
 |---:|---|---|---:|---:|---:|---:|---:|---|
 | 1 | 1991-11-04 | 1992-08-18 | 1 | 41% | +40 | +0.76 | +12 | FF-Japan |
-| 2 | 1993-08-17 | 1993-11-29 | 1 | 26% | -0 | -0.00 | -0 | FF-Japan |
+| 2 | 1993-08-17 | 1993-11-29 | 1 | 26% | +0 | +0.00 | +0 | FF-Japan |
 | 3 | 1994-02-04 | 1997-04-14 | 2 | 32% | +5 | +0.15 | -18 | FF-AsiaPacExJapan, FF-Japan |
 | 4 | 1997-06-26 | 1998-10-08 | 4 | 36% | +32 | +0.62 | +8 | FF-AsiaPacExJapan, FF-Europe, FF-Japan |
 | 5 | 2000-01-03 | 2003-04-28 | 5 | 39% | +37 | +0.74 | +10 | FF-AsiaPacExJapan, FF-Europe, FF-Japan |
@@ -183,21 +183,21 @@ Premium by era (episodes by peak, calm by date): before 2002 0.98 (41 episodes; 
 
 | Test | Clusters (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p | 90% range |
 |---|---:|---:|---:|---:|---:|---|
-| I, anchored on US falls | 17 | 15 | 0.0012 | +24.7 | 0.000 | +16.9 to +32.8 |
-| I, linked (strict) | 15 | 13 | 0.0037 | +22.5 | 0.000 | +14.5 to +31.1 |
-| N = I + B, anchored | 17 | 9 | 0.5 | -0.3 | 0.555 | -4.4 to +4.5 |
-| N = I + B, linked | 15 | 9 | 0.3 | +0.9 | 0.408 | -3.4 to +5.9 |
-| Share avoided S, anchored | 17 | 15 | 0.0012 | +0.5 | 0.000 | +0.3 to +0.6 |
+| I, anchored on US falls | 13 | 13 | 0.00012 | +24.7 | 0.000 | +16.9 to +32.8 |
+| I, linked (strict) | 11 | 11 | 0.00049 | +22.5 | 0.000 | +14.5 to +31.1 |
+| N = I + B, anchored | 14 | 6 | 0.79 | -0.3 | 0.555 | -4.4 to +4.5 |
+| N = I + B, linked | 12 | 6 | 0.61 | +0.9 | 0.408 | -3.4 to +5.9 |
+| Share avoided S, anchored | 13 | 13 | 0.00012 | +0.5 | 0.000 | +0.3 to +0.6 |
 
 Episodes 92; anchored clusters (effective episodes) 17; linked 15. Verdict by card 1's rule: **Insurance real, handed back in the rebound**.
 
 | Peak to trough | Episodes | Mean depth | Mean I | I > 0 | Mean S | Mean N | N > 0 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 19 | 35% | +15.7 | 17 | +0.35 | -12.3 | 6 |
-| medium, 93-365 | 49 | 38% | +30.2 | 42 | +0.55 | +1.4 | 24 |
+| fast, <= 92 days | 19 | 35% | +15.7 | 11 | +0.35 | -12.3 | 1 |
+| medium, 93-365 | 49 | 38% | +30.2 | 40 | +0.55 | +1.4 | 20 |
 | slow, > 365 | 24 | 43% | +37.9 | 24 | +0.62 | +5.4 | 15 |
 
-Sensitivity (anchored): 20% falls: 33 clusters, I > 0 in 31 of 33 (p 6.5e-08), mean N -0.7, premium 1.15; 40% falls: 10 clusters, I > 0 in 10 of 10 (p 0.00098), mean N +3.4, premium 1.26.
+Sensitivity (anchored): 20% falls: 33 clusters, I > 0 in 30 of 31 (p 1.5e-08), mean N -0.7, premium 1.15; 40% falls: 10 clusters, I > 0 in 10 of 10 (p 0.00098), mean N +3.4, premium 1.26.
 
 Card 2's controls (rotations by one common calendar offset, 1,000, median and 5-95%):
 
@@ -220,7 +220,7 @@ Anchored clusters:
 | 4 | 1999-06-21 | 1999-09-27 | 1 | 28% | +0 | +0.00 | +0 | Indonesia |
 | 5 | 2000-01-04 | 2003-02-13 | 24 | 38% | +27 | +0.51 | +5 | Brazil, India, Indonesia, Israel, Italy, Korea, Malaysia, Mexico, Taiwan |
 | 6 | 2002-12-03 | 2003-03-17 | 1 | 30% | +24 | +0.68 | -10 | Korea |
-| 7 | 2004-01-14 | 2004-05-17 | 2 | 27% | -0 | -0.00 | +0 | Brazil, India |
+| 7 | 2004-01-14 | 2004-05-17 | 2 | 27% | +0 | +0.00 | +0 | Brazil, India |
 | 8 | 2006-05-10 | 2006-06-14 | 1 | 29% | +0 | +0.00 | +0 | India |
 | 9 | 2007-05-18 | 2009-03-09 | 4 | 51% | +61 | +0.82 | +8 | India, Italy, Mexico, NewZealand |
 | 10 | 2007-10-18 | 2008-12-29 | 7 | 54% | +57 | +0.72 | +5 | Brazil, Indonesia, Israel, Korea, Malaysia, Mexico, Taiwan |
@@ -230,7 +230,7 @@ Anchored clusters:
 | 14 | 2017-07-25 | 2020-03-23 | 9 | 37% | +21 | +0.45 | -14 | Brazil, India, Israel, Italy, Korea, Malaysia, Mexico, NewZealand, Taiwan |
 | 15 | 2018-02-19 | 2020-03-24 | 2 | 34% | +23 | +0.56 | -13 | Indonesia, Italy |
 | 16 | 2021-06-07 | 2023-10-26 | 5 | 29% | +18 | +0.51 | -6 | Brazil, Israel, Italy, Korea, Taiwan |
-| 17 | 2024-07-11 | 2025-04-09 | 1 | 29% | -0 | -0.00 | -11 | Taiwan |
+| 17 | 2024-07-11 | 2025-04-09 | 1 | 29% | +0 | +0.00 | -11 | Taiwan |
 
 ### Developed ex US as one series (French, USD)
 

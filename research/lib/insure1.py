@@ -42,6 +42,10 @@ FAST, MEDIUM = 92, 365  # calendar days peak -> trough
 REBOUND = 365
 DRAWS, SEED = 10_000, 0
 RUNS = harness.DATA / "runs" / "trend-1926"
+# |value| below this (log points) is a tie: a rule in the market through a whole fall leaves
+# I at rounding size (about 1e-14), which a sign test would otherwise count as a win or a loss
+# at random (insure-bonds-1, #219; fixed in eng-nits-1, #218).
+TIE = 1e-9
 OUT = harness.RESEARCH / "results" / "insure-1.md"
 ERAS = (
     ("1927-1961", date(1927, 7, 2), date(1961, 12, 31)),
@@ -84,19 +88,35 @@ def parse_vw(lines: Sequence[str], last: date = LAST) -> tuple[list[str], dict[d
 
 
 def infer_pos(ret: np.ndarray, bar: np.ndarray, cost: float) -> np.ndarray:
-    """The paper series' position from its returns: ret = pos * bar - cost * flip.
+    """The paper series' position from its returns: ret = pos * bar - cost * |pos - prev|.
 
-    Known limitation (calm-drag-1): on a flip day whose return is 0 or exactly the cost both
-    positions fit, and the old position is kept, so the flip is dated one session late (the
-    cost lands on the next day). `calmdrag1.repair` fixes it. Other merged users: insure-1's
-    bills series (d_tb), gap-2002-1's bills series, rev-costloss-1's `french()`, insure-2's
-    geo indices; the effect is negligible (one day per affected flip).
+    Each session is read on its own first (in: ret is bar or bar - cost; out: 0 or -cost), so a
+    window that opens already in the market or an off-model day does not carry over. When both
+    fit (a flip on a day the holding did not move: -cost; or a return of exactly +-cost), the
+    position that reproduces the return given the session before is taken; if both still fit,
+    the next session decides; failing that, the old position is kept. Before eng-nits-1 a tie
+    always kept the old position, so a flip on a flat day was dated one session late (calm-drag-1's
+    note, #203); `calmdrag1.repair` worked around it and leaves this output as it is. The
+    merged results of insure-1, insure-2, gap-2002-1 and rev-costloss-1 were written with the old
+    reading; rerun now, some of their numbers move in the last digit (eng-nits-1's PR lists them).
     """
-    pos = np.zeros(len(ret))
-    for i in range(1, len(ret)):
+    n = len(ret)
+
+    def fits(i: int, v: float, prev: float) -> bool:
+        return abs(v * bar[i] - cost * abs(v - prev) - ret[i]) < 1e-12
+
+    pos = np.zeros(n)
+    for i in range(1, n):
+        prev = pos[i - 1]
         fit1 = min(abs(ret[i] - bar[i]), abs(ret[i] - bar[i] + cost)) < 1e-12
         fit0 = min(abs(ret[i]), abs(ret[i] + cost)) < 1e-12
-        pos[i] = pos[i - 1] if fit1 == fit0 else (1.0 if fit1 else 0.0)
+        if fit1 != fit0:
+            pos[i] = 1.0 if fit1 else 0.0
+            continue
+        cand = [v for v in (prev, 1.0 - prev) if fit1 and fits(i, v, prev)]
+        if len(cand) > 1 and i + 1 < n:
+            cand = [v for v in cand if fits(i + 1, 0.0, v) or fits(i + 1, 1.0, v)] or cand
+        pos[i] = cand[0] if cand else prev
     return pos
 
 
@@ -234,6 +254,11 @@ class Scored:
     in_mask: np.ndarray = field(default_factory=lambda: np.zeros(0, dtype=bool))
 
 
+def tie0(x: float) -> float:
+    """0 for a rounding-sized value (|x| < TIE), else x."""
+    return 0.0 if abs(x) < TIE else x
+
+
 def score(s: Series, down: float, up: float, rule: np.ndarray | None = None) -> Scored:
     r = s.rule if rule is None else rule
     hold_lr = np.zeros(len(s.px))
@@ -253,11 +278,11 @@ def score(s: Series, down: float, up: float, rule: np.ndarray | None = None) -> 
         if j + 1 < len(pairs):
             e = min(e, pairs[j + 1][0])
         hold = 100 * math.log(s.px[b] / s.px[a])
-        ins = float(cum[b] - cum[a])
+        ins = tie0(float(cum[b] - cum[a]))
         eps.append(Episode(
             s.name, s.days[a], s.days[b], 1 - s.px[b] / s.px[a], hold, hold + ins, ins,
-            float(cum[e] - cum[b]), float(cum_tb[b] - cum_tb[a]), float(cum_tb[e] - cum_tb[a]),
-            idx=(a, b, e),
+            tie0(float(cum[e] - cum[b])), tie0(float(cum_tb[b] - cum_tb[a])),
+            tie0(float(cum_tb[e] - cum_tb[a])), idx=(a, b, e),
         ))  # fmt: skip
         mask[a + 1 : e + 1] = True
     calm_d, calm_tb_d = np.where(mask, 0.0, d), np.where(mask, 0.0, d_tb)
@@ -308,7 +333,8 @@ def market_anchored(eps: Sequence[Episode], market: str) -> list[list[Episode]]:
 
 
 def sign_test(vals: Sequence[float]) -> tuple[int, int, float]:
-    v = [x for x in vals if x != 0]
+    """Values above 0 (k) of those not tied with 0 (n, |x| >= TIE), one-sided sign-test p."""
+    v = [x for x in vals if abs(x) >= TIE]
     n, k = len(v), sum(1 for x in v if x > 0)
     p = sum(math.comb(n, j) for j in range(k, n + 1)) / 2**n if n else 1.0
     return k, n, p
