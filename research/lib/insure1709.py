@@ -51,10 +51,15 @@ CASH = "spliced-series-for-discount-rate-on-prime-short-term-paper"
 M13 = "M13. Mthly share prices 1709+ "
 # M13 columns (0-based) of the source indices (card, workbook header text)
 M13_COLS = {
-    "Neal": 2, "GRS with mines": 3, "GRS without mines": 4, "Hayek": 5,
-    "Acheson cap-weighted": 6, "Acheson paid-up weighted": 7, "Acheson unweighted": 8,
+    "Neal": 2,
+    "GRS with mines": 3,
+    "GRS without mines": 4,
+    "Hayek": 5,
+    "Acheson cap-weighted": 6,
+    "Acheson paid-up weighted": 7,
+    "Acheson unweighted": 8,
     "spliced": 23,
-}  # fmt: skip
+}
 CONSOL_SPLIT = 1823 * 12  # Neal to 1823-01 (card: Neal 1753-1823, end month), Odlyzko/NBER after
 
 Levels = dict[int, float]  # ym (year * 12 + month - 1) -> level
@@ -146,30 +151,28 @@ def m13_columns(rows: Sequence[dict[int, str]], last: int = LAST_YM) -> dict[str
             continue
         for k, j in M13_COLS.items():
             x = r.get(j)
-            if x is not None:
-                try:
-                    out[k][m] = float(x)
-                except ValueError:
-                    pass
+            if x is not None and re.fullmatch(r"-?[0-9.]+(E-?[0-9]+)?", x):
+                out[k][m] = float(x)
     return out
 
 
-def splice_month(
-    cols: dict[str, Levels], tol: float = 1e-6
-) -> tuple[int | None, int | None, str]:
+def splice_month(cols: dict[str, Levels], tol: float = 1e-6) -> tuple[int | None, int | None, str]:
     """First month whose spliced change equals the Acheson cap-weighted change, and the last
     month whose spliced change equals Neal's (card: identified after the card)."""
     sp, ne, ac = cols["spliced"], cols["Neal"], cols["Acheson cap-weighted"]
 
     def same(a: Levels, m: int) -> bool:
-        return all(k in a and k in sp for k in (m, m - 1)) and abs(
-            a[m] / a[m - 1] - sp[m] / sp[m - 1]
-        ) < tol
+        return (
+            all(k in a and k in sp for k in (m, m - 1))
+            and abs(a[m] / a[m - 1] - sp[m] / sp[m - 1]) < tol
+        )
 
     last_neal = max((m for m in sp if same(ne, m)), default=None)
     first_ach = min((m for m in sp if same(ac, m)), default=None)
-    note = (f"last month matching Neal: {ym_str(last_neal) if last_neal else '-'}; "
-            f"first matching Acheson: {ym_str(first_ach) if first_ach else '-'}")  # fmt: skip
+    note = (
+        f"last month matching Neal: {ym_str(last_neal) if last_neal else '-'}; "
+        f"first matching Acheson: {ym_str(first_ach) if first_ach else '-'}"
+    )
     if first_ach is None or (last_neal is not None and last_neal >= first_ach):
         return None, last_neal, note + " (ambiguous)"
     return first_ach, last_neal, note
@@ -223,10 +226,22 @@ def periods(splice: int, neal_end: int) -> list[Period]:
     by the splice check after the card, which had expected Neal to run to the Acheson splice."""
     return [
         Period("shares", "Neal (3 shares, unweighted)", 0, neal_end, True, "end month"),
-        Period("shares", "Gayer-Rostow-Schwartz excl. mines (63 companies)", neal_end + 1,
-               splice - 1, False, "not stated"),  # fmt: skip
-        Period("shares", "Acheson et al. (681 companies, cap-weighted)", splice, LAST_YM, False,
-               "end month"),  # fmt: skip
+        Period(
+            "shares",
+            "Gayer-Rostow-Schwartz excl. mines (63 companies)",
+            neal_end + 1,
+            splice - 1,
+            False,
+            "not stated",
+        ),
+        Period(
+            "shares",
+            "Acheson et al. (681 companies, cap-weighted)",
+            splice,
+            LAST_YM,
+            False,
+            "end month",
+        ),
         Period("consols", "Neal (3% consols)", 0, CONSOL_SPLIT - 1, False, "end month"),
         Period("consols", "Odlyzko / NBER", CONSOL_SPLIT, LAST_YM, False, "not stated"),
     ]
@@ -261,8 +276,18 @@ def period_stats(lev: Levels, p: Period) -> PStat:
     a1, n1 = acf(ms, x, 1)
     a2, n2 = acf(ms, x, 2)
     zero = float((np.abs(x) < 1e-12).mean()) if len(x) else math.nan
-    return PStat(p, len(ms_all), hi - lo + 1 - len(ms_all), a1, n1, a2, n2, zero,
-                 float(x.mean()), float(x.std(ddof=1)))  # fmt: skip
+    return PStat(
+        p,
+        len(ms_all),
+        hi - lo + 1 - len(ms_all),
+        a1,
+        n1,
+        a2,
+        n2,
+        zero,
+        float(x.mean()),
+        float(x.std(ddof=1)),
+    )
 
 
 # --- rule and series ---
@@ -288,8 +313,9 @@ def holding_returns(lev: Levels, months: Sequence[int], income: Levels | None = 
     return r
 
 
-def build_seg(series: str, months: Sequence[int], r_all: np.ndarray, lag: int = 0,
-              cash: Levels | None = None) -> Seg | None:  # fmt: skip
+def build_seg(
+    series: str, months: Sequence[int], r_all: np.ndarray, lag: int = 0, cash: Levels | None = None
+) -> Seg | None:
     """Signals by `trend_where_long.signals` on the segment's returns; the signal at the end of
     month k trades the return dated k + 1 + lag."""
     valid, on = twl.signals(r_all.reshape(-1, 1))
@@ -322,8 +348,9 @@ def rule_returns(pos: np.ndarray, r: np.ndarray, cash: np.ndarray | None = None)
 def to_series(s: Seg, j: int) -> i1.Series:
     px = np.cumprod(1 + s.r)
     rule = rule_returns(s.pos, s.r)
-    return i1.Series(f"{s.series}-{j}", [month_end(m) for m in s.months], px, rule, rule.copy(),
-                     s.pos, s.cash)  # fmt: skip
+    return i1.Series(
+        f"{s.series}-{j}", [month_end(m) for m in s.months], px, rule, rule.copy(), s.pos, s.cash
+    )
 
 
 # --- scoring on a set of segments ---
@@ -342,8 +369,12 @@ class Book:
     s_eps: np.ndarray  # (K, episodes)
 
 
-def book(segs: Sequence[Seg], poss: Sequence[np.ndarray], pairs: Sequence[Sequence[tuple[int, int]]],
-         cost: bool = True) -> Book:  # fmt: skip
+def book(
+    segs: Sequence[Seg],
+    poss: Sequence[np.ndarray],
+    pairs: Sequence[Sequence[tuple[int, int]]],
+    cost: bool = True,
+) -> Book:
     """`poss[j]` is a (K, n_j) array of positions for segment j (K the same for all)."""
     s_cols, sum_i, total = [], 0.0, 0.0
     for s, pos, pr in zip(segs, poss, pairs, strict=True):
@@ -400,11 +431,14 @@ class Timing:
         return float((self.rot.prem <= self.rule.prem[0] + 1e-12).mean())
 
 
-def timing(segs: Sequence[Seg], pairs: Sequence[Sequence[tuple[int, int]]], ks: np.ndarray) -> Timing:
+def timing(
+    segs: Sequence[Seg], pairs: Sequence[Sequence[tuple[int, int]]], ks: np.ndarray
+) -> Timing:
     rule = book(segs, [s.pos for s in segs], pairs)
     xs = [float(s.pos[1:].mean()) for s in segs]
-    fixed = book(segs, [np.full(len(s.pos), x) for s, x in zip(segs, xs, strict=True)], pairs,
-                 cost=False)  # fmt: skip
+    fixed = book(
+        segs, [np.full(len(s.pos), x) for s, x in zip(segs, xs, strict=True)], pairs, cost=False
+    )
     rot = book(segs, rotated(segs, ks), pairs)
     return Timing(rule, fixed, rot, xs)
 
@@ -421,8 +455,9 @@ class Raw:
     per: np.ndarray  # period index of the return dated months[i] (i >= 1)
 
 
-def ar1_path(rng: np.random.Generator, per: np.ndarray, m: np.ndarray, sd: np.ndarray,
-             phi: np.ndarray) -> np.ndarray:  # fmt: skip
+def ar1_path(
+    rng: np.random.Generator, per: np.ndarray, m: np.ndarray, sd: np.ndarray, phi: np.ndarray
+) -> np.ndarray:
     """Gaussian AR(1) log returns with period-specific mean, sd and lag-1 coefficient
     (standardised AR(1) z, x = m + sd z)."""
     n = len(per)
@@ -435,8 +470,9 @@ def ar1_path(rng: np.random.Generator, per: np.ndarray, m: np.ndarray, sd: np.nd
     return m[per] + sd[per] * z
 
 
-def bb_path(rng: np.random.Generator, per: np.ndarray, pools: Sequence[np.ndarray],
-            block: float = BLOCK) -> np.ndarray:  # fmt: skip
+def bb_path(
+    rng: np.random.Generator, per: np.ndarray, pools: Sequence[np.ndarray], block: float = BLOCK
+) -> np.ndarray:
     """Stationary bootstrap (Politis-Romano): each period's months drawn in blocks of mean
     length `block` from that period's own returns (circular)."""
     out = np.empty(len(per))
@@ -452,8 +488,12 @@ def bb_path(rng: np.random.Generator, per: np.ndarray, pools: Sequence[np.ndarra
     return out
 
 
-def world_gap(raws: Sequence[Raw], paths: Sequence[np.ndarray], rng: np.random.Generator,
-              n_rot: int = WORLD_ROT) -> tuple[float, float, int]:  # fmt: skip
+def world_gap(
+    raws: Sequence[Raw],
+    paths: Sequence[np.ndarray],
+    rng: np.random.Generator,
+    n_rot: int = WORLD_ROT,
+) -> tuple[float, float, int]:
     """(rule S, gap, episodes) on one synthetic world (log returns per segment)."""
     segs, prs = [], []
     for raw, x in zip(raws, paths, strict=True):
@@ -469,8 +509,14 @@ def world_gap(raws: Sequence[Raw], paths: Sequence[np.ndarray], rng: np.random.G
     return float(t.rule.s_mean[0]), t.gap, sum(len(p) for p in prs)
 
 
-def null_gaps(raws: Sequence[Raw], kind: str, stats: Sequence[PStat], pools: Sequence[np.ndarray],
-              worlds: int, seed: int) -> np.ndarray:  # fmt: skip
+def null_gaps(
+    raws: Sequence[Raw],
+    kind: str,
+    stats: Sequence[PStat],
+    pools: Sequence[np.ndarray],
+    worlds: int,
+    seed: int,
+) -> np.ndarray:
     """Gap G of `worlds` synthetic worlds; kind 'ar1', 'iid' or 'bb'. NaN where no fall."""
     rng = np.random.default_rng(seed)
     m = np.array([s.mean for s in stats])
@@ -513,8 +559,9 @@ def load(root: Path | None = None) -> Data:
     common = [m for m in c[SHARES] if m in cols["spliced"]]
     gap = max(abs(c[SHARES][m] / cols["spliced"][m] - 1) for m in common) if common else math.nan
     yld = {m: y for m, y in c[CONSOL].items() if y > 0}
-    return Data(c[SHARES], {m: 1 / y for m, y in yld.items()}, yld, c[CASH], cols, sp, ne, note,
-                gap)  # fmt: skip
+    return Data(
+        c[SHARES], {m: 1 / y for m, y in yld.items()}, yld, c[CASH], cols, sp, ne, note, gap
+    )
 
 
 def series_levels(d: Data, name: str) -> Levels:
@@ -528,18 +575,20 @@ def before_rows(d: Data) -> list[str]:
         f"Splice of the share index (M13, monthly changes matched to 1e-6): {d.splice_note}. "
         f"So Neal to {ym_str(d.neal_end)}, Gayer-Rostow-Schwartz without mines (the only M13 "
         f"column whose changes match in between) {ym_str(d.neal_end + 1)} to "
-        f"{ym_str(d.splice - 1)}, Acheson et al. from {ym_str(d.splice)}. Cached CSV against the workbook's spliced "
-        f"column: largest relative difference {d.csv_vs_xlsx:.1e} "
+        f"{ym_str(d.splice - 1)}, Acheson et al. from {ym_str(d.splice)}. Cached CSV against "
+        f"the workbook's spliced column: largest relative difference {d.csv_vs_xlsx:.1e} "
         f"({len([m for m in d.shares if m in d.cols['spliced']])} common months).",
         "",
     ]
     for name in ("shares", "consols"):
         lev = series_levels(d, name)
         segs = segments(lev)
-        out.append(f"{name}: {len(lev)} months {ym_str(min(lev))} to {ym_str(max(lev))}, "
-                   f"{len(segs)} runs of consecutive months: "
-                   + ", ".join(f"{ym_str(s[0])}..{ym_str(s[-1])} ({len(s)})" for s in segs)
-                   + ".")  # fmt: skip
+        out.append(
+            f"{name}: {len(lev)} months {ym_str(min(lev))} to {ym_str(max(lev))}, "
+            f"{len(segs)} runs of consecutive months: "
+            + ", ".join(f"{ym_str(s[0])}..{ym_str(s[-1])} ({len(s)})" for s in segs)
+            + "."
+        )
         out.append("")
     out += [
         "| Series | Source period | Timing (documented) | Thin | Months | Missing inside | "
@@ -568,13 +617,455 @@ def all_stats(d: Data) -> list[PStat]:
     return [period_stats(series_levels(d, p.series), p) for p in periods(d.splice, d.neal_end)]
 
 
+# --- evaluation ---
+
+
+@dataclass
+class Eval:
+    label: str
+    segs: list[Seg]
+    scored: list[i1.Scored]
+    eps: list[i1.Episode]
+    t: Timing
+    ks: np.ndarray
+
+    @property
+    def n(self) -> int:
+        return len(self.eps)
+
+    @property
+    def k(self) -> int:
+        return sum(e.ins > 0 for e in self.eps)
+
+    def tests(self, f: Callable[[i1.Episode], float]) -> tuple[int, int, float, float, float]:
+        vals = [f(e) for e in self.eps]
+        k, n, p = i1.sign_test(vals)
+        m, bp, _, _ = i1.boot(vals) if vals else (math.nan, 1.0, 0.0, 0.0)
+        return k, n, p, m, bp
+
+    @property
+    def calm_drag(self) -> float:
+        months = sum(int((~x.in_mask[1:]).sum()) for x in self.scored)
+        return sum(x.calm for x in self.scored) / (months / 12) if months else math.nan
+
+    @property
+    def prem(self) -> float:
+        si = sum(e.ins for e in self.eps)
+        sb = sum(e.rebound for e in self.eps)
+        c = sum(x.calm for x in self.scored)
+        return -(sb + c) / si if si > 0 else math.inf
+
+
+def evaluate(
+    label: str, segs: Sequence[Seg], down: float = 0.25, up: float = 0.25, n_rot: int = ROTATIONS
+) -> Eval:
+    ser = [to_series(s, j) for j, s in enumerate(segs)]
+    sc = [i1.score(x, down, up) for x in ser]
+    prs = [pairs_of(s.r, down, up) for s in segs]
+    ks = offsets(segs, n_rot, np.random.default_rng(i1.SEED))
+    t = timing(segs, prs, ks)
+    eps = [e for x in sc for e in x.eps]
+    # the vectorised S must equal insure1's episode shares
+    if eps and abs(float(np.mean([e.share for e in eps])) - float(t.rule.s_mean[0])) > 1e-9:
+        raise AssertionError(f"{label}: S mismatch")
+    return Eval(label, list(segs), sc, eps, t, ks)
+
+
+def make_segs(
+    d: Data,
+    name: str,
+    lev: Levels | None = None,
+    lag: int = 0,
+    lo: int = 0,
+    hi: int = LAST_YM,
+    income: bool = False,
+) -> list[Seg]:
+    lev = series_levels(d, name) if lev is None else lev
+    lev = {m: x for m, x in lev.items() if lo <= m <= hi}
+    inc = {m: y / 1200 for m, y in d.yld.items()} if income else None
+    out = []
+    for run_ in segments(lev):
+        r_all = holding_returns(lev, run_, inc)
+        s = build_seg(name, run_, r_all, lag, d.cash)  # cash fills insure1's T-bill reading
+        if s is not None:
+            out.append(s)
+    return out
+
+
+def raws_of(d: Data, name: str, stats: Sequence[PStat]) -> tuple[list[Raw], list[np.ndarray]]:
+    """Segments as raw month runs with the period index of each month, and per-period pools
+    of observed log returns (all periods of all series, indexed like `stats`)."""
+    lev = series_levels(d, name)
+    raws = []
+    for run_ in segments(lev):
+        per = np.array(
+            [
+                next(
+                    i
+                    for i, st in enumerate(stats)
+                    if st.p.series == name and st.p.lo <= m <= st.p.hi
+                )
+                for m in run_
+            ]
+        )
+        raws.append(Raw(name, run_, per))
+    pools = []
+    for st in stats:
+        lv = series_levels(d, st.p.series)
+        ms = [m for m in lv if st.p.lo <= m <= st.p.hi]
+        pools.append(logrets(lv, [m for m in ms if m - 1 >= st.p.lo])[1])
+    return raws, pools
+
+
+def q(a: np.ndarray, fmt: str = "+.2f") -> str:
+    a = a[np.isfinite(a)]
+    lo, mid, hi = np.quantile(a, [0.05, 0.5, 0.95])
+    return f"{mid:{fmt}} ({lo:{fmt}} to {hi:{fmt}})"
+
+
+def verdict(ev: Eval, p_ar: float) -> str:
+    _, n_i, p_i, _, bp_i = ev.tests(lambda e: e.ins)
+    if n_i < 5:
+        return "Too few falls"
+    if not (p_i < 0.05 and bp_i < 0.05):
+        return "Does not hold"
+    if ev.t.p_rot < 0.05:
+        return (
+            "Holds, timing beyond autocorrelation"
+            if p_ar < 0.05
+            else "Holds, timing not separable from autocorrelation"
+        )
+    return "In between" if ev.t.p_rot < 0.10 else "Holds only as lower exposure"
+
+
+def qualifiers(ev: Eval) -> str:
+    _, _, p_n, _, bp_n = ev.tests(lambda e: e.net)
+    share = ev.k / ev.n if ev.n else math.nan
+    return "; ".join(
+        [
+            "at the claimed strength" if share >= 0.80 else "weaker than claimed",
+            "kept" if p_n < 0.05 and bp_n < 0.05 else "handed back in the rebound",
+            "cheaper than holding less"
+            if ev.t.rule.prem[0] < ev.t.fixed.prem[0]
+            else "not cheaper than holding less",
+        ]
+    )
+
+
+def period_of(stats: Sequence[PStat], series: str, m: int) -> str:
+    return next(
+        (
+            st.p.label.split(" (")[0]
+            for st in stats
+            if st.p.series == series and st.p.lo <= m <= st.p.hi
+        ),
+        "-",
+    )
+
+
+def ym_of(d: date) -> int:
+    return ym(d.year, d.month)
+
+
+def episode_rows(ev: Eval, stats: Sequence[PStat]) -> list[str]:
+    out = [
+        "| # | Peak | Trough | Months | Depth | Holding, log pts | Rule, log pts | I | S | B "
+        "(12 m) | N | Source at peak |",
+        "|---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+    ]
+    for j, e in enumerate(ev.eps):
+        a, b = ym_of(e.peak), ym_of(e.trough)
+        out.append(
+            f"| {j + 1} | {ym_str(a)} | {ym_str(b)} | {b - a} | {e.depth:.0%} | {e.hold:+.0f} | "
+            f"{e.rule:+.0f} | {e.ins:+.0f} | {e.share:+.2f} | {e.rebound:+.0f} | {e.net:+.0f} | "
+            f"{period_of(stats, ev.segs[0].series, a)} |"
+        )
+    open_ = [x.open_peak for x in ev.scored if x.open_peak]
+    out += ["", f"Unfinished fall at the end (peak): {', '.join(map(str, open_)) or 'none'}.", ""]
+    return out
+
+
+def test_rows(ev: Eval) -> list[str]:
+    out = [
+        "| Test | Falls with value != 0 (n) | Above 0 (k) | Sign-test p | Mean, log pts | "
+        "Bootstrap p |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+    for lab, f in (
+        ("I (insurance)", lambda e: e.ins),
+        ("N = I + B (net of rebound)", lambda e: e.net),
+        ("I with cash at the discount rate", lambda e: e.ins_tb),
+    ):
+        k, n, p, m, bp = ev.tests(f)
+        out.append(f"| {lab} | {n} | {k} | {p:.3g} | {m:+.1f} | {bp:.3f} |")
+    return out + [""]
+
+
+def control_rows(ev: Eval) -> list[str]:
+    t = ev.t
+    return [
+        "| | Mean S (share avoided) | Pooled premium P |",
+        "|---|---:|---:|",
+        f"| `tsmom12` monthly | {t.rule.s_mean[0]:+.2f} | {t.rule.prem[0]:.2f} |",
+        f"| Fixed exposure (x = {', '.join(f'{x:.0%}' for x in t.xs)}) | "
+        f"{t.fixed.s_mean[0]:+.2f} | {t.fixed.prem[0]:.2f} |",
+        f"| Random dates (1,000 rotations, median, 5-95%) | {q(t.rot.s_mean)} | "
+        f"{q(t.rot.prem[np.isfinite(t.rot.prem)])} |",
+        f"| p: rotations at least as good | {t.p_rot:.3f} | {t.p_prem:.3f} |",
+        "",
+        f"Timing gap G = rule S minus mean rotation S: {t.gap:+.3f}. Calm drag (rule minus "
+        f"holding per calm year): {ev.calm_drag:+.2f} log points. Premium from insure1's "
+        f"decomposition: {ev.prem:.2f}.",
+        "",
+    ]
+
+
+@dataclass
+class Nulls:
+    gaps: dict[str, np.ndarray]
+    obs: float
+
+    def p(self, kind: str) -> float:
+        g = self.gaps[kind]
+        g = g[np.isfinite(g)]
+        return float((g >= self.obs - 1e-12).mean()) if len(g) else math.nan
+
+    def dropped(self, kind: str) -> int:
+        return int((~np.isfinite(self.gaps[kind])).sum())
+
+    @property
+    def p_ar(self) -> float:
+        return max(self.p("ar1"), self.p("bb"))
+
+
+def nulls(d: Data, name: str, stats: Sequence[PStat], obs: float, worlds: int) -> Nulls:
+    raws, pools = raws_of(d, name, stats)
+    gaps = {
+        "ar1": null_gaps(raws, "ar1", stats, pools, worlds, 0),
+        "bb": null_gaps(raws, "bb", stats, pools, worlds, 1),
+        "iid": null_gaps(raws, "iid", stats, pools, worlds, 2),
+    }
+    return Nulls(gaps, obs)
+
+
+def null_rows(nl: Nulls) -> list[str]:
+    lab = {
+        "ar1": "AR1: Gaussian AR(1), each source period's own mean, sd, lag-1 acf",
+        "bb": f"BB: stationary block bootstrap of each period's returns, mean block {BLOCK:.0f} m",
+        "iid": "Reference: iid Gaussian (phi 0), the event definition alone",
+    }
+    out = [
+        "| Null (1,000 worlds) | Median gap G (5-95%) | p: worlds with G >= observed | "
+        "Worlds without a fall |",
+        "|---|---:|---:|---:|",
+    ]
+    for k in ("ar1", "bb", "iid"):
+        out.append(f"| {lab[k]} | {q(nl.gaps[k], '+.3f')} | {nl.p(k):.3f} | {nl.dropped(k)} |")
+    return out + ["", f"Observed G {nl.obs:+.3f}; p_AR (larger of AR1 and BB) = {nl.p_ar:.3f}.", ""]
+
+
+def check_line(ev: Eval) -> str:
+    k, n, p, m, bp = ev.tests(lambda e: e.ins)
+    kn, nn, pn, _, _ = ev.tests(lambda e: e.net)
+    t = ev.t
+    return (
+        f"| {ev.label} | {ev.n} | {ev.k} of {ev.n} | {p:.3g} / {bp:.3f} | {kn} of {nn} | "
+        f"{t.rule.s_mean[0]:+.2f} / {t.fixed.s_mean[0]:+.2f} / "
+        f"{float(np.median(t.rot.s_mean)):+.2f} ({t.p_rot:.3f}) | {t.gap:+.3f} | "
+        f"{t.rule.prem[0]:.2f} / {t.fixed.prem[0]:.2f} | {ev.calm_drag:+.2f} |"
+    )
+
+
+CHECK_HEAD = [
+    "| Run | Falls | I > 0 (ties against) | Sign p / boot p | N > 0 | S rule / fixed / random "
+    "(p_rot) | Gap G | P rule / fixed | Calm drag a year |",
+    "|---|---:|---|---|---|---|---:|---|---:|",
+]
+
+
+def tb_eval(ev: Eval) -> str:
+    """Check 1: the same run with cash at the discount rate (insure1's T-bill reading)."""
+    eps = ev.eps
+    k = sum(e.ins_tb > 0 for e in eps)
+    p = i1.sign_test([e.ins_tb for e in eps])[2]
+    bp = i1.boot([e.ins_tb for e in eps])[1] if eps else 1.0
+    kn = sum(e.net_tb > 0 for e in eps)
+    s_tb = float(np.mean([e.ins_tb / abs(e.hold) for e in eps])) if eps else math.nan
+    si = sum(e.ins_tb for e in eps)
+    rest = sum(e.net_tb - e.ins_tb for e in eps) + sum(x.calm_tb for x in ev.scored)
+    months = sum(int((~x.in_mask[1:]).sum()) for x in ev.scored)
+    return (
+        f"| {ev.label}, cash at the discount rate | {len(eps)} | {k} of {len(eps)} | "
+        f"{p:.3g} / {bp:.3f} | {kn} of {len(eps)} | {s_tb:+.2f} / - / - | - | "
+        f"{-rest / si if si > 0 else math.inf:.2f} / - | "
+        f"{sum(x.calm_tb for x in ev.scored) / (months / 12):+.2f} |"
+    )
+
+
+def sharpe_row(ev: Eval) -> tuple[str, str, float, float, float, float]:
+    rule = np.concatenate([rule_returns(s.pos, s.r)[1:] for s in ev.segs])
+    pos = np.concatenate([s.pos for s in ev.segs])
+    sh = float(rule.mean() / rule.std() * math.sqrt(12)) if rule.std() > 0 else 0.0
+    eq = np.cumprod(1 + rule)
+    mdd = float((1 - eq / np.maximum.accumulate(eq)).max())
+    years = len(rule) / 12
+    flips = float(np.abs(np.diff(pos)).sum()) / years
+    first = month_end(ev.segs[0].months[1]).isoformat()
+    last = month_end(ev.segs[-1].months[-1]).isoformat()
+    return first, last, sh, float(eq[-1] - 1), mdd, flips
+
+
+def log_rows(evs: Sequence[tuple[str, Eval]]) -> int:
+    text = harness.TRIES.read_text()
+    rows = []
+    for v, ev in evs:
+        if f"| {IDEA} | {v} |" in text:
+            continue
+        a, b, sh, tot, mdd, fl = sharpe_row(ev)
+        rows.append(
+            f"| {datetime.now(UTC):%Y-%m-%d %H:%M} | {IDEA} | {v} | insure-check | "
+            f"train | {a} | {b} | {sh:.2f} | {tot:+.1%} | {mdd:.1%} | {fl:.2f} |\n"
+        )
+    with harness.TRIES.open("a") as f:
+        f.writelines(rows)
+    return len(rows)
+
+
+def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
+    stats = all_stats(d)
+    text = [
+        "# insure-1709-1: crash insurance of monthly `tsmom12` on UK shares and consols, 1709-1866",
+        "",
+        "Card: `cards/insure-1709-1.md`. Written by `lib/insure1709.py`. Log points = 100 x "
+        "natural log, rule minus holding unless said otherwise. Cash earns 0 unless the row "
+        "says otherwise. Price indices (no dividends, no coupons unless stated).",
+        "",
+    ]
+    text += before_rows(d)
+    evs: list[tuple[str, Eval]] = []
+    verdicts = {}
+    for name, title in (("shares", "UK shares (primary)"), ("consols", "Consols (secondary)")):
+        ev = evaluate(name, make_segs(d, name))
+        nl = nulls(d, name, stats, ev.t.gap, worlds)
+        v = verdict(ev, nl.p_ar)
+        verdicts[name] = v
+        text += [f"## {title}: 25% falls", ""]
+        text += episode_rows(ev, stats) + test_rows(ev) + control_rows(ev) + null_rows(nl)
+        text += [
+            f"**Verdict by the card ({name}): {v}** ({qualifiers(ev)}). Headline: lost less "
+            f"in {ev.k} of {ev.n} falls (ties against).",
+            "",
+        ]
+        evs.append((f"tsmom12m@insure-1709-{name}", ev))
+
+    # pooled description: linked clusters across shares and consols
+    pooled = evs[0][1].eps + evs[1][1].eps
+    groups = i1.link(pooled)
+    text += [
+        "## Pooled description: shares and consols, linked clusters",
+        "",
+        "| # | First peak | Last trough | Series | Mean I | Mean S | Mean N |",
+        "|---:|---|---|---|---:|---:|---:|",
+    ]
+    for j, g in enumerate(groups):
+        text.append(
+            f"| {j + 1} | {ym_str(ym_of(min(e.peak for e in g)))} | "
+            f"{ym_str(ym_of(max(e.trough for e in g)))} | "
+            f"{', '.join(sorted({e.series.split('-')[0] for e in g}))} | "
+            f"{i1.cmean(g, lambda e: e.ins):+.0f} | {i1.cmean(g, lambda e: e.share):+.2f} | "
+            f"{i1.cmean(g, lambda e: e.net):+.0f} |"
+        )
+    vals = [i1.cmean(g, lambda e: e.ins) for g in groups]
+    k, n, p = i1.sign_test(vals)
+    text += [
+        "",
+        f"Clusters with mean I > 0: {k} of {n} non-zero (sign p {p:.3g}), "
+        f"bootstrap p {i1.boot(vals)[1]:.3f}.",
+        "",
+    ]
+
+    # checks
+    sh = evs[0][1]
+    checks: list[tuple[str, Eval]] = []
+    text += ["## Checks (description)", ""] + CHECK_HEAD
+    text.append(check_line(sh))
+    text.append(tb_eval(sh))
+    text.append(tb_eval(evs[1][1]))
+    for down, up in ((0.20, 0.20), (0.40, 0.25)):
+        checks.append(
+            (
+                f"shares {down:.0%}/{up:.0%}",
+                evaluate(
+                    f"shares, {down:.0%} fall / {up:.0%} rise", make_segs(d, "shares"), down, up
+                ),
+            )
+        )
+    for st in stats:
+        if st.p.series != "shares":
+            continue
+        lab = st.p.label.split(" (")[0]
+        segs = make_segs(d, "shares", lo=st.p.lo, hi=st.p.hi)
+        if segs:
+            checks.append((f"shares {lab} alone", evaluate(f"shares, {lab} alone", segs)))
+    for col, lo, hi in (
+        ("Acheson paid-up weighted", ym(1825, 3), LAST_YM),
+        ("Acheson unweighted", ym(1825, 3), LAST_YM),
+        ("GRS with mines", 0, LAST_YM),
+        ("GRS without mines", 0, LAST_YM),
+        ("Hayek", 0, LAST_YM),
+    ):
+        segs = make_segs(d, "shares", lev=d.cols[col], lo=lo, hi=hi)
+        if segs:
+            checks.append((f"index {col}", evaluate(f"index: {col}", segs)))
+    checks.append(
+        (
+            "shares lag 1",
+            evaluate("shares, signal one month older (stale check)", make_segs(d, "shares", lag=1)),
+        )
+    )
+    checks.append(
+        (
+            "consols lag 1",
+            evaluate("consols, signal one month older", make_segs(d, "consols", lag=1)),
+        )
+    )
+    checks.append(
+        (
+            "consols total return",
+            evaluate("consols with coupon accrual", make_segs(d, "consols", income=True)),
+        )
+    )
+    text += [check_line(ev) for _, ev in checks]
+    text += [
+        "",
+        "p_rot: share of 1,000 rotations with mean S at least the rule's. Fixed "
+        "exposure: the rule's mean position, no costs. Check 4's indices overlap the "
+        "primary's calendar (not independent).",
+        "",
+    ]
+    # per-check episode lists for the stale check and per-period runs
+    for key, ev in checks:
+        if key in ("shares lag 1",) or key.endswith("alone"):
+            text += [f"### Episodes: {ev.label}", ""] + episode_rows(ev, stats)
+    OUT.write_text("\n".join(text) + "\n")
+    n_rows = (
+        log_rows(
+            evs + [(f"tsmom12m@insure-1709-check-{k.replace(' ', '-')}", ev) for k, ev in checks]
+        )
+        if log
+        else 0
+    )
+    print(f"wrote {OUT}; verdicts {verdicts}; {n_rows} tries rows")
+
+
 def main(argv: Sequence[str]) -> None:
     d = load()
     if argv and argv[0] == "before":
         text = "\n".join(before_rows(d)) + "\n"
         print(text)
         return
-    run(d, "--log" in argv)
+    worlds = int(argv[argv.index("--worlds") + 1]) if "--worlds" in argv else WORLDS
+    run(d, "--log" in argv, worlds)
 
 
 if __name__ == "__main__":
