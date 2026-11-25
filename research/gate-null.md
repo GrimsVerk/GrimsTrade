@@ -47,6 +47,7 @@ shows how wide the real null is:
 | French Mkt-RF of month m+3 on year-on-year growth of EIA industrial electricity sales, Newey-West 3 lags, 619 months 1974-2025 (wide-22, W36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.91 | 2% | persistent macro dose, centred (median -0.44, 5/95% -1.38/+1.40); 40 phase-randomised surrogates (shown) are wider: SD 1.10, 10%, smallest -2.62, and rank the true t 3, not 1 |
 | Same on yoy growth of NBER utility electricity production (spliced), 357 months 1926-1955 (wide-22, R36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.55 | 0% | narrower than N(0, 1) (5/95% -1.36/+0.60, extremes -1.78/+0.66); phase surrogates SD 1.10 |
 | ETH 7-day return from the end of day d+1 on log2(USD stolen / 5 m) of DefiLlama non-exchange thefts >= USD 10 m on day d, controls r7 r30, Newey-West 7 lags, 3,412 days 2016-2025 (wide-23, W37) | 40 earlier-dose calendars, k = 23-920 days (step 23) | 1.02 | 5% | 109 nearly independent event days: about normal, slightly left (median -0.60, 5/95% -1.85/+1.19, min -3.61); phase surrogates SD 1.13 (10%), random-day surrogates SD 1.08 (8%); without the one event not public at its date (LuBian, post hoc) placebo SD 1.02, random-day 0.94 |
+| Hit country's index minus the other 24 cached markets, 20 sessions from the close of s0+1, on log2(1 + % of the country's place population within a magnitude radius) of declustered M >= 6 shallow quakes, controls r2 r20, market dummies, Driscoll-Kraay 30 days, 168,901 rows, 25 markets, 1998-2025 (wide-24, W40) | 40 calendars moved 23k days, k = +-1..20, both ways | 1.09 | 5% | 79 nearly independent (event, market) pairs, dose acf1 +0.008: about normal (median +0.15, 5/95% -1.95/+1.30, extremes -2.29/+1.80); random-day surrogates SD 1.28 (5%), one draw at +4.77 |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -200,6 +201,7 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W36 `grid-load-premium` (wide-22) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t -2.31, rank 1, post-sample b < 0: **pass (kill-only)** | killed by its replication R36 (1926-1955: t -0.32, rank 13) |
 | R36, replication of W36 (wide-22, `cards/wide-22b.md`) | k = 25..103 months, earlier only | not used | t -0.32 (predicted < 0), rank 13 | no: t > -2; W36 dead (low power: see `wide-22.md`) |
 | W37 `hack-drift` (wide-23) | k = 23..920 days, earlier only | not used (earlier only, as step 1 asks: the loot scales with prices) | t +0.68 (predicted < 0), rank 38; post hoc without LuBian (USD 3.5 bn, not public at its listed date) t -0.01, rank 31 | no: t near 0 (the positive sign is one event) |
+| W40 `quake-drift` (wide-24; provisional id, W38/W39 are #210's) | k = +-23..460 days, both ways | no: earthquakes do not answer prices | t +0.38 (predicted < 0), rank 24; random-day rank 28 | no: wrong sign |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -267,6 +269,15 @@ phase-randomised and random-day surrogate families (shown) agreed with the earli
 placebos on width (SD 1.13 and 1.08 against 1.02; without LuBian random-day 0.94) and on the
 verdict (ranks 27 and 30). One gate does not say when the families disagree; gate-null-2
 (PR #207, open) studies exactly that.
+
+**Count after W40 (wide-24, 2026-11-25; id provisional: W38/W39 are held by the open #210).**
+One more mechanism and gate after W37: **106 mechanisms, 29 tested by a strategy, 34 gates, two
+kill-only passes (W32, W36), each killed by its replication (R32, R36)**; W40 failed (t +0.38,
+predicted negative, rank 24 of 41), so every gated idea is dead. Family bar p < 0.10 / 106 =
+0.00094. If #210 (W38, W39) lands first: 108 / 29 / 36, bar 0.10 / 108 = 0.00093. W40's dose is
+a sparse event series (pooled lag-1 acf +0.008), so gate-null-2's proposed "both families" rule
+(acf >= 0.8) did not apply; the random-day surrogates (shown) agreed with the shifted calendars
+on the verdict (rank 28), as in W37.
 
 ## Cyclic doses need another placebo family (wide-21, 2026-11-25)
 
