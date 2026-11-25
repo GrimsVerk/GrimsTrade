@@ -76,20 +76,22 @@ class Parts:
     resid: float = 0.0  # max |C - parts| checks
 
 
-def zigzag(px: np.ndarray) -> list[tuple[int, int]]:
+def zigzag(px: np.ndarray, down: float = DOWN, up: float = UP) -> list[tuple[int, int]]:
     import gap2002
 
-    return gap2002.zigzag(px, DOWN, UP)
+    return gap2002.zigzag(px, down, up)
 
 
-def labels(days: Sequence[date], hold: np.ndarray) -> np.ndarray:
+def labels(
+    days: Sequence[date], hold: np.ndarray, down: float = DOWN, up: float = UP
+) -> np.ndarray:
     """0 calm, 1 fall, 2 rebound: gap-2002-1's by-date labels."""
     hl = np.zeros(len(hold))
     hl[1:] = np.log1p(hold[1:])
     px = np.exp(np.cumsum(hl))
     ords = np.array([x.toordinal() for x in days])
     part = np.zeros(len(hold), dtype=int)
-    pairs = zigzag(px)
+    pairs = zigzag(px, down, up)
     for j, (a, b) in enumerate(pairs):
         e = int(np.searchsorted(ords, days[b].toordinal() + REBOUND, side="right")) - 1
         if j + 1 < len(pairs):
@@ -361,6 +363,24 @@ def main() -> None:
     md += ["", HB, "|---|---|" + "---:|" * 12]
     md += [rb(s.name, "2002-2025", a) for s, (a, _) in zip(fr[1:], ind, strict=True)]
     md += [""]
+    # post hoc (not on the card): under 25% the coins have almost no calm sessions
+    md += [
+        "## Post hoc (not on the card): the coins with a 50% / 50% zigzag",
+        "",
+        "Under the card's 25% zigzag BTC and ETH have almost no calm sessions (table A), so the "
+        "card says nothing about them. Diagnostic only, chosen after seeing that: falls of 50% "
+        "down / 50% up, same rebound rule, everything else unchanged.",
+        "",
+    ]
+    coin = [(s.name, decompose(s, s.days[0], LAST, False, labels(s.days, s.hold, 0.5, 0.5)),
+             decompose(s, s.days[0], LAST, True, labels(s.days, s.hold, 0.5, 0.5)))
+            for s in six if s.name in ("BTC", "ETH")]  # fmt: skip
+    for tag, j in (("cash 0", 1), ("bills", 2)):
+        md += [f"{tag}:", "", HA, "|---|---|" + "---:|" * 8]
+        md += [ra(c[0], "own", c[j]) for c in coin]  # type: ignore[arg-type]
+        md += ["", HB, "|---|---|" + "---:|" * 12]
+        md += [rb(c[0], "own", c[j]) for c in coin]  # type: ignore[arg-type]
+        md += [""]
     OUT.write_text("\n".join(md))
     print("\n".join(md))
 
