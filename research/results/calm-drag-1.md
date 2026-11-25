@@ -103,3 +103,31 @@ Checks: largest |C - sum of parts| over all rows 1.8e-15. gap-2002-1's C (cash 0
 | Hlth | 2002-2025 | -3.86 | +0.00 | +0.00 | +0.00 | +2.62 | -6.48 | -3.92 | +0.06 | -3.15 | -0.71 | 1.17 | 14 |
 | Utils | 2002-2025 | -1.39 | +0.00 | +0.00 | +0.00 | +1.69 | -3.08 | -1.55 | +0.16 | -1.37 | -0.02 | 0.59 | 22 |
 | Other | 2002-2025 | -0.62 | +0.00 | +0.00 | +0.00 | +1.64 | -2.26 | -0.69 | +0.07 | -0.41 | -0.21 | 0.38 | 10 |
+
+## Post hoc (not on the card): the coins with a 50% / 50% zigzag
+
+Under the card's 25% zigzag BTC and ETH have almost no calm sessions (table A), so the card says nothing about them. Diagnostic only, chosen after seeing that: falls of 50% down / 50% up, same rebound rule, everything else unchanged.
+
+cash 0:
+
+| Series | Window | Calm share | C | Cost K | Out O | Premium P | Timing T | Out share of calm | Calm flips / yr |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| BTC | own | 0.33 | -0.07 | -0.07 | +0.00 | +0.00 | +0.00 | 0.000 | 0.08 |
+| ETH | own | 0.11 | +1.27 | -0.41 | +1.67 | -1.31 | +2.98 | 0.064 | 0.47 |
+
+| Series | Window | O | E-pre | E-mid | E-post | Calm-only: G (dip) | L (lag) | W- (back higher) | W+ (saved) | <=13 wk | >13 wk | Spells / yr | Median days |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| BTC | own | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | 0.00 | 0 |
+| ETH | own | +1.67 | +0.00 | +0.00 | +0.00 | +1.87 | -0.20 | +0.00 | +1.67 | +1.67 | +0.00 | 0.24 | 10 |
+
+bills:
+
+| Series | Window | Calm share | C | Cost K | Out O | Premium P | Timing T | Out share of calm | Calm flips / yr |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| BTC | own | 0.33 | -0.07 | -0.07 | +0.00 | +0.00 | +0.00 | 0.000 | 0.08 |
+| ETH | own | 0.11 | +1.30 | -0.41 | +1.71 | -1.28 | +2.99 | 0.064 | 0.47 |
+
+| Series | Window | O | E-pre | E-mid | E-post | Calm-only: G (dip) | L (lag) | W- (back higher) | W+ (saved) | <=13 wk | >13 wk | Spells / yr | Median days |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| BTC | own | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | 0.00 | 0 |
+| ETH | own | +1.71 | +0.00 | +0.00 | +0.00 | +1.90 | -0.19 | +0.00 | +1.71 | +1.71 | +0.00 | 0.24 | 10 |
