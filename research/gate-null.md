@@ -36,6 +36,9 @@ shows how wide the real null is:
 | SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade, Newey-West 3 lags, 393 months (wide-17, W29) | 40 calendars moved k = 13-89 months, both ways | 1.47 | 22% | persistent dose with a few ENSO-paced swings; far shifts carry the upper tail (to +3.11) |
 | SPY 4-week return on detrended Anscombe count of WHO outbreak reports, Newey-West 4 lags, 1,082 weeks (wide-17, W30) | 40 calendars moved k = 27-103 weeks, both ways | **1.64** | **22%** | one website re-dating week (2021-06-11, 814 items, x about 23 sd) dominates; 2005-2019 alone SD 1.16, 7% (wide-17 erratum) |
 | SPY daily return on log2(deaths / 25) of aviation accidents (>= 50 deaths), days 0-1, HC1, 4,488 days (wide-20, W31) | 40 calendars moved 23k days, wrapped, both ways | 0.91 | 2% | 34 unscheduled, nearly independent events on daily returns: about normal, slightly narrow |
+| TLT next-quarter return on -PDSI (contiguous US drought), Newey-West 3 lags, 276 months (parked-gates-1, W32) | 40 calendars moved k = 13-89 months, both ways | 0.94 | 0% | persistent dose, but placebo t stay inside -1.76 / +1.95; the true t -3.71 ranked 1 (the first pass), then failed its replication R32 |
+| 10-year yield change over the next quarter on -PDSI, Newey-West 3 lags, 483 months 1962-2002 (parked-gates-1, R32) | 40 calendars moved k = 13-89 months, both ways | 1.19 | 8% | same dose, 40 other years: wider than W32's |
+| GSPC next month on this month's fall x detrended ln(broker customer receivables / equity value), four controls, Newey-West 3 lags, 729 months (parked-gates-1, W33) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.58 | **30%** | **off-centre**: all 40 placebo t positive (median +1.70, 95% +3.06): an earlier-only family can be biased; the rank is the reference |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -179,6 +182,8 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W29 `temperature-premium` (wide-17) | k = 13..89 months, both ways | no: temperature does not answer prices | t +1.63, rank 9 | no: t < 2 |
 | W30 `outbreak-premium` (wide-17) | k = 27..103 weeks, both ways | no: WHO reporting does not answer prices | t +1.68, rank 9 | no: t < 2 |
 | W31 `air-disaster-mood` (wide-20) | 23k days wrapped, k = ±1..20, both ways | no: accidents do not answer prices | t -0.59, rank 10 | no: t > -2 |
+| W32 `drought-inflation` (parked-gates-1) | k = 13..89 months, both ways | no: drought does not answer prices | t -3.71, rank 1: **pass (kill-only)** | killed by its replication R32 (1962-2002: t -0.19, rank 21) |
+| W33 `margin-susceptibles` (parked-gates-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +0.05, rank 41 | no: t < 2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -192,3 +197,15 @@ every one failed on its own t (wrong sign or t < 2). Where a null is widened ins
 placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
 W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" is weaker evidence against
 borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
+
+## First pass, and what the procedure did with it (parked-gates-1, 2026-11-25)
+
+W32 `drought-inflation` was the first gate in this record to pass (TLT on -PDSI, t -3.71, rank 1
+of 41, 2002-2025). Step 7 labels such a pass "not dead yet" and asks for a new design with more
+independent episodes. That design (R32, `cards/parked-gates-1b.md`) was carded after the W32
+number and before its own: the same dose on the 10-year yield over 1962-2002, the 40 years
+before TLT. It failed (t -0.19, rank 21 of 41), and the mechanism's first link (drought, then
+higher food prices) was absent in both periods. So a persistent monthly dose passed one
+20-year period on a narrow-looking null (placebo SD 0.94) and showed nothing in the 40 years
+before: a narrow placebo null does not make a 20-year sample of a slow dose rich in independent
+episodes. Keep the replication step for every future pass.
