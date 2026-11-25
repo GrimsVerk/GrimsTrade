@@ -118,15 +118,3 @@ Conditions: b < 0 yes; t <= -2 yes; rank <= 2 yes; post-sample b < 0 yes.
 | surrogate 38 | +0.51 |
 | surrogate 39 | +0.01 |
 | surrogate 40 | +1.67 |
-
-## Post hoc (added after the W36 and R36 numbers; not part of any rule)
-
-`uv run python -I research/lib/wide22.py posthoc`, run 2026-11-25 21:15 UTC, to see where the
-pass came from.
-
-| Cell (post hoc) | b | t | rows |
-|---|---:|---:|---:|
-| 2011-01 .. 2025-07 without usage months 2020-2021 | -0.2332 | -1.27 | 151 |
-| 1974-01 .. 2025-07 without usage months 2020-2021 | -0.0840 | -1.82 | 595 |
-| Mkt-RF on SPY's rows (usage months 1993-01 .. 2025-07) | -0.0728 | -1.02 | 391 |
-| 1993-01 .. 2010-12 | -0.0085 | -0.08 | 216 |

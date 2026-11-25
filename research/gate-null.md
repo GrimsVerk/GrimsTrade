@@ -203,23 +203,23 @@ W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the fac
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 
-The table holds all **30 gates** of the family count (`parked-gates-1.md`, "Family count";
+The table holds all **32 gates** of the family count (`parked-gates-1.md`, "Family count";
 family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates;
-panic-words-1 adds W34 and wide-21 adds W35: **103 mechanisms, 29 tested by a strategy, 30
-gates, family bar p < 0.10 / 103 = 0.00097**):
+panic-words-1 adds W34, wide-21 adds W35, wide-22 adds W36 and its replication R36: **104
+mechanisms, 29 tested by a strategy, 32 gates, family bar p < 0.10 / 104 = 0.00096**):
 the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
-weather-1 and weather-2, W27-W35 and the replication R32 (summary-6 added the `seasonal-20y`,
-weather-2 and R32 rows from their write-ups, 2026-11-25). One passed (W32, kill-only), and its
-replication killed it.
+weather-1 and weather-2, W27-W36 and the replications R32 and R36 (summary-6 added the
+`seasonal-20y`, weather-2 and R32 rows from their write-ups, 2026-11-25). Two passed (W32 and
+W36, both kill-only), and each was killed by its replication (R32, R36).
 
 **No verdict can flip, and dead ideas stay dead.** A gate passes only if the true t is at least
 2 with the predicted sign *and* ranks among the top 2 of 41. Removing contaminated placebos can
 only narrow the null on the side that matters, so it could turn a fail into a pass only where
 the true t cleared 2 with the right sign and the rank alone failed. No gate is in that position:
-every one failed on its own t (wrong sign or t < 2), except W32 (parked-gates-1), which passed
-outright and was killed by its replication R32. Where a null is widened instead (stricter
+every one failed on its own t (wrong sign or t < 2), except W32 (parked-gates-1) and W36
+(wide-22), which passed outright and were killed by their replications R32 and R36. Where a null is widened instead (stricter
 placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
-W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 30 now, one kill-only pass) is weaker evidence against
+W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 32 now, two kill-only passes, both killed by replication) is weaker evidence against
 borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
 
 ## First pass, and what the procedure did with it (parked-gates-1, 2026-11-25)
@@ -252,6 +252,8 @@ Both passes were persistent monthly macro doses on a narrow placebo null (SD 0.9
 W36 a phase-randomised surrogate family (shown, not gating) was wider (SD 1.10) and ranked the
 true t 3 of 41, a miss. Suggestion for the lead (not adopted): for persistent macro doses,
 require the rank in both families.
+#197 `fx-value-real-1` (merged 2026-11-25) is treated as part of #170's style-book mechanism (a
+better currency-value definition for the same book), not a new mechanism, so 104 / 29 stands.
 
 ## Cyclic doses need another placebo family (wide-21, 2026-11-25)
 

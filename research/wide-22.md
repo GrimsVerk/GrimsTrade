@@ -138,8 +138,15 @@ The rule, data, placebo family, gate, the replication R36 (run only after a pass
 power and guess are in [`cards/wide-22.md`](cards/wide-22.md), pushed before any number.
 Code: `research/lib/wide22_events.py` (pure functions, tested offline in `tests/test_wide22.py`)
 and `research/lib/wide22.py` (run, `r36`, `posthoc`). Results:
-`research/results/grid-load-premium.md` (W36, with every placebo t and the post-hoc cells) and
-`research/results/grid-load-premium-r36.md` (R36).
+`research/results/grid-load-premium.md` (W36, with every placebo t),
+`research/results/grid-load-premium-r36.md` (R36) and
+`research/results/grid-load-premium-posthoc.md` (the post-hoc cells).
+
+**Timing caveat (added at review, 2026-11-25):** the m+3 pairing rests on the Electric Power
+Monthly's current release lag (month m out around the 24th-26th of month m+2); the MER's own
+timing and the release lags of earlier decades (1970s-1990s) were not verified tonight. If old
+releases came later than two months, the early rows hold up to a month or two of look-ahead in
+the dose (the data are also today's vintage, not real time; card, "Data").
 
 ### Dry run (counts only, 2026-11-25 21:12 UTC)
 
@@ -190,7 +197,8 @@ rule a pass is "not dead yet" and goes to its replication at once.
 
 ### Post hoc: where the W36 pass came from (added after both numbers; not a rule)
 
-`wide22.py posthoc`, 2026-11-25 21:15 UTC; one `robustness` row in `tries.md`.
+`wide22.py posthoc`, 2026-11-25 21:15 UTC (written to `results/grid-load-premium-posthoc.md`);
+one `robustness` row in `tries.md`.
 
 | Cell (post hoc) | b | t | Rows |
 |---|---:|---:|---:|
@@ -224,8 +232,10 @@ of 41, usage months 1926-04 .. 1955-12, 357 rows. Fails: W36 is killed.**
 | P2 alone, 1939-01 .. 1955-12 | -0.006 | -0.10 | 204 |
 
 Null: earlier-dose placebos SD 0.55 (0% past |t| 2; 5/50/95% -1.36 / -0.14 / +0.60); phase
-surrogates SD 1.10, rank 14 of 41. The sign is negative in every cut and the size is a third
-or less of W36's per point; per sd of growth (7.5 points then, 4.3 since 1974) it is about half.
+surrogates SD 1.10, rank 14 of 41. The sign is negative in every cut. Per point, the full-period
+slope is about a quarter of W36's (-0.027 against -0.098), P1 alone about 83% of it (-0.081),
+the cut without the Depression about 41% (-0.040) and P2 alone about zero (-0.006); per sd of
+growth (7.5 points then, 4.3 since 1974) the full-period slope is about half of W36's.
 My guess (b < 0, t between -2.5 and -0.5, rank 1-10, pass 30%) was right on sign and t, too
 kind on the rank.
 
@@ -251,7 +261,9 @@ wide-12 .. wide-21; each has a `note` row in `tries.md` (no number computed) and
 **Count: 104 mechanisms (103 carried in + W36), 29 tested by a strategy, none passed; 32 gates
 (30 + W36 + its replication R36), two kill-only passes (W32, W36), each killed by its
 replication (R32, R36).** The next strategy test is read at p < 0.10 / 104 = 0.00096 (family)
-and the register's bar. Published effects tested after publication: 1 more (Da, Huang and Yun
+and the register's bar. #197 `fx-value-real-1` (merged tonight) is treated as part of #170's style-book mechanism (a
+better currency-value definition for the same book), not a new mechanism, so 104 / 29 stands.
+Published effects tested after publication: 1 more (Da, Huang and Yun
 2017, industrial electricity growth): the post-sample slope keeps its sign but its t rests on
 2020; dead by its replication (a low-powered one: see the R36 caveat). Ids W36 / R36 are provisional (parallel lanes tonight may take
 W36 too; the lead renumbers).

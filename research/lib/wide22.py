@@ -6,8 +6,10 @@ lane rule); usage and market months after 2025-10 are never read. The EIA file i
 download in the shared cache: run with `python -I`.
 
 Run:  `uv run python -I research/lib/wide22.py`  (DRY=1: counts only)
-R36:  `uv run python -I research/lib/wide22.py r36`  (only after a W36 pass; fetches FRED once)
-Output: research/results/grid-load-premium.md
+R36:  `uv run python -I research/lib/wide22.py r36`  (cards/wide-22b.md; FRED files cached)
+Post hoc: `uv run python -I research/lib/wide22.py posthoc`
+Output: research/results/grid-load-premium.md, grid-load-premium-r36.md,
+grid-load-premium-posthoc.md
 """
 
 from __future__ import annotations
@@ -37,7 +39,6 @@ EIA_REL = "wide-22/2026-11-25/eia/T07.06.csv"
 FRENCH_REL = "french/2026-11-12/F-F_Research_Data_Factors_CSV.zip"
 LAGS = 3
 POST = 2011 * 12  # 2011-01: first usage month after the paper's sample
-mi = e17.month_index
 
 
 def ym(m: int) -> str:
@@ -201,20 +202,12 @@ def run() -> None:
     print("\n".join(lines))
 
 
-def splice_r36(p1: dict[int, float], p2: dict[int, float]) -> dict[int, float]:
-    """R36 dose (cards/wide-22b.md): year-on-year growth of P1 for months <= 1938-12, of P2
-    from 1939-01; each ratio inside one series."""
-    g1, g2 = ev.yoy(p1), ev.yoy(p2)
-    cut = 1938 * 12 + 11
-    return {**{m: v for m, v in g1.items() if m <= cut}, **{m: v for m, v in g2.items() if m > cut}}
-
-
 def r36() -> None:
     root = dw.cache_root()
     p1 = ev.parse_fred((root / "wide-22/2026-11-25/fred/M01128USM247NNBR.csv").read_text(), LAST)
     p2 = ev.parse_fred((root / "wide-22/2026-11-25/fred/M0128AUSM247NNBR.csv").read_text(), LAST)
     _, _, mkt = load()
-    g = splice_r36(p1, p2)
+    g = ev.splice_r36(p1, p2)
     y = {m - ev.LAG: v for m, v in mkt.items()}
     lo, hi = 1926 * 12 + 3, 1955 * 12 + 11
     allm = list(range(lo, hi + 1))
@@ -283,10 +276,21 @@ def posthoc() -> None:
          if m >= 1993 * 12]),
         ("1993-01 .. 2010-12", [m for m in allm if 1993 * 12 <= m < POST]),
     ]  # fmt: skip
-    print("| Cell (post hoc) | b | t | rows |")
-    print("|---|---:|---:|---:|")
-    for name, ms in cells:
-        print(cell(name, fit(ms, y, g)))
+    lines = [
+        "# W36 `grid-load-premium`: post-hoc diagnostics",
+        "",
+        "Added after the W36 and R36 numbers; not part of any rule. Script:"
+        " `research/lib/wide22.py posthoc` (first run 2026-11-25 21:15 UTC). Outcome and dose as"
+        " the gate (`grid-load-premium.md`): French Mkt-RF of month m+3 on yoy growth of EIA"
+        " industrial electricity sales, NW 3.",
+        "",
+        "| Cell (post hoc) | b | t | rows |",
+        "|---|---:|---:|---:|",
+        *[cell(name, fit(ms, y, g)) for name, ms in cells],
+        "",
+    ]
+    (RESULTS / "grid-load-premium-posthoc.md").write_text("\n".join(lines))
+    print("\n".join(lines))
 
 
 if __name__ == "__main__":

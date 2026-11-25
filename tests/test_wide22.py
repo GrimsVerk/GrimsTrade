@@ -108,3 +108,14 @@ def test_rank_lowest() -> None:
     ev = _ev()
     assert ev.rank_lowest(-3.0, [-1.0, 0.0, 2.0]) == 1
     assert ev.rank_lowest(0.5, [-1.0, 0.0, 2.0]) == 3
+
+
+def test_splice_r36_takes_p1_growth_to_1938_and_p2_growth_after() -> None:
+    ev = _ev()
+    m37, m38, m39 = 1937 * 12 + 11, 1938 * 12 + 11, 1939 * 12  # 1937-12, 1938-12, 1939-01
+    p1 = {m37: 1.0, m38: 2.0, m39 - 12: 1.0, m39: 50.0}  # P1 1939-01 must be ignored
+    p2 = {m37: 10.0, m38: 30.0, m39 - 12: 10.0, m39: 15.0}  # P2 1938-12 must be ignored
+    g = ev.splice_r36(p1, p2)
+    assert set(g) == {m38, m39}
+    assert math.isclose(g[m38], 100 * math.log(2.0))
+    assert math.isclose(g[m39], 100 * math.log(1.5))

@@ -90,6 +90,14 @@ def parse_fred(text: str, last: date) -> dict[int, float]:
     return out
 
 
+def splice_r36(p1: Mapping[int, float], p2: Mapping[int, float]) -> dict[int, float]:
+    """R36 dose (cards/wide-22b.md): year-on-year growth of P1 for months <= 1938-12, of P2
+    from 1939-01; each ratio inside one series."""
+    g1, g2 = yoy(p1), yoy(p2)
+    cut = 1938 * 12 + 11
+    return {**{m: v for m, v in g1.items() if m <= cut}, **{m: v for m, v in g2.items() if m > cut}}
+
+
 def shifted(d: Mapping[int, float], k: int) -> dict[int, float]:
     """d_k(m) = d(m - k): for k > 0 an earlier dose."""
     return {m + k: v for m, v in d.items()}
