@@ -126,8 +126,27 @@ def build(
         m = qc.Mkt(name, groups[name], "m", np.concatenate([x.periods for x in ms]))
         for r in RULES2:
             m.rets[r] = np.concatenate([x.rets[r] for x in ms])
+            w = [len(x.rets[r]) for x in ms]
+            m.turnover[r] = float(
+                sum(x.turnover[r] * k for x, k in zip(ms, w, strict=True)) / sum(w)
+            )
         out.append(m)
     return out, log
+
+
+def mstats(ms: Sequence[qc.Mkt]) -> dict[str, dict[str, object]]:
+    """Per market and rule: Sharpe, total return, max drawdown, position change a year, span."""
+    out: dict[str, dict[str, object]] = {}
+    for m in ms:
+        row: dict[str, object] = {
+            "first": date.fromordinal(int(m.periods[0])).isoformat(),
+            "last": date.fromordinal(int(m.periods[-1])).isoformat(),
+        }
+        for r in RULES2:
+            sh, tot, mdd, to = qc.stats(m, r)
+            row[r] = [sh, tot, mdd, to]
+        out[m.name] = row
+    return out
 
 
 def span_years(root: Path, specs: Sequence[Spec]) -> dict[str, float]:
@@ -214,6 +233,78 @@ def power() -> None:
             )
 
 
+# ------------------------------------------------------------------- post hoc (not in the card)
+
+
+def posthoc() -> None:
+    """POST HOC, written after the card's run: P4 with dividends for every market. US: Shiller's
+    dividends (the card's check); GB, DE, FR: JST R6 annual `eq_dp` / 12 added to each month's
+    price return of that calendar year (GB 1867-1870 take 1871's value); signals read the
+    total-return level, as in the US check. Reported, not deciding."""
+    import long_macro_build as lmb
+
+    root = long_bond.cache_root()
+    dp = lmb._jst()["eq_dp"]
+    iso = {"GB": "GBR", "DE": "DEU", "FR": "FRA"}
+    by: dict[str, list[qc.Mkt]] = {}
+    tr = [Spec("US", "P4", "shiller-tr", 1, None, ed.CUT)] + PRIMARY[1:]
+    for s in tr:
+        y = {d.year: x for d, x in dp.get(iso.get(s.market, ""), [])}
+        for seg in load_segs(root, s):
+            if scored(seg) < MIN_SCORED:
+                continue
+            r = np.array(seg.r)
+            if s.market in iso:
+                first = min(y)
+                r = r + np.array([y.get(mo.year, y[first]) / 12 for mo in seg.months])
+            m = qc.run_monthly(s.market, "P4", seg.months, r, seg.gap, COST)
+            by.setdefault(s.market, []).append(m)
+    ms = []
+    for name, parts in by.items():
+        m = qc.Mkt(name, "P4", "m", np.concatenate([x.periods for x in parts]))
+        for rr in RULES2:
+            m.rets[rr] = np.concatenate([x.rets[rr] for x in parts])
+        ms.append(m)
+    res: dict[str, object] = {"dividends, all four": pooled_of(ms)}
+    res["sharpe"] = {m.name: {rr: sharpe(m.rets[rr]) for rr in RULES2} for m in ms}
+    for nm in [m.name for m in ms]:
+        res[f"dividends, without {nm}"] = pooled_of([m for m in ms if m.name != nm])
+    out = RESEARCH / "results" / "e4-indep-1-posthoc.json"
+    out.write_text(json.dumps(res, indent=1, default=str) + "\n")
+    print(json.dumps(res, indent=1))
+
+
+def freq41() -> None:
+    """POST HOC diagnostic on already-scored data: the card's monthly code on pooled-1's own 41
+    stock markets (month-end levels of `pooled1.load_all()`, through 2025-10), g = 0 and g = 1.
+    Does the monthly version show pooled-1's weekly lead (+0.063) on the same markets?"""
+    import pooled1
+
+    out: dict[str, object] = {}
+    for gap in (0, 1):
+        ms = []
+        for name, group, days, px in pooled1.load_all():
+            lv: dict[int, float] = {}
+            for d, p in zip(days, px, strict=True):
+                if d <= date(2025, 10, 31):
+                    lv[ed.mi(d.year, d.month)] = float(p)  # the month's last close
+            segs = [ed.seg_returns(name, run, gap) for run in ed.segments(lv) if len(run) > 1]
+            seg = max(segs, key=lambda x: len(x.r))
+            ms.append(qc.run_monthly(name, group, seg.months, np.array(seg.r), gap, COST))
+        res = pooled_of(ms)
+        groups = sorted({m.group for m in ms})
+        res["by_group"] = {
+            g: float(np.mean([res["per_market"][m.name] for m in ms if m.group == g]))  # type: ignore[index]
+            for g in groups
+        }
+        out[f"gap {gap}"] = res
+    f = RESEARCH / "results" / "e4-indep-1-freq41.json"
+    f.write_text(json.dumps(out, indent=1) + "\n")
+    for k, v in out.items():
+        assert isinstance(v, dict)
+        print(k, {x: v[x] for x in ("D", "se", "z", "n_pos", "n", "by_group")})
+
+
 # ------------------------------------------------------------------- run
 
 
@@ -224,6 +315,7 @@ def run() -> None:
     res["segments"] = log
     res["years"] = {m.name: len(m.rets["e4"]) / 12 for m in ms}
     res["sharpe"] = {m.name: {r: sharpe(m.rets[r]) for r in RULES2} for m in ms}
+    res["stats"] = mstats(ms)
     main = pooled_of(ms)
     main["reading"] = reading(main)
     res["primary"] = main
@@ -254,6 +346,7 @@ def run() -> None:
     res["secondary"] = sec
     res["secondary_segments"] = log2
     res["secondary_years"] = {m.name: len(m.rets["e4"]) / 12 for m in ms2}
+    res["secondary_stats"] = mstats(ms2)
     res["secondary_sharpe"] = {m.name: {r: sharpe(m.rets[r]) for r in RULES2} for m in ms2}
     out = RESEARCH / "results" / "e4-indep-1.json"
     out.write_text(json.dumps(res, indent=1, default=str) + "\n")
@@ -335,5 +428,9 @@ if __name__ == "__main__":
         ed.fetch(long_bond.cache_root())
     elif cmd == "power":
         power()
+    elif cmd == "posthoc":
+        posthoc()
+    elif cmd == "freq41":
+        freq41()
     else:
         run()
