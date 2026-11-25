@@ -199,6 +199,24 @@ def mean_parts(ps: Sequence[Parts]) -> Parts:
 # --- loaders (the projects' own) ---
 
 
+def repair(pos: np.ndarray, hold: np.ndarray, rule0: np.ndarray, cost: float) -> np.ndarray:
+    """`infer_pos` keeps the old position when a flip day has a zero return (both fit); take
+    the position that reproduces the paper series' cost on that day instead."""
+
+    def fits(i: int, v: float, prev: float) -> bool:
+        return abs(v * hold[i] - cost * abs(v - prev) - rule0[i]) < 1e-12
+
+    p = pos.copy()
+    n = len(p)
+    for i in range(1, n):
+        cand = [v for v in (p[i], 1.0 - p[i]) if fits(i, v, p[i - 1])]
+        if len(cand) > 1 and i + 1 < n:  # both fit (a zero or cost-sized return): look ahead
+            cand = [v for v in cand if fits(i + 1, p[i + 1], v) or fits(i + 1, 1 - p[i + 1], v)]
+        if cand:
+            p[i] = cand[0]
+    return p
+
+
 def irx() -> dict[date, float]:
     import insure3 as i3
     from macro import cache_root
@@ -228,8 +246,9 @@ def load_french() -> list[Ser]:
         hold = np.zeros(len(s.px))
         hold[1:] = s.px[1:] / s.px[:-1] - 1
         ok = np.ones(len(hold), dtype=bool)
-        out.append(Ser(nm, s.days, hold, s.pos, ok, s.rf, 0.0002, s.paper,
-                       s.paper + (1 - s.pos) * s.rf))  # fmt: skip
+        pos = repair(s.pos, hold, s.paper, 0.0002)
+        out.append(Ser(nm, s.days, hold, pos, ok, s.rf, 0.0002, s.paper,
+                       s.paper + (1 - pos) * s.rf))  # fmt: skip
     return out
 
 
@@ -240,6 +259,9 @@ def load_spx(bill: dict[date, float]) -> Ser:
     days, s, _, _ = i3.load()
     hold, r0, rb = s["hold"], s["trend@cash0"], s["trend"]
     pos = i1.infer_pos(r0, hold, i3.COST)
+    if abs(r0[1] - pos[1] * hold[1]) < 1e-12:  # the window opens already in that position
+        pos[0] = pos[1]
+    pos = repair(pos, hold, r0, i3.COST)
     rf = i3.bill_returns(days, bill)
     ok = np.ones(len(hold), dtype=bool)
     return Ser("S&P 500 TR", list(days), hold, pos, ok, rf, i3.COST, r0, rb)
