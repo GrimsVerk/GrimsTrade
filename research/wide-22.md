@@ -136,3 +136,142 @@ meters and share its verdict.
 
 The rule, data, placebo family, gate, the replication R36 (run only after a pass), shown cells,
 power and guess are in [`cards/wide-22.md`](cards/wide-22.md), pushed before any number.
+Code: `research/lib/wide22_events.py` (pure functions, tested offline in `tests/test_wide22.py`)
+and `research/lib/wide22.py` (run, `r36`, `posthoc`). Results:
+`research/results/grid-load-premium.md` (W36, with every placebo t and the post-hoc cells) and
+`research/results/grid-load-premium-r36.md` (R36).
+
+### Dry run (counts only, 2026-11-25 21:12 UTC)
+
+EIA file fetched once (`wide-22/2026-11-25/eia/T07.06.csv`, 599 kB): industrial and residential
+sales 634 months each, 1973-01 .. 2025-10 (none later). French monthly market 1926-07 ..
+2025-10. **Gate rows: 619 usage months 1974-01 .. 2025-07** (as the card says); placebo rows
+516 .. 594; post-sample rows (2011-01 on) 175; surrogate run 622 months.
+
+## What came out
+
+### W36 `grid-load-premium`: passes the kill-only gate (one real run, 2026-11-25 21:13:15 UTC)
+
+**One point more year-on-year growth in industrial electricity sales goes with -0.098% a month
+on the US market's excess return three months later (-0.42% a month per sd of growth, sd 4.30
+points; t -2.31, 619 months, 1974-2025); the true t ranks 1 of 41 earlier-dose calendars, and
+the post-sample sign holds (2011-2025: b -0.225, t -2.53, 175 months). All four conditions
+hold: PASS (kill-only).**
+
+| Cell (French Mkt-RF of month m+3 unless named) | b, % a month per point | t | Rows |
+|---|---:|---:|---:|
+| **Gate: industrial sales growth, 1974-01 .. 2025-07** | **-0.098** | **-2.31** | **619** |
+| (a) with controls (Mkt-RF of m+2, of m-9..m+2) | -0.099 | -2.46 | 619 |
+| (b) paper's horizon, Mkt-RF m+3..m+14, NW 18 (% a year) | -0.50 | -1.29 | 608 |
+| (c) inside the paper's sample, 1974-2010 | -0.074 | -1.52 | 444 |
+| (c) after it, 2011-2025 (gate condition 4) | -0.225 | -2.53 | 175 |
+| (d) common rows 1982-08 .. 2025-07 (rank 1 of 41) | -0.095 | -1.93 | 516 |
+| (e) negative control: residential sales growth | -0.029 | -1.04 | 619 |
+| (h) SPY / TLT / GLD / BTC, log return of month m+3 | -0.046 / +0.028 / +0.002 / -1.37 | -0.67 / +0.49 / +0.04 / -1.82 | 393 / 279 / 251 / 165 |
+
+- The size matches the paper: -0.098% a month is about -1.2% a year per point, against the
+  published -0.9% `[search summary]`, and my card's power guess (t about -1.7 at full size) was
+  slightly pessimistic.
+- **The null is narrow and centred** (SD of placebo t 0.91, 2% with |t| >= 2; 5/50/95%
+  -1.38 / -0.44 / +1.40; extremes -1.54 / +2.06). The phase-randomised surrogates (shown) are
+  wider (SD 1.10, 10% past |t| 2, smallest -2.62) and rank the true t 3 of 41: by that family
+  the rank would have been a near miss.
+- **Feedback** (f): growth follows the market's past 24-month return (+0.053 per point of
+  return, t +2.28), not its 12-month return (t +0.98): prices lead output, as expected; the
+  earlier-only placebo family was the right choice, and the price controls in (a) do not change
+  b.
+- The negative control (residential, weather-driven growth) has the same sign at a third of
+  the size (t -1.04): not zero, which is expected if part of residential use also follows the
+  cycle, but a hint that part of the slope is generic.
+
+Label: **kill-only** (gate-null step 7: about 10 independent swings in 1974-2025; smallest
+p 1/41 = 0.024, far above the family bar 0.00096 and the register's 9.9e-5). By the gate-null
+rule a pass is "not dead yet" and goes to its replication at once.
+
+### Post hoc: where the W36 pass came from (added after both numbers; not a rule)
+
+`wide22.py posthoc`, 2026-11-25 21:15 UTC; one `robustness` row in `tries.md`.
+
+| Cell (post hoc) | b | t | Rows |
+|---|---:|---:|---:|
+| 2011-2025 without usage months 2020-2021 | -0.233 | -1.27 | 151 |
+| 1974-2025 without usage months 2020-2021 | -0.084 | -1.82 | 595 |
+| Usage months 1993-2025 (SPY's span) | -0.073 | -1.02 | 391 |
+| Usage months 1993-2010 | -0.009 | -0.08 | 216 |
+
+The slope's sign is stable, but its t leans on two episodes: the 1974-1992 years and the 2020
+lockdown (industrial sales fell sharply in spring 2020 and rebounded a year later `[memory]`, while
+the market fell and recovered). Over 1993-2010, eighteen years with two recessions, the slope is zero.
+The post-sample t of -2.53 falls to -1.27 without 2020-2021. That is what a 10-swing design
+gives: one large episode moves t by one unit.
+
+### R36, the replication (card b, one real run, 2026-11-25 21:15:27 UTC): fails, W36 is dead
+
+R36 as first written (`cards/wide-22.md`) was not runnable: FRED `M01128USM247NNBR` ends in
+1938-12 (153 usable usage months, under the card's 240). `cards/wide-22b.md`, pushed after the
+W36 number and before any R36 number (21:14:54 UTC), splices the NBER indicator's two FRED
+variables (`M01128` to 1938, `M0128A` from 1939) on year-on-year growth and keeps the rest of
+R36.
+
+**R36: b -0.027% a month per point (-0.20% per sd of growth, sd 7.47 points), t -0.32, rank 13
+of 41, usage months 1926-04 .. 1955-12, 357 rows. Fails: W36 is killed.**
+
+| Cell | b, % a month per point | t | Rows |
+|---|---:|---:|---:|
+| **R36: spliced utility production growth, 1926-04 .. 1955-12** | **-0.027** | **-0.32** | **357** |
+| Without the Depression, 1934-01 .. 1955-12 | -0.040 | -0.68 | 264 |
+| P1 alone, 1926-04 .. 1938-12 | -0.081 | -0.57 | 153 |
+| P2 alone, 1939-01 .. 1955-12 | -0.006 | -0.10 | 204 |
+
+Null: earlier-dose placebos SD 0.55 (0% past |t| 2; 5/50/95% -1.36 / -0.14 / +0.60); phase
+surrogates SD 1.10, rank 14 of 41. The sign is negative in every cut and the size is a third
+or less of W36's per point; per sd of growth (7.5 points then, 4.3 since 1974) it is about half.
+My guess (b < 0, t between -2.5 and -0.5, rank 1-10, pass 30%) was right on sign and t, too
+kind on the rank.
+
+**Caveat on the kill:** the replication's meter is total utility production, not industrial
+sales (the card says so), so it is a weaker test of the exact published dose; a pass there
+needed about -0.17% a month per point (t -2 at its standard error of 0.085), 1.7 times W36's
+slope and six times what it found. **R36 had little power** (computed after the run, not in
+its card): at W36's slope per point the expected t was about -1.15 (power for t <= -2 about
+20%), and at W36's slope per sd of growth about -0.66, because 1926-1955 monthly returns are
+twice as volatile. So the kill follows the rule the card fixed, but it is a weak kill: the
+replication neither confirms nor refutes the published size. Read together: the slope has the
+predicted sign in 1926-1955, 1974-2010 and 2011-2025, but it is significant only where one
+or two large episodes (1974-1992, 2020) carry it. That is the profile W32 / R32 had: a
+persistent macro dose that passes one window on a narrow null and fades in the next.
+
+## Family count and status
+
+One mechanism added and closed by its gate and its replication (W36 `grid-load-premium`). The
+twelve others are parked, filtered or dead in the literature and are **not counted**, as in
+wide-12 .. wide-21; each has a `note` row in `tries.md` (no number computed) and a line in
+`ideas.md`.
+
+**Count: 104 mechanisms (103 carried in + W36), 29 tested by a strategy, none passed; 32 gates
+(30 + W36 + its replication R36), two kill-only passes (W32, W36), each killed by its
+replication (R32, R36).** The next strategy test is read at p < 0.10 / 104 = 0.00096 (family)
+and the register's bar. Published effects tested after publication: 1 more (Da, Huang and Yun
+2017, industrial electricity growth): the post-sample slope keeps its sign but its t rests on
+2020; dead by its replication (a low-powered one: see the R36 caveat). Ids W36 / R36 are provisional (parallel lanes tonight may take
+W36 too; the lead renumbers).
+
+Rows logged in `tries.md`: 2 `screen` (W36, R36), 1 `robustness` (post hoc), 12 `note` (one per
+candidate scored but not gated). Data downloaded: 0.6 MB (EIA) + 8 kB (two FRED files).
+
+## Next
+
+1. **The output-gap premium class is parked with W36** (Q1 `kingman-bottleneck`, T1
+   `freight-gauge`): they are the same channel with other meters. A later lane could test the
+   class across countries (Da et al. also report Japan and the UK `[search summary]`), which is
+   the only way to get more than about 10 independent swings, and the test R36 could not be; keyless monthly electricity data
+   for other countries were not looked for tonight.
+2. **Second kill-only pass, second replication kill.** Both passes (W32 drought, W36 grid load)
+   were persistent monthly macro doses with a narrow earlier-or-shifted placebo null (SD 0.9-0.94)
+   and both died on 30-40 earlier years. The phase-randomised surrogate family (used here as a
+   diagnostic) was wider (SD 1.10) and would have ranked W36 3rd, a miss. Suggestion for
+   `gate-null.md` (not adopted here, for the lead to decide): for a persistent macro dose,
+   require the rank in both the shifted family and a phase-surrogate family.
+3. **E2 `storage-premium`** (gas storage deficit, UNG) is the best parked candidate (score 5),
+   but has about five deficit episodes: kill-only with little power; skip unless a lane can pool
+   several storable commodities.
