@@ -141,8 +141,11 @@ its own dose, through its own fit:
 **Verdicts that would change: none**, under F2 alone, F3 alone or "both". Every gate except W32
 fails its own t condition (wrong sign or |t| < 2), which no placebo family can change. W32 ranks
 1 of 41 in all three families. Not re-scored: W1-W19 and ann-1 (code not on main),
-`seasonal-20y` (no single dose series). W36 (#202, unmerged) is left out. Its own write-up
-reports phase rank 3, so W36 would have failed "both". That is one of the two passes so far.
+`seasonal-20y` (no single dose series). W36 and R36 (#202) are left out, as the brief asked;
+#202 was unmerged when this lane started and merged into main while it ran (count now 104
+mechanisms, 29 tested by a strategy, 32 gates, two kill-only passes, both killed by their
+replications). Its own write-up reports phase rank 3, so W36 would have failed "both": the
+rule would have stopped one of the two passes so far, at the gate instead of the replication.
 
 ## What this does and does not explain
 
