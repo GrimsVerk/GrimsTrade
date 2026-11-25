@@ -55,8 +55,14 @@ the merge-commit offset is fixed):** #185 (this handoff), #149, #153, #155, #161
 daily run), #192 jst-autocorr-1 (review result in its PR or the night log), and the last lanes'
 PRs: #194 wide-21 (W34 solar-max-recession fails) and #193 panic-words-1 (W34 panic-words
 fails). Both used gate id W34 and both count 102/29/29: whichever merges second becomes W35
-and the count 103/29/30 (bar 0.10/103). A review of both was started at 02:52 UTC; its verdict
-is in the night log if it finished. #193's raw text cache (~30 GB, CC-BY newspaper text) sits
+and the count 103/29/30 (bar 0.10/103). **Review (02:55 UTC): #193 MERGE, #194 MERGE.** #193
+was carded first, so it keeps W34; #194 becomes W35 (replication R35). Merge #193 first, then
+on #194's branch: merge main (union for gate-null.md/tries.md), then W34->W35 and R34->R35 in
+research/gate-null.md (its two rows, the cyclic-dose note, and the count paragraph: 30 gates,
+W27-W35, 103/29/30, bar 0.00097), research/wide-21.md (plus 'renumbered from W34 at merge; the
+card says W34 (provisional)'), research/lib/wide21.py, research/lib/wide21_events.py,
+research/results/solar-max-recession.md:1, research/ideas.md (the wide-21 gate row); append a
+tries.md note row 'wide-21's W34 = W35' (never edit the old row). Cards stay unchanged. #193's raw text cache (~30 GB, CC-BY newspaper text) sits
 in the local data cache `panic-words-1/` and can be deleted; monthly counts are committed (check `gh pr list`; each needs a fresh review first unless the
 night log says "review: MERGE"). #192 review: MERGE (no required fixes).
 
