@@ -11,9 +11,11 @@ and run this repo; open pull requests are listed under "Still open".
   bear markets.
 - **The insurance is real, and holds everywhere we looked.** The evidence is timing: it avoided
   0.50 of each fall, against 0.27 for the same exposure at random dates (#87). In 21 US market
-  falls of 25% or more since 1927 it lost less than holding in 20 (50 episodes when
-  industry-only falls are added, 37 under strict grouping). In 13 other developed markets since
-  1966: 17 of 18, not independent of the US falls (#90). It is cheaper than simply holding less
+  falls of 25% or more since 1927 it lost less than holding in 20 (20 of 20 not tied; 1933, held
+  throughout, is a tie; 50 episodes when industry-only falls are added, 37 under strict
+  grouping). In 13 other developed markets since 1966: 17 of 19 effective falls (17 of 17 not
+  tied; 2 ties where the rule held throughout, Hong Kong 1989 and Japan 2024; ties counted as
+  ties since #218), not independent of the US falls (#90). It is cheaper than simply holding less
   in direction in every era and market, but statistically shown only for 1927-1961 and the
   developed-market price indices; since 2002 not shown (p 0.19). Out of sample on annual data
   for 1870-1965 it holds in slow falls only (#186); its timing statistic is consistent with the

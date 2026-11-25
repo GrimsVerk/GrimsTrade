@@ -26,7 +26,7 @@ Card 1's 25% episodes and market-anchored clusters, cash at 0, each rule's paper
 
 ## (b) `arm3-12`: exit as `tsmom12`, re-enter when the 3-month return turns positive
 
-**Verdict by the card (family bar p < 0.025): In between.** US mean dN +1.8 (sign test 28 of 50, p 0.24; bootstrap p 0.114); non-US mean dN +5.3; premium US 1.07 -> 0.98, non-US 1.11 -> 0.97; share avoided US 0.50 -> 0.37 (guard: drop at most 0.10).
+**Verdict by the card (family bar p < 0.025): In between.** US mean dN +1.8 (sign test 26 of 45, p 0.19; bootstrap p 0.114); non-US mean dN +5.3; premium US 1.07 -> 0.98, non-US 1.11 -> 0.97; share avoided US 0.50 -> 0.37 (guard: drop at most 0.10).
 
 ### US: market + 10 industries, 1927-2025 (decides)
 
@@ -34,13 +34,13 @@ Effective falls (clusters): 50; episodes: 270.
 
 | Mean over effective falls | `tsmom12` | `arm3-12` | Difference | Falls where `arm3-12` is higher |
 |---|---:|---:|---:|---:|
-| I, loss avoided peak -> trough | +25.1 | +19.3 | -5.9 | 8 of 48 |
-| B, the year after the low | -25.4 | -17.7 | +7.7 | 40 of 49 |
-| **N = I + B** | -0.3 | +1.6 | +1.8 | 28 of 50 |
-| S, share of the fall avoided | +0.50 | +0.37 | -0.13 | 8 of 48 |
-| N > 0 (falls) | 18 of 50 | 22 of 50 | | |
+| I, loss avoided peak -> trough | +25.1 | +19.3 | -5.9 | 3 of 36 |
+| B, the year after the low | -25.4 | -17.7 | +7.7 | 39 of 44 |
+| **N = I + B** | -0.3 | +1.6 | +1.8 | 26 of 45 |
+| S, share of the fall avoided | +0.50 | +0.37 | -0.13 | 3 of 36 |
+| N > 0 (falls) | 16 of 50 | 22 of 50 | | |
 
-Test of the difference in N (H1: `arm3-12` higher): sign test 28 of 50, p 0.24; cluster bootstrap mean +1.8, p 0.114, 90% range -0.6 to +4.3.
+Test of the difference in N (H1: `arm3-12` higher): sign test 26 of 45, p 0.19; cluster bootstrap mean +1.8, p 0.114, 90% range -0.6 to +4.3.
 
 | Full period | `tsmom12` | `arm3-12` |
 |---|---:|---:|
@@ -61,8 +61,8 @@ Test of the difference in N (H1: `arm3-12` higher): sign test 28 of 50, p 0.24; 
 
 | Peak to trough (episode level) | Episodes | Mean dI | Mean dB | Mean dN | dN > 0 | `tsmom12` N | `arm3-12` N |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 63 | -4.9 | +5.1 | +0.3 | 30 | -6.5 | -6.3 |
-| medium, 93-365 | 127 | -6.2 | +7.5 | +1.3 | 68 | +2.7 | +4.0 |
+| fast, <= 92 days | 63 | -4.9 | +5.1 | +0.3 | 20 | -6.5 | -6.3 |
+| medium, 93-365 | 127 | -6.2 | +7.5 | +1.3 | 60 | +2.7 | +4.0 |
 | slow, > 365 | 80 | -7.0 | +11.1 | +4.1 | 47 | +10.5 | +14.6 |
 
 Effective falls, largest |dN| first (10):
@@ -80,7 +80,7 @@ Effective falls, largest |dN| first (10):
 | 1968-11-12 | 1970-05-26 | 9 | 37% | +1 | +16 | -4 | +18 | +14 |
 | 1961-11-14 | 1962-10-23 | 4 | 35% | -6 | +7 | -3 | +16 | +14 |
 
-`arm3-12` minus `or3-12` (description): mean cluster dN +0.4, higher in 28 of 45 falls (two rules' N, same episodes).
+`arm3-12` minus `or3-12` (description): mean cluster dN +0.4, higher in 24 of 38 falls (two rules' N, same episodes).
 
 ### Non-US: 13 developed indices, price (decides, direction)
 
@@ -88,10 +88,10 @@ Effective falls (clusters): 19; episodes: 109.
 
 | Mean over effective falls | `tsmom12` | `arm3-12` | Difference | Falls where `arm3-12` is higher |
 |---|---:|---:|---:|---:|
-| I, loss avoided peak -> trough | +27.0 | +23.1 | -3.9 | 4 of 18 |
+| I, loss avoided peak -> trough | +27.0 | +23.1 | -3.9 | 2 of 15 |
 | B, the year after the low | -27.9 | -18.6 | +9.2 | 19 of 19 |
 | **N = I + B** | -0.9 | +4.4 | +5.3 | 13 of 19 |
-| S, share of the fall avoided | +0.49 | +0.42 | -0.07 | 4 of 18 |
+| S, share of the fall avoided | +0.49 | +0.42 | -0.07 | 2 of 15 |
 | N > 0 (falls) | 7 of 19 | 10 of 19 | | |
 
 Test of the difference in N (H1: `arm3-12` higher): sign test 13 of 19, p 0.084; cluster bootstrap mean +5.3, p 0.000, 90% range +2.6 to +8.2.
@@ -114,7 +114,7 @@ Test of the difference in N (H1: `arm3-12` higher): sign test 13 of 19, p 0.084;
 
 | Peak to trough (episode level) | Episodes | Mean dI | Mean dB | Mean dN | dN > 0 | `tsmom12` N | `arm3-12` N |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast, <= 92 days | 23 | -0.2 | +7.5 | +7.2 | 17 | -15.0 | -7.7 |
+| fast, <= 92 days | 23 | -0.2 | +7.5 | +7.2 | 16 | -15.0 | -7.7 |
 | medium, 93-365 | 40 | -4.9 | +7.9 | +2.9 | 23 | +3.1 | +6.1 |
 | slow, > 365 | 46 | -6.5 | +10.2 | +3.7 | 27 | +9.7 | +13.5 |
 
@@ -133,7 +133,7 @@ Effective falls, largest |dN| first (10):
 | 2024-07-11 | 2024-08-05 | 1 | 25% | -8 | -2 | +0 | +6 | +6 |
 | 1991-03-18 | 1992-08-18 | 1 | 47% | +29 | +24 | -6 | +1 | -5 |
 
-`arm3-12` minus `or3-12` (description): mean cluster dN +0.6, higher in 11 of 17 falls (two rules' N, same episodes).
+`arm3-12` minus `or3-12` (description): mean cluster dN +0.6, higher in 11 of 16 falls (two rules' N, same episodes).
 
 ### French regions, total return, USD (description)
 
@@ -141,13 +141,13 @@ Effective falls (clusters): 13; episodes: 25.
 
 | Mean over effective falls | `tsmom12` | `arm3-12` | Difference | Falls where `arm3-12` is higher |
 |---|---:|---:|---:|---:|
-| I, loss avoided peak -> trough | +30.1 | +24.8 | -5.3 | 2 of 13 |
-| B, the year after the low | -29.7 | -18.4 | +11.3 | 12 of 13 |
-| **N = I + B** | +0.4 | +6.5 | +6.0 | 9 of 13 |
-| S, share of the fall avoided | +0.53 | +0.42 | -0.11 | 2 of 13 |
+| I, loss avoided peak -> trough | +30.1 | +24.8 | -5.3 | 2 of 10 |
+| B, the year after the low | -29.7 | -18.4 | +11.3 | 12 of 12 |
+| **N = I + B** | +0.4 | +6.5 | +6.0 | 9 of 12 |
+| S, share of the fall avoided | +0.53 | +0.42 | -0.11 | 2 of 10 |
 | N > 0 (falls) | 8 of 13 | 7 of 13 | | |
 
-Test of the difference in N (H1: `arm3-12` higher): sign test 9 of 13, p 0.13; cluster bootstrap mean +6.0, p 0.025, 90% range +0.8 to +12.1.
+Test of the difference in N (H1: `arm3-12` higher): sign test 9 of 12, p 0.073; cluster bootstrap mean +6.0, p 0.025, 90% range +0.8 to +12.1.
 
 | Full period | `tsmom12` | `arm3-12` |
 |---|---:|---:|
@@ -186,4 +186,4 @@ Effective falls, largest |dN| first (10):
 | 2021-09-06 | 2022-10-13 | 2 | 33% | -3 | -1 | -6 | +8 | +2 |
 | 2011-04-28 | 2011-10-04 | 2 | 30% | -16 | -14 | -0 | +2 | +2 |
 
-`arm3-12` minus `or3-12` (description): mean cluster dN +2.0, higher in 8 of 13 falls (two rules' N, same episodes).
+`arm3-12` minus `or3-12` (description): mean cluster dN +2.0, higher in 7 of 11 falls (two rules' N, same episodes).

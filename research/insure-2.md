@@ -15,29 +15,29 @@ point of loss avoided, roughly 2 log points a year behind holding.**
 
 | Where | Effective falls | Lost less than holding | Share of fall avoided | Premium: trend / hold less (fixed) / random timing | Verdict (cheaper than holding less?) |
 |---|---:|---|---:|---|---|
-| US 1927-1961 | 22 | 21 of 22 | 0.55 | 0.85 / 1.38 / 1.63 | yes (p 0.000) |
+| US 1927-1961 | 22 | 21 of 21 (was 21 of 22 before #218) | 0.55 | 0.85 / 1.38 / 1.63 | yes (p 0.000) |
 | US 1962-2001 | 15 | 15 of 15 | 0.47 | 1.38 / 2.15 / 2.60 | yes (p 0.013) |
-| US 2002-2025 | 13 | 12 of 13 | 0.45 | 1.34 / 1.53 / 1.91 | in between (p 0.19) |
-| 13 developed markets, 1966-2025 (price) | 19 | 17 of 18 | 0.49 | 1.11 / 1.33 / 1.52 | yes (p 0.009) |
-| 3 regions, 1991-2025 (total return, USD) | 13 | 12 of 13 | 0.53 | 1.23 / 1.40 / 1.60 | in between (p 0.24) |
-| 10 more markets, 1991-2025 (price) | 17 | 15 of 17 | 0.47 | 1.18 / 1.34 / 1.49 | in between (p 0.08) |
+| US 2002-2025 | 13 | 11 of 12 (was 12 of 13 before #218) | 0.45 | 1.34 / 1.53 / 1.91 | in between (p 0.19) |
+| 13 developed markets, 1966-2025 (price) | 19 | 17 of 17 (was 17 of 18 before #218) | 0.49 | 1.11 / 1.33 / 1.52 | yes (p 0.008; was 0.009 before the #218 infer_pos fix) |
+| 3 regions, 1991-2025 (total return, USD) | 13 | 12 of 12 (was 12 of 13 before #218) | 0.53 | 1.23 / 1.40 / 1.60 | in between (p 0.24) |
+| 10 more markets, 1991-2025 (price) | 17 | 13 of 13 (was 15 of 17 before #218; 13 of 17 with ties counted against) | 0.47 | 1.18 / 1.34 / 1.49 | in between (p 0.08) |
 
 (p: share of 1,000 random-timing rotations whose premium is at least as low as trend's.)
 
 - **Robust: the insurance itself.** In every era and every set trend lost less than holding in
-  nearly every effective fall (92 of 98 counted above with a sign) and avoided 0.45-0.55 of the
+  nearly every effective fall (89 of 90 not tied, counted above; was 92 of 98 before #218) and avoided 0.45-0.55 of the
   fall, against 0.26-0.36 for the same average exposure held fixed or at random dates. That
-  "timing" part beats random timing in every era and set (share p 0.000-0.035).
+  "timing" part beats random timing in every era and set (share p 0.000-0.034; was 0.000-0.035 before the #218 infer_pos fix).
 - **Robust in direction, not always in strength: cheaper than holding less.** Trend's premium
   is below a fixed lower exposure and below random timing in all six rows. The rotation test
   passes in three (US 1927-61, US 1962-2001, 13 developed markets) and is "in between" in the
   three shortest or smallest (US since 2002, the total-return regions, the wider set). Nowhere
   is holding less the cheaper insurance.
 - **Not robust: keeping it.** Net of the year after the low the insurance is a coin flip
-  everywhere (US 16 of 50, non-US 7 of 19 effective falls positive): the rule buys back late.
+  everywhere (US 15 of 48 not tied, was 16 of 50 before #218; non-US 7 of 19 effective falls positive): the rule buys back late.
   It pays only in long, deep bear markets (1929-32, 1973-74, Japan 1990-92, 2000-03, 2008) and
   loses in fast falls of three months or less (1987, 2020, August 2024: share avoided about a
-  third, net about -15 log points, outside the US positive in 3 of 23).
+  third, net about -15 log points, outside the US positive in 1 of 23, was 3 before #218).
 - **What an investor should expect today.** Use the post-2002 numbers, total return: a premium
   of about **1.3-1.5** (US 1.34, non-US regions 1.49, wider set 1.37), i.e. for every 10 log
   points of a crash avoided, about 13-15 given up in rebounds and calm markets; in growth
@@ -70,7 +70,7 @@ the era (1,000 rotations).
 | 1927-1961 | 22 | 0.55 / 0.32 / 0.29 | **0.85** / 1.38 / 1.63 | 0.000, 0.000 | Timing, not just exposure |
 | 1962-2001 | 15 | 0.47 / 0.26 / 0.25 | **1.38** / 2.15 / 2.60 | 0.002, 0.013 | Timing, not just exposure |
 | 2002-2025 | 13 | 0.45 / 0.34 / 0.30 | **1.34** / 1.53 / 1.91 | 0.032, 0.191 | In between |
-| **1962-2025** | 28 | 0.46 / 0.28 / 0.26 | **1.36** / 1.88 / 2.20 | 0.000, 0.020 | **Timing, not just exposure** |
+| **1962-2025** | 28 | 0.46 / 0.28 / 0.26 | **1.36** / 1.88 / 2.20 | 0.000, 0.022 (was 0.020 before the #218 infer_pos fix) | **Timing, not just exposure** |
 
 - **Answer: yes, after 1962 trend is still cheaper insurance than holding less.** Holding less
   got dearer too after 1962 (fixed exposure 1.38 -> 1.88): the rise in trend's premium from 0.85
@@ -82,14 +82,14 @@ the era (1,000 rotations).
   (1.34) is only a little below a fixed 75% (1.53) and inside the random-timing range
   (p 0.19); its share avoided still beats random timing (p 0.03). 13 effective episodes is thin.
 - Multiple tests (8 rotation p-values, Bonferroni 0.006): 1927-1961 both, 1962-2001 share
-  (0.002), and 1962-2025 share (0.000) survive; the premium tests after 1962 (0.013, 0.020) do
+  (0.002), and 1962-2025 share (0.000) survive; the premium tests after 1962 (0.013, 0.022; was 0.020 before the #218 infer_pos fix) do
   not. So "trend times falls better than chance" is solid in every era but the latest; "trend
   buys that cheaper than random timing" is solid only in 1927-1961, suggestive after.
 - Net of the rebound, the rule is worse than both controls after 1962 (cluster N -3.8 log points
   against +1.5 fixed and +0.4 random; p 0.92): the late buy-back costs it more than it costs a
   passive lower exposure. Its advantage is entirely in calm markets (it is fully in when calm).
-- Insurance itself (rule loses less than holding) stays near certain per era: 21 of 22, 15 of
-  15, 12 of 13 effective episodes.
+- Insurance itself (rule loses less than holding) stays near certain per era: 21 of 21, 15 of
+  15, 11 of 12 effective episodes not tied (was 21 of 22, 15 of 15, 12 of 13 before #218).
 - The paper-series premium per era (0.85 / 1.38 / 1.34) matches insure-1's gym-splice numbers
   (0.86 / 1.38 / 1.34). No `tries.md` rows (re-scoring of logged positions).
 
@@ -106,19 +106,19 @@ markets).
 
 | Set | Episodes / effective | Rule I > 0 (anchored; strict) | Share avoided | Net of rebound N | Premium: rule / fixed / random | p (share, premium) | Verdicts (card 1; card 2) |
 |---|---:|---|---:|---:|---|---|---|
-| **13 developed, price (decides)** | 109 / 19 | 17 of 18, p 7e-5; 14 of 15 | 0.49 | -0.9 (7 of 19 > 0) | **1.11** / 1.33 / 1.52 | 0.000, 0.009 | handed back; **timing, not just exposure** |
-| 3 regions, total return, USD | 25 / 13 | 12 of 13, p 0.002; 10 of 11 | 0.53 | +0.4 | **1.23** / 1.40 / 1.60 | 0.035, 0.24 | handed back; in between |
-| 10 more indices, price | 92 / 17 | 15 of 17, p 0.001; 13 of 15 | 0.47 | -0.3 | **1.18** / 1.34 / 1.49 | 0.009, 0.081 | handed back; in between |
-| US, 1962-2025 (step 1) | 132 / 28 | 27 of 28 | 0.46 | -3.8 | **1.36** / 1.88 / 2.20 | 0.000, 0.020 | handed back; timing |
+| **13 developed, price (decides)** | 109 / 19 | 17 of 17, p 8e-6; 14 of 14 (was 17 of 18, p 7e-5; 14 of 15 before #218) | 0.49 | -0.9 (7 of 19 > 0) | **1.11** / 1.33 / 1.52 | 0.000, 0.008 (was 0.009 before the #218 infer_pos fix) | handed back; **timing, not just exposure** |
+| 3 regions, total return, USD | 25 / 13 | 12 of 12, p 2e-4; 10 of 10 (was 12 of 13, p 0.002; 10 of 11 before #218) | 0.53 | +0.4 | **1.23** / 1.40 / 1.60 | 0.034 (was 0.035 before the #218 infer_pos fix), 0.24 | handed back; in between |
+| 10 more indices, price | 92 / 17 | 13 of 13, p 1e-4; 11 of 11 (was 15 of 17, p 0.001; 13 of 15 before #218; 13 of 17 with ties counted against) | 0.47 | -0.3 | **1.18** / 1.34 / 1.49 | 0.009, 0.081 | handed back; in between |
+| US, 1962-2025 (step 1) | 132 / 28 | 26 of 27 (was 27 of 28 before #218) | 0.46 | -3.8 | **1.36** / 1.88 / 2.20 | 0.000, 0.022 (was 0.020 before the #218 infer_pos fix) | handed back; timing |
 
-- **The insurance generalises.** Outside the US the rule lost less than holding in 17 of 18
-  effective falls (sign test p 7e-5; strict grouping 14 of 15), avoiding about half of each
+- **The insurance generalises.** Outside the US the rule lost less than holding in 17 of 17
+  effective falls not tied (was 17 of 18 before #218; sign test p 8e-6, was 7e-5; strict grouping 14 of 14, was 14 of 15), avoiding about half of each
   fall (0.49), the same share as on US data. Net of the year after the low it is again a coin
   flip (mean -0.9 log points, 7 of 19 positive). Verdict by card 1's rule: **"insurance
   real, handed back in the rebound"**, in every set. The sign-test p (7.2e-5) narrowly misses
   the project-wide bar (4.9e-5); it is not a pick, quoted for scale.
 - **Cheaper than holding less, again.** On the primary set the rule's premium (1.11) is below a
-  fixed 66% exposure (1.33) and random timing (1.52, p 0.009), and its share avoided beats
+  fixed 66% exposure (1.33) and random timing (1.52, p 0.008; was 0.009 before the #218 infer_pos fix), and its share avoided beats
   random timing (0.49 vs 0.34, p 0.000): card 2's verdict "timing, not just exposure". The
   order rule < fixed < random holds in every set; the rotation p-values are weaker on the
   shorter or smaller sets (premium p 0.24 on 3 regions, 0.08 on the wider 10), so those read
@@ -130,10 +130,12 @@ markets).
   and miss the same dividends, so the comparison with them is fair; the price-index level is
   too low, by roughly 0.1-0.4.
 - **Fast falls fail outside the US too:** 23 falls of three months or less (1987, 1989 Hong
-  Kong, 2020, August 2024 in Japan): share avoided 0.35, net -15 log points, positive in 3 of
-  23. Slow falls (over a year, 46): share 0.63, net +9.7, positive in 32 of 46.
+  Kong, 2020, August 2024 in Japan): share avoided 0.35, net -15 log points, positive in 1 of
+  23 (was 3 before #218). Slow falls (over a year, 46): share 0.63, net +9.7, positive in 32 of 46.
 - **By era:** price indices 1.12 before 2002 and 1.11 after; total-return regions 0.91 and
   1.49; wider set 0.98 and 1.37. Since 2002 the rule trailed holding by about 2-2.7 log points
   a year on the total-return regions and the wider set (2.2 on US data), and about 0.8 on the
   price indices.
 - `tries.md`: 27 rows of kind `insure-check` (13 + 3 + 10 + Developed ex US), idea `insure-2`.
+
+2026-11-25 (eng-nits-1, #218): a value below 1e-9 log points (a rule in the market through a whole fall or rebound) is now a tie, left out of the sign tests, instead of a win or a loss at random; the counts above are marked "(was ... before #218)". No verdict changed. Also, `insure1.infer_pos` now dates a flip on a day the holding did not move on that day (it was one session late; 1-6 sessions per series). `results/insure-2.md` was regenerated: some p-values, bands and the 2002-2025 premium (+1.91 to +1.90) moved in the last digit; the numbers quoted above are marked. No verdict changed.
