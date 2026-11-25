@@ -2,7 +2,7 @@
 
 The live rule is `tsmom12`: hold an asset only while its price is above where it was a year ago,
 otherwise cash. "Sharpe" below means return per unit of risk (higher is better). Agents now merge
-and run this repo; 6 pull requests are open (listed under "Still open").
+and run this repo; 7 pull requests are open (listed under "Still open").
 
 ## What we know now
 
@@ -103,7 +103,7 @@ and run this repo; 6 pull requests are open (listed under "Still open").
   fails the bar (z 2.75, IR +0.31; momentum's cost decides). Since 1994 its alpha is
   insignificant (z 0.75), negative in the 2010s. Managing it by market volatility does not help
   (#179). It needs shorts in any case (B7).
-- **Borrowed ideas: 101 mechanisms listed, 28 tested by a strategy, none passed; 28 gates, one
+- **Borrowed ideas: 101 mechanisms listed, 29 tested by a strategy, none passed; 28 gates, one
   kill-only pass, killed by its own replication** (many gates can only kill an idea, never pass
   one, by design: few independent episodes; #124). The pass was W32 `drought-inflation`
   (t -3.71, rank 1 of 41 on TLT 2002-2025); its replication R32 on the 10-year yield 1962-2002
@@ -111,10 +111,11 @@ and run this repo; 6 pull requests are open (listed under "Still open").
   #173, #176), parked-gates-1 2 mechanisms and 3 gates (#188); every gate is listed in
   [`gate-null.md`](gate-null.md). A bookkeeping pass (#191) applied the rule the count states
   (a mechanism enters once it gets a gate or a strategy test; descriptive re-scores do not) and
-  added five strategy tests the count had missed: `vm-style-book` (#179), the century style
-  book (#170), Hedge across the books (#175) and `coin-drift-run` (#157, #190), each a new
-  mechanism, and the strategy form of `seasonal-20y` (#148), a mechanism already counted by its
-  gate. Family bar for the next strategy test: p < 0.10 / 101 = 0.00099. New candidates must pass two
+  added six strategy tests the count had missed: `vm-style-book` (#179), the century style
+  book (#170), Hedge across the books (#175) and `coin-drift-run` (#157, #190; read as one
+  mechanism with `cost-band` the count is 100 / 28), each a new mechanism, and two of mechanisms
+  already counted: the strategy form of `seasonal-20y` (#148; listed by survey-4) and
+  `turbulence-1` (#134; wide-1's M1, which collapsed into `turbulence`). Family bar for the next strategy test: p < 0.10 / 101 = 0.00099. New candidates must pass two
   filters first: not announced, not driven by price (#109). A literature survey listed 11 more
   from 2024-2026, none tested by it (#177).
 
@@ -197,12 +198,12 @@ and run this repo; 6 pull requests are open (listed under "Still open").
   TLT over the next quarter (t -3.71, rank 1 of 41 shifted calendars, 2002-2025): the first gate
   pass in this record. Kill-only by design, so its replication R32, carded after the W32 number
   and before its own, ran the same dose on the 10-year yield over the 40 years before TLT
-  (1962-2002): t -0.19, rank 21 of 41, and drought did not predict food prices in either period.
+  (1962-2002): t -0.19, rank 21 of 41, and drought did not predict food prices (1962-2002 t -1.82, 1962-2025 t -1.68).
   Verdict as the R32 card fixed it: a one-period result. **W33 `margin-susceptibles` fails:**
   this month's fall times the stock of broker customer receivables over equity value has no
   slope on next month's S&P 500, 1965-2025 (t +0.05, rank 41 of 41; its earlier-dose placebo null
   is off-centre, all 40 placebo t positive). parked-gates-1 counted 97 mechanisms, 23 tested
-  by a strategy, 28 gates (R32 included); corrected by #191 to 101 / 28 / 28 (see "What we know
+  by a strategy, 28 gates (R32 included); corrected by #191 to 101 / 29 / 28 (see "What we know
   now").
 - A dependence-robust standard error for the forward registry's verdict (#189, engineering):
   **adopted as an improvement, not a fix.** The verdict's standard error now allows a year of
@@ -243,7 +244,8 @@ z -1.67).
 - Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
   environment (#149), the daily run reconciling its own record (#153), the scoreboard's
   live-start-delay note (#155), daily-run robustness tests for misbehaving sources (#161).
-- Tonight's lanes still open: the night lead's handoff (#185), this summary update (#191).
+- Tonight's lanes still open: the night lead's handoff (#185), this summary update (#191), whether
+  insure-1870-1's timing result is a smoothed-index artefact (#192).
 - Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168, #178); the halving
   window's one forward score (#137). `coin-drift-run` is dead: not confirmed (#157), then killed
   on six unseen coins (#190).
