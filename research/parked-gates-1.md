@@ -159,6 +159,12 @@ its own replication; every idea gated so far is dead.** Family bar for the next 
 p < 0.10 / 97 = 0.00103, and the register's (3,982 tries, N 1,099, N_eff 504: z >= 4.70,
 Bonferroni p <= 9.9e-5).
 
+Later correction (summary-6, PR #191, 2026-11-25): the count missed five strategy tests that the
+rule "a mechanism enters once it gets a gate or a strategy test" includes (`vm-style-book` #179,
+the century style book #170, Hedge across the books #175, `coin-drift-run` #157/#190, and
+`seasonal-20y`'s strategy form #148, a mechanism already counted); corrected count **101
+mechanisms, 28 tested by a strategy, 28 gates**, family bar p < 0.10 / 101 = 0.00099.
+
 Rows logged in `tries.md`: 3 `screen` rows (`drought-inflation` W32, `drought-inflation` R32,
 `margin-susceptibles` W33).
 
