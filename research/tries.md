@@ -4375,3 +4375,5 @@ Never edit or delete a row.
 | 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-A1-GOV-1820-1920 | insure-check | train | 1823-04-30 | 1920-12-31 | 2.04 | +3458.8% | 8.0% | 0.15 |
 | 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-lag-1 | insure-check | train | 1823-05-31 | 1984-12-31 | 1.43 | +49976.7% | 13.9% | 0.27 |
 | 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-consols-lag-1 | insure-check | train | 1867-02-28 | 1926-12-31 | 0.57 | +336.7% | 21.6% | 1.07 |
+| 2026-11-25 23:21 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-cash-discount-rate | insure-check | train | 1823-04-30 | 1984-12-31 | 1.57 | +83779.3% | 11.1% | 0.27 |
+| 2026-11-25 23:21 | insure-bonds-1 | tsmom12m@insure-bonds-check-consols-cash-discount-rate | insure-check | train | 1867-01-31 | 1926-12-31 | 0.67 | +451.5% | 25.2% | 1.07 |

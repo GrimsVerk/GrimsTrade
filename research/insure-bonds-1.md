@@ -4,12 +4,15 @@ Lane `insure-bonds-1`, 2026-11-25 (UTC). Branch `insure-bonds-1`. Research only:
 keyless public data, no change to the gym, the daily runner or the live strategies. Card:
 [`cards/insure-bonds-1.md`](cards/insure-bonds-1.md) (commit 422f648, 22:54 UTC, before any
 number on these series). Before-scoring table and card amendment A: commit 3078c29 (22:59),
-before any rule position, episode or outcome was read. Tables:
+before any rule position, episode or outcome was read. (The amendment's heading time in the
+card was corrected from "~23:15" to "22:56-22:59" in the run commit fb8f673, after the
+results: a cosmetic edit of the time stamp only.) Tables:
 [`results/insure-bonds-1.md`](results/insure-bonds-1.md). Code: `lib/insurebonds1.py` (reuses
 `insure1709` and `insure1` unchanged), tests `tests/test_insurebonds1.py`. Data: Norges Bank
 Historical Monetary Statistics (Klovland 2004 in Eitrheim, Klovland and Qvigstad 2004; short
 rates: Eitrheim and Klovland 2007) and the Bank of England's "A millennium of macroeconomic
-data" v3.1 (OGL v3), read locally; only statistics are committed.
+data" v3.1, read locally; only statistics are committed. Contains public sector information
+licensed under the Open Government Licence v3.0.
 
 ## The answer on one screen
 
@@ -20,7 +23,7 @@ split, and it adds no timing support. On UK consols 1867-1926 the rule lost less
 0.069; AR nulls p 0.07-0.10). On Norwegian government bonds 1823-1984 (the amendment's
 primary) it does not hold: it lost less in 4 of 11 falls (sign p 0.34). Five of the 11 are
 one-month falls, where the rule was in and lost the same as holding. In both series it handed
-the saving back in the rebound (net N > 0 in 2 of 11 and 3 of 10 falls).**
+the saving back in the rebound (net N > 0 in 1 of 10 and 3 of 9 falls with N != 0).**
 
 | Reading | Falls (size) | Lost less | S: rule / fixed / random (p_rot) | Gap G; p AR1 / BB | Premium rule / fixed | Verdict |
 |---|---:|---|---|---|---|---|
@@ -45,8 +48,9 @@ rebounds and calm years per unit saved in falls.)
   stated as such.
 - **Where it works: slow yield rises.** Consols: every fall from 1884 to 1920 was a slow rise
   in yields (7-32 months), except 1918-19 (4 months) and a one-month fall in 1922 (a tie). The
-  rule avoided 0.24-1.00 of each slow fall; 1918-19 only 0.04. Norway: the slow falls 1919-20 (S 0.67), 1939-40 (0.75), 1940
-  (1.00: the rule was already out at the invasion month) and 1954-56 (0.29) all lost less. With
+  rule avoided 0.24-1.00 of each slow fall; 1918-19 only 0.04. Norway: the slow falls 1919-20 (S 0.67), 1939-40 (0.75)
+  and 1954-56 (0.29) all lost less; so did the one-month fall of 1940-04..05 (S 1.00: the rule
+  was already out at the invasion month, after the slow 1939-40 fall). With
   a perpetuity, Norway's slow falls 1949-51 and 1954-56 lost less with S 0.82-0.91.
 - **Where it fails: one-month jumps.** Norway's 1946-1984 yields were administered and moved in
   steps. In 1969, 1974, 1977 and 1979 the yield jumped 1.2-2.0 points in one month and stayed
@@ -61,11 +65,13 @@ rebounds and calm years per unit saved in falls.)
   gap G = +0.20 is at the 93rd percentile of AR(1) worlds and the 90th of block-bootstrap
   worlds. Lag-1 autocorrelation is small in every source period except Norway's 1822-1842
   quotations abroad (+0.13, with 23% unchanged-yield months: "stale-suspect") and the 1940-45
-  occupation (-0.26), and consols 1914-26 (-0.13). So the AR nulls hardly differ from the iid reference here. Unlike the
+  occupation (-0.26), and consols 1914-26 (-0.13). So the AR nulls hardly differ from the iid
+  reference here. The AAFT surrogates (whole spectrum kept) give consols p 0.028, the only null
+  below 0.05; it is description by the card, not decisive, and it is not a pass. Unlike the
   equity series, autocorrelation is not what keeps the bond timing from passing: the effect is
   small and the falls are few.
 - **The insurance is handed back.** In both series most of the saving goes in the 12 months
-  after the trough: N > 0 in 2 of 11 Norwegian and 3 of 10 consol falls. The rule's premium
+  after the trough: N > 0 in 1 of the 10 Norwegian and 3 of the 9 consol falls where N != 0. The rule's premium
   is above 1 in every primary reading (1.9-8.0): with cash at 0 it trails holding over the
   whole span, partly because being out forgoes a 3-5% coupon. It is still cheaper than holding
   the same average exposure fixed (premium below the fixed one in all five readings).
@@ -118,12 +124,12 @@ rebounds and calm years per unit saved in falls.)
   1871-1984 shares it with the US bond calendar (`SEEN` bond USA from 1871). Norway's own bond
   market is scored only from 1985 (data-long-3), so every Norwegian month here is new for that
   market. Consols 1867-1926 are new for UK government bonds (`SEEN` GBR from 1960; JST's annual
-  UK bond returns from 1870 are unscored). The 1866 consol months only warm up the signal. The
+  UK bond returns from 1870 were unscored at the time of writing; see insure-jstbonds-1). The 1866 consol months only warm up the signal. The
   pooled description has one shared cluster (1919-20, both series).
 - Not used: Hypotekbank (state mortgage bank) bonds 1851-1920; A3 maturities (overlap A4 from
   1921); SNB Swiss bond indices (cached; 1924-1954 is unscored for Switzerland but needs a
-  yield-to-price splice in 1943); JST annual bond returns (annual, 17 countries from 1870: the
-  natural next bond insurance check, with an AR-preserving null).
+  yield-to-price splice in 1943); JST annual bond returns (annual; taken up by
+  insure-jstbonds-1).
 
 ## What it adds to the SUMMARY claim
 
@@ -138,17 +144,26 @@ of 10%+ are too rare in these data for the card's test." Nothing changes for the
 When the rule is in throughout a fall (a one-month fall, no flip), `insure1.score`'s
 cumulative sum of log differences leaves I at about 1e-14 instead of 0. `insure1.sign_test`
 (drops only exact zeros) and `insure1709.Eval.k` (I > 0) then count that tie as a win or a
-loss at random. Here it turned 3 ties into wins in the first run (consols 1922; Norway
-perpetuity 1969). This lane zeroes |I| < 1e-9 in its own wrapper (`insurebonds1.evaluate`,
-tested), and every number above uses it; `insure1` and `insure1709` are unchanged. Earlier
-equity lanes are unlikely to be affected (a 25% equity fall with no exit is rare and shows as
-a visible "+0" row), but a tolerance in `insure1` itself would be the clean fix.
+loss at random; the rebound B and so N = I + B carry the same noise. In this lane's first
+run (fb8f673) it moved several rows: A2 10 of 10 (now 9 of 10), A3 6 of 9 (now 5 of 9), check 2
+at 10% 13 of 16 (now 10 of 16), consols price-only 15 of 15 (now 14 of 15), the cash-rate rows,
+and the pooled clusters 13 of 15 (now 12 of 14). The second fix (zeroing B and the cash-rate N
+too, after the lead's review) moved N: A1 2 of 11 to 1 of 10 non-zero, A2 3 of 10 to 3 of 9,
+Norway's cash-rate N 5 to 4 of 11. This lane zeroes |I|, |B|, |I_cash| and |N_cash| below 1e-9
+in its own wrapper (`insurebonds1.evaluate`, tested), and every number above uses it;
+`insure1` and `insure1709` are unchanged here. Earlier equity lanes **are** affected, per the
+lead's review: insure-1 (#87) 48 of 50 becomes 47 of 50 with ties counted against (a 2010
+durable-goods tie had counted as a win), insure-2 (#90) wider set 15 of 17 becomes 13 of 17. No
+verdict changes; insure-1870-1 is unaffected (its difference is exactly 0). The shared fix and
+the regeneration are in eng-nits-1 (#218).
 
 ## Logged
 
-`tries.md`: 1 `note` row (the before-scoring table) and 17 `insure-check` rows, idea
+`tries.md`: 1 `note` row (the before-scoring table) and 19 `insure-check` rows, idea
 `insure-bonds-1`, variants `tsmom12m@insure-bonds-*`: two card readings, three amendment
-readings and 12 checks. Sharpe = mean / sd of monthly rule returns x sqrt(12), cash at 0. Several
+readings and 14 checks (the two card check 1 rows, `...-cash-discount-rate`, carry the Sharpe
+with cash at the discount rate when out). In the run commit, checks 3, 5, 7 and 8 were run at
+A1/A2's 5% instead of the card's 10% (at 10% they have 0-2 falls); check 2 stays at 10%. Sharpe = mean / sd of monthly rule returns x sqrt(12), cash at 0. Several
 rows share one return series: the threshold only changes the episodes, not the rule, so the
 Sharpe columns repeat. Rotations, null worlds and the fixed control are re-scorings and get no
 rows. No gate id was taken. Download: Norges Bank `shortterm_ir.xlsx` (338 KB, once, robots.txt

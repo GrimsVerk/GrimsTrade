@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.util
 import math
 import sys
+from datetime import date
 from pathlib import Path
 from types import ModuleType
 
@@ -108,3 +109,21 @@ def test_float_noise_in_insurance_is_a_tie(m: ModuleType) -> None:
     ev = m.evaluate("t", [s], 0.05, 0.05)
     assert [e.ins for e in ev.eps] == [0.0]
     assert ev.k == 0
+
+
+def test_noise_in_rebound_and_cash_rate_net_is_zeroed(m: ModuleType) -> None:
+    ep = m.i1.Episode("t", date(1900, 1, 31), date(1900, 2, 28), 0.05, -5.0, -5.0, 1.2e-14,
+                      -2.8e-14, ins_tb=3e-15, net_tb=-1e-14)  # fmt: skip
+
+    class _Ev:
+        eps = [ep]
+
+    orig = m.i17.evaluate
+    try:
+        m.i17.evaluate = lambda *a, **k: _Ev()
+        ev = m.evaluate("t", [], 0.05, 0.05)
+    finally:
+        m.i17.evaluate = orig
+    e = ev.eps[0]
+    assert (e.ins, e.rebound, e.net, e.ins_tb, e.net_tb) == (0.0, 0.0, 0.0, 0.0, 0.0)
+    assert m.i1.sign_test([e.net])[1] == 0  # a tie, dropped by the sign test

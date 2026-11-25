@@ -118,7 +118,7 @@ Unfinished fall at the end (peak): none.
 | Test | Falls with value != 0 (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p |
 |---|---:|---:|---:|---:|---:|
 | I (insurance) | 6 | 4 | 0.344 | +2.0 | 0.014 |
-| N = I + B (net of rebound) | 11 | 2 | 0.994 | -5.1 | 1.000 |
+| N = I + B (net of rebound) | 10 | 1 | 0.999 | -5.1 | 1.000 |
 | I with cash at the discount rate | 6 | 4 | 0.344 | +2.8 | 0.006 |
 
 | | Mean S (share avoided) | Pooled premium P |
@@ -154,14 +154,14 @@ Observed G +0.090; p_AR (larger of AR1 and BB) = 0.659.
 | 7 | 1916-06 | 1917-01 | 7 | 12% | -13 | -0 | +13 | +1.00 | -12 | +1 | C3 Capie-Webber |
 | 8 | 1918-10 | 1919-02 | 4 | 14% | -16 | -15 | +1 | +0.04 | -16 | -16 | C3 Capie-Webber |
 | 9 | 1919-08 | 1920-11 | 15 | 20% | -23 | -15 | +8 | +0.33 | -16 | -9 | C3 Capie-Webber |
-| 10 | 1922-11 | 1922-12 | 1 | 6% | -6 | -6 | +0 | +0.00 | -0 | -0 | C3 Capie-Webber |
+| 10 | 1922-11 | 1922-12 | 1 | 6% | -6 | -6 | +0 | +0.00 | +0 | +0 | C3 Capie-Webber |
 
 Unfinished fall at the end (peak): none.
 
 | Test | Falls with value != 0 (n) | Above 0 (k) | Sign-test p | Mean, log pts | Bootstrap p |
 |---|---:|---:|---:|---:|---:|
 | I (insurance) | 9 | 9 | 0.00195 | +5.2 | 0.000 |
-| N = I + B (net of rebound) | 10 | 3 | 0.945 | -2.7 | 0.927 |
+| N = I + B (net of rebound) | 9 | 3 | 0.91 | -2.7 | 0.927 |
 | I with cash at the discount rate | 9 | 9 | 0.00195 | +8.5 | 0.000 |
 
 | | Mean S (share avoided) | Pooled premium P |
@@ -240,7 +240,7 @@ Observed G +0.087; p_AR (larger of AR1 and BB) = 0.566.
 | 8 | 1916-06 | 1917-01 | consols | +13 | +1.00 | +1 |
 | 9 | 1918-10 | 1919-02 | consols | +1 | +0.04 | -16 |
 | 10 | 1919-08 | 1920-11 | consols, norway | +7 | +0.50 | -5 |
-| 11 | 1922-11 | 1922-12 | consols | +0 | +0.00 | -0 |
+| 11 | 1922-11 | 1922-12 | consols | +0 | +0.00 | +0 |
 | 12 | 1931-08 | 1931-09 | norway | +0 | +0.00 | +0 |
 | 13 | 1939-02 | 1940-02 | norway | +9 | +0.75 | +3 |
 | 14 | 1940-04 | 1940-05 | norway | +7 | +1.00 | -5 |
@@ -259,12 +259,12 @@ Clusters with mean I > 0: 12 of 14 non-zero (sign p 0.00647), bootstrap p 0.000.
 |---|---:|---|---|---|---|---:|---|---:|
 | norway | 2 | 1 of 2 | 0.5 / 0.245 | 0 of 2 | +0.39 / +0.15 / +0.00 (0.188) | +0.252 | 8.03 / 14.24 | -0.42 |
 | consols | 4 | 4 of 4 | 0.0625 / 0.000 | 2 of 4 | +0.45 / +0.24 / +0.19 (0.142) | +0.232 | 2.28 / 2.96 | -0.63 |
-| norway | 11 | 4 of 11 | 0.344 / 0.014 | 2 of 11 | +0.21 / +0.14 / +0.09 (0.164) | +0.090 | 4.32 / 4.78 | -0.13 |
-| consols | 10 | 9 of 10 | 0.00195 / 0.000 | 3 of 10 | +0.42 / +0.24 / +0.20 (0.069) | +0.200 | 1.86 / 2.29 | -0.44 |
+| norway | 11 | 4 of 11 | 0.344 / 0.014 | 1 of 10 | +0.21 / +0.14 / +0.09 (0.164) | +0.090 | 4.32 / 4.78 | -0.13 |
+| consols | 10 | 9 of 10 | 0.00195 / 0.000 | 3 of 9 | +0.42 / +0.24 / +0.20 (0.069) | +0.200 | 1.86 / 2.29 | -0.44 |
 | norway | 9 | 5 of 9 | 0.109 / 0.006 | 3 of 9 | +0.34 / +0.27 / +0.24 (0.217) | +0.087 | 2.22 / 2.99 | -0.89 |
 | norway, cash at the discount rate | 2 | 1 of 2 | 0.5 / 0.245 | 1 of 2 | +0.51 / - / - | - | 2.11 / - | -0.11 |
 | consols, cash at the discount rate | 4 | 4 of 4 | 0.0625 / 0.000 | 2 of 4 | +0.79 / - / - | - | 0.83 / - | -0.16 |
-| norway, cash at the discount rate | 11 | 4 of 11 | 0.344 / 0.006 | 5 of 11 | +0.30 / - / - | - | 1.50 / - | -0.06 |
+| norway, cash at the discount rate | 11 | 4 of 11 | 0.344 / 0.006 | 4 of 11 | +0.30 / - / - | - | 1.50 / - | -0.06 |
 | consols, cash at the discount rate | 10 | 9 of 10 | 0.00195 / 0.000 | 6 of 10 | +0.73 / - / - | - | 0.88 / - | -0.28 |
 | norway, cash at the discount rate | 9 | 6 of 9 | 0.0156 / 0.000 | 5 of 9 | +0.48 / - / - | - | 0.72 / - | -0.08 |
 | Norway, perpetuity total return, 10% | 16 | 10 of 16 | 0.000977 / 0.000 | 5 of 16 | +0.42 / +0.26 / +0.23 (0.051) | +0.174 | 1.83 / 2.47 | -0.82 |
@@ -274,10 +274,10 @@ Clusters with mean I > 0: 12 of 14 non-zero (sign p 0.00647), bootstrap p 0.000.
 | consols, falls of 15.0% | 2 | 2 of 2 | 0.25 / 0.000 | 1 of 2 | +0.52 / +0.25 / +0.13 (0.122) | +0.302 | 2.76 / 4.08 | -0.78 |
 | consols, falls of 7.5% | 5 | 5 of 5 | 0.0312 / 0.000 | 2 of 5 | +0.41 / +0.24 / +0.20 (0.093) | +0.188 | 2.21 / 2.78 | -0.51 |
 | Norway 1822-1914 alone, 5% | 1 | 0 of 1 | 1 / 1.000 | 0 of 1 | -0.36 / +0.03 / +0.00 (1.000) | -0.381 | inf / 27.46 | -0.12 |
-| Norway 1915-1984 alone, 5% | 10 | 4 of 10 | 0.188 / 0.006 | 2 of 10 | +0.27 / +0.15 / +0.10 (0.092) | +0.137 | 3.24 / 4.51 | -0.14 |
+| Norway 1915-1984 alone, 5% | 10 | 4 of 10 | 0.188 / 0.006 | 1 of 9 | +0.27 / +0.15 / +0.10 (0.092) | +0.137 | 3.24 / 4.51 | -0.14 |
 | Norway A1 GOV 1820-1920 (overlapping), 5% | 2 | 1 of 2 | 0.75 / 0.243 | 0 of 2 | +0.15 / +0.08 / +0.00 (0.184) | +0.079 | 7.59 / 6.06 | -0.12 |
 | norway, signal one month older (stale check), 5% | 11 | 5 of 11 | 0.0312 / 0.001 | 0 of 10 | +0.21 / +0.14 / +0.10 (0.187) | +0.081 | 4.51 / 4.78 | -0.08 |
-| consols, signal one month older (stale check), 5% | 10 | 7 of 10 | 0.00781 / 0.000 | 4 of 10 | +0.49 / +0.24 / +0.21 (0.031) | +0.264 | 1.22 / 2.29 | -0.22 |
+| consols, signal one month older (stale check), 5% | 10 | 7 of 10 | 0.00781 / 0.000 | 4 of 9 | +0.49 / +0.24 / +0.21 (0.031) | +0.264 | 1.22 / 2.29 | -0.22 |
 
 p_rot: share of 1,000 rotations with mean S at least the rule's. Fixed exposure: the rule's mean position, no costs. The first rows are the card and amendment readings, then the same with cash at the discount rate (Norges Bank's for Norway, the BoE prime-paper rate for consols), then the checks at the threshold in their label.
 
@@ -367,7 +367,7 @@ Unfinished fall at the end (peak): none.
 | 7 | 1916-06 | 1917-01 | 7 | 12% | -13 | -0 | +13 | +1.00 | -10 | +3 | C3 Capie-Webber |
 | 8 | 1918-10 | 1919-02 | 4 | 14% | -16 | -16 | +0 | +0.00 | -13 | -13 | C3 Capie-Webber |
 | 9 | 1919-08 | 1920-11 | 15 | 20% | -23 | -10 | +13 | +0.56 | -4 | +9 | C3 Capie-Webber |
-| 10 | 1922-11 | 1922-12 | 1 | 6% | -6 | -6 | +0 | +0.00 | -0 | -0 | C3 Capie-Webber |
+| 10 | 1922-11 | 1922-12 | 1 | 6% | -6 | -6 | +0 | +0.00 | +0 | +0 | C3 Capie-Webber |
 
 Unfinished fall at the end (peak): none.
 

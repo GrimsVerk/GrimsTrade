@@ -418,15 +418,15 @@ TIE = 1e-9  # log points; |I| below this is floating-point noise of a cumulative
 
 
 def evaluate(label: str, segs: Sequence[i17.Seg], down: float, up: float) -> i17.Eval:
-    """`insure1709.evaluate`, with I (and I with cash) set to exactly 0 where the rule held
-    throughout the fall: insure1's sum of log differences leaves ~1e-14 there, which its sign
-    test and headline count would otherwise score as a win (or loss) instead of a tie."""
+    """`insure1709.evaluate`, with I, the rebound B and the cash-rate I and N set to exactly 0
+    where they are floating-point noise (the rule held throughout): insure1's sum of log
+    differences leaves ~1e-14 there, which its sign test and headline count would otherwise
+    score as a win (or loss) instead of a tie. N = I + B then inherits exact zeros."""
     ev = i17.evaluate(label, segs, down, up)
     for e in ev.eps:
-        if abs(e.ins) < TIE:
-            e.ins = 0.0
-        if abs(e.ins_tb) < TIE:
-            e.ins_tb = 0.0
+        for f in ("ins", "rebound", "ins_tb", "net_tb"):
+            if abs(getattr(e, f)) < TIE:
+                setattr(e, f, 0.0)
     return ev
 
 
@@ -535,7 +535,20 @@ def null_rows(nl: i17.Nulls, worlds: int) -> list[str]:
 # --- rows and report ---
 
 
-def log_rows(evs: Sequence[tuple[str, i17.Eval]], note: str | None = None) -> int:
+def sharpe_cash(ev: i17.Eval) -> tuple[str, str, float, float, float, float]:
+    """`insure1709.sharpe_row` with cash at the discount rate while out (card check 1)."""
+    rule = np.concatenate([i17.rule_returns(s.pos, s.r, s.cash)[1:] for s in ev.segs])
+    a, b, _, _, _, fl = i17.sharpe_row(ev)
+    sh = float(rule.mean() / rule.std() * math.sqrt(12)) if rule.std() > 0 else 0.0
+    eq = np.cumprod(1 + rule)
+    return a, b, sh, float(eq[-1] - 1), float((1 - eq / np.maximum.accumulate(eq)).max()), fl
+
+
+def log_rows(
+    evs: Sequence[tuple[str, i17.Eval]],
+    note: str | None = None,
+    cash_evs: Sequence[tuple[str, i17.Eval]] = (),
+) -> int:
     text = harness.TRIES.read_text()
     rows = []
     now = f"{datetime.now(UTC):%Y-%m-%d %H:%M}"
@@ -545,6 +558,14 @@ def log_rows(evs: Sequence[tuple[str, i17.Eval]], note: str | None = None) -> in
         if f"| {IDEA} | {v} |" in text:
             continue
         a, b, sh, tot, mdd, fl = i17.sharpe_row(ev)
+        rows.append(
+            f"| {now} | {IDEA} | {v} | insure-check | train | {a} | {b} | {sh:.2f} | "
+            f"{tot:+.1%} | {mdd:.1%} | {fl:.2f} |\n"
+        )
+    for v, ev in cash_evs:
+        if f"| {IDEA} | {v} |" in text:
+            continue
+        a, b, sh, tot, mdd, fl = sharpe_cash(ev)
         rows.append(
             f"| {now} | {IDEA} | {v} | insure-check | train | {a} | {b} | {sh:.2f} | "
             f"{tot:+.1%} | {mdd:.1%} | {fl:.2f} |\n"
@@ -705,6 +726,10 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
         log_rows(
             evs + [(f"tsmom12m@insure-bonds-check-{k.replace(' ', '-')}", ev) for k, ev in checks],
             before_note(nor, con),
+            [
+                (f"tsmom12m@insure-bonds-check-{n}-cash-discount-rate", ev)
+                for n, ev in (("norway", evs[0][1]), ("consols", evs[1][1]))
+            ],  # fmt: skip
         )
         if log
         else 0
