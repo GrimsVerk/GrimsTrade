@@ -336,6 +336,7 @@
 {"excess_kurtosis":3.78,"id":"336cb5d476287b5e-1","idea":"seasonal-20y","kind":"robustness","sharpe_logged":0.8,"sharpe_weekly":0.7782,"skew":-0.2379,"source":"logged","variant":"hold@US-Shops","weeks":4189}
 {"excess_kurtosis":3.8163,"id":"3393c8b34072a84c-1","idea":"trend3","kind":"robustness","sharpe_logged":0.53,"sharpe_weekly":0.5409,"skew":-0.4959,"source":"curve","variant":"trend3-sma200@etf","weeks":1275}
 {"excess_kurtosis":15.1918,"id":"3395e2026447a194-1","idea":"real-rate","kind":"variant","sharpe_logged":0.87,"sharpe_weekly":0.8793,"skew":0.136,"source":"curve","variant":"real-and","weeks":1657}
+{"excess_kurtosis":1.4659,"id":"33a60fc663621718-1","idea":"coin-drift-run","kind":"baseline","sharpe_logged":1.93,"sharpe_weekly":1.8732,"skew":1.0156,"source":"logged","variant":"tsmom12@cd2 (band 0.01; coin-drift-2's six coins to 2019-03)","weeks":217}
 {"excess_kurtosis":10.0238,"id":"340fe67cd9ac1fa0-1","idea":"rl-3-control","kind":"control","sharpe_logged":0.98,"sharpe_weekly":0.9923,"skew":-0.103,"source":"curve","variant":"diag-noes-0.05-s2","weeks":1348}
 {"excess_kurtosis":7.5797,"id":"346aa0751a9eab89-1","idea":"gsy-runup","kind":"baseline","sharpe_logged":0.62,"sharpe_weekly":0.6483,"skew":-0.6714,"source":"curve","variant":"equal-weight@G10-check","weeks":1244}
 {"excess_kurtosis":6.7263,"id":"347adfb52c892980-1","idea":"xs_momentum","kind":"robustness","sharpe_logged":1.29,"sharpe_weekly":1.2628,"skew":0.9833,"source":"logged","variant":"sched-0300@coin","weeks":722}
@@ -1057,6 +1058,7 @@
 {"excess_kurtosis":7.135,"id":"aab7de998e69c28c-1","idea":"sixty_forty","kind":"robustness","sharpe_logged":0.77,"sharpe_weekly":0.8117,"skew":-0.5276,"source":"logged","variant":"lag-e0-c0","weeks":1657}
 {"excess_kurtosis":16.7293,"id":"aaba7e4538a87f78-1","idea":"seasonal-20y","kind":"robustness","sharpe_logged":0.34,"sharpe_weekly":0.3425,"skew":-1.3717,"source":"logged","variant":"seasonal-20y-alone@geo-France","weeks":867}
 {"excess_kurtosis":9.8499,"id":"aafa4325a6c7dd45-1","idea":"rl-4-control","kind":"control","sharpe_logged":0.94,"sharpe_weekly":0.9433,"skew":-0.0151,"source":"curve","variant":"ppo3-warm-0.00-s7","weeks":1348}
+{"excess_kurtosis":1.433,"id":"ab10044596a6b491-1","idea":"coin-drift-run","kind":"robustness","sharpe_logged":1.92,"sharpe_weekly":1.8627,"skew":1.019,"source":"logged","variant":"band05@cd2 (band 0.05 of equity)","weeks":217}
 {"excess_kurtosis":14.7369,"id":"ab3904fceb5b0ed9-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.87,"sharpe_weekly":0.8649,"skew":-0.8517,"source":"curve","variant":"tsmom12-10bps@F-Mkt","weeks":1799}
 {"excess_kurtosis":8.0886,"id":"ab6628e53b22ac11-1","idea":"credit-spread","kind":"robustness","sharpe_logged":0.56,"sharpe_weekly":0.5683,"skew":-0.7,"source":"curve","variant":"spread-and@N225","weeks":3122}
 {"excess_kurtosis":3.229,"id":"ab9482c182c971cc-1","idea":"trend-1926","kind":"robustness","sharpe_logged":0.61,"sharpe_weekly":0.5915,"skew":-0.2257,"source":"curve","variant":"hold-10bps@F62-Durbl","weeks":2086}
