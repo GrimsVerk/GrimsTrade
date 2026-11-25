@@ -24,3 +24,18 @@ long free history; long monthly commodity spot or futures series; free bulk cryp
 order-book archives. For each: URL, licence or terms, frequency, span, number of series,
 whether a polite script fetch works, size. Fetch and cache only the top few that are clearly
 allowed (total < 3 GB), with a loader in `research/lib/` and an offline test on a fixture.
+
+## Probe log (in progress, 2026-11-25 UTC)
+
+- 21:20 AQR "Commodities for the Long Run" (index level, monthly 1877-02 on): 200, keyless xlsx,
+  aggregate portfolios only (equal-weight and long/short), no single commodities.
+- 21:22 NBER Macrohistory chapter pages read (www.nber.org allows it). **data.nber.org's
+  robots.txt is `Disallow: /` for every agent**: no scripted fetch of the .dat files from this
+  lane (manual download only). FRED and ALFRED (which mirror many NBER series) reset the
+  connection from this machine tonight (HTTP/2 reset, then time-outs).
+- 21:25 Yale ICF (som.yale.edu, robots allow `/sites/default/files`, crawl delay 10 s, terms:
+  academic research only, no redistribution, cite): St Petersburg and NYSE monthly indices,
+  NYSE index 1815-1925, London IMM clean file fetched (10 MB zip).
+- 21:28 OECD SDMX API: Cloudflare challenge (403) for a script; DBnomics mirror answers keyless.
+- 21:30 Norges Bank HMS (robots allow, crawl delay 5 s), SNB historical series (allow),
+  Riksbank (robots disallow `*.xls`: the stock and exchange-rate sheets are .xls, manual only).
