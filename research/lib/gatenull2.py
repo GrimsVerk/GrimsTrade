@@ -4,6 +4,9 @@ the network; randomness comes only from the `numpy.random.Generator` passed in."
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
+from typing import Any
+
 import numpy as np
 
 SHIFT_EARLIER: list[int] = list(range(25, 104, 2))  # F1: W33/W34/W36
@@ -147,3 +150,77 @@ def n_eff(x: np.ndarray) -> float:
 def acf1(x: np.ndarray) -> float:
     xc = x - x.mean()
     return float(xc[1:] @ xc[:-1]) / float(xc @ xc)
+
+
+# ---------------------------------------------------------------- Part 3: re-score helpers
+
+SURR_SEED = 2  # card: surrogates built once per family and dose, seed 2
+
+
+def surrogate_doses(
+    dose: Mapping[Any, float], family: str, m: int = 40, seed: int = SURR_SEED
+) -> list[dict[Any, float]]:
+    """m surrogate copies of a dose given as {key: value} (keys in time order when sorted;
+    the sorted values are treated as one evenly spaced series). `family`: "phase" (F2) or
+    "iaaft" (F3). Same keys as the dose; deterministic for a given seed and series."""
+    keys = sorted(dose)
+    x = np.array([dose[k] for k in keys], dtype=float)
+    fam = {"phase": 0, "iaaft": 1}[family]
+    rng = np.random.default_rng([seed, fam])
+    s = phase_surrogates(rng, x, m) if family == "phase" else iaaft_surrogates(rng, x, m)
+    return [dict(zip(keys, s[:, j].tolist(), strict=True)) for j in range(m)]
+
+
+def rescore_record(
+    gate: str,
+    design: str,
+    sign: int,
+    stored_t: float,
+    stored_rank: int,
+    true_t: float,
+    shift_t: Sequence[float],
+    phase_t: Sequence[float],
+    iaaft_t: Sequence[float],
+    dose: Sequence[float],
+    note: str = "",
+) -> dict[str, Any]:
+    """One gate's re-score row (JSON-ready). Ranks count from the predicted side (sign +1:
+    1 = highest t; -1: 1 = lowest). Pass in a family = sign * t >= 2 and rank <= 2 of 41."""
+    x = np.asarray(dose, dtype=float)
+
+    def rk(pl: Sequence[float]) -> int:
+        return int(rank_high(sign * true_t, sign * np.asarray(pl, dtype=float)))
+
+    def spread(pl: Sequence[float]) -> dict[str, float]:
+        a = np.asarray(pl, dtype=float)
+        q = np.quantile(a, [0.05, 0.5, 0.95])
+        return {
+            "sd": float(a.std(ddof=1)),
+            "share2": float(np.mean(np.abs(a) >= 2)),
+            "q05": float(q[0]),
+            "q50": float(q[1]),
+            "q95": float(q[2]),
+            "min": float(a.min()),
+            "max": float(a.max()),
+        }
+
+    tcond = sign * true_t >= 2
+    out: dict[str, Any] = {
+        "gate": gate,
+        "design": design,
+        "sign": sign,
+        "stored_t": stored_t,
+        "stored_rank": stored_rank,
+        "true_t": float(true_t),
+        "dose_n": len(x),
+        "dose_acf1": acf1(x),
+        "dose_neff": n_eff(x),
+        "note": note,
+    }
+    for name, pl in (("shift", shift_t), ("phase", phase_t), ("iaaft", iaaft_t)):
+        if len(pl):
+            out[f"{name}_t"] = [float(v) for v in pl]
+            out[f"{name}_rank"] = rk(pl)
+            out[f"{name}_null"] = spread(pl)
+            out[f"{name}_pass"] = bool(tcond and rk(pl) <= 2)
+    return out
