@@ -178,3 +178,100 @@ one shown cell (added now, before any number, not gating) drops events whose pre
 is a caretaker that started on its own election day. Events after a non-caretaker cabinet that
 started on election day (Britain 1976 and 1990, Norway, Sweden 1986 and 1990) are real
 mid-term changes and stay in.
+
+## What came out (one real run, 2026-11-25 23:05 UTC)
+
+### W41 `cabinet-collapse`: fails (wrong sign; no premium)
+
+**In the six months after a mid-term cabinet start, the country's market did 1.66% worse than
+the other developed markets, not better (DK t -1.74, 9,300 country-months, 171 event months,
+18 countries, 1976-2022), against the predicted positive sign; the true t ranks 41 of 41
+earlier-dose calendars (the lowest). Dead by the gate: no card for a strategy. R41 is not run**
+(the card runs it only after a pass). Held-out year untouched. Table: `results/cabinet-collapse.md`.
+
+| Cell (excess over the other 20 markets, USD, six months from m+1, controls c1 c3 c12, country dummies, unless named) | b, % per event month | t | Rows |
+|---|---:|---:|---:|
+| **Gate** | **-1.663** | **-1.74** | **9,300** |
+| Reaction e(m-1) + e(m), no controls, DK 2 (the channel's first link) | +0.086 | +0.15 | 9,360 |
+| Horizon 3 months, DK 3 | -1.119 | -1.86 | 9,300 |
+| Horizon 12 months, DK 12 | -3.120 | -2.60 | 9,300 |
+| Local-currency returns | -1.197 | -1.44 | 9,300 |
+| Without Italy and Japan | -1.323 | -1.13 | 8,172 |
+| Rows m >= 2001-01 (after Bernhard and Leblang's samples) | -0.888 | -1.08 | 4,752 |
+| Non-caretaker events only | -1.647 | -1.60 | 9,300 |
+| Caretaker events only (17) | -1.726 | -0.85 | 9,300 |
+| Without the 13 post-election formations (added after the card, before any number) | -1.773 | -1.77 | 9,300 |
+| Count dose | -1.663 | -1.74 | 9,300 |
+| No controls | -1.683 | -1.74 | 9,300 |
+
+- **No reaction, no premium.** Over the month before and the month of the new cabinet the
+  country's market moves +0.09% against the others (t +0.15): by the time a new cabinet takes
+  office, a fall at the crisis (if any) is either earlier than the month before or absent at
+  this monthly resolution. Nothing positive follows: every shown cell is negative.
+- **The negative side is noted only, not a lead.** The gate is one-sided (b > 0). The true t
+  is below all 40 placebos and the 12-month cell reaches t -2.60, but the direction was not
+  predicted, the null is wide (SD 1.24, below), a two-sided reading of rank 41 of 41 gives p
+  about 2/41 = 0.05 before counting the 11 shown cells, and the post-2001 half (t -1.08) and the cell
+  without Italy and Japan (t -1.13) are weaker. By gate-null step 6, a shown cell with |t| 2.5
+  in a design with placebo SD 1.2 is "noted only". A card for a negative drift (markets
+  under-react to a weakened government) would have to be written before looking at
+  independent data: R41's annual JST design on 1921-1959, with the sign b < 0, is the obvious
+  candidate (`Next`).
+- **The null is somewhat wide on the upper side** (earlier-dose placebos: SD 1.24, 8% past
+  |t| 2, 5/50/95% -1.26 / +0.14 / +2.26, extremes -1.66 / +3.39). Shifts of 31-53 months lean
+  positive (k 33: +2.84, 41: +2.23, 43: +3.39): a placebo dose 3-4 years before the outcome
+  falls near the next regular election of a parliament, so these shifts may pick up a
+  pre-election pattern (Pantzalis, Stangeland and Turtle, JBF 2000, report positive returns
+  before elections `[memory]`); a guess, not tested. Random-month surrogates (shown) are
+  centred and close to normal: SD 1.10, 5% past |t| 2, 5/50/95% -1.50 / +0.16 / +1.96; true
+  t rank 39 of 41. The two families agree on the verdict.
+- **Power, measured.** SE(b) is about 0.96% (b / t), as the card guessed (1.0%): a pass needed
+  about +2% over six months after a mid-term change. The point estimate is -1.7% with its
+  upper 95% bound near +0.2%: a premium of the size a pass needed is unlikely in these
+  markets and years. A strong kill for the premium form as stated.
+- **Event dates.** ParlGov's start dates are the dates the new cabinets took office (public on
+  the day). Its one known coding quirk for this rule (caretaker cabinets from election day,
+  dry run above) does not move the result (-1.77 without the 13 post-election formations).
+- My guess (b near 0, t between -1.5 and +1.5, a middle rank, placebo SD 0.9-1.3, pass 3%) was
+  wrong on t and rank (t -1.74, the lowest rank), right on the null's width (1.24) and on the
+  verdict.
+
+Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024, above the family bar and
+the register's 9.8e-5). A kill on its own sign (b < 0, every shown cell negative).
+
+## Family count and status
+
+One mechanism added and closed by its gate (W41 `cabinet-collapse`). The thirteen others are
+parked, filtered, dead by class or a duplicate and are **not counted**, as in wide-12 ..
+wide-24; each has a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
+
+**Count (provisional): 109 mechanisms, 29 tested by a strategy, none passed; 37 gates, two
+kill-only passes (W32, W36), each killed by its replication (R32, R36)**: +1 mechanism and +1
+gate over the count after #215 (108 / 29 / 36). Relative to `main` ee7ba63 (107 / 29 / 35,
+without #215) it would be 108 / 29 / 36. Family bar p < 0.10 / 109 = 0.00092. Gate id W41 / R41
+provisional (W40 is #215's). Published effects tested after publication: 1 more (a
+Pastor-Veronesi political-uncertainty premium after mid-term cabinet changes, in the spirit of
+Bernhard and Leblang 2006, 18 developed markets 1976-2022, half after their samples): dead.
+
+Rows logged in `tries.md`: 1 `screen` (`cabinet-collapse`), 11 `robustness` rows (the shown
+cells), 13 `note` rows (one per candidate scored but not gated). Data downloaded: 4.5 MB (ParlGov
+`view_cabinet.csv` 1.8 MB; the CPDS codebook 0.2 MB and xlsx 2.5 MB, not used by the rule);
+the French country returns were already cached (data-long-4).
+
+## Next
+
+1. **The political-uncertainty premium is closed at this horizon in two forms** (W27 roll
+   calls on SPY, W41 cabinet changes on 18 markets). A third try should not reuse the premium
+   story.
+2. **The negative drift after cabinet changes is a post-hoc pattern, not a lead.** If a lane
+   wants it, the honest test is a new card with b < 0 on independent years: R41's design
+   (annual JST, ParlGov events, 1921-1959, 15 countries, 20 earlier-dose calendars), written
+   before any number. Expect low power (about 15 countries x 30 usable years, annual returns).
+3. **P8 `sanctions-designation`** is a data lead for wide-23's C2 `crackdown-shock`: OFAC's
+   SDN list is a complete official list of one kind of action against crypto services, if
+   per-entry designation dates can be had keyless (not checked tonight). The index-level size
+   is likely small (most designated services are small).
+4. **Method**: an event calendar with a known election clock (parliaments of 3-5 years) can
+   make earlier-dose placebos near that clock lean one way (k 31-53 months here); a future
+   political gate should either skip shifts near the term length or report the random-month
+   family next to it, as here.
