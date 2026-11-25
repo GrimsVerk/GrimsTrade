@@ -202,8 +202,10 @@ def mean_parts(ps: Sequence[Parts]) -> Parts:
 
 
 def repair(pos: np.ndarray, hold: np.ndarray, rule0: np.ndarray, cost: float) -> np.ndarray:
-    """`infer_pos` keeps the old position when a flip day has a zero return (both fit); take
-    the position that reproduces the paper series' cost on that day instead."""
+    """`infer_pos` used to keep the old position when a flip day has a zero return (both fit);
+    take the position that reproduces the paper series' cost on that day instead. Since
+    eng-nits-1 `infer_pos` does this itself and this leaves its output as it is (kept so the
+    merged records' code path is unchanged)."""
 
     def fits(i: int, v: float, prev: float) -> bool:
         return abs(v * hold[i] - cost * abs(v - prev) - rule0[i]) < 1e-12

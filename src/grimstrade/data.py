@@ -261,7 +261,10 @@ def log_days(root: Path, symbol: str, source: str, days: Sequence[date], seen: s
 # --- revisions: what the source says now about bars we already hold ---
 
 REVISIONS = Path("data/revisions.jsonl")
-# Look this many days back for changed bars on each run.
+# Look this many days back for changed bars on each run. Expected side effect (#199 review): a
+# finding inside the window is said again on each run until the window has passed it. A day
+# Kraken never lists (stored from Coinbase) is "kraken lists no such day" on about
+# REVISION_DAYS - 1 daily runs, so expect several red runs per Kraken hole, not one.
 REVISION_DAYS = 5
 
 

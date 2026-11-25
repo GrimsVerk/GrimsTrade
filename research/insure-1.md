@@ -17,17 +17,19 @@ crashes.**
   on the US market and 10 industries (French daily, 1927-07 to 2025-10): 270 episodes. They
   cluster, so they were grouped into **50 effective episodes** (each market fall plus the
   industry falls inside it; 37 under a stricter grouping). The market alone has 21.
-- **Insurance (loss avoided from peak to trough).** `tsmom12` lost less than holding in 48 of
-  50 effective episodes (sign test p 1e-12; 36 of 37 under the strict grouping). On average it
-  avoided half of the fall (mean share avoided 0.50). Market alone: 20 of 21.
+- **Insurance (loss avoided from peak to trough).** `tsmom12` lost less than holding in 47 of
+  48 effective episodes that are not ties (was 48 of 50 before #218: 2 are ties, the rule held
+  through the fall; 47 of 50 with ties counted against; sign test p 2e-13, was 1e-12; 35 of 36
+  under the strict grouping, was 36 of 37). On average it
+  avoided half of the fall (mean share avoided 0.50). Market alone: 20 of 20 not tied (one tie: 20 of 21 with it counted against, as before #218).
 - **Is it more than holding less?** A rule that sits in cash 25% of the time at random also
   loses less in a fall. Against exactly that (card 2): the rule's own positions shifted to
   random dates (same exposure, same spells) avoid 0.27 of the fall (90% of shifts 0.21-0.34),
   and a fixed 73% exposure avoids 0.29. The rule's 0.50 beat all 1,000 shifts. The timing is
   real.
 - **What it costs.** The rule buys back late, so the year after the low hands most of it back.
-  Net of that rebound, the effective episodes are a coin flip (16 of 50 positive, mean -0.3 log
-  points; on the market alone 12 of 21, +5.9, p 0.06). Over the whole period, per log point of
+  Net of that rebound, the effective episodes are a coin flip (15 of 48 not tied positive, was 16 of 50
+  before #218; mean -0.3 log points; on the market alone 12 of 20, was 12 of 21, +5.9, p 0.06). Over the whole period, per log point of
   loss avoided in falls the rule gave up **1.07** in rebounds and calm markets (0.97 if cash
   earns T-bills). Holding less is far dearer insurance: **1.63** for a fixed 73% exposure,
   **1.8** for random timing (1.44 to 2.57). So trend is the cheapest of the three ways to lose
@@ -36,7 +38,7 @@ crashes.**
   1962-2001 and **1.34** in 2002-2025 (it cost a third more than it saved).
 - **When it fails.** Fast falls (peak to trough within 3 months, 63 episodes): it still avoids
   about half of the fall on average, but sells near the low and buys back higher: net of the
-  rebound -6.6 log points, positive in only 15 of 63. Market cases: September 1929 (avoided
+  rebound -6.6 log points, positive in only 12 of 63 (was 15 before #218). Market cases: September 1929 (avoided
   31%), spring 1940 (3%), 1987 (26%), March 2020 (44%), 2009's last leg (100% of the fall, then
   -48 in the rebound). Slow falls (over a year, 80 episodes): avoided two thirds, positive in 79
   of 80, still +10.5 net of the rebound (52 of 80). The insurance pays in long bear markets
@@ -60,26 +62,30 @@ crashes.**
   are re-scorings: no rows.
 - Bar. Not a pick, so the bar for a new pick does not apply. For scale: project-wide
   (`register-1`'s `BAR.md`, rows through 2026-11-18 22:34) **2,904 tries, N 1,012 for a new pick,
-  Bonferroni p <= 4.9e-5**. Card 1's insurance sign tests (1.1e-12, 2.8e-10; market alone 1e-5)
+  Bonferroni p <= 4.9e-5**. Card 1's insurance sign tests (1.7e-13, 5.4e-10; market alone 9.5e-7; were 1.1e-12, 2.8e-10 and 1e-5 before #218)
   clear it, but that test is easy by construction (see card 2). Card 2's rotation test (0 of
   1,000) cannot reach 4.9e-5 with 1,000 rotations. The base lane trend-1926 had no family bar.
 
 ## Card 1 result: "insurance real, handed back in the rebound"
 
-| Test (primary set, 25% episodes) | Clusters | Above 0 | Sign-test p | Mean, log pts | Bootstrap p |
+| Test (primary set, 25% episodes) | Clusters not tied | Above 0 | Sign-test p | Mean, log pts | Bootstrap p |
 |---|---:|---:|---:|---:|---:|
-| I (peak -> trough), market-anchored | 50 | 48 | 1.1e-12 | +25.1 | 0.000 |
-| I, linked (strict) | 37 | 36 | 2.8e-10 | +19.8 | 0.000 |
-| N = I + rebound, market-anchored | 50 | 16 | 1 | -0.3 | 0.56 |
-| N, linked | 37 | 9 | 1 | -3.7 | 0.97 |
-| N with cash at T-bills, market-anchored | 50 | 20 | 0.94 | +2.3 | 0.15 |
-| Market alone, I | 21 | 20 | 1e-5 | +32.9 | 0.000 |
-| Market alone, N | 21 | 12 | 0.33 | +5.9 | 0.06 |
+| I (peak -> trough), market-anchored | 48 | 47 | 1.7e-13 | +25.1 | 0.000 |
+| I, linked (strict) | 36 | 35 | 5.4e-10 | +19.8 | 0.000 |
+| N = I + rebound, market-anchored | 48 | 15 | 1 | -0.3 | 0.56 |
+| N, linked | 36 | 8 | 1 | -3.7 | 0.97 |
+| N with cash at T-bills, market-anchored | 48 | 20 | 0.9 | +2.3 | 0.15 |
+| Market alone, I | 20 | 20 | 9.5e-7 | +32.9 | 0.000 |
+| Market alone, N | 20 | 12 | 0.25 | +5.9 | 0.06 |
+
+Before #218 (ties counted as wins or losses at random) the rows read, as clusters / above 0 /
+sign p: 50 / 48 / 1.1e-12; 37 / 36 / 2.8e-10; 50 / 16 / 1; 37 / 9 / 1; 50 / 20 / 0.94;
+21 / 20 / 1e-5; 21 / 12 / 0.33. A tie is a cluster whose mean is below 1e-9 log points.
 
 - Robust to the threshold: 20% falls (70 effective episodes) and 40% falls (23) give the same
-  picture; at 40% the net is positive (+7.7, bootstrap p 0.03, sign test p 0.11): the deeper
+  picture; at 40% the net is positive (+7.7, bootstrap p 0.03, sign test p 0.067, was 0.11 before #218): the deeper
   the fall, the more of the insurance survives the rebound. Premium 1.06 (20%), 1.11 (40%).
-- 30 industries (961 industry episodes, 63 effective): I 58 of 62 positive, N -0.5, premium
+- 30 industries (961 industry episodes, 63 effective): I 58 of 60 not tied positive (was 58 of 62 before #218), N -0.5, premium
   1.06. The same answer.
 - Per series the premium runs from 0.98 (telecoms) to 1.25 (energy); the market is 1.01.
 
@@ -118,3 +124,7 @@ costs much less growth outside the falls.
    episode); a re-entry rule fixed on a card, judged on N across these 50 effective episodes.
 3. The same count on non-US stocks (French international indices, or the Yahoo country indices
    1994-2025), to see whether 50 US episodes generalise.
+
+2026-11-25 (eng-nits-1, #218): a value below 1e-9 log points (a rule in the market through a
+whole fall or rebound) is now a tie, left out of the sign tests, instead of a win or a loss at
+random; the counts above are marked "(was ... before #218)". No verdict changed. Also, `infer_pos` now dates a flip on a day the holding did not move on that day (it was one session late). `results/insure-1.md` was regenerated: card 2's random-timing N band moved from -1.44 to +4.19 to -1.42 to +4.18, and its p from 0.816 to 0.817 (0.82 above still holds). No verdict changed.
