@@ -169,21 +169,22 @@ def make_market(
 A2_ONLY = ["USD", "SEK", "DKK", "CHF", "ITL", "ESP", "FIM", "CAD", "ISK", "PTE", "ATS"]
 
 
-def build_markets(boe: dict[int, float], a1: dict[str, dict[int, float]],
-                  a2: dict[str, dict[int, float]]) -> list[Market]:  # fmt: skip
+def build_markets(
+    boe: dict[int, float], a1: dict[str, dict[int, float]], a2: dict[str, dict[int, float]]
+) -> list[Market]:
     hi1 = JOIN - 1
+
+    def both(c1: str, c2: str) -> list[tuple[dict[int, float], str]]:
+        return [(changes(a1[c1], hi=hi1), "end"), (changes(a2[c2], lo=JOIN), "avg")]
+
     mk = [make_market("GBP in USD", "GBP", "USD", [(changes(boe), "unstated")])]
-    mk.append(make_market("GBP in NOK", "GBP", "NOK",
-                          [(changes(a1["LONDON"], hi=hi1), "end"), (changes(a2["GBP"], lo=JOIN), "avg")]))  # fmt: skip
-    mk.append(make_market("Mark in NOK", "DEM", "NOK", [
-        (changes(a1["HAMBURG"], hi=hi1), "end"), (changes(a1["REICHMARKS"], hi=hi1), "end"),
-        (changes(a2["DEM"], lo=JOIN), "avg")]))  # fmt: skip
+    mk.append(make_market("GBP in NOK", "GBP", "NOK", both("LONDON", "GBP")))
+    hamburg = [(changes(a1["HAMBURG"], hi=hi1), "end")]
+    mk.append(make_market("Mark in NOK", "DEM", "NOK", hamburg + both("REICHMARKS", "DEM")))
     for cur, col in (("FRF", "PARIS"), ("NLG", "AMSTERDAM")):
-        mk.append(make_market(f"{cur} in NOK", cur, "NOK",
-                              [(changes(a1[col], hi=hi1), "end"), (changes(a2[cur], lo=JOIN), "avg")]))  # fmt: skip
-    mk.append(make_market("BEF in NOK", "BEF", "NOK", [
-        (changes(a1["ANTWERP"], hi=hi1), "end"), (changes(a2["BEF_OLD"], lo=JOIN), "avg"),
-        (changes(a2["BEF"], lo=JOIN), "avg")]))  # fmt: skip
+        mk.append(make_market(f"{cur} in NOK", cur, "NOK", both(col, cur)))
+    belga = [(changes(a2["BEF"], lo=JOIN), "avg")]
+    mk.append(make_market("BEF in NOK", "BEF", "NOK", both("ANTWERP", "BEF_OLD") + belga))
     mk.append(make_market("NOK in DKK", "NOK", "DKK", [(changes(a1["SPECIEDALER"]), "end")]))
     for cur in A2_ONLY:
         mk.append(make_market(f"{cur} in NOK", cur, "NOK", [(changes(a2[cur]), "avg")]))
@@ -680,7 +681,11 @@ class JointWorlds:
             if kind == "bb":
                 cur = int(rng.integers(n))
                 for t in range(n):
-                    cur = int(rng.integers(n)) if (t == 0 or rng.random() < 1 / BLOCK) else (cur + 1) % n
+                    cur = (
+                        int(rng.integers(n))
+                        if (t == 0 or rng.random() < 1 / BLOCK)
+                        else (cur + 1) % n
+                    )
                     tau[t] = cur
             else:
                 tau = rng.integers(n, size=n)
@@ -693,7 +698,11 @@ class JointWorlds:
                 own = tau[m0 : m0 + L] - m0  # drawn calendar month as an index into the segment
                 miss = (own < 0) | (own >= L)
                 if kind == "ar1":
-                    phi = float(np.clip(np.corrcoef(dev[:-1], dev[1:])[0, 1], -0.9, 0.9)) if L > 2 else 0.0
+                    phi = (
+                        float(np.clip(np.corrcoef(dev[:-1], dev[1:])[0, 1], -0.9, 0.9))
+                        if L > 2
+                        else 0.0
+                    )
                     e = np.empty(L)
                     e[1:] = dev[1:] - phi * dev[:-1]
                     e[0] = math.nan
@@ -824,7 +833,8 @@ def before_rows(d: Data) -> list[str]:
             out.append(
                 f"| {mk.name} | {t} {ym_str(first)}..{ym_str(last)} | {int(fin.sum())} | "
                 f"{a:+.3f} ({n}) | {1.645 / math.sqrt(max(n, 1)):.3f} | {sh:.2f} | "
-                f"{(ss == FLOAT).mean():.2f} / {(ss == PEG).mean():.2f} / {(ss == UNKNOWN).mean():.2f} | "
+                f"{(ss == FLOAT).mean():.2f} / {(ss == PEG).mean():.2f} / "
+                f"{(ss == UNKNOWN).mean():.2f} | "
                 f"{ag.agree:.2f} ({ag.n}, {ag.kappa:+.2f}) |"
             )
     ag = agreement(allp)
@@ -833,10 +843,14 @@ def before_rows(d: Data) -> list[str]:
         f"All markets: agreement {ag.agree:.3f} on {ag.n} market-months, kappa {ag.kappa:+.3f}; "
         f"filter float / chronology peg {ag.ff_cp}, filter peg / chronology float {ag.fp_cf}, "
         f"both peg {ag.fp_cp}, both float {ag.ff_cf}. Card reading: "
-        + ("the filter matches the chronology." if ag.agree >= 0.85
-           else "filter disagrees with the chronology (caveat on the verdict)."),  # fmt: skip
-        f"Breaks dropped by the ln 10 rule: "
-        + (", ".join(f"{m.name} {m.breaks}" for m in d.markets if m.breaks) or "none") + ".",
+        + (
+            "the filter matches the chronology."
+            if ag.agree >= 0.85
+            else "filter disagrees with the chronology (caveat on the verdict)."
+        ),  # fmt: skip
+        "Breaks dropped by the ln 10 rule: "
+        + (", ".join(f"{m.name} {m.breaks}" for m in d.markets if m.breaks) or "none")
+        + ".",
     ]
     return out
 
@@ -844,7 +858,6 @@ def before_rows(d: Data) -> list[str]:
 def sharpe_row(ev: Eval) -> tuple[str, str, float, float, float, float]:
     with cost_of(ev.spec.cost):
         rule = np.concatenate([i9.rule_returns(s.pos, s.r)[1:] for s in ev.segs])
-    pos = np.concatenate([s.pos[1:] for s in ev.segs])
     sh = float(rule.mean() / rule.std() * math.sqrt(12)) if rule.std() > 0 else 0.0
     eq = np.cumprod(1 + rule)
     mdd = float((1 - eq / np.maximum.accumulate(eq)).max())
@@ -873,7 +886,8 @@ def log_rows(evs: Sequence[tuple[str, Eval]]) -> int:
 
 def summary_line(label: str, ev: Eval) -> str:
     if ev.tim is None:
-        return f"| {label} | {len(ev.segs)} | 0 | - | - | - | - | - | {ev.ls[0] * 1200:+.2f} ({ev.ls[2]:+.2f}) |"
+        ls = f"{ev.ls[0] * 1200:+.2f} ({ev.ls[2]:+.2f})"
+        return f"| {label} | {len(ev.segs)} | 0 | - | - | - | - | - | {ls} |"
     k = sum(1 for v in ev.c_ins if v > 0)
     _, _, ps = i1.sign_test(ev.c_ins)
     _, pb, _, _ = i1.boot(ev.c_ins)
@@ -949,7 +963,8 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
 
     def q(a: np.ndarray) -> str:
         v = a[np.isfinite(a)]
-        return f"median {np.median(v):+.4f}, 5-95% {np.quantile(v, 0.05):+.4f}..{np.quantile(v, 0.95):+.4f}"
+        lo, hi = np.quantile(v, [0.05, 0.95])
+        return f"median {np.median(v):+.4f}, 5-95% {lo:+.4f}..{hi:+.4f}"
 
     lines = [
         "# fx-peg-1 results",
