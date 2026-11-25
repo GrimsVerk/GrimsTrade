@@ -25,17 +25,6 @@ import datawide2 as dw  # noqa: E402
 OUT = dw.ROOT / "research" / "results"
 
 
-def splice(a: dw.Monthly, b: dw.Monthly, name: str) -> dw.Monthly:
-    """a, then b rescaled at a's last month (b must contain that month)."""
-    last = a.months[-1]
-    if last not in b.months:
-        return a
-    k = a.level[-1] / b.level[b.months.index(last)]
-    pts = list(zip(a.months, a.level, strict=True))
-    pts += [(m, v * k) for m, v in zip(b.months, b.level, strict=True) if m > last]
-    return dw.from_points(name, a.asset, a.market, pts, timing=a.timing)
-
-
 def load_all() -> dict[str, list[dw.Monthly]]:
     root = dw.cache_root()
     w2 = root / "data-wide-2"
@@ -114,43 +103,12 @@ def load_all() -> dict[str, list[dw.Monthly]]:
         "SBC equity index 1959-1997", "stock", "CHE", snb("T 8.3 p.m."), timing="month-end"
     )
     src["SNB Swiss equity 1924-1997"] = [
-        splice(eq, eq2, "SNB 1924-1968 + SBC 1968-1997 equity index")
+        dw.splice(eq, eq2, "SNB 1924-1968 + SBC 1968-1997 equity index")
     ]
     src["SNB Swiss bond price index 1943-1981"] = [
         dw.from_points(
             "SNB bond index, price", "bond", "CHE", snb("T 10.2 p.m."), timing="month-end"
         )
-    ]
-
-    # DBnomics mirrors (trimmed to 2025-10 at fetch)
-    d = w2 / "dbnomics" / "2026-11-25"
-    src["OECD MEI share prices (DBnomics)"] = dw.parse_dbnomics(
-        (d / "oecd-finmark-share-m.json").read_text(), "stock"
-    )
-    src["OECD MEI share prices (DBnomics)"] = [
-        s for s in src["OECD MEI share prices (DBnomics)"] if not s.market.startswith("EA")
-    ]
-    src["IMF IFS share prices (DBnomics)"] = dw.parse_dbnomics(
-        (d / "imf-ifs-FPE_IX-m.json").read_text(), "stock", iso2=True
-    )
-    fx = dw.parse_dbnomics(
-        (d / "imf-ifs-ENDA_XDC_USD_RATE-m.json").read_text(), "fx", invert=True, iso2=True
-    )
-    src["IMF IFS exchange rates vs USD (DBnomics)"] = [
-        s
-        for s in fx
-        if s.market.isalpha() and s.market not in ("US", "USA") and s.market[0] not in "1234567"
-    ]
-    by = dw.parse_dbnomics((d / "imf-ifs-FIGB_PA-m.json").read_text(), "bond", iso2=True)
-    src["IMF IFS government bond yields (DBnomics)"] = [
-        dw.from_points(
-            s.name + " (price 1/y)",
-            "bond",
-            s.market,
-            dw.yields_to_price(zip(s.months, s.level, strict=True)),
-            timing="average",
-        )
-        for s in by
     ]
 
     # AQR

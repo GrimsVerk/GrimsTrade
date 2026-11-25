@@ -7,32 +7,28 @@ episode, counted when the trough falls in a new year. Months after 2025-10 are d
 
 | Source | Series | Months | New market-years | of which before 1927 | New calendar years | Falls 25%+ in new years | of which before 1927 | Falls 25%+ all years |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| IMF IFS exchange rates vs USD (DBnomics) | 217 | 150,607 | 12,117 | 0 | 31 | 188 | 0 | 213 |
 | Yale IMM government bonds 1869-1929 | 77 | 32,175 | 2,666 | 2,463 | 2 | 84 | 82 | 88 |
-| Yale IMM common stocks 1869-1929 (file truncated) | 50 | 20,318 | 1,608 | 1,496 | 0 | 97 | 85 | 100 |
+| Yale IMM common stocks 1869-1929 (file truncated) | 50 | 20,318 | 1,382 | 1,289 | 0 | 88 | 78 | 100 |
 | Yale IMM government bonds, 3+ quotes a month | 49 | 15,402 | 1,271 | 1,162 | 2 | 33 | 32 | 34 |
-| OECD MEI share prices (DBnomics) | 47 | 26,411 | 1,061 | 0 | 0 | 114 | 0 | 223 |
-| IMF IFS government bond yields (DBnomics) | 44 | 14,860 | 903 | 0 | 0 | 84 | 0 | 136 |
-| BoE millennium monthly sheet | 4 | 11,526 | 761 | 546 | 262 | 11 | 6 | 18 |
-| Yale IMM common stocks, 3+ quotes a month | 23 | 8,606 | 663 | 618 | 0 | 26 | 23 | 28 |
-| IMF IFS share prices (DBnomics) | 30 | 13,044 | 610 | 0 | 0 | 76 | 0 | 124 |
+| BoE millennium monthly sheet | 4 | 11,526 | 707 | 540 | 262 | 7 | 5 | 18 |
+| Yale IMM common stocks, 3+ quotes a month | 23 | 8,606 | 579 | 540 | 0 | 25 | 22 | 28 |
 | Norges Bank exchange rates 1819- | 2 | 2,232 | 187 | 96 | 140 | 3 | 2 | 3 |
 | Norges Bank government bond yields 1820- | 1 | 1,142 | 96 | 96 | 46 | 2 | 2 | 2 |
-| Norges Bank stocks 1914-2001 | 1 | 1,050 | 61 | 13 | 0 | 2 | 0 | 6 |
 | Yale NYSE 1815-1925 | 1 | 1,331 | 56 | 56 | 52 | 2 | 2 | 6 |
-| SNB Swiss equity 1924-1997 | 1 | 879 | 51 | 3 | 0 | 2 | 0 | 3 |
 | Yale St Petersburg SE 1865-1917 | 1 | 597 | 50 | 50 | 2 | 4 | 4 | 5 |
 | AQR Commodities for the Long Run 1877- | 1 | 1,780 | 36 | 36 | 36 | 2 | 2 | 7 |
 | SNB Swiss bond price index 1943-1981 | 1 | 468 | 12 | 0 | 0 | 0 | 0 | 0 |
+| Norges Bank stocks 1914-2001 | 1 | 1,050 | 0 | 0 | 0 | 0 | 0 | 6 |
+| SNB Swiss equity 1924-1997 | 1 | 879 | 0 | 0 | 0 | 0 | 0 | 3 |
 
 Union across sources (a country-year counted once per asset class; markets by first 3 letters):
 
 | Asset | New market-years | Falls 25%+ in new years |
 |---|---:|---:|
-| bond | 3,846 | 172 |
+| bond | 2,946 | 88 |
 | commodity | 36 | 2 |
-| fx | 12,456 | 193 |
-| stock | 3,350 | 262 |
+| fx | 367 | 5 |
+| stock | 1,620 | 94 |
 
 ## Per series (sources with up to 60 series; the full list is in the .json)
 
@@ -42,7 +38,6 @@ Union across sources (a country-year counted once per asset class; markets by fi
 |---|---|---|---|---:|---:|---:|
 | IMM Common Stock CAN | CAN | 1869-02 | 1929-12 | 646 | 54 | 2 / 2 |
 | IMM Common Stock EGY | EGY | 1869-02 | 1929-12 | 646 | 54 | 1 / 1 |
-| IMM Common Stock AUS | AUS | 1869-02 | 1929-12 | 646 | 54 | 1 / 1 |
 | IMM Common Stock NZL | NZL | 1869-02 | 1929-12 | 646 | 54 | 1 / 1 |
 | IMM Common Stock HKG | HKG | 1869-02 | 1929-12 | 638 | 54 | 5 / 5 |
 | IMM Common Stock ZAF | ZAF | 1869-02 | 1929-12 | 646 | 54 | 1 / 1 |
@@ -53,8 +48,6 @@ Union across sources (a country-year counted once per asset class; markets by fi
 | IMM Common Stock BRA | BRA | 1869-02 | 1929-12 | 646 | 54 | 2 / 2 |
 | IMM Common Stock IRN | IRN | 1869-02 | 1929-12 | 644 | 54 | 3 / 3 |
 | IMM Common Stock MEX | MEX | 1869-02 | 1929-12 | 646 | 54 | 3 / 3 |
-| IMM Common Stock ITA | ITA | 1869-02 | 1929-12 | 638 | 54 | 4 / 4 |
-| IMM Common Stock NLD | NLD | 1869-02 | 1928-02 | 605 | 51 | 3 / 3 |
 | IMM Common Stock ROU | ROU | 1870-09 | 1929-12 | 606 | 50 | 2 / 2 |
 | IMM Common Stock CHL | CHL | 1872-09 | 1929-12 | 589 | 49 | 1 / 1 |
 | IMM Common Stock VEN | VEN | 1874-03 | 1929-12 | 573 | 49 | 2 / 2 |
@@ -63,32 +56,35 @@ Union across sources (a country-year counted once per asset class; markets by fi
 | IMM Common Stock GHA | GHA | 1882-02 | 1929-12 | 488 | 41 | 3 / 3 |
 | IMM Common Stock CRI | CRI | 1886-12 | 1929-12 | 428 | 36 | 3 / 3 |
 | IMM Common Stock MUS | MUS | 1869-02 | 1916-04 | 416 | 35 | 3 / 3 |
-| IMM Common Stock BEL | BEL | 1869-02 | 1929-12 | 390 | 32 | 1 / 1 |
-| IMM Common Stock FRA | FRA | 1869-02 | 1907-12 | 467 | 30 | 0 / 0 |
+| IMM Common Stock NLD | NLD | 1869-02 | 1928-02 | 605 | 32 | 2 / 3 |
 | IMM Common Stock AUT | AUT | 1872-06 | 1924-10 | 361 | 30 | 1 / 1 |
 | IMM Common Stock RUS | RUS | 1869-02 | 1918-03 | 340 | 29 | 1 / 1 |
 | IMM Common Stock CUB | CUB | 1894-11 | 1929-12 | 335 | 28 | 3 / 3 |
-| IMM Common Stock SWE | SWE | 1869-02 | 1897-10 | 319 | 27 | 3 / 4 |
 | IMM Common Stock NGA | NGA | 1897-05 | 1929-12 | 307 | 26 | 1 / 1 |
 | IMM Common Stock LKA | LKA | 1897-05 | 1929-12 | 307 | 26 | 2 / 2 |
 | IMM Common Stock GRC | GRC | 1889-03 | 1929-12 | 251 | 22 | 1 / 1 |
 | IMM Common Stock COL | COL | 1893-08 | 1929-12 | 257 | 22 | 7 / 7 |
 | IMM Common Stock BOL | BOL | 1902-06 | 1929-12 | 244 | 21 | 1 / 1 |
 | IMM Common Stock ZWE | ZWE | 1905-12 | 1929-12 | 204 | 17 | 1 / 1 |
+| IMM Common Stock ITA | ITA | 1869-02 | 1929-12 | 638 | 17 | 3 / 4 |
 | IMM Common Stock MYS | MYS | 1906-04 | 1929-12 | 198 | 17 | 2 / 2 |
 | IMM Common Stock BGD | BGD | 1869-02 | 1884-07 | 186 | 16 | 0 / 0 |
-| IMM Common Stock ESP | ESP | 1907-11 | 1929-12 | 178 | 15 | 1 / 1 |
 | IMM Common Stock IDN | IDN | 1915-02 | 1929-12 | 179 | 15 | 2 / 2 |
 | IMM Common Stock SLV | SLV | 1907-08 | 1929-12 | 176 | 14 | 3 / 3 |
 | IMM Common Stock PER | PER | 1915-08 | 1929-12 | 144 | 12 | 1 / 1 |
-| IMM Common Stock PRT | PRT | 1919-09 | 1929-12 | 124 | 10 | 1 / 1 |
 | IMM Common Stock ECU | ECU | 1920-02 | 1929-12 | 119 | 10 | 3 / 3 |
-| IMM Common Stock GBR | GBR | 1869-02 | 1929-12 | 646 | 9 | 0 / 0 |
 | IMM Common Stock ETH | ETH | 1907-11 | 1924-10 | 84 | 7 | 1 / 2 |
 | IMM Common Stock PRY | PRY | 1890-06 | 1922-09 | 71 | 6 | 1 / 1 |
 | IMM Common Stock LUX | LUX | 1869-02 | 1873-04 | 51 | 4 | 1 / 1 |
 | IMM Common Stock PHL | PHL | 1888-09 | 1892-08 | 48 | 4 | 1 / 1 |
 | IMM Common Stock TTO | TTO | 1926-03 | 1929-12 | 46 | 4 | 1 / 1 |
+| IMM Common Stock AUS | AUS | 1869-02 | 1929-12 | 646 | 2 | 0 / 1 |
+| IMM Common Stock FRA | FRA | 1869-02 | 1907-12 | 467 | 2 | 0 / 0 |
+| IMM Common Stock BEL | BEL | 1869-02 | 1929-12 | 390 | 2 | 0 / 1 |
+| IMM Common Stock SWE | SWE | 1869-02 | 1897-10 | 319 | 1 | 0 / 4 |
+| IMM Common Stock GBR | GBR | 1869-02 | 1929-12 | 646 | 0 | 0 / 0 |
+| IMM Common Stock ESP | ESP | 1907-11 | 1929-12 | 178 | 0 | 0 / 1 |
+| IMM Common Stock PRT | PRT | 1919-09 | 1929-12 | 124 | 0 | 0 / 1 |
 | IMM Common Stock USA | USA | 1879-03 | 1929-12 | 501 | 0 | 0 / 1 |
 
 ### Yale IMM government bonds, 3+ quotes a month
@@ -150,7 +146,6 @@ Union across sources (a country-year counted once per asset class; markets by fi
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
 | IMM Common Stock CAN | CAN | 1869-02 | 1929-12 | 638 | 54 | 2 / 2 |
-| IMM Common Stock AUS | AUS | 1869-02 | 1929-12 | 646 | 54 | 1 / 1 |
 | IMM Common Stock NZL | NZL | 1869-02 | 1929-12 | 643 | 54 | 1 / 1 |
 | IMM Common Stock IRL | IRL | 1869-02 | 1929-12 | 646 | 54 | 1 / 1 |
 | IMM Common Stock ARG | ARG | 1869-09 | 1929-12 | 637 | 53 | 4 / 4 |
@@ -160,17 +155,18 @@ Union across sources (a country-year counted once per asset class; markets by fi
 | IMM Common Stock CHL | CHL | 1878-07 | 1929-12 | 517 | 43 | 1 / 1 |
 | IMM Common Stock EGY | EGY | 1869-02 | 1929-12 | 417 | 36 | 2 / 2 |
 | IMM Common Stock URY | URY | 1888-02 | 1929-12 | 417 | 35 | 1 / 1 |
-| IMM Common Stock FRA | FRA | 1869-02 | 1907-12 | 395 | 25 | 0 / 0 |
 | IMM Common Stock LKA | LKA | 1902-11 | 1929-12 | 236 | 20 | 2 / 2 |
 | IMM Common Stock NLD | NLD | 1873-05 | 1891-02 | 210 | 18 | 1 / 1 |
 | IMM Common Stock MEX | MEX | 1885-12 | 1907-12 | 180 | 16 | 0 / 0 |
 | IMM Common Stock VEN | VEN | 1897-04 | 1924-10 | 190 | 16 | 1 / 1 |
 | IMM Common Stock GHA | GHA | 1901-07 | 1927-04 | 133 | 12 | 0 / 1 |
-| IMM Common Stock GBR | GBR | 1869-02 | 1929-12 | 646 | 9 | 0 / 0 |
 | IMM Common Stock RUS | RUS | 1874-11 | 1882-12 | 98 | 8 | 1 / 1 |
 | IMM Common Stock COL | COL | 1926-03 | 1929-12 | 46 | 4 | 1 / 1 |
 | IMM Common Stock IDN | IDN | 1926-04 | 1929-12 | 45 | 4 | 1 / 1 |
 | IMM Common Stock TUR | TUR | 1873-03 | 1875-12 | 34 | 3 | 1 / 1 |
+| IMM Common Stock AUS | AUS | 1869-02 | 1929-12 | 646 | 2 | 0 / 1 |
+| IMM Common Stock FRA | FRA | 1869-02 | 1907-12 | 395 | 2 | 0 / 0 |
+| IMM Common Stock GBR | GBR | 1869-02 | 1929-12 | 646 | 0 | 0 / 0 |
 | IMM Common Stock USA | USA | 1883-03 | 1899-12 | 104 | 0 | 0 / 1 |
 
 ### Yale St Petersburg SE 1865-1917
@@ -189,7 +185,7 @@ Union across sources (a country-year counted once per asset class; markets by fi
 
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
-| Norges Bank stock index, total | NOR | 1914-01 | 2001-08 | 1050 | 61 | 2 / 6 |
+| Norges Bank stock index, total | NOR | 1914-01 | 2001-08 | 1050 | 0 | 0 / 6 |
 
 ### Norges Bank government bond yields 1820-
 
@@ -208,149 +204,13 @@ Union across sources (a country-year counted once per asset class; markets by fi
 
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
-| SNB 1924-1968 + SBC 1968-1997 equity index | CHE | 1924-01 | 1997-12 | 879 | 51 | 2 / 3 |
+| SNB 1924-1968 + SBC 1968-1997 equity index | CHE | 1924-01 | 1997-12 | 879 | 0 | 0 / 3 |
 
 ### SNB Swiss bond price index 1943-1981
 
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
 | SNB bond index, price | CHE | 1943-01 | 1981-12 | 468 | 12 | 0 / 0 |
-
-### OECD MEI share prices (DBnomics)
-
-| Series | Market | First | Last | Months | New years | Falls new / all |
-|---|---|---|---|---:|---:|---:|
-| OECD/DSD_STES@DF_FINMARK ZAF.M.SHARE.IX._Z._Z._Z._Z.N | ZAF | 1960-01 | 2025-10 | 790 | 66 | 9 / 9 |
-| OECD/DSD_STES@DF_FINMARK GRC.M.SHARE.IX._Z._Z._Z._Z.N | GRC | 1985-01 | 2025-10 | 490 | 41 | 4 / 4 |
-| OECD/DSD_STES@DF_FINMARK IND.M.SHARE.IX._Z._Z._Z._Z.N | IND | 1957-01 | 2025-10 | 826 | 40 | 5 / 9 |
-| OECD/DSD_STES@DF_FINMARK PRT.M.SHARE.IX._Z._Z._Z._Z.N | PRT | 1988-01 | 2025-10 | 454 | 38 | 4 / 4 |
-| OECD/DSD_STES@DF_FINMARK TUR.M.SHARE.IX._Z._Z._Z._Z.N | TUR | 1988-01 | 2025-10 | 454 | 38 | 7 / 7 |
-| OECD/DSD_STES@DF_FINMARK CHL.M.SHARE.IX._Z._Z._Z._Z.N | CHL | 1990-01 | 2025-10 | 430 | 36 | 3 / 3 |
-| OECD/DSD_STES@DF_FINMARK COL.M.SHARE.IX._Z._Z._Z._Z.N | COL | 1991-01 | 2025-10 | 418 | 35 | 4 / 4 |
-| OECD/DSD_STES@DF_FINMARK HUN.M.SHARE.IX._Z._Z._Z._Z.N | HUN | 1991-01 | 2025-10 | 418 | 35 | 7 / 7 |
-| OECD/DSD_STES@DF_FINMARK POL.M.SHARE.IX._Z._Z._Z._Z.N | POL | 1991-05 | 2025-10 | 414 | 35 | 6 / 6 |
-| OECD/DSD_STES@DF_FINMARK ISL.M.SHARE.IX._Z._Z._Z._Z.N | ISL | 1993-01 | 2025-10 | 394 | 33 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK CZE.M.SHARE.IX._Z._Z._Z._Z.N | CZE | 1994-01 | 2025-10 | 382 | 32 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK SVK.M.SHARE.IX._Z._Z._Z._Z.N | SVK | 1993-09 | 2025-10 | 386 | 32 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK SVN.M.SHARE.IX._Z._Z._Z._Z.N | SVN | 1994-06 | 2025-10 | 377 | 32 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK CRI.M.SHARE.IX._Z._Z._Z._Z.N | CRI | 1995-01 | 2025-10 | 370 | 31 | 3 / 3 |
-| OECD/DSD_STES@DF_FINMARK EST.M.SHARE.IX._Z._Z._Z._Z.N | EST | 1996-06 | 2025-10 | 353 | 30 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK HRV.M.SHARE.IX._Z._Z._Z._Z.N | HRV | 1997-01 | 2025-10 | 346 | 29 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK ROU.M.SHARE.IX._Z._Z._Z._Z.N | ROU | 1997-09 | 2025-10 | 338 | 28 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK RUS.M.SHARE.IX._Z._Z._Z._Z.N | RUS | 1997-09 | 2025-10 | 338 | 28 | 5 / 5 |
-| OECD/DSD_STES@DF_FINMARK CHN.M.SHARE.IX._Z._Z._Z._Z.N | CHN | 1999-01 | 2025-10 | 322 | 27 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK LUX.M.SHARE.IX._Z._Z._Z._Z.N | LUX | 1999-01 | 2025-10 | 322 | 27 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK LTU.M.SHARE.IX._Z._Z._Z._Z.N | LTU | 1999-12 | 2025-10 | 311 | 26 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK LVA.M.SHARE.IX._Z._Z._Z._Z.N | LVA | 2000-01 | 2025-10 | 310 | 26 | 3 / 3 |
-| OECD/DSD_STES@DF_FINMARK BGR.M.SHARE.IX._Z._Z._Z._Z.N | BGR | 2000-10 | 2025-10 | 301 | 25 | 2 / 2 |
-| OECD/DSD_STES@DF_FINMARK SWE.M.SHARE.IX._Z._Z._Z._Z.N | SWE | 1950-01 | 2025-10 | 910 | 25 | 2 / 9 |
-| OECD/DSD_STES@DF_FINMARK MEX.M.SHARE.IX._Z._Z._Z._Z.N | MEX | 1970-01 | 2025-10 | 670 | 21 | 3 / 9 |
-| OECD/DSD_STES@DF_FINMARK CHE.M.SHARE.IX._Z._Z._Z._Z.N | CHE | 1955-01 | 2025-10 | 850 | 20 | 3 / 7 |
-| OECD/DSD_STES@DF_FINMARK FRA.M.SHARE.IX._Z._Z._Z._Z.N | FRA | 1955-01 | 2025-10 | 850 | 20 | 2 / 8 |
-| OECD/DSD_STES@DF_FINMARK IRL.M.SHARE.IX._Z._Z._Z._Z.N | IRL | 1955-01 | 2025-10 | 850 | 20 | 1 / 7 |
-| OECD/DSD_STES@DF_FINMARK CAN.M.SHARE.IX._Z._Z._Z._Z.N | CAN | 1956-01 | 2025-10 | 838 | 19 | 3 / 8 |
-| OECD/DSD_STES@DF_FINMARK AUT.M.SHARE.IX._Z._Z._Z._Z.N | AUT | 1957-01 | 2025-10 | 826 | 18 | 1 / 4 |
-| OECD/DSD_STES@DF_FINMARK FIN.M.SHARE.IX._Z._Z._Z._Z.N | FIN | 1957-01 | 2025-10 | 826 | 18 | 2 / 6 |
-| OECD/DSD_STES@DF_FINMARK ITA.M.SHARE.IX._Z._Z._Z._Z.N | ITA | 1957-01 | 2025-10 | 826 | 18 | 0 / 5 |
-| OECD/DSD_STES@DF_FINMARK NLD.M.SHARE.IX._Z._Z._Z._Z.N | NLD | 1957-01 | 2025-10 | 826 | 18 | 4 / 7 |
-| OECD/DSD_STES@DF_FINMARK AUS.M.SHARE.IX._Z._Z._Z._Z.N | AUS | 1958-01 | 2025-10 | 814 | 17 | 1 / 4 |
-| OECD/DSD_STES@DF_FINMARK GBR.M.SHARE.IX._Z._Z._Z._Z.N | GBR | 1957-12 | 2025-10 | 815 | 17 | 2 / 5 |
-| OECD/DSD_STES@DF_FINMARK DEU.M.SHARE.IX._Z._Z._Z._Z.N | DEU | 1960-01 | 2025-10 | 790 | 15 | 1 / 7 |
-| OECD/DSD_STES@DF_FINMARK KOR.M.SHARE.IX._Z._Z._Z._Z.N | KOR | 1981-01 | 2025-10 | 538 | 15 | 2 / 6 |
-| OECD/DSD_STES@DF_FINMARK ISR.M.SHARE.IX._Z._Z._Z._Z.N | ISR | 1980-01 | 2025-10 | 550 | 12 | 1 / 6 |
-| OECD/DSD_STES@DF_FINMARK NZL.M.SHARE.IX._Z._Z._Z._Z.N | NZL | 1967-01 | 2025-10 | 706 | 8 | 1 / 2 |
-| OECD/DSD_STES@DF_FINMARK JPN.M.SHARE.IX._Z._Z._Z._Z.N | JPN | 1959-01 | 2025-10 | 802 | 6 | 0 / 3 |
-| OECD/DSD_STES@DF_FINMARK BRA.M.SHARE.IX._Z._Z._Z._Z.N | BRA | 1988-10 | 2025-10 | 445 | 4 | 3 / 8 |
-| OECD/DSD_STES@DF_FINMARK BEL.M.SHARE.IX._Z._Z._Z._Z.N | BEL | 1985-04 | 2025-10 | 487 | 0 | 0 / 4 |
-| OECD/DSD_STES@DF_FINMARK DNK.M.SHARE.IX._Z._Z._Z._Z.N | DNK | 1983-01 | 2025-10 | 514 | 0 | 0 / 4 |
-| OECD/DSD_STES@DF_FINMARK ESP.M.SHARE.IX._Z._Z._Z._Z.N | ESP | 1985-01 | 2025-10 | 490 | 0 | 0 / 4 |
-| OECD/DSD_STES@DF_FINMARK IDN.M.SHARE.IX._Z._Z._Z._Z.N | IDN | 1997-07 | 2025-10 | 340 | 0 | 0 / 3 |
-| OECD/DSD_STES@DF_FINMARK NOR.M.SHARE.IX._Z._Z._Z._Z.N | NOR | 1986-01 | 2025-10 | 478 | 0 | 0 / 6 |
-| OECD/DSD_STES@DF_FINMARK USA.M.SHARE.IX._Z._Z._Z._Z.N | USA | 1957-01 | 2025-10 | 826 | 0 | 0 / 5 |
-
-### IMF IFS share prices (DBnomics)
-
-| Series | Market | First | Last | Months | New years | Falls new / all |
-|---|---|---|---|---:|---:|---:|
-| IMF/IFS M.PH.FPE_IX | PHL | 1957-01 | 2025-07 | 823 | 69 | 9 / 9 |
-| IMF/IFS M.ZA.FPE_IX | ZAF | 1960-01 | 2025-03 | 783 | 65 | 7 / 7 |
-| IMF/IFS M.IN.FPE_IX | IND | 1960-01 | 2017-04 | 688 | 37 | 5 / 8 |
-| IMF/IFS M.MU.FPE_IX | MUS | 1989-07 | 2025-02 | 428 | 36 | 4 / 4 |
-| IMF/IFS M.CL.FPE_IX | CHL | 1990-01 | 2025-05 | 425 | 35 | 4 / 4 |
-| IMF/IFS M.PL.FPE_IX | POL | 1993-01 | 2025-06 | 390 | 33 | 5 / 5 |
-| IMF/IFS M.TR.FPE_IX | TUR | 1986-01 | 2017-04 | 376 | 31 | 7 / 7 |
-| IMF/IFS M.TH.FPE_IX | THA | 1997-01 | 2025-07 | 343 | 29 | 3 / 3 |
-| IMF/IFS M.CN.FPE_IX | CHN | 1990-12 | 2017-04 | 317 | 26 | 5 / 5 |
-| IMF/IFS M.FJ.FPE_IX | FJ | 2000-01 | 2025-06 | 306 | 26 | 2 / 2 |
-| IMF/IFS M.IR.FPE_IX | IRN | 1991-04 | 2017-02 | 311 | 26 | 3 / 3 |
-| IMF/IFS M.IT.FPE_IX | ITA | 1950-01 | 2025-06 | 906 | 25 | 0 / 5 |
-| IMF/IFS M.IS.FPE_IX | IS | 2002-04 | 2025-07 | 280 | 24 | 1 / 1 |
-| IMF/IFS M.MV.FPE_IX | MV | 2002-05 | 2025-06 | 278 | 24 | 3 / 3 |
-| IMF/IFS M.MN.FPE_IX | MN | 2000-01 | 2022-09 | 273 | 23 | 4 / 4 |
-| IMF/IFS M.PG.FPE_IX | PG | 2001-01 | 2020-11 | 235 | 20 | 1 / 1 |
-| IMF/IFS M.RU.FPE_IX | RUS | 1997-09 | 2017-04 | 236 | 19 | 4 / 4 |
-| IMF/IFS M.KR.FPE_IX | KOR | 1978-01 | 2025-05 | 569 | 18 | 2 / 6 |
-| IMF/IFS M.AR.FPE_IX | ARG | 2010-01 | 2025-06 | 186 | 16 | 2 / 2 |
-| IMF/IFS M.GB.FPE_IX | GBR | 1963-01 | 2016-08 | 644 | 12 | 2 / 5 |
-| IMF/IFS M.JP.FPE_IX | JPN | 1957-01 | 2017-04 | 724 | 8 | 1 / 3 |
-| IMF/IFS M.UZ.FPE_IX | UZ | 2016-08 | 2024-12 | 101 | 8 | 2 / 2 |
-| IMF/IFS M.BR.FPE_IX | BRA | 1993-11 | 2017-04 | 282 | 0 | 0 / 4 |
-| IMF/IFS M.CA.FPE_IX | CAN | 1984-01 | 2017-04 | 400 | 0 | 0 / 4 |
-| IMF/IFS M.HK.FPE_IX | HKG | 1996-01 | 2025-07 | 355 | 0 | 0 / 4 |
-| IMF/IFS M.MX.FPE_IX | MEX | 1998-01 | 2017-04 | 232 | 0 | 0 / 3 |
-| IMF/IFS M.MY.FPE_IX | MYS | 1980-01 | 2025-05 | 545 | 0 | 0 / 4 |
-| IMF/IFS M.NZ.FPE_IX | NZL | 1986-06 | 2025-07 | 469 | 0 | 0 / 4 |
-| IMF/IFS M.SG.FPE_IX | SGP | 1989-09 | 2017-04 | 331 | 0 | 0 / 3 |
-| IMF/IFS M.US.FPE_IX | USA | 1950-01 | 2017-04 | 808 | 0 | 0 / 5 |
-
-### IMF IFS government bond yields (DBnomics)
-
-| Series | Market | First | Last | Months | New years | Falls new / all |
-|---|---|---|---|---:|---:|---:|
-| IMF/IFS M.ZA.FIGB_PA (price 1/y) | ZAF | 1957-01 | 2025-03 | 819 | 68 | 1 / 1 |
-| IMF/IFS M.KR.FIGB_PA (price 1/y) | KOR | 1973-05 | 2025-05 | 625 | 52 | 8 / 8 |
-| IMF/IFS M.IT.FIGB_PA (price 1/y) | ITA | 1980-01 | 2025-06 | 546 | 46 | 9 / 9 |
-| IMF/IFS M.NP.FIGB_PA (price 1/y) | NP | 1981-06 | 2025-06 | 521 | 45 | 1 / 1 |
-| IMF/IFS M.SB.FIGB_PA (price 1/y) | SB | 1981-01 | 2021-09 | 471 | 40 | 1 / 1 |
-| IMF/IFS M.IN.FIGB_PA (price 1/y) | IND | 1960-01 | 2017-05 | 461 | 38 | 1 / 1 |
-| IMF/IFS M.VU.FIGB_PA (price 1/y) | VU | 1989-01 | 2025-01 | 433 | 36 | 0 / 0 |
-| IMF/IFS M.IS.FIGB_PA (price 1/y) | IS | 1992-01 | 2025-06 | 392 | 34 | 8 / 8 |
-| IMF/IFS M.MY.FIGB_PA (price 1/y) | MYS | 1992-02 | 2025-05 | 400 | 33 | 4 / 4 |
-| IMF/IFS M.SC.FIGB_PA (price 1/y) | SC | 1989-10 | 2025-05 | 406 | 33 | 2 / 2 |
-| IMF/IFS M.AN.FIGB_PA (price 1/y) | AN | 1982-01 | 2010-09 | 335 | 29 | 1 / 1 |
-| IMF/IFS M.AM.FIGB_PA (price 1/y) | AM | 1994-12 | 2025-06 | 245 | 26 | 3 / 3 |
-| IMF/IFS M.TH.FIGB_PA (price 1/y) | THA | 1999-09 | 2025-07 | 311 | 26 | 4 / 4 |
-| IMF/IFS M.PL.FIGB_PA (price 1/y) | POL | 2001-01 | 2025-06 | 294 | 25 | 5 / 5 |
-| IMF/IFS M.SG.FIGB_PA (price 1/y) | SGP | 1998-06 | 2021-07 | 277 | 24 | 4 / 4 |
-| IMF/IFS M.MX.FIGB_PA (price 1/y) | MEX | 2001-10 | 2025-06 | 224 | 23 | 1 / 1 |
-| IMF/IFS M.NO.FIGB_PA (price 1/y) | NOR | 1961-09 | 2025-05 | 763 | 23 | 0 / 8 |
-| IMF/IFS M.PK.FIGB_PA (price 1/y) | PK | 1991-04 | 2021-12 | 273 | 23 | 1 / 1 |
-| IMF/IFS M.BW.FIGB_PA (price 1/y) | BW | 2003-06 | 2025-04 | 263 | 22 | 1 / 1 |
-| IMF/IFS M.MA.FIGB_PA (price 1/y) | MA | 1997-12 | 2025-06 | 231 | 22 | 2 / 2 |
-| IMF/IFS M.RO.FIGB_PA (price 1/y) | RO | 2005-04 | 2025-05 | 219 | 20 | 3 / 3 |
-| IMF/IFS M.BD.FIGB_PA (price 1/y) | BD | 2006-08 | 2025-06 | 208 | 19 | 3 / 3 |
-| IMF/IFS M.GH.FIGB_PA (price 1/y) | GH | 2004-09 | 2024-11 | 234 | 19 | 1 / 1 |
-| IMF/IFS M.MD.FIGB_PA (price 1/y) | MD | 1997-12 | 2025-04 | 232 | 18 | 2 / 3 |
-| IMF/IFS M.ET.FIGB_PA (price 1/y) | ET | 1985-12 | 2008-12 | 206 | 17 | 1 / 2 |
-| IMF/IFS M.MU.FIGB_PA (price 1/y) | MUS | 2002-09 | 2024-11 | 138 | 16 | 2 / 2 |
-| IMF/IFS M.VE.FIGB_PA (price 1/y) | VE | 1999-01 | 2018-09 | 182 | 16 | 3 / 3 |
-| IMF/IFS M.FJ.FIGB_PA (price 1/y) | FJ | 2001-12 | 2024-01 | 152 | 15 | 2 / 2 |
-| IMF/IFS M.KG.FIGB_PA (price 1/y) | KG | 2009-10 | 2025-02 | 177 | 15 | 2 / 2 |
-| IMF/IFS M.RU.FIGB_PA (price 1/y) | RUS | 2005-04 | 2024-06 | 157 | 14 | 2 / 2 |
-| IMF/IFS M.PG.FIGB_PA (price 1/y) | PG | 2005-02 | 2018-07 | 147 | 13 | 2 / 2 |
-| IMF/IFS M.MM.FIGB_PA (price 1/y) | MM | 2010-01 | 2021-05 | 137 | 11 | 0 / 0 |
-| IMF/IFS M.MV.FIGB_PA (price 1/y) | MV | 2014-12 | 2025-06 | 127 | 11 | 0 / 0 |
-| IMF/IFS M.PH.FIGB_PA (price 1/y) | PHL | 1994-10 | 2014-04 | 99 | 9 | 2 / 3 |
-| IMF/IFS M.AO.FIGB_PA (price 1/y) | AO | 2013-10 | 2025-07 | 66 | 5 | 0 / 1 |
-| IMF/IFS M.CA.FIGB_PA (price 1/y) | CAN | 1950-01 | 2017-04 | 808 | 5 | 0 / 3 |
-| IMF/IFS M.MN.FIGB_PA (price 1/y) | MN | 2013-01 | 2017-10 | 51 | 5 | 1 / 1 |
-| IMF/IFS M.LK.FIGB_PA (price 1/y) | LK | 2009-07 | 2020-04 | 55 | 4 | 1 / 2 |
-| IMF/IFS M.GB.FIGB_PA (price 1/y) | GBR | 1957-01 | 2025-06 | 822 | 3 | 0 / 7 |
-| IMF/IFS M.AU.FIGB_PA (price 1/y) | AUS | 1969-07 | 2019-11 | 605 | 0 | 0 / 6 |
-| IMF/IFS M.CH.FIGB_PA (price 1/y) | CHE | 1998-01 | 2024-12 | 252 | 0 | 0 / 5 |
-| IMF/IFS M.JP.FIGB_PA (price 1/y) | JPN | 1999-01 | 2017-05 | 212 | 0 | 0 / 5 |
-| IMF/IFS M.NZ.FIGB_PA (price 1/y) | NZL | 1987-01 | 2025-07 | 463 | 0 | 0 / 9 |
-| IMF/IFS M.US.FIGB_PA (price 1/y) | USA | 1953-04 | 2021-08 | 821 | 0 | 0 / 4 |
 
 ### AQR Commodities for the Long Run 1877-
 
@@ -362,8 +222,8 @@ Union across sources (a country-year counted once per asset class; markets by fi
 
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
-| BoE Spliced monthly share price index weighted by market capitalisation | GBR | 1709-04 | 2017-02 | 3695 | 212 | 6 / 10 |
 | BoE Long-term consols yield 1753-2015, corrected for Goschen's conversion issues | GBR | 1753-08 | 2017-01 | 3162 | 206 | 1 / 3 |
 | BoE $/£ exchange rate | GBR | 1791-01 | 2017-01 | 2713 | 180 | 2 / 3 |
 | BoE Monthly corporate bond yields 1854-2015 | GBR-corp | 1854-01 | 2016-12 | 1956 | 163 | 2 / 2 |
+| BoE Spliced monthly share price index weighted by market capitalisation | GBR | 1709-04 | 2017-02 | 3695 | 158 | 2 / 10 |
 

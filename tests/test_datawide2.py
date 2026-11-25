@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import importlib
-import json
 import math
 import sys
 import zipfile
@@ -61,26 +60,46 @@ def test_falls_counts_one_episode_per_peak_and_open_falls() -> None:
     assert dw.falls([0, 1, 2], [100, 80, 100]) == []  # 20% is below the threshold
 
 
-def test_dbnomics_parser_inverts_and_maps_codes() -> None:
+BOE = """period,year,month,variable_id,variable,section,unit,value
+1720-06,1720,6,spliced-monthly-share-price-index-weighted-by-market,Spliced monthly share price index,Financial markets,index,100
+1720-09,1720,9,spliced-monthly-share-price-index-weighted-by-market,Spliced monthly share price index,Financial markets,index,60
+1753-08,1753,8,long-term-consols-yield-1753-2015-corrected-for-goschen-s,Consols yield,Financial markets,% pa,4
+1753-09,1753,9,long-term-consols-yield-1753-2015-corrected-for-goschen-s,Consols yield,Financial markets,% pa,
+"""
+
+
+def test_boe_long_csv_picks_one_variable_and_prices_yields() -> None:
     dw = _dw()
-    text = json.dumps(
-        {
-            "series": [
-                {
-                    "series_code": "M.IN.ENDA_XDC_USD_RATE",
-                    "provider": "IMF",
-                    "dataset": "IFS",
-                    "period": ["1966-05", "1966-06", "2025-11"],
-                    "value": [4.76, 7.5, "NA"],
-                }
-            ]
-        }
-    )
-    (s,) = dw.parse_dbnomics(text, "fx", invert=True, iso2=True)
-    assert s.market == "IND" and s.months == [dw.ym(1966, 5), dw.ym(1966, 6)]
-    assert math.isclose(s.level[1], 1 / 7.5)
-    # the 1966 rupee devaluation is a fall of 36.5% for a holder in USD
-    assert len(dw.falls(s.months, s.level)) == 1
+    sh = dw.parse_boe_long_csv(BOE, "spliced-monthly-share-price-index", "stock")
+    assert sh.market == "GBR" and sh.months == [dw.ym(1720, 6), dw.ym(1720, 9)]
+    assert sh.level == [100.0, 60.0]  # the South Sea crash in the sample: one fall of 40%
+    assert len(dw.falls(sh.months, sh.level)) == 1
+    co = dw.parse_boe_long_csv(BOE, "long-term-consols-yield", "bond", yield_=True)
+    assert co.months == [dw.ym(1753, 8)] and co.level == [25.0]  # blank value dropped
+
+
+def test_aqr_comlr_chains_returns_from_text_and_serial_dates() -> None:
+    dw = _dw()
+    rows = [
+        ["AQR Capital Management, LLC"],
+        [None, "Excess return of equal-weight commodities portfolio"],
+        ["1877-02-28", -0.1, -0.09],
+        ["1899-12-29", 0.5],
+        [31.0, 0.1],  # Excel serial 31 = 1900-01-31
+        [None, None],
+    ]
+    s = dw.parse_aqr_comlr(rows)
+    assert s.months == [dw.ym(1877, 2), dw.ym(1899, 12), dw.ym(1900, 1)]
+    assert [round(x, 6) for x in s.level] == [90.0, 135.0, 148.5]
+
+
+def test_splice_rescales_the_later_series_at_the_join() -> None:
+    dw = _dw()
+    a = dw.Monthly("a", "stock", "CHE", [1, 2, 3], [10.0, 11.0, 12.0])
+    b = dw.Monthly("b", "stock", "CHE", [3, 4], [100.0, 50.0])
+    s = dw.splice(a, b, "a+b")
+    assert s.months == [1, 2, 3, 4] and s.level == [10.0, 11.0, 12.0, 6.0]
+    assert dw.splice(a, dw.Monthly("c", "stock", "CHE", [5], [1.0]), "x") is a  # no overlap
 
 
 def test_labelled_columns_yields_and_the_cut() -> None:
@@ -150,3 +169,5 @@ def test_new_years_respect_the_scored_coverage() -> None:
     # 1867 is scored (NBER GB shares); 1865-66 are new and no scored stock series covers them
     assert (c.new_years, c.new_calendar_years, c.falls_new, c.falls_all) == (2, 2, 1, 1)
     assert dw.seen("fx", "JPN", 1971) and not dw.seen("fx", "IND", 1990)
+    # JST annual equity scored by insure-1870-1 counts as seen (Norway from 1882)
+    assert dw.seen("stock", "NOR", 1930) and not dw.seen("stock", "NOR", 1880)

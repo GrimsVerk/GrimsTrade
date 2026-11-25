@@ -6,9 +6,8 @@ and falls of 25% or more they add to what the project has already scored. This m
 - parses each cached source into monthly level series (`Monthly`): Yale ICF London IMM
   (security-level monthly prices 1869-1929, built into per-country indices by a chained median
   of month-to-month log changes), Yale St Petersburg / NYSE indices, Norges Bank HMS (stocks,
-  bond yields, exchange rates), SNB historical capital-market tables, DBnomics mirrors of OECD
-  and IMF IFS monthly series, AQR "Commodities for the Long Run", and the Bank of England
-  "millennium" monthly sheet in its long CSV form;
+  bond yields, exchange rates), SNB historical capital-market tables, AQR "Commodities for the
+  Long Run", and the Bank of England "millennium" monthly sheet in its long CSV form;
 - counts market-years and falls (`falls`, `count_new`) against the coverage already scored
   (`SEEN`, written from the research records before any count was run).
 
@@ -284,34 +283,7 @@ def yields_to_price(pts: Iterable[tuple[int, float]]) -> list[tuple[int, float]]
     return [(m, 100.0 / y) for m, y in pts if y > 0]
 
 
-# ---------------------------------------------------------------- DBnomics, AQR, BoE
-
-
-def parse_dbnomics(
-    text: str, asset: str, *, invert: bool = False, iso2: bool = False
-) -> list[Monthly]:
-    """The trimmed DBnomics JSON written by the fetch (`series` with `period` 'YYYY-MM' and
-    `value`). Market = the series code's country part. `invert` turns local-per-USD into
-    USD-per-local."""
-    d = json.loads(text)
-    out = []
-    for s in d["series"]:
-        code = s["series_code"]
-        parts = code.split(".")
-        mkt = parts[1] if iso2 else parts[0]
-        mkt = ISO2_TO_3.get(mkt, mkt) if iso2 else mkt
-        pts = []
-        for p, v in zip(s["period"], s["value"], strict=True):
-            x = _num(v)
-            if x is None or x <= 0:
-                continue
-            pts.append((ym(int(p[:4]), int(p[5:7])), 1.0 / x if invert else x))
-        out.append(
-            from_points(
-                f"{s.get('provider')}/{s.get('dataset')} {code}", asset, mkt, pts, timing="average"
-            )
-        )
-    return out
+# ---------------------------------------------------------------- AQR, BoE
 
 
 def parse_aqr_comlr(rows: Sequence[Sequence[object]], col: int = 1) -> Monthly:
@@ -353,6 +325,17 @@ def parse_boe_long_csv(
     if yield_:
         pts = yields_to_price(pts)
     return from_points(f"BoE {name}", asset, market, pts)
+
+
+def splice(a: Monthly, b: Monthly, name: str) -> Monthly:
+    """a, then b rescaled to a's level at a's last month (b must hold that month, else a)."""
+    last = a.months[-1]
+    if last not in b.months:
+        return a
+    k = a.level[-1] / b.level[b.months.index(last)]
+    pts = list(zip(a.months, a.level, strict=True))
+    pts += [(m, v * k) for m, v in zip(b.months, b.level, strict=True) if m > last]
+    return from_points(name, a.asset, a.market, pts, timing=a.timing)
 
 
 # ---------------------------------------------------------------- counting
@@ -408,6 +391,14 @@ for _c in _FRENCH21.split():
     SEEN[("stock", _c)].append((1975, 2025))
 for _c, _y in _YAHOO.items():
     SEEN[("stock", _c)].append((_y, 2025))
+# JST R6 annual equity, scored by insure-1870-1 (per-country start, and a full-span run to 2020)
+_JST = {
+    "AUS": 1871, "BEL": 1871, "CHE": 1901, "DEU": 1871, "DNK": 1876, "ESP": 1901, "FIN": 1897,
+    "FRA": 1871, "GBR": 1872, "ITA": 1886, "JPN": 1887, "NLD": 1901, "NOR": 1882, "PRT": 1881,
+    "SWE": 1872, "USA": 1873,
+}  # fmt: skip
+for _c, _y in _JST.items():
+    SEEN[("stock", _c)].append((_y, 2020))
 SEEN[("bond", "USA")] = [(1871, 2025)]
 for _c, _y in {"AUS": 1969, "CAN": 1955, "CHE": 1955, "DEU": 1956, "GBR": 1960, "JPN": 1989,
                "NOR": 1985, "NZL": 1970, "SWE": 1986}.items():  # fmt: skip
@@ -454,13 +445,3 @@ def count_new(s: Monthly, threshold: float = 0.25) -> Count:
         len(s.months), len(new), len(cal), len(fl_new), len(fl),
         sum(1 for y in new if y < 1927), sum(1 for f in fl_new if f[1] // 12 < 1927),
     )  # fmt: skip
-
-
-ISO2_TO_3 = {
-    "US": "USA", "GB": "GBR", "JP": "JPN", "DE": "DEU", "FR": "FRA", "IT": "ITA", "CA": "CAN",
-    "CH": "CHE", "AU": "AUS", "NZ": "NZL", "SE": "SWE", "NO": "NOR", "DK": "DNK", "FI": "FIN",
-    "NL": "NLD", "BE": "BEL", "AT": "AUT", "ES": "ESP", "PT": "PRT", "IE": "IRL", "GR": "GRC",
-    "IN": "IND", "ZA": "ZAF", "PH": "PHL", "KR": "KOR", "MY": "MYS", "SG": "SGP", "HK": "HKG",
-    "TR": "TUR", "MX": "MEX", "BR": "BRA", "CL": "CHL", "CN": "CHN", "RU": "RUS", "PL": "POL",
-    "TH": "THA", "ID": "IDN", "IL": "ISR", "AR": "ARG", "U2": "EMU", "IR": "IRN", "MU": "MUS",
-}  # fmt: skip
