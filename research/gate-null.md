@@ -46,6 +46,8 @@ shows how wide the real null is:
 | Shiller S&P 500 next month (monthly averages) on trailing 12-month mean sunspot number, Newey-West 12 lags, 1,831 months 1871-2023 (wide-21, W35) | 40 calendars moved k = 19-95 months, both ways | 1.16 | 25% | **off-centre** (median +1.25, 95% +2.83, max +3.11): a cyclic dose shifted 4-8 years becomes its own anti-phase, so the family repeats one weak pattern with the opposite sign; about 14 cycles |
 | French Mkt-RF of month m+3 on year-on-year growth of EIA industrial electricity sales, Newey-West 3 lags, 619 months 1974-2025 (wide-22, W36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.91 | 2% | persistent macro dose, centred (median -0.44, 5/95% -1.38/+1.40); 40 phase-randomised surrogates (shown) are wider: SD 1.10, 10%, smallest -2.62, and rank the true t 3, not 1 |
 | Same on yoy growth of NBER utility electricity production (spliced), 357 months 1926-1955 (wide-22, R36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.55 | 0% | narrower than N(0, 1) (5/95% -1.36/+0.60, extremes -1.78/+0.66); phase surrogates SD 1.10 |
+| JST next-year log equity return over bills on the Hamilton consumption cycle, country dummies and three controls, Driscoll-Kraay 2 lags, 355 country-years 1904-1947, 14 countries (jst-gates-1, W38) | 20 earlier-dose calendars, k = 4-23 years | 1.06 | 5% | centred (median -0.10, 5/95% -2.00/+1.39, extremes -2.29/+1.82); the returns-side AR bootstrap (SD 1.32, median +0.34) and phase surrogates with shared phases (SD 1.49) are wider |
+| Same design on JST `lev` minus its trailing 10-year mean, plus a crisis control, 1,285 country-years 1925-2020, 16 countries (jst-gates-1, W39) | 40 earlier-dose calendars, k = 5-44 years | 1.09 | 12% | **off-centre** (median +0.23, 95% +2.16, max +2.37: k = 20-29 sit near +2, as W33); bootstrap SD 1.09 and phase SD 0.89 are centred |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -198,6 +200,8 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W35 `solar-max-recession` (wide-21) | k = +-19..95 months (step 4), both ways | no: the sun does not answer prices | t -0.87, rank 3 | no: t > -2 |
 | W36 `grid-load-premium` (wide-22) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t -2.31, rank 1, post-sample b < 0: **pass (kill-only)** | killed by its replication R36 (1926-1955: t -0.32, rank 13) |
 | R36, replication of W36 (wide-22, `cards/wide-22b.md`) | k = 25..103 months, earlier only | not used | t -0.32 (predicted < 0), rank 13 | no: t > -2; W36 dead (low power: see `wide-22.md`) |
+| W38 `consumption-cycle` (jst-gates-1) | k = 4..23 years, earlier only | not used (earlier only, as step 1 asks) | t -1.88, rank 3 of 21, bootstrap p 0.045 | no: t > -2 and rank 3; a near miss, not a clean kill (`jst-gates-1.md`) |
+| W39 `bank-capital-premium` (jst-gates-1) | k = 5..44 years, earlier only | not used | t +0.17 (predicted < 0), rank 19 | no: wrong sign |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -254,6 +258,19 @@ true t 3 of 41, a miss. Suggestion for the lead (not adopted): for persistent ma
 require the rank in both families.
 #197 `fx-value-real-1` (merged 2026-11-25) is treated as part of #170's style-book mechanism (a
 better currency-value definition for the same book), not a new mechanism, so 104 / 29 stands.
+
+**Count after W38 and W39 (jst-gates-1, 2026-11-25; ids provisional, #205 holds W37 unmerged
+and the merging lead may renumber).** Two more mechanisms and two more gates, no replication
+(neither gate passed): **106 mechanisms, 29 tested by a strategy, 34 gates, still two
+kill-only passes (W32, W36), each killed by its replication**. Family bar p < 0.10 / 106 =
+0.00094 (if #205 lands first: 107 / 29 / 35, 0.00093). Both are pooled annual JST gates before
+and after 1966. Per jst-autocorr-2, the shift family keeps the returns' own and common
+autocorrelation, because the outcome is the real one. It does not keep a shifted dose's
+same-year link to returns. The card therefore added a returns-side AR(1) bootstrap under H0 (a
+pass condition) and phase surrogates with shared phases (shown). W38 (`consumption-cycle`, t
+-1.88, rank 3 of 21) is a near miss with the predicted sign. It fails t and rank, and with
+about 60-70 effective years it is a weak kill of the published size. W39 (`bank-capital-
+premium`, t +0.17) fails on its sign.
 
 ## Cyclic doses need another placebo family (wide-21, 2026-11-25)
 
