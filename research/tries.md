@@ -4061,5 +4061,62 @@ Never edit or delete a row.
 | 2026-11-24 23:35 | outbreak-premium | SPY 4-week return on detrended Anscombe count of WHO Disease Outbreak News reports (b +0.065%/unit, t +1.68, rank 9/41, gate fail) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
 | 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit without the 6 weeks with >= 60 WHO items (re-dated archive weeks) (b +0.159%/unit, t +1.11, rank 12/41, placebo SD 1.64) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
 | 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit on Fridays 2005-01..2019-12 only, before the re-dated years (b +0.082%/unit, t +0.48, rank 21/41, placebo SD 1.16) | screen | train | 2005-01-07 | 2020-01-27 | - | - | - | - |
+| 2026-11-24 23:45 | wide-19 | cred-xs | variant | train | 1994-02-01 | 2025-10-31 | 1.09 | +29621.4% | 39.9% | 1.83 |
+| 2026-11-24 23:45 | wide-19 | cred-xs/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.11 | +33497.4% | 38.8% | 1.82 |
+| 2026-11-24 23:45 | wide-19 | cred-lr | variant | train | 1994-02-01 | 2025-10-31 | 0.95 | +20355.6% | 48.6% | 1.72 |
+| 2026-11-24 23:45 | wide-19 | cred-lr/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +21459.4% | 47.5% | 1.73 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.62 | +325.1% | 23.6% | 2.12 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.53 | +284.1% | 36.2% | 0.96 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.70 | +4868.1% | 26.0% | 2.13 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.65 | +7530.4% | 51.9% | 0.89 |
+| 2026-11-24 23:50 | wide-19 | brier-verify: Brier skill / Murphy decomposition of the in/out signal (killed in step 1: multi-signal / info-1 IC, insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | rev-costloss: relative economic value of the exit (new, descriptive; a reframing of insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | mos-calibrate: logistic MOS soft slot (killed: kelly-shrunk, ml-linear, ml-sizing; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | damped-persistence: persistence/climatology blend (killed: combo-1 blend-iv, bet-hedge-seedbank; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bma-lookbacks: BMA / lagged ensemble of lookbacks (killed: e4, wf-pooled, tranching; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | xl-layer: reinsurance layer / aggregate stop-loss (killed: drawdown-control, cppi-floor, stop-0.25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bonus-malus: exposure ladder by monthly outcome (killed: ensemble-tsmom, slew-limit, arm3-12; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | cred-forward: credibility of the forward record, Esscher/Wang premium (killed: power-map-1, insure-4; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | stop-reentry: optimal-stopping re-entry, real-options band (killed: fast-reentry, bear-legs, eu-4 dz25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | robust-lookback: worst-case lookback set, minimax regret, newsvendor size (killed: ensemble-tsmom, wf-pooled, ib-soft; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | post hoc (not a try): Z at 2025-10-31 with the noise term corrected for correlation, V (1 - rho): six 0.00, etf 0.03, idx 0.16 (lib/wide19_posthoc.py) | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:55 | hedge-books-1 | book/buy_hold_btc | robustness | train | 1994-02-01 | 2025-10-31 | 0.87 | +2384778.8% | 84.9% | 0.00 |
+| 2026-11-24 23:55 | hedge-books-1 | book/buy_hold_spy | robustness | train | 1994-02-01 | 2025-10-31 | 0.63 | +2398.0% | 55.2% | 0.01 |
+| 2026-11-24 23:55 | hedge-books-1 | book/sixty_forty | robustness | train | 1994-02-01 | 2025-10-31 | 0.77 | +1126.1% | 30.5% | 0.47 |
+| 2026-11-24 23:55 | hedge-books-1 | book/equal_weight | robustness | train | 1994-02-01 | 2025-10-31 | 1.01 | +57602.8% | 66.7% | 1.51 |
+| 2026-11-24 23:55 | hedge-books-1 | book/ts_momentum | robustness | train | 1994-02-01 | 2025-10-31 | 1.10 | +6236.9% | 28.4% | 4.38 |
+| 2026-11-24 23:55 | hedge-books-1 | book/xs_momentum | robustness | train | 1994-02-01 | 2025-10-31 | 0.94 | +582644.9% | 77.5% | 3.57 |
+| 2026-11-24 23:55 | hedge-books-1 | book/vol_target_spy | robustness | train | 1994-02-01 | 2025-10-31 | 0.74 | +864.0% | 33.4% | 3.94 |
+| 2026-11-24 23:55 | hedge-books-1 | book/risk_parity | robustness | train | 1994-02-01 | 2025-10-31 | 0.83 | +3688.5% | 62.0% | 0.58 |
+| 2026-11-24 23:55 | hedge-books-1 | book/crypto_mean_reversion | robustness | train | 1994-02-01 | 2025-10-31 | 0.13 | +28.1% | 51.7% | 7.05 |
+| 2026-11-24 23:55 | hedge-books-1 | book/preset_careful | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +1606.2% | 22.0% | 4.78 |
+| 2026-11-24 23:55 | hedge-books-1 | book/preset_middle | robustness | train | 1994-02-01 | 2025-10-31 | 1.04 | +6760.6% | 30.9% | 4.91 |
+| 2026-11-24 23:55 | hedge-books-1 | book/own_vol_70 | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +4300.6% | 27.7% | 1.86 |
+| 2026-11-24 23:55 | hedge-books-1 | book/tsmom12 | baseline | train | 1994-02-01 | 2025-10-31 | 1.05 | +18641.3% | 37.0% | 2.80 |
+| 2026-11-24 23:55 | hedge-books-1 | book/halving-alone | robustness | train | 1994-02-01 | 2025-10-31 | 1.29 | +70158.9% | 29.5% | 2.57 |
+| 2026-11-24 23:55 | hedge-books-1 | book/where-vol | robustness | train | 1994-02-01 | 2025-10-31 | 1.07 | +24569.7% | 35.4% | 1.89 |
+| 2026-11-24 23:55 | hedge-books-1 | book/stop-0.25 | robustness | train | 1994-02-01 | 2025-10-31 | 1.09 | +9925.7% | 28.9% | 3.84 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge16 | variant | train | 1994-02-01 | 2025-10-31 | 1.13 | +20836.8% | 33.5% | 2.96 |
+| 2026-11-24 23:55 | hedge-books-1 | ew16 | baseline | train | 1994-02-01 | 2025-10-31 | 1.16 | +15095.3% | 33.0% | 3.19 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge-pair | variant | train | 1994-02-01 | 2025-10-31 | 1.05 | +9239.2% | 32.9% | 2.34 |
+| 2026-11-24 23:55 | hedge-books-1 | ew-pair | baseline | train | 1994-02-01 | 2025-10-31 | 1.05 | +9073.0% | 32.8% | 2.31 |
+| 2026-11-24 23:55 | hedge-books-1 | book/tsmom12/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +18290.3% | 37.4% | 2.81 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.12 | +20488.7% | 33.5% | 2.94 |
+| 2026-11-24 23:55 | hedge-books-1 | ew16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.15 | +14775.1% | 33.0% | 3.19 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge-pair/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +9021.0% | 33.2% | 2.33 |
+| 2026-11-24 23:50 | air-disaster-mood | SPY daily return on log2(deaths/25) of Wikidata aviation accidents >= 50 deaths, days 0-1, HC1 (b -0.038%/day/unit, t -0.59, rank 10/41, gate fail) | screen | train | 2008-01-02 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:55 | jackpot-substitution | wide-20 candidate, scored before any price, no number computed: P2, score 5, parked: no keyless jackpot history | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | panic-words | wide-20 candidate, scored before any price, no number computed: P3, score 4, parked: about 2,000 Chronicling America calls | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | mass-casualty-mood | wide-20 candidate, scored before any price, no number computed: P4, score 4, parked: P1's channel, data terms unclear | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | my-ratio | wide-20 candidate, scored before any price, no number computed: P5, filtered (F1: age structure known decades ahead) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | conception-lead | wide-20 candidate, scored before any price, no number computed: P6, filtered (F1: births read as news) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | dst-sleep | wide-20 candidate, scored before any price, no number computed: P7, filtered (F1: scheduled dates, no dose) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | sad-onset | wide-20 candidate, scored before any price, no number computed: P8, filtered (F1: fixed calendar, no dose) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | experience-weighted | wide-20 candidate, scored before any price, no number computed: P9, filtered (F2: weighted past returns) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | consumer-sentiment | wide-20 candidate, scored before any price, no number computed: P10, filtered (F1 and F2) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | skyscraper-index | wide-20 candidate, scored before any price, no number computed: P11, score 0, dead (literature) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | strike-idleness | wide-20 candidate, scored before any price, no number computed: P12, score 4, parked: BLS refuses scripts | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:47 | ownvol-anatomy-1 | re-score (not a try): vt-own-70-x minus tsmom12 split into exposure E (fixed-share twin), mean channel M and risk channel R; equity 41 d +0.022 = E +0.001 + M -0.003 + R +0.024; judged 21 d -0.010 = E +0.000 + M -0.015 + R +0.005; FX9 d -0.052 = E +0.000 + M -0.056 + R +0.004; COM8 d +0.056 = E -0.001 + M -0.018 + R +0.075; six d +0.101 = E +0.003 + M -0.153 + R +0.251 (research/ownvol-anatomy-1.md) | note | train | 1913-01-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 00:07 | breadth-anatomy-1 | re-score (not a try): why breadth-book-1's wider tsmom12 books score lower (same bars, rule, universes; Sharpe above bills 2008-01..2025-10). Gap L-12/L-20/L-all - six -0.23/-0.36/-0.54 = ETF breadth with coins at the six's weight (K - six) -0.17/-0.17/-0.17 (z -2.6 to -3.2) + coin dilution -0.06/-0.19/-0.37 (coin share 26/54/68%). Coin-free: four 0.82 vs four+6/14/29 added 0.38/0.36/0.37. Added sleeves' own tsmom12 Sharpe mean 0.17 (six 0.65; FX -0.31, intl eq 0.04, cmdty 0.06); A-29 book 0.29 vs rho 0.38 x 1.19 = 0.45: marginal test fails, best weight 0 (vs four: rho 0.73). Crisis rho(A-29, six) 0.66 vs 0.37. Inverse-vol widens the gap (-0.81). 2008-09 gap -0.19, 2010-25 -0.54 (research/breadth-anatomy-1.md) | note | train | 2008-01-02 | 2025-10-31 | - | - | - | - |
 | 2026-11-25 00:04 | reentry-reconcile-1 | re-score (not a try): e4, or3-12, arm3-12 minus tsmom12 on pooled-1's 41 equity markets (d reproduced exactly), e4's gap split into buy-back ((1-h12)h) and trims (h12(h-1)). Card split, 25% zigzag: e4 buy-back rebound +0.134 = or3-12's +0.134, slow bear -0.065; trims slow bear +0.069, rebound -0.042, calm -0.157. Per 25% fall (491, log pts): e4 dI +1.88 dB +3.54 (K 1.53); e4 buy-back alone -4.35 / +6.32 (K 0.31); or3-12 -6.48 / +8.43 (K 0.23); arm3-12 -5.75 / +7.78 (K 0.26). per fall, in log points, e4's buy-back leaks like the old rules and its trims pay for the bear rallies; in Sharpe the graded, smaller buy-back matters about as much (e4-re +0.045 of e4's +0.063) (research/reentry-reconcile-1.md) | note | train | 1927-07-05 | 2025-10-31 | - | - | - | - |
 | 2026-11-25 00:04 | reentry-reconcile-1 | diagnostic sleeves (not tries, not selectable; a later card on any counts these 10): e4-re (h12 + (1-h12) e4) D +0.045, e4-trim (h12 e4) +0.014, or3-12 x 0.25/0.5/0.75/w* (w* 0.735) +0.015/+0.022/+0.023/+0.023, arm3-12 x 0.25/0.5/0.75/w* (w* 0.914) +0.012/+0.018/+0.019/+0.017, Sharpe per market vs tsmom12 on 41 equity markets; e4-re minus size-matched sleeves +0.022 / +0.028 (paired SE 0.010 / 0.014) | note | train | 1927-07-05 | 2025-10-31 | - | - | - | - |
