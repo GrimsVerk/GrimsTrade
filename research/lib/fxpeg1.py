@@ -924,6 +924,39 @@ def episode_rows(ev: Eval) -> list[str]:
     return out
 
 
+def open_rows(ev: Eval) -> list[str]:
+    """Falls still unfinished at a segment end (not counted by the card): peak, the lowest
+    month after it, depth, holding's log change and I to that low (description)."""
+    out = [
+        "| Market | Peak | Low | Segment end | Depth | Hold (log pts) | I | S |",
+        "|---|---|---|---|---:|---:|---:|---:|",
+    ]
+    with cost_of(ev.spec.cost):
+        for s in ev.segs:
+            px = np.cumprod(1 + s.r)
+            _, pk = i1.zigzag(px, ev.spec.down, ev.spec.up)
+            if pk is None:
+                continue
+            lo = pk + int(np.argmin(px[pk:]))
+            rule = i9.rule_returns(s.pos, s.r)
+            d = np.log1p(rule) - np.log1p(s.r)
+            ins = 100 * float(d[pk + 1 : lo + 1].sum())
+            hold = 100 * math.log(px[lo] / px[pk])
+            out.append(
+                f"| {s.series} | {ym_str(s.months[pk])} | {ym_str(s.months[lo])} | "
+                f"{ym_str(s.months[-1])} | {1 - px[lo] / px[pk]:.0%} | {hold:+.1f} | "
+                f"{ins:+.1f} | {ins / abs(hold):+.2f} |"
+            )
+    return out
+
+
+def spell_rows(ev: Eval) -> list[str]:
+    by: dict[str, list[str]] = {}
+    for s in ev.segs:
+        by.setdefault(s.series, []).append(f"{ym_str(s.months[1])}..{ym_str(s.months[-1])}")
+    return [f"- {k}: {', '.join(v)}" for k, v in by.items()]
+
+
 CHECKS: list[tuple[str, Spec]] = [
     ("check-falls-10/10", Spec(down=0.10, up=0.10)),
     ("check-falls-25/25", Spec(down=0.25, up=0.25)),
@@ -1003,6 +1036,9 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
         "",
         f"**Premium verdict: {v_prem}.**",
         "",
+        f"Unfiltered book by the same rules (description): {verdict(unf, math.nan)} "
+        f"({qualifiers(unf)}); peg-only: {verdict(peg, math.nan)}.",
+        "",
         "## Checks (description)",
         "",
         *HEAD,
@@ -1011,6 +1047,14 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
         "## Episodes, primary",
         "",
         *episode_rows(prim),
+        "",
+        "## Falls unfinished at a segment end, primary (not counted; description)",
+        "",
+        *open_rows(prim),
+        "",
+        "## Floating spells scored by the primary book",
+        "",
+        *spell_rows(prim),
         "",
         "## Episodes, unfiltered",
         "",
