@@ -153,3 +153,125 @@ def null_spread(ts: Sequence[float]) -> tuple[float, float, float, float, float,
         float(a.min()),
         float(a.max()),
     )
+
+
+# ---------------------------------------------------------------- W18 elimination-mood
+# (research/cards/wide-26b.md: a record-closing check of wide-8's W18)
+
+TOURNAMENTS = ("FIFA World Cup", "UEFA Euro")
+W18_SHIFTS = [23 * k for k in range(-20, 0)] + [23 * k for k in range(1, 21)]
+W18_LAGS = 5
+
+
+def parse_matches(text: str) -> list[tuple[int, str, str, int, int, str]]:
+    """(date ordinal, home, away, home goals, away goals, tournament) of every row of the
+    `results.csv` of martj42/international_results with numeric scores."""
+    import csv
+    import io
+    from datetime import date
+
+    out = []
+    for r in csv.DictReader(io.StringIO(text)):
+        hs, as_ = r["home_score"], r["away_score"]
+        if not (hs.isdigit() and as_.isdigit()):
+            continue
+        d = date.fromisoformat(r["date"]).toordinal()
+        out.append((d, r["home_team"], r["away_team"], int(hs), int(as_), r["tournament"]))
+    return out
+
+
+def parse_shootouts(text: str) -> dict[tuple[int, str, str], str]:
+    """{(date ordinal, home, away): winner} from `shootouts.csv`."""
+    import csv
+    import io
+    from datetime import date
+
+    return {
+        (date.fromisoformat(r["date"]).toordinal(), r["home_team"], r["away_team"]): r["winner"]
+        for r in csv.DictReader(io.StringIO(text))
+    }
+
+
+def knockout_events(
+    matches: Sequence[tuple[int, str, str, int, int, str]],
+    shootouts: Mapping[tuple[int, str, str], str],
+    tournaments: Sequence[str] = TOURNAMENTS,
+) -> list[tuple[str, int, str, int, str]]:
+    """(team, match date ordinal, kind, match number, tournament) per the W18 card. kind:
+    'elim' = the team's first knockout match (4th or later of the edition) that it lost, in play
+    or on penalties; 'win' = each knockout match it won; 'group' = the last match of a team that
+    played exactly three. Editions: tournament x calendar year of the match. A drawn knockout
+    match without a shootout record is skipped (unknown winner)."""
+    from datetime import date
+
+    ed: dict[tuple[str, int, str], list[tuple[int, str]]] = {}
+    for d, h, a, hs, as_, t in matches:
+        if t not in tournaments:
+            continue
+        y = date.fromordinal(d).year
+        for team, _opp, gf, ga in ((h, a, hs, as_), (a, h, as_, hs)):
+            if gf > ga:
+                res = "W"
+            elif gf < ga:
+                res = "L"
+            else:
+                w = shootouts.get((d, h, a))
+                res = "D" if w is None else ("W" if w == team else "L")
+            ed.setdefault((t, y, team), []).append((d, res))
+    out: list[tuple[str, int, str, int, str]] = []
+    for (t, _, team), ms in ed.items():
+        ms.sort()
+        if len(ms) == 3:
+            out.append((team, ms[2][0], "group", 3, t))
+        lost = False
+        for n, (d, res) in enumerate(ms, start=1):
+            if n < 4 or res == "D":
+                continue
+            if res == "W":
+                out.append((team, d, "win", n, t))
+            elif not lost:
+                out.append((team, d, "elim", n, t))
+                lost = True
+    return sorted(out, key=lambda e: (e[1], e[0]))
+
+
+def next_session_dose(
+    dates: np.ndarray, days: Sequence[tuple[int, float]], shift: int = 0
+) -> np.ndarray:
+    """Dose over sessions: each (match day, weight) lands on the first session dated on or
+    after match day + 1 + shift; days outside the session range drop."""
+    d = np.zeros(len(dates))
+    if len(dates) == 0:
+        return d
+    for day, w in days:
+        x = day + 1 + shift
+        if x < dates[0] or x > dates[-1]:
+            continue
+        s = int(np.searchsorted(dates, x, side="left"))
+        if s < len(dates):
+            d[s] += w
+    return d
+
+
+def session_rows(
+    dates: np.ndarray,
+    logc: np.ndarray,
+    others: Sequence[tuple[np.ndarray, np.ndarray]],
+    first_day: int,
+    last_day: int,
+    after: int = 0,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """(s, y, raw, period) for sessions s >= 1 dated in [first_day, last_day] with session
+    s + after present and dated <= last_day: raw = ln C(s+after) - ln C(s-1), y = raw minus the
+    other markets' mean change between the dates of s-1 and s+after (`world_change` of
+    wide-24); period = the calendar date of session s."""
+    import wide24_events as e24
+
+    n = len(dates)
+    s = np.arange(1, max(1, n - after))
+    s = s[(dates[s] >= first_day) & (dates[s] <= last_day) & (dates[s + after] <= last_day)]
+    w = e24.world_change(dates[s - 1], dates[s + after], others)
+    raw = logc[s + after] - logc[s - 1]
+    ok = np.isfinite(w)
+    s, w, raw = s[ok], w[ok], raw[ok]
+    return s, raw - w, raw, dates[s].astype(int)

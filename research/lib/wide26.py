@@ -96,9 +96,7 @@ def placebo_ts(
         raise ValueError("dose has gaps; surrogates need a full series")
     x = np.array([dose[m] for m in full])
     sur = g2.phase_surrogates(np.random.default_rng(ev.SEED), x, 40)
-    su = [
-        ev.regress(ms, y, dict(zip(full, sur[:, i], strict=True)), lags)[1] for i in range(40)
-    ]
+    su = [ev.regress(ms, y, dict(zip(full, sur[:, i], strict=True)), lags)[1] for i in range(40)]
     return sh, su
 
 

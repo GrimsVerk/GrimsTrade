@@ -1,4 +1,4 @@
-# Wide 26: fourteen mechanisms from agronomy, crop physiology, glaciology, hydropower, remote sensing, atmospheric chemistry, plant pathology, fisheries, wind and solar power, limnology, fire science, coastal flooding and livestock physiology, scored before any price, the top one gated
+# Wide 26: fourteen mechanisms from agronomy, crop physiology, glaciology, hydropower, remote sensing, atmospheric chemistry, plant pathology, fisheries, wind and solar power, limnology, fire science, coastal flooding and livestock physiology, scored before any price, the top one gated; plus a record-closing gate of W18 `elimination-mood`
 
 Research run wide-26, 2026-11-25 (night run, WIDER lane). Branch `wide-26` (from `main`
 013bedd), PR into `main`. Research only: fake money, keyless public data, no change to the gym,
@@ -225,3 +225,92 @@ Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024, above th
 the register's 9.8e-5). A kill on its own t (+0.07, wrong sign).
 Published effect tested after publication: Hong, Li and Xu (2019) `[memory]` in a US-only,
 industry-level form (their test is a cross-country panel of drought trends): not reproduced.
+
+## Step 4. Record-closing check: W18 `elimination-mood` (wide-8), gated at last
+
+Not a new idea and not this lane's angle: wide-24 noted that W18's data gap was closed and
+that it could be closed cheaply. Its channel is the mood shock W31 `air-disaster-mood` killed.
+Card [`cards/wide-26b.md`](cards/wide-26b.md), pushed before the match file was fetched and
+before any return (commit 1640535, 23:15 UTC); gate id W18 (its own), replication R18. Code:
+`research/lib/wide26_w18.py` (pure parts in `wide26_events.py`, tested). Results:
+`research/results/elimination-mood.md`. Data: `results.csv` and `shootouts.csv` of
+`martj42/international_results` (CC0; `raw.githubusercontent.com` has no robots.txt; SHA-256
+`c1773d3e...dfb` and `15b2015c...23e`, full hashes in the cache manifest); owner decision B5's
+default (no 2026 World Cup).
+
+**Dry run (counts only):** 122,576 rows in 25 markets, 2006-2025; **74 knockout eliminations
+of mapped teams in ten tournaments** (73 on gate rows: Sweden 2006 is before the cached OMX
+file), England 8, the Netherlands, Switzerland, Germany and France 7 each, Spain, Brazil and
+Belgium 5, others fewer; 39 in the first knockout round, 17 quarter-finals, 12 semi-finals, 6
+finals; pooled dose acf1 -0.001. Spot check, World Cup 2006: Sweden, Mexico, Australia,
+Switzerland (penalties), the Netherlands, Spain (round of 16), England (penalties), Brazil
+(quarter-finals), Germany (semi-final), France (final, penalties): 10, as counted.
+
+**Real run: fails.** **b -0.081% per elimination on the next session against the world (DK t
+-0.95, rank 6 of 41 shifted calendars). Dead by the gate; R18 not run.**
+
+| Cell (next session, minus world, market dummies, DK 5, 2006-2025) | b, % | t |
+|---|---:|---:|
+| **Gate** | **-0.081** | **-0.95** |
+| Round weight (match number - 3) | -0.032 | -0.87 |
+| Group-stage exits | -0.031 | -0.26 |
+| Knockout **wins** (placebo dose, predicted 0) | -0.093 | -1.09 |
+| Own return, no world subtraction | -0.048 | -0.34 |
+| World Cup only | -0.152 | -1.73 |
+| Two sessions (s0-1 to s0+1) | -0.092 | -0.61 |
+
+- **The published effect is far outside the interval.** SE(b) is about 0.085%, so the 95%
+  interval is about -0.25% .. +0.09%; Edmans, Garcia and Norli's 0.4-0.5% next-day fall after a
+  World Cup loss `[memory]` lies 4-5 SEs below the estimate. The World Cup-only cell (-0.15%, t
+  -1.73) is noted only.
+- **Wins look like losses.** The knockout-win placebo dose is as negative as the gate (-0.09%,
+  t -1.09): the small negative lean belongs to tournament session days, not to losing.
+- **Null:** shifted calendars SD 0.87, 0% past |t| 2, 5/50/95% -1.20 / -0.20 / +1.37,
+  extremes -1.77 / +2.00: narrower than normal, as expected for sparse one-day events.
+- The largest event sessions (results file) go both ways: Brazil after the 1-7 semi-final in
+  2014 (the session after the São Paulo holiday) +2.4% against the world; Brazil after the 2022
+  quarter-final -1.9%.
+- Guess (b -0.15% .. +0.1%, t -1.5 .. +1, middle rank, pass 3%): right.
+
+So W18 is closed dead, on its own t, post-sample, with more events than wide-8 planned (74
+against about 25). With W31 this is the second post-sample kill of a mood-shock claim of the
+same research programme.
+
+## Family count and status
+
+One mechanism added and closed by its gate (W43 `drought-food-margin`); one listed mechanism
+(W18, counted since wide-8) closed by its first gate. The thirteen others scored here are
+parked or filtered and are **not counted**, as in wide-12 .. wide-25; each has a `note` row in
+`tries.md` (no number computed) and a line in `ideas.md`.
+
+**Count (provisional, after #215 and before wide-25): 108 + 1 = 109 mechanisms, 29 tested by a
+strategy, none passed; 36 + 2 = 38 gates (W43, W18), two kill-only passes (W32, W36), each
+killed by its replication (R32, R36).** If wide-25's W41 lands first: 110 / 29 / 39. Family bar
+p < 0.10 / 109 = 0.00092 (0.10 / 110 = 0.00091). Ids W43 and W18 as carded; W43 is
+provisional (wide-25 holds W41/W42; W42 unused there, so the merging lead may renumber W43 to
+W42). Published effects tested after publication: 2 more (Hong, Li and Xu 2019 in a US
+industry form; Edmans, Garcia and Norli 2007, 2006-2024): both dead.
+
+Rows logged in `tries.md`: 2 `screen` (`drought-food-margin`, `elimination-mood`), 16
+`robustness` (10 + 6 shown cells), 13 `note` rows (H2 .. H14). Data downloaded: 4.3 MB (the
+49-industry zip, 0.5 MB, and the two match files, 3.8 MB); the PDSI, factors and index closes
+were already cached (parked-gates-1, french, insure-2, yahoo-1d).
+
+## Next
+
+1. **The crop-to-food-margin channel is closed at US industry level.** With a physical dose
+   that prices cannot move, a 60-month beta and both placebo families, food stocks show no
+   drought effect in the next quarter or year (t +0.07, +0.20); after the 2012 drought they beat
+   their beta. Together with W32/R32 (bonds) and W19 (commodities), the record now has three
+   crop-weather channels dead. H2 `heat-yield` and H14 `livestock-heat` share the channel and
+   join its fate.
+2. **What would still be worth a gate in this angle** needs a firm-level outcome the cache
+   lacks: hydro-heavy or wind-heavy producers without cost pass-through (H3, H9), or
+   Oslo-listed salmon farmers (H8). Each would need a keyless daily price source checked for
+   robots first, and each has few independent years.
+3. **Hong, Li and Xu's cross-country form** (drought trends against 31 countries' food
+   indices) is not testable keyless: country food-industry indices come from commercial
+   databases. Not parked as a lead: the US half is dead.
+4. **Method:** a persistent physical dose (acf 0.94) gave a shifted-calendar null of SD 1.10
+   and a surrogate null of SD 1.25: the surrogates are wider, as gate-null-2 found; the two
+   families agreed on the verdict (ranks 22 and 23).

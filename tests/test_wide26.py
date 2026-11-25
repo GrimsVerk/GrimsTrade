@@ -105,3 +105,52 @@ def test_rank_and_spread() -> None:
     assert ev.rank_lowest(0.5, [-1.0, 0.0, 2.0]) == 3
     sd, share, *_ = ev.null_spread([-2.5, 0.0, 2.5, math.nan])
     assert share == pytest.approx(2 / 3) and sd == pytest.approx(2.5)
+
+
+def _o(s: str) -> int:
+    from datetime import date
+
+    return date.fromisoformat(s).toordinal()
+
+
+def test_knockout_events_first_loss_shootout_and_group_exit() -> None:
+    t = "FIFA World Cup"
+    m = [
+        (_o("2018-06-14"), "A", "B", 1, 0, t),
+        (_o("2018-06-19"), "A", "C", 1, 1, t),
+        (_o("2018-06-24"), "C", "A", 0, 2, t),
+        (_o("2018-06-20"), "B", "D", 0, 1, t),
+        (_o("2018-06-25"), "D", "B", 2, 2, t),
+        (_o("2018-07-01"), "A", "E", 1, 1, t),  # A wins on penalties: 4th match
+        (_o("2018-07-06"), "A", "F", 0, 2, t),  # A loses QF: elimination
+        (_o("2018-07-14"), "A", "G", 0, 1, t),  # third-place match: not a second event
+        (_o("2018-07-01"), "X", "Y", 3, 0, "Friendly"),
+    ]
+    so = {(_o("2018-07-01"), "A", "E"): "A"}
+    ev_ = ev.knockout_events(m, so)
+    a = [(k, n) for team, _, k, n, _ in ev_ if team == "A"]
+    assert a == [("win", 4), ("elim", 5)]
+    b = [(k, n) for team, _, k, n, _ in ev_ if team == "B"]
+    assert b == [("group", 3)]
+    assert not any(team == "X" for team, *_ in ev_)
+
+
+def test_next_session_dose_lands_after_the_match_day() -> None:
+    dates = np.array([_o("2018-07-05"), _o("2018-07-06"), _o("2018-07-09")])
+    # Friday match -> Monday session; Thursday match -> Friday session
+    d = ev.next_session_dose(dates, [(_o("2018-07-06"), 1.0), (_o("2018-07-05"), 2.0)])
+    assert list(d) == [0.0, 2.0, 1.0]
+    assert list(ev.next_session_dose(dates, [(_o("2018-07-09"), 1.0)])) == [0.0, 0.0, 0.0]
+    assert list(ev.next_session_dose(dates, [(_o("2018-07-03"), 1.0)], shift=1)) == [1.0, 0, 0]
+
+
+def test_session_rows_subtract_the_world() -> None:
+    dates = np.arange(100, 110)
+    logc = np.log(np.arange(1.0, 11.0))
+    other = (dates.copy(), np.zeros(10) + 0.01 * np.arange(10))
+    s, y, raw, per = ev.session_rows(dates, logc, [other], 100, 109)
+    assert list(s) == list(range(1, 10))
+    assert raw[0] == pytest.approx(math.log(2.0))
+    assert y[0] == pytest.approx(math.log(2.0) - 0.01)
+    s2, _, raw2, _ = ev.session_rows(dates, logc, [other], 100, 109, after=1)
+    assert list(s2) == list(range(1, 9)) and raw2[0] == pytest.approx(math.log(3.0))
