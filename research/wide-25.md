@@ -23,7 +23,8 @@ contagion, rational inattention, frost, habituation (wide-22); cybercrime, court
 news novelty, cloud outages, influenza, estates, crime counts, bolides, soil moisture, creep
 (wide-23); seismology as damage, supply networks, renewal processes, sport, mega-events,
 shipping, cable cuts, white-collar crime, livestock disease, migration, supply-chain pressure,
-critical minerals, extreme-value theory (wide-24, PR #215, open). Mechanisms scored there are
+critical minerals, extreme-value theory (wide-24, PR #215, open when this lane started, merged
+before this lane's PR; `main` merged into this branch). Mechanisms scored there are
 not scored again.
 
 **New fields tonight**: comparative politics (cabinets, coups, leaders, party systems),
@@ -34,7 +35,8 @@ linguistics of official documents (the Beige Book) and cryptography (quantum ris
 legal-docket candidate (sanctions designations) is noted as a data lead for wide-23's parked C2,
 not scored again.
 
-**Count carried in** (provisional, after #215 lands): **108 mechanisms, 29 tested by a
+**Count carried in** (after #215, merged during this lane; `main` ee7ba63 had 107 / 29 / 35
+without it): **108 mechanisms, 29 tested by a
 strategy, none passed; 36 gates, two kill-only passes (W32, W36), each killed by its
 replication (R32, R36).** As in wide-12 .. wide-24, only mechanisms that get a gate or a
 strategy test enter the count.
@@ -71,6 +73,9 @@ barge, PHMSA, derail, wildfire, air quality, smog, PM2.5, Beige Book, docket. Fo
 - Beige Book, dockets, derailments, wildfires, protests: nothing.
 
 ## Step 2. Fourteen mechanisms, scored (2026-11-25 23:00 UTC, before any price was read)
+
+(Time corrected on review: the first pushed version said 23:10 UTC, a slip; the table was
+written before the card's commit at 23:01 UTC.)
 
 **Disclosure.** Before this table, format and coverage only (no price, no return, no statistic
 involving a price): the ParlGov cabinet table (`view_cabinet.csv`, 1.8 MB; field names, and per
@@ -146,8 +151,8 @@ events). P1 is picked: it has a structural cause (as P4, unlike P6), nearly inde
 (P4's dose is persistent, a few swings per country) and keyless data with event dates as the
 market saw them (ParlGov's start dates; a complete list of cabinets, not one chosen by market
 impact). **Gated: P1 as W41 `cabinet-collapse`** (card `cards/wide-25.md`, pushed before any
-return was read; id W41 / R41 provisional: wide-24's PR #215, open, takes W40 and leaves W41
-unused). The replication **R41** is fixed in the same card: the same event definition on annual
+return was read; the card calls W41 / R41 provisional because wide-24's PR #215 was open
+and held W40; #215 merged before this PR and left W41 unused, so **W41 / R41 are final**). The replication **R41** is fixed in the same card: the same event definition on annual
 JST returns, 1921-1959 (years before the gate's), 15 countries. No second gate (W42 not used).
 
 ## Step 3. W41 `cabinet-collapse` gate
@@ -201,7 +206,7 @@ earlier-dose calendars (the lowest). Dead by the gate: no card for a strategy. R
 | Non-caretaker events only | -1.647 | -1.60 | 9,300 |
 | Caretaker events only (17) | -1.726 | -0.85 | 9,300 |
 | Without the 13 post-election formations (added after the card, before any number) | -1.773 | -1.77 | 9,300 |
-| Count dose | -1.663 | -1.74 | 9,300 |
+| Count dose (equal to the gate: no row month has two events) | -1.663 | -1.74 | 9,300 |
 | No controls | -1.683 | -1.74 | 9,300 |
 
 - **No reaction, no premium.** Over the month before and the month of the new cabinet the
@@ -212,8 +217,9 @@ earlier-dose calendars (the lowest). Dead by the gate: no card for a strategy. R
   is below all 40 placebos and the 12-month cell reaches t -2.60, but the direction was not
   predicted, the null is wide (SD 1.24, below), a two-sided reading of rank 41 of 41 gives p
   about 2/41 = 0.05 before counting the 11 shown cells, and the post-2001 half (t -1.08) and the cell
-  without Italy and Japan (t -1.13) are weaker. By gate-null step 6, a shown cell with |t| 2.5
-  in a design with placebo SD 1.2 is "noted only". A card for a negative drift (markets
+  without Italy and Japan (t -1.13) are weaker. The 12-month cell is noted only because its
+  sign was not predicted, its window overlaps the gate's (it contains the gate's six months),
+  and it has no placebo of its own. A card for a negative drift (markets
   under-react to a weakened government) would have to be written before looking at
   independent data: R41's annual JST design on 1921-1959, with the sign b < 0, is the obvious
   candidate (`Next`).
@@ -245,13 +251,28 @@ One mechanism added and closed by its gate (W41 `cabinet-collapse`). The thirtee
 parked, filtered, dead by class or a duplicate and are **not counted**, as in wide-12 ..
 wide-24; each has a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
 
-**Count (provisional): 109 mechanisms, 29 tested by a strategy, none passed; 37 gates, two
+**Count: 109 mechanisms, 29 tested by a strategy, none passed; 37 gates, two
 kill-only passes (W32, W36), each killed by its replication (R32, R36)**: +1 mechanism and +1
-gate over the count after #215 (108 / 29 / 36). Relative to `main` ee7ba63 (107 / 29 / 35,
-without #215) it would be 108 / 29 / 36. Family bar p < 0.10 / 109 = 0.00092. Gate id W41 / R41
-provisional (W40 is #215's). Published effects tested after publication: 1 more (a
+gate over the count after #215 (108 / 29 / 36), which merged into `main` during this lane
+(and was merged into this branch). Family bar p < 0.10 / 109 = 0.00092. Gate id
+W41 / R41 final (W40 is #215's; W42 not used). Published effects tested after publication: 1 more (a
 Pastor-Veronesi political-uncertainty premium after mid-term cabinet changes, in the spirit of
 Bernhard and Leblang 2006, 18 developed markets 1976-2022, half after their samples): dead.
+
+**Data terms.** ParlGov: Döring, Holger, Alexandra Quaas, Maike Hesse and Philip Manow
+(2023), "Parliaments and governments database (ParlGov): Information on parties, elections and
+cabinets in established democracies", development version (4 Nov 2023), parlgov.org; release
+data: Döring and Manow, Harvard Dataverse, doi 10.7910/dvn/2vz5zc. parlgov.org's data and
+about pages (read 2026-11-25 23:15 UTC, generic UA) give the citation but state no licence;
+the Dataverse page answered the script with a bot challenge (HTTP 202, no content), so its
+licence was not read (Dataverse releases are often CC0 `[memory]`, unchecked). Only statistics
+derived from the table are committed. `view_cabinet.csv` sha256
+bd39f73335e8bc49c00d5000ab5a68e7a8c41ca0eb17d8c89ff6d05ba93e6063 (1,783,351 bytes; manifest
+`wide-25/parlgov/2026-11-25/`). CPDS (not used by the rule): Armingeon, Klaus, Sarah Engler,
+Lucas Leemann and David Weisstanner (2025), "Supplement to the Comparative Political Data Set -
+Government Composition 1960-2023", University of Zurich, Leuphana University Lueneburg and
+University of Lucerne; its codebook asks users to quote the data set and the original sources;
+the data page states no other terms.
 
 Rows logged in `tries.md`: 1 `screen` (`cabinet-collapse`), 11 `robustness` rows (the shown
 cells), 13 `note` rows (one per candidate scored but not gated). Data downloaded: 4.5 MB (ParlGov

@@ -49,6 +49,7 @@ shows how wide the real null is:
 | ETH 7-day return from the end of day d+1 on log2(USD stolen / 5 m) of DefiLlama non-exchange thefts >= USD 10 m on day d, controls r7 r30, Newey-West 7 lags, 3,412 days 2016-2025 (wide-23, W37) | 40 earlier-dose calendars, k = 23-920 days (step 23) | 1.02 | 5% | 109 nearly independent event days: about normal, slightly left (median -0.60, 5/95% -1.85/+1.19, min -3.61); phase surrogates SD 1.13 (10%), random-day surrogates SD 1.08 (8%); without the one event not public at its date (LuBian, post hoc) placebo SD 1.02, random-day 0.94 |
 | JST next-year log equity return over bills on the Hamilton consumption cycle, country dummies and three controls, Driscoll-Kraay 2 lags, 355 country-years 1904-1947, 14 countries (jst-gates-1, W38) | 20 earlier-dose calendars, k = 4-23 years | 1.06 | 5% | centred (median -0.10, 5/95% -2.00/+1.39, extremes -2.29/+1.82); the returns-side AR bootstrap (SD 1.32, median +0.34) and phase surrogates with shared phases (SD 1.49) are wider |
 | Same design on JST `lev` minus its trailing 10-year mean, plus a crisis control, 1,285 country-years 1925-2020, 16 countries (jst-gates-1, W39) | 40 earlier-dose calendars, k = 5-44 years | 1.09 | 12% | **off-centre** (median +0.23, 95% +2.16, max +2.37: k = 20-29 sit near +2, as W33); bootstrap SD 1.09 and phase SD 0.89 are centred |
+| Hit country's index minus the other 24 cached markets, 20 sessions from the close of s0+1, on log2(1 + % of the country's place population within a magnitude radius) of declustered M >= 6 shallow quakes, controls r2 r20, market dummies, Driscoll-Kraay 30 days, 168,901 rows, 25 markets, 1998-2025 (wide-24, W40) | 40 calendars moved 23k days, k = +-1..20, both ways | 1.09 | 5% | 79 nearly independent (event, market) pairs, dose acf1 +0.008: about normal (median +0.15, 5/95% -1.95/+1.30, extremes -2.29/+1.80); random-day surrogates SD 1.28 (5%), one draw at +4.77 |
 | Country's French USD market minus the other 20 over the six months after a ParlGov mid-term cabinet start (binary monthly dose), own excess 1/3/12-month controls, country dummies, Driscoll-Kraay 6 lags, 9,300 country-months 1976-2022, 18 countries, 171 event months (wide-25, W41) | 40 earlier-dose calendars, k = 25-103 months (odd) | 1.24 | 8% | upper side wide (median +0.14, 95% +2.26, max +3.39): shifts of 31-53 months lean positive, perhaps the 3-5 year election clock; random-month surrogates (shown) centred, SD 1.10, 5% |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
@@ -205,7 +206,8 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W37 `hack-drift` (wide-23) | k = 23..920 days, earlier only | not used (earlier only, as step 1 asks: the loot scales with prices) | t +0.68 (predicted < 0), rank 38; post hoc without LuBian (USD 3.5 bn, not public at its listed date) t -0.01, rank 31 | no: t near 0 (the positive sign is one event) |
 | W38 `consumption-cycle` (jst-gates-1) | k = 4..23 years, earlier only | not used (earlier only, as step 1 asks) | t -1.88, rank 3 of 21 | no: fails t and rank; the predicted sign shows only for the same-year dose, which a real-time reader could not have had (dose of year t-1: t -0.57) |
 | W39 `bank-capital-premium` (jst-gates-1) | k = 5..44 years, earlier only | not used | t +0.17 (predicted < 0), rank 19 | no: wrong sign |
-| W41 `cabinet-collapse` (wide-25; provisional id) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks: governments fall after bad markets) | t -1.74 (predicted > 0), rank 41 of 41; random-month rank 39 | no: wrong sign |
+| W40 `quake-drift` (wide-24) | k = +-23..460 days, both ways | no: earthquakes do not answer prices | t +0.38 (predicted < 0), rank 24; random-day rank 28 | no: wrong sign |
+| W41 `cabinet-collapse` (wide-25) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks: governments fall after bad markets) | t -1.74 (predicted > 0), rank 41 of 41; random-month rank 39 | no: wrong sign |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -289,6 +291,15 @@ dose of year t-1 gives t -0.57 (lags 2 and 3: -0.04, -0.10). A full pass would s
 have been kill-only (p >= 0.048 against 0.00093). W39 (`bank-capital-premium`, t +0.17) fails
 on its sign.
 
+**Count after W40 (wide-24, 2026-11-25; carded as a provisional id while #210 held W38/W39;
+#210 landed during the lane, so W40 is the next free id and stands).** One more mechanism and
+gate after W38/W39: **108 mechanisms, 29 tested by a strategy, 36 gates, two kill-only passes
+(W32, W36), each killed by its replication (R32, R36)**; W40 failed (t +0.38, predicted
+negative, rank 24 of 41), so every gated idea is dead. Family bar p < 0.10 / 108 = 0.00093.
+W40's dose is a sparse event series (pooled lag-1 acf +0.008), so gate-null-2's proposed "both
+families" rule (acf >= 0.8) did not apply; the random-day surrogates (shown) agreed with the
+shifted calendars on the verdict (rank 28), as in W37.
+
 ## Cyclic doses need another placebo family (wide-21, 2026-11-25)
 
 W35 (`solar-max-recession`) moved a dose with its own cycle (the sunspot cycle, about 132
@@ -331,11 +342,11 @@ Re-scored on main, no verdict changes: W32 ranks 1 in every family, and the othe
 their own t. Surrogates centre the off-centre nulls of W33 and W35. W36 (wide-22, #202; not
 re-scored here) had phase rank 3 in its own write-up, so it would have failed "both".
 
-## Count after W41 (wide-25, 2026-11-25; provisional id)
+## Count after W41 (wide-25, 2026-11-25)
 
 W41 `cabinet-collapse` (comparative politics: a political-uncertainty premium after mid-term
 cabinet starts, 18 developed markets 1976-2022) fails on its sign (t -1.74, predicted > 0;
-rank 41 of 41). Provisional count, after wide-24's #215 (W40): **109 mechanisms, 29 tested by a
+rank 41 of 41). Count after wide-24's #215 (W40), merged before this one: **109 mechanisms, 29 tested by a
 strategy, none passed; 37 gates, two kill-only passes (W32, W36), each killed by its
 replication; family bar p < 0.10 / 109 = 0.00092.** The dose is a sparse event series (pooled
 lag-1 acf -0.007), so gate-null-2's proposed "both families" rule does not apply; the two
