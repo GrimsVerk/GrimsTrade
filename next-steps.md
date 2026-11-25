@@ -71,16 +71,13 @@ rules, or banks/brokers as "ours"); a history rewrite follows after the night ru
 2. Engineering, after #161: fix its two strict xfails (Kraken answering from a later day must
    fall back to Coinbase; duplicate same-day bars in one answer must be refused or logged), and
    the smaller notes in #161's PR body (rate gap with no problem line; no overall fetch time cap).
-3. Register: run `register2.py live` then `export`, commit `research/register/returns/live.csv.gz`
-   (register-7 follow-up), regenerate BAR.md. Consider the review's `pick_live` fallback
-   (prefer the stored version whose `code-<c>` equals the current `code_hash`).
-4. Optional: `reconcile.py` reuses `gym.cash_rate` / `gym.interest` (review of #153).
-5. Research, DEEPER: `e4` is the only open lead (pooled-1 +0.063 on 41 equity markets; pooled-2
+3. Optional: `reconcile.py` reuses `gym.cash_rate` / `gym.interest` (review of #153).
+4. Research, DEEPER: `e4` is the only open lead (pooled-1 +0.063 on 41 equity markets; pooled-2
    +0.010 on bonds+FX; combined +0.045, z 1.43). Do not retune it. If tested again, pre-register
    on new independent data only.
-6. Research, WIDER: fast-crash cover. insure-3: puts beat trend in fast crashes; insure-4 (running
+5. Research, WIDER: fast-crash cover. insure-3: puts beat trend in fast crashes; insure-4 (running
    at ~21:45 UTC, check its PR) tests puts only while trend is in. Next: VIX-call overlays (VXTH
    was the only option index near trend's cost) on keyless CBOE data, statistics only (CBOE
    terms).
-7. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
+6. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
    manual browser download if wanted (data-long-3, insure-3).
