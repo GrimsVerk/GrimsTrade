@@ -248,10 +248,11 @@ def lrv_upper(point: float, nu: float, level: float = LRV_LEVEL) -> float:
     `nu` degrees of freedom: the verdict's own fixed-b approximation (`_ref`) treats the
     Bartlett estimate over its mean as chi^2_nu / nu, so the truth is at most
     point * nu / chi^2_nu(1 - level) with probability `level`. The chi^2 quantile is
-    Wilson-Hilferty's, nu (1 - a - z sqrt(a))^3 with a = 2 / (9 nu), z = z(level), within about
-    1% of the exact one at nu >= 3 (the shortest record `measure_lrv` accepts). `level` is a
-    tuning value sized by simulation (`LRV_LEVEL`), not a promised coverage: at five years of
-    weekly bars nu = 1.5 / b overstates the estimate's spread."""
+    Wilson-Hilferty's, nu (1 - a - z sqrt(a))^3 with a = 2 / (9 nu), z = z(level): within 1.5%
+    of the exact one at nu >= 3 (the shortest record `measure_lrv` accepts), 0.3% at nu >= 7.5
+    (five years of weekly values). `level` is a
+    tuning value sized by simulation (`LRV_LEVEL`), not a promised coverage: at 0.65 the value
+    is below the truth in about 39% of five-year weekly AR(1) records, not 35%."""
     a = 2 / (9 * nu)
     base = 1 - a - _N.inv_cdf(level) * math.sqrt(a)
     if not base > 0:
@@ -266,8 +267,9 @@ def measure_lrv(train: Sequence[float], per_year: float) -> dict[str, Any]:
     about c = 1 - b + b^2 / 3 of the true value, 0.81 at five years of weekly bars): the
     `point` estimate. The line is sized with its upper `LRV_LEVEL` confidence value
     (`lrv_upper`, nu of `_ref`), floored at 1 (`Plan` needs at least 1): five years of weekly
-    values measure a true 3 with sd about 1.4, so the point estimate alone leaves about half
-    of all dependent lines short of their power. With no lags (under two observations a year)
+    values measure a true 3 with sd about 1.4, and sized with the point estimate a dependent
+    line's power averages 0.70-0.77 instead of 0.80
+    (research/results/registry-moments-1.md). With no lags (under two observations a year)
     nothing is measured and `lrv` is 1. Refuses a record too short to hold a year of lags
     (n < 4 (round(per_year) - 1)) or with no variation. Returns the numbers a frozen line keeps
     under `lrv_train`: n, lags, the raw ratio, c, nu, the point estimate, the level, the

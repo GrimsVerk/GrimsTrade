@@ -166,8 +166,11 @@ def main() -> None:
             label = f"8 a year, {n // 8} y, phi {phi:.2f}"
             print("\n".join(cell_rows(label, x, 8.0, (1 + phi) / (1 - phi), [None, chosen])))
     t4 = rng(4).standard_t(4, (RECORDS, BURN + 260)) / math.sqrt(2)
-    print("\n".join(cell_rows("weekly 5 y, phi 0.50, t(4) shocks", ar1(t4, 0.5), 52.0, 3.0,
-                              [None, chosen])))
+    print(
+        "\n".join(
+            cell_rows("weekly 5 y, phi 0.50, t(4) shocks", ar1(t4, 0.5), 52.0, 3.0, [None, chosen])
+        )
+    )
     # slow dependence: white noise plus a small AR(1) phi 0.98 component (true lrv 3 for the
     # mean of a long record, most of it at lags beyond a year)
     g = rng(5)

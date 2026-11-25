@@ -9,9 +9,10 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pytest
 
-from grimstrade import forward, ledger
+from grimstrade import forward, ledger, stats
 
 T0 = datetime(2026, 11, 19, 12, 0, tzinfo=UTC)
 CANDIDATES = Path(__file__).resolve().parents[1] / forward.CANDIDATES
@@ -533,8 +534,10 @@ def test_measured_lrv_recovers_a_known_ar1_ratio() -> None:
         true = (1 + phi) / (1 - phi)
         got = [forward.measure_lrv(ar1(lcg_normals(20800, s), phi), 52) for s in (1, 2, 3)]
         assert all(m["lags"] == 51 and m["n"] == 20800 for m in got)
-        assert all(abs(m["lrv"] / true - 1) < 0.1 for m in got)
-        mean = sum(m["lrv"] for m in got) / 3
+        assert all(abs(m["point"] / true - 1) < 0.1 for m in got)
+        # 400 years leave little noise: the upper value is within 3% of the estimate
+        assert all(m["point"] < m["lrv"] < 1.03 * m["point"] for m in got)
+        mean = sum(m["point"] for m in got) / 3
         assert mean == pytest.approx(bartlett_mean(phi, 51), rel=0.05)
 
 
@@ -542,14 +545,17 @@ def test_independent_or_negatively_dependent_records_measure_1() -> None:
     """iid values measure about 1, and anything below 1 is floored at 1 (a seed whose raw
     ratio falls below 1, and an AR(1) with phi -0.5, true ratio 1/3)."""
     iid = [forward.measure_lrv(lcg_normals(20800, s), 52) for s in (1, 2, 3)]
-    assert all(0.9 < m["ratio"] < 1.1 and m["lrv"] == max(1.0, m["ratio"] / m["c"]) for m in iid)
-    assert iid[1]["ratio"] < 1 and iid[1]["lrv"] == 1.0
+    for m in iid:
+        assert 0.9 < m["ratio"] < 1.1 and m["point"] == m["ratio"] / m["c"]
+        assert m["lrv"] == max(1.0, forward.lrv_upper(m["point"], m["nu"]))
+    assert iid[1]["ratio"] < 1 and iid[1]["lrv"] < 1.05
     neg = forward.measure_lrv(ar1(lcg_normals(20800, 1), -0.5), 52)
     assert neg["ratio"] == pytest.approx(1 / 3, rel=0.15) and neg["lrv"] == 1.0
     assert forward.measure_lrv(flat_train(), 52)["lrv"] == 1.0
     # with no lags (one observation a year) there is nothing to measure: exactly 1
     yearly = forward.measure_lrv(ar1(lcg_normals(40, 4), 0.5), 1)
     assert yearly["lags"] == 0 and yearly["ratio"] == pytest.approx(1.0)
+    assert yearly["lrv"] == 1.0  # no upper value either: nothing was estimated
 
 
 def test_the_fixed_b_factor_removes_most_of_a_short_records_bias() -> None:
@@ -637,3 +643,133 @@ def test_freeze_refuses_an_unmeasured_or_understated_lrv(repo: Path) -> None:
     assert forward.read(reg(repo))[0]["lrv_train"]["sha256"] == forward.train_hash(train)
     # a win_rate rule needs no train record
     forward.freeze(reg(repo), row(repo, "w@1"), T0)
+
+
+# --- lrv sized with an upper value, skew and kurtosis measured (lane registry-moments-1) ---
+
+
+def gen_ar1(seed: int, n: int, phi: float) -> list[float]:
+    """AR(1) from numpy's PCG64 (SeedSequence-seeded, not consecutive LCG seeds), 200 burn-in."""
+    e = np.random.default_rng(np.random.SeedSequence((20261125, seed))).standard_normal(n + 200)
+    return ar1([float(v) for v in e], phi)[200:]
+
+
+def crash_record(seed: int, n: int) -> list[float]:
+    """iid weekly values with a crash state: N(0, 1) w.p. 0.95, N(-2.5, 2^2) w.p. 0.05
+    (population skew about -1, kurtosis about 6.5)."""
+    g = np.random.default_rng(np.random.SeedSequence((20261126, seed)))
+    crash = g.random(n) < 0.05
+    return [float(v) for v in np.where(crash, g.normal(-2.5, 2.0, n), g.standard_normal(n))]
+
+
+def test_the_upper_chi_square_value_matches_a_simulated_quantile() -> None:
+    """lrv_upper's Wilson-Hilferty quantile: point * nu / chi2_nu(1 - level), checked against
+    the quantile of a million chi-square draws; it never lowers the estimate and grows with
+    the level, and with a long record (large nu) it is the estimate."""
+    g = np.random.default_rng(np.random.SeedSequence((20261125, 99)))
+    for nu in (3.0, 7.5, 15.0):
+        for level in (0.65, 0.9):
+            exact = nu / float(np.quantile(g.chisquare(nu, 1_000_000), 1 - level))
+            tol = 0.02 if nu < 4 else 0.005
+            assert forward.lrv_upper(1.0, nu, level) == pytest.approx(exact, rel=tol)
+    assert forward.lrv_upper(2.0, 7.5) == pytest.approx(2 * forward.lrv_upper(1.0, 7.5))
+    assert 1 < forward.lrv_upper(1.0, 7.5, 0.6) < forward.lrv_upper(1.0, 7.5, 0.8)
+    assert forward.lrv_upper(1.0, 1e6) == pytest.approx(1.0, abs=0.001)
+
+
+def test_five_years_of_a_dependent_record_are_sized_safely_more_often() -> None:
+    """research/registrymoments1.py: at five years of weekly values the point estimate of a
+    true lrv 3 (AR(1) phi 0.5) falls below the truth in about 60% of records; the upper 0.65
+    value in about 40%. 150 records, fixed seeds."""
+    ms = [forward.measure_lrv(gen_ar1(s, 260, 0.5), 52) for s in range(150)]
+    assert all(m["level"] == forward.LRV_LEVEL == 0.65 and m["nu"] == 7.5 for m in ms)
+    assert all(m["lrv"] == max(1.0, forward.lrv_upper(m["point"], 7.5)) for m in ms)
+    below_point = sum(m["point"] < 3 for m in ms) / len(ms)
+    below_used = sum(m["lrv"] < 3 for m in ms) / len(ms)
+    assert below_point > 0.5 and below_used < 0.47
+    assert all(m["lrv"] > m["point"] for m in ms)
+
+
+def test_measured_moments_are_the_records_population_moments() -> None:
+    train = crash_record(1, 520)
+    m = forward.measure_moments(train)
+    ref = stats.moments(train)
+    assert ref is not None
+    assert m == {
+        "n": 520,
+        "skew": ref.skew,
+        "kurtosis": ref.kurtosis,
+        "sha256": forward.train_hash(train),
+    }
+    assert m["skew"] < -0.5 and m["kurtosis"] > 4  # the crash state shows
+    with pytest.raises(ValueError, match="no variation"):
+        forward.measure_moments([0.01] * 300)
+    with pytest.raises(ValueError, match="kurtosis"):  # impossible moments
+        forward.Plan("sharpe", effect=1.0, per_year=52, skew=-2.0, kurtosis=4.0)
+
+
+def make_sharpe(plan: forward.Plan, train: list[float]) -> dict[str, Any]:
+    return forward.entry(
+        "s@1",
+        code={"a.py": "0"},
+        code_ref="HEAD",
+        params={},
+        data={},
+        plan=plan,
+        source="t",
+        train=train,
+    )
+
+
+def test_entry_takes_the_measured_moments_when_the_plan_is_more_optimistic() -> None:
+    """A Sharpe plan's k (Mertens) may not be below the train record's: the default skew 0 /
+    kurtosis 3 on a crash-prone record is raised to the measured pair and the sample grows; a
+    plan with a larger k keeps its own pair; a positively skewed record (smaller k) leaves
+    the default alone. Both cases keep the measurement under moments_train."""
+    train = crash_record(2, 520)
+    m = forward.measure_moments(train)
+    plan = forward.Plan("sharpe", effect=0.79, per_year=52)
+    e = make_sharpe(plan, train)
+    assert e["moments_train"] == m and e["moments_train"]["sha256"] == e["lrv_train"]["sha256"]
+    assert (e["skew"], e["kurtosis"]) == (m["skew"], m["kurtosis"])
+    lrv = e["lrv"]
+    assert e["min_sample"] == forward.min_sample(
+        forward.Plan("sharpe", 0.79, 52, skew=m["skew"], kurtosis=m["kurtosis"], lrv=lrv)
+    )
+    assert e["min_sample"] > forward.min_sample(forward.Plan("sharpe", 0.79, 52, lrv=lrv))
+    assert forward.plan_of(json.loads(json.dumps(e))).skew == m["skew"]
+    grim = forward.Plan("sharpe", effect=0.79, per_year=52, skew=-3.0, kurtosis=20.0)
+    assert (make_sharpe(grim, train)["skew"], make_sharpe(grim, train)["kurtosis"]) == (-3, 20)
+    rosy = [-v for v in train]  # skew about +1: k below the default's
+    r = make_sharpe(plan, rosy)
+    assert (r["skew"], r["kurtosis"]) == (0.0, 3.0) and r["moments_train"]["skew"] > 0.5
+    # the mean test's sample uses neither: nothing measured
+    mean = forward.Plan("mean", effect=0.1, per_year=52, sd=1.0)
+    assert "moments_train" not in make_sharpe(mean, train)
+
+
+def test_freeze_refuses_unmeasured_or_understated_moments(repo: Path) -> None:
+    plan = forward.Plan("sharpe", effect=0.79, per_year=52)
+    train = crash_record(3, 520)
+    good = row(repo, "s@1", plan, train)
+    old = {k: v for k, v in good.items() if k != "moments_train"}  # built before this lane
+    with pytest.raises(forward.MomentsNotMeasured):
+        forward.freeze(reg(repo), old, T0, train)
+    rosy = good | {"skew": 0.0, "kurtosis": 3.0}  # edited back to the default ...
+    rosy["min_sample"] = forward.min_sample(forward.plan_of(rosy))  # ... consistently
+    with pytest.raises(forward.MomentsNotMeasured, match="below the train record"):
+        forward.freeze(reg(repo), rosy, T0, train)
+    forged = good | {"moments_train": good["moments_train"] | {"skew": 0.0}}
+    with pytest.raises(forward.MomentsNotMeasured, match="not the measurement"):
+        forward.freeze(reg(repo), forged, T0, train)
+    assert not reg(repo).exists() or not reg(repo).read_text().strip()
+    line = forward.freeze(reg(repo), good, T0, train)
+    assert line["skew"] == forward.measure_moments(train)["skew"] < -0.5
+    # a mean rule needs its lrv measured but no moments; a win_rate rule neither
+    m_plan = forward.Plan("mean", effect=0.1, per_year=52, sd=1.0)
+    forward.freeze(reg(repo), row(repo, "m@1", m_plan, train), T0, train)
+    forward.freeze(reg(repo), row(repo, "w@1"), T0)
+    assert [r["id"] for r in forward.read(reg(repo))] == ["s@1", "m@1", "w@1"]
+    # old lines (no skew, kurtosis, lrv) still read and score with the defaults
+    bare = {k: v for k, v in good.items() if k not in ("skew", "kurtosis", "lrv")}
+    assert forward.plan_of(bare) == forward.Plan("sharpe", 0.79, 52)
