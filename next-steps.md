@@ -119,8 +119,8 @@ Merged (in order): #196 reconcile-reuse-1, #197 fx-value-real-1, #198 e4-indep-1
 registry-lrv-1, #201 survey-8, #202 wide-22, #203 calm-drag-1, #204 jst-autocorr-2, #199
 runner-faults-2 (three review rounds: per-request cap with `read1`, early-EOF `IncompleteRead`
 restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 registry-moments-1,
-#207 gate-null-2, #209 rl-7, #206 data-wide-2, #212 insure-1709-1. Verdicts: `research/SUMMARY.md`
-(night 6, PR #211 summary-8).
+#207 gate-null-2, #209 rl-7, #206 data-wide-2, #212 insure-1709-1, #211 summary-8 (SUMMARY night 6),
+#210 jst-gates-1. Verdicts: `research/SUMMARY.md` (night 6; #210 and later PRs not yet in it).
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
@@ -135,10 +135,13 @@ restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 regis
 
 ## Lane queue (each from `main`)
 
-1. Open at this handoff: #210 jst-gates-1 (W38 consumption-cycle fails, W39 bank-capital-premium
-   dead; review fixes in progress: drop "near miss", state the real-time t-1 result), #211
-   summary-8 (SUMMARY night 6; add #210 when it lands), plus any lane PRs listed by
-   `gh pr list`. Each needs a fresh review verdict before merging.
+1. Open at this handoff (lead 1 of the night handed off at ~22:50 UTC for context): #214
+   asset-ledger-1 (review fixes in progress, text only; then merge), #213 this handoff, and the
+   PRs of the lanes still running: wide-24 (WIDER, gate ids W40/W41 provisional) and survey-9
+   (literature on long-history trend evidence vs the project's insurance finding). Each needs a
+   fresh review verdict before merging (`gh pr list`). Then a short summary-9 lane: add #210,
+   #214, wide-24, survey-9 to SUMMARY night 6 (counts after #210: 107 mechanisms / 29 / 35 gates,
+   bar 0.10/107).
 2. Closed tonight, do not redo: `e4` (contradicted on pre-1927 stocks, #198: no longer a lead;
    the clean keyless independent monthly stock data are nearly used up), real-rate FX value and
    sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
