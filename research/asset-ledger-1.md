@@ -47,7 +47,9 @@ held: the book without timing) and `tsmom12`, each over its own worst drawdown, 
 The book shares: without timing the worst drawdown is 2000-03-24 .. 2002-10-09 (68.8%), when
 the book held only SPY and QQQ; with timing it is 2018-01-13 .. 2020-03-12 (37.4%), the coins
 carrying 107% of it and TLT and GLD offsetting 11% (shares sum to 100%; a negative share is a
-gain in the drawdown). Since 2002 (results table B) the book without timing has its worst
+gain in the drawdown). The two share columns compare different episodes (each book's own worst
+drawdown); over the same 2000-2002 dates the timed book also had QQQ at 74% and SPY at 26%.
+Since 2002 (results table B) the book without timing has its worst
 drawdown in 2018-01 .. 2018-12 (47.6%), 97% of it from the coins; with timing it is the same
 2018-2020 drawdown as above.
 
@@ -73,30 +75,35 @@ long US stock record it about broke even.**
   So here the insurance is roughly fairly priced: you pay about what you get back, and what
   you get is shallower drawdowns.
 - **QQQ: paid once, in a big way.** Since 2000 it is +1.06 a year ahead of holding, entirely
-  thanks to the 2000-2002 crash (QQQ fell over 80%). Without that crash (since 2002) it trails
-  by 1.48. The loose long proxy (French technology industry since 1927) is -0.40 (+0.46 with
+  thanks to the 2000-2002 crash (QQQ fell over 80%). Its window starts on 2000-03-13 (its first
+  eligible session), almost at the Nasdaq peak, so the +1.06 is largely a start-date artefact.
+  Without that crash (since 2002) it trails by 1.48. The loose long proxy (French technology industry since 1927) is -0.40 (+0.46 with
   bills). QQQ also carried three quarters of the book's worst drawdown without timing (2000-2002),
   and timing cut that drawdown from 68.8% to 27.7% over the same dates.
 - **Bonds (TLT and the 30-year Treasury since 1978): has not paid.** Bonds had few 25% falls (2
   since 2003, 4 since 1978); the fall gain is small (about +1.6 to +2.0 a year), the buy-back
   costs most of it, and the calm drag, mostly premium from being out about a quarter of calm
   time, makes the net -1.5 (TLT) to -2.1 (since 1978) a year at cash 0. With cash at bills it
-  is less bad (-0.7) because bills paid well while out in the 1980s. Bonds never carried the
+  is less bad (TLT -0.70, the 1978 rebuild -0.67); for the rebuild that is largely the high
+  bill rates of the late 1970s and 1980s while out. Bonds never carried the
   book's worst drawdown; in the timed book's worst one they gained.
-- **Gold (GLD): has not paid.** GLD lost even inside its falls (buy-back -2.53 against a fall
-  gain of +1.64) and pays a large calm premium (out 20% of calm time): net -2.33 a year. The
+- **Gold (GLD): has not paid.** GLD gave back more in the year after its lows than it gained
+  in its falls (buy-back -2.53 against a fall gain of +1.64) and pays a large calm premium (out 20% of calm time): net -2.33 a year. The
   only long gold series (monthly averages since 1972) shows +0.22, but averaging flatters
   trend timing: on the same 2005-2025 years the averaged series gives -1.43 against GLD's
   -2.33. So "about zero at best" over 1972-2025, negative since 2002. Gold never carried the
   book's worst drawdown.
-- **Coins (BTC, ETH): has not paid in their 9-12 years.** Coins are in a 25% fall or its
+- **Coins (BTC, ETH): has not paid in their 8-13 years.** Coins are in a 25% fall or its
   rebound almost all the time, so the ledger is all I and B: huge gains in falls (+27 and +64 a
   year) and even larger give-backs after the lows (-31 and -67). Net -3.7 and -3.6 a year; the
-  gym's crypto trading cost is about a third to a half of that (-1.0 and -1.9 a year). And
+  gym's crypto trading cost is 27% and 54% of that (-1.00 and -1.91 a year). And
   timing did not protect the book from the coins: the timed book's worst drawdown (37.4%,
   2018-01 .. 2020-03) is a coin drawdown, and over those same dates the book without timing
-  lost less (27.1%): the rule sold the coins in 2018, bought back higher in 2019 and was in for
-  the March 2020 fall. Over the untimed book's own worst coin drawdown since 2002 (2018,
+  lost less (27.1%): the rule held the coins through most of the 2018 crash, left late, and
+  missed most of the rebound from the 2018-19 lows. BTC went out on 2018-11-03 (at 6,347) and
+  back in on 2019-05-25 (at 8,006, higher), and was in for the March 2020 fall. ETH, which
+  carries 73% of that drawdown, went out on 2018-08-18 (at 317) and back in on 2019-09-21 (at
+  218, lower), then out and in four more times; it was in from 2020-01-18 to 2020-03-14. Over the untimed book's own worst coin drawdown since 2002 (2018,
   47.6%) timing did help (29.3% over the same dates).
 
 **In one line:** historically the insurance has about paid for its premium on US stocks over the
@@ -114,7 +121,7 @@ histories. Whether to hold the insurance remains a drawdown preference (`owner-d
 ## How sure
 
 - **One history per asset, few independent falls.** Bonds and gold have 2 falls each in their
-  ETF windows, the coins one regime of 9-12 years. A single crash moves a row by points a year
+  ETF windows, the coins one regime of about 8-13 years (ETH from 2017-05-27, BTC from 2013-01-05). A single crash moves a row by points a year
   (QQQ: +1.06 with 2000-2002, -1.48 without). No standard errors: these are descriptions.
 - **Proxies differ from the ETFs.** The 30-year rebuild (data-long-3) has a longer maturity
   than TLT's 20+ year basket; the French technology industry is not the Nasdaq-100 (loose);
@@ -131,9 +138,11 @@ histories. Whether to hold the insurance remains a drawdown preference (`owner-d
   2005, the coins in 2013 and 2017), which is why the untimed 1994-2025 worst is all stocks.
 - **Deviations from the card, disclosed.** (1) Added side columns not on the card: trading
   cost over all sessions, and a side row "`equal-weight` over the `tsmom12` dates" (the mirror
-  of the card's side row). (2) For the coins and the 30-year rebuild, the "since 2002" window
-  equals the own window (they start later), so only one row is shown in the table above
-  (the results file has every row).
+  of the card's side row). (2) TLT, GLD and the coins start after 2002, so for them the "since
+  2002" window equals the own window and one row is shown. The long proxies' since-2002 rows
+  (French US market, S&P 500 TR, French HiTec, the 30-year rebuild: N -2.49 since 2002 against
+  -2.12 since 1978, monthly gold) are only in the results file, except where quoted in the
+  text.
 - Bar for scale (BAR.md, rows through 2026-11-25 01:16): 4,126 distinct tries, N for a new
   pick 1,116 (z >= 4.93; measured rho: N 506, z >= 4.70; Bonferroni p <= 9.9e-05). Not
   applicable: no test, no pick.
