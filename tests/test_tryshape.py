@@ -122,6 +122,14 @@ def test_harness_log_writes_the_shape_next_to_the_row(
         assert f"| {stored.sharpe:.2f} |" in row
         want = returnstore.quantize(tryshape.weekly_returns(days, eq))
         assert list(stored.rets) == want
+        # register-7: a robustness try is logged, but its returns are not stored by default
+        robust = harness.Run(
+            "idea-x", "v2", "train", SimpleNamespace(turnover=0.5), full,
+            np.array(filled) * 101, 1.0, [],
+        )  # fmt: skip
+        harness._log(robust, "robustness", date(1994, 2, 1), date(2025, 11, 9))
+        assert len(tries.read_text().splitlines()) == 2
+        assert [r.variant for r in returnstore.read(store)] == ["v1"]
     finally:
         sys.modules.pop(spec.name, None)
         data.UNIVERSE.clear()

@@ -1,6 +1,6 @@
 # eu-3: fewer orders for a small coin-free EUR book (decision frequency and slot structure)
 
-Field: execution structure of the house rule for a Dutch retail investor (not a new signal).
+Field: execution structure of the house rule for a euro-area retail investor (not a new signal).
 Lane `eu-3` (DEEPER), night of 2026-11-18, branch `eu-3` from `eu-2`. Written and pushed before
 any eu-3 number existed. Seen before: everything in `eu-1.md`, `eu-2.md` and their result tables
 (all `euw` numbers at the house structure, the fee table by book size, the band tests).
@@ -51,8 +51,8 @@ runs start on the same day as the reference.
   Fridays.
 - **Class slots** (`V4`, `V5`): one fund per asset class, at `euw`'s own class weights, so the
   mix is kept while the number of lines drops from 7 to 4: **IWDA** (iShares Core MSCI World,
-  Amsterdam; developed-world equity, in place of SXR8 + EXSA + IQQE) at 3/7, **IBGM** (iShares
-  Euro Govt Bond 7-10yr, Amsterdam; between IBGS and IBGL) at 2/7, **4GLD** at 1/7, **EXXY** at
+  Euronext Amsterdam; developed-world equity, in place of SXR8 + EXSA + IQQE) at 3/7, **IBGM** (iShares
+  Euro Govt Bond 7-10yr, Euronext Amsterdam; between IBGS and IBGL) at 2/7, **4GLD** at 1/7, **EXXY** at
   1/7. Each line has its own signal. Both lines are in the eu-1 data (`results/eu-1-data.md`;
   IWDA from 2009-09, IBGM from 2008). This drops the EM sleeve (IWDA has none); accepted, fixed
   now. Equal weight at class weights (`ew-c4`) is run at `slip` as a descriptive baseline.

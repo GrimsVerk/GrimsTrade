@@ -342,8 +342,8 @@ def _log(run: Run, kind: str, start: date, end: date) -> None:
         tryshape.log(SHAPES, row, run.days, [float(e) for e in run.equity])
     except (OSError, ValueError, ZeroDivisionError) as e:
         print(f"harness: try shape not logged ({e})", file=sys.stderr)
-    if run.period == "train":
-        _store(run, sharpe)
+    if run.period == "train" and kind not in returnstore.NOT_STORED_BY_DEFAULT:
+        _store(run, sharpe)  # register-7: robustness curves are not stored by default
 
 
 def _store(run: Run, sharpe: float) -> None:
@@ -377,12 +377,14 @@ def run(
     costs: Mapping[str, gym.Costs] = gym.COSTS,
     log: bool = True,
     rates: gym.Rates = (),
+    band: float = gym.BAND,
 ) -> Run:
     """Backtest one variant through the gym and append it to tries.md.
 
     `log=False` is only for re-scoring an already logged variant (e.g. reading its equity curve
     again); every new configuration must be logged. `rates`: what idle cash earns (default
     nothing, the protocol's convention; `bill_rates()` for the 13-week T-bill, gym PR #61).
+    `band`: the gym's rebalance band (default the gym's own; wide-16's `cost-band` varies it).
     """
     if kind not in ("variant", "baseline", "robustness"):
         raise ValueError(kind)
@@ -393,7 +395,7 @@ def run(
     a, b = _period_dates(period)
     a, b = start or a, end or b
     decs = decisions(strategy, pan, a, b)
-    res = gym.simulate(decs, hist, costs=costs, rates=rates)
+    res = gym.simulate(decs, hist, costs=costs, rates=rates, band=band)
     sc = report.score(f"{idea}/{variant}", res)
     days, equity = _calendar(res.equity)
     out = Run(

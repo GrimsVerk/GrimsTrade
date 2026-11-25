@@ -30,7 +30,7 @@ SPLICE_START = date(2000, 1, 3)
 
 COSTS = {
     "gym": dict(gym.COSTS),
-    "nl": {ETF: gym.Costs(fee=0.0010, slip=0.0005), CRYPTO: gym.COSTS[CRYPTO]},
+    "retail": {ETF: gym.Costs(fee=0.0010, slip=0.0005), CRYPTO: gym.COSTS[CRYPTO]},
     "harsh": {ETF: gym.Costs(fee=0.0025, slip=0.0015), CRYPTO: gym.COSTS[CRYPTO]},
 }
 
@@ -162,7 +162,7 @@ def main() -> None:
     out = ["# eu-1 results: `tsmom12` on European UCITS ETFs in EUR", ""]
     out += [
         "Train period only. Total-return prices. Sharpe on calendar days, zero risk-free rate, "
-        "each book in its own currency. Costs: `gym` (ETFs 0 + 2 bps), `nl` (Dutch broker, "
+        "each book in its own currency. Costs: `gym` (ETFs 0 + 2 bps), `retail` (retail broker, "
         "ETFs 0.10% + 0.05%), `harsh` (ETFs 0.25% + 0.15%); coins 0.25% + 0.05% throughout. "
         "Card: `cards/eu-1.md`. Era columns are Sharpe ratios.",
         "",
@@ -170,13 +170,13 @@ def main() -> None:
     books = {
         "us6": Book("us6", US6, "gym"),
         "us6-eur": Book("us6-eur", US6_EUR, "gym"),
-        "eu6": Book("eu6", EU6, "nl"),
+        "eu6": Book("eu6", EU6, "retail"),
         "usw": Book("usw", USW, "gym"),
         "usw-eur": Book("usw-eur", USW_EUR, "gym"),
-        "euw": Book("euw", EUW, "nl"),
+        "euw": Book("euw", EUW, "retail"),
     }
     res = {k: pair(b, W_START) for k, b in books.items()}
-    bh_iwda = go("hold-IWDA", c.weekly(c.hold("IWDA")), ["IWDA"], "nl", "baseline", W_START)
+    bh_iwda = go("hold-IWDA", c.weekly(c.hold("IWDA")), ["IWDA"], "retail", "baseline", W_START)
     bh_spy = go("hold-SPY", c.weekly(c.hold("SPY")), ["SPY"], "gym", "baseline", W_START)
 
     out += ["## 1. Window W, 2012-01-02 .. 2025-11-09", ""]
@@ -205,7 +205,7 @@ def main() -> None:
         for k in ("gym", "harsh"):
             cost_runs.append(go(f"tsmom12@{book}/{k}", TSMOM, syms, k, "robustness", W_START))
     out += [c.table(cost_runs, eras=False), ""]
-    is04 = pair(Book("eu6-is04", EU6_IS04, "nl"), W_START)
+    is04 = pair(Book("eu6-is04", EU6_IS04, "retail"), W_START)
     out += [
         "IS04 (US Treasuries 20+, EUR-hedged; joins 2016) in place of IBGL:",
         "",
@@ -216,7 +216,7 @@ def main() -> None:
     out += ["## 5. Single assets: the filter against holding, slot by slot", ""]
     singles = []
     for eu_sym, us_sym in SINGLE_PAIRS:
-        for sym, costs in ((eu_sym, "nl"), (us_sym, "gym")):
+        for sym, costs in ((eu_sym, "retail"), (us_sym, "gym")):
             t = go(f"tsmom12@{sym}", TSMOM, [sym], costs, "robustness", W_START)
             h = go(f"hold@{sym}", c.weekly(c.hold(sym)), [sym], costs, "baseline", W_START)
             singles += [t, h]
@@ -224,11 +224,11 @@ def main() -> None:
     out += [crash_table(singles), ""]
 
     out += ["## 6. Longer windows (robustness only)", ""]
-    euw09 = pair(Book("euw", EUW, "nl"), NATIVE_START, "-2009")
+    euw09 = pair(Book("euw", EUW, "retail"), NATIVE_START, "-2009")
     usw09 = pair(Book("usw", USW, "gym"), NATIVE_START, "-2009")
     out += ["### Asset classes from 2009-01-02 (native UCITS histories)", ""]
     out += [c.table([*euw09, *usw09]), "", crash_table([*euw09, *usw09]), ""]
-    s00 = pair(Book("eu6-S", EU6_S, "nl"), SPLICE_START, "-2000")
+    s00 = pair(Book("eu6-S", EU6_S, "retail"), SPLICE_START, "-2000")
     u00 = pair(Book("us6", US6, "gym"), SPLICE_START, "-2000")
     out += [
         "### The six from 2000-01-03, spliced (`-S`: US ETFs in EUR before 2008-2010)",
