@@ -178,16 +178,18 @@ and run this repo; open pull requests are listed under "Still open".
   a tested record in other words: its fitted large-move rate is a volatility measure, so the
   rule is a vol-calm re-entry (`bear-legs` #103, `arm3-12`, `vol-calm`).
 - Trend's crash insurance on annual data the project had never used (Jorda-Schularick-Taylor:
-  US 1873-1926, 15 countries 1871-1965; #186): **the 9-of-9 insurance count holds; the timing
-  evidence is not shown** (#192). The annual rule
+  US 1873-1926, 15 countries 1871-1965; #186): **the 9-of-9 insurance count holds; the
+  share-avoided timing evidence is not shown** (#192). The annual rule
   lost less than holding in 9 of 9 effective falls of 25% or more (about 7 independent world
   events): all 31 multi-year falls and 1 of 7 one-year falls; the US contributes one fall, a
   tie. A fixed 62% exposure also scores 9 of 9, so the timing evidence is the share of each fall
   avoided, 0.73 against 0.51 fixed and 0.47 at random dates (p 0.020, 2 of 93 offsets), and the
   premium, 1.17 against 2.23 for holding less. Correction (#192): that timing statistic (p
   0.020) is consistent with the early annual data's lag-1 autocorrelation, of unknown origin:
-  an AR(1) of 0.19 alone gives most of the gap (median +0.20 of the observed +0.32). JST US and
-  Norway are true year-end prices, so averaging is not shown to be the cause.
+  an AR(1) of 0.19 alone gives most of the gap (per-episode share avoided: median gap +0.20
+  against the observed +0.32). Where it could be checked (JST US to 1926, Norway 1921-1965) the
+  prices are year-end, not annual averages, so averaging is not shown to be the cause; the most
+  autocorrelated early periods could not be checked.
 - An anytime-valid sequential (e-value) test for the forward registry (#184, simulation): it
   **does not change power-map-1's answer**; its median stop is about the fixed test's 80%-power
   horizon, and plausible edges stay out of reach within 100 years. On the store's own serial
@@ -208,7 +210,7 @@ and run this repo; open pull requests are listed under "Still open".
   this month's fall times the stock of broker customer receivables over equity value has no
   slope on next month's S&P 500, 1965-2025 (t +0.05, rank 41 of 41; its earlier-dose placebo null
   is off-centre, all 40 placebo t positive). parked-gates-1 counted 97 mechanisms, 23 tested
-  by a strategy, 28 gates (R32 included); corrected by #191 to 101 / 29 / 28 (see "What we know
+  by a strategy, 28 gates (R32 included); corrected by #191 to 101 / 29 / 28; 103 / 29 / 30 after W34 and W35 (see "What we know
   now").
 - A dependence-robust standard error for the forward registry's verdict (#189, engineering):
   **adopted as an improvement, not a fix.** The verdict's standard error now allows a year of
