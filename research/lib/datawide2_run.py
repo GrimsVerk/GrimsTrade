@@ -26,8 +26,26 @@ OUT = dw.ROOT / "research" / "results"
 
 # Documented data errors left out of the counts (the cached source is not changed).
 # BoE $/£ (M15) 1857-10 reads 8.924 between 4.876 (1857-09) and 4.843 (1857-11): a one-month
-# spike found in the fx-peg-1 review. With it, the counts held a 48% "fall" 1857-10..1861-01.
+# spike found in the fx-peg-1 review (gold par is about 4.87; a rate 83% above par is impossible
+# under convertibility, even in the 1857 panic). With it, the counts held a 48% "fall"
+# 1857-10..1861-01. The report header states each exclusion, built from this list.
 BOE_USD_BAD = [dw.ym(1857, 10)]
+
+
+def exclusion_notes(boe_text: str) -> list[str]:
+    """One report line per excluded month, with the source values around it."""
+    raw = dw.parse_boe_long_csv(boe_text, "usd-gbp-exchange-rate", "fx", "GBR")
+    lv = dict(zip(raw.months, raw.level, strict=True))
+    out = []
+    for m in BOE_USD_BAD:
+        a, x, b = (lv.get(k) for k in (m - 1, m, m + 1))
+        if a is None or x is None or b is None:
+            raise ValueError(f"BoE $/£ {dw.ym_str(m)} or a neighbour is missing")
+        out.append(
+            f"BoE $/£ {dw.ym_str(m)} ({x:.3f} between {a:.3f} and {b:.3f}, a one-month data error)"
+            " is left out (`BOE_USD_BAD`)."
+        )
+    return out
 
 
 def load_all() -> dict[str, list[dw.Monthly]]:
@@ -175,6 +193,8 @@ def main() -> None:
         "no strategy). A market-year counts with at least 6 monthly points; 'new' = not in `SEEN`",
         "(`research/lib/datawide2.py`); falls are peak-to-trough >= 25% of the monthly level, one per",
         "episode, counted when the trough falls in a new year. Months after 2025-10 are dropped.",
+        "",
+        *exclusion_notes((dw.cache_root() / "jst-autocorr-2" / "boe" / "monthly.csv").read_text()),
         "",
         "| Source | Series | Months | New market-years | of which before 1927 | New calendar years | Falls 25%+ in new years | of which before 1927 | Falls 25%+ all years |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---:|",

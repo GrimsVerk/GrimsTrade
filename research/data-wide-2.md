@@ -246,9 +246,11 @@ allowed (total < 3 GB), with a loader in `research/lib/` and an offline test on 
   currencies union 367 -> 379; Norges Bank FX 187 -> 199 new market-years, 96 -> 108 before
   1927, 140 -> 152 new calendar years, 2,232 -> 2,384 months.
 - BoE $/£ spike (#224, found in the fx-peg-1 review): the BoE millennium sheet's $/£ (M15) reads
-  8.924 in 1857-10, between 4.876 (1857-09) and 4.843 (1857-11), a one-month data error. It made
-  a 48% "fall" from 1857-10 to 1861-01 with its trough in a new year. `datawide2_run.py` now
-  leaves that month out (`BOE_USD_BAD`; the cached source is unchanged). Moved: BoE $/£ falls
-  new / all 2 / 3 -> 1 / 2; BoE source row falls in new years 7 -> 6, before 1927 5 -> 4, all
-  years 18 -> 17; currencies union falls 5 -> 4. The remaining $/£ falls are 1809-02..1812-04
-  (27%, new years) and 1864-07..1985-02 (91%, trough in a seen year).
+  8.924 in 1857-10, between 4.876 (1857-09) and 4.843 (1857-11), a one-month data error: gold
+  par is about 4.87, and a sterling rate 83% above par is impossible under convertibility, even
+  in the 1857 panic. It made a 48% "fall" from 1857-10 to 1861-01 with its trough in a new year.
+  `datawide2_run.py` now leaves that month out (`BOE_USD_BAD`; the cached source is unchanged;
+  the results header states the exclusion). Moved: BoE $/£ falls new / all 2 / 3 -> 1 / 2; BoE
+  source row falls in new years 7 -> 6, before 1927 5 -> 4, all years 18 -> 17; currencies union
+  falls 5 -> 4. The remaining $/£ falls are 1809-02..1812-04 (27%, new years) and
+  1864-07..1985-02 (91%, trough in a seen year).

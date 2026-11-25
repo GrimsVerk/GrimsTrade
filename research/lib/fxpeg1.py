@@ -76,9 +76,9 @@ def ym_parse(s: str) -> int:
 
 
 def label_month(x: object) -> int | None:
-    """Month of a row label: an Excel serial (any value 1..1e5, unlike datawide2's parser,
-    which drops serials below 10,000 and so Table A2's 1914-1927 rows), 'YYYY MM', 'YYYYMmm'
-    or an ISO date."""
+    """Month of a row label: an Excel serial (any value 1..1e5; Table A2 labels 1914-1927
+    with serials below 10,000, which datawide2's parser also reads since #224), 'YYYY MM',
+    'YYYYMmm' or an ISO date."""
     if isinstance(x, int | float) and 1 <= x < 1e5:
         d = dw.excel_serial(float(x))
         return ym(d.year, d.month)
