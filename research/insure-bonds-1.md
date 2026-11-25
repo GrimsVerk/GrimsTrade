@@ -159,9 +159,9 @@ the regeneration are in eng-nits-1 (#218).
 
 ## Logged
 
-`tries.md`: 1 `note` row (the before-scoring table) and 19 `insure-check` rows, idea
+`tries.md`: 1 `note` row (the before-scoring table) and 18 `insure-check` rows, idea
 `insure-bonds-1`, variants `tsmom12m@insure-bonds-*`: two card readings, three amendment
-readings and 14 checks (the two card check 1 rows, `...-cash-discount-rate`, carry the Sharpe
+readings and 13 checks (the two card check 1 rows, `...-cash-discount-rate`, carry the Sharpe
 with cash at the discount rate when out). In the run commit, checks 3, 5, 7 and 8 were run at
 A1/A2's 5% instead of the card's 10% (at 10% they have 0-2 falls); check 2 stays at 10%. Sharpe = mean / sd of monthly rule returns x sqrt(12), cash at 0. Several
 rows share one return series: the threshold only changes the episodes, not the rule, so the
