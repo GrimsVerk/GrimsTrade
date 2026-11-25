@@ -263,6 +263,18 @@ def footnote(trials: Trials) -> str:
     )
 
 
+# research/lagcost-1.md, Recommendation 2: its pre-set rule triggered, so the scoreboard says
+# this (docs/DECISIONS.md, 2026-11-24 delayed schedule). Live only, so not in `footnote`.
+LIVE_TIMING_NOTE = (
+    "Timing: the daily run is scheduled for 22:30 UTC, but GitHub starts it at about "
+    "02:00-06:13 UTC the next day. So a strategy that buys coins on its very first decision "
+    "fills that buy one day later than in a 22:30 backtest started the same day. In 1994-2025 "
+    "backtests, leaving out each strategy's first 30 days (a cut chosen after seeing the "
+    "results), the two schedules differed by at most 0.004 Sharpe and 0.27 points of yearly "
+    "return (`research/lagcost-1.md`)."
+)
+
+
 def freshness(history: History) -> str:
     """The newest stored bar per asset, with a loud note on any asset that has fallen behind.
 
@@ -384,6 +396,8 @@ def render(root: Path, history: History, repo: Path = Path(".")) -> str:
         freshness(history),
         "",
         footnote(trials),
+        "",
+        LIVE_TIMING_NOTE,
     ]
     changed = code_changes(root)
     if changed:

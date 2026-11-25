@@ -367,3 +367,19 @@ def test_the_scoreboard_has_a_column_that_is_fair_to_late_starters(tmp_path: Pat
     assert "| 0 of 1 |" in rows["ts_momentum"]  # the same thing: not ahead, whatever the Return
     assert "| 1 of 1 |" in rows["xs_momentum"]  # cash beat a sideways BTC bought with costs
     assert 'compare rows by "Beats yardsticks"' in board
+
+
+def test_the_scoreboard_states_the_live_start_delay_and_the_backtest_does_not(
+    tmp_path: Path,
+) -> None:
+    """research/lagcost-1.md, Recommendation 2 (its pre-set rule triggered): live runs start
+    02:00-06:13 UTC, so a first coin entry fills one day later than in a 22:30 backtest. The
+    scoreboard says so, next to the other footnotes, even before any decision."""
+    note = report.LIVE_TIMING_NOTE
+    assert "02:00-06:13 UTC" in note and "one day later than in a 22:30 backtest" in note
+    empty = report.render(tmp_path, {}, tmp_path)
+    assert "No decisions yet." in empty and note in empty
+    lines = empty.splitlines()
+    trials = report.count_tries(tmp_path, tmp_path)
+    assert lines.index(note) == lines.index(report.footnote(trials)) + 2
+    assert note not in report.render_backtest(tmp_path, {}, tmp_path)
