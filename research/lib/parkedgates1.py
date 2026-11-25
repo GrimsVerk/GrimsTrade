@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import math
 import os
+import subprocess
 import sys
 import urllib.request
 from collections.abc import Callable, Hashable, Sequence
@@ -50,10 +51,18 @@ YFn = Callable[[str, int], float]
 
 
 def _get(url: str) -> bytes:
+    """GET with a generic User-Agent; FRED's graph CSV times out under urllib from this
+    machine (2026-11-25), so curl with its default User-Agent is the fallback."""
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        data: bytes = r.read()
-    return data
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            data: bytes = r.read()
+        return data
+    except TimeoutError:
+        out = subprocess.run(
+            ["curl", "-sS", "-f", "-m", "120", url], check=True, capture_output=True
+        )
+        return out.stdout
 
 
 def fetch() -> None:
