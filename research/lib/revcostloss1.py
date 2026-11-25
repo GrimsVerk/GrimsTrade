@@ -444,6 +444,11 @@ def where_rows(sets: Sequence[tuple[str, Cell]]) -> list[str]:
     return head + out
 
 
+def hit_txt(w: np.ndarray, e: np.ndarray, m: np.ndarray) -> str:
+    k = int((e & m).sum())
+    return f"{(w & e & m).sum() / k:.2f} (n {k:,})" if k else "n/a"
+
+
 def speed_rows(sets: Sequence[tuple[str, Cell]]) -> list[str]:
     head = [
         "| Set | Event weeks | H, all | H in fast falls (<= 92 d) | medium (93-365 d) | slow "
@@ -456,14 +461,10 @@ def speed_rows(sets: Sequence[tuple[str, Cell]]) -> list[str]:
         e = np.concatenate(c.es).astype(bool)
         sp = np.concatenate(c.speeds)
 
-        def hr(m: np.ndarray) -> str:
-            k = int((e & m).sum())
-            return f"{(w & e & m).sum() / k:.2f} (n {k:,})" if k else "n/a"
-
         out.append(
             f"| {name} | {int(e.sum()):,} | {(w & e).sum() / max(e.sum(), 1):.2f} | "
-            + " | ".join(hr(sp == k) for k in (1, 2, 3))
-            + f" | {hr(sp == 0)} |"
+            + " | ".join(hit_txt(w, e, sp == k) for k in (1, 2, 3))
+            + f" | {hit_txt(w, e, sp == 0)} |"
         )
     return head + out
 
