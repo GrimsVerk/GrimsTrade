@@ -24,7 +24,7 @@ import bisect
 import json
 import traceback
 from collections.abc import Mapping, Sequence
-from datetime import UTC, date, datetime, time, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -105,12 +105,6 @@ def fill_problems(
     return out, ruled
 
 
-def _rate_on(steps: gym.Rates, known: Sequence[datetime], day: date) -> float:
-    """The annual cash rate on UTC day `day`: the newest known at the day's start, never < 0."""
-    i = bisect.bisect_right(known, datetime.combine(day, time(0, 0), tzinfo=UTC))
-    return max(steps[i - 1][1], 0.0) if i else 0.0
-
-
 def rebuild_state(
     fills: Sequence[Fill],
     ruled: Sequence[tuple[float, float]],
@@ -124,8 +118,9 @@ def rebuild_state(
     """What `state/portfolio.json` must hold for one book, rebuilt from its fills at the rule
     prices and fees: cash and units move with each fill, a distribution pays the units held
     before its ex-date's open, and from the first decision's day each day's closing cash earns
-    that day's rate / 365 (the marked day not yet: it is not over). Also returns problems: cash
-    or units below zero at any point."""
+    that day's rate / 365 (the marked day not yet: it is not over). The day's rate and its
+    interest come from `gym.cash_rate` / `gym.interest`, so the two cannot drift; which days
+    accrue is re-derived here. Also returns problems: cash or units below zero at any point."""
     events: list[tuple[datetime, int, str, float, float]] = []  # time, order, symbol, qty, cash
     for f, (px, fee) in zip(fills, ruled, strict=True):
         flow = -f.qty * px - fee
@@ -145,7 +140,7 @@ def rebuild_state(
     day = first.date() if first is not None and marked_on is not None else None
     for t, order, sym, qty, amount in events:
         while day is not None and marked_on is not None and t.date() > day and day < marked_on:
-            cash += cash * _rate_on(steps, known, day) / gym.DAYS_PER_YEAR
+            cash += gym.interest(cash, gym.cash_rate(steps, day, known))
             day += timedelta(days=1)
         if order == 0:  # a distribution: on the units held before this open
             if (paid := units[sym] * amount) > 0:
@@ -156,7 +151,7 @@ def rebuild_state(
             low_cash = min(low_cash, cash)
             low_units = min(low_units, units[sym])
     while day is not None and marked_on is not None and day < marked_on:
-        cash += cash * _rate_on(steps, known, day) / gym.DAYS_PER_YEAR
+        cash += gym.interest(cash, gym.cash_rate(steps, day, known))
         day += timedelta(days=1)
     last_close = {s: bars[-1].close for s, bars in history.items() if bars}
     equity = cash + sum(q * last_close.get(s, 0.0) for s, q in units.items())
