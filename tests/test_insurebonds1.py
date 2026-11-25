@@ -96,3 +96,15 @@ def test_world_gap_uses_the_given_threshold(m: ModuleType) -> None:
     rng = np.random.default_rng(0)
     assert math.isnan(m.world_gap([raw], [x], rng, 0.25))
     assert math.isfinite(m.world_gap([raw], [x], np.random.default_rng(0), 0.02))
+
+
+def test_float_noise_in_insurance_is_a_tie(m: ModuleType) -> None:
+    # a world where the rule is in throughout a one-month fall: I must be exactly 0
+    months = list(range(m.ym(1900, 1), m.ym(1900, 1) + 120))
+    r = np.full(120, 0.003)
+    r[0] = np.nan
+    r[100] = -0.08  # one-month fall while the 12-month trend is up
+    s = m.i17.build_seg("t", months, r)
+    ev = m.evaluate("t", [s], 0.05, 0.05)
+    assert [e.ins for e in ev.eps] == [0.0]
+    assert ev.k == 0

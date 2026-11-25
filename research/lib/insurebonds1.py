@@ -414,6 +414,22 @@ def before_rows(
     return out
 
 
+TIE = 1e-9  # log points; |I| below this is floating-point noise of a cumulative sum
+
+
+def evaluate(label: str, segs: Sequence[i17.Seg], down: float, up: float) -> i17.Eval:
+    """`insure1709.evaluate`, with I (and I with cash) set to exactly 0 where the rule held
+    throughout the fall: insure1's sum of log differences leaves ~1e-14 there, which its sign
+    test and headline count would otherwise score as a win (or loss) instead of a tie."""
+    ev = i17.evaluate(label, segs, down, up)
+    for e in ev.eps:
+        if abs(e.ins) < TIE:
+            e.ins = 0.0
+        if abs(e.ins_tb) < TIE:
+            e.ins_tb = 0.0
+    return ev
+
+
 # --- null worlds at a given threshold ---
 
 
@@ -573,7 +589,7 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
     ] + [(f"A{j + 1}", lab, a, lab) for j, (lab, a) in enumerate(amend)]
     amend_evs = []
     for tag, _, s, title in readings:
-        ev = i17.evaluate(s.name, s.segs, s.d, s.d)
+        ev = evaluate(s.name, s.segs, s.d, s.d)
         if sum(e.ins != 0 for e in ev.eps) < 5:
             nl = None
             v = "Too few falls"
@@ -633,18 +649,18 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
     nd, cd = amend[0][1].d, amend[1][1].d  # checks at A1/A2's 5% (at 10% they are empty)
     checks.append((
         "norway perpetuity",
-        i17.evaluate("Norway, perpetuity total return, 10%", make_segs(
+        evaluate("Norway, perpetuity total return, 10%", make_segs(
             "norway", tr_levels(d.nor_y, perp_return), d.nor_cash), nor.d, nor.d),
     ))  # fmt: skip
     checks.append((
         "consols price only",
-        i17.evaluate("consols, price only (1/y), 5%", make_segs(
+        evaluate("consols, price only (1/y), 5%", make_segs(
             "consols", tr_levels(d.con_y, price_return), d.con_cash), cd, cd),
     ))  # fmt: skip
     for s in (nor, con):
         for x in neighbours(s.d) + [0.075]:
             checks.append(
-                (f"{s.name} {x:.1%}", i17.evaluate(f"{s.name}, falls of {x:.1%}", s.segs, x, x))
+                (f"{s.name} {x:.1%}", evaluate(f"{s.name}, falls of {x:.1%}", s.segs, x, x))
             )
     for lab, lo, hi in (
         ("1822-1914", NOR_LO, ym(1914, 12)),
@@ -652,16 +668,16 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
     ):
         segs = make_segs("norway", nor.lev, d.nor_cash, lo=lo, hi=hi)
         if segs:
-            checks.append((f"norway {lab}", i17.evaluate(f"Norway {lab} alone, 5%", segs, nd, nd)))
+            checks.append((f"norway {lab}", evaluate(f"Norway {lab} alone, 5%", segs, nd, nd)))
     checks.append((
         "norway A1 GOV 1820-1920",
-        i17.evaluate("Norway A1 GOV 1820-1920 (overlapping), 5%", make_segs(
+        evaluate("Norway A1 GOV 1820-1920 (overlapping), 5%", make_segs(
             "norway", tr_levels(d.gov_y, par_return), d.nor_cash), nd, nd),
     ))  # fmt: skip
     for s, a in ((nor, amend[0][1]), (con, amend[1][1])):
         checks.append((
             f"{s.name} lag 1",
-            i17.evaluate(f"{s.name}, signal one month older (stale check), 5%",
+            evaluate(f"{s.name}, signal one month older (stale check), 5%",
                          make_segs(s.name, s.lev, s.cash, lag=1), a.d, a.d),
         ))  # fmt: skip
 
