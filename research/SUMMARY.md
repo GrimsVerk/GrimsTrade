@@ -1,8 +1,8 @@
-# Research summary (2026-11-25, night 5)
+# Research summary (2026-11-25, night 5, updated after the morning merges)
 
 The live rule is `tsmom12`: hold an asset only while its price is above where it was a year ago,
 otherwise cash. "Sharpe" below means return per unit of risk (higher is better). Agents now merge
-and run this repo; 7 pull requests are open (listed under "Still open").
+and run this repo; open pull requests are listed under "Still open".
 
 ## What we know now
 
@@ -16,7 +16,8 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   1966: 17 of 18, not independent of the US falls (#90). It is cheaper than simply holding less
   in direction in every era and market, but statistically shown only for 1927-1961 and the
   developed-market price indices; since 2002 not shown (p 0.19). Out of sample on annual data
-  for 1870-1965 it holds, narrowly on timing and in slow falls only (#186). On the S&P 500 since
+  for 1870-1965 it holds in slow falls only (#186); its timing statistic is consistent with the
+  early annual data's autocorrelation, so the timing part there is not shown (#192). On the S&P 500 since
   1986 it was far cheaper insurance than buying puts (#160). Scored as a crash warning, the exit
   has real skill on US stocks since 1927 (hit rate 0.49, false-alarm rate 0.21; Peirce score
   +0.28 against -0.01 for the same warnings at random dates) and none on gold, bonds or coins
@@ -103,19 +104,20 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   fails the bar (z 2.75, IR +0.31; momentum's cost decides). Since 1994 its alpha is
   insignificant (z 0.75), negative in the 2010s. Managing it by market volatility does not help
   (#179). It needs shorts in any case (B7).
-- **Borrowed ideas: 101 mechanisms listed, 29 tested by a strategy, none passed; 28 gates, one
+- **Borrowed ideas: 103 mechanisms listed, 29 tested by a strategy, none passed; 30 gates, one
   kill-only pass, killed by its own replication** (many gates can only kill an idea, never pass
   one, by design: few independent episodes; #124). The pass was W32 `drought-inflation`
   (t -3.71, rank 1 of 41 on TLT 2002-2025); its replication R32 on the 10-year yield 1962-2002
   showed nothing (t -0.19, rank 21) (#188). Tonight's wide-17 to wide-20 added 7 (#169, #171,
-  #173, #176), parked-gates-1 2 mechanisms and 3 gates (#188); every gate is listed in
-  [`gate-null.md`](gate-null.md). A bookkeeping pass (#191) applied the rule the count states
+  #173, #176), parked-gates-1 2 mechanisms and 3 gates (#188), and the morning merges two
+  more gates, both dead: W34 `panic-words` (#193) and W35 `solar-max-recession` (#194); every
+  gate is listed in [`gate-null.md`](gate-null.md). A bookkeeping pass (#191) applied the rule the count states
   (a mechanism enters once it gets a gate or a strategy test; descriptive re-scores do not) and
   added six strategy tests the count had missed: `vm-style-book` (#179), the century style
   book (#170), Hedge across the books (#175) and `coin-drift-run` (#157, #190; read as one
   mechanism with `cost-band` the count is 100 / 28), each a new mechanism, and two of mechanisms
   already counted: the strategy form of `seasonal-20y` (#148; listed by survey-4) and
-  `turbulence-1` (#134; wide-1's M1, which collapsed into `turbulence`). Family bar for the next strategy test: p < 0.10 / 101 = 0.00099. New candidates must pass two
+  `turbulence-1` (#134; wide-1's M1, which collapsed into `turbulence`). Family bar for the next strategy test: p < 0.10 / 103 = 0.00097. New candidates must pass two
   filters first: not announced, not driven by price (#109). A literature survey listed 11 more
   from 2024-2026, none tested by it (#177).
 
@@ -176,13 +178,16 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   a tested record in other words: its fitted large-move rate is a volatility measure, so the
   rule is a vol-calm re-entry (`bear-legs` #103, `arm3-12`, `vol-calm`).
 - Trend's crash insurance on annual data the project had never used (Jorda-Schularick-Taylor:
-  US 1873-1926, 15 countries 1871-1965; #186): **holds, narrowly on timing.** The annual rule
+  US 1873-1926, 15 countries 1871-1965; #186): **the 9-of-9 insurance count holds; the timing
+  evidence is not shown** (#192). The annual rule
   lost less than holding in 9 of 9 effective falls of 25% or more (about 7 independent world
   events): all 31 multi-year falls and 1 of 7 one-year falls; the US contributes one fall, a
   tie. A fixed 62% exposure also scores 9 of 9, so the timing evidence is the share of each fall
   avoided, 0.73 against 0.51 fixed and 0.47 at random dates (p 0.020, 2 of 93 offsets), and the
-  premium, 1.17 against 2.23 for holding less. Caveat: lag-1 autocorrelation of 0.19 in the
-  early sample (possible index smoothing) would bias the share avoided up.
+  premium, 1.17 against 2.23 for holding less. Correction (#192): that timing statistic (p
+  0.020) is consistent with the early annual data's lag-1 autocorrelation, of unknown origin:
+  an AR(1) of 0.19 alone gives most of the gap (median +0.20 of the observed +0.32). JST US and
+  Norway are true year-end prices, so averaging is not shown to be the cause.
 - An anytime-valid sequential (e-value) test for the forward registry (#184, simulation): it
   **does not change power-map-1's answer**; its median stop is about the fixed test's 80%-power
   horizon, and plausible edges stay out of reach within 100 years. On the store's own serial
@@ -239,13 +244,21 @@ fewer trades, not drift), the register fixes (#158), `e4` and own-vol on non-equ
 (#159), trend against puts (#160) and puts while trend is in (#165: worse than `tsmom12`,
 z -1.67).
 
+Merged the morning after (2026-11-25): whether insure-1870-1's timing is a smoothed-index
+artefact (#192: partly; most of the timing gap is what the early data's autocorrelation alone
+produces, but the checked sources are year-end, so smoothing is not shown; correction above),
+the newspaper "panic" share as a premium dose (#193, W34: **fails**, wrong sign, t +1.19, rank
+37 of 41), and the sunspot cycle as a recession dose (#194, W35: **fails**, t -0.87, rank 3 of
+41; a cyclic dose needs another placebo family, written into `gate-null.md`).
+
 ## Still open or running
 
-- Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
-  environment (#149), the daily run reconciling its own record (#153), the scoreboard's
-  live-start-delay note (#155), daily-run robustness tests for misbehaving sources (#161).
-- Tonight's lanes still open: the night lead's handoff (#185), this summary update (#191), whether
-  insure-1870-1's timing result is a smoothed-index artefact (#192).
+- The 2026-11-25 daily run passed (first run on night 5's main; its snapshot matches the gym on
+  `main` for all 12 books). Then merged one at a time: one replay engine for the gym and the
+  learning environment (#149), the daily run reconciling its own record (#153), the
+  scoreboard's live-start-delay note (#155), daily-run robustness tests for misbehaving sources
+  (#161; its two strict xfails are the next engineering lane).
+- The night lead's handoff (#185) lands with this update.
 - Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168, #178); the halving
   window's one forward score (#137). `coin-drift-run` is dead: not confirmed (#157), then killed
   on six unseen coins (#190).
@@ -276,7 +289,8 @@ None of the rows is a proven edge.
   `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `rev-costloss-1.md`,
   `tick-tier-1.md`, `omori-1.md`, `insure-1870-1.md`, `evalue-forward-1.md`,
   `breadth-anatomy-1.md`, `wide-17.md` to `wide-20.md`, `survey-7b.md`, `data-long-4.md`,
-  `parked-gates-1.md`, `forward-se-1.md`, `coin-drift-2.md`.
+  `parked-gates-1.md`, `forward-se-1.md`, `coin-drift-2.md`, `jst-autocorr-1.md`,
+  `panic-words-1.md`, `wide-21.md`.
 - Shorts: #83, #89. Coins: #69, #82. Euro books: #59, #62, #63, #68, #73, #77, #80, #85.
 - Corrections after the independent review (#119): [`errata-2.md`](errata-2.md).
 - Earlier runs (machine learning, macro, carry, papers): [`README.md`](README.md) and this
