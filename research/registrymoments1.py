@@ -15,7 +15,7 @@ fat tails, slow dependence) are reported, not used for sizing.
 
 Deterministic: numpy Generator (PCG64) seeded from SeedSequence((SEED, cell)), one stream per
 cell, never consecutive LCG seeds. Vectorised measurement checked against
-`forward.measure_lrv` record by record. Prints markdown. About 20 s.
+`forward.measure_lrv` record by record. Prints markdown. About 10 s.
 """
 
 from __future__ import annotations

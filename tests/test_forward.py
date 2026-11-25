@@ -773,3 +773,19 @@ def test_freeze_refuses_unmeasured_or_understated_moments(repo: Path) -> None:
     # old lines (no skew, kurtosis, lrv) still read and score with the defaults
     bare = {k: v for k, v in good.items() if k not in ("skew", "kurtosis", "lrv")}
     assert forward.plan_of(bare) == forward.Plan("sharpe", 0.79, 52)
+
+
+def test_a_two_valued_record_meets_the_kurtosis_bound_and_is_measured() -> None:
+    """Any two-valued record has kurtosis exactly 1 + skew^2; float rounding of the measured
+    pair sits just below it for many win shares. `entry` must still take the measurement."""
+    for pct in range(5, 96):
+        wins = round(260 * pct / 100)
+        train = [0.02] * wins + [-0.01] * (260 - wins)
+        m = forward.measure_moments(train)
+        assert m["kurtosis"] == pytest.approx(1 + m["skew"] ** 2, rel=1e-9)
+        e = make_sharpe(forward.Plan("sharpe", effect=0.79, per_year=52), train)
+        assert e["moments_train"] == m
+        forward.plan_of(e)  # the line reads back as a valid plan
+    # the bound itself still refuses an impossible pair
+    with pytest.raises(ValueError, match="kurtosis"):
+        forward.Plan("sharpe", effect=0.79, per_year=52, skew=-1.0, kurtosis=1.99)

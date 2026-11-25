@@ -128,7 +128,9 @@ class Plan:
             raise ValueError("the effect to detect must be positive (one-sided test)")
         if not self.lrv >= 1:
             raise ValueError("lrv (long-run variance ratio) must be at least 1; write 1 if lower")
-        if not self.kurtosis >= 1 + self.skew**2:
+        # equality holds for any two-valued record; a relative tolerance keeps float rounding of
+        # a measured pair (`measure_moments`) from failing it
+        if not self.kurtosis >= (1 + self.skew**2) * (1 - 1e-12):
             raise ValueError("raw kurtosis is at least 1 + skew^2 (3 for a normal distribution)")
 
 

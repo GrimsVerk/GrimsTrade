@@ -112,8 +112,8 @@ standard error rejected a true null 4-9% of the time at nominal 2.5% (evalue-for
   ten. The level 0.65 (`LRV_LEVEL`) is the smallest on a 0.05 grid at which the expected power
   over the measurement noise reaches 0.80 in every AR(1) cell (phi 0 to 0.6, five and ten years
   of weekly values, 4,000 records each, `research/registrymoments1.py`, tables in
-  `research/results/registry-moments-1.md`): 0.809-0.838 there, against 0.703-0.771 for the
-  point estimate. Cost: a line with no dependence waits on average 1.45 times (five years of
+  `research/results/registry-moments-1.md`): 0.809-0.838 in the dependent cells (phi 0.2 to
+  0.6), against 0.703-0.771 for the point estimate; 0.869-0.883 with no dependence. Cost: a line with no dependence waits on average 1.45 times (five years of
   train) or 1.28 times (ten) the sample it needs, up from 1.20 / 1.14. Not fixed by it: 8 events
   a year with strong dependence (0.77 at phi 0.5) and dependence slower than a year (0.57: the
   one-year window does not see it; the caller must set a larger `lrv`).

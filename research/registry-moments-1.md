@@ -5,7 +5,7 @@ Synthetic records only: no store data, no backtest, no held-out year read. Code
 `src/grimstrade/forward.py` (`lrv_upper`, `LRV_LEVEL`, `measure_lrv`, `k_factor`,
 `measure_moments`, `check_moments`), tests `tests/test_forward.py`, sizing script
 [`registrymoments1.py`](registrymoments1.py), tables
-[`results/registry-moments-1.md`](results/registry-moments-1.md) (about 5 s, deterministic).
+[`results/registry-moments-1.md`](results/registry-moments-1.md) (about 10 s, deterministic).
 Decision: `docs/DECISIONS.md`, 2026-11-25; rules: `docs/forward-registry.md`.
 
 ## Answer

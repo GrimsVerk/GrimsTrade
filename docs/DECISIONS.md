@@ -13,7 +13,9 @@ Settled decisions and why, newest first. Don't relitigate; update an entry if th
   in every weekly AR(1) cell (phi 0, 0.2, 1/3, 0.5, 0.6; five and ten years; 4,000 records).
   With the point estimate it was 0.70-0.77 for every dependent cell (a power target met only
   on average across lines, the review of #200); with 0.65 it is 0.81-0.84. The level is a
-  tuning value, not a coverage (the value is below the truth in 35-39% of records). Why an
+  tuning value, not a coverage (the value is below the truth in 35-39% of records). The
+  intended effect: dependent lines now wait on average 1.16-1.36 times the sample their true
+  lrv needs (was 0.94-1.04 times). Why an
   upper value and not shrinkage toward a prior: shrinking pulls the high measurements down,
   which is the direction that under-sizes the dependent lines; and no prior for the next rule's
   lrv is known well enough (the store's variance ratios run 1 to 3.3). Cost: a line with no
