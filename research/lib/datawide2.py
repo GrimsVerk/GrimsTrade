@@ -150,7 +150,9 @@ def read_xlsx_rows(path: Path, sheet: str | int = 0) -> list[list[object]]:
 
 
 def excel_serial(x: float) -> date:
-    return date(1899, 12, 30) + timedelta(days=int(x))
+    """Date of an Excel (1900 date system) serial. Excel counts a fictitious 1900-02-29
+    (serial 60), so serials 1..59 start from 1899-12-31 and later ones from 1899-12-30."""
+    return date(1899, 12, 31 if x < 60 else 30) + timedelta(days=int(x))
 
 
 # ---------------------------------------------------------------- Yale ICF
@@ -243,7 +245,11 @@ _YM = re.compile(r"^\s*(1[6-9]\d\d|20\d\d)\s*[: ]\s*(\d{1,2})\s*$")
 
 
 def _ym_label(x: object) -> int | None:
-    if isinstance(x, int | float) and 1e4 < x < 1e5:  # Excel serial date
+    # Excel serial date of any size (1 = 1900-01-01, 99,999 = 2173): Norges Bank Table A2 labels
+    # 1914-01..1927-04 with serials 5,145..9,982. Before the dw2-dates-1 fix only serials above
+    # 10,000 (1927-05-18) were read. A bare year number (1914.0) would be read as a serial;
+    # none of the label columns this module reads holds one (dw2-dates-1 checked each sheet).
+    if isinstance(x, int | float) and 1 <= x < 1e5:
         d = excel_serial(float(x))
         return ym(d.year, d.month)
     m = _YM.match(str(x)) if x is not None else None
@@ -310,16 +316,24 @@ def parse_aqr_comlr(rows: Sequence[Sequence[object]], col: int = 1) -> Monthly:
 
 
 def parse_boe_long_csv(
-    text: str, prefix: str, asset: str, market: str = "GBR", *, yield_: bool = False
+    text: str,
+    prefix: str,
+    asset: str,
+    market: str = "GBR",
+    *,
+    yield_: bool = False,
+    drop: Iterable[int] = (),
 ) -> Monthly:
     """Bank of England 'A millennium of macroeconomic data' monthly sheet in the long CSV form
-    (period, year, month, variable_id, ..., value)."""
+    (period, year, month, variable_id, ..., value). Months in `drop` (documented data errors)
+    are left out; the source data are not changed."""
     pts = []
     name = prefix
+    skip = set(drop)
     for r in csv.DictReader(io.StringIO(text)):
         if r["variable_id"].startswith(prefix):
             v = _num(r["value"])
-            if v is not None:
+            if v is not None and ym(int(r["year"]), int(r["month"])) not in skip:
                 pts.append((ym(int(r["year"]), int(r["month"])), v))
                 name = r["variable"]
     if yield_:

@@ -5,14 +5,16 @@ no strategy). A market-year counts with at least 6 monthly points; 'new' = not i
 (`research/lib/datawide2.py`); falls are peak-to-trough >= 25% of the monthly level, one per
 episode, counted when the trough falls in a new year. Months after 2025-10 are dropped.
 
+BoE $/£ 1857-10 (8.924 between 4.876 and 4.843, a one-month data error) is left out (`BOE_USD_BAD`).
+
 | Source | Series | Months | New market-years | of which before 1927 | New calendar years | Falls 25%+ in new years | of which before 1927 | Falls 25%+ all years |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Yale IMM government bonds 1869-1929 | 77 | 32,175 | 2,666 | 2,463 | 2 | 84 | 82 | 88 |
 | Yale IMM common stocks 1869-1929 (file truncated) | 50 | 20,318 | 1,382 | 1,289 | 0 | 88 | 78 | 100 |
 | Yale IMM government bonds, 3+ quotes a month | 49 | 15,402 | 1,271 | 1,162 | 2 | 33 | 32 | 34 |
-| BoE millennium monthly sheet | 4 | 11,526 | 707 | 540 | 262 | 7 | 5 | 18 |
+| BoE millennium monthly sheet | 4 | 11,525 | 707 | 540 | 262 | 6 | 4 | 17 |
 | Yale IMM common stocks, 3+ quotes a month | 23 | 8,606 | 579 | 540 | 0 | 25 | 22 | 28 |
-| Norges Bank exchange rates 1819- | 2 | 2,232 | 187 | 96 | 140 | 3 | 2 | 3 |
+| Norges Bank exchange rates 1819- | 2 | 2,384 | 199 | 108 | 152 | 3 | 2 | 3 |
 | Norges Bank government bond yields 1820- | 1 | 1,142 | 96 | 96 | 46 | 2 | 2 | 2 |
 | Yale NYSE 1815-1925 | 1 | 1,331 | 56 | 56 | 52 | 2 | 2 | 6 |
 | Yale St Petersburg SE 1865-1917 | 1 | 597 | 50 | 50 | 2 | 4 | 4 | 5 |
@@ -27,7 +29,7 @@ Union across sources (a country-year counted once per asset class; markets by fi
 |---|---:|---:|
 | bond | 2,946 | 88 |
 | commodity | 36 | 2 |
-| fx | 367 | 5 |
+| fx | 379 | 4 |
 | stock | 1,620 | 94 |
 
 ## Per series (sources with up to 60 series; the full list is in the .json)
@@ -197,8 +199,8 @@ Union across sources (a country-year counted once per asset class; markets by fi
 
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
+| NOK in USD 1914- (monthly average) | NOR-USD | 1914-09 | 2017-07 | 1235 | 103 | 1 / 1 |
 | NOK in GBP 1819-1914 (Oslo, end of month) | NOR | 1819-04 | 1914-12 | 1149 | 96 | 2 / 2 |
-| NOK in USD 1914- (monthly average) | NOR-USD | 1927-05 | 2017-07 | 1083 | 91 | 1 / 1 |
 
 ### SNB Swiss equity 1924-1997
 
@@ -223,7 +225,7 @@ Union across sources (a country-year counted once per asset class; markets by fi
 | Series | Market | First | Last | Months | New years | Falls new / all |
 |---|---|---|---|---:|---:|---:|
 | BoE Long-term consols yield 1753-2015, corrected for Goschen's conversion issues | GBR | 1753-08 | 2017-01 | 3162 | 206 | 1 / 3 |
-| BoE $/£ exchange rate | GBR | 1791-01 | 2017-01 | 2713 | 180 | 2 / 3 |
+| BoE $/£ exchange rate | GBR | 1791-01 | 2017-01 | 2712 | 180 | 1 / 2 |
 | BoE Monthly corporate bond yields 1854-2015 | GBR-corp | 1854-01 | 2016-12 | 1956 | 163 | 2 / 2 |
 | BoE Spliced monthly share price index weighted by market capitalisation | GBR | 1709-04 | 2017-02 | 3695 | 158 | 2 / 10 |
 
