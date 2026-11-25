@@ -31,7 +31,8 @@ checked with `ledger.check_append_only`, the same check the paper-trail ledger g
 | `params`, `data` | the rule's parameters; its data source, universe and mode (`replayable` or `live`) |
 | `rule_hash` | sha256 over `code`, `params` and `data` (canonical JSON): the rule's fingerprint |
 | `metric` | `sharpe` (per-period values, annualised), `mean` (per-event values) or `win_rate` (share of events above 0, against 1/2) |
-| `effect`, `sd`, `skew`, `kurtosis` | the effect assumed true, used for power (and the noise, for `mean`) |
+| `effect`, `sd`, `skew`, `kurtosis` | the effect assumed true, used for power (and the noise, for `mean`); skew and kurtosis enter only the `sharpe` sample |
+| `moments_train` | `sharpe` only: skew and kurtosis measured on the train record (n, skew, kurtosis, sha256 of the values); `freeze` refuses a line without it or with a smaller Mertens k |
 | `lrv`, `lrv_train`, `se` | long-run variance ratio used for the sample (`mean`, `sharpe`), its measurement on the train record (`freeze` refuses a line without one), and the standard-error rule |
 | `per_year` | observations a year (52 weekly bars, 8 FOMC meetings, ...) |
 | `alpha`, `power` | one-sided significance level and power, fixed in advance |
@@ -102,6 +103,31 @@ standard error rejected a true null 4-9% of the time at nominal 2.5% (evalue-for
   `train`, with a `lrv_train` that is not this record's, or with a `lrv` below it. A caller may
   set a larger `lrv` (dependence longer than a year, which a one-year window cannot see), never
   a smaller one. Lines without `lrv` (none frozen) read as 1. `win_rate` does not use `lrv`.
+- **The measured lrv is an upper value, not the estimate** (lane `registry-moments-1`). Five
+  years of weekly values measure a true lrv of 3 with sd about 1.4, so a line sized with the
+  point estimate gets an expected power of 0.70-0.77 instead of 0.80 whenever it is dependent.
+  `measure_lrv` keeps the estimate as `point` and sets `lrv` = max(1, `lrv_upper(point, nu)`):
+  point nu / chi2_nu(1 - 0.65), nu = 1.5 / b the verdict's own fixed-b degrees of freedom
+  (Wilson-Hilferty quantile). 1.35 times the estimate at five years of weekly values, 1.21 at
+  ten. The level 0.65 (`LRV_LEVEL`) is the smallest on a 0.05 grid at which the expected power
+  over the measurement noise reaches 0.80 in every AR(1) cell (phi 0 to 0.6, five and ten years
+  of weekly values, 4,000 records each, `research/registrymoments1.py`, tables in
+  `research/results/registry-moments-1.md`): 0.809-0.838 in the dependent cells (phi 0.2 to
+  0.6), against 0.703-0.771 for the point estimate; 0.869-0.883 with no dependence. Cost: a line with no dependence waits on average 1.45 times (five years of
+  train) or 1.28 times (ten) the sample it needs, up from 1.20 / 1.14. Not fixed by it: 8 events
+  a year with strong dependence (0.77 at phi 0.5) and dependence slower than a year (0.57: the
+  one-year window does not see it; the caller must set a larger `lrv`).
+- **Skew and kurtosis are measured too** (`sharpe` only). `measure_moments` takes the train
+  record's population skew and raw kurtosis (`stats.moments`); `entry` compares Mertens' k =
+  1 - skew sr + (kurtosis - 1)/4 sr^2 at the plan's own per-period Sharpe (`k_factor`) for the
+  plan's pair and the measured pair, and takes the measured pair when the plan's k is smaller
+  (more optimistic). A caller may assume a larger k (a worse tail than the record shows), never
+  a smaller one; `freeze` refuses (`MomentsNotMeasured`) a `sharpe` line without
+  `moments_train`, with one from other values, or with a k below the measured one. No upper
+  value here: on a crash-prone weekly record (skew -1, kurtosis 6.5) the measured k has sd
+  0.02-0.10 around a true 1.08-1.27 (Sharpe 0.5-1.5), so it moves the sample by a few percent
+  where lrv moves it by a third. `mean` (its sample uses `sd`, not the moments) and `win_rate`
+  measure no moments; lines without the fields read skew 0, kurtosis 3.
 - Measured level (research/forward-se-1.md): on 52-week block-resampled store nulls it rejects
   4.3-5.8% at 10 years and 3.1-3.6% at 100 years for a difference against `tsmom12` (was
   6.1-6.4% / 4.6-4.7%), 1.0% / 2.3% for `tsmom12` against zero (was 8.1% / 8.3%; the upper test
