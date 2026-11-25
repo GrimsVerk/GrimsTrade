@@ -1,6 +1,6 @@
 # Card insure-bonds-1: does trend's crash insurance hold on long government-bond histories?
 
-Lane `insure-bonds-1`, written 2026-11-25 22:55-23:10 UTC, **before any number on the tested
+Lane `insure-bonds-1`, written 2026-11-25 22:40-22:54 UTC, **before any number on the tested
 series was computed** (no yield, return, level, fall count, autocorrelation, rule position or
 episode). Branch `insure-bonds-1`. Research only: fake money, keyless public data, no change to
 the gym, the daily runner or the live strategies. Train data only (everything is before 1985).
