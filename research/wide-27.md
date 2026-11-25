@@ -36,15 +36,13 @@ operations (release blackouts), central-bank staff research, spectrum management
 route networks, postal systems, measurement standards (statistical methodology changes) and
 information science (attention, one duplicate).
 
-**Count carried in** (provisional): `main` after #221 reads **109 mechanisms, 29 tested by a
-strategy, none passed; 37 gates, two kill-only passes (W32, W36), each killed by its
-replication (R32, R36).** wide-26 (#223, open) adds +1 mechanism and +2 gates if merged first.
-As in wide-12 .. wide-26, only mechanisms that get a gate or a strategy test enter the count.
+**Count carried in** from `main` after #223 = **110 / 29 / 39** (110 mechanisms, 29 tested
+by a strategy, none passed; 39 gates, two kill-only passes (W32, W36), each killed by its
+replication (R32, R36)). As in wide-12 .. wide-26, only mechanisms that get a gate or a strategy test enter the count.
 
 Project-wide bar (`research/register/BAR.md`, as quoted by wide-25 and wide-26: rows through
 2026-11-25 22:31): **N_eff 509 (measured rho 0.55): a new rule needs z >= 4.70 against
-`tsmom12`, Bonferroni p <= 9.8e-5.** Family bar with this run's gate: p < 0.10 / 111 = 0.00090
-(0.10 / 110 = 0.00091 if #223 has not merged).
+`tsmom12`, Bonferroni p <= 9.8e-5.** Family bar with this run's gate: p < 0.10 / 111 = 0.00090.
 
 Method as wide-21 .. wide-26: wide-11's filters F1 (not announced: an unscheduled flow (a) or
 a premium (b)) and F2 (not price-driven; passing only with controls costs 1 point), then
@@ -78,7 +76,14 @@ measurement noise. Found:
   `air-disaster-mood` (crash mood, dead), "archive" hits are data archives, "peer review" hits
   are the literature surveys. Retractions, standards bodies, postal systems: nothing.
 
-## Step 2. Thirteen mechanisms, scored (2026-11-25, written before the card's commit at 23:29 UTC, before any price was read)
+## Step 2. Thirteen mechanisms, scored (2026-11-25, drafted before the card's commit at 23:29:25 UTC, before any price was read)
+
+**Timing, stated plainly (review of #226).** This score table was first pushed at 23:32:47 UTC
+(0f02a1f), after the card (f8f266f, 23:29:25 UTC) and before the real run (23:32-23:33 UTC).
+The `note` rows in `tries.md` carry 23:28, the time the table was drafted, but were committed
+with the result (58722d6). So only the card's commit dates the scoring before any number: it
+names O6 as candidate 6 of this step and the O1 data probes; the rest of the table is as
+drafted, not proven earlier by git.
 
 **Disclosure.** Before this table, format and coverage only (no price, no return, no dose
 value): the sheet name, size and first/last vintage column of the cached Philadelphia Fed
@@ -155,8 +160,8 @@ script-readable country-by-year patent table answered tonight. O6 is next (5) an
 data already cached, dated as the market saw it (the Philadelphia Fed's monthly vintages, each
 as recorded in the middle of its month, after that month's payroll release), and earlier
 years free for a replication. **Gated: O6 as W44 `revision-noise`** (card
-`cards/wide-27.md`, pushed at 23:29 UTC before any return was read; W44 / R44 provisional: W42
-is unused by wide-25, W43 is wide-26's in #223; the merging lead may renumber). The
+`cards/wide-27.md`, pushed at 23:29 UTC before any return was read; W44 / R44 provisional then,
+final after #223 merged: W42 is unused by wide-25, W43 is wide-26's). The
 replication **R44** is fixed in the same card: the same rule on rows 1976-01 .. 1989-09
 (outcomes end before the gate's first). No second gate (W45 not used).
 
@@ -165,7 +170,8 @@ replication **R44** is fixed in the same card: the same rule on rows 1976-01 .. 
 The rule, data, both placebo families, gate, the replication R44 (run only after a pass),
 shown cells, power and guess are in [`cards/wide-27.md`](cards/wide-27.md), pushed before any
 number (commit f8f266f, 23:29 UTC; code and offline tests 4f6885f; steps 1-2 of this write-up
-0f02a1f, 23:32 UTC, all before the real run). Code: `research/lib/wide27.py` (pure functions
+0f02a1f, 23:32 UTC, all before the real run). Card header time corrected 23:45 -> 23:29 in 4f6885f, before any number; no rule text
+changed. Code: `research/lib/wide27.py` (pure functions
 tested offline in `tests/test_wide27.py`). Results: `research/results/revision-noise.md`.
 
 ### Dry run (counts only, 2026-11-25 23:31 UTC)
@@ -201,7 +207,7 @@ is not run** (the card runs it only after a pass). Held-out year untouched. Tabl
 | Rows 1990-01 .. 2007-12 | +6.942 | +1.30 | 216 |
 | Rows 2008-01 .. 2025-07 | -1.598 | -0.66 | 211 |
 
-- **Nothing near a pass.** Every cell has |t| under 1.3. The controls take out about two
+- **Nothing near a pass.** Every cell has |t| at most 1.30. The controls take out about two
   thirds of the raw slope (no controls +1.53, t +0.95): what there is goes with the business
   cycle (revisions are larger when payroll growth is volatile, s12), as F2 warned.
 - **The halves disagree** (1990-2007 +6.9, t +1.30; 2008-2025 -1.6, t -0.66). Not a lead: each
@@ -219,8 +225,10 @@ is not run** (the card runs it only after a pass). Held-out year untouched. Tabl
   over three months) is unlikely.
 - **Event dates.** Vintage v is the Philadelphia Fed's mid-month record, after that month's
   first-Friday payroll release, and the outcome starts in month v+1: no publication-lag
-  look-ahead. The 2013 and 2018-19 shutdowns delayed one or two releases; the vintage
-  convention keeps the delayed values in the month they were public.
+  look-ahead. The 2013 shutdown delayed the September payroll release to 22 October,
+  so the 2013-10 vintage holds September data that were public only on 22 October, after the
+  vintage's nominal mid-month date; harmless here, because row v enters at the end of month v,
+  after the release. In 2018-19 the payroll releases were not delayed (BLS was funded).
 - My guess (b near 0, t between -1.5 and +1.5, middle ranks in both families, the shifted null
   somewhat wider than the surrogates, pass 3%) was right on all four.
 
@@ -233,12 +241,10 @@ One mechanism added and closed by its gate (W44 `revision-noise`). The twelve ot
 parked (O1 on data, O7), filtered or folded and are **not counted**, as in wide-12 ..
 wide-26; each has a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
 
-**Count: +1 mechanism, +1 gate over the count carried in.** Against `main` after #221 (109 /
-29 / 37): **110 mechanisms, 29 tested by a strategy, none passed; 38 gates, two kill-only
-passes (W32, W36), each killed by its replication (R32, R36)**; if wide-26's #223 (+1
-mechanism, +2 gates) merges first: 111 / 29 / 40. Gate id **W44 / R44 provisional** (W42 unused
-by wide-25, W43 taken by wide-26; W45 not used); the summary lane reconciles. Family bar p <
-0.10 / 111 = 0.00090. Published effects tested after publication: none new (no paper on a
+**Count:** carried in from `main` after #223 = 110 / 29 / 39; **after W44 = 111 mechanisms,
+29 tested by a strategy, none passed, 40 gates, two kill-only passes (W32, W36), each killed
+by its replication** (R32, R36). Gate id W44 / R44 (W42 unused by wide-25, W43 is wide-26's;
+W45 not used). Family bar p < 0.10 / 111 = 0.00090. Published effects tested after publication: none new (no paper on a
 revision-size premium in stock returns is known to me; the learning-model channel is
 theory).
 

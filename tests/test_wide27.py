@@ -96,3 +96,21 @@ def test_rank_and_pass_rules() -> None:
     assert w.passes(1.0, 2.1, 2, None)
     assert not w.passes(-1.0, 2.1, 1, 1)
     assert not w.passes(1.0, 1.9, 1, 1)
+
+
+def test_dose_ignores_vintages_after_v() -> None:
+    # 12 years of vintages with noisy revisions; perturbing vintages after v leaves D(v) alone
+    rng = np.random.default_rng(1)
+    start, end = w.mi(1980, 1), w.mi(1993, 1)
+    base = {j: 100.0 * 1.002 ** (j - start) for j in range(start - 24, end)}
+    vs: w.Vintages = {}
+    for v in range(start, end):
+        vs[v] = {j: base[j] * (1 + 0.001 * float(rng.normal())) for j in range(start - 24, v)}
+    d0 = w.dose_series(vs)
+    v = max(d0) - 5
+    later = {u: {j: x * (1 + 0.01 * float(rng.normal())) for j, x in vs[u].items()} for u in vs}
+    vs2 = {u: (later[u] if u > v else vs[u]) for u in vs}
+    d1 = w.dose_series(vs2)
+    assert all(math.isclose(d0[u], d1[u]) for u in d0 if u <= v)
+    assert any(not math.isclose(d0[u], d1[u]) for u in d0 if u > v)
+    assert w.controls(vs, v) == w.controls(vs2, v)

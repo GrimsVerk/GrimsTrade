@@ -370,3 +370,16 @@ passed; 39 gates, two kill-only passes (W32, W36), each killed by its replicatio
 p < 0.10 / 110 = 0.00091.** W43's dose is persistent (acf1 0.94); gate-null-2's proposed
 "both families" rule applied because the card pre-registered it; the two families agreed (surrogates wider, SD 1.25 against
 1.10). W18's dose is sparse (acf1 -0.001); its shifted null is narrower than normal (SD 0.87).
+
+## Count after W44 (wide-27, 2026-11-25)
+
+W44 `revision-noise` (statistical-agency revisions: the 12-month mean of first and second
+payroll revisions, Philadelphia Fed monthly vintages, detrended by its trailing ten years, as a
+data-uncertainty premium on the US market over three months; a provisional id, W42 is unused)
+fails on its t (+0.24, predicted > 0; rank 23 of 41 shifted, 19 of 41 phase surrogates).
+Count after #223 (W43, W18), merged before this one: one more mechanism and one more gate:
+**111 mechanisms, 29 tested by a strategy, none passed; 40 gates, two kill-only passes (W32,
+W36), each killed by its replication; family bar p < 0.10 / 111 = 0.00090.** W44's dose is
+persistent (acf1 0.969); gate-null-2's proposed "both families" rule applied because the card
+adopted it before any number; the two families agreed (shifted SD 1.03 with a wave across
+shifts, surrogates centred, SD 0.96). R44 not run.
