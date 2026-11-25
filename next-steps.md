@@ -50,6 +50,17 @@ privacy leak on a public repo, so per the all-repo rule the lead stopped merging
 CoS. Until the CoS says otherwise: lanes may push branches and open PRs; nobody merges. This
 handoff (#185) is itself unmerged: read it from branch `lead-next-1125`.
 
+**Open PRs at handoff (all unmerged by the CoS's no-merge decision; merge in the daytime once
+the merge-commit offset is fixed):** #185 (this handoff), #149, #153, #155, #161 (held for the
+daily run), #192 jst-autocorr-1 (review result in its PR or the night log), and the last lanes'
+PRs if they finished: panic-words-1, wide-21 (check `gh pr list`; each needs a fresh review
+first if the night log does not say "review: MERGE").
+
+**SUMMARY correction needed after #192 merges:** #186's "holds, narrowly on timing" must say
+the timing statistic (p_S 0.020) is consistent with the early annual data's lag-1
+autocorrelation of unknown origin (an AR(1) of 0.19 alone gives most of the gap; JST US and
+Norway are true year-end prices, so averaging is not shown); the 9-of-9 insurance count stands.
+
 **Lead decision to check (owner may reverse):** #189 changed the forward registry's verdict SE to
 HAC/Newey-West with fixed-b p-values although its card's kill condition was met (3 of the
 10-year null cells > 0.040). Adopted because every resampled cell moved toward nominal and the
