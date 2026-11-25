@@ -43,15 +43,25 @@ breadth-anatomy-1, #181 tick-tier-1, #182 rev-costloss-1, #183 summary-5 (SUMMAR
 regenerated), #184 evalue-forward-1, #186 insure-1870-1, #187 omori-1, #188 parked-gates-1, #189
 forward-se-1, #190 coin-drift-2, #191 summary-6 (the last merge).
 
-**MERGES STOPPED at 02:02 UTC (CoS/owner to decide how to resume):** every merge GitHub makes
-here (`gh pr merge --merge` or `--rebase`) writes commits with a non-UTC offset and the bot
-account's own email; `--author-email` with the noreply address is rejected. That is a
-privacy leak on a public repo, so per the all-repo rule the lead stopped merging and told the
-CoS. Until the CoS says otherwise: lanes may push branches and open PRs; nobody merges. This
-handoff (#185) is itself unmerged: read it from branch `lead-next-1125`.
+**Merges stopped at 02:02 UTC, resumed 2026-11-25 ~09:15 UTC:** GitHub's merge commits carry a
+non-UTC offset and the bot account's own email; the owner OK'd both on 2026-11-25, so agents
+merge again with `gh pr merge --merge` (re-push the head branch after each).
 
-**Open PRs at handoff (all unmerged by the CoS's no-merge decision; merge in the daytime once
-the merge-commit offset is fixed):** #185 (this handoff), #149, #153, #155, #161 (held for the
+**Morning merges 2026-11-25 (CoS cleanup agent, 09:15-10:35 UTC):** #192 jst-autocorr-1, #193
+panic-words-1 (keeps W34; tries.md merged by union), #194 wide-21 (renumbered W34 -> W35, R34 ->
+R35 per the steps below; count 103 / 29 / 30, bar 0.00097; tries.md note row added), then the
+runner PRs one at a time after the passing 2026-11-25 daily run (Actions run 04:57 UTC green,
+paper-trail got rows, `dividends.csv` and `rates.csv` created, scoreboard updated;
+`reconcile1.py` rerun: 0 late bars, 0 class (b)/(c), the 2026-11-25 snapshot equals the gym on
+`main` for all 12 books, so the one-time (d) change happened): #149 gymreplay-1, #153
+reconcile-daily-1, #155 scoreboard-note-1, #161 runner-faults-1. Each was merged with `main`
+first (merge commit; DECISIONS.md conflicts resolved newest first), full tests passed and
+a daily dry run on a copy of paper-trail exited 0 (reconcile: 12 books, 0 problems; intraday exit
+0). SUMMARY updated by #195 summary-7 (the #186 timing correction below is done; review fixes
+applied). This handoff (#185) merged last.
+
+**Open PRs at handoff (history: all merged on the morning of 2026-11-25, see above; were
+unmerged by the CoS's no-merge decision):** #185 (this handoff), #149, #153, #155, #161 (held for the
 daily run), #192 jst-autocorr-1 (review result in its PR or the night log), and the last lanes'
 PRs: #194 wide-21 (W34 solar-max-recession fails) and #193 panic-words-1 (W34 panic-words
 fails). Both used gate id W34 and both count 102/29/29: whichever merges second becomes W35
@@ -66,7 +76,7 @@ tries.md note row 'wide-21's W34 = W35' (never edit the old row). Cards stay unc
 in the local data cache `panic-words-1/` and can be deleted; monthly counts are committed (check `gh pr list`; each needs a fresh review first unless the
 night log says "review: MERGE"). #192 review: MERGE (no required fixes).
 
-**SUMMARY correction needed after #192 merges:** #186's "holds, narrowly on timing" must say
+**SUMMARY correction (done in #195):** #186's "holds, narrowly on timing" must say
 the timing statistic (p_S 0.020) is consistent with the early annual data's lag-1
 autocorrelation of unknown origin (an AR(1) of 0.19 alone gives most of the gap; JST US and
 Norway are true year-end prices, so averaging is not shown); the 9-of-9 insurance count stands.
@@ -100,12 +110,8 @@ line conflicts with that (owner/CoS to settle).
 
 ## Lane queue (each from `main`)
 
-1. **After the 2026-11-25 daily run** (fires ~02:00-06:13 UTC): check it passed (Actions run
-   green, `paper-trail` got the new rows, `reports/scoreboard.md` updated, `dividends.csv` and
-   `rates.csv` created). Rerun `research/lib/reconcile1.py --work <scratch>` and confirm the
-   one-time replay change it predicts (reconcile-1 table). Then merge #149, #153, #155, #161 one
-   at a time (`gh pr merge --merge`, re-push the head branch after each). If the run fires after
-   the 04:20 UTC hold, leave the merges for the next lead/day.
+1. DONE 2026-11-25 morning: daily run checked, reconcile-1 rerun, #149, #153, #155, #161
+   merged one at a time (see "Morning merges" above).
 2. Engineering, after #161: fix its two strict xfails (Kraken answering from a later day must
    fall back to Coinbase; duplicate same-day bars in one answer must be refused or logged), and
    the smaller notes in #161's PR body (rate gap with no problem line; no overall fetch time cap).

@@ -3,7 +3,8 @@
     uv run python research/lib/reconcile1.py --work <scratch dir> [--json out.json]
 
 Reads the `paper-trail` branch (default ref `origin/paper-trail` of the repo in the working
-directory) into a private clone under `--work`; nothing on the branch is changed. Tolerance and
+directory; `--ref` takes any commit of it, a sha too, e.g. to rerun on an older state of the
+record) into a private clone under `--work`; nothing on the branch is changed. Tolerance and
 mismatch classes are fixed in `research/reconcile-1.md`, written before any number.
 
 Four checks per live book:
@@ -407,7 +408,10 @@ def run(repo: Path, work: Path, ref: str, live: Strategies) -> dict[str, Any]:
     if clone.exists():
         shutil.rmtree(clone)
     git(work, "clone", "-q", "--no-checkout", str(repo.resolve()), str(clone))
-    git(clone, "fetch", "-q", str(repo.resolve()), f"+refs/remotes/{ref}:refs/heads/trail")
+    # Any commit-ish of `repo` (a remote-tracking or local branch, a tag, a sha): resolved there,
+    # then fetched by its sha.
+    sha = git(repo, "rev-parse", "--verify", "--end-of-options", f"{ref}^{{commit}}").strip()
+    git(clone, "fetch", "-q", str(repo.resolve()), f"+{sha}:refs/heads/trail")
     commits = git(clone, "rev-list", "--reverse", "trail").split()
     findings: list[Finding] = []
     at_run: dict[tuple[str, str], dict[str, float]] = {}  # (book, line time) -> weights
@@ -573,7 +577,11 @@ def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--repo", type=Path, default=Path("."))
     p.add_argument("--work", type=Path, required=True, help="scratch folder (a clone goes here)")
-    p.add_argument("--ref", default="origin/paper-trail")
+    p.add_argument(
+        "--ref",
+        default="origin/paper-trail",
+        help="the record to read: any commit of --repo (branch, remote branch, tag or sha)",
+    )
     p.add_argument("--json", type=Path)
     args = p.parse_args(argv)
     from grimstrade.strategies import LIVE

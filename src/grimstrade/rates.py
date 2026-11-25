@@ -20,7 +20,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from grimstrade import gym, sources
-from grimstrade.data import ETF, SETTLE, close_time, ends_mid_line, settled
+from grimstrade.data import ETF, SETTLE, append_rows, close_time, read_rows, settled
 
 RATES = Path("data/rates.csv")
 FIELDS = ["date", "rate", "seen"]
@@ -65,18 +65,17 @@ def load(root: Path) -> list[Rate]:
     if not path.exists():
         return []
     out: list[Rate] = []
-    with path.open(newline="") as f:
-        for row in csv.DictReader(f):
-            r = Rate(
-                date.fromisoformat(row["date"]),
-                float(row["rate"]),
-                datetime.fromisoformat(row["seen"]),
-            )
-            if r.seen.tzinfo is None:
-                raise ValueError(f"rate for {r.date}: stored time {row['seen']} has no time zone")
-            if p := problem(r, out[-1].date if out else None):
-                raise ValueError(p)
-            out.append(r)
+    for row in read_rows(path, FIELDS):
+        r = Rate(
+            date.fromisoformat(row["date"]),
+            float(row["rate"]),
+            datetime.fromisoformat(row["seen"]),
+        )
+        if r.seen.tzinfo is None:
+            raise ValueError(f"rate for {r.date}: stored time {row['seen']} has no time zone")
+        if p := problem(r, out[-1].date if out else None):
+            raise ValueError(p)
+        out.append(r)
     return out
 
 
@@ -98,17 +97,8 @@ def append(root: Path, fetched: Iterable[Rate]) -> tuple[int, list[str]]:
 def _write(root: Path, rows: Sequence[Rate]) -> int:
     if not rows:
         return 0
-    path = root / RATES
-    path.parent.mkdir(parents=True, exist_ok=True)
-    header = not path.exists() or path.stat().st_size == 0
-    with path.open("a", newline="") as f:
-        if ends_mid_line(path):
-            f.write("\n")
-        w = csv.writer(f, lineterminator="\n")
-        if header:
-            w.writerow(FIELDS)
-        for r in rows:
-            w.writerow([r.date.isoformat(), repr(float(r.rate)), r.seen.isoformat()])
+    lines = [[r.date.isoformat(), repr(float(r.rate)), r.seen.isoformat()] for r in rows]
+    append_rows(root / RATES, FIELDS, lines)
     return len(rows)
 
 
