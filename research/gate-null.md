@@ -42,6 +42,7 @@ shows how wide the real null is:
 | TLT next-quarter return on -PDSI (contiguous US drought), Newey-West 3 lags, 276 months (parked-gates-1, W32) | 40 calendars moved k = 13-89 months, both ways | 0.94 | 0% | persistent dose, but placebo t stay inside -1.76 / +1.95; the true t -3.71 ranked 1 (the first pass), then failed its replication R32 |
 | 10-year yield change over the next quarter on -PDSI, Newey-West 3 lags, 483 months 1962-2002 (parked-gates-1, R32) | 40 calendars moved k = 13-89 months, both ways | 1.19 | 8% | same dose, 40 other years: wider than W32's |
 | GSPC next month on this month's fall x detrended ln(broker customer receivables / equity value), four controls, Newey-West 3 lags, 729 months (parked-gates-1, W33) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.58 | **30%** | **off-centre**: all 40 placebo t positive (median +1.70, 95% +3.06): an earlier-only family can be biased; the rank is the reference |
+| Shiller S&P 500 next month (monthly averages) on trailing 12-month mean sunspot number, Newey-West 12 lags, 1,831 months 1871-2023 (wide-21, W34) | 40 calendars moved k = 19-95 months, both ways | 1.16 | 25% | **off-centre** (median +1.25, 95% +2.83, max +3.11): a cyclic dose shifted 4-8 years becomes its own anti-phase, so the family repeats one weak pattern with the opposite sign; about 14 cycles |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -190,16 +191,18 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W32 `drought-inflation` (parked-gates-1) | k = 13..89 months, both ways | no: drought does not answer prices | t -3.71, rank 1: **pass (kill-only)** | killed by its replication R32 (1962-2002: t -0.19, rank 21) |
 | R32, replication of W32 (parked-gates-1, `cards/parked-gates-1b.md`) | k = 13..89 months, both ways | no: drought does not answer prices | 10-year yield 1962-2002: t -0.19 (predicted > 0), rank 21 | no: t < 2; W32 dead |
 | W33 `margin-susceptibles` (parked-gates-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +0.05, rank 41 | no: t < 2 |
+| W34 `solar-max-recession` (wide-21) | k = +-19..95 months (step 4), both ways | no: the sun does not answer prices | t -0.87, rank 3 | no: t > -2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 
-The table holds all **28 gates** of the family count (`parked-gates-1.md`, "Family count";
-family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates, family
-bar p < 0.10 / 101 = 0.00099):
+The table holds all **29 gates** of the family count (`parked-gates-1.md`, "Family count";
+family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates; wide-21
+adds W34: **102 mechanisms, 29 tested by a strategy, 29 gates, family bar p < 0.10 / 102 =
+0.00098**):
 the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
-weather-1 and weather-2, W27-W33 and the replication R32 (summary-6 added the `seasonal-20y`,
+weather-1 and weather-2, W27-W34 and the replication R32 (summary-6 added the `seasonal-20y`,
 weather-2 and R32 rows from their write-ups, 2026-11-25). One passed (W32, kill-only), and its
 replication killed it.
 
@@ -224,3 +227,16 @@ higher food prices) was absent in both periods. So a persistent monthly dose pas
 20-year period on a narrow-looking null (placebo SD 0.94) and showed nothing in the 40 years
 before: a narrow placebo null does not make a 20-year sample of a slow dose rich in independent
 episodes. Keep the replication step for every future pass.
+
+## Cyclic doses need another placebo family (wide-21, 2026-11-25)
+
+W34 (`solar-max-recession`) moved a dose with its own cycle (the sunspot cycle, about 132
+months) by k = +-19..95 months. Shifts of 4-8 years turn the dose into its own anti-phase, so
+those placebos repeat the true pattern with the opposite sign: placebo t median +1.25, 95%
++2.83, max +3.11, against a true t of -0.87 that still ranked 3 of 41. The family measured one
+weak cyclic pattern 40 times, not 40 nulls; only the t condition (step 4) kept the rank from
+deciding. For the next dose with its own clock (a cycle, a season of variable length), write
+into the rule a family that keeps the phase relation random rather than systematic: a
+phase-randomised surrogate of the dose (same spectrum, random phases; Theiler et al. 1992
+`[memory]`) or a permutation of whole cycles, and keep t >= 2 as a necessary condition.
+
