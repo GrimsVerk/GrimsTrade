@@ -403,6 +403,31 @@ def refuse_links(root: Path, rel: Path) -> None:
             raise LedgerTampered(f"{part.as_posix()}: is a symbolic link")
 
 
+def check_lines(root: Path, rel: Path) -> None:
+    """Raise LedgerTampered at a line of the JSON-lines record file `rel` that is not one whole
+    JSON object: what a write cut short (a killed job, a full disk) leaves behind. Such a line
+    stays for good, as the file is append-only, and every reader would crash on it part way
+    through a run, after the bars were stored and before anything was decided."""
+    path = root / rel
+    if not path.exists():
+        return
+    try:
+        lines = path.read_text().splitlines()  # as `_read` and the other readers split them
+    except ValueError as e:  # not UTF-8
+        raise LedgerTampered(f"{rel.as_posix()}: unreadable ({e})") from e
+    for n, line in enumerate(lines, 1):
+        if not line.strip():
+            continue
+        try:
+            whole = isinstance(json.loads(line), dict)
+        except ValueError:
+            whole = False
+        if not whole:
+            raise LedgerTampered(
+                f"{rel.as_posix()} line {n}: not one whole JSON object (a write cut short?)"
+            )
+
+
 def check_append_only(path: Path) -> int:
     """Raise LedgerTampered unless `path` only ever grew: in every commit reachable from HEAD its
     content must start with its content in each parent (merges included, so a rewrite can't hide

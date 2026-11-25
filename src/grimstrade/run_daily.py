@@ -60,6 +60,11 @@ def check_record(root: Path, now: datetime) -> None:
         ledger.check_append_only(root / rel)
     for name in WRITTEN_EACH_RUN:  # a link here would swallow what the run writes
         ledger.refuse_links(root, Path(name))
+    # A line a crash cut short: refused here, before anything is written, not by a crash later.
+    # (`data/sources.jsonl` is only ever appended to, never read by a run.)
+    for rel in (ledger.DECISIONS, ledger.TRIES, ledger.RESEARCH_FLOOR, ledger.PROBLEMS,
+                data.REVISIONS):  # fmt: skip
+        ledger.check_lines(root, rel)
     # Appending is all it takes to add a row by hand, and the append-only check has nothing to
     # say about an append. What no run would write: rows `data.load` refuses (a second row for a
     # stored day, an ETF bar on a weekend) and a bar that has not closed yet.
