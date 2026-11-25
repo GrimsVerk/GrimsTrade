@@ -150,7 +150,9 @@ pass-through, H4, H7, H9, H11-H13 on events.
 and enough episodes (H2 and H14 share its channel). **Gated: H1 as W43 `drought-food-margin`**
 (card `cards/wide-26.md`, pushed before any return was read; ids W43 / R43 provisional: wide-25
 takes W41/R41 and W42). The replication **R43** is fixed in the same card: the same rule on dose
-months 1931-06 .. 1959-09 (the 1930s and 1950s droughts, no overlap with the gate's outcome
+months 1931-06 .. 1959-09 as carded, off by one: the code now uses 1931-05 .. 1959-10, the
+first month with a 60-month beta and the last whose outcome ends before the gate's first
+outcome month; R43 was not run, so nothing depends on it (the 1930s and 1950s droughts, no overlap with the gate's outcome
 months). No second gate (W44 not used).
 
 ## Step 3. W43 `drought-food-margin` gate
@@ -204,7 +206,7 @@ card runs it only after a pass). Held-out year untouched.
 - **The post-sample cell (t -2.02, 114 months) is noted only, not a lead** (gate-null step 6). It
   rests on one episode: all 14 of its months at PDSI <= -2 lie in 2022-10 .. 2024-03. Run
   through the same two families after the main run (descriptive, shown here because its t
-  crossed 2): rank 5 of 41 in the shifted calendars (null SD 1.49, 22% past |t| 2, min -3.99)
+  crossed 2; first from an ad hoc call, now printed by `wide26.py` into the results file): rank 5 of 41 in the shifted calendars (null SD 1.49, 22% past |t| 2, min -3.99)
   and 2 of 41 in the surrogates (SD 1.47, 22%). A one-episode subsample with that null width is
   ordinary.
 - **The null.** Shifted calendars: SD 1.10, 8% past |t| 2, 5/50/95% -1.68 / +0.03 / +1.52,
@@ -220,6 +222,10 @@ card runs it only after a pass). Held-out year untouched.
   the worst droughts is not ruled out.
 - My guess (b near 0, t between -1.5 and +1, a middle rank, placebo SD 1.0-1.5, pass 3%) was
   right on every count.
+
+- **Vintage caveat.** The PDSI is today's nClimDiv vintage (2026-11-05), recomputed monthly;
+  real-time vintages were not used (as in W32). The fail does not depend on it; any future pass
+  of a PDSI design would need a real-time vintage check before it is read.
 
 Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024, above the family bar and
 the register's 9.8e-5). A kill on its own t (+0.07, wrong sign).
@@ -237,6 +243,10 @@ before any return (commit 1640535, 23:15 UTC); gate id W18 (its own), replicatio
 `martj42/international_results` (CC0; `raw.githubusercontent.com` has no robots.txt; SHA-256
 `c1773d3e...dfb` and `15b2015c...23e`, full hashes in the cache manifest); owner decision B5's
 default (no 2026 World Cup).
+
+**Data terms.** NCEI nClimDiv: US federal government data (public domain). Ken French's data
+library: no licence stated; used from the cache only, not redistributed in the repository.
+martj42/international_results: CC0-1.0.
 
 **Dry run (counts only):** 122,576 rows in 25 markets, 2006-2025; **74 knockout eliminations
 of mapped teams in ten tournaments** (73 on gate rows: Sweden 2006 is before the cached OMX
@@ -259,10 +269,16 @@ Switzerland (penalties), the Netherlands, Spain (round of 16), England (penaltie
 | World Cup only | -0.152 | -1.73 |
 | Two sessions (s0-1 to s0+1) | -0.092 | -0.61 |
 
-- **The published effect is far outside the interval.** SE(b) is about 0.085%, so the 95%
-  interval is about -0.25% .. +0.09%; Edmans, Garcia and Norli's 0.4-0.5% next-day fall after a
-  World Cup loss `[memory]` lies 4-5 SEs below the estimate. The World Cup-only cell (-0.15%, t
-  -1.73) is noted only.
+- **The published size is well outside the interval.** SE(b) is about 0.085%, so the 95%
+  interval is about -0.25% .. +0.09%; Edmans, Garcia and Norli's 0.4-0.5% next-day fall
+  `[memory]` lies 3.8-4.9 SEs below the estimate. Like for like (their headline is World Cup
+  losses): the World Cup-only cell is -0.152%, SE about 0.088%, interval about -0.33% .. +0.02%,
+  so 0.4-0.5% is 2.8-4.0 SEs away. That cell (t -1.73) is noted only.
+- **Timing, as the card fixed it.** s0 is the first session on or after the day after the match.
+  A few eliminations ended inside the losing market's own session (Brazil 2010, 2018 and 2022,
+  Mexico 2018: afternoon matches in Africa, Russia and Qatar are morning or midday in the
+  Americas), so for those s0 misses part of the reaction; the two-session cell (s0-1 to s0+1,
+  t -0.61) covers the match day for them and is flat too.
 - **Wins look like losses.** The knockout-win placebo dose is as negative as the gate (-0.09%,
   t -1.09): the small negative lean belongs to tournament session days, not to losing.
 - **Null:** shifted calendars SD 0.87, 0% past |t| 2, 5/50/95% -1.20 / -0.20 / +1.37,

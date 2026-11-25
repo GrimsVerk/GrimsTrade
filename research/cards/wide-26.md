@@ -134,3 +134,9 @@ a pass: 3%.
 
 Pass: run R43 at once and report both. Fail: dead, one `screen` row in `research/tries.md`
 (descriptive, not selectable); R43 is not run. Every shown cell gets a `robustness` row.
+
+## Correction after the run (2026-11-26, review of #223; R43 was not run, no number depends on it)
+
+R43's span above is off by one: the first dose month with a full 60-month beta (months m-58 ..
+m+1 from 1926-07) is 1931-05, and the last whose outcome (m+2 .. m+4) ends before the gate's
+first outcome month (1960-03) is 1959-10. `wide26.py` uses 1931-05 .. 1959-10.

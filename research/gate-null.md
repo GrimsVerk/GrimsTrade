@@ -367,6 +367,6 @@ predicted < 0; rank 22 of 41 shifted, 23 of 41 phase surrogates). W18 `eliminati
 Count after wide-25's #221 (W41), merged before this one: one more mechanism (W43; W18 was
 counted since wide-8) and two more gates: **110 mechanisms, 29 tested by a strategy, none
 passed; 39 gates, two kill-only passes (W32, W36), each killed by its replication; family bar
-p < 0.10 / 110 = 0.00091.** W43's dose is persistent (acf1 0.94), so gate-null-2's proposed
-"both families" rule applied; the two families agreed (surrogates wider, SD 1.25 against
+p < 0.10 / 110 = 0.00091.** W43's dose is persistent (acf1 0.94); gate-null-2's proposed
+"both families" rule applied because the card pre-registered it; the two families agreed (surrogates wider, SD 1.25 against
 1.10). W18's dose is sparse (acf1 -0.001); its shifted null is narrower than normal (SD 0.87).

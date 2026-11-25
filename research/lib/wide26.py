@@ -33,7 +33,7 @@ PDSI_FILE = "parked-gates-1/climdiv/2026-11-25/climdiv-pdsist-v1.0.0-20261105"
 IND_FILE = "wide-26/french/2026-11-25/49_Industry_Portfolios_CSV.zip"
 FAC_FILE = "french/2026-11-12/F-F_Research_Data_Factors_CSV.zip"
 GATE = (1960 * 12, 2025 * 12 + 6)  # dose months 1960-01 .. 2025-07
-REPL = (1931 * 12 + 5, 1959 * 12 + 8)  # R43: 1931-06 .. 1959-09
+REPL = (1931 * 12 + 4, 1959 * 12 + 9)  # R43: 1931-05 .. 1959-10 (card's 06 / 09 off by one)
 POST = 2016 * 12  # after Hong, Li and Xu's sample
 VW = "Average Value Weighted Returns -- Monthly"
 EW = "Average Equal Weighted Returns -- Monthly"
@@ -185,16 +185,35 @@ def main() -> None:
           f"{int((dz >= 2).sum())}, D >= 4: {int((dz >= 4).sum())}")  # fmt: skip
     if DRY:
         return
-    lines, ok, res = gate(data, GATE, "W43 gate (dose months 1960-01 .. 2025-07)")
+    lines, ok, res = gate(
+        data,
+        GATE,
+        "W43 gate (dose months 1960-01 .. 2025-07; rows end 2025-06, whose outcome ends 2025-10)",
+    )
     print("\n".join(lines))
     rep: list[str] = []
     if ok:
-        rep, _, _ = gate(data, REPL, "R43 replication (dose months 1931-06 .. 1959-09)")
+        rep, _, _ = gate(data, REPL, "R43 replication (dose months 1931-05 .. 1959-10)")
         print("\n".join(rep))
     cl = cells(data)
     for c in cl:
         print(f"{c[0]}: b {c[1]:+.3f} t {c[2]:+.2f} n {c[3]}")
     top = sorted(gm, key=lambda m: -d361[m])[:10]
+    post = [m for m in months(GATE) if m >= POST]
+    pb, pt, pn = ev.regress(post, y, d361, 3)
+    psh, psu = placebo_ts(y, d361, (POST, GATE[1]), 3)
+    post_lines = [
+        "## Post-2016 cell through both placebo families (shown, not gating)",
+        "",
+        "Added after the main run because the post-sample cell's t crossed 2 (gate-null step 6);",
+        "the first numbers came from an ad hoc call with the same functions, reproduced here.",
+        "",
+        f"- b {pb:+.3f}% per unit, t {pt:+.2f}, {pn} dose months (2016-01 .. 2025-06).",
+        f"- Shifted calendars: rank {ev.rank_lowest(pt, psh)} of 41; null {fmt_null(psh)}.",
+        f"- Phase surrogates: rank {ev.rank_lowest(pt, psu)} of 41; null {fmt_null(psu)}.",
+        "- All 14 of its months at PDSI <= -2 lie in 2022-10 .. 2024-03: one drought episode.",
+        "",
+    ]
     out = [
         "# W43 `drought-food-margin`: results",
         "",
@@ -202,6 +221,10 @@ def main() -> None:
         "`research/lib/wide26.py`, `research/lib/wide26_events.py`. Outcome: French 49-industry",
         "value-weighted Food minus its 60-month beta times Mkt-RF, summed over months m+2..m+4,",
         "percent; dose D = -PDSI of the Corn Belt (nClimDiv 361) in month m.",
+        "",
+        "Vintage caveat: the PDSI is today's nClimDiv vintage (2026-11-05), recomputed each month;",
+        "real-time vintages were not used (as in W32). The fail does not depend on it; any future",
+        "pass of this design would need a real-time vintage check before it is read.",
         "",
         *lines,
         *(rep or ["R43 not run (the card runs it only after a pass).", ""]),
@@ -212,6 +235,7 @@ def main() -> None:
         f"| **Gate** | **{res['b']:+.3f}** | **{res['t']:+.2f}** | **{int(res['n'])}** |",
         *[f"| {c[0]} | {c[1]:+.3f} | {c[2]:+.2f} | {c[3]} |" for c in cl],
         "",
+        *post_lines,
         "## The ten driest dose months in the gate rows",
         "",
         "| Dose month | D (-PDSI) | y, % |",

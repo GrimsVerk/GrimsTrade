@@ -401,17 +401,6 @@ Count after this run (after #210's W38/W39): 108 mechanisms, 29 tested by a stra
 | elimination-mood (note) | Sport (wide-8's W18) | closed dead above by wide-26; parked by wide-24 (scored 4) | - | wide-24's Q4: the keyless match list now exists (GitHub results dataset `[memory]`, 24 cached indices), but the mood class died in W31 and a one-day dip is not a trade at the book's horizon. |
 | wide-24-filtered-set | Renewal processes, mega-events, shipping, telecommunications, agriculture, migration, supply chains, materials, extreme-value theory | filtered (wide-24) | - | Q3 `aftershock-renewal` (F1: public Omori clock; omori-1), Q5 `olympic-host` (power), Q6 `canal-closure` (power), Q7 `cable-cut` (no index channel), Q9 `livestock-epidemic` (food channel dead), Q10 `refugee-wave` (F1, size), Q11 `supply-pressure` (power; inflation channel dead), Q12 `export-ban` (power, reach), Q13 `disaster-evt` (duplicate of W30; data). |
 
-
-## wide-26: agronomy, crop physiology, snow hydrology, hydropower, remote sensing, atmospheric chemistry, plant pathology, fisheries, wind and solar power, river levels, fire science, coastal flooding, livestock physiology (2026-11-25, UTC)
-
-Count after this run (after #215 and wide-25's #221): 110 mechanisms, 29 tested by a strategy, 39 gates (W43, provisional id, and the record-closing W18), two kill-only passes (W32, W36), each killed by its replication; family bar p < 0.10 / 110 = 0.00091. Write-up [wide-26.md](wide-26.md).
-
-| Idea | Field | Status | Card | Note |
-|---|---|---|---|---|
-| drought-food-margin | Agronomy x food-processor margins (Hong, Li and Xu, J. Econometrics 2019) | dead (gate W43, provisional id, wide-26) | [card](cards/wide-26.md) | French 49-industry VW Food minus 60-month beta x market, months m+2..m+4, on -PDSI of the Corn Belt (nClimDiv 361), NW 3, 786 months 1960-2025: b +0.009%/unit (t +0.07), rank 22/41 shifted, 23/41 phase surrogates (dose acf 0.94, both families). After 2016 t -2.02 on one episode: noted only (ranks 5 and 2 post hoc). R43 not run. [results](results/drought-food-margin.md) |
-| heat-yield, livestock-heat | Crop physiology (Schlenker-Roberts extreme degree days), animal heat stress | parked (same channel as drought-food-margin, now dead) | - | wide-26's H2 (scored 6), H14: processor input costs with another meter; GHCN-daily is several GB. |
-| wide-26-filtered-set | Snow hydrology, hydropower, remote sensing, atmospheric chemistry, plant pathology, fisheries, wind and solar power, river levels, fire science, coastal flooding | filtered (wide-26) | - | H3 `snowpack-hydro` (cost pass-through, power), H4 `reservoir-power` (power), H5 `ndvi-crop` (H1's channel; login), H6 `ozone-yield` (size, data), H7 `crop-pest` (power), H8 `sst-fishery` (ENSO duplicate; Oslo not cached), H9 `wind-drought` (power, data), H10 `solar-curtailment` (reach), H11 `rhine-low-water` (duplicate of S3, power), H12 `wildfire-liability` (power), H13 `sea-level-flooding` (no dose). |
-
 ### Run survey-7b: 2024-2026 literature on trend crashes, tail hedging, vol management, blending, decay (2026-11-24, UTC)
 
 Sources, filters (F1/F2, #109) and power scores (#150) in [survey-7b.md](survey-7b.md) (lane
@@ -471,3 +460,14 @@ Count after this run (after #215's W40): 109 mechanisms, 29 tested by a strategy
 | beige-book-tone | Linguistics of official documents (Beige Book text) | new (scored 3, parked) | - | wide-25's P13: scheduled release, priced on the day; narrative-text channel dead (W34). |
 | sanctions-designation (note) | Legal dockets (OFAC SDN additions with digital-currency addresses) | not scored (duplicate of wide-23 C2) | - | Data lead for C2 `crackdown-shock`: a complete official list of one kind of action, if per-entry dates are keyless; index-level size likely small. |
 | wide-25-filtered-set | Political science, environmental health, software security, remote sensing, process safety, transport, food safety, cryptography | filtered (wide-25) | - | P2 `coup-shock` (power), P3 `leader-death` (power), P5 `smog-cognition` (same-day mood class dead, horizon), P7 `cve-disclosure` (power; W37), P9 `night-lights` (login), P10 `process-accident` (reach), P11 `rail-carloads` (F1, data, duplicate of wide-22 T1), P12 `recall-wave` (reach), P14 `quantum-threat` (power). |
+
+## wide-26: agronomy, crop physiology, snow hydrology, hydropower, remote sensing, atmospheric chemistry, plant pathology, fisheries, wind and solar power, river levels, fire science, coastal flooding, livestock physiology (2026-11-25, UTC)
+
+Count after this run (after #215 and wide-25's #221): 110 mechanisms, 29 tested by a strategy, 39 gates (W43, provisional id, and the record-closing W18), two kill-only passes (W32, W36), each killed by its replication; family bar p < 0.10 / 110 = 0.00091. Write-up [wide-26.md](wide-26.md).
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| drought-food-margin | Agronomy x food-processor margins (Hong, Li and Xu, J. Econometrics 2019) | dead (gate W43, provisional id, wide-26) | [card](cards/wide-26.md) | French 49-industry VW Food minus 60-month beta x market, months m+2..m+4, on -PDSI of the Corn Belt (nClimDiv 361), NW 3, 786 months 1960-2025: b +0.009%/unit (t +0.07), rank 22/41 shifted, 23/41 phase surrogates (dose acf 0.94, both families). After 2016 t -2.02 on one episode: noted only (ranks 5 and 2 post hoc). R43 not run. [results](results/drought-food-margin.md) |
+| heat-yield, livestock-heat | Crop physiology (Schlenker-Roberts extreme degree days), animal heat stress | parked (same channel as drought-food-margin, now dead) | - | wide-26's H2 (scored 6), H14: processor input costs with another meter; GHCN-daily is several GB. |
+| wide-26-filtered-set | Snow hydrology, hydropower, remote sensing, atmospheric chemistry, plant pathology, fisheries, wind and solar power, river levels, fire science, coastal flooding | filtered (wide-26) | - | H3 `snowpack-hydro` (cost pass-through, power), H4 `reservoir-power` (power), H5 `ndvi-crop` (H1's channel; login), H6 `ozone-yield` (size, data), H7 `crop-pest` (power), H8 `sst-fishery` (ENSO duplicate; Oslo not cached), H9 `wind-drought` (power, data), H10 `solar-curtailment` (reach), H11 `rhine-low-water` (duplicate of S3, power), H12 `wildfire-liability` (power), H13 `sea-level-flooding` (no dose). |
+

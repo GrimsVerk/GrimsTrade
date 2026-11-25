@@ -5,7 +5,11 @@ Rule: [`cards/wide-26.md`](../cards/wide-26.md) (pushed before any number). Code
 value-weighted Food minus its 60-month beta times Mkt-RF, summed over months m+2..m+4,
 percent; dose D = -PDSI of the Corn Belt (nClimDiv 361) in month m.
 
-### W43 gate (dose months 1960-01 .. 2025-07)
+Vintage caveat: the PDSI is today's nClimDiv vintage (2026-11-05), recomputed each month;
+real-time vintages were not used (as in W32). The fail does not depend on it; any future
+pass of this design would need a real-time vintage check before it is read.
+
+### W43 gate (dose months 1960-01 .. 2025-07; rows end 2025-06, whose outcome ends 2025-10)
 
 - b +0.009% per PDSI unit, Newey-West t +0.07, 786 dose months.
 - Shifted calendars: rank 22 of 41 (lowest = 1); null SD 1.10, 8% past |t| 2, 5/50/95% -1.68 / +0.03 / +1.52, extremes -2.28 / +2.02.
@@ -30,6 +34,16 @@ R43 not run (the card runs it only after a pass).
 | Equal-weighted Food, beta-adjusted | -0.122 | -1.19 | 786 |
 | The market itself (Mkt-RF, m+2 .. m+4) | +0.246 | +1.59 | 786 |
 | After Hong-Li-Xu: dose months 2016-01 on | -0.327 | -2.02 | 114 |
+
+## Post-2016 cell through both placebo families (shown, not gating)
+
+Added after the main run because the post-sample cell's t crossed 2 (gate-null step 6);
+the first numbers came from an ad hoc call with the same functions, reproduced here.
+
+- b -0.327% per unit, t -2.02, 114 dose months (2016-01 .. 2025-06).
+- Shifted calendars: rank 5 of 41; null SD 1.49, 22% past |t| 2, 5/50/95% -2.67 / -0.02 / +2.18, extremes -3.99 / +2.46.
+- Phase surrogates: rank 2 of 41; null SD 1.47, 22% past |t| 2, 5/50/95% -1.72 / +0.39 / +2.72, extremes -2.06 / +3.08.
+- All 14 of its months at PDSI <= -2 lie in 2022-10 .. 2024-03: one drought episode.
 
 ## The ten driest dose months in the gate rows
 

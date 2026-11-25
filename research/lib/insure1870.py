@@ -302,8 +302,11 @@ def ok(vals: Sequence[float]) -> bool:
     return p < 0.05 and bp < 0.05
 
 
-def run(cfg: Config, jst: dict[str, dict[str, dict[int, float]]]) -> Result:
-    segs = build(cfg, jst)
+def run(
+    cfg: Config, jst: dict[str, dict[str, dict[int, float]]], segs: list[Seg] | None = None
+) -> Result:
+    """`segs` (optional, stale-checks-1): score these segments instead of `build(cfg, jst)`."""
+    segs = build(cfg, jst) if segs is None else segs
     scs = [episodes(s, cfg.down, cfg.up, cfg.real) for s in segs]
     for s in scs:
         rescore(s, strat(s.seg, s.seg.pos, cfg.cash0))
