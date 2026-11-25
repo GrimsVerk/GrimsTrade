@@ -21,8 +21,13 @@ It holds every re-simulated baseline, every live strategy and every saved equity
 fits a register row, so `moments.jsonl` and `trials.json` regenerate on any checkout, with no
 price caches and no other lane's files:
 
-    uv run --with numpy python research/register2.py estimate
-    uv run python -m grimstrade.register      # after `git fetch origin`; rewrites BAR.md too
+    uv run python -m grimstrade.register      # after `git fetch origin`; tries.jsonl first
+    uv run --with numpy python research/register2.py estimate   # reads tries.jsonl
+    uv run python -m grimstrade.register      # again: BAR.md with the new moments
+
+`estimate` matches stored series to the rows of `tries.jsonl`, so it must run after the first
+`grimstrade.register`; with the old order (estimate first) rows pushed since the last
+regeneration got no moments (summary-5).
 
 Re-runs (register-7, addendum of `research/register-4.md`). The store only grows: no
 committed row is ever replaced or removed, and each try has one series in it.
@@ -73,7 +78,8 @@ rows). To put their weekly returns in the store (needs this branch's `register2.
    families with new series get a changed file.
 4. Commit only `research/register/returns/` (check `git diff --stat`: your families' files),
    and push. Leave `tries.jsonl`, `BAR.md`, `moments.jsonl` and `trials.json` to whoever
-   regenerates the register (`estimate`, then `grimstrade.register`), unless that is your task.
+   regenerates the register (`grimstrade.register`, then `estimate`, then `grimstrade.register`
+   again), unless that is your task.
 
 Tries logged by a script that does not save a curve: save one in the same place and format
 (`date,equity`, one row per day with a bar) before step 3, or log the row's shape with
