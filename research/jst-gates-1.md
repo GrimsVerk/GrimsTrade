@@ -6,13 +6,13 @@ of the tested data was read (only presence counts, listed in the card). Tables:
 [`results/jst-gates-1.md`](results/jst-gates-1.md). Code: `lib/jstgates1.py`; tests:
 `tests/test_jstgates1.py`. Data: the cached JST R6 file (CC BY-NC-SA 4.0; Jorda, Schularick and
 Taylor 2017), nothing downloaded, nothing but statistics committed. Gate ids W38/W39
-(replications R38/R39) are provisional: PR #205 holds W37 unmerged, and the merging lead may
-renumber.
+(replications R38/R39) were carded as provisional while PR #205 held W37 unmerged; #205 merged
+with W37 during the lane, so W38/W39 are the next free ids on `main`.
 
 ## The answer on one screen
 
 Both gates fail. Both were labelled **kill-only** before any number (smallest honest p 0.048 for
-W38 and 0.024 for W39, far above the family bar of 0.00094), so even a pass would only have said
+W38 and 0.024 for W39, far above the family bar of 0.00093), so even a pass would only have said
 "not dead yet". No replication was run, because the card runs one only after a pass.
 
 | Gate | b per 1 sd of dose | DK t | Shift rank | Bootstrap p (H0) | Phase rank (shown) | Card verdict |
@@ -103,11 +103,11 @@ tails, so the verdict does not depend on it.
 
 ## Counts
 
-- Main's `gate-null.md`: 104 mechanisms, 29 tested by a strategy, 32 gates. This lane adds two
-  mechanisms and two gates (W38, W39; no replication ran): **106 mechanisms, 29 tested by a
-  strategy, 34 gates, still two kill-only passes (W32, W36), each killed by its replication.
-  Family bar p < 0.10 / 106 = 0.00094.** If #205 (W37) lands first: 107 / 29 / 35, bar 0.00093,
-  and the merging lead may renumber W38/W39.
+- Main's `gate-null.md` (after #205, W37): 105 mechanisms, 29 tested by a strategy, 33 gates.
+  This lane adds two mechanisms and two gates (W38, W39; no replication ran): **107
+  mechanisms, 29 tested by a strategy, 35 gates, still two kill-only passes (W32, W36), each
+  killed by its replication. Family bar p < 0.10 / 107 = 0.00093.** The card quoted 106 / 34
+  (0.00094) from main before #205 landed; it named this case.
 - `BAR.md` unchanged: these are `screen` rows, not selectable. N for a new pick is 1,116,
   N_eff 506, z >= 4.70.
 

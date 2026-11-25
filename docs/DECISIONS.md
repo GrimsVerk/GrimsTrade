@@ -2,6 +2,78 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-25 (lane `registry-moments-1`; before any freeze, the registry holds no line): two
+  follow-ups to `registry-lrv-1`. (1) **A line is sized with an upper value of the measured
+  lrv, not its estimate.** `measure_lrv` keeps the estimate (ratio / c) as `point` and sets
+  `lrv` = max(1, point nu / chi2_nu(1 - `LRV_LEVEL`)), nu = 1.5 / b from `_ref` (the verdict's
+  fixed-b degrees of freedom), Wilson-Hilferty quantile (`lrv_upper`); with no lags `lrv` is 1.
+  `LRV_LEVEL` = 0.65, sized by a deterministic simulation (`research/registrymoments1.py`,
+  numpy PCG64 from SeedSequence per cell): the smallest level on a 0.05 grid at which the
+  expected power, averaged over the train record's measurement noise, reaches the plan's 0.80
+  in every weekly AR(1) cell (phi 0, 0.2, 1/3, 0.5, 0.6; five and ten years; 4,000 records).
+  With the point estimate it was 0.70-0.77 for every dependent cell (a power target met only
+  on average across lines, the review of #200); with 0.65 it is 0.81-0.84. The level is a
+  tuning value, not a coverage (the value is below the truth in 35-39% of records). The
+  intended effect: dependent lines now wait on average 1.16-1.36 times the sample their true
+  lrv needs (was 0.94-1.04 times). Why an
+  upper value and not shrinkage toward a prior: shrinking pulls the high measurements down,
+  which is the direction that under-sizes the dependent lines; and no prior for the next rule's
+  lrv is known well enough (the store's variance ratios run 1 to 3.3). Cost: a line with no
+  dependence waits about 21% (five years of train) or 12% (ten) longer than before. Sized at
+  power 0.80; a plan at 0.90 is not checked. Still short: 8 events a year with strong
+  dependence (0.77 at phi 0.5) and dependence slower than a year (0.57), which no noise rule
+  fixes; there the caller must set a larger `lrv`. (2) **Skew and kurtosis are measured on the
+  train record for `sharpe` lines** (`measure_moments`, kept under `moments_train` with the
+  same sha256 as `lrv_train`). Direction: a plan whose Mertens factor k = 1 - skew sr +
+  (kurtosis - 1) / 4 sr^2, at the plan's own effect, is below the measured pair's k is
+  optimistic; `entry` replaces the pair by the measured one, a larger k stays, and `freeze`
+  refuses a line without the measurement, from other values, or with a smaller k
+  (`MomentsNotMeasured`). k, not skew and kurtosis one by one, because only k enters the sample
+  and a pair can be worse in one and better in the other. No upper value for k: its sampling
+  sd is 0.02-0.10 on a crash-prone weekly record (skew -1, kurtosis 6.5), a few percent of the
+  sample. `mean` (sized by `sd`) and `win_rate` (exact sign test) measure no moments; `Plan`
+  now refuses a raw kurtosis below 1 + skew^2 (impossible). Old lines without the new fields
+  read and score as before (skew 0, kurtosis 3, lrv 1). The daily runner does not import
+  `grimstrade.forward`.
+
+- 2026-11-25 (lane `runner-faults-2`, fixing PR #161's open findings): how the daily run
+  treats a source answer that is data but cannot all be stored. (1) A crypto answer that leaves
+  out a day (it starts after the day after the newest stored bar, or skips a day inside) is not
+  used while the next source may have the day (`sources.skipped_day`, `fetch_from`): BTC/ETH go
+  to Coinbase when Kraken lacks a day. Only if no source has an unbroken answer is the first
+  broken one taken, as before: the days before the hole are stored and the rest is a problem
+  line (the store can never hold a crypto gap). The bars stored then come from Coinbase
+  (`data/sources.jsonl` says so); Kraken's own hole still shows as "kraken lists no such day"
+  in the revision check. Trade-off on a first run (nothing stored yet): only a gap inside an
+  answer counts, but a Kraken hole there sends the run to Coinbase, which serves about 300 days
+  instead of Kraken's 700. (2) An answer that lists one day twice with different numbers is
+  **refused** (`check_sane`: like a nonsense bar, the next source is asked; if every source
+  does it, nothing is stored and it is one "all sources failed" line). Why refuse rather than
+  store one version and log the other: stored rows are never rewritten, so a wrong pick stays
+  for good, and nothing in the answer says which version is right (first, last, or neither);
+  the answer contradicts itself, so the rest of it is not trusted either. A refused fetch costs
+  one day's delay at worst (the next run asks again; the overdue line names it), a wrong row
+  costs the record. But a source that keeps sending the same twin every day (with the other
+  source down) stalls that symbol until a person acts; the daily problem line and then the
+  overdue line show it. The same bar listed twice is harmless and stored once, as before. (3) A
+  cash-rate session with no row before the newest stored one, while the Treasury request
+  failed, is a problem line ("a holiday, or a gap that stays"): with the Treasury down a
+  holiday and a hole in Yahoo's answer look the same, and the gap would otherwise be silent.
+  (4) All fetching in one run is capped at `run_daily.FETCH_CAP` = 600 s (`--fetch-cap
+  SECONDS`; `sources.Budget`): later calls fail without being sent, as problem lines, and the
+  run still decides on what is stored, instead of the 20-minute job timeout killing it between
+  the bars and the decisions. The runner's requests (`sources.runner_get`, the default of
+  `run_daily.run`) also get `sources.REQUEST_CAP` = 90 s each for the body: `http_get(cap=...)`
+  reads with `read1` (returns as soon as some bytes arrive) and checks the time between reads,
+  so a body trickled byte by byte stops at the cap plus at most one socket timeout (30 s, if
+  the server then goes silent). `urlopen`'s 30 s timeout alone is per socket operation, so a
+  trickled body was unbounded. Not covered: a server trickling the status line or headers
+  (only the per-operation socket timeout applies there; the overall cap stops further calls).
+  Scripts and the intraday step call `http_get` without a cap, as before (large downloads). A
+  body that ends before its Content-Length still raises `IncompleteRead`, as `read()` did (with
+  or without a cap): a CSV cut inside its newest row must never pass as data. A normal run
+  fetches in well under a minute.
+
 - 2026-11-25 (lane `registry-lrv-1`; before any freeze, the registry holds no line): the
   forward registry measures `lrv` on the train record at every freeze instead of assuming it.
   `forward.measure_lrv(train, per_year)`: Bartlett long-run variance at the verdict's own lag

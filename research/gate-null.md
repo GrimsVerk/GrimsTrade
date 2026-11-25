@@ -46,6 +46,7 @@ shows how wide the real null is:
 | Shiller S&P 500 next month (monthly averages) on trailing 12-month mean sunspot number, Newey-West 12 lags, 1,831 months 1871-2023 (wide-21, W35) | 40 calendars moved k = 19-95 months, both ways | 1.16 | 25% | **off-centre** (median +1.25, 95% +2.83, max +3.11): a cyclic dose shifted 4-8 years becomes its own anti-phase, so the family repeats one weak pattern with the opposite sign; about 14 cycles |
 | French Mkt-RF of month m+3 on year-on-year growth of EIA industrial electricity sales, Newey-West 3 lags, 619 months 1974-2025 (wide-22, W36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.91 | 2% | persistent macro dose, centred (median -0.44, 5/95% -1.38/+1.40); 40 phase-randomised surrogates (shown) are wider: SD 1.10, 10%, smallest -2.62, and rank the true t 3, not 1 |
 | Same on yoy growth of NBER utility electricity production (spliced), 357 months 1926-1955 (wide-22, R36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.55 | 0% | narrower than N(0, 1) (5/95% -1.36/+0.60, extremes -1.78/+0.66); phase surrogates SD 1.10 |
+| ETH 7-day return from the end of day d+1 on log2(USD stolen / 5 m) of DefiLlama non-exchange thefts >= USD 10 m on day d, controls r7 r30, Newey-West 7 lags, 3,412 days 2016-2025 (wide-23, W37) | 40 earlier-dose calendars, k = 23-920 days (step 23) | 1.02 | 5% | 109 nearly independent event days: about normal, slightly left (median -0.60, 5/95% -1.85/+1.19, min -3.61); phase surrogates SD 1.13 (10%), random-day surrogates SD 1.08 (8%); without the one event not public at its date (LuBian, post hoc) placebo SD 1.02, random-day 0.94 |
 | JST next-year log equity return over bills on the Hamilton consumption cycle, country dummies and three controls, Driscoll-Kraay 2 lags, 355 country-years 1904-1947, 14 countries (jst-gates-1, W38) | 20 earlier-dose calendars, k = 4-23 years | 1.06 | 5% | centred (median -0.10, 5/95% -2.00/+1.39, extremes -2.29/+1.82); the returns-side AR bootstrap (SD 1.32, median +0.34) and phase surrogates with shared phases (SD 1.49) are wider |
 | Same design on JST `lev` minus its trailing 10-year mean, plus a crisis control, 1,285 country-years 1925-2020, 16 countries (jst-gates-1, W39) | 40 earlier-dose calendars, k = 5-44 years | 1.09 | 12% | **off-centre** (median +0.23, 95% +2.16, max +2.37: k = 20-29 sit near +2, as W33); bootstrap SD 1.09 and phase SD 0.89 are centred |
 
@@ -200,6 +201,7 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W35 `solar-max-recession` (wide-21) | k = +-19..95 months (step 4), both ways | no: the sun does not answer prices | t -0.87, rank 3 | no: t > -2 |
 | W36 `grid-load-premium` (wide-22) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t -2.31, rank 1, post-sample b < 0: **pass (kill-only)** | killed by its replication R36 (1926-1955: t -0.32, rank 13) |
 | R36, replication of W36 (wide-22, `cards/wide-22b.md`) | k = 25..103 months, earlier only | not used | t -0.32 (predicted < 0), rank 13 | no: t > -2; W36 dead (low power: see `wide-22.md`) |
+| W37 `hack-drift` (wide-23) | k = 23..920 days, earlier only | not used (earlier only, as step 1 asks: the loot scales with prices) | t +0.68 (predicted < 0), rank 38; post hoc without LuBian (USD 3.5 bn, not public at its listed date) t -0.01, rank 31 | no: t near 0 (the positive sign is one event) |
 | W38 `consumption-cycle` (jst-gates-1) | k = 4..23 years, earlier only | not used (earlier only, as step 1 asks) | t -1.88, rank 3 of 21, bootstrap p 0.045 | no: t > -2 and rank 3; a near miss, not a clean kill (`jst-gates-1.md`) |
 | W39 `bank-capital-premium` (jst-gates-1) | k = 5..44 years, earlier only | not used | t +0.17 (predicted < 0), rank 19 | no: wrong sign |
 
@@ -207,12 +209,13 @@ W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the fac
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 
-The table holds all **32 gates** of the family count (`parked-gates-1.md`, "Family count";
+The table holds all **33 gates** of the family count (`parked-gates-1.md`, "Family count";
 family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates;
-panic-words-1 adds W34, wide-21 adds W35, wide-22 adds W36 and its replication R36: **104
-mechanisms, 29 tested by a strategy, 32 gates, family bar p < 0.10 / 104 = 0.00096**):
+panic-words-1 adds W34, wide-21 adds W35, wide-22 adds W36 and its replication R36, wide-23
+adds W37: **105 mechanisms, 29 tested by a strategy, 33 gates, family bar p < 0.10 / 105 =
+0.00095**):
 the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
-weather-1 and weather-2, W27-W36 and the replications R32 and R36 (summary-6 added the
+weather-1 and weather-2, W27-W37 and the replications R32 and R36 (summary-6 added the
 `seasonal-20y`, weather-2 and R32 rows from their write-ups, 2026-11-25). Two passed (W32 and
 W36, both kill-only), and each was killed by its replication (R32, R36).
 
@@ -223,7 +226,7 @@ the true t cleared 2 with the right sign and the rank alone failed. No gate is i
 every one failed on its own t (wrong sign or t < 2), except W32 (parked-gates-1) and W36
 (wide-22), which passed outright and were killed by their replications R32 and R36. Where a null is widened instead (stricter
 placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
-W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 32 now, two kill-only passes, both killed by replication) is weaker evidence against
+W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 33 now, two kill-only passes, both killed by replication) is weaker evidence against
 borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
 
 ## First pass, and what the procedure did with it (parked-gates-1, 2026-11-25)
@@ -259,12 +262,21 @@ require the rank in both families.
 #197 `fx-value-real-1` (merged 2026-11-25) is treated as part of #170's style-book mechanism (a
 better currency-value definition for the same book), not a new mechanism, so 104 / 29 stands.
 
-**Count after W38 and W39 (jst-gates-1, 2026-11-25; ids provisional, #205 holds W37 unmerged
-and the merging lead may renumber).** Two more mechanisms and two more gates, no replication
-(neither gate passed): **106 mechanisms, 29 tested by a strategy, 34 gates, still two
-kill-only passes (W32, W36), each killed by its replication**. Family bar p < 0.10 / 106 =
-0.00094 (if #205 lands first: 107 / 29 / 35, 0.00093). Both are pooled annual JST gates before
-and after 1966. Per jst-autocorr-2, the shift family keeps the returns' own and common
+**Count after W37 (wide-23, 2026-11-25).** One more mechanism and gate after W36/R36:
+**105 mechanisms, 29 tested by a strategy, 33 gates, two kill-only passes (W32, W36), each
+killed by its replication (R32, R36)**; W37 failed (t +0.68, rank 38; post hoc t -0.01 without
+its one event that was not public at its listed date, so no effect rather than a wrong sign),
+so every gated idea is dead. Family bar p < 0.10 / 105 = 0.00095. In this one event gate the
+phase-randomised and random-day surrogate families (shown) agreed with the earlier-dose
+placebos on width (SD 1.13 and 1.08 against 1.02; without LuBian random-day 0.94) and on the
+verdict (ranks 27 and 30). One gate does not say when the families disagree; gate-null-2
+(PR #207, open) studies exactly that.
+
+**Count after W38 and W39 (jst-gates-1, 2026-11-25; carded as provisional ids while #205 was
+unmerged; #205 then landed with W37, so W38/W39 stand).** Two more mechanisms and two more
+gates, no replication (neither gate passed): **107 mechanisms, 29 tested by a strategy, 35
+gates, still two kill-only passes (W32, W36), each killed by its replication**. Family bar p <
+0.10 / 107 = 0.00093. W38 is a pooled annual JST gate before 1966; W39 spans both sides of it. Per jst-autocorr-2, the shift family keeps the returns' own and common
 autocorrelation, because the outcome is the real one. It does not keep a shifted dose's
 same-year link to returns. The card therefore added a returns-side AR(1) bootstrap under H0 (a
 pass condition) and phase surrogates with shared phases (shown). W38 (`consumption-cycle`, t

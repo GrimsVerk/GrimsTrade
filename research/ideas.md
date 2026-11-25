@@ -378,6 +378,17 @@ Count after this run: 104 mechanisms, 29 tested by a strategy, 32 gates, two kil
 | expansion-hazard | Reliability engineering (Weibull duration dependence of expansions) | dead (literature) | - | wide-22's R1: no positive duration dependence in post-war US expansions (Diebold and Rudebusch 1990; Rudebusch 2016) `[memory]`. |
 | wide-22-filtered-set | Power-grid networks, queueing, network contagion, game theory, mechanism design, demography, agronomy, neuroscience | filtered (wide-22) | - | E3 `blackout-cascade` (mood class dead, W31), Q1 `kingman-bottleneck` (F1 / duplicate of E1's channel), N1 `epidemic-threshold` (F2: graph from return correlations), G1 `debt-ceiling-attrition` (F1: X-dates published), G2 `auction-winners-curse` (F1: sizes announced), D1 `prime-age-inflow` (F1: duplicate of wide-20 P5), H1 `frost-crop` (food channel dead W32/R32; size), B1 `habituation` (F2). |
 
+## wide-23: criminology (cybercrime), law, information theory, telecommunications, public health, demography, agriculture, materials, astronomy, neuroscience (`wide-23.md`, card `cards/wide-23.md`)
+
+Count after this run: 105 mechanisms, 29 tested by a strategy, 33 gates, two kill-only passes (W32, W36), each killed by its replication; family bar p < 0.10 / 105 = 0.00095.
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| hack-drift | Criminology of cybercrime x crypto (Corbet et al., Economics Letters 2020; Liu and Tsyvinski, RFS 2021) | dead (gate W37, wide-23) | [card](cards/wide-23.md) | ETH's 7-day return after the news on log2(USD stolen) of 114 DefiLlama non-exchange thefts of USD 10 m or more, 2016-2025, price controls: +0.28% per doubling (t +0.68, predicted negative), rank 38 of 41 earlier-dose calendars; the positive sign is one event (LuBian, USD 3.5 bn, not public until 2025-08): without it t -0.01, rank 31 (post hoc): no effect. Day-0/1 reaction nil (t -0.27); BTC flat; phase and random-day surrogate ranks 27 and 30. Weak kill (dose noise from late disclosures). R37 (exchange thefts on BTC) not run. [result](results/hack-drift.md) |
+| crackdown-shock | Law and regulation (unscheduled crypto enforcement; Auer and Claessens 2018) | new (scored 5, parked: data) | - | wide-23's C2: needs a dated list of every action, not the remembered ones. |
+| scotus-business, flu-absenteeism, news-novelty | Law (Supreme Court), public health (ILI), information theory (KL novelty of news) | new (scored 4-5, parked) | - | wide-23's C4, C8 (cause 0: index reach or size), C5 (narrative channel dead in W34). |
+| wide-23-filtered-set | Law, telecommunications, network traffic, demography, criminology, astronomy, agriculture, materials, neuroscience | filtered (wide-23) | - | C3 `court-ruling-shock` (power), C6 `cloud-outage` (mood/productivity class dead), C7 `fee-congestion` (F2), C9 `estate-liquidation` (size, power), C10 `crime-cycle` (F1, data), C11 `fireball-omen` (no channel), C12 `soil-moisture` (food channel dead), C13 `creep-rupture` (F2), C14 `prediction-error` (F1). |
+
 ### Run survey-7b: 2024-2026 literature on trend crashes, tail hedging, vol management, blending, decay (2026-11-24, UTC)
 
 Sources, filters (F1/F2, #109) and power scores (#150) in [survey-7b.md](survey-7b.md) (lane
@@ -407,9 +418,8 @@ Sources, filters (F1/F2, #109) and power scores (#150) in [survey-7b.md](survey-
 Sources, filters (F1/F2, #109) and power in [survey-8.md](survey-8.md). 11 new mechanisms,
 none tested; listing does not enter the count (#191), family bar stays 0.10 / 103 = 0.00097.
 Rows 1-2 were then gated by jst-gates-1 (W38, W39, both failed, kill-only). Count after it:
-106 mechanisms, 29 tested by a strategy, 34 gates, two kill-only passes (W32, W36), each
-killed by its replication; family bar p < 0.10 / 106 = 0.00094 (ids provisional; 107 / 35 if
-#205's W37 lands first).
+107 mechanisms, 29 tested by a strategy, 35 gates (after wide-23's W37), two kill-only passes
+(W32, W36), each killed by its replication; family bar p < 0.10 / 107 = 0.00093.
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|
