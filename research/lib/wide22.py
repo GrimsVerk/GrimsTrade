@@ -201,5 +201,98 @@ def run() -> None:
     print("\n".join(lines))
 
 
+def splice_r36(p1: dict[int, float], p2: dict[int, float]) -> dict[int, float]:
+    """R36 dose (cards/wide-22b.md): year-on-year growth of P1 for months <= 1938-12, of P2
+    from 1939-01; each ratio inside one series."""
+    g1, g2 = ev.yoy(p1), ev.yoy(p2)
+    cut = 1938 * 12 + 11
+    return {**{m: v for m, v in g1.items() if m <= cut}, **{m: v for m, v in g2.items() if m > cut}}
+
+
+def r36() -> None:
+    root = dw.cache_root()
+    p1 = ev.parse_fred((root / "wide-22/2026-11-25/fred/M01128USM247NNBR.csv").read_text(), LAST)
+    p2 = ev.parse_fred((root / "wide-22/2026-11-25/fred/M0128AUSM247NNBR.csv").read_text(), LAST)
+    _, _, mkt = load()
+    g = splice_r36(p1, p2)
+    y = {m - ev.LAG: v for m, v in mkt.items()}
+    lo, hi = 1926 * 12 + 3, 1955 * 12 + 11
+    allm = list(range(lo, hi + 1))
+    if DRY:
+        print("P1", len(p1), ym(min(p1)), ym(max(p1)), "P2", len(p2), ym(min(p2)), ym(max(p2)))
+        print("rows", len([m for m in allm if m in g and m in y]))
+        ns = [len([m for m in allm if m - k in g and m in y]) for k in ev.SHIFTS]
+        print("placebo rows min", min(ns), "max", max(ns))
+        return
+    b, t, n = fit(allm, y, g)
+    placebo = [fit(allm, y, ev.shifted(g, k))[1] for k in ev.SHIFTS]
+    rank, null = null_block(t, placebo, [f"k = {k}" for k in ev.SHIFTS])
+    passed = b < 0 and t <= -2 and rank <= 2
+    gs = {m: v for m, v in g.items() if lo - 200 <= m <= hi}
+    ps = [fit(allm, y, s)[1] for s in ev.phase_surrogates(gs)]
+    rank_s, null_s = null_block(t, ps, [f"surrogate {i + 1}" for i in range(len(ps))])
+    shown = [
+        cell("without the Depression, 1934-01 .. 1955-12", fit(allm[(1934 * 12) - lo :], y, g)),
+        cell("P1 alone, 1926-04 .. 1938-12", fit([m for m in allm if m <= 1938 * 12 + 11], y, g)),
+        cell("P2 alone, 1939-01 .. 1955-12", fit([m for m in allm if m > 1938 * 12 + 11], y, g)),
+    ]
+    sd_g = float(np.std([g[m] for m in allm if m in g]))
+    lines = [
+        "# R36: replication of W36 `grid-load-premium` on 1926-1955",
+        "",
+        "Card: `research/cards/wide-22b.md` (pushed after the W36 number, before this one)."
+        " Script: `research/lib/wide22.py r36`. Data: NBER Macrohistory electric power"
+        " production (FRED `M01128USM247NNBR` to 1938, `M0128AUSM247NNBR` from 1939, spliced on"
+        " year-on-year growth); French monthly `Mkt-RF`.",
+        "",
+        f"**R36 (usage months {ym(lo)} .. {ym(hi)}, {n} rows; outcome Mkt-RF of month m+3):**"
+        f" b = {b:+.4f}% a month per point ({b * sd_g:+.3f}% per sd of g, sd {sd_g:.2f}),"
+        f" Newey-West t {t:+.2f}; rank {rank} of 41 (lowest = 1)."
+        f" **{'PASS (kill-only)' if passed else 'FAIL: W36 is killed'}.**",
+        "",
+        "## Placebo null: earlier doses, k = 25..103 months (odd)",
+        "",
+        *null,
+        "## Shown (not deciding)",
+        "",
+        "| Cell | b (% a month per point) | t | rows |",
+        "|---|---:|---:|---:|",
+        *shown,
+        "",
+        f"Phase-randomised surrogates of g (seed {ev.SEED}): the true t ranks {rank_s} of 41.",
+        "",
+        *null_s,
+    ]
+    (RESULTS / "grid-load-premium-r36.md").write_text("\n".join(lines))
+    print("\n".join(lines))
+
+
+def posthoc() -> None:
+    """Diagnostics added after both numbers (labelled post hoc in research/wide-22.md)."""
+    ind, _, mkt = load()
+    g = ev.yoy(ind)
+    y = {m - ev.LAG: v for m, v in mkt.items()}
+    allm = [m for m in sorted(g) if m in y]
+    covid = set(range(2020 * 12, 2021 * 12 + 12))
+    cells = [
+        ("2011-01 .. 2025-07 without usage months 2020-2021", [m for m in allm
+         if m >= POST and m not in covid]),
+        ("1974-01 .. 2025-07 without usage months 2020-2021", [m for m in allm
+         if m not in covid]),
+        ("Mkt-RF on SPY's rows (usage months 1993-01 .. 2025-07)", [m for m in allm
+         if m >= 1993 * 12]),
+        ("1993-01 .. 2010-12", [m for m in allm if 1993 * 12 <= m < POST]),
+    ]  # fmt: skip
+    print("| Cell (post hoc) | b | t | rows |")
+    print("|---|---:|---:|---:|")
+    for name, ms in cells:
+        print(cell(name, fit(ms, y, g)))
+
+
 if __name__ == "__main__":
-    run()
+    if sys.argv[1:] == ["posthoc"]:
+        posthoc()
+    elif sys.argv[1:] == ["r36"]:
+        r36()
+    else:
+        run()
