@@ -66,3 +66,5 @@ orders of magnitude short of that bar.
 1. None for the insure or re-entry line: it stays closed.
 2. If anyone revisits trend insurance: the same catalogue on total-return non-US country series
    (the price indices here flatter the level, not the comparison).
+
+2026-11-25 (eng-nits-1, #218): `insure1.score` now sets rounding-sized I and B (below 1e-9 log points) to 0; `results/bear-legs.md` was regenerated and only three printed signs of zero changed (-0 / +0). No number or conclusion changed.

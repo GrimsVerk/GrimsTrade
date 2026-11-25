@@ -162,10 +162,7 @@ restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 regis
    (wide-23 C2) needs a hindsight-free dated list first. `strike-idleness` (still not
    run) needs BLS, which asks for a contact e-mail in the User-Agent: never send a personal one;
    skip it unless the owner provides a generic project contact.
-5. Engineering: `insure1.infer_pos` mislabels zero-return flip days (docstring note, #203; fix
-   upstream if any record needs it); tests that `fetch_from` moves on after `IncompleteRead`
-   (#199 nit); `REVISION_DAYS` repeats a problem line for up to 5 runs per Kraken hole (#199
-   review: expect several red runs per hole).
+5. Engineering: ~~`infer_pos` flat-day flips; `fetch_from` after `IncompleteRead` test; `REVISION_DAYS` repeat note~~: done in #218.
 6. Data, owner only: World Bank Pink Sheet and CBOE SPXTR (403 to scripts), NBER ch. IV
    commodities and non-US bonds, IFS/OECD via DBnomics, Riksbank: manual browser download if
    wanted.
