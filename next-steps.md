@@ -126,8 +126,8 @@ Lead 2 (from ~22:50 UTC) merged: #214 asset-ledger-1, #213 lead-next-1126 (the n
 wide-24 (W40 dead), #216 survey-9, #217 summary-9, #218 eng-nits-1 (infer_pos flat-day fix, sign-test
 ties), #219 insure-bonds-1, #220 stale-checks-1, #221 wide-25 (W41 dead), #222 fx-peg-1, #223
 wide-26 (W43 dead, W18 closed dead), #225 insure-jstbonds-1, #224 dw2-dates-1 (data-wide-2 date
-parse and BoE $/£ 1857-10 spike). Open at summary-10: #226 wide-27 (W44 dead; counts 111/29/40
-once merged), summary-10 itself. SUMMARY night 6 covers #218-#225 (summary-10).
+parse and BoE $/£ 1857-10 spike), #226 wide-27 (W44 dead; counts 111/29/40). SUMMARY night 6
+covers #218-#226 (summary-10).
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
@@ -151,7 +151,7 @@ once merged), summary-10 itself. SUMMARY night 6 covers #218-#225 (summary-10).
    the clean keyless independent monthly stock data are nearly used up, apart from the Yale IMM stocks, data-wide-2
    rank 2, which wait on the owner's ruling), real-rate FX value and
    sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
-   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W43, W18 (W44 if #226 merges), the insurance
+   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W43, W18, W44, the insurance
    on long bonds and floating FX (#219, #222, #225: exposure only) and the stale checks (#220). The previous
    night's do-not-redo list is in the night-lead 2026-11-24/25 section above and in SUMMARY.
 3. DEEPER next: (a) a sovereign-bond pool (Yale IMM bonds) or the IMM stocks with its own crash calendar (data-wide-2 rank 1) only

@@ -212,19 +212,20 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W41 `cabinet-collapse` (wide-25) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks: governments fall after bad markets) | t -1.74 (predicted > 0), rank 41 of 41; random-month rank 39 | no: wrong sign |
 | W43 `drought-food-margin` (wide-26) | k = +-13..89 months, both ways, plus 40 phase surrogates | no: drought does not answer stock prices | t +0.07 (predicted < 0), rank 22; surrogate rank 23 | no: wrong sign |
 | W18 `elimination-mood` (wide-26, record-closing) | k = +-23..460 days, both ways | no: match results do not answer prices | t -0.95, rank 6 | no: t > -2 |
+| W44 `revision-noise` (wide-27) | k = 25..103 months, earlier only, plus 40 phase surrogates (both gating) | not used (earlier only) | t +0.24 (predicted > 0), rank 23; surrogate rank 19 | no: t < 2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 
-The table holds all **39 gates** of the family count (`parked-gates-1.md`, "Family count";
+The table holds all **40 gates** of the family count (`parked-gates-1.md`, "Family count";
 family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates;
 panic-words-1 adds W34, wide-21 adds W35, wide-22 adds W36 and its replication R36, wide-23
 adds W37, jst-gates-1 W38 and W39, wide-24 W40, wide-25 W41, wide-26 W43 and the first gate of
-wide-8's W18; W42 is unused: **110 mechanisms, 29 tested by a strategy, 39 gates, family bar
-p < 0.10 / 110 = 0.00091**; the "Count after" paragraphs below give each step):
+wide-8's W18, wide-27 W44; W42 is unused: **111 mechanisms, 29 tested by a strategy, 40 gates,
+family bar p < 0.10 / 111 = 0.00090**; the "Count after" paragraphs below give each step):
 the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
-weather-1 and weather-2, W27-W41, W43, W18 and the replications R32 and R36 (summary-6 added the
+weather-1 and weather-2, W27-W41, W43, W44, W18 and the replications R32 and R36 (summary-6 added the
 `seasonal-20y`, weather-2 and R32 rows from their write-ups, 2026-11-25). Two passed (W32 and
 W36, both kill-only), and each was killed by its replication (R32, R36).
 
@@ -235,7 +236,7 @@ the true t cleared 2 with the right sign and the rank alone failed. No gate is i
 every one failed on its own t (wrong sign or t < 2), except W32 (parked-gates-1) and W36
 (wide-22), which passed outright and were killed by their replications R32 and R36. Where a null is widened instead (stricter
 placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
-W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 39 now, two kill-only passes, both killed by replication) is weaker evidence against
+W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" (19 gates then; 40 now, two kill-only passes, both killed by replication) is weaker evidence against
 borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
 
 ## First pass, and what the procedure did with it (parked-gates-1, 2026-11-25)
