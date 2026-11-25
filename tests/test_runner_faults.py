@@ -9,6 +9,7 @@ refusal, exit 2).
 
 import json
 import re
+import urllib.request
 from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
@@ -16,7 +17,7 @@ from pathlib import Path
 import pytest
 from test_run_daily import DAY0, fake_market
 
-from grimstrade import data, ledger, run_daily, sources
+from grimstrade import data, ledger, rates, run_daily, sources
 from grimstrade.strategies import LIVE
 
 FIRST = datetime(2026, 11, 2, 22, 30, tzinfo=UTC)  # a Monday evening, after the US close
@@ -97,7 +98,8 @@ def test_main_exits_1_on_a_problem_and_2_on_a_record_it_cannot_believe(
     real = run_daily.run
     get = market(XBTUSD=raise_(OSError("503")), **{"BTC-USD": raise_(OSError("503"))})
 
-    def run(root: Path, now: datetime, repo: Path) -> list[str]:
+    def run(root: Path, now: datetime, repo: Path, fetch_cap: float) -> list[str]:
+        assert fetch_cap == run_daily.FETCH_CAP
         return real(root, FIRST, get, repo)
 
     monkeypatch.setattr(run_daily, "run", run)
@@ -312,19 +314,17 @@ def test_a_lost_newline_alone_is_no_cut_row(tmp_path: Path) -> None:
     assert len(data.load(tmp_path, "BTC")) == 33
 
 
-# --- open findings (reproductions; the fix is left to a later lane, see PR #161) ---
+# --- findings of PR #161, fixed by lane runner-faults-2 ---
 
 
-@pytest.mark.xfail(strict=True, reason="open: the first source's gap is not filled from the second")
 def test_a_kraken_answer_missing_the_first_day_asked_is_filled_from_coinbase(
     tmp_path: Path,
 ) -> None:
-    """Kraken answers, but from a day later than asked (it lacks 2026-11-02). `fetch_from` takes
-    any non-empty answer from the first source, and `data.append` then refuses the whole answer
-    (a crypto day skipped could never be added later). Coinbase, which has the day, is never
-    asked, so BTC stores nothing for as long as Kraken lacks the day (a problem line each run,
-    then the overdue line). Wanted: an answer that does not continue the stored series counts as
-    a failed source, and the next one is asked."""
+    """Kraken answers, but from a day later than asked (it lacks 2026-11-02). `fetch_from` took
+    any non-empty answer from the first source, and `data.append` then refused the whole answer
+    (a crypto day skipped could never be added later). Coinbase, which has the day, was never
+    asked, so BTC stored nothing for as long as Kraken lacked the day. Now an answer that does
+    not continue the stored series counts as a failed source, and the next one is asked."""
     run_daily.run(tmp_path, FIRST, market(), tmp_path)
     assert data.load(tmp_path, "BTC")[-1].date == date(2026, 11, 1)
     gap = body(kraken_rows([d for d in DAYS if d >= date(2026, 11, 3)]))
@@ -334,13 +334,12 @@ def test_a_kraken_answer_missing_the_first_day_asked_is_filled_from_coinbase(
     assert data.load(tmp_path, "BTC")[-1].date == date(2026, 11, 4)
 
 
-@pytest.mark.xfail(strict=True, reason="open: a self-contradicting answer is stored, last row wins")
 def test_an_answer_with_two_different_bars_for_one_day_is_not_stored_silently(
     tmp_path: Path,
 ) -> None:
-    """One answer lists 2026-10-05 twice with different prices. `data.append` keeps whichever
-    comes last and says nothing; the other version is lost. Wanted: such an answer counts as a
-    failed source (try the next one), like a nonsense bar."""
+    """One answer lists 2026-10-05 twice with different prices. `data.append` kept whichever
+    came last and said nothing; the other version was lost. Now such an answer counts as a failed
+    source (the next one is asked), like a nonsense bar (docs/DECISIONS.md, 2026-11-26)."""
     days = DAYS[:10]
     rows = json.loads(kraken_rows(days))
     twin = list(rows["result"]["XXBTZUSD"][4])
@@ -351,3 +350,190 @@ def test_an_answer_with_two_different_bars_for_one_day_is_not_stored_silently(
     stored = data.load(tmp_path, "BTC")
     assert stored and stored[4].close == 100.5 + 4  # the first source's other bars or Coinbase's
     assert not any(p.startswith("BTC") for p in problems)
+
+
+def test_a_kraken_answer_skipping_a_day_inside_is_filled_from_coinbase(tmp_path: Path) -> None:
+    run_daily.run(tmp_path, FIRST, market(), tmp_path)
+    holed = body(kraken_rows([d for d in DAYS if d != date(2026, 11, 3)]))
+    problems = run_daily.run(tmp_path, FIRST + timedelta(days=3), market(kraken=holed), tmp_path)
+    # Stored from Coinbase; that Kraken lacks a stored day is still said (the revision check).
+    assert [p for p in problems if p.startswith("BTC")] == [
+        "BTC 2026-11-03: a bar is stored, but kraken lists no such day"
+    ]
+    got = [b.date for b in data.load(tmp_path, "BTC")]
+    assert got[-1] == date(2026, 11, 4) and date(2026, 11, 3) in got
+    assert data.load(tmp_path, "ETH")[-1].date == date(2026, 11, 4)  # same Kraken answer: "PAIR"
+
+
+def test_when_no_source_has_the_missing_day_what_comes_before_it_is_stored_and_said(
+    tmp_path: Path,
+) -> None:
+    """Both sources lack 2026-11-03: as before the fix, the days before the hole are stored, the
+    rest is refused with a problem line (the store can never hold a crypto gap)."""
+    run_daily.run(tmp_path, FIRST, market(), tmp_path)
+    days = [d for d in DAYS if d != date(2026, 11, 3)]
+    stamp = [int(datetime(d.year, d.month, d.day, tzinfo=UTC).timestamp()) for d in days]
+    coin = json.dumps([[t, 1.0, 1.0, 1.0, 1.0, 1.0] for t in stamp]).encode()  # not chosen
+    get = market(kraken=body(kraken_rows(days)), coinbase=body(coin))
+    problems = run_daily.run(tmp_path, FIRST + timedelta(days=3), get, tmp_path)
+    assert data.load(tmp_path, "BTC")[-1].date == date(2026, 11, 2)
+    assert data.load(tmp_path, "BTC")[-1].close == 100.5 + (date(2026, 11, 2) - DAY0).days
+    assert [p for p in problems if p.startswith("BTC")] == [
+        "BTC: the source skips from 2026-11-02 to 2026-11-04; a day left out now could never be "
+        "added later. Not stored.",
+        "BTC: no new bar for 2 days (newest stored: 2026-11-02)",
+    ]
+
+
+def test_a_contradicting_answer_from_every_source_stores_nothing_and_is_one_problem_line(
+    tmp_path: Path,
+) -> None:
+    run_daily.run(tmp_path, FIRST, market(), tmp_path)
+    before = data.bars_path(tmp_path, "BTC").read_bytes()
+    day = date(2026, 11, 2)
+    rows = json.loads(kraken_rows([day, day], shift=0.0))
+    rows["result"]["XXBTZUSD"][1][4] = "200.0"  # the same day, another close
+    t = int(datetime(day.year, day.month, day.day, tzinfo=UTC).timestamp())
+    coin = json.dumps([[t, 99.0, 101.0, 100.0, 100.5, 10.0], [t, 99.0, 101.0, 100.0, 100.7, 10.0]])
+    get = market(kraken=body(json.dumps(rows).encode()), coinbase=body(coin.encode()))
+    problems = run_daily.run(tmp_path, FIRST + timedelta(days=1), get, tmp_path)
+    assert data.bars_path(tmp_path, "BTC").read_bytes() == before
+    assert [p for p in problems if p.startswith("BTC")] == [
+        "BTC: all sources failed: kraken: two different bars for 2026-11-02 in one answer; "
+        "coinbase: two different bars for 2026-11-02 in one answer",
+        "BTC: no new bar for 1 days (newest stored: 2026-11-01)",
+    ]
+
+
+# --- the cash rate: a session Yahoo lacks while the Treasury is down ---
+
+
+def irx_without(missing: date) -> bytes:
+    sessions = [d for d in DAYS if d.weekday() < 5 and d != missing]
+    ts = [int(datetime(d.year, d.month, d.day, 14, 30, tzinfo=UTC).timestamp()) for d in sessions]
+    quote = {k: [4.0] * len(ts) for k in ("open", "high", "low", "close")}
+    result = {"timestamp": ts, "indicators": {"quote": [quote | {"volume": [0] * len(ts)}]}}
+    return json.dumps({"chart": {"result": [result], "error": None}}).encode()
+
+
+def test_a_rate_gap_yahoo_leaves_with_the_treasury_down_is_a_problem_line(tmp_path: Path) -> None:
+    """Yahoo `^IRX` lacks a session inside its answer and the Treasury request fails: the rows
+    are stored (the gym carries the previous rate over that day), and the gap, which stays for
+    good, is said. Before, only stderr had the Treasury failure."""
+    run_daily.run(tmp_path, FIRST, market(), tmp_path)
+    later = FIRST + timedelta(days=3)  # Thursday evening: Tue, Wed, Thu are new
+    get = market(**{"%5EIRX": body(irx_without(date(2026, 11, 4)))})  # Treasury: blocked
+    problems = run_daily.run(tmp_path, later, get, tmp_path)
+    assert [p for p in problems if p.startswith("rates")] == [
+        "rates: no rate stored for 2026-11-04 (a holiday, or a gap that stays: Yahoo lacks it "
+        "and treasury: blocked)"
+    ]
+    stored = [r.date for r in rates.load(tmp_path)]
+    assert stored[-2:] == [date(2026, 11, 3), date(2026, 11, 5)]
+
+
+def test_a_rate_day_both_sources_lack_is_a_holiday_and_no_problem(tmp_path: Path) -> None:
+    run_daily.run(tmp_path, FIRST, market(), tmp_path)
+    csv = b"Date,13 WEEKS BANK DISCOUNT\n11/05/2026,4.0\n11/03/2026,4.0\n"
+    get = market(**{"%5EIRX": body(irx_without(date(2026, 11, 4))), "treasury": body(csv)})
+    problems = run_daily.run(tmp_path, FIRST + timedelta(days=3), get, tmp_path)
+    assert not any(p.startswith("rates") for p in problems), problems
+
+
+# --- an overall time cap on fetching ---
+
+
+class FakeClock:
+    def __init__(self) -> None:
+        self.t = 0.0
+
+    def __call__(self) -> float:
+        return self.t
+
+
+def test_fetching_stops_at_the_time_cap_and_the_run_still_decides(tmp_path: Path) -> None:
+    """Every call takes 100 s of a fake clock; the cap is 450 s. Five calls are made (the fifth
+    starts at 400 s), every later one fails at once without being sent, those fetches are problem
+    lines, and the rest of the run happens: decisions, reports. The next run catches up."""
+    clock, asked = FakeClock(), []
+
+    def slow(url: str) -> bytes:
+        asked.append(url)
+        clock.t += 100
+        return market()(url)
+
+    problems = run_daily.run(tmp_path, FIRST, slow, tmp_path, fetch_cap=450, clock=clock)
+    assert len(asked) == 5
+    assert any("fetch time cap of 450 s is used up" in p for p in problems)
+    assert data.load(tmp_path, "BTC") and data.load(tmp_path, "ETH")
+    assert {r["strategy"] for r in ledger.decisions(tmp_path)} == set(LIVE)
+    assert (tmp_path / "reports" / "scoreboard.md").exists()
+    assert ledger.problem_runs(tmp_path)[-1]["problems"] == problems
+    later = FIRST + timedelta(days=1)
+    assert run_daily.run(tmp_path, later, market(), tmp_path, clock=clock) == []
+    assert all(data.load(tmp_path, s)[-1].date >= FIRST.date() for s in data.UNIVERSE)
+
+
+def test_no_cap_means_every_call_is_made(tmp_path: Path) -> None:
+    clock, asked = FakeClock(), []
+
+    def slow(url: str) -> bytes:
+        asked.append(url)
+        clock.t += 10_000
+        return market()(url)
+
+    assert run_daily.run(tmp_path, FIRST, slow, tmp_path, fetch_cap=None, clock=clock) == []
+    assert len(asked) > 10
+
+
+def test_the_fetch_cap_is_a_command_line_option(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    caps = []
+
+    def run(root: Path, now: datetime, repo: Path, fetch_cap: float) -> list[str]:
+        caps.append(fetch_cap)
+        return []
+
+    monkeypatch.setattr(run_daily, "run", run)
+    run_daily.main(["--root", str(tmp_path), "--fetch-cap", "120"])
+    assert caps == [120.0]
+    with pytest.raises(SystemExit) as exit_:
+        run_daily.main(["--root", str(tmp_path), "--fetch-cap", "0"])
+    assert exit_.value.code == 2 and "--fetch-cap must be a positive" in capsys.readouterr().err
+
+
+class Trickle:
+    """A response that sends a few bytes per read, each read taking 20 s of a fake clock."""
+
+    def __init__(self, clock: FakeClock, reads: int) -> None:
+        self.clock, self.left = clock, reads
+
+    def __enter__(self) -> "Trickle":
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        return None
+
+    def read(self, n: int) -> bytes:
+        self.clock.t += 20
+        if self.left == 0:
+            return b""
+        self.left -= 1
+        return b"ab"
+
+
+@pytest.mark.parametrize(("reads", "ok"), [(3, True), (100, False)])
+def test_a_trickling_answer_is_cut_off_at_the_request_cap(
+    monkeypatch: pytest.MonkeyPatch, reads: int, ok: bool
+) -> None:
+    """`urlopen`'s timeout is per socket operation: a server sending two bytes every 20 s never
+    trips it. `http_get` gives the whole request at most its cap."""
+    clock = FakeClock()
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout: Trickle(clock, reads))
+    if ok:
+        assert sources.http_get("https://example.invalid/", cap=90, clock=clock) == b"ab" * reads
+    else:
+        with pytest.raises(TimeoutError, match="no whole answer within 90 s"):
+            sources.http_get("https://example.invalid/", cap=90, clock=clock)
+        assert clock.t <= 90 + 20

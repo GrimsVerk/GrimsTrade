@@ -2,6 +2,32 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-26 (lane `runner-faults-2`, fixing PR #161's open findings): how the daily run
+  treats a source answer that is data but cannot all be stored. (1) A crypto answer that leaves
+  out a day (it starts after the day after the newest stored bar, or skips a day inside) is not
+  used while the next source may have the day (`sources.skipped_day`, `fetch_from`): BTC/ETH go
+  to Coinbase when Kraken lacks a day. Only if no source has an unbroken answer is the first
+  broken one taken, as before: the days before the hole are stored and the rest is a problem
+  line (the store can never hold a crypto gap). The bars stored then come from Coinbase
+  (`data/sources.jsonl` says so); Kraken's own hole still shows as "kraken lists no such day"
+  in the revision check. (2) An answer that lists one day twice with different numbers is
+  **refused** (`check_sane`: like a nonsense bar, the next source is asked; if every source
+  does it, nothing is stored and it is one "all sources failed" line). Why refuse rather than
+  store one version and log the other: stored rows are never rewritten, so a wrong pick stays
+  for good, and nothing in the answer says which version is right (first, last, or neither);
+  the answer contradicts itself, so the rest of it is not trusted either. A refused fetch costs
+  one day's delay at worst (the next run asks again; the overdue line names it), a wrong row
+  costs the record. The same bar listed twice is harmless and stored once, as before. (3) A
+  cash-rate session with no row before the newest stored one, while the Treasury request
+  failed, is a problem line ("a holiday, or a gap that stays"): with the Treasury down a
+  holiday and a hole in Yahoo's answer look the same, and the gap would otherwise be silent.
+  (4) All fetching in one run is capped at `run_daily.FETCH_CAP` = 600 s (`--fetch-cap
+  SECONDS`; `sources.Budget`): later calls fail without being sent, as problem lines, and the
+  run still decides on what is stored, instead of the 20-minute job timeout killing it between
+  the bars and the decisions. Each request is also capped at `sources.REQUEST_CAP` = 90 s
+  (`http_get` reads in chunks; `urlopen`'s 30 s timeout is per socket operation, so a server
+  trickling bytes was unbounded). A normal run fetches in well under a minute.
+
 - 2026-11-25 (lane `forward-se-1`; fixed before any live verdict: the forward registry holds no
   frozen line): the forward registry's `mean` and `sharpe` verdicts use a dependence-robust
   standard error. Rule (`forward.hac_t`, `forward.lag`, recorded as `"se": "bartlett-1y"` on each

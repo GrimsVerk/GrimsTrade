@@ -10,23 +10,56 @@ import csv
 import io
 import json
 import math
+import sys
+import time
 import urllib.request
 from collections.abc import Callable
 from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
-from grimstrade.data import UNIVERSE, Bar, Dividend, settled
+from grimstrade.data import CRYPTO, DAY, UNIVERSE, Bar, Dividend, settled
 
 Get = Callable[[str], bytes]
 
 USER_AGENT = "grimstrade/0.1 (paper trading research)"
+# `urlopen`'s timeout limits each socket operation, not a request: a server that sends a few
+# bytes every so often would hold a request open for ever. A whole request gets this long
+# (seconds) at most; the answers here are small and normally take a second or two.
+REQUEST_CAP = 90.0
+SOCKET_TIMEOUT = 30.0
 
 
-def http_get(url: str) -> bytes:
+def http_get(
+    url: str, cap: float = REQUEST_CAP, clock: Callable[[], float] = time.monotonic
+) -> bytes:
+    """The body at `url`. Raises TimeoutError once the request has taken more than `cap`
+    seconds (checked between reads, so at most `cap` plus one socket timeout)."""
+    deadline = clock() + cap
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        body: bytes = resp.read()
-        return body
+    with urllib.request.urlopen(req, timeout=SOCKET_TIMEOUT) as resp:
+        chunks = []
+        while chunk := resp.read(1 << 16):
+            chunks.append(chunk)
+            if clock() > deadline:
+                raise TimeoutError(f"no whole answer within {cap:g} s")
+        return b"".join(chunks)
+
+
+class Budget:
+    """`get` with an overall time cap for one run: once `seconds` have passed since it was made,
+    every further call raises TimeoutError without asking anyone. The run then goes on with what
+    it has (the failed fetches are problem lines; the next run catches up), instead of being
+    killed by the job's own timeout halfway through. A call already under way is limited by
+    `http_get`'s own cap."""
+
+    def __init__(self, get: Get, seconds: float, clock: Callable[[], float] = time.monotonic):
+        self.get, self.seconds, self.clock = get, seconds, clock
+        self.deadline = clock() + seconds
+
+    def __call__(self, url: str) -> bytes:
+        if self.clock() >= self.deadline:
+            raise TimeoutError(f"the run's fetch time cap of {self.seconds:g} s is used up")
+        return self.get(url)
 
 
 def _ts(d: date) -> int:
@@ -175,9 +208,15 @@ SOURCES: dict[str, list[tuple[Source, str]]] = {
 
 
 def check_sane(bars: list[Bar]) -> None:
-    """Raise ValueError on a bar no market can print. Stored rows are never rewritten, so a
-    nonsense bar (zero price, columns mixed up) must be stopped before it gets in."""
+    """Raise ValueError on a bar no market can print, and on an answer that lists one day twice
+    with different numbers (it contradicts itself: which one is right is unknown, and the store
+    would keep whichever came last). Stored rows are never rewritten, so a nonsense bar (zero
+    price, columns mixed up) must be stopped before it gets in. The same bar listed twice is
+    harmless and passes (it is stored once)."""
+    seen: dict[date, Bar] = {}
     for b in bars:
+        if seen.setdefault(b.date, b) != b:
+            raise ValueError(f"two different bars for {b.date} in one answer")
         prices = (b.open, b.high, b.low, b.close)
         ok = (
             all(math.isfinite(x) and x > 0 for x in prices)
@@ -191,25 +230,52 @@ def check_sane(bars: list[Bar]) -> None:
             raise ValueError(f"nonsense bar {b.date}: o={b.open} h={b.high} l={b.low} c={b.close}")
 
 
+def skipped_day(symbol: str, since: date, bars: list[Bar], continues: bool) -> str | None:
+    """Why a crypto answer leaves out a day, or None: it starts after `since` (when `continues`:
+    `since` is the day after the newest stored bar) or skips a day inside. Crypto trades every
+    day, and the store only appends newer bars, so such an answer could store nothing past the
+    missing day (`data.append` refuses it). ETFs have holidays: no check."""
+    if UNIVERSE[symbol] != CRYPTO or not bars:
+        return None
+    days = sorted({b.date for b in bars})
+    if continues and days[0] != since:
+        return f"the answer starts at {days[0]}, not at {since}"
+    for a, b in zip(days, days[1:], strict=False):
+        if b - a != DAY:
+            return f"the answer skips from {a} to {b}"
+    return None
+
+
 def fetch_from(
-    symbol: str, since: date, now: datetime, get: Get = http_get
+    symbol: str, since: date, now: datetime, get: Get = http_get, *, continues: bool = True
 ) -> tuple[str, list[Bar]]:
     """Settled, sane bars from `since` on, and the name of the source that gave them: the first
     one that has any. A source that answers with nothing new is not trusted on that alone: the
-    next one is asked too (an empty or cut-short answer looks exactly like "no news"). Raises if
-    every source fails."""
+    next one is asked too (an empty or cut-short answer looks exactly like "no news"). A crypto
+    answer that leaves out a day (`skipped_day`; `continues`: `since` is the day after the newest
+    stored bar) is not taken either while another source may have the day; if none has, the
+    first such answer is returned (the store keeps what comes before the missing day and the run
+    says why the rest was refused). Raises if every source fails."""
     errors = []
     nothing_new_from = None
+    gapped: tuple[str, list[Bar]] | None = None
     for source, ticker in SOURCES[symbol]:
         try:
             bars = settled(source(ticker, since, get), UNIVERSE[symbol], now)
             check_sane(bars)
         except Exception as e:  # noqa: BLE001 - any failure means: try the next source
             errors.append(f"{source.__name__}: {e}")
+            print(f"{symbol}: {source.__name__} not used: {e}", file=sys.stderr)
+            continue
+        if skip := skipped_day(symbol, since, bars, continues):
+            print(f"{symbol}: {source.__name__} not used: {skip}", file=sys.stderr)
+            gapped = gapped or (source.__name__, bars)
             continue
         if bars:
             return source.__name__, bars
         nothing_new_from = nothing_new_from or source.__name__
+    if gapped is not None:
+        return gapped
     if nothing_new_from is not None:
         return nothing_new_from, []
     raise RuntimeError(f"{symbol}: all sources failed: {'; '.join(errors)}")
