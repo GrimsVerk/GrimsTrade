@@ -135,3 +135,30 @@ next free id on `main`'s `gate-null.md`; parallel lanes may take it too, the lea
 The next candidate (S3, score 5) fails its own size check and its channel (inflation) died in
 W32/R32; S2 has six events, so even a pass could say nothing. Neither is gated; both are parked,
 not counted.
+
+## Step 3. W34 `solar-max-recession` gate
+
+The rule, data, placebo family, gate, the replication R34 (run only after a pass), shown cells,
+power and guess are in [`cards/wide-21.md`](cards/wide-21.md), pushed before any number. Code:
+`research/lib/wide21_events.py` (pure functions, tested offline in `tests/test_wide21.py`) and
+`research/lib/wide21.py` (fetch and run). Results: `research/results/solar-max-recession.md`.
+
+**A slip in the card, found while writing the tests (before any number), not edited:** the card
+says every placebo shift |k| <= 95 is "at least 37 months from both 0 and 132". True for 132
+(95 is 37 from it); from 0 the nearest shifts are 19 months. The shift set itself is written out
+in the card (+-19, 23, ..., 95) and is used as written. A 19-month shift leaves no month shared
+between the true and placebo 12-month windows, but the cycle keeps the two doses correlated, so
+the nearest placebos lean toward the true t; that widens the null on the true side and can only
+make a pass harder.
+
+### Dry run (counts only, 2026-11-25 02:4x UTC)
+
+SILSO file fetched once (`wide-21/silso/2026-11-25/SN_m_tot_V2.0.csv`): 3,322 months read,
+1749-01 .. 2025-10 (none later). Shiller: 1,833 months, 1871-01 .. 2023-09. **Gate rows: 1,831
+dose months 1871-01 .. 2023-07**, the dose defined on all; placebo rows 1,763 .. 1,831 (shifts
+to a later dose lose the rows that would need sunspots after 2025-10). Solar maxima found by the
+look-ahead shown cell: 1883-12, 1894-01, 1906-02, 1917-08, 1928-04, 1937-04, 1947-05, 1958-03,
+1968-11, 1979-12, 1989-11, 2001-11, 2014-04, 2024-10 (14 maxima in the price span, matching the
+published cycle maxima to within a few months `[memory]`). Shown month-end rows: GSPC 909
+(1950-01 .. 2025-09; the cache starts in 1950, not 1928), SPY 393, QQQ 319, TLT 279, GLD 251,
+BTC 165, ETH 113.
