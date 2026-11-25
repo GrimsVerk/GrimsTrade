@@ -19,9 +19,9 @@ same 25% falls:
 
 | | US, 50 effective falls (decides) | 13 developed non-US, 19 falls |
 |---|---|---|
-| Rebound B (year after the low) | **+8.4** better, 41 of 49 falls | **+9.3**, 18 of 19 |
-| Insurance I (peak -> trough) | **-6.9** worse, 8 of 48 better | -4.5, 2 of 18 |
-| **Net N = I + B** | **+1.5** (30 of 50; sign p 0.10, bootstrap p 0.19) | +4.7 (12 of 19; p 0.18, 0.002) |
+| Rebound B (year after the low) | **+8.4** better, 40 of 45 falls not tied (was 41 of 49 before #218) | **+9.3**, 18 of 19 |
+| Insurance I (peak -> trough) | **-6.9** worse, 3 of 40 better (was 8 of 48 before #218) | -4.5, 0 of 15 (was 2 of 18) |
+| **Net N = I + B** | **+1.5** (29 of 47; sign p 0.072, was 30 of 50 and 0.10 before #218; bootstrap p 0.19) | +4.7 (12 of 19; p 0.18, 0.002) |
 | Share of the fall avoided | 0.50 -> **0.35** | 0.49 -> 0.41 |
 | Premium, full period | 1.07 -> 0.97 | 1.11 -> 0.97 |
 | Premium 2002-2025 | 1.34 -> 1.33 | 1.11 -> 0.98 |
@@ -35,7 +35,7 @@ same 25% falls:
   clusters, -16 to -29 log points each) and 1992. The card's guard (share avoided at most 0.10
   below `tsmom12`) fails on US data (-0.15).
 - **Where it helps.** Fast falls (three months or less), `tsmom12`'s weak spot: US +1.7 per
-  episode (38 of 63), non-US **+7.4** (18 of 23; net -15.0 -> -7.6), and the long rebounds after
+  episode (30 of 63, was 38 before #218), non-US **+7.4** (15 of 23, was 18; net -15.0 -> -7.6), and the long rebounds after
   1974, 1982 and 2009 (+12 to +36). Outside the US the net gain is consistent (bootstrap p
   0.002) but the sign test is not (12 of 19).
 - **The premium.** It falls on every set (US 1.07 -> 0.97; total-return regions 1.23 -> 1.06),
@@ -107,9 +107,9 @@ its own rotated positions (1,000 rotations):
 
 | | US, 50 effective falls (decides) | 13 developed non-US, 19 falls |
 |---|---|---|
-| Rebound dB | **+7.7**, 40 of 49 | +9.2, 19 of 19 |
-| Insurance dI | **-5.9**, 8 of 48 better | -3.9, 4 of 18 |
-| **Net dN** | **+1.8** (28 of 50; sign p 0.24, bootstrap p 0.11) | +5.3 (13 of 19; p 0.084, 0.000) |
+| Rebound dB | **+7.7**, 39 of 44 (was 40 of 49 before #218) | +9.2, 19 of 19 |
+| Insurance dI | **-5.9**, 3 of 36 better (was 8 of 48 before #218) | -3.9, 2 of 15 (was 4 of 18) |
+| **Net dN** | **+1.8** (26 of 45; sign p 0.19, was 28 of 50 and 0.24 before #218; bootstrap p 0.11) | +5.3 (13 of 19; p 0.084, 0.000) |
 | Share avoided | 0.50 -> **0.37** (guard: drop 0.13 > 0.10, fails) | 0.49 -> 0.42 |
 | Premium, full period / 2002-2025 | 1.07 -> 0.98 / 1.34 -> 1.31 | 1.11 -> 0.97 / 1.11 -> 0.98 |
 | Mean position, flips a year | 73% -> 81%, 1.9 -> 2.9 | 66% -> 77%, 2.4 -> 3.8 |
@@ -117,11 +117,11 @@ its own rotated positions (1,000 rotations):
 
 - **The exit was not the leak.** `arm3-12` leaves at every `tsmom12` exit (`or3-12` stayed in at
   369 of 1,030), yet it keeps only one more log point of the fall (dI -5.9 vs -6.9; share 0.37
-  vs 0.35). Against `or3-12` directly: dN +0.4, 28 of 45 falls. The loss is in the re-entries:
+  vs 0.35). Against `or3-12` directly: dN +0.4, 24 of 38 falls not tied (was 28 of 45 before #218). The loss is in the re-entries:
   the four worst US clusters are again 1929-1933 (-16 to -29 log points), where every 3-month
   rally was bought and the next leg ridden down.
 - **Where it helps**, as before: slow falls (US +4.1 per episode) and the long rebounds after
-  1974 (+29) and the 1960s-70s falls; outside the US fast falls (+7.2, 17 of 23) and the 2008
+  1974 (+29) and the 1960s-70s falls; outside the US fast falls (+7.2, 16 of 23, was 17 before #218) and the 2008
   rebound. Non-US is consistent by bootstrap (p 0.000) but not by sign (0.084), and those falls
   overlap the US ones in time.
 - **Bar.** Second pick in the insure line, family bar p < 0.025: not met on the deciding set
@@ -140,3 +140,5 @@ the live rule.
 
 `tries.md`: 27 rows, idea `fast-reentry`: 1 `variant` (`arm3-12@insure-Mkt`), 26 `robustness`.
 Part (a) added none.
+
+2026-11-25 (eng-nits-1, #218): a value below 1e-9 log points (both rules, or a rule and the holding, equal over a fall) is now a tie, left out of the counts and sign tests, instead of a win or a loss at random. `results/fast-reentry.md` and `results/fast-reentry-2.md` were regenerated; the counts above are marked "(was ... before #218)". No verdict changed.
