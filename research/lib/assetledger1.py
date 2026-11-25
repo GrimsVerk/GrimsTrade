@@ -42,6 +42,7 @@ class Ledger:
     falls: int  # 25% falls with the trough in the window
     yrs: float
     resid: float  # |n - i - b - c|
+    k_all: float = 0.0  # trading cost over all window sessions (not on the card; a side column)
 
 
 def window(s: cd.Ser, lo: date, hi: date) -> tuple[np.ndarray, float]:
@@ -66,7 +67,8 @@ def ledger(s: cd.Ser, lo: date, hi: date, part: np.ndarray, bills: bool) -> Ledg
     hl[1:] = np.log1p(s.hold[1:])
     px = np.exp(np.cumsum(hl))
     falls = sum(1 for _, tr in cd.zigzag(px) if win[tr])
-    return Ledger(i, b, c, n_all, falls, yrs, abs(n_all - i - b - c))
+    k_all = float((100 * (np.log1p(r) - np.log1p(r + s.cost * flip)))[win].sum()) / yrs
+    return Ledger(i, b, c, n_all, falls, yrs, abs(n_all - i - b - c), k_all)
 
 
 # --- long proxies ---
@@ -192,7 +194,8 @@ def worst(days: Sequence[date], eq: np.ndarray, pnl: Mapping[str, np.ndarray], l
 # --- report ---
 
 HEAD = ("| Series | For | Window | Falls | Fall gain I | Buy-back B | Calm C | Cost K | Premium P "
-        "| Timing T | Net N (cash 0) | Net (bills) | Out share of calm |")  # fmt: skip
+        "| Timing T | Net N (cash 0) | Net (bills) | Out share of calm "
+        "| Cost, all sessions |")  # fmt: skip
 
 
 def line(nm: str, for_: str, lo: date, s: cd.Ser, part: np.ndarray, bills_ok: bool
@@ -205,7 +208,7 @@ def line(nm: str, for_: str, lo: date, s: cd.Ser, part: np.ndarray, bills_ok: bo
     nb = f"{lgb.n:+.2f}" if lgb else "-"
     txt = (f"| {nm} | {for_} | {w} | {lg0.falls} | {lg0.i:+.2f} | {lg0.b:+.2f} | {lg0.c:+.2f} | "
            f"{p0.k:+.2f} | {p0.p:+.2f} | {p0.t:+.2f} | **{lg0.n:+.2f}** | {nb} | "
-           f"{p0.out_share:.3f} |")  # fmt: skip
+           f"{p0.out_share:.3f} | {lg0.k_all:+.2f} |")  # fmt: skip
     return txt, lg0, p0, max(lg0.resid, abs(lg0.c - p0.c), p0.resid)
 
 
@@ -276,10 +279,11 @@ def main() -> None:
         "Labels: gap-2002-1's (25% / 25% zigzag on the series' own total-return index, rebound = "
         "365 days after the trough or the next peak). N = I + B + C; C = K + P + T "
         "(calm-drag-1's `decompose`). Cash 0 unless marked. Falls: 25% falls with the trough in "
-        "the window. Negative = costs the rule.",
+        "the window. Negative = costs the rule. Cost, all sessions: trading cost over every "
+        "window session (in I, B and C; a side column, not on the card).",
         "",
         HEAD,
-        "|---|---|---|" + "---:|" * 10,
+        "|---|---|---|" + "---:|" * 11,
         *rows,
         "",
         f"Checks: largest |N - I - B - C|, |C - calm-drag-1's C| and calm-split residual over "
