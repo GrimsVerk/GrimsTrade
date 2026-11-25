@@ -57,7 +57,7 @@ def test_pieces_split_at_source_change_and_demean(m: ModuleType) -> None:
 
 def test_acf_alternating_and_lag2(m: ModuleType) -> None:
     alt = np.array([0.1, -0.1] * 6)
-    s = seg(m, "SWE", 1880, np.expm1(alt))
+    s = seg(m, "PRT", 1880, np.expm1(alt))
     ps = m.pieces([s])
     a, n = m.acf(m.pairs(ps))
     assert n == 11 and a == pytest.approx(-1.0)

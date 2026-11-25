@@ -44,9 +44,10 @@ THIN, BROAD = "thin", "broad"
 
 # Equity price source periods of the RORE appendix (Tables 19-35): (first year, name).
 SOURCES: dict[str, list[tuple[int, str]]] = {
-    "AUS": [(1870, "IMM London listings"), (1882, "Brailsford et al."), (2009, "NERA"),
+    "AUS": [(1870, "IMM London listings"), (1882, "Brailsford et al. (to 1935)"),
+            (1936, "Brailsford et al. (1936-)"), (2009, "NERA"),
             (2014, "ASX 200")],
-    "BEL": [(1870, "Buelens SCOB")],
+    "BEL": [(1870, "Buelens SCOB (to 1914)"), (1915, "Buelens SCOB (1915-)")],
     "CHE": [(1900, "Moore Zurich microdata"), (1926, "Pictet"), (1960, "SBC (Pictet/SNB)"),
             (1984, "SPI")],
     "DEU": [(1870, "Ronge top-30"), (1890, "Eube all-share"), (1914, "Ronge top-30 (2)"),
@@ -66,27 +67,46 @@ SOURCES: dict[str, list[tuple[int, str]]] = {
     "NLD": [(1900, "Eichholtz-Koedijk-Otten"), (1996, "CBS"), (2004, "AEX")],
     "NOR": [(1881, "Oslo microdata (JST)"), (1921, "Klovland"), (2001, "OSEBX")],
     "PRT": [(1870, "Lisbon microdata (JST)"), (1988, "PSI")],
-    "SWE": [(1871, "Waldenstrom"), (2003, "OMXSGI")],
+    "SWE": [(1871, "Waldenstrom (Aurell lists)"), (1891, "Waldenstrom (ten most traded)"),
+            (1902, "Waldenstrom (1902-)"), (2003, "OMXSGI")],
     "USA": [(1870, "Shiller")],
 }  # fmt: skip
 # Price timing per source period (absent: UNK). Filled from the documentation only.
 TIMING: dict[tuple[str, str], str] = {
     ("USA", "Shiller"): DAVG,  # Shiller: monthly averages of daily closes; JST = Dec-Dec
     ("NOR", "Klovland"): YE,  # Klovland 2004: latest bid price of the month (JST = Dec-Dec)
+    # Brailsford-Handley-Maheswaran: "the average value of the index in December"
+    ("AUS", "Brailsford et al. (to 1935)"): DAVG,
+    ("AUS", "Brailsford et al. (1936-)"): DAVG,
+    ("FRA", "Le Bris-Hautcoeur"): YE,  # first Friday of January, chained January to January
+    ("CHE", "Moore Zurich microdata"): YE,  # JST footnote: December 1913 - July 1914 etc.
+    ("CHE", "Pictet"): YE,  # "relevees a la fin des annees etudiees" (Pictet 1998 reprint)
+    ("ESP", "Madrid microdata (BdE archive)"): YE,  # JST: "prices of securities in end-1936"
+    ("DEU", "Ronge top-30"): YE,  # "Ultimo 1870 bis Ultimo 1959", weekly closes, year-end
+    ("DEU", "Ronge top-30 (2)"): YE,
+    ("SWE", "Waldenstrom (ten most traded)"): YE,  # "year-end market prices ... were collected"
+    ("SWE", "Waldenstrom (1902-)"): YE,  # "market value of listed stocks at the end of the period"
 }
 # Thin-market label per source period (absent: UNK).
 THINNESS: dict[tuple[str, str], str] = {
-    ("DEU", "Ronge top-30"): BROAD,
+    ("DEU", "Ronge top-30"): BROAD,  # 30 blue chips by market cap
     ("DEU", "Ronge top-30 (2)"): BROAD,
-    ("DEU", "Eube all-share"): BROAD,
-    ("BEL", "Buelens SCOB"): BROAD,
-    ("FRA", "Le Bris-Hautcoeur"): BROAD,
+    ("DEU", "Eube all-share"): BROAD,  # 415 shares; replaced (missing) prices at most 1%
     ("GBR", "Barclays top-30"): BROAD,
     ("GBR", "FTSE all-share"): BROAD,
+    ("CHE", "Pictet"): BROAD,  # 50 Zurich shares chosen at random (Raetzer 1983 in Pictet)
+    ("FIN", "Nyberg-Vaihekoski"): BROAD,  # on average 53 series a month
+    ("AUS", "Brailsford et al. (1936-)"): BROAD,  # "forty seven in 1935"
+    # stated: missing prices carried forward, 16% of 19th-century prices (Le Bris-Hautcoeur)
+    ("FRA", "Le Bris-Hautcoeur"): THIN,
+    ("AUS", "Brailsford et al. (to 1935)"): THIN,  # "five stocks ... in 1875, twelve in 1905"
+    ("BEL", "Buelens SCOB (to 1914)"): THIN,  # Annaert-Van Hyfte: "did not trade very frequently"
     ("DNK", "yearbook selection"): THIN,
-    ("ITA", "Genova (Da Pozzo-Felloni)"): THIN,
-    ("FIN", "Poutvaara"): THIN,
-    ("NOR", "Oslo microdata (JST)"): THIN,
+    ("ITA", "Genova (Da Pozzo-Felloni)"): THIN,  # "selected stocks"
+    ("FIN", "Poutvaara"): THIN,  # "unofficial auction price quotations for three banks"
+    ("NOR", "Oslo microdata (JST)"): THIN,  # Klovland 2004: 22 shares quoted monthly in 1881
+    ("SWE", "Waldenstrom (Aurell lists)"): THIN,  # "Trading activity was quite low", 10-50 firms
+    ("SWE", "Waldenstrom (ten most traded)"): THIN,  # ten stocks
 }
 # Year-level interpolated / non-calendar returns (documented closures; JST *_interp flags).
 INTERP: dict[str, tuple[int, int]] = {
@@ -96,7 +116,7 @@ WARS = [(1914, 1918), (1939, 1945)]
 # Documented closures, civil war, revolution and price controls beyond the world wars.
 DISRUPT_EXTRA: dict[str, list[tuple[int, int]]] = {
     "ESP": [(1936, 1940)], "PRT": [(1974, 1977)], "JPN": [(1946, 1948)],
-    "DEU": [(1943, 1947)], "NLD": [(1944, 1946)],
+    "DEU": [(1943, 1948)], "NLD": [(1944, 1946)], "AUS": [(1941, 1947)],
 }  # fmt: skip
 
 
