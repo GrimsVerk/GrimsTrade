@@ -30,54 +30,111 @@ branches; the leads' night log is on branch `summary-1` (closed PR #28, branch k
 - Owner decisions brief (`research/owner-decisions.md`): every item answered by its default as
   an agent call (section "Answers"); no owner question left.
 
-## Night lead 2026-11-24 (in flight; rewritten at handoff)
+## Night lead 2026-11-24/25 (handoff, lead 2; window 23:20-04:20 UTC)
 
-Merged tonight, each after a fresh review agent (fixes applied where it asked): #136, #133, #138,
-#137, #134, #135, #140, #139, #143, #141, #147, #142, #148, #145, #144, #150, #154, #156, #152,
-#157. Verdicts are in `research/SUMMARY.md` (night 4, #156).
+Lead 1 (19:20-22:00 UTC) merged 26 PRs (#133-#165); lead 2 (23:20 UTC on) merged #166-#182 and
+more (list below), each after a fresh review agent, review fixes applied before merging, head
+branch re-pushed after each merge. Verdicts: `research/SUMMARY.md` (night 5, #183).
+
+Lead 2 merged: #166 register-8, #167 vix-call-1, #168 e4-anatomy-1, #169 wide-18, #170
+xs-century-1, #171 wide-17, #172 ownvol-anatomy-1, #173 wide-19, #174 data-long-4, #175
+hedge-books-1, #176 wide-20, #177 survey-7b, #178 reentry-reconcile-1, #179 vm-style-1, #180
+breadth-anatomy-1, #181 tick-tier-1, #182 rev-costloss-1, #183 summary-5 (SUMMARY night 5, BAR
+regenerated), #184 evalue-forward-1, #186 insure-1870-1, #187 omori-1, #188 parked-gates-1, #189
+forward-se-1, #190 coin-drift-2, #191 summary-6 (the last merge).
+
+**Merges stopped at 02:02 UTC, resumed 2026-11-25 ~09:15 UTC:** GitHub's merge commits carry a
+non-UTC offset and the bot account's own email; the owner OK'd both on 2026-11-25, so agents
+merge again with `gh pr merge --merge` (re-push the head branch after each).
+
+**Morning merges 2026-11-25 (CoS cleanup agent, 09:15-10:35 UTC):** #192 jst-autocorr-1, #193
+panic-words-1 (keeps W34; tries.md merged by union), #194 wide-21 (renumbered W34 -> W35, R34 ->
+R35 per the steps below; count 103 / 29 / 30, bar 0.00097; tries.md note row added), then the
+runner PRs one at a time after the passing 2026-11-25 daily run (Actions run 04:57 UTC green,
+paper-trail got rows, `dividends.csv` and `rates.csv` created, scoreboard updated;
+`reconcile1.py` rerun: 0 late bars, 0 class (b)/(c), the 2026-11-25 snapshot equals the gym on
+`main` for all 12 books, so the one-time (d) change happened): #149 gymreplay-1, #153
+reconcile-daily-1, #155 scoreboard-note-1, #161 runner-faults-1. Each was merged with `main`
+first (merge commit; DECISIONS.md conflicts resolved newest first), full tests passed and
+a daily dry run on a copy of paper-trail exited 0 (reconcile: 12 books, 0 problems; intraday exit
+0). SUMMARY updated by #195 summary-7 (the #186 timing correction below is done; review fixes
+applied). This handoff (#185) merged last.
+
+**Open PRs at handoff (history: all merged on the morning of 2026-11-25, see above; were
+unmerged by the CoS's no-merge decision):** #185 (this handoff), #149, #153, #155, #161 (held for the
+daily run), #192 jst-autocorr-1 (review result in its PR or the night log), and the last lanes'
+PRs: #194 wide-21 (W34 solar-max-recession fails) and #193 panic-words-1 (W34 panic-words
+fails). Both used gate id W34 and both count 102/29/29: whichever merges second becomes W35
+and the count 103/29/30 (bar 0.10/103). **Review (02:55 UTC): #193 MERGE, #194 MERGE.** #193
+was carded first, so it keeps W34; #194 becomes W35 (replication R35). Merge #193 first, then
+on #194's branch: merge main (union for gate-null.md/tries.md), then W34->W35 and R34->R35 in
+research/gate-null.md (its two rows, the cyclic-dose note, and the count paragraph: 30 gates,
+W27-W35, 103/29/30, bar 0.00097), research/wide-21.md (plus 'renumbered from W34 at merge; the
+card says W34 (provisional)'), research/lib/wide21.py, research/lib/wide21_events.py,
+research/results/solar-max-recession.md:1, research/ideas.md (the wide-21 gate row); append a
+tries.md note row 'wide-21's W34 = W35' (never edit the old row). Cards stay unchanged. #193's raw text cache (~30 GB, CC-BY newspaper text) sits
+in the local data cache `panic-words-1/` and can be deleted; monthly counts are committed (check `gh pr list`; each needs a fresh review first unless the
+night log says "review: MERGE"). #192 review: MERGE (no required fixes).
+
+**SUMMARY correction (done in #195):** #186's "holds, narrowly on timing" must say
+the timing statistic (p_S 0.020) is consistent with the early annual data's lag-1
+autocorrelation of unknown origin (an AR(1) of 0.19 alone gives most of the gap; JST US and
+Norway are true year-end prices, so averaging is not shown); the 9-of-9 insurance count stands.
+
+**Lead decision to check (owner may reverse):** #189 changed the forward registry's verdict SE to
+HAC/Newey-West with fixed-b p-values although its card's kill condition was met (3 of the
+10-year null cells > 0.040). Adopted because every resampled cell moved toward nominal and the
+iid controls keep their level; a 10-year verdict vs `tsmom12` still reads as about a 5% test.
+Disclosed in `docs/DECISIONS.md` (2026-11-25). `run_daily` does not import `grimstrade.forward`.
 
 **Held until after the 2026-11-25 daily run** (first run on tonight's new main; check it passed,
-then merge in this order, each with `gh pr merge --merge`, then re-push the head branch, see
-below): #149 gymreplay-1 (one simulator loop; review MERGE, CI green on the branch), #153
-reconcile-daily-1 (daily live==gym check; review MERGE + try/finally fix applied), #155
-scoreboard-note-1 (timing note; review wording fix applied), #161 runner-faults-1 (fault tests;
-a half-written row now refuses the run with exit 2 naming the file and line instead of crashing;
-review MERGE: the stricter check passes on the whole real record). Reviewers merged all four
-locally: no conflicts, 892 tests pass, dry run exit 0 with 0 reconcile problems. #161's two open
-findings (Kraken answering from a later day blocks the Coinbase fallback; duplicate same-day bars
-in one answer, last wins) are strict xfails: next engineering lane.
+then merge in this order, each with `gh pr merge --merge`, then re-push the head branch): #149
+gymreplay-1, #153 reconcile-daily-1, #155 scoreboard-note-1, #161 runner-faults-1. Reviewers
+merged all four locally: no conflicts, dry run exit 0 with 0 reconcile problems. Main moved a lot
+since (research files only, nothing in `src/`): expect clean merges, but re-run the checks.
+#161's two open findings are strict xfails (next engineering lane, queue item 2).
 
-Also merged after ~20:45: #154, #156, #152, #157, #159, #160, #158 (register-7: `--ref`, live
-series keyed by code version; the next register regeneration must run `live` then `export` and
-commit `research/register/returns/live.csv.gz`). Running at ~21:30 UTC: `gap-2002-1`
-(per-series gap to holding since 2002; corrects SUMMARY's "But it has a price" line).
+**Repo setting:** GitHub auto-deletes merged head branches (`delete_branch_on_merge`); until the
+owner turns it off, re-push each lane branch right after merging it
+(`git push origin <sha>:refs/heads/<lane>`). AGENTS.md's "`gh pr merge --rebase --delete-branch`"
+line conflicts with that (owner/CoS to settle).
 
-**Repo setting:** GitHub auto-deletes merged head branches (`delete_branch_on_merge`), against
-the rule above; the owner was asked to turn it off. Until then, re-push each lane branch right
-after merging it (`git push origin refs/heads/<lane>:refs/heads/<lane>`). AGENTS.md's
-"`gh pr merge --rebase --delete-branch`" line conflicts with that rule too (owner/CoS to settle).
+**Privacy (CoS):** commit with `TZ=UTC`; all dates in files and PR text in UTC; neutral framing.
 
-**Privacy (CoS):** commit with `TZ=UTC`; neutral framing (no country of residence, national tax
-rules, or banks/brokers as "ours"); a history rewrite follows after the night run.
+**Notes for the owner/CoS (not acted on):**
+- `research/lib/long_x_fetch._get` (on main, older) sends a browser-like user agent to Yahoo;
+  review of #174 flagged it as at odds with the no-evasion rule. Decide whether to change it.
+- data-long-4 cached the JST Macrohistory R6 file (CC BY-NC-SA) from a plain script fetch made
+  before the site began to 403 scripts; local cache only, nothing committed; the loader now
+  treats it as a hand download (`--jst <path>`).
 
 ## Lane queue (each from `main`)
 
-1. **After the 2026-11-25 daily run** (fires ~02:00-06:13 UTC): check it passed (Actions run
-   green, `paper-trail` got the new rows, `reports/scoreboard.md` updated, `dividends.csv` and
-   `rates.csv` created). Rerun `research/lib/reconcile1.py --work <scratch>` and confirm the
-   one-time replay change it predicts (reconcile-1 table). Then merge #149, #153, #155, #161 one
-   at a time (`gh pr merge --merge`, re-push the head branch after each). If the run fires after
-   the 04:20 UTC hold, leave the merges for the next lead/day.
+1. DONE 2026-11-25 morning: daily run checked, reconcile-1 rerun, #149, #153, #155, #161
+   merged one at a time (see "Morning merges" above).
 2. Engineering, after #161: fix its two strict xfails (Kraken answering from a later day must
    fall back to Coinbase; duplicate same-day bars in one answer must be refused or logged), and
    the smaller notes in #161's PR body (rate gap with no problem line; no overall fetch time cap).
 3. Optional: `reconcile.py` reuses `gym.cash_rate` / `gym.interest` (review of #153).
-4. Research, DEEPER: `e4` is the only open lead (pooled-1 +0.063 on 41 equity markets; pooled-2
-   +0.010 on bonds+FX; combined +0.045, z 1.43). Do not retune it. If tested again, pre-register
-   on new independent data only.
-5. Research, WIDER: fast-crash cover. insure-3: puts beat trend in fast crashes; insure-4 (running
-   at ~21:45 UTC, check its PR) tests puts only while trend is in. Next: VIX-call overlays (VXTH
-   was the only option index near trend's cost) on keyless CBOE data, statistics only (CBOE
-   terms).
-6. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
+4. Research, DEEPER: `e4` stays the only open lead (+0.063 on 41 stock markets, z 1.55). Its lead
+   is explained (#168, #178): a graded buy-back after the low plus earlier partial exits; per fall
+   its buy-back leaks like the old re-entry rules. Do not retune it; test again only on new
+   independent data, pre-registered. The "legs agree" buy-back (+0.022/+0.028 in #178) is a
+   diagnostic, not a lead, unless carded on independent data.
+5. Research: fast-crash cover is closed for now (puts #160, puts-while-in #165, VIX calls #167:
+   all a net cost). The century long-short style book (#170) is the closest thing to the bar
+   (gross z 7.39, net 2.75; variance management #179 does not help). With data-long-4's real
+   exchange rates (#174), a pre-registered rerun with the published currency-value definition
+   would be a new counted try, not a fix: only if someone writes the card first and accepts it
+   is close to retesting a failed book.
+6. Done tonight, do not redo: tick-size split of trend (#181, inconclusive by its card), the exit
+   as a crash warning (#182), insurance out of sample 1870-1965 (#186, holds narrowly on timing),
+   sequential tests (#184), registry SE fix (#189), coin-drift-run (#190, dead), Omori re-entry
+   (#187, a vol-calm rule in disguise), drought gate (#188, passed then killed by replication).
+7. Next WIDER ideas not yet run: `panic-words` (wide-20 P3, ~2,000 loc.gov calls: be polite);
+   `strike-idleness` needs BLS, which asks for a contact e-mail in the User-Agent: never send a
+   personal one; skip unless the owner provides a generic project contact. Next DEEPER: why the
+   annual early-sample returns autocorrelate (index smoothing?) before any further use of JST
+   annual data (#186 caveat).
+8. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
    manual browser download if wanted (data-long-3, insure-3).
