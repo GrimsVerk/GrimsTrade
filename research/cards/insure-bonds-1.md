@@ -203,3 +203,33 @@ a new pick) is quoted for scale only; no p here can reach it. `tries.md` (kind `
 idea `insure-bonds-1`): one row per primary series (`tsmom12m@insure-bonds-norway`,
 `tsmom12m@insure-bonds-consols`) and one per check; the before-scoring table gets a `note` row.
 Rotations, null worlds and the fixed control are re-scorings: no rows.
+
+## Amendment A (2026-11-25 ~23:15 UTC, after the before-scoring fall counts, before any rule position, episode or outcome was read)
+
+The before-scoring table (`results/insure-bonds-1.md`, this commit) gives, at the card's
+ladder, Norway (10-year par bond) 0/0/0/2 falls at 25/20/15/10% and consols 0/2/2/4. By the
+card, d = 10% for both and **both card verdicts are "Too few falls"**; that stays the card's
+answer. Bond total-return indices fall much less than share indices; the ladder should have gone
+lower. Added now, reported next to the card's verdicts and never instead of them:
+
+- **A1 (amendment primary):** Norway 10-year par bond on an extended ladder 10% / 7.5% / 5%,
+  same rule (largest rung with at least 8 falls): 2 / 7 / 11, so **d = 5%** (rise 5%).
+- **A2:** consols perpetuity on the same extended ladder: 4 / 5 / 10, so d = 5%.
+- **A3:** Norway with a perpetuity total return (card check 2's formula, the longest duration)
+  on the card's own ladder: 2 / 4 / 9 / 16 at 25/20/15/10%, so d = 15%.
+- Each gets the card's full machinery: sign and bootstrap tests of I and N, fixed exposure,
+  1,000 rotations, the AR1 and BB nulls (p_AR = the larger), iid and AAFT references, and the
+  card's verdict table and qualifiers. Each also gets a `tries.md` row.
+- Interpretation fixed now: A1 decides the amendment's reading; A2 and A3 are secondary. A 5%
+  fall of a 10-year bond index is a yield rise of roughly 0.7-1 point net of coupons: a real
+  bond bear market by bond standards, but small next to the 25% equity falls of the SUMMARY
+  claim. So any A1 result answers "does the insurance show on bond falls", not "on crashes".
+- The card's checks keep the card's threshold (10%) where they say so; check 4 (neighbouring
+  rungs) is applied around A1's and A2's 5% (i.e. 7.5% only, there is no lower rung) as well as
+  around the card's 10%.
+- Also found in the before-scoring table (documentation, not outcome): A4 has **no** monthly
+  values for 1843-1844 (the interpolation note concerns the annual averages), so period N2 and
+  check 6 are void; the 1845-11..1848-03 run (29 months) is shorter than the 60-month minimum and
+  is dropped. Consol splice: the Klovland column matches from 1866-01 (not 1870) to 1914-07,
+  nothing matches 1914-08..1915-01 (exchange closure), Capie-Webber from 1915-02; so C1 (NBER)
+  has no month in the window and C3 starts at 1914-08.
