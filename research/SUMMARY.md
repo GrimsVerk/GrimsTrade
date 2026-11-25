@@ -26,8 +26,8 @@ and run this repo; open pull requests are listed under "Still open".
   on the count (7 of 7), with the same autocorrelation caveat as the annual JST data (#212).
   The annual JST timing rests on last year's return: a year-older signal removes it (S 0.72 ->
   0.37, p 0.73); averaged prices barely move the 12-month timing on US 1885-1925 (#220).
-  **On bonds and floating currencies the insurance is only what holding less gives, with no
-  timing:** Norwegian bonds 1823-1984 do not hold (4 of 11 falls of 5%), UK consols 1867-1926
+  **On bonds and floating currencies no timing is shown: where the insurance holds, it is what
+  holding less gives.** Norwegian bonds 1823-1984 do not hold (4 of 11 falls of 5%), UK consols 1867-1926
   are in between (#219); JST bonds in 14 countries lost less in 9 of 12 falls of 10%, timing
   below the nulls (#225); floating currencies 1791-1970 lost less in 10 of 11 clusters, by
   exposure only (#222). The literature (#216) agrees where it compares with holding (about
