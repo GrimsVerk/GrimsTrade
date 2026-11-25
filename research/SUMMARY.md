@@ -50,8 +50,8 @@ and run this repo; open pull requests are listed under "Still open".
   30-year since 1978 -2.12), gold (GLD -2.33) or coins (BTC -3.72, ETH -3.55). The timed
   book's worst drawdown (37.4%, 2018-2020) is a coin drawdown, deeper than the untimed book
   over the same dates (27.1%). As a warning it pays only for someone whose protection costs
-  about a tenth to a third of the loss it prevents; on the US market a plain holder sits at the top edge
-  of that band, where it is worth about nothing (value +0.06 of a perfect warning; in money -0.01;
+  about a tenth to a third of the loss it prevents; on the US market a plain holder sits at the
+  top edge of that band, where it is worth about nothing (value +0.06 of a perfect warning; in money -0.01;
   pooled 11 series +0.01 / -0.04; SPY and QQQ +0.17 / +0.20, but -0.05 / +0.05 in money), and the
   largest block of false alarms is the rebound after the low (#182). It fails in fast crashes of
   three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
