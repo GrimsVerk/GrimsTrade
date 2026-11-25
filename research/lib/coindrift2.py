@@ -17,48 +17,30 @@ import fcntl
 import math
 import os
 import sys
-from collections.abc import Sequence
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import coindrift2_core as core  # noqa: E402
 import harness  # noqa: E402
 import stats  # noqa: E402
+from coindrift2_core import CARD_COINS, EXCLUDE, cm_bars, pick_coins  # noqa: E402
 from harness import OOU_COINS, TRAIN_START, Panel  # noqa: E402
 
 from grimstrade import gym  # noqa: E402
 from grimstrade.data import CRYPTO, ETF, UNIVERSE, Bar  # noqa: E402
 
+assert tuple(OOU_COINS) == core.OOU_COINS
+
 IDEA = "coin-drift-run"
 PICK_DAY = date(2018, 1, 1)  # wide-16's set rule: "large caps of January 2018"
 LAST = date(2019, 3, 31)  # last bar: coin-drift-1's first return day is 2019-04-07
-EXCLUDE = ("btc", "eth", "usdt", *(s.lower() for s in OOU_COINS))
-CARD_COINS = ("xem", "xmr", "zec", "doge", "dcr", "rep")  # as the card lists them
 BAND05 = 0.05
 SUFFIX = "-CD2"
 DRY = os.environ.get("DRY") == "1"
 SPLIT = date(2018, 1, 1)  # reporting only: the part after the pick
-
-
-def pick_coins(
-    names: Sequence[str], elig: np.ndarray, cap30: np.ndarray, exclude: Sequence[str], k: int = 6
-) -> list[str]:
-    """The k largest by `cap30` among `elig` coins, skipping `exclude` (one day's rows)."""
-    ok = [j for j, n in enumerate(names) if elig[j] and n not in exclude and np.isfinite(cap30[j])]
-    ok.sort(key=lambda j: -float(cap30[j]))
-    return [names[j] for j in ok[:k]]
-
-
-def cm_bars(series: Sequence[tuple[date, float]], last: date) -> list[Bar]:
-    """breadth-book-1's CM bars (`bbook1.prep_coins`): a bar opens at the previous known price
-    and closes at the day's price; nothing after `last`, no non-positive price."""
-    s = sorted((d, p) for d, p in series if d <= last and p > 0)
-    return [
-        Bar(d, p0, max(p0, p), min(p0, p), p, 0.0)
-        for (_, p0), (d, p) in zip(s, s[1:], strict=False)
-    ]
 
 
 def load_coins() -> dict[str, list[Bar]]:

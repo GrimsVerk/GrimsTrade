@@ -1,4 +1,4 @@
-"""coin-drift-2 (research/lib/coindrift2.py) picks and builds its data as the card
+"""coin-drift-2 (research/lib/coindrift2_core.py) picks and builds its data as the card
 (research/cards/coin-drift-2.md) says.
 
 - The pick ranks by cap among eligible coins only and skips the excluded names.
@@ -17,7 +17,7 @@ import numpy as np
 
 LIB = Path(__file__).resolve().parents[1] / "research" / "lib"
 sys.path.insert(0, str(LIB))
-cd2: Any = importlib.import_module("coindrift2")
+cd2: Any = importlib.import_module("coindrift2_core")
 
 
 def test_pick_ranks_eligible_by_cap_and_skips_excluded() -> None:
