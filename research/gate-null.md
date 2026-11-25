@@ -51,6 +51,8 @@ shows how wide the real null is:
 | Same design on JST `lev` minus its trailing 10-year mean, plus a crisis control, 1,285 country-years 1925-2020, 16 countries (jst-gates-1, W39) | 40 earlier-dose calendars, k = 5-44 years | 1.09 | 12% | **off-centre** (median +0.23, 95% +2.16, max +2.37: k = 20-29 sit near +2, as W33); bootstrap SD 1.09 and phase SD 0.89 are centred |
 | Hit country's index minus the other 24 cached markets, 20 sessions from the close of s0+1, on log2(1 + % of the country's place population within a magnitude radius) of declustered M >= 6 shallow quakes, controls r2 r20, market dummies, Driscoll-Kraay 30 days, 168,901 rows, 25 markets, 1998-2025 (wide-24, W40) | 40 calendars moved 23k days, k = +-1..20, both ways | 1.09 | 5% | 79 nearly independent (event, market) pairs, dose acf1 +0.008: about normal (median +0.15, 5/95% -1.95/+1.30, extremes -2.29/+1.80); random-day surrogates SD 1.28 (5%), one draw at +4.77 |
 | Country's French USD market minus the other 20 over the six months after a ParlGov mid-term cabinet start (binary monthly dose), own excess 1/3/12-month controls, country dummies, Driscoll-Kraay 6 lags, 9,300 country-months 1976-2022, 18 countries, 171 event months (wide-25, W41) | 40 earlier-dose calendars, k = 25-103 months (odd) | 1.24 | 8% | upper side wide (median +0.14, 95% +2.26, max +3.39): shifts of 31-53 months lean positive, perhaps the 3-5 year election clock; random-month surrogates (shown) centred, SD 1.10, 5% |
+| US food industry (French 49 VW Food) minus 60-month beta x market, months m+2..m+4, on -PDSI of the Corn Belt (nClimDiv 361), Newey-West 3 lags, 786 months 1960-2025 (wide-26, W43, provisional id) | 40 calendars moved k = 13-89 months, both ways; 40 phase surrogates (both families: dose acf1 0.94) | 1.10 | 8% | persistent physical dose, centred (median +0.03, 5/95% -1.68/+1.52, extremes -2.28/+2.02); phase surrogates wider: SD 1.25, 15%, extremes -2.97/+2.65 |
+| Losing country's index next-session return minus the other cached markets on 1 per World Cup / Euro knockout elimination, market dummies, Driscoll-Kraay 5 days, 122,576 rows, 25 markets, 2006-2025 (wide-26, W18, record-closing) | 40 calendars moved 23k days, k = +-1..20, both ways | 0.87 | 0% | 74 sparse one-day events, dose acf1 -0.001: narrower than normal (median -0.20, 5/95% -1.20/+1.37, extremes -1.77/+2.00) |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -208,6 +210,8 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W39 `bank-capital-premium` (jst-gates-1) | k = 5..44 years, earlier only | not used | t +0.17 (predicted < 0), rank 19 | no: wrong sign |
 | W40 `quake-drift` (wide-24) | k = +-23..460 days, both ways | no: earthquakes do not answer prices | t +0.38 (predicted < 0), rank 24; random-day rank 28 | no: wrong sign |
 | W41 `cabinet-collapse` (wide-25) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks: governments fall after bad markets) | t -1.74 (predicted > 0), rank 41 of 41; random-month rank 39 | no: wrong sign |
+| W43 `drought-food-margin` (wide-26) | k = +-13..89 months, both ways, plus 40 phase surrogates | no: drought does not answer stock prices | t +0.07 (predicted < 0), rank 22; surrogate rank 23 | no: wrong sign |
+| W18 `elimination-mood` (wide-26, record-closing) | k = +-23..460 days, both ways | no: match results do not answer prices | t -0.95, rank 6 | no: t > -2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -353,3 +357,16 @@ lag-1 acf -0.007), so gate-null-2's proposed "both families" rule does not apply
 families agree. An event calendar tied to a 3-5 year election clock made the earlier-dose
 shifts of 31-53 months lean positive (max +3.39): a political gate should report a
 random-month family next to the shifts, as W41 did.
+
+## Count after W43 and W18 (wide-26, 2026-11-25)
+
+W43 `drought-food-margin` (agronomy: Corn Belt drought as an input-cost shock to US food
+stocks; a provisional id, W42 is unused, so the lead may renumber) fails on its t (+0.07,
+predicted < 0; rank 22 of 41 shifted, 23 of 41 phase surrogates). W18 `elimination-mood`
+(wide-8's own id, gated for the first time as a record-closing check) fails (t -0.95, rank 6).
+Count after wide-25's #221 (W41), merged before this one: one more mechanism (W43; W18 was
+counted since wide-8) and two more gates: **110 mechanisms, 29 tested by a strategy, none
+passed; 39 gates, two kill-only passes (W32, W36), each killed by its replication; family bar
+p < 0.10 / 110 = 0.00091.** W43's dose is persistent (acf1 0.94); gate-null-2's proposed
+"both families" rule applied because the card pre-registered it; the two families agreed (surrogates wider, SD 1.25 against
+1.10). W18's dose is sparse (acf1 -0.001); its shifted null is narrower than normal (SD 0.87).
