@@ -1,7 +1,7 @@
 # Survey 8: 2017-2026 literature on intermediaries, rebalancing flows, macro and text indices, cross-asset lead-lag and real-time data (2026-11-25, UTC)
 
 Lane `survey-8` of the night lead (WIDER lane, research only, fake money). Branch `survey-8`
-from `origin/main` (`d84fe39`). Format, filters and power yardstick as in `survey-7b.md`.
+from `origin/main` (`d84fe39`; merged with main at `845f34e`). Format, filters and power yardstick as in `survey-7b.md`.
 
 No test was run, no price or return was loaded, no statistic was computed on any data. One
 header row of the cached JST R6 file was read to list its column names (no values). Each
@@ -31,7 +31,11 @@ Each item is scored on:
   The only form in which a macro predictor can say anything is a **gate** (event study or
   predictive regression, judged against its own placebos, `gate-null.md`) at the family bar
   **p < 0.10 / 103 = 0.00097** (one-sided z about 3.10; 103 mechanisms per `SUMMARY.md`,
-  night 5 and the morning merges; listing alone does not add to the count, #191).
+  night 5 and the morning merges; listing alone does not add to the count, #191). By
+  `gate-null.md` step 7 a gate whose smallest honest p (a rank among 20-40 placebos bottoms at
+  0.048-0.024; fewer independent episodes push it higher) is above that bar is **kill-only**:
+  a fail kills the idea, a pass only says "not dead yet". Every gate sketched below is
+  kill-only.
 - **Unseen data.** survey-7b's lesson stands: a published effect keeps 0-30% of its paper size
   once investable and out of sample. A gate only means something on data the source papers
   never used (pre-sample, post-sample or other countries).
@@ -93,11 +97,18 @@ working paper]` With Baron and Xiong, "Credit Expansion and Neglected Crash Risk
 - Seen data: 1950-2015 by Davis-Taylor; 1870-1913 in their binned table; 1920-2012 by Baron and
   Xiong (bank and market equity). **Unseen: 2016-2025 only**, about 10 years x 14 markets that
   move together.
-- F1 pass (b, a premium); F2 pass with controls (GDP in the ratio falls in recessions; credit is
-  not a price). Closest try: none (W33 is margin receivables times this month's fall, monthly).
+- F1 **contested**. Closest try: wide-21's S11 `paris-law-credit` (BIS credit-to-GDP
+  acceleration times leverage, filtered F1: "quarterly credit statistics are public news").
+  The two calls are squared like this: if the low returns after credit booms are a premium
+  that shrinks when risk appetite is high (Davis-Taylor's reading), F1 (b) passes, because a
+  premium is earned on public information; if they are neglected crash risk, i.e. mispricing
+  of a published statistic (Baron-Xiong's reading), F1 fails, as wide-21 ruled. The literature
+  does not settle which; this survey marks F1 contested and does not overrule wide-21. F2 with
+  controls (GDP in the ratio falls in recessions; credit grows after price rises).
 - Power: on 2016-2025 a gate has roughly 10 annual observations per market with cross-market
-  correlation near 0.6, so 15-25 effective years: **kill-only at best, dead on power.** As a
-  pick (stock weight tilt) it is C1: dead on power.
+  correlation near 0.6, so 15-25 effective years and two or three credit swings: **kill-only
+  (step 7), dead on power.** As a pick (stock weight tilt) it is C1: dead on power. Verdict
+  parked (kill-only), with F1 contested.
 
 **I4. Adrian, Etula and Muir, "Financial Intermediaries and the Cross-Section of Asset
 Returns", Journal of Finance 69(6), 2014; Adrian, Moench and Shin, NY Fed Staff Reports 422
@@ -179,9 +190,10 @@ stronger for cyclical industries; one-month out-of-sample forecast weak.
   (to verify). Post-sample after Huang-Kilic (data to about 2018): about 7 years.
 - One global dose for all markets, so pooling does not add independent years. **Dead on power.**
 
-**L2. Jeanneret and Sokolovski, "Commodity Prices and Currencies", working paper 2023-09;
-"Looking Under the Hood of Commodity Currency Predictability", Management Science (2025, DOI
-10.1287/mnsc.2024.07249; authorship not confirmed).** `[abstract, search summary]`
+**L2. Jeanneret and Sokolovski, "Commodity Prices and Currencies", working paper 2023-09,
+published as "Looking Under the Hood of Commodity Currency Predictability", Management Science
+(2025, DOI 10.1287/mnsc.2024.07249; authors per the INFORMS page).** `[abstract, search
+summary]`
 - Claim: monthly changes in a country's commodity export prices predict its currency, out of
   sample against the random walk; concentrated at short horizons and in a few thinly traded
   (mostly emerging) currencies: slow information diffusion, not a premium.
@@ -211,7 +223,11 @@ and currency carry need assets the gym does not hold. **Nothing new listed.**
 of Finance 75(3), 2020, pp. 1677-1713, DOI 10.1111/jofi.12870** `[abstract, search summary]`;
 **Melone, "Consumption Disconnect Redux", working paper 2022-06** `[full text, first 800
 lines]`; Moller and Rangvid, "End-of-the-Year Economic Growth and Time-Varying Expected
-Returns", JFE 115(1), 2015 `[search result title]`.
+Returns", JFE 115(1), 2015 `[search result title]`; Favero, Melone, Myers and Tamoni,
+"Consumption Anchors Stock Prices", CEPR DP 21911, 2026 `[search summary]` (prices above their
+consumption-implied level predict lower returns, 1 quarter to 2 years; US quarterly through
+2024, estimated recursively in real time; its dose contains the price level, so F2 fails for
+that variant).
 - Claim: when consumption is low against its own trend (marginal utility high), expected stock
   returns are high. AMP: "cyclical consumption" (a Hamilton-filter residual of log
   consumption), US post-war, slope negative in every country of an international sample, and
@@ -230,12 +246,15 @@ Returns", JFE 115(1), 2015 `[search result title]`.
   from 1870, cached locally (`data-long-4`; coverage per country to be checked by the card
   before any return is read); Philadelphia Fed Real-Time Data Set (real consumption vintages
   from 1965, keyless xlsx; part of it is already cached under `philly-rtdsm/`).
-- **Unseen data: 1870-1946 in every JST country** (all three papers are post-war; one related
+- **Unseen data: 1870-1946 in every JST country** (all four papers are post-war; one related
   long-run paper, Pozzi, tests the consumption-income ratio 1870-2015 for four countries and
-  finds it inconclusive `[abstract]`), and the US after 2020 (Melone) or 2017 (AMP).
-- Power: see the card sketch. As a pick: C1, dead. As a gate on 1870-1946: within reach **only
-  if most of the published size survives** (needs a pooled annual R2 of about 6%; Melone's
-  in-sample 12% at one year is the ceiling, the 0-30% haircut puts it at 0-4%). Top 1.
+  finds it inconclusive `[abstract]`). The US after 2020 is **not** clean: Favero et al. run
+  US data through 2024 on a closely related dose, so US 2021-2025 is mostly in-sample for them.
+- Power: see the card sketch. As a pick: C1, dead. As a gate on 1880-1947 it **can only
+  kill** (`gate-null.md` step 7): about 30 outcome years with roughly 8-10 common business
+  cycles, 20 earlier-only placebos, smallest honest p 1/21 = 0.048, far above 0.00097. Top 1
+  because a clean kill on a century of unseen data is cheap and informative, not because a
+  pass is possible.
 
 **M2. Bianchi, Buchner and Tamoni, "Bond Risk Premiums with Machine Learning", RFS 34(2), 2021,
 pp. 1046-1089; corrigendum with Hoogteijling, RFS 34(2), 2021, pp. 1090-1103.** `[abstract,
@@ -273,9 +292,9 @@ vintages are used, so any card here must use vintages or the second lag, as Melo
 
 | # | Mechanism (`ideas.md` name) | Source | F1 | F2 | Closest try (disguise) | Keyless data | Unseen data | Can it reach the bar? | Verdict |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | `consumption-cycle` | M1 (JF 2020; WP 2022; JFE 2015) | pass (premium) | pass with controls (wealth feedback) | none (no consumption predictor tried) | JST `rconsbarro` 1870- (cached); Philly Fed real-time vintages | **1870-1946, 17 countries**; US after 2020 | gate: only if ~all of the paper size survives; pick: no | **top 1** (gate) |
-| 2 | `bank-capital-premium` | I2, I5 theory; JST `lev` (Jorda et al. 2021 used it for crises only) | pass (premium) | pass with controls (loan losses follow falls) | none; W33 is margin receivables | JST `lev` 1870- (cached) | no return test on this dose found (Baron-Muir used asset growth) | gate: weak (slow, trending dose; Haddad-Muir expect little in equities); pick: no | **top 2** (gate, likely kill-only) |
-| 3 | `credit-boom-leverage` | I3 (MS 2022), Baron-Xiong (QJE 2017), I1 (RFS 2022) | pass | pass with controls | none | JST `tloans`/`gdp`; BIS credit-to-GDP | 2016-2025 only | no (15-25 effective years) | parked (kill-only) |
+| 1 | `consumption-cycle` | M1 (JF 2020; WP 2022; JFE 2015) | pass (premium) | pass with controls (wealth feedback) | none (no consumption predictor tried) | JST `rconsbarro` 1870- (cached); Philly Fed real-time vintages | **1870-1946, 17 countries** (US after 2020 mostly in-sample for Favero et al.) | no: gate is kill-only (smallest p 0.048); pick: no | **top 1** (kill-only gate) |
+| 2 | `bank-capital-premium` | I2, I5 theory; JST `lev` (Jorda et al. 2021 used it for crises only) | pass (premium) | pass with controls (loan losses follow falls) | none; W33 is margin receivables | JST `lev` 1870- (cached) | no return test on this dose found (Baron-Muir used asset growth) | no: gate is kill-only (smallest p 0.024; slow, trending dose; Haddad-Muir expect little in equities); pick: no | **top 2** (kill-only gate) |
+| 3 | `credit-boom-leverage` | I3 (MS 2022), Baron-Xiong (QJE 2017), I1 (RFS 2022) | **contested** (premium vs neglected crash risk; wide-21 S11 filtered F1) | with controls | wide-21 S11 `paris-law-credit` (filtered F1) | JST `tloans`/`gdp`; BIS credit-to-GDP | 2016-2025 only | no (15-25 effective years) | parked (kill-only) |
 | 4 | `dealer-leverage` | I4 (JF 2014; NY Fed SR 422/625) | pass | with controls (assets marked to market) | W33 (same Z.1 table, other dose) | Z.1 via FRED, quarterly 1952- | 1952-1967, 2013-2025 | no (one quarterly series) | dead on power |
 | 5 | `intermediary-capital-ratio` | I5 (JFE 2017), I2 (JF 2021) | pass | **fail** (dealers' market equity) | `credit-spread` (dead) | authors' site `[memory]` | 2013-2025 | no | dead (filter, power) |
 | 6 | `dealer-treasury-position` | I6 (JFE 2023) | pass | with controls | `yield-curve`, `ts-carry` (the term spread with a minus sign) | NY Fed dealer positions, weekly | 2023- | no | dead (overlap) |
@@ -301,51 +320,68 @@ number here (104 now, 105 after a gate: 0.10 / 105 = 0.00095). Project bar uncha
 **The honest summary.** Ten of the eleven are dead or parked before any data: they fail a
 filter, duplicate a dead try, do not apply to the six assets, or have under 30 unseen years for
 a single slow signal. The only two that can say anything are annual gates on the JST panel
-before 1947, and both are long shots: row 1 needs the published effect to survive almost
-whole on data from a different century, row 2 has a dose that trends for decades and an
-authors' own prior (I2) that equities are where intermediaries matter least.
+before 1947, and both **can only kill**: by `gate-null.md` step 7 their smallest honest p
+(0.048 and 0.024) is far above the family bar 0.00097, so a pass would only mean "not dead
+yet". Row 1 is worth the run because a century of unseen data can kill a well-published JF
+result cheaply; row 2 has a dose that trends for decades and an authors' own prior (I2) that
+equities are where intermediaries matter least.
 
 ## Top 2 for a future lane (card sketches; not cards, nothing was run)
 
-### 1. `consumption-cycle`: does consumption below its own trend predict higher stock returns in 1870-1946?
+Both are **KILL-ONLY gates, labelled in advance** (`gate-null.md` step 7, as `panic-words-1`
+W34 and `wide-21` W35 did): a fail kills the idea; a pass says only "not dead yet" and needs a
+new design with more independent episodes before any card. Both doses are F2 "with controls",
+so by `gate-null.md` step 1 the placebos are **earlier shifts only**, and each placebo dose
+ends before its outcome year starts.
+
+### 1. `consumption-cycle`: does consumption below its own trend predict higher stock returns in 1880-1947? (KILL-ONLY)
 
 - **Why this one.** A premium mechanism (F1 pass) whose dose is not a price (F2 with controls),
-  with three published papers that all used post-war data, so the JST panel before 1947 is
-  unseen by every source; the dose is in a file we already hold; and the real-time result
-  (Melone) answers the vintage objection for the post-war US.
+  with four published papers that all used post-war data, so the JST panel before 1947 is
+  unseen by every source; the dose is in a file we already hold. A kill on a century of unseen
+  data is cheap and would retire a well-cited JF result for this project.
 - **Hypothesis (sign fixed).** Lower cyclical consumption at the end of year t predicts higher
-  real equity total return in year t+1 (and t+1..t+3), pooled across JST countries.
+  real equity total return in year t+1, pooled across JST countries.
 - **Data.** JST R6 `rconsbarro` (real consumption per capita), `eq_tr`, `bill_rate`, `cpi`,
-  `eq_dp`, 1870-1946; countries with at least 40 consumption years (listed by the card from
-  coverage counts before any return is read). Train only; JST ends 2020, nothing after
+  `eq_dp`, 1870-1947; countries with consumption in at least 25 of the 30 outcome years (listed
+  by the card from coverage counts before any return is read). JST ends 2020; nothing after
   2025-10-31 exists in it. Cite Jorda, Schularick and Taylor (2017); CC BY-NC-SA; nothing
   committed but derived statistics.
 - **Dose (fixed before any number).** AMP's construction in annual form: cc_t = c_t minus the
   fitted value of a regression of c_t on c_{t-2} and c_{t-3} (Hamilton filter, h = 2 years,
-  two lags), estimated by expanding window per country (first 20 years burn-in), so the dose
-  is known at t. Second form, reported only: the 5-year deviation of log consumption from its
-  trailing 10-year mean.
+  two lags), estimated by expanding window per country with a **10-year burn-in**, so the dose
+  exists from 1880 and is known at t. Second form, reported only: the 5-year deviation of log
+  consumption from its trailing 10-year mean.
+- **Outcome years (fixed).** 1904-1913, 1920-1938 and 1947: 30 years. War years and the
+  post-war adjustment (1914-1919, 1939-1946) are dropped. 1947 is the last year before the
+  post-war samples of the sources begin.
 - **Statistic.** Pooled regression of the next year's real excess equity return on the
   standardised dose (per-country expanding z), with country fixed effects; controls: the
   market's own trailing 1- and 3-year real returns and `eq_dp` (wealth feedback, F2). SE:
-  Driscoll-Kraay, 2 lags. Null: 40 placebo calendars (dose shifted by k = 5..44 years within
-  country, both ways, `gate-null.md` step 1), and the earlier-dose half reported separately.
-- **Pass / kill (fixed).** Gate W-next. Pass: one-sided p < 0.00096 (family bar at 104) **and**
-  rank 1 of 41 against placebos **and** the sign holds in both halves (1870-1913, 1920-1946)
-  with the wars (1914-1919, 1939-1945) dropped. Kill: t >= 0 (wrong sign) or rank worse than
-  10 of 41. Between: inconclusive. Replication (if pass): US 2021-2025 on Philadelphia Fed
-  vintages with Melone's second lag, sign only (five years: kill-only).
-- **Power, stated before any number.** About 15 countries x 65 usable years = 975
-  country-years; cross-country correlation of annual returns about 0.4 gives roughly 160
-  effective years. t is about sqrt(R2 x 160): R2 2% -> 1.8, 4% -> 2.5, 6% -> 3.1 (the bar),
-  12% (Melone's in-sample ceiling) -> 4.4. With the 0-30% haircut a pass is unlikely; a clean
-  kill (t >= 0) is the likely informative outcome. The `jst-autocorr-1` caveat applies (early
-  annual returns have a lag-1 autocorrelation near 0.19 of unknown origin): the controls
-  include the lagged return, and the placebo null absorbs the rest.
-- **What it cannot do.** Change the book: even a pass is a fact about 1870-1946 stock markets;
-  as a stock-weight tilt on the six it is class C1 (needs +0.44, plausible +0.10).
+  Driscoll-Kraay, 2 lags.
+- **Null (earlier only, sized to fit).** 20 placebos: the dose shifted **earlier** by
+  k = 4..23 years within country (the outcome stays; the placebo dose for outcome year y is
+  cc_{y-1-k}). With the dose from 1880 and the first outcome in 1904, every placebo has the
+  same 30 outcome years as the true statistic, and no placebo dose touches its outcome window.
+  k starts at 4 so a placebo is not a one-cycle lag of the true dose. Ranks are among 21.
+- **Episodes and smallest honest p (stated before any number).** About 30 outcome years with
+  roughly 8-10 business cycles that the countries largely share (1907, 1920-21, 1929-33,
+  1937-38 among them). Smallest honest p = 1/21 = 0.048 from the rank, and the episode count
+  supports nothing smaller: far above the family bar 0.00097, so **KILL-ONLY**.
+- **Rules (fixed).** Kill: t >= 0 (wrong sign: the slope on cc must be negative) or rank worse
+  than 5 of 21. "Not dead yet": rank 1 or 2 of 21 and t <= -2 and the sign holds in both
+  halves (1904-1913, 1920-1938). Anything else: inconclusive, read as not supported.
+- **Power, for the record.** About 15 countries x 30 years = 450 country-years; with
+  cross-country correlation of annual returns about 0.4 that is roughly 30 x 15 / 6.6 = 68
+  effective years, so t is about sqrt(R2 x 68): R2 4% -> 1.6, 6% -> 2.0, 12% (Melone's
+  in-sample ceiling) -> 2.9. Even a fully surviving effect would not clear z 3.10, which is
+  why the gate can only kill. The `jst-autocorr-1` caveat applies (early annual returns have
+  a lag-1 autocorrelation near 0.19 of unknown origin): the controls include the lagged return,
+  and the placebo null absorbs the rest.
+- **What it cannot do.** Change the book: even "not dead yet" is a fact about 1904-1947 stock
+  markets; as a stock-weight tilt on the six it is class C1 (needs +0.44, plausible +0.10).
 
-### 2. `bank-capital-premium`: does thin bank capital predict higher stock returns, 1870-2020?
+### 2. `bank-capital-premium`: does thin bank capital predict higher stock returns, 1925-2020? (KILL-ONLY)
 
 - **Why this one.** The intermediary-asset-pricing prediction (He-Krishnamurthy; HKM) tested on
   a **book** capital ratio, which is less price-driven than HKM's market ratio, on a long panel
@@ -353,19 +389,28 @@ authors' own prior (I2) that equities are where intermediaries matter least.
   Schularick and Taylor, Review of Economic Studies 88(1), 2021, used it for crisis risk and
   found little; Baron-Muir used asset growth). The dose is already cached.
 - **Hypothesis (sign fixed).** A banking sector capital ratio below its own trailing trend at
-  the end of year t predicts higher real equity (and government bond) excess returns in t+1.
+  the end of year t predicts higher real equity excess return in t+1 (government bonds
+  reported only).
 - **Data.** JST R6 `lev` (capital to assets), `eq_tr`, `bond_tr`, `bill_rate`, `cpi`,
-  `crisisJST`; all years with `lev`; post-war and pre-war halves reported.
+  `crisisJST`.
 - **Dose (fixed).** lev_t minus its trailing 10-year mean (the level trends down from the 19th
-  century into the 1950s; the detrending is the only parameter), per-country expanding z.
-- **Statistic, null, pass/kill.** As in sketch 1, with the systemic-crisis dummy (`crisisJST`)
-  as an extra control so the dose is not a crisis flag in disguise (Muir 2017 `[memory]`:
-  premia rise in financial crises). Pass at p < 0.00096 and rank 1 of 41 and the sign in both
-  halves; kill at the wrong sign or rank worse than 10.
-- **Power, before any number.** The dose moves slowly (book capital changes over years), so a
-  10-year detrended series has perhaps 10-15 independent swings per country over 150 years;
-  Haddad-Muir (I2) expect little in equities. **Likely kill-only**; listed second because it is
-  the one intermediary dose with long, keyless, unseen data, not because it is likely to pass.
+  century into the 1950s; the detrending is the only parameter), per-country expanding z; it
+  exists from 1880.
+- **Outcome years and null (earlier only, sized to fit).** Outcomes 1925-2020 with 1939-1946
+  dropped (88 years); 40 placebos with the dose shifted **earlier** by k = 5..44 years within
+  country, so every placebo dose exists (from 1880) for every outcome year and ends before it.
+  Ranks are among 41. Controls as in sketch 1 plus the systemic-crisis dummy (`crisisJST`), so
+  the dose is not a crisis flag in disguise (Muir 2017 `[memory]`: premia rise in crises).
+- **Episodes and smallest honest p (stated before any number).** The detrended book capital
+  ratio moves over several years, so perhaps 10-15 independent swings per country in 88 years,
+  partly shared across countries. Smallest honest p = 1/41 = 0.024 from the rank, more in
+  practice: far above 0.00097, so **KILL-ONLY**.
+- **Rules (fixed).** Kill: wrong sign (t <= 0 for the slope on minus the dose) or rank worse
+  than 10 of 41. "Not dead yet": rank 1 or 2 of 41, |t| >= 2 and the sign in both halves
+  (1925-1938 plus 1947-1970, and 1971-2020).
+- **Power, before any number.** Slow dose, few swings, and Haddad-Muir (I2) expect little in
+  equities. Listed second because it is the one intermediary dose with long, keyless, unseen
+  data, not because it is likely to survive.
 
 ## Checks
 
@@ -401,6 +446,8 @@ Downloads: six paper PDFs (about 7 MB) into a scratch folder outside the repo; n
 - M1 <https://econpapers.repec.org/RePEc:bla:jfinan:v:75:y:2020:i:3:p:1677-1713>;
   <https://acfr.aut.ac.nz/__data/assets/pdf_file/0003/689016/Melone-Consumption-Disconnect-Redux.pdf>
   (PDF read); Pozzi <https://personal.eur.nl:443/pozzi/returns.pdf> (not opened);
-  Engsted-Hyde-Moller <https://ideas.repec.org/a/eee/jimfin/v29y2010i7p1237-1255.html>
+  Engsted-Hyde-Moller <https://ideas.repec.org/a/eee/jimfin/v29y2010i7p1237-1255.html>;
+  Favero-Melone-Myers-Tamoni <https://cepr.org/publications/DP21911>,
+  <https://cepr.org/voxeu/columns/when-wall-street-drifts-main-street-consumption-anchor-stock-prices>
 - M2 <https://repub.eur.nl/pub/134902>; <https://wrap.warwick.ac.uk/151797>
 - Bank capital <https://www.nber.org/papers/w23287> (not opened)
