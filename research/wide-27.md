@@ -159,3 +159,113 @@ years free for a replication. **Gated: O6 as W44 `revision-noise`** (card
 is unused by wide-25, W43 is wide-26's in #223; the merging lead may renumber). The
 replication **R44** is fixed in the same card: the same rule on rows 1976-01 .. 1989-09
 (outcomes end before the gate's first). No second gate (W45 not used).
+
+## Step 3. W44 `revision-noise` gate
+
+The rule, data, both placebo families, gate, the replication R44 (run only after a pass),
+shown cells, power and guess are in [`cards/wide-27.md`](cards/wide-27.md), pushed before any
+number (commit f8f266f, 23:29 UTC; code and offline tests 4f6885f; steps 1-2 of this write-up
+0f02a1f, 23:32 UTC, all before the real run). Code: `research/lib/wide27.py` (pure functions
+tested offline in `tests/test_wide27.py`). Results: `research/results/revision-noise.md`.
+
+### Dry run (counts only, 2026-11-25 23:31 UTC)
+
+Vintages 1964-12 .. 2025-10 (731); the dose is defined 1975-12 .. 2025-07 (596 months; the
+12-month mean and the 120-month trailing mean use up the first eleven years). **Gate rows 427
+months (1990-01 .. 2025-07)**; every earlier-dose shift k = 25 .. 103 is defined on every row.
+**Lag-1 autocorrelation of the dose 0.969** (as the card expected): the surrogate family
+gates. |end - start| of the dose is 0.89 SD (under the card's 1 SD switch), so the
+surrogates are plain phase-randomised, not IAAFT.
+
+## What came out (one real run, 2026-11-25 23:32 UTC)
+
+### W44 `revision-noise`: fails (no premium)
+
+**In the three months after a spell of large payroll revisions the US market earned no more
+than after a quiet spell: b +0.47% per unit of the dose (+0.17% per SD of the dose, SD 0.35),
+t +0.24, 427 months 1990-2025. The true t ranks 23 of 41 among earlier-dose calendars and 19
+of 41 among phase surrogates. Dead by the gate in both families: no card for a strategy. R44
+is not run** (the card runs it only after a pass). Held-out year untouched. Table:
+`results/revision-noise.md`.
+
+| Cell (US Mkt-RF, % over three months from v+1, per unit of D; controls g12, s12, c12, c1; NW 3, unless named) | b | t | Rows |
+|---|---:|---:|---:|
+| **Gate** | **+0.473** | **+0.24** | **427** |
+| Horizon 1 month (NW 0) | +0.244 | +0.26 | 427 |
+| Horizon 6 months (NW 6) | +1.372 | +0.38 | 424 |
+| Horizon 12 months (NW 12) | -0.224 | -0.04 | 418 |
+| No controls | +1.531 | +0.95 | 427 |
+| Without s12 | +0.873 | +0.61 | 427 |
+| First revision only | +0.579 | +0.30 | 427 |
+| Dose in levels (ln R12, no trailing mean) | +0.350 | +0.17 | 427 |
+| Rows 1990-01 .. 2007-12 | +6.942 | +1.30 | 216 |
+| Rows 2008-01 .. 2025-07 | -1.598 | -0.66 | 211 |
+
+- **Nothing near a pass.** Every cell has |t| under 1.3. The controls take out about two
+  thirds of the raw slope (no controls +1.53, t +0.95): what there is goes with the business
+  cycle (revisions are larger when payroll growth is volatile, s12), as F2 warned.
+- **The halves disagree** (1990-2007 +6.9, t +1.30; 2008-2025 -1.6, t -0.66). Not a lead: each
+  half has perhaps 15-20 independent stretches of a dose with acf 0.97.
+- **The two nulls.** Earlier-dose calendars: SD 1.03, 5% past |t| 2, 5/50/95% -0.93 / +0.53 /
+  +1.89, extremes -1.17 / +2.20; short shifts (25-55 months) lean positive (k 25: +2.04, k 41:
+  +2.20), long ones (59-87) negative: the persistent dose and the 1990s/2000s cycles give the
+  shifted family a wave, as gate-null-2 describes for persistent doses. Phase surrogates are
+  centred: SD 0.96, 3% past 2, 5/50/95% -1.26 / +0.09 / +1.50. The true t sits in the middle of
+  both; the verdict does not depend on the family.
+- **Power, measured.** SE(b) about 1.97% per unit of D, 0.69% per SD of D over three months,
+  better than the card's guess (the card expected only a 2-3% premium per SD to be visible).
+  One-sided upper 95% bound about +1.3% per SD over three months: a premium of a few percent a
+  year per SD of data noise is not excluded, one of the size a pass needed (about 1.4% per SD
+  over three months) is unlikely.
+- **Event dates.** Vintage v is the Philadelphia Fed's mid-month record, after that month's
+  first-Friday payroll release, and the outcome starts in month v+1: no publication-lag
+  look-ahead. The 2013 and 2018-19 shutdowns delayed one or two releases; the vintage
+  convention keeps the delayed values in the month they were public.
+- My guess (b near 0, t between -1.5 and +1.5, middle ranks in both families, the shifted null
+  somewhat wider than the surrogates, pass 3%) was right on all four.
+
+Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024, above the family bar
+and the register's 9.8e-5).
+
+## Family count and status
+
+One mechanism added and closed by its gate (W44 `revision-noise`). The twelve others are
+parked (O1 on data, O7), filtered or folded and are **not counted**, as in wide-12 ..
+wide-26; each has a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
+
+**Count: +1 mechanism, +1 gate over the count carried in.** Against `main` after #221 (109 /
+29 / 37): **110 mechanisms, 29 tested by a strategy, none passed; 38 gates, two kill-only
+passes (W32, W36), each killed by its replication (R32, R36)**; if wide-26's #223 (+1
+mechanism, +2 gates) merges first: 111 / 29 / 40. Gate id **W44 / R44 provisional** (W42 unused
+by wide-25, W43 taken by wide-26; W45 not used); the summary lane reconciles. Family bar p <
+0.10 / 111 = 0.00090. Published effects tested after publication: none new (no paper on a
+revision-size premium in stock returns is known to me; the learning-model channel is
+theory).
+
+**Data terms.** Philadelphia Fed Real-Time Data Set for Macroeconomists, `employmvmd.xlsx`
+(nonfarm payroll employment, monthly vintages; cached 2026-11-12 by an earlier lane under
+`philly-rtdsm/2026-11-12/`, sha256
+49553e6a60fa5e807f2039e4699400cfd407a51104b32ba670b7ba2260ce5437); the Federal Reserve Bank of
+Philadelphia asks users to cite the data set (Croushore and Stark, Journal of Econometrics
+2001 `[memory]`). Ken French Data Library `F-F_Research_Data_Factors_CSV.zip` (cached
+2026-11-12). Only statistics are committed. No new download (the USPTO and ALFRED probes
+returned no data).
+
+Rows logged in `tries.md`: 1 `screen` (`revision-noise`), 9 `robustness` rows (the shown
+cells), 12 `note` rows (one per candidate scored but not gated).
+
+## Next
+
+1. **O1 `patent-surge` is the best unmet candidate of this lane** (scored 6) and only needs
+   data: a script-readable country-by-year table of US utility-patent grants by country of
+   first inventor. FRED release 486 ("U.S. Granted Patents by States, Territories, and
+   Countries") carries the series; try ALFRED/fredgraph again on another night (both refused
+   tonight) and date each annual count by its first vintage. The test would be the country's
+   market against the other developed markets in the twelve months after the count is public,
+   kill-only, with an earlier-year replication.
+2. **Data quality as a priced state is closed at this horizon in its simplest form** (payroll
+   revisions, US market, three months). A GDP-revision version (`routputqvqd.xlsx`, also
+   cached) would share most of the cycle confound and is not worth a separate gate.
+3. **Method**: with a dose of acf 0.97 the shifted family showed a wave across shifts (k 25-55
+   positive, 59-87 negative) while the phase surrogates were centred; another case,
+   after W33 and W35, where the two families differ in shape but agree on the verdict.
