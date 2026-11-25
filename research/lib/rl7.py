@@ -479,6 +479,36 @@ def gate_rows(res: dict, when: str, lo: str) -> list[str]:  # type: ignore[type-
     return out
 
 
+def final_rows(res: dict, when: str) -> list[str]:  # type: ignore[type-arg]
+    out = []
+    for name, c in res["cells"].items():
+        lo, hi = c["span"]
+        prim = name.startswith("primary")
+        tag = {True: "primary-56", False: name.split(" x ")[0].replace(" ", "-")}[prim]
+        if not prim:
+            tag = "trainmkts-post1990" if name.startswith("train") else "holdmkts-pre1990"
+        ms = c["mean_sharpe"]
+        out.append(_row(when, "rl-7", f"tsmom12@rl7-{tag} (comparator, mean per-market Sharpe; "
+                        f"{name})", "baseline" if prim else "robustness", lo, hi,
+                        f"{ms['tsmom12']:.2f}"))  # fmt: skip
+        for ln in res["learners"]:
+            v = c[ln]
+            txt = (f"{ln}@rl7-{tag} ({name}; frozen fit on the training cell; pooled dSharpe vs "
+                   f"tsmom12 {v['D']:+.3f}, SE {v['se']:.3f}, z {v['z']:+.2f}, d>0 in "
+                   f"{v['n_pos']}/{v['n']}")
+            if prim:
+                vd = res["verdicts"][ln]
+                txt += f"; one-sided 95% upper {vd['hi95']:+.3f}; {vd['verdict']}"
+            out.append(_row(when, "rl-7", txt + ")", "variant" if prim else "robustness", lo, hi,
+                            f"{ms[ln]:.2f}"))  # fmt: skip
+            if prim:
+                for cl, b in v["by_class"].items():
+                    out.append(_row(when, "rl-7", f"{ln}@rl7-primary-{cl} (class slice of the "
+                                    f"primary cell; dSharpe {b['D']:+.3f}, SE {b['se']:.3f}, d>0 "
+                                    f"in {b['n_pos']}/{b['n']})", "robustness", lo, hi, "-"))  # fmt: skip
+    return out
+
+
 # --------------------------------------------------------------------------- main
 
 
@@ -512,6 +542,9 @@ def main() -> None:
         cell = train[rows.market] & (rows.k < CUT_K)
         lo = ed.month_of(int(rows.k[cell].min())).isoformat()
         print("\n".join(gate_rows(res, sys.argv[2], lo)))
+    elif cmd == "final-rows":
+        res = json.loads((out / "rl-7-final.json").read_text())
+        print("\n".join(final_rows(res, sys.argv[2])))
     elif cmd == "final":
         g = json.loads((out / "rl-7-gate.json").read_text())["gate"]
         passed = [ln for ln in FITTERS if g[ln]["passes"]]
