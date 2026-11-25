@@ -65,6 +65,12 @@ on other coins.
   flips on so small a change says the same as the SE: there is no stable effect here.
 - Both books: Sharpe 1.93 / 1.92, growth 284% / 268% a year, worst loss 77.5% / 75.0% (a
   thinly traded book in the 2015-18 coin boom and bust; one or two coins until 2016-04).
+- **Survivorship.** For 2015-2017 the coins were picked by their January 2018 cap, which is
+  look-ahead in the universe. It inflates both books' Sharpe (1.93) and, if anything, favours
+  `band05` (winners drift up), so the kill is conservative.
+- **The only look-ahead-free slice** (2018-01-01 on, 453 days, mostly a bust spent in cash) is
+  dSharpe +0.044 net / +0.039 costs-free, with no SE: too short to read, and not a reason to
+  revive the idea.
 
 ## What it means
 
