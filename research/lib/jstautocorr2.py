@@ -1,7 +1,7 @@
 """jst-autocorr-2: where does the autocorrelation of early JST annual equity returns come from?
 Card: research/cards/jst-autocorr-2.md.
 
-    uv run python -I research/lib/jstautocorr2.py [--log]
+    uv run python -I research/lib/jstautocorr2.py [--log] [--uk path/to/boe/monthly.csv]
 
 Descriptive. Each equity source period of the JST Macrohistory R6 file gets three labels from the
 source documentation (price timing, thin market, and year-level disruption), fixed in SOURCES /
@@ -27,6 +27,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import insure1870 as ins  # noqa: E402
+import jstautocorr as jac  # noqa: E402
 
 IDEA = "jst-autocorr-2"
 OUT = HERE.parent / "results" / "jst-autocorr-2.md"
@@ -368,6 +369,43 @@ def world_acf(segs: Sequence[ins.Seg], y0: int, y1: int) -> tuple[float, int]:
     return corr(u, v), len(u)
 
 
+def uk_monthly(path: Path) -> dict[tuple[int, int], float]:
+    """Bank of England 'A millennium of macroeconomic data' v3.1, monthly sheet in long CSV form
+    (datahub mirror, OGL v3): spliced monthly share price index weighted by market cap."""
+    import csv
+
+    out = {}
+    with path.open() as fh:
+        for r in csv.DictReader(fh):
+            if r["variable_id"].startswith("spliced-monthly-share-price-index") and r["value"]:
+                out[(int(r["year"]), int(r["month"]))] = float(r["value"])
+    return out
+
+
+def uk_rows(path: Path) -> list[str]:
+    import long_macro_build as lmb
+
+    cg = {d.year: x for d, x in lmb._jst()["eq_capgain"]["GBR"]}
+    mon = uk_monthly(path)
+    alt = jac.norway_annual(mon)  # Dec-Dec and annual-average changes of a monthly index
+    jj = {}
+    for y in {y for y, _ in mon}:
+        if (y - 1, 1) in mon and (y, 1) in mon:
+            jj[y] = mon[(y, 1)] / mon[(y - 1, 1)] - 1
+    alts = {"Dec-Dec": alt["Dec-Dec"], "Jan-Jan": jj, "annual average": alt["annual average"]}
+    out = []
+    for y0, y1, lab in [(1871, 1907, "Grossman"), (1908, 1963, "Barclays top-30"),
+                        (1964, 2016, "FTSE all-share")]:  # fmt: skip
+        out += [f"UK {y0}-{y1} ({lab}), JST `eq_capgain` against the Bank of England's spliced "
+                "monthly share price index:\n",
+                "| Series | Years | Corr. with JST | Mean abs. diff, log pts | Lag-1 acf |",
+                "|---|---:|---:|---:|---:|"]  # fmt: skip
+        for name, n, c, d, a in jac.compare(cg, alts, y0, y1):
+            out.append(f"| {name} | {n} | {c:.3f} | {d:.1f} | {a:+.2f} |")
+        out.append("")
+    return out
+
+
 def main(argv: Sequence[str]) -> None:
     jst = ins.load_jst()
     hyper = {iso: ins.hyper_years(c) for iso, c in jst["cpi"].items()}
@@ -459,6 +497,9 @@ def main(argv: Sequence[str]) -> None:
           "rule, on the undisrupted acf.\n", *src_rows, ""]  # fmt: skip
     L.append("Scored years per usability class (full span): " + "; ".join(
         f"{k} {v}" for k, v in sorted(tally.items())) + ".\n")  # fmt: skip
+    if "--uk" in argv:
+        L += ["## Independent series: UK (description)\n",
+              *uk_rows(Path(argv[list(argv).index("--uk") + 1]).expanduser())]  # fmt: skip
     OUT.write_text("\n".join(L) + "\n")
     print("\n".join(L))
     if "--log" in argv:
