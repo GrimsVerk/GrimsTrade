@@ -41,7 +41,14 @@ xs-century-1, #171 wide-17, #172 ownvol-anatomy-1, #173 wide-19, #174 data-long-
 hedge-books-1, #176 wide-20, #177 survey-7b, #178 reentry-reconcile-1, #179 vm-style-1, #180
 breadth-anatomy-1, #181 tick-tier-1, #182 rev-costloss-1, #183 summary-5 (SUMMARY night 5, BAR
 regenerated), #184 evalue-forward-1, #186 insure-1870-1, #187 omori-1, #188 parked-gates-1, #189
-forward-se-1, #190 coin-drift-2, and #191 summary-6 if its review passed (check `gh pr list`).
+forward-se-1, #190 coin-drift-2, #191 summary-6 (the last merge).
+
+**MERGES STOPPED at 02:02 UTC (CoS/owner to decide how to resume):** every merge GitHub makes
+here (`gh pr merge --merge` or `--rebase`) writes commits with a non-UTC offset and the bot
+account's own email; `--author-email` with the noreply address is rejected. That is a
+privacy leak on a public repo, so per the all-repo rule the lead stopped merging and told the
+CoS. Until the CoS says otherwise: lanes may push branches and open PRs; nobody merges. This
+handoff (#185) is itself unmerged: read it from branch `lead-next-1125`.
 
 **Lead decision to check (owner may reverse):** #189 changed the forward registry's verdict SE to
 HAC/Newey-West with fixed-b p-values although its card's kill condition was met (3 of the
