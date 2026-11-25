@@ -2,7 +2,7 @@
 
 The live rule is `tsmom12`: hold an asset only while its price is above where it was a year ago,
 otherwise cash. "Sharpe" below means return per unit of risk (higher is better). Agents now merge
-and run this repo; 7 pull requests are open (listed under "Still open").
+and run this repo; 8 pull requests are open (listed under "Still open").
 
 ## What we know now
 
@@ -11,25 +11,27 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   bear markets.
 - **The insurance is real, and holds everywhere we looked.** The evidence is timing: it avoided
   0.50 of each fall, against 0.27 for the same exposure at random dates (#87). In 21 US market
-  falls of 25% or more since 1927 it lost less than holding in 20 (50 episodes when industry-only
-  falls are added, 37 under strict grouping). In 13 other developed markets since 1966: 17 of 18,
-  not independent of the US falls (#90). It is cheaper than simply holding less in direction in
-  every era and market, but statistically shown only for 1927-1961 and the developed-market
-  price indices; since 2002 not shown (p 0.19). On the S&P 500 since 1986 it was far cheaper
-  insurance than buying puts (#160). Scored as a crash warning, the exit has real skill on US
-  stocks since 1927 (hit rate 0.49, false alarms 0.21, against about 0 at random dates) and none
-  on gold, bonds or coins (#182).
+  falls of 25% or more since 1927 it lost less than holding in 20 (50 episodes when
+  industry-only falls are added, 37 under strict grouping). In 13 other developed markets since
+  1966: 17 of 18, not independent of the US falls (#90). It is cheaper than simply holding less
+  in direction in every era and market, but statistically shown only for 1927-1961 and the
+  developed-market price indices; since 2002 not shown (p 0.19). On the S&P 500 since 1986 it
+  was far cheaper insurance than buying puts (#160). Scored as a crash warning, the exit has
+  real skill on US stocks since 1927 (hit rate 0.49, false-alarm rate 0.21; Peirce score +0.28
+  against -0.01 for the same warnings at random dates) and none on gold, bonds or coins (#182).
 - **But it has a price.** It buys back late, so the year after the low hands most of the gain
-  back, and it trails holding in calm markets too, by about 2 points a year. Since 2002 the fall gain and the late buy-back about cancelled, so the calm drag is most of the cost: it left it about 1 point of
-  growth a year behind holding on the broad US index (S&P 500 total return 0.7 with idle cash
-  at bills, 1.0 with cash at 0; the French US market 1.1-1.4) and about 2 on single industries
-  (mean of 10: 1.6-2.0; from about 1 ahead to 4 behind by industry) (#162). As a warning it
-  pays only for someone whose protection costs about a tenth to a third of the loss it
-  prevents; a plain holder sits at the top edge of that band, where it is worth about nothing
-  (value +0.06 of a perfect warning; in money -0.01), and the largest block of false alarms is
-  the rebound after the low (#182). It fails in fast
-  crashes of three months or less (1987, 2020). Faster buy-back rules did not fix this: early rallies look
-  just like the bottom (#94, #96, #103; per fall `e4` too, #178).
+  back, and it trails holding in calm markets too, by about 2 points a year. Since 2002 the fall
+  gain and the late buy-back about cancelled, so the calm drag is most of the cost: it left it
+  about 1 point of growth a year behind holding on the broad US index (S&P 500 total return 0.7
+  with idle cash at bills, 1.0 with cash at 0; the French US market 1.1-1.4) and about 2 on
+  single industries (mean of 10: 1.6-2.0; from about 1 ahead to 4 behind by industry) (#162). As
+  a warning it pays only for someone whose protection costs about a tenth to a third of the loss
+  it prevents; on the US market a plain holder sits at the top edge of that band, where it is
+  worth about nothing (value +0.06 of a perfect warning; in money -0.01; pooled 11 series +0.01
+  / -0.04; SPY and QQQ +0.17 / +0.20, but -0.05 / +0.05 in money), and the largest block of
+  false alarms is the rebound after the low (#182). It fails in fast crashes of three months or
+  less (1987, 2020). Faster buy-back rules did not fix this: early rallies look just like the
+  bottom (#94, #96, #103; per fall `e4` too, #178).
 - **Fast-crash cover can be bought, but it has not paid.** Puts while trend is in cost about 2.9
   points of growth a year against `tsmom12` (#165). VIX calls are the best cover tested for the
   falls trend misses (21.9 log points avoided per fall, against trend's 6.9), but over 2006-2025
@@ -64,18 +66,20 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   +0.024 a market); it gains in falls `tsmom12` is still in and pays some back in rebounds and
   calm markets. On the commodity currencies, whose trends pay while volatile, it loses (-0.123 a
   market, through the mean channel). It now trades as a paper book, `own_vol_70` (#135).
-- **A broader `tsmom12` book is worse because the added markets trend poorly here, not because
-  they co-move** (#143, #180, descriptive). The 29 added ETFs score 0.29 as a trend book against
-  the six's 1.19; at their correlation with the six (0.38) they would need about 0.45 to help,
-  so the best weight on them is zero. About two thirds of the fall at 35 assets is the coin
-  share shrinking, one third the ETFs. Weighting by inverse volatility makes it worse.
+- **A broader `tsmom12` book is worse mainly because the added markets trend poorly here**
+  (#143, #180, descriptive). The 29 added ETFs score 0.29 as a trend book against the six's
+  1.19; at their correlation with the six (0.38) they would need about 0.45 to help, so the best
+  weight on them is zero. Co-movement is secondary, not absent: 0.66 with the six in crises, and
+  against the four non-coin assets (rho 0.73) both causes count. About two thirds of the fall at
+  35 assets is the coin share shrinking, one third the ETFs. Weighting by inverse volatility
+  makes it worse.
 - **Live funds agree: no family beat its plain index after fees.** 15 strategy families, 60
   real funds. The published effects kept about a quarter of their paper Sharpe after
   publication (median about 28% over six factors), and long-only funds built on them matched
   their index after fees (#91). Our own tests of published effects: 0 for 9 (tonight's two:
   the aviation-disaster mood effect #176, market-volatility management of style factors #179).
-- **The bar for a new rule is measured, and rebuilds on any computer.** 4,095 tries logged
-  (240 new since night 4), worth between 11 and 506 independent shots depending on how they are
+- **The bar for a new rule is measured, and rebuilds on any computer.** 4,119 tries logged
+  (264 new since night 4), worth between 11 and 506 independent shots depending on how they are
   counted; the bar uses the cautious 506. A new rule must beat `tsmom12` at z >= 4.70, which is
   +0.31 to +0.56 Sharpe for rules correlated 0.77-0.93 with `tsmom12` (others use the z column
   in `BAR.md`) (#92, #100). The growth did not move it (night 4: 3,855 tries, N_eff 500,
@@ -85,16 +89,16 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   3.25 the bar would be if tries were counted by clusters, the coin rebalance band (z 2.76,
   #145) and the century long-short style book in alpha form (z 2.75, #170). Re-scored in alpha
   form, none of 341 stored series reaches the bar; the 2 above 3.29 are known artefacts (#154).
-- **The bar is out of reach for every class we can test, and the one exception failed on
-  costs** (#150, #170). With edges of the size the records show, no strategy class we can test
-  has a realistic chance to clear the bar. Power depends on years of data, not on bar
-  frequency. Forward paper scoring cannot confirm an edge: +0.10 over `tsmom12` by a book
-  correlated 0.95 with it needs 72 years of record at 80% power even when registered alone
-  (356 at the bar). The only case where a pass was not absurd, a long-short style book (value,
-  momentum and carry in US stocks, 10 bond and 9 currency markets) on 97 years scored in alpha
-  form against `tsmom12`, is now tested and comes closest: large gross edge in-sample (z 7.4, on
-  the data HML and UMD were found on, so gross rows cannot decide); net of published trading
-  costs it fails the bar (z 2.75, IR +0.31; momentum's cost decides). Since 1994 its alpha is
+- **The bar is out of reach for every class we can test, and the one exception failed on costs**
+  (#150, #170). With edges of the size the records show, no strategy class we can test has a
+  realistic chance to clear the bar. Power depends on years of data, not on bar frequency.
+  Forward paper scoring cannot confirm an edge: +0.10 over `tsmom12` by a book correlated 0.95
+  with it needs 72 years of record at 80% power even when registered alone (356 at the bar). The
+  only case where a pass was not absurd, a long-short style book (value and momentum in US
+  stocks; value, momentum and carry in 10 bond and 9 currency markets) on 97 years scored in
+  alpha form against `tsmom12`, is now tested: large gross edge in-sample (z 7.4, on the data
+  HML and UMD were found on, so gross rows cannot decide); net of published trading costs it
+  fails the bar (z 2.75, IR +0.31; momentum's cost decides). Since 1994 its alpha is
   insignificant (z 0.75), negative in the 2010s. Managing it by market volatility does not help
   (#179). It needs shorts in any case (B7).
 - **Borrowed ideas: 95 mechanisms listed, 23 tested by a strategy, 25 gates, none passed** (many
@@ -111,11 +115,12 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   pass). What survives costs is bond carry, FX value and carry, and HML. A diversifier at best
   (mix gain +0.08 Sharpe in-sample, net), not an edge at the bar. Informational: needs shorts.
 - Market-volatility management of that book (DeMiguel, Martin-Utrera and Uppal 2024; #179):
-  **dead.** Out of the paper's window z 1.58 (full sample 2.40), below the unmanaged book's
-  2.46 on the same months (kill K2). The paper's gain shows only inside its own 1977-2020
-  window. Diagnostic after the run: before 1977 the fitted timing weight is 0 in every month,
-  so there the managed book is the unmanaged one (the method found nothing to time, rather
-  than timing and failing), and 1967-1976 was the paper's first estimation window.
+  **dead.** Out of the paper's window z 1.58 (full sample 2.40), below the unmanaged book's 2.46
+  on the same months (kill K2). The paper's gain shows only inside its own 1977-2020 window.
+  Diagnostic after the run: before 1977 the fitted timing weight is 0 in every month, so there
+  the managed book equals its unconditional twin (b = 0, the paper's comparator) (the method
+  found nothing to time, rather than timing and failing), and 1967-1976 was the paper's first
+  estimation window.
 - A VIX-call overlay on `tsmom12` (#167): **dead.** Best fast-crash cover tested, but a net
   cost even with 2020 (23 log points behind trend, d -0.09, z -0.42); without 2020 d -0.31
   (z -2.32). Both forms "rest on one crash" (kill 4).
@@ -141,16 +146,30 @@ and run this repo; 7 pull requests are open (listed under "Still open").
 - Biology, ecology, epidemiology and climate (#171): two premium gates **fail**, temperature
   and disease-outbreak news (each rank 9 of 41 placebos, t +1.63 and +1.68). In both the
   reaction had the same sign as the forward return: a regime coincidence, not a premium.
+  W30's t rests on one WHO re-dating week (2021-06-11, 814 archive items moved by a website
+  migration); on the clean 2005-2019 weeks it is t +0.48, rank 21, so the kill is stronger.
 - Economic history, psychology and sociology (#176): the aviation-disaster mood gate **fails**
   (t -0.59, rank 10 of 41; no reversal); a published effect not found post-sample.
 - 2024-2026 literature (#177): 11 new mechanisms listed, none tested by the survey. Its top 1,
   `vm-style-book`, failed tonight (#179); its top 2, the post-2009 trend break by asset class,
-  is #181 (open).
+  ran as #181 (below).
+- The post-2009 trend break by asset class (Kurth, Eisler, Rej and Bouchaud 2026; #181,
+  descriptive, kill-only): **inconclusive** by the card's statistic. `tsmom12`'s own Sharpe fell
+  after 2009 on stocks, currencies and bonds alike (C -0.14, z -0.38). Against holding, the
+  paper's pattern shows (timing C -0.77, z -3.40: the rule lost ground on 33 of 34 stock series
+  and 8 of 9 currencies, on none of 14 bond series; post hoc, the bond side rests on 2022). But
+  holding stocks got better and holding bonds worse, so it cannot tell the paper's mechanism
+  from a change of regime.
+- An Omori-law aftershock clock for re-entry (#187): **not run**, killed before any number as
+  a tested record in other words: its fitted large-move rate is a volatility measure, so the
+  rule is a vol-calm re-entry (`bear-legs` #103, `arm3-12`, `vol-calm`).
 - The `tsmom12` exit as a crash warning (#182, descriptive): **a real but narrow warning**,
-  worth about nothing to a plain holder; see "What we know now".
-- Data (#174): keyless monthly consumer prices for 11 economies (from 1913-1954; annual back to
-  1661 for one), country equity yields from 1975 and policy rates from 1946-1960. A real
-  exchange rate can now replace the spot-reversal proxy for currency value (own card needed).
+  worth about nothing to a plain holder on the US market and pooled sets (SPY/QQQ +0.17 / +0.20
+  of a perfect warning, -0.05 / +0.05 in money); see "What we know now".
+- Data (#174): keyless monthly consumer prices for 11 economies (from 1913-1954 (euro area
+  1990); annual back to 1661 for one), country equity yields from 1975 and policy rates from
+  1946-1960. A real exchange rate can now replace the spot-reversal proxy for currency value
+  (own card needed).
 - Engineering (#166): the register stores the current live code versions (12 live series) and
   falls back to a series with the same code hash; the bar was regenerated (3,982 tries, N_eff
   504, z 4.70, before tonight's research lanes merged).
@@ -167,8 +186,9 @@ z -1.67).
 - Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
   environment (#149), the daily run reconciling its own record (#153), the scoreboard's
   live-start-delay note (#155), daily-run robustness tests for misbehaving sources (#161).
-- Tonight's lanes still open: the post-2009 trend break by asset class (#181), an anytime-valid
-  sequential test for the forward registry (#184), this summary (#183).
+- Tonight's lanes still open: an anytime-valid sequential test for the forward registry (#184),
+  trend's crash insurance on 1870-1965 annual data (#186), the night lead's handoff (#185), this
+  summary (#183).
 - Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168, #178); the halving
   window's one forward score (#137). `coin-drift-run` is closed: not confirmed (#157).
 - Live: 11 books trade fake money daily; `own_vol_70` joins on its first run (#135). The record
@@ -195,8 +215,9 @@ None of the rows is a proven edge.
 - Is the edge real? #74 (`research/dsr-1.md`), #78; live funds #91 (`research/survey-6.md`).
 - The bar: #92, #100, #108, #111 (`research/register/BAR.md`); what could reach it: #150, #170.
 - Tonight: `research/xs-century-1.md`, `vm-style-1.md`, `vix-call-1.md`, `hedge-books-1.md`,
-  `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `rev-costloss-1.md`, `breadth-anatomy-1.md`, `wide-17.md` to
-  `wide-20.md`, `survey-7b.md`, `data-long-4.md`.
+  `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `rev-costloss-1.md`,
+  `tick-tier-1.md`, `omori-1.md`, `breadth-anatomy-1.md`, `wide-17.md` to `wide-20.md`,
+  `survey-7b.md`, `data-long-4.md`.
 - Shorts: #83, #89. Coins: #69, #82. Euro books: #59, #62, #63, #68, #73, #77, #80, #85.
 - Corrections after the independent review (#119): [`errata-2.md`](errata-2.md).
 - Earlier runs (machine learning, macro, carry, papers): [`README.md`](README.md) and this
