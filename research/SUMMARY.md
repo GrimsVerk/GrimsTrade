@@ -22,8 +22,8 @@ and run this repo; open pull requests are listed under "Still open".
   common across countries; its origin is open, so before 1966 any pooled timing test needs a
   null that keeps the autocorrelation (#204). Independent monthly UK data for 1709-1866 agree
   on the count (7 of 7), with the same autocorrelation caveat as the annual JST data (#212).
-  The literature (#216): no century study tests trend against holding the same assets (they
-  score long-short, volatility-scaled books against zero or 60/40); those that do compare with
+  The literature (#216): the famous century studies score long-short, volatility-scaled books
+  against zero or 60/40, not against holding the same assets; the papers that do compare with
   holding agree: about holding's return, smaller worst falls. The strongest counter-evidence is
   Lempérière et al. (2014): a large long-short edge on the earliest index data, with no
   stale-price check. The project's pre-1966 caution is stricter than the literature, not at
@@ -43,14 +43,14 @@ and run this repo; open pull requests are listed under "Still open".
   points a year (#203, descriptive). On the US market 1927-2001 it is only the premium given up
   while out (8-9% of calm time); on US stocks since 2002 it is mostly one- or two-week whipsaws,
   and bad timing is half to three quarters of it; on bonds and gold it is long time out (TLT 25%,
-  GLD 20% of calm time). Per asset, net of fall gain, buy-back and calm drag (#214,
+  GLD 20% of calm time). Per asset, the net of fall gain, buy-back and calm drag (#214,
   descriptive, cash 0): about break-even on the long US stock record (French US market
   1927-2025 -0.10 a year, +0.66 with idle cash at bills), on QQQ positive only because its
   window starts at the 2000 peak (+1.06; since 2002 -1.48); not paid on bonds (TLT -1.48,
   30-year since 1978 -2.12), gold (GLD -2.33) or coins (BTC -3.72, ETH -3.55). The timed
   book's worst drawdown (37.4%, 2018-2020) is a coin drawdown, deeper than the untimed book
-  over the same dates (27.1%). As a warning it pays only for someone whose protection costs about a
-  tenth to a third of the loss it prevents; on the US market a plain holder sits at the top edge
+  over the same dates (27.1%). As a warning it pays only for someone whose protection costs
+  about a tenth to a third of the loss it prevents; on the US market a plain holder sits at the top edge
   of that band, where it is worth about nothing (value +0.06 of a perfect warning; in money -0.01;
   pooled 11 series +0.01 / -0.04; SPY and QQQ +0.17 / +0.20, but -0.05 / +0.05 in money), and the
   largest block of false alarms is the rebound after the low (#182). It fails in fast crashes of
@@ -103,11 +103,13 @@ and run this repo; open pull requests are listed under "Still open".
   publication (median about 28% over six factors), and long-only funds built on them matched
   their index after fees (#91). Our own tests of published effects: 0 for 9 by night 5 (its
   last two: the aviation-disaster mood effect #176, market-volatility management of style
-  factors #179). Night 6 adds four that did not hold up: the industrial-electricity premium
+  factors #179). Night 6 adds five that did not hold up: the industrial-electricity premium
   (Da, Huang and Yun 2017; passed its gate, died in replication, #202), real-rate currency value
   (Asness, Moskowitz and Pedersen 2013; no better than the proxy, #197), the crypto-theft
-  channel (Liu and Tsyvinski 2021, Corbet et al. 2020; no effect, #205) and the post-quake
-  drift of the hit country's index (Scholtens and Voorhorst 2013; none after two sessions, #215).
+  channel (Liu and Tsyvinski 2021, Corbet et al. 2020; no effect, #205), the consumption cycle
+  (Atanasov, Møller and Priestley 2020, Melone 2022; on unseen JST years 1904-1947 t -1.88, and
+  -0.57 with a dose known at the time, #210) and the post-quake drift of the hit country's
+  index (Scholtens and Voorhorst 2013; none after two sessions, #215).
 - **The bar for a new rule is measured, and rebuilds on any computer.** 4,338 tries logged
   (212 new since night 5; the register reads every pushed branch, open ones included), worth
   between 11 and 509 independent shots depending on how they are counted; the bar uses the
@@ -164,20 +166,20 @@ and run this repo; open pull requests are listed under "Still open".
 - What the calm-market drag is made of (#203, descriptive): false alarms re-entered higher,
   not costs and not late buy-backs; see "What we know now". The short stock whipsaws are the
   only plausible lever, and a weak one: specific to one era, and the obvious reducers already
-  failed (eu-4, trend-tune, trend-age).
+  failed (eu-4, trend-tune, trend-age). The split depends on the 25% cut-off.
 - Where the early JST autocorrelation comes from (#204, descriptive): **not documented
   averaging; origin open.** No source is documented as an annual average, and no flag (thin
   markets, war, closure, hyperinflation) explains it by the card's rule. Rule from now on:
   before 1966 a pooled timing test needs a null that keeps the autocorrelation (AR(1)-matched
-  or block bootstrap, never rotation or random dates); a
-  single-source test may use a standard null only on the cleared rows (Switzerland 1926-1959,
-  Germany 1871-1889 and 1914-1959).
+  or block bootstrap, never rotation or random dates); a single-source test may use a standard
+  null only on the cleared rows (Switzerland 1926-1959, Germany 1871-1889 and 1914-1959).
 - Energy, queueing, contagion, demography and other new fields (wide-22, #202): 13 mechanisms
   scored before any price; the top one gated. **W36 `grid-load-premium` passed its kill-only
   gate, then failed its replication: dead.** Industrial electricity use growth went with lower
   US market returns three months on (t -2.31, rank 1 of 41, 1974-2025; 2011-2025 alone t
   -2.53); R36 on 1926-1955 t -0.32, rank 13. A weak kill by a fixed rule: R36 had about 20%
-  power at W36's size. Post hoc, phase-randomised surrogates ranked W36 3rd, not 1st (#207).
+  power at W36's size. Post hoc, phase-randomised surrogates ranked W36 3rd, not 1st (#202;
+  #207: such a family would have stopped it).
 - Cybercrime, law, telecoms, public health and other new fields (wide-23, #205): 14 mechanisms
   scored before any price; the top one gated. **W37 `hack-drift` fails: no effect.** ETH's 7-day
   return after crypto thefts outside exchanges of USD 10 million or more (113 in the gate rows,
@@ -232,9 +234,9 @@ and run this repo; open pull requests are listed under "Still open".
   mechanisms scored before any price; the top one gated. **W40 `quake-drift` fails** (kill-only).
   The hit country's index against 24 other markets in the 20 sessions after a damaging M >= 6
   quake (25 markets, 1998-2025, 79 event-market pairs): t +0.38 (predicted negative), rank 24
-  of 41. A small two-session reaction (-0.38% per unit, t -1.39), nothing after it; since 2012 t +0.22.
-  Moderate kill: about even odds to see a published-size drift on the large events. With W15,
-  W31 and W37, four unscheduled-shock gates are now dead.
+  of 41. A small two-session reaction (-0.38% per unit, t -1.39), nothing after it; since 2012
+  t +0.22. Moderate kill: about even odds to see a published-size drift on the large events.
+  With W15, W31 and W37, four unscheduled-shock gates are now dead.
 - Long-history trend literature next to the insurance finding (survey-9, #216, literature
   only): **agrees where it makes the same comparison; the century edge studies answer a
   different question** (long-short, volatility-scaled, dozens of markets, against zero); see
@@ -243,12 +245,13 @@ and run this repo; open pull requests are listed under "Still open".
   cached); none is a new mechanism.
 - Engineering. The daily check rebuilds cash with the gym's own functions, bit-identical
   (#196). The daily runner fixes #161's open findings (#199): source fallback for a coin answer
-  with a missing day, two different bars for one day refused, a cash-rate gap a problem line,
-  fetching capped at 600 s a run and 90 s a request. The forward registry measures `lrv` on the
-  train record at freeze and refuses a mean or Sharpe line without it (#200); it sizes lines
-  with an upper value of `lrv`, so expected power reaches 0.80 in all ten weekly sizing cells
-  (8 events a year with strong dependence: 0.77), and measures skew and kurtosis for Sharpe
-  lines (#208). Nothing live changes (the registry holds no frozen line).
+  with a missing day, two different bars for one day refused, a cash-rate gap while the
+  Treasury is down a problem line, fetching capped at 600 s a run and 90 s a request. The
+  forward registry measures `lrv` on the train record at freeze and refuses a mean or Sharpe
+  line without it (#200); it sizes lines with an upper value of `lrv`, so expected power
+  reaches 0.80 in all ten weekly sizing cells (8 events a year with strong dependence: 0.77),
+  and measures skew and kurtosis for Sharpe lines (#208) (dependence slower than a year still
+  needs a larger `lrv` set by hand). Nothing live changes (the registry holds no frozen line).
 - `BAR.md` regenerated by this update in the order `research/register/README.md` states:
   4,338 tries, N 1,123, N_eff 509, z 4.70 (rows through 2026-11-25 22:34 UTC).
 
