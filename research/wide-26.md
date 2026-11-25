@@ -283,12 +283,13 @@ One mechanism added and closed by its gate (W43 `drought-food-margin`); one list
 parked or filtered and are **not counted**, as in wide-12 .. wide-25; each has a `note` row in
 `tries.md` (no number computed) and a line in `ideas.md`.
 
-**Count (provisional, after #215 and before wide-25): 108 + 1 = 109 mechanisms, 29 tested by a
-strategy, none passed; 36 + 2 = 38 gates (W43, W18), two kill-only passes (W32, W36), each
-killed by its replication (R32, R36).** If wide-25's W41 lands first: 110 / 29 / 39. Family bar
-p < 0.10 / 109 = 0.00092 (0.10 / 110 = 0.00091). Ids W43 and W18 as carded; W43 is
-provisional (wide-25 holds W41/W42; W42 unused there, so the merging lead may renumber W43 to
-W42). Published effects tested after publication: 2 more (Hong, Li and Xu 2019 in a US
+**Count: 110 mechanisms, 29 tested by a strategy, none passed; 39 gates, two kill-only passes
+(W32, W36), each killed by its replication (R32, R36).** This is after wide-25's #221 (W41:
+109 / 29 / 37), which merged into `main` during this lane (merged into this branch); this lane
+adds +1 mechanism (W43; W18 has been counted since wide-8) and +2 gates (W43, W18). Family bar
+p < 0.10 / 110 = 0.00091 (the cards wrote 0.10 / 109 before #221 landed; no verdict depends on
+it). Ids: W18 is wide-8's own; W43 is provisional (wide-25 ended with W42 unused, so the
+merging lead may renumber W43 to W42). Published effects tested after publication: 2 more (Hong, Li and Xu 2019 in a US
 industry form; Edmans, Garcia and Norli 2007, 2006-2024): both dead.
 
 Rows logged in `tries.md`: 2 `screen` (`drought-food-margin`, `elimination-mood`), 16
