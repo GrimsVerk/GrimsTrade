@@ -41,19 +41,19 @@ FIELDS = ["date", "open", "high", "low", "close", "volume"]
 UCITS = {
     "IWDA": "IWDA.AS",  # iShares Core MSCI World (Acc), Euronext Amsterdam
     "EUNL": "EUNL.DE",  # same fund, Xetra
-    "VWRL": "VWRL.AS",  # Vanguard FTSE All-World (Dist), Amsterdam
+    "VWRL": "VWRL.AS",  # Vanguard FTSE All-World (Dist), Euronext Amsterdam
     "SXR8": "SXR8.DE",  # iShares Core S&P 500 (Acc), Xetra, EUR line of CSPX
-    "CSPX": "CSPX.AS",  # same fund, Amsterdam
+    "CSPX": "CSPX.AS",  # same fund, Euronext Amsterdam
     "SXRV": "SXRV.DE",  # iShares Nasdaq 100 (Acc), Xetra
     "EQQQ": "EQQQ.DE",  # Invesco EQQQ Nasdaq-100 (Dist), Xetra
     "EXSA": "EXSA.DE",  # iShares STOXX Europe 600 (DE) (Dist), Xetra
     "MEUD": "MEUD.PA",  # Amundi STOXX Europe 600 (Acc), Paris
-    "EMIM": "EMIM.AS",  # iShares Core MSCI EM IMI (Acc), Amsterdam
+    "EMIM": "EMIM.AS",  # iShares Core MSCI EM IMI (Acc), Euronext Amsterdam
     "IS3N": "IS3N.DE",  # same fund, Xetra
     "IQQE": "IQQE.DE",  # iShares MSCI EM (Dist), Xetra (older)
-    "IBGS": "IBGS.AS",  # iShares Euro Govt Bond 1-3yr (Dist), Amsterdam
-    "IBGM": "IBGM.AS",  # iShares Euro Govt Bond 7-10yr (Dist), Amsterdam
-    "IBGL": "IBGL.AS",  # iShares Euro Govt Bond 15-30yr (Dist), Amsterdam
+    "IBGS": "IBGS.AS",  # iShares Euro Govt Bond 1-3yr (Dist), Euronext Amsterdam
+    "IBGM": "IBGM.AS",  # iShares Euro Govt Bond 7-10yr (Dist), Euronext Amsterdam
+    "IBGL": "IBGL.AS",  # iShares Euro Govt Bond 15-30yr (Dist), Euronext Amsterdam
     "EXHE": "EXHE.DE",  # iShares eb.rexx Govt Germany 10.5+ (DE), Xetra
     "4GLD": "4GLD.DE",  # Xetra-Gold (physically backed ETC), Xetra
     "EWG2": "EWG2.DE",  # EUWAX Gold II (ETC), Xetra

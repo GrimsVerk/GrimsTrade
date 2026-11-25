@@ -3622,3 +3622,565 @@ Never edit or delete a row.
 | 2026-11-24 19:22 | halving-2 | S2 alone-btc@LZ BTC-calendar placebos (Sharpe 1.23, rank 1/41, null SD 0.22) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | C2 LZ alt/BTC own window minus outside (+0.402/yr, rank 32/41 most negative; gate fail: BTC-beta) | screen | train | 2014-04-02 | 2025-11-09 | - | - | - | - |
 | 2026-11-24 19:22 | halving-2 | BTC alone-own placebos (rank 1/41, shown) | screen | train | 2011-07-19 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:45 | buy_hold_btc | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.87 | +2294348.3% | 84.9% | 0.00 |
+| 2026-11-24 19:45 | buy_hold_btc | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.87 | +2294348.3% | 84.9% | 0.00 |
+| 2026-11-24 19:45 | buy_hold_spy | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.63 | +2395.7% | 55.2% | 0.01 |
+| 2026-11-24 19:45 | buy_hold_spy | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.63 | +2395.7% | 55.2% | 0.01 |
+| 2026-11-24 19:45 | sixty_forty | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.77 | +1123.3% | 30.5% | 0.47 |
+| 2026-11-24 19:45 | sixty_forty | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.77 | +1123.3% | 30.5% | 0.47 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +56379.0% | 66.7% | 1.52 |
+| 2026-11-24 19:45 | equal_weight | lag-e1-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +56630.0% | 66.7% | 1.54 |
+| 2026-11-24 19:45 | equal_weight | lag-e2-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +55763.4% | 66.8% | 1.52 |
+| 2026-11-24 19:45 | equal_weight | lag-e5-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.00 | +54598.4% | 66.7% | 1.50 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +56620.6% | 66.7% | 1.52 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +55674.8% | 66.7% | 1.52 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +55452.6% | 66.7% | 1.53 |
+| 2026-11-24 19:45 | equal_weight | lag-e1-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +56796.9% | 66.7% | 1.52 |
+| 2026-11-24 19:45 | equal_weight | lag-e2-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 1.00 | +54467.4% | 66.8% | 1.52 |
+| 2026-11-24 19:45 | equal_weight | lag-e5-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +54614.4% | 66.7% | 1.55 |
+| 2026-11-24 19:45 | equal_weight | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +56071.5% | 66.7% | 1.51 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.09 | +5936.8% | 28.4% | 4.31 |
+| 2026-11-24 19:45 | ts_momentum | lag-e1-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.12 | +6657.7% | 24.7% | 4.33 |
+| 2026-11-24 19:45 | ts_momentum | lag-e2-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.10 | +6190.5% | 25.9% | 4.33 |
+| 2026-11-24 19:45 | ts_momentum | lag-e5-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.13 | +7391.7% | 24.6% | 4.34 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 1.09 | +6033.2% | 28.4% | 4.36 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 1.07 | +5715.5% | 28.4% | 4.40 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 1.07 | +5682.9% | 28.4% | 4.39 |
+| 2026-11-24 19:45 | ts_momentum | lag-e1-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 1.11 | +6728.3% | 24.7% | 4.39 |
+| 2026-11-24 19:45 | ts_momentum | lag-e2-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 1.08 | +5928.8% | 25.9% | 4.41 |
+| 2026-11-24 19:45 | ts_momentum | lag-e5-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 1.11 | +7127.2% | 24.6% | 4.42 |
+| 2026-11-24 19:45 | ts_momentum | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 1.09 | +6028.4% | 28.4% | 4.36 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +570422.0% | 77.6% | 3.66 |
+| 2026-11-24 19:45 | xs_momentum | lag-e1-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +574505.0% | 77.7% | 3.78 |
+| 2026-11-24 19:45 | xs_momentum | lag-e2-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +559237.6% | 77.7% | 3.79 |
+| 2026-11-24 19:45 | xs_momentum | lag-e5-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.93 | +526798.8% | 77.6% | 4.03 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +574511.0% | 77.4% | 3.63 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +537465.7% | 77.8% | 3.63 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 0.93 | +498023.7% | 77.9% | 3.63 |
+| 2026-11-24 19:45 | xs_momentum | lag-e1-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +582610.5% | 77.3% | 3.64 |
+| 2026-11-24 19:45 | xs_momentum | lag-e2-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +536789.2% | 77.7% | 3.71 |
+| 2026-11-24 19:45 | xs_momentum | lag-e5-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 0.92 | +456221.4% | 78.1% | 3.76 |
+| 2026-11-24 19:45 | xs_momentum | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.94 | +564160.9% | 77.4% | 3.58 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.74 | +862.9% | 33.4% | 3.93 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e1-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.73 | +834.4% | 33.2% | 3.96 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e2-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.73 | +849.9% | 34.4% | 3.96 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e5-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.73 | +906.6% | 33.0% | 3.96 |
+| 2026-11-24 19:45 | vol_target_spy | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.74 | +862.9% | 33.4% | 3.93 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3619.2% | 62.0% | 0.58 |
+| 2026-11-24 19:45 | risk_parity | lag-e1-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3601.0% | 62.0% | 0.58 |
+| 2026-11-24 19:45 | risk_parity | lag-e2-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3614.4% | 62.1% | 0.61 |
+| 2026-11-24 19:45 | risk_parity | lag-e5-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3712.7% | 62.1% | 0.60 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 0.82 | +3566.8% | 62.0% | 0.58 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3649.8% | 62.0% | 0.59 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 0.82 | +3571.3% | 62.0% | 0.57 |
+| 2026-11-24 19:45 | risk_parity | lag-e1-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3701.1% | 62.0% | 0.59 |
+| 2026-11-24 19:45 | risk_parity | lag-e2-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 0.82 | +3575.6% | 62.1% | 0.59 |
+| 2026-11-24 19:45 | risk_parity | lag-e5-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3757.7% | 62.1% | 0.62 |
+| 2026-11-24 19:45 | risk_parity | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.83 | +3605.3% | 62.0% | 0.57 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.09 | +6.2% | 39.5% | 6.71 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 0.04 | -16.2% | 58.3% | 6.28 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c2 | robustness | train | 1994-02-01 | 2025-11-09 | -0.05 | -41.6% | 52.4% | 5.16 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 0.27 | +136.6% | 28.7% | 8.67 |
+| 2026-11-24 19:45 | crypto_mean_reversion | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.04 | -16.2% | 58.3% | 6.28 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.95 | +1547.3% | 22.0% | 4.76 |
+| 2026-11-24 19:45 | preset_careful | lag-e1-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.00 | +1863.7% | 16.5% | 4.81 |
+| 2026-11-24 19:45 | preset_careful | lag-e2-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 0.96 | +1677.6% | 17.6% | 4.81 |
+| 2026-11-24 19:45 | preset_careful | lag-e5-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +2014.0% | 17.2% | 4.83 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 0.95 | +1578.6% | 22.0% | 4.77 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 0.95 | +1553.1% | 22.0% | 4.77 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 0.96 | +1579.6% | 22.0% | 4.78 |
+| 2026-11-24 19:45 | preset_careful | lag-e1-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +1897.3% | 16.5% | 4.81 |
+| 2026-11-24 19:45 | preset_careful | lag-e2-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 0.96 | +1685.8% | 17.6% | 4.80 |
+| 2026-11-24 19:45 | preset_careful | lag-e5-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +2022.4% | 17.2% | 4.83 |
+| 2026-11-24 19:45 | preset_careful | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 0.95 | +1577.9% | 22.0% | 4.77 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.02 | +6244.7% | 30.9% | 4.90 |
+| 2026-11-24 19:45 | preset_middle | lag-e1-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.05 | +7291.7% | 27.4% | 4.92 |
+| 2026-11-24 19:45 | preset_middle | lag-e2-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +6659.6% | 28.1% | 4.92 |
+| 2026-11-24 19:45 | preset_middle | lag-e5-c0 | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +7770.8% | 27.7% | 4.90 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +6520.8% | 30.9% | 4.89 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 1.01 | +5963.8% | 30.9% | 4.90 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 1.00 | +5881.1% | 30.9% | 4.91 |
+| 2026-11-24 19:45 | preset_middle | lag-e1-c1 | robustness | train | 1994-02-01 | 2025-11-09 | 1.06 | +7608.1% | 27.4% | 4.91 |
+| 2026-11-24 19:45 | preset_middle | lag-e2-c2 | robustness | train | 1994-02-01 | 2025-11-09 | 1.02 | +6386.4% | 28.1% | 4.93 |
+| 2026-11-24 19:45 | preset_middle | lag-e5-c5 | robustness | train | 1994-02-01 | 2025-11-09 | 1.04 | +7252.3% | 27.7% | 4.91 |
+| 2026-11-24 19:45 | preset_middle | sched-0300 | robustness | train | 1994-02-01 | 2025-11-09 | 1.03 | +6521.7% | 30.9% | 4.88 |
+| 2026-11-24 19:45 | buy_hold_btc | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.31 | +1975195.7% | 84.9% | 0.00 |
+| 2026-11-24 19:45 | buy_hold_btc | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.31 | +2131456.4% | 84.9% | 0.00 |
+| 2026-11-24 19:45 | buy_hold_spy | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.91 | +580.8% | 33.7% | 0.02 |
+| 2026-11-24 19:45 | buy_hold_spy | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.91 | +580.8% | 33.7% | 0.02 |
+| 2026-11-24 19:45 | sixty_forty | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.93 | +256.9% | 27.3% | 0.49 |
+| 2026-11-24 19:45 | sixty_forty | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.93 | +256.9% | 27.3% | 0.49 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.44 | +10186.9% | 47.7% | 1.55 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.44 | +10232.6% | 47.8% | 1.55 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.44 | +10173.8% | 47.7% | 1.53 |
+| 2026-11-24 19:45 | equal_weight | lag-e0-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.45 | +10200.0% | 47.6% | 1.57 |
+| 2026-11-24 19:45 | equal_weight | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.45 | +10352.0% | 47.7% | 1.54 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.57 | +1042.2% | 20.1% | 4.45 |
+| 2026-11-24 19:45 | ts_momentum | lag-e1-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.59 | +1085.5% | 21.9% | 4.47 |
+| 2026-11-24 19:45 | ts_momentum | lag-e2-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.56 | +1030.5% | 21.3% | 4.46 |
+| 2026-11-24 19:45 | ts_momentum | lag-e5-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.57 | +1090.2% | 21.5% | 4.46 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.55 | +1054.3% | 20.0% | 4.51 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.51 | +994.5% | 19.9% | 4.56 |
+| 2026-11-24 19:45 | ts_momentum | lag-e0-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.50 | +990.5% | 20.3% | 4.55 |
+| 2026-11-24 19:45 | ts_momentum | lag-e1-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.57 | +1088.2% | 20.0% | 4.52 |
+| 2026-11-24 19:45 | ts_momentum | lag-e2-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.50 | +980.9% | 20.6% | 4.56 |
+| 2026-11-24 19:45 | ts_momentum | lag-e5-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.50 | +1045.5% | 20.6% | 4.56 |
+| 2026-11-24 19:45 | ts_momentum | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.55 | +1053.8% | 20.0% | 4.51 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.29 | +121944.4% | 77.7% | 3.65 |
+| 2026-11-24 19:45 | xs_momentum | lag-e1-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.29 | +122910.3% | 77.6% | 3.75 |
+| 2026-11-24 19:45 | xs_momentum | lag-e2-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.29 | +122770.0% | 77.6% | 3.79 |
+| 2026-11-24 19:45 | xs_momentum | lag-e5-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.29 | +122590.6% | 77.5% | 4.03 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.29 | +123228.8% | 77.4% | 3.61 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.28 | +115184.6% | 77.9% | 3.64 |
+| 2026-11-24 19:45 | xs_momentum | lag-e0-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.27 | +106096.0% | 78.1% | 3.63 |
+| 2026-11-24 19:45 | xs_momentum | lag-e2-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.28 | +115685.3% | 77.9% | 3.70 |
+| 2026-11-24 19:45 | xs_momentum | lag-e5-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.27 | +106309.4% | 77.9% | 3.76 |
+| 2026-11-24 19:45 | xs_momentum | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.29 | +120494.3% | 77.5% | 3.60 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.00 | +280.1% | 13.3% | 3.87 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e1-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.94 | +257.3% | 12.9% | 3.89 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e2-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.96 | +274.3% | 14.1% | 3.90 |
+| 2026-11-24 19:45 | vol_target_spy | lag-e5-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.93 | +275.0% | 15.5% | 3.89 |
+| 2026-11-24 19:45 | vol_target_spy | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.00 | +280.1% | 13.3% | 3.87 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.43 | +760.7% | 29.9% | 0.60 |
+| 2026-11-24 19:45 | risk_parity | lag-e1-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.41 | +741.3% | 29.5% | 0.60 |
+| 2026-11-24 19:45 | risk_parity | lag-e2-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.43 | +756.1% | 29.8% | 0.63 |
+| 2026-11-24 19:45 | risk_parity | lag-e5-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.41 | +745.4% | 29.9% | 0.60 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.42 | +748.3% | 29.8% | 0.59 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.42 | +746.9% | 29.8% | 0.60 |
+| 2026-11-24 19:45 | risk_parity | lag-e0-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.41 | +739.6% | 30.0% | 0.58 |
+| 2026-11-24 19:45 | risk_parity | lag-e1-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.42 | +758.0% | 29.9% | 0.61 |
+| 2026-11-24 19:45 | risk_parity | lag-e2-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.43 | +759.4% | 29.6% | 0.61 |
+| 2026-11-24 19:45 | risk_parity | lag-e5-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.42 | +743.9% | 29.7% | 0.62 |
+| 2026-11-24 19:45 | risk_parity | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.42 | +751.7% | 30.0% | 0.58 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.14 | +6.2% | 39.5% | 15.11 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.07 | -16.2% | 58.3% | 14.58 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | -0.07 | -41.6% | 52.4% | 13.99 |
+| 2026-11-24 19:45 | crypto_mean_reversion | lag-e0-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.41 | +136.6% | 28.7% | 16.20 |
+| 2026-11-24 19:45 | crypto_mean_reversion | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 0.07 | -16.2% | 58.3% | 14.59 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.25 | +236.3% | 12.4% | 5.01 |
+| 2026-11-24 19:45 | preset_careful | lag-e1-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.28 | +247.7% | 10.7% | 5.05 |
+| 2026-11-24 19:45 | preset_careful | lag-e2-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.23 | +232.5% | 10.7% | 5.04 |
+| 2026-11-24 19:45 | preset_careful | lag-e5-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.22 | +246.2% | 12.4% | 5.06 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.27 | +242.8% | 12.2% | 5.02 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.26 | +238.3% | 12.2% | 5.01 |
+| 2026-11-24 19:45 | preset_careful | lag-e0-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.27 | +243.1% | 12.2% | 5.03 |
+| 2026-11-24 19:45 | preset_careful | lag-e1-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.29 | +253.9% | 10.7% | 5.05 |
+| 2026-11-24 19:45 | preset_careful | lag-e2-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.23 | +233.9% | 10.7% | 5.02 |
+| 2026-11-24 19:45 | preset_careful | lag-e5-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.22 | +247.6% | 12.2% | 5.06 |
+| 2026-11-24 19:45 | preset_careful | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.27 | +242.6% | 12.2% | 5.02 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.41 | +1156.9% | 23.7% | 5.11 |
+| 2026-11-24 19:45 | preset_middle | lag-e1-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.42 | +1218.7% | 25.3% | 5.12 |
+| 2026-11-24 19:45 | preset_middle | lag-e2-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.40 | +1149.3% | 24.8% | 5.13 |
+| 2026-11-24 19:45 | preset_middle | lag-e5-c0@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.41 | +1224.1% | 25.3% | 5.11 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.43 | +1212.1% | 23.9% | 5.10 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.38 | +1098.4% | 24.5% | 5.13 |
+| 2026-11-24 19:45 | preset_middle | lag-e0-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.37 | +1082.9% | 23.8% | 5.13 |
+| 2026-11-24 19:45 | preset_middle | lag-e1-c1@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.45 | +1285.6% | 24.2% | 5.11 |
+| 2026-11-24 19:45 | preset_middle | lag-e2-c2@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.36 | +1085.5% | 26.5% | 5.15 |
+| 2026-11-24 19:45 | preset_middle | lag-e5-c5@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.38 | +1143.2% | 25.9% | 5.13 |
+| 2026-11-24 19:45 | preset_middle | sched-0300@coin | robustness | train | 2012-01-02 | 2025-11-09 | 1.43 | +1214.0% | 24.0% | 5.09 |
+| 2026-11-24 19:48 | cost-band | band05 | variant | train | 1994-02-01 | 2025-11-09 | 1.09 | +22368.9% | 32.5% | 2.06 |
+| 2026-11-24 19:48 | cost-band | band05/bills | robustness | train | 1994-02-01 | 2025-11-09 | 1.13 | +26578.8% | 31.1% | 2.04 |
+| 2026-11-24 19:48 | cost-band | band02 | variant | train | 1994-02-01 | 2025-11-09 | 1.06 | +19426.3% | 36.1% | 2.44 |
+| 2026-11-24 19:48 | cost-band | band02/bills | robustness | train | 1994-02-01 | 2025-11-09 | 1.09 | +22485.7% | 35.2% | 2.43 |
+| 2026-11-24 19:48 | cost-band | band05@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.56 | +234.6% | 91.7% | 3.27 |
+| 2026-11-24 19:48 | cost-band | band02@coin | robustness | train | 2017-08-18 | 2025-11-09 | 0.53 | +165.3% | 92.5% | 4.09 |
+| 2026-11-24 19:52 | cost-band | ceiling: `tsmom12` with coin fills free (not tradable; step 1b, `lib/wide16_ceiling.py`): +0.0103, SE 0.0017, z 6.0; drift costs only +0.0085, z 10.0 | note | train | 1994-02-01 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:52 | cost-band | post hoc split (`lib/wide16_posthoc.py`, not a try): band05 +0.049 = drift bet +0.054 (coin fills free) + fees/tiers -0.005; coin share while held 0.274 vs 0.273 | note | train | 1994-02-01 | 2025-11-09 | - | - | - | - |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-overlay@US-ind10 | robustness | train | 1945-07-25 | 2025-11-09 | 0.83 | +5654.2% | 19.1% | 5.31 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-alone@US-ind10 | robustness | train | 1945-07-25 | 2025-11-09 | 0.73 | +16610.6% | 35.3% | 5.47 |
+| 2026-11-24 19:48 | seasonal-20y | tsmom12@US-ind10 | robustness | train | 1945-07-25 | 2025-11-09 | 0.98 | +190644.3% | 30.1% | 2.73 |
+| 2026-11-24 19:48 | seasonal-20y | hold@US-ind10 | robustness | train | 1945-07-25 | 2025-11-09 | 0.86 | +843652.9% | 52.4% | 0.20 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-overlay@US-Mkt | robustness | train | 1945-07-25 | 2025-11-09 | 0.48 | +1982.7% | 31.0% | 4.60 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-alone@US-Mkt | robustness | train | 1945-07-25 | 2025-11-09 | 0.48 | +4762.1% | 39.3% | 4.99 |
+| 2026-11-24 19:48 | seasonal-20y | tsmom12@US-Mkt | robustness | train | 1945-07-25 | 2025-11-09 | 0.86 | +185980.7% | 32.3% | 1.25 |
+| 2026-11-24 19:48 | seasonal-20y | hold@US-Mkt | robustness | train | 1945-07-25 | 2025-11-09 | 0.78 | +584882.4% | 54.6% | 0.00 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-overlay@US-NoDur | robustness | train | 1945-07-25 | 2025-11-09 | 0.67 | +5000.0% | 36.0% | 5.74 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-alone@US-NoDur | robustness | train | 1945-07-25 | 2025-11-09 | 0.65 | +11233.7% | 43.0% | 5.27 |
+| 2026-11-24 19:48 | seasonal-20y | tsmom12@US-NoDur | robustness | train | 1945-07-25 | 2025-11-09 | 0.90 | +144248.0% | 35.5% | 3.03 |
+| 2026-11-24 19:48 | seasonal-20y | hold@US-NoDur | robustness | train | 1945-07-25 | 2025-11-09 | 0.89 | +582613.7% | 54.0% | 0.00 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-overlay@US-Durbl | robustness | train | 1945-07-25 | 2025-11-09 | 0.56 | +11704.6% | 48.4% | 4.80 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-alone@US-Durbl | robustness | train | 1945-07-25 | 2025-11-09 | 0.44 | +11499.3% | 67.6% | 5.15 |
+| 2026-11-24 19:48 | seasonal-20y | tsmom12@US-Durbl | robustness | train | 1945-07-25 | 2025-11-09 | 0.56 | +77320.9% | 72.5% | 3.32 |
+| 2026-11-24 19:48 | seasonal-20y | hold@US-Durbl | robustness | train | 1945-07-25 | 2025-11-09 | 0.57 | +503970.9% | 78.5% | 0.00 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-overlay@US-Manuf | robustness | train | 1945-07-25 | 2025-11-09 | 0.60 | +4767.2% | 34.9% | 4.81 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-alone@US-Manuf | robustness | train | 1945-07-25 | 2025-11-09 | 0.61 | +17885.5% | 46.2% | 5.00 |
+| 2026-11-24 19:48 | seasonal-20y | tsmom12@US-Manuf | robustness | train | 1945-07-25 | 2025-11-09 | 0.76 | +101259.6% | 41.0% | 2.28 |
+| 2026-11-24 19:48 | seasonal-20y | hold@US-Manuf | robustness | train | 1945-07-25 | 2025-11-09 | 0.74 | +559070.7% | 58.5% | 0.00 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-overlay@US-Enrgy | robustness | train | 1945-07-25 | 2025-11-09 | 0.41 | +2220.8% | 54.8% | 5.61 |
+| 2026-11-24 19:48 | seasonal-20y | seasonal-20y-alone@US-Enrgy | robustness | train | 1945-07-25 | 2025-11-09 | 0.47 | +10285.9% | 63.0% | 5.37 |
+| 2026-11-24 19:48 | seasonal-20y | tsmom12@US-Enrgy | robustness | train | 1945-07-25 | 2025-11-09 | 0.65 | +136518.7% | 44.0% | 3.24 |
+| 2026-11-24 19:48 | seasonal-20y | hold@US-Enrgy | robustness | train | 1945-07-25 | 2025-11-09 | 0.64 | +769953.3% | 72.1% | 0.00 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@US-HiTec | robustness | train | 1945-07-25 | 2025-11-09 | 0.49 | +5839.4% | 36.0% | 5.16 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@US-HiTec | robustness | train | 1945-07-25 | 2025-11-09 | 0.52 | +22922.1% | 65.2% | 5.41 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@US-HiTec | robustness | train | 1945-07-25 | 2025-11-09 | 0.69 | +337743.9% | 44.0% | 1.57 |
+| 2026-11-24 19:49 | seasonal-20y | hold@US-HiTec | robustness | train | 1945-07-25 | 2025-11-09 | 0.66 | +1371734.8% | 82.2% | 0.00 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@US-Telcm | robustness | train | 1945-07-25 | 2025-11-09 | 0.58 | +3441.7% | 29.8% | 4.49 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@US-Telcm | robustness | train | 1945-07-25 | 2025-11-09 | 0.45 | +3928.4% | 66.0% | 5.08 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@US-Telcm | robustness | train | 1945-07-25 | 2025-11-09 | 0.75 | +71279.2% | 30.8% | 2.46 |
+| 2026-11-24 19:49 | seasonal-20y | hold@US-Telcm | robustness | train | 1945-07-25 | 2025-11-09 | 0.62 | +107068.4% | 73.7% | 0.00 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@US-Shops | robustness | train | 1945-07-25 | 2025-11-09 | 0.57 | +4415.8% | 37.9% | 5.27 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@US-Shops | robustness | train | 1945-07-25 | 2025-11-09 | 0.55 | +10539.8% | 65.6% | 5.32 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@US-Shops | robustness | train | 1945-07-25 | 2025-11-09 | 0.80 | +164085.4% | 52.4% | 1.13 |
+| 2026-11-24 19:49 | seasonal-20y | hold@US-Shops | robustness | train | 1945-07-25 | 2025-11-09 | 0.80 | +1005184.3% | 60.9% | 0.00 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@US-Hlth | robustness | train | 1945-07-25 | 2025-11-09 | 0.51 | +3395.6% | 38.6% | 5.34 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@US-Hlth | robustness | train | 1945-07-25 | 2025-11-09 | 0.58 | +12908.1% | 37.7% | 5.12 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@US-Hlth | robustness | train | 1945-07-25 | 2025-11-09 | 0.79 | +222954.1% | 36.2% | 2.68 |
+| 2026-11-24 19:49 | seasonal-20y | hold@US-Hlth | robustness | train | 1945-07-25 | 2025-11-09 | 0.83 | +1776031.5% | 48.2% | 0.00 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@US-Utils | robustness | train | 1945-07-25 | 2025-11-09 | 0.67 | +3519.9% | 22.5% | 6.20 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@US-Utils | robustness | train | 1945-07-25 | 2025-11-09 | 0.64 | +10432.4% | 35.5% | 6.55 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@US-Utils | robustness | train | 1945-07-25 | 2025-11-09 | 0.92 | +107501.9% | 30.3% | 2.26 |
+| 2026-11-24 19:49 | seasonal-20y | hold@US-Utils | robustness | train | 1945-07-25 | 2025-11-09 | 0.82 | +306809.5% | 45.7% | 0.00 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@US-Other | robustness | train | 1945-07-25 | 2025-11-09 | 0.59 | +4459.2% | 42.0% | 5.01 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@US-Other | robustness | train | 1945-07-25 | 2025-11-09 | 0.55 | +14015.2% | 59.1% | 5.45 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@US-Other | robustness | train | 1945-07-25 | 2025-11-09 | 0.76 | +93858.2% | 34.7% | 2.16 |
+| 2026-11-24 19:49 | seasonal-20y | hold@US-Other | robustness | train | 1945-07-25 | 2025-11-09 | 0.66 | +314648.9% | 72.0% | 0.00 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@US-ind10-late | robustness | train | 1945-07-25 | 2025-11-09 | 0.75 | +4050.8% | 25.2% | 5.29 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@US-ind10-late | robustness | train | 1945-07-25 | 2025-11-09 | 0.70 | +13896.6% | 35.6% | 5.46 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@US-ind10-late | robustness | train | 1945-07-25 | 2025-11-09 | 0.94 | +143864.7% | 30.7% | 2.71 |
+| 2026-11-24 19:49 | seasonal-20y | hold@US-ind10-late | robustness | train | 1945-07-25 | 2025-11-09 | 0.86 | +859593.2% | 52.3% | 0.20 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo13 | robustness | train | 1984-01-25 | 2025-11-09 | 0.47 | +219.9% | 33.9% | 4.49 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo13 | robustness | train | 1984-01-25 | 2025-11-09 | 0.25 | +150.4% | 62.4% | 5.42 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo13 | robustness | train | 1984-01-25 | 2025-11-09 | 0.48 | +521.1% | 41.6% | 2.44 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo13 | robustness | train | 1984-01-25 | 2025-11-09 | 0.31 | +407.2% | 72.2% | 0.20 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Japan | robustness | train | 1984-01-25 | 2025-11-09 | 0.45 | +377.5% | 38.4% | 3.83 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Japan | robustness | train | 1984-01-25 | 2025-11-09 | 0.16 | +66.5% | 74.7% | 4.65 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Japan | robustness | train | 1984-01-25 | 2025-11-09 | 0.49 | +1061.8% | 40.8% | 2.26 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Japan | robustness | train | 1984-01-25 | 2025-11-09 | 0.29 | +417.1% | 81.9% | 0.01 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Canada | robustness | train | 1998-06-24 | 2025-11-09 | 0.22 | +52.4% | 34.9% | 4.74 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Canada | robustness | train | 1998-06-24 | 2025-11-09 | 0.21 | +73.2% | 45.3% | 5.32 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Canada | robustness | train | 1998-06-24 | 2025-11-09 | 0.32 | +130.4% | 34.1% | 2.57 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Canada | robustness | train | 1998-06-24 | 2025-11-09 | 0.39 | +309.7% | 50.0% | 0.02 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-UK | robustness | train | 2003-01-25 | 2025-11-09 | 0.24 | +44.5% | 22.4% | 6.17 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-UK | robustness | train | 2003-01-25 | 2025-11-09 | 0.35 | +135.2% | 33.7% | 6.43 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-UK | robustness | train | 2003-01-25 | 2025-11-09 | 0.21 | +45.7% | 34.3% | 3.05 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-UK | robustness | train | 2003-01-25 | 2025-11-09 | 0.34 | +172.3% | 47.8% | 0.02 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Australia | robustness | train | 2003-08-25 | 2025-11-09 | 0.34 | +59.1% | 24.1% | 6.40 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Australia | robustness | train | 2003-08-25 | 2025-11-09 | 0.40 | +129.2% | 38.0% | 7.74 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Australia | robustness | train | 2003-08-25 | 2025-11-09 | 0.38 | +112.4% | 30.1% | 2.66 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Australia | robustness | train | 2003-08-25 | 2025-11-09 | 0.38 | +186.5% | 54.6% | 0.03 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-HongKong | robustness | train | 2005-12-25 | 2025-11-09 | 0.22 | +39.9% | 30.8% | 5.90 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-HongKong | robustness | train | 2005-12-25 | 2025-11-09 | 0.33 | +130.8% | 41.3% | 7.48 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-HongKong | robustness | train | 2005-12-25 | 2025-11-09 | 0.25 | +70.7% | 44.9% | 2.97 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-HongKong | robustness | train | 2005-12-25 | 2025-11-09 | 0.24 | +74.1% | 65.2% | 0.03 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Germany | robustness | train | 2006-12-25 | 2025-11-09 | 0.15 | +21.7% | 36.0% | 5.34 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Germany | robustness | train | 2006-12-25 | 2025-11-09 | 0.38 | +151.9% | 47.6% | 6.00 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Germany | robustness | train | 2006-12-25 | 2025-11-09 | 0.22 | +48.0% | 51.9% | 2.05 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Germany | robustness | train | 2006-12-25 | 2025-11-09 | 0.43 | +263.1% | 54.8% | 0.03 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Singapore | robustness | train | 2006-12-25 | 2025-11-09 | 0.40 | +63.7% | 26.0% | 4.98 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Singapore | robustness | train | 2006-12-25 | 2025-11-09 | 0.36 | +101.1% | 45.2% | 6.23 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Singapore | robustness | train | 2006-12-25 | 2025-11-09 | 0.22 | +36.3% | 26.0% | 2.95 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Singapore | robustness | train | 2006-12-25 | 2025-11-09 | 0.21 | +48.3% | 62.4% | 0.05 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-France | robustness | train | 2009-03-25 | 2025-11-09 | 0.14 | +16.9% | 20.3% | 5.35 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-France | robustness | train | 2009-03-25 | 2025-11-09 | 0.34 | +89.9% | 38.6% | 5.45 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-France | robustness | train | 2009-03-25 | 2025-11-09 | 0.04 | -6.5% | 35.8% | 2.81 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-France | robustness | train | 2009-03-25 | 2025-11-09 | 0.41 | +174.4% | 38.6% | 0.03 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Switzerland | robustness | train | 2009-11-24 | 2025-11-09 | -0.01 | -5.6% | 28.7% | 5.62 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Switzerland | robustness | train | 2009-11-24 | 2025-11-09 | 0.30 | +50.3% | 20.4% | 5.34 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Switzerland | robustness | train | 2009-11-24 | 2025-11-09 | 0.02 | -6.2% | 36.9% | 4.41 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Switzerland | robustness | train | 2009-11-24 | 2025-11-09 | 0.34 | +88.2% | 31.2% | 0.04 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Belgium | robustness | train | 2010-04-24 | 2025-11-09 | 0.20 | +19.5% | 14.6% | 4.14 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Belgium | robustness | train | 2010-04-24 | 2025-11-09 | 0.23 | +36.7% | 37.6% | 5.92 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Belgium | robustness | train | 2010-04-24 | 2025-11-09 | 0.21 | +32.9% | 36.5% | 2.15 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Belgium | robustness | train | 2010-04-24 | 2025-11-09 | 0.32 | +91.4% | 39.8% | 0.05 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Netherlands | robustness | train | 2011-10-25 | 2025-11-09 | 0.61 | +95.7% | 14.1% | 5.72 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Netherlands | robustness | train | 2011-10-25 | 2025-11-09 | 0.63 | +167.1% | 27.5% | 5.93 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Netherlands | robustness | train | 2011-10-25 | 2025-11-09 | 0.32 | +56.4% | 28.7% | 2.82 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Netherlands | robustness | train | 2011-10-25 | 2025-11-09 | 0.58 | +221.6% | 35.8% | 0.04 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Austria | robustness | train | 2011-11-24 | 2025-11-09 | 0.02 | -2.9% | 33.7% | 3.87 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Austria | robustness | train | 2011-11-24 | 2025-11-09 | 0.32 | +66.4% | 50.7% | 4.62 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Austria | robustness | train | 2011-11-24 | 2025-11-09 | 0.15 | +16.1% | 38.8% | 2.57 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Austria | robustness | train | 2011-11-24 | 2025-11-09 | 0.44 | +159.2% | 55.8% | 0.05 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay@geo-Spain | robustness | train | 2012-07-25 | 2025-11-09 | 0.20 | +20.3% | 29.0% | 4.71 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone@geo-Spain | robustness | train | 2012-07-25 | 2025-11-09 | 0.11 | +8.1% | 43.8% | 6.07 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12@geo-Spain | robustness | train | 2012-07-25 | 2025-11-09 | 0.30 | +48.1% | 36.5% | 2.21 |
+| 2026-11-24 19:49 | seasonal-20y | hold@geo-Spain | robustness | train | 2012-07-25 | 2025-11-09 | 0.43 | +137.3% | 48.5% | 0.05 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-overlay | variant | train | 1994-02-01 | 2025-11-09 | 0.87 | +4608.3% | 41.9% | 4.31 |
+| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.81 | +7486.9% | 50.8% | 4.53 |
+| 2026-11-24 19:49 | seasonal-20y | tsmom12 | baseline | train | 1994-02-01 | 2025-11-09 | 1.04 | +18044.5% | 37.4% | 2.81 |
+| 2026-11-24 19:49 | seasonal-20y | hold | baseline | train | 1994-02-01 | 2025-11-09 | 0.88 | +20054.9% | 68.8% | 1.46 |
+| 2026-11-24 20:17 | alpha-form | stored record re-scored in alpha form (residual IR on the same universe's `tsmom12`, NW/bootstrap z, best long-only mix): 341 distinct selectable series, 0 at z >= 4.69, 2 at >= 3.29 (fm-bolt-base-tilt 4.31: pretraining memory; merfx7 4.14: cash earns 0); median mix gain +0.010; a lens, no new try (research/alpha-form-1.md) | note | - | - | - | - | - | - | - |
+| 2026-11-24 20:01 | power-map | power map of strategy classes vs the bar (z 4.69): edge needed at 80% power C1 six assets +0.51, US 1927 +0.29, 13 markets pooled (Y_eff 191) +0.21, C2 +0.79 (ETFs/coins), +0.34 (Ken French at the long-only rho 0.84; long-short near rho 0: +0.85), C3 daily +0.72, C4 +0.43, C5 +3.03; alpha form IR 0.43-2.40; chance a top-plausible edge passes <= 0.02 where known; forward d +0.10 needs 72+ years; no backtest (research/power-map-1.md) | note | - | - | - | - | - | - | - |
+| 2026-11-24 20:30 | coin-drift-run | k06@cm (cointop-1 coin book, band 0.06 of the slot) | baseline | train | 2019-04-07 | 2025-11-10 | 0.69 | +337.3% | 63.9% | 7.61 |
+| 2026-11-24 20:30 | coin-drift-run | band05@cm (band 0.30 of the slot) | robustness | train | 2019-04-07 | 2025-11-10 | 0.72 | +373.9% | 60.6% | 5.03 |
+| 2026-11-24 20:30 | coin-drift-run | band02@cm (band 0.12 of the slot) | robustness | train | 2019-04-07 | 2025-11-10 | 0.70 | +351.2% | 62.9% | 6.40 |
+| 2026-11-24 20:30 | coin-drift-run | k06@cm placebo P1 (median of 40 shuffles; mean Sharpe 0.66) | control | train | 2019-04-07 | 2025-11-10 | 0.66 | +286.1% | 62.2% | 7.49 |
+| 2026-11-24 20:30 | coin-drift-run | band02@cm placebo P1 (median of 40 shuffles; mean Sharpe 0.67) | control | train | 2019-04-07 | 2025-11-10 | 0.67 | +298.3% | 62.4% | 6.51 |
+| 2026-11-24 20:30 | coin-drift-run | band05@cm placebo P1 (median of 40 shuffles; mean Sharpe 0.68) | control | train | 2019-04-07 | 2025-11-10 | 0.69 | +309.5% | 61.0% | 5.10 |
+| 2026-11-24 20:30 | coin-drift-run | k06@cm placebo P2 (median of 40 shuffles; mean Sharpe 0.47) | control | train | 2019-04-07 | 2025-11-10 | 0.56 | +180.4% | 58.0% | 8.78 |
+| 2026-11-24 20:30 | coin-drift-run | band02@cm placebo P2 (median of 40 shuffles; mean Sharpe 0.49) | control | train | 2019-04-07 | 2025-11-10 | 0.58 | +196.3% | 56.9% | 7.41 |
+| 2026-11-24 20:30 | coin-drift-run | band05@cm placebo P2 (median of 40 shuffles; mean Sharpe 0.50) | control | train | 2019-04-07 | 2025-11-10 | 0.59 | +202.1% | 57.7% | 5.33 |
+| 2026-11-24 20:32 | coin-drift-run | costs-at-zero split (same run, not a try): band05@cm net +0.033 (z 1.80) = drift with all coin costs zero +0.014 (z 0.71) + fees and tiers +0.019; band02@cm +0.011 = +0.005 + 0.006; excess over placebo P1 +0.009 (z 0.83) / +0.002 (z 0.62), over P2 +0.009 (z 0.54) / -0.001 (z -0.35); Turnover/yr in this idea's rows = traded value x equity a year, both sides | note | train | 2019-04-07 | 2025-11-10 | - | - | - | - |
+| 2026-11-24 20:25 | data-long-3 | data lane: keyless long rates/FX/commodity panel cached (US bonds 1962-, 9 foreign 10y 1955-89-, 9 FX with carry 1971-, 12 PPI commodity indices 1913-47-); bonds vs IEF/TLT/SHY corr 0.97-0.99, FX spot vs trusts 0.99, spot oil vs USO +10 pts/yr; no strategy run (research/data-long-3.md) | note | train | 1913-01-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 20:57 | insure-3 | hold-spx-tr@insure3 | baseline | train | 1986-06-30 | 2025-10-31 | 0.67 | +6242.2% | 55.3% | - |
+| 2026-11-24 20:57 | insure-3 | tsmom12-spx-tr-bills@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.80 | +5457.0% | 33.0% | 1.12 |
+| 2026-11-24 20:57 | insure-3 | tsmom12-spx-tr-cash0@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.76 | +4452.0% | 34.3% | 1.12 |
+| 2026-11-24 20:57 | insure-3 | cboe-pput@insure3 | baseline | train | 1986-06-30 | 2025-10-31 | 0.63 | +1952.2% | 42.0% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | mix50-tsmom12-pput-bills@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.77 | +3388.5% | 28.6% | - |
+| 2026-11-24 20:57 | insure-3 | mix50-tsmom12-pput-cash0@insure3 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +3057.1% | 29.1% | - |
+| 2026-11-24 20:57 | insure-3 | cboe-put@insure3 | baseline | train | 2007-01-31 | 2025-10-31 | 0.54 | +245.6% | 37.1% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | cboe-bxm@insure3 | baseline | train | 2002-03-28 | 2025-10-31 | 0.48 | +278.2% | 40.1% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | cboe-cll@insure3 | baseline | train | 2008-08-29 | 2025-10-31 | 0.58 | +210.6% | 25.5% | 12.00 |
+| 2026-11-24 20:57 | insure-3 | cboe-vxth@insure3 | baseline | train | 2006-03-31 | 2025-10-31 | 0.67 | +580.8% | 43.3% | 12.00 |
+| 2026-11-24 20:57 | pooled-2 | e4@pooled2-nonequity-21 (pooled dSharpe vs tsmom12 +0.010, SE 0.030, z +0.33; still open) | variant | train | 1956-03-01 | 2025-10-31 | 0.30 | - | - | - |
+| 2026-11-24 20:57 | pooled-2 | e4@pooled2-com-8 (pooled dSharpe vs tsmom12 -0.019, SE 0.022, z -0.86; killed (shown, not judged)) | variant | train | 1927-04-01 | 2025-10-01 | 0.34 | - | - | - |
+| 2026-11-24 20:57 | pooled-2 | e4@pooled2-combined-62 (pooled dSharpe vs tsmom12 +0.045, SE 0.032, z +1.43; unsettled, leaning positive) | variant | train | 1927-07-08 | 2025-10-31 | 0.46 | - | - | - |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@pooled2-nonequity-21 (pooled dSharpe vs tsmom12 -0.010, SE 0.017, z -0.57; killed) | variant | train | 1956-03-01 | 2025-10-31 | 0.28 | - | - | - |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@pooled2-com-8 (pooled dSharpe vs tsmom12 +0.056, SE 0.026, z +2.15; still open (shown, not judged)) | variant | train | 1927-04-01 | 2025-10-01 | 0.42 | - | - | - |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@pooled2-combined-62 (pooled dSharpe vs tsmom12 +0.011, SE 0.012, z +0.89; equity-only at best) | variant | train | 1927-07-08 | 2025-10-31 | 0.42 | - | - | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@USB3-UST2 | robustness | train | 1977-06-10 | 2025-10-31 | 0.61 | +64.8% | 5.7% | 2.46 |
+| 2026-11-24 20:57 | pooled-2 | e4@USB3-UST2 | robustness | train | 1977-06-10 | 2025-10-31 | 0.63 | +59.8% | 5.1% | 4.81 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@USB3-UST2 | robustness | train | 1977-06-10 | 2025-10-31 | 0.60 | +42.9% | 4.0% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@USB3-UST10 | robustness | train | 1963-01-18 | 2025-10-31 | 0.41 | +272.1% | 16.4% | 2.18 |
+| 2026-11-24 20:57 | pooled-2 | e4@USB3-UST10 | robustness | train | 1963-01-18 | 2025-10-31 | 0.36 | +177.8% | 14.9% | 5.30 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@USB3-UST10 | robustness | train | 1963-01-18 | 2025-10-31 | 0.39 | +96.1% | 11.4% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@USB3-UST30 | robustness | train | 1978-03-03 | 2025-10-31 | 0.31 | +262.2% | 37.4% | 2.35 |
+| 2026-11-24 20:57 | pooled-2 | e4@USB3-UST30 | robustness | train | 1978-03-03 | 2025-10-31 | 0.34 | +269.0% | 29.2% | 5.46 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@USB3-UST30 | robustness | train | 1978-03-03 | 2025-10-31 | 0.40 | +204.3% | 25.9% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-JP | robustness | train | 1990-03-01 | 2025-09-01 | 0.45 | +70.7% | 10.5% | 1.18 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-JP | robustness | train | 1990-03-01 | 2025-09-01 | 0.32 | +41.1% | 10.0% | 2.26 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-JP | robustness | train | 1990-03-01 | 2025-09-01 | 0.43 | +51.6% | 10.0% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-GB | robustness | train | 1961-03-01 | 2025-09-01 | 0.16 | +52.7% | 29.5% | 1.11 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-GB | robustness | train | 1961-03-01 | 2025-09-01 | 0.11 | +25.8% | 26.3% | 2.34 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-GB | robustness | train | 1961-03-01 | 2025-09-01 | 0.23 | +53.8% | 16.0% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-CH | robustness | train | 1973-03-01 | 2025-08-01 | 0.53 | +188.9% | 12.5% | 1.05 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-CH | robustness | train | 1973-03-01 | 2025-08-01 | 0.56 | +176.3% | 12.1% | 2.48 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-CH | robustness | train | 1973-03-01 | 2025-08-01 | 0.53 | +117.7% | 9.9% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-CA | robustness | train | 1956-03-01 | 2025-09-01 | 0.30 | +115.0% | 17.5% | 0.92 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-CA | robustness | train | 1956-03-01 | 2025-09-01 | 0.20 | +56.1% | 20.3% | 2.30 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-CA | robustness | train | 1956-03-01 | 2025-09-01 | 0.27 | +50.3% | 12.2% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-DE | robustness | train | 1957-07-01 | 2025-09-01 | 0.58 | +273.1% | 14.6% | 0.82 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-DE | robustness | train | 1957-07-01 | 2025-09-01 | 0.63 | +280.1% | 14.7% | 2.00 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-DE | robustness | train | 1957-07-01 | 2025-09-01 | 0.62 | +138.8% | 7.4% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-AU | robustness | train | 1970-09-01 | 2025-09-01 | 0.21 | +67.1% | 23.1% | 1.18 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-AU | robustness | train | 1970-09-01 | 2025-09-01 | 0.22 | +60.9% | 19.9% | 2.29 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-AU | robustness | train | 1970-09-01 | 2025-09-01 | 0.27 | +51.3% | 11.6% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-NZ | robustness | train | 1980-12-01 | 2025-09-01 | 0.06 | +9.1% | 40.9% | 1.16 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-NZ | robustness | train | 1980-12-01 | 2025-09-01 | 0.11 | +21.1% | 35.3% | 2.50 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-NZ | robustness | train | 1980-12-01 | 2025-09-01 | 0.10 | +18.5% | 29.7% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-SE | robustness | train | 1988-02-01 | 2025-09-01 | 0.36 | +87.3% | 21.9% | 1.01 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-SE | robustness | train | 1988-02-01 | 2025-09-01 | 0.56 | +133.8% | 13.3% | 2.04 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-SE | robustness | train | 1988-02-01 | 2025-09-01 | 0.40 | +69.1% | 13.5% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@GOV9-GOV10-NO | robustness | train | 1986-03-01 | 2025-09-01 | 0.31 | +63.7% | 16.3% | 1.06 |
+| 2026-11-24 20:57 | pooled-2 | e4@GOV9-GOV10-NO | robustness | train | 1986-03-01 | 2025-09-01 | 0.38 | +73.2% | 12.0% | 2.38 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@GOV9-GOV10-NO | robustness | train | 1986-03-01 | 2025-09-01 | 0.31 | +44.2% | 11.9% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-JPY | robustness | train | 1974-03-22 | 2025-10-31 | 0.24 | +117.5% | 34.6% | 2.17 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-JPY | robustness | train | 1974-03-22 | 2025-10-31 | 0.19 | +70.6% | 36.9% | 5.01 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-JPY | robustness | train | 1974-03-22 | 2025-10-31 | 0.21 | +50.9% | 19.1% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-GBP | robustness | train | 1974-03-22 | 2025-10-31 | 0.18 | +59.9% | 39.1% | 2.54 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-GBP | robustness | train | 1974-03-22 | 2025-10-31 | 0.24 | +87.8% | 22.1% | 5.25 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-GBP | robustness | train | 1974-03-22 | 2025-10-31 | 0.15 | +32.8% | 34.4% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-CHF | robustness | train | 1974-03-22 | 2025-10-31 | 0.21 | +99.9% | 36.9% | 2.34 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-CHF | robustness | train | 1974-03-22 | 2025-10-31 | 0.21 | +86.7% | 36.9% | 5.44 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-CHF | robustness | train | 1974-03-22 | 2025-10-31 | 0.27 | +84.3% | 28.8% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-CAD | robustness | train | 1974-03-22 | 2025-10-31 | 0.08 | +15.0% | 30.5% | 3.02 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-CAD | robustness | train | 1974-03-22 | 2025-10-31 | 0.08 | +13.6% | 24.8% | 5.67 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-CAD | robustness | train | 1974-03-22 | 2025-10-31 | -0.11 | -12.1% | 18.3% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-AUD | robustness | train | 1974-03-22 | 2025-10-31 | 0.20 | +86.3% | 37.8% | 2.13 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-AUD | robustness | train | 1974-03-22 | 2025-10-31 | 0.19 | +71.2% | 34.9% | 5.04 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-AUD | robustness | train | 1974-03-22 | 2025-10-31 | 0.09 | +16.0% | 25.4% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-NZD | robustness | train | 1975-01-17 | 2025-10-31 | 0.42 | +358.8% | 27.7% | 2.32 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-NZD | robustness | train | 1975-01-17 | 2025-10-31 | 0.41 | +278.7% | 32.6% | 5.27 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-NZD | robustness | train | 1975-01-17 | 2025-10-31 | 0.31 | +81.0% | 19.3% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-SEK | robustness | train | 1974-03-22 | 2025-10-31 | 0.13 | +40.8% | 35.4% | 2.42 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-SEK | robustness | train | 1974-03-22 | 2025-10-31 | 0.16 | +48.1% | 37.4% | 5.26 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-SEK | robustness | train | 1974-03-22 | 2025-10-31 | 0.14 | +31.4% | 24.4% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-NOK | robustness | train | 1980-02-15 | 2025-10-31 | 0.21 | +80.4% | 31.5% | 3.13 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-NOK | robustness | train | 1980-02-15 | 2025-10-31 | 0.23 | +80.3% | 33.7% | 5.69 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-NOK | robustness | train | 1980-02-15 | 2025-10-31 | 0.13 | +24.7% | 26.5% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@FX9-FX-EUR | robustness | train | 1974-05-01 | 2025-10-01 | 0.07 | +13.5% | 49.6% | 1.18 |
+| 2026-11-24 20:57 | pooled-2 | e4@FX9-FX-EUR | robustness | train | 1974-05-01 | 2025-10-01 | 0.12 | +31.9% | 28.9% | 2.26 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@FX9-FX-EUR | robustness | train | 1974-05-01 | 2025-10-01 | 0.10 | +18.7% | 38.7% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-PPI-grains | robustness | train | 1927-04-01 | 2025-08-01 | 0.16 | +314.4% | 59.3% | 1.26 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-PPI-grains | robustness | train | 1927-04-01 | 2025-08-01 | 0.12 | +120.7% | 57.4% | 2.57 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-PPI-grains | robustness | train | 1927-04-01 | 2025-08-01 | 0.18 | +260.6% | 34.6% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-PPI-livestock | robustness | train | 1947-03-01 | 2025-08-01 | 0.16 | +154.7% | 56.5% | 1.18 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-PPI-livestock | robustness | train | 1947-03-01 | 2025-08-01 | -0.05 | -52.5% | 75.7% | 2.57 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-PPI-livestock | robustness | train | 1947-03-01 | 2025-08-01 | 0.14 | +79.2% | 36.0% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-PPI-coal | robustness | train | 1927-04-01 | 2025-08-01 | 0.62 | +2516.9% | 16.0% | 1.18 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-PPI-coal | robustness | train | 1927-04-01 | 2025-08-01 | 0.53 | +1287.7% | 14.7% | 2.41 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-PPI-coal | robustness | train | 1927-04-01 | 2025-08-01 | 0.62 | +424.2% | 7.4% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-PPI-natgas | robustness | train | 1968-04-01 | 2025-08-01 | 0.19 | +107.0% | 93.8% | 1.34 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-PPI-natgas | robustness | train | 1968-04-01 | 2025-08-01 | 0.28 | +945.5% | 75.0% | 2.45 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-PPI-natgas | robustness | train | 1968-04-01 | 2025-08-01 | 0.20 | +196.0% | 50.5% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-PPI-crude | robustness | train | 1948-04-01 | 2025-08-01 | 0.10 | +1.1% | 91.5% | 1.03 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-PPI-crude | robustness | train | 1948-04-01 | 2025-08-01 | 0.17 | +191.0% | 77.2% | 1.91 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-PPI-crude | robustness | train | 1948-04-01 | 2025-08-01 | 0.14 | +64.0% | 48.7% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-PPI-steel | robustness | train | 1927-04-01 | 2025-08-01 | 0.64 | +2633.8% | 37.1% | 0.70 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-PPI-steel | robustness | train | 1927-04-01 | 2025-08-01 | 0.66 | +2088.8% | 32.2% | 1.81 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-PPI-steel | robustness | train | 1927-04-01 | 2025-08-01 | 0.88 | +660.3% | 9.2% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-PPI-prim-nonferrous | robustness | train | 1948-04-01 | 2025-08-01 | 0.40 | +1226.6% | 46.3% | 0.89 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-PPI-prim-nonferrous | robustness | train | 1948-04-01 | 2025-08-01 | 0.47 | +1513.7% | 31.3% | 2.05 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-PPI-prim-nonferrous | robustness | train | 1948-04-01 | 2025-08-01 | 0.56 | +740.6% | 19.9% | - |
+| 2026-11-24 20:57 | pooled-2 | tsmom12@COM8-GOLD | robustness | train | 1972-03-01 | 2025-10-01 | 0.63 | +8907.1% | 44.1% | 1.32 |
+| 2026-11-24 20:57 | pooled-2 | e4@COM8-GOLD | robustness | train | 1972-03-01 | 2025-10-01 | 0.57 | +2882.0% | 49.8% | 2.28 |
+| 2026-11-24 20:57 | pooled-2 | vt-own-70-x@COM8-GOLD | robustness | train | 1972-03-01 | 2025-10-01 | 0.65 | +2921.7% | 38.9% | - |
+| 2026-11-24 21:27 | gap-2002-1 | re-score (not a try): tsmom12 minus holding 2002-01..2025-10, log pts a year, cash 0 / bills: S&P 500 TR -1.00 / -0.70, French US market -1.41 / -1.08, mean of 10 industries -2.02 / -1.60 (Telcm +0.72 to Hlth -3.92), 11-series mean -1.96 / -1.55 (insure-2's -2.19 by peak reproduced); by date fall +7.4, rebound lag -7.5, calm drag -1.9 (11-series mean, cash 0); S&P +4.9 / -4.3 / -1.7 (research/gap-2002-1.md) | note | train | 2002-01-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
+| 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
+| 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
+| 2026-11-24 23:31 | wide-18 | vclock12 | variant | train | 1994-02-01 | 2025-10-31 | 0.88 | +6123.2% | 48.3% | 3.32 |
+| 2026-11-24 23:31 | wide-18 | vclock12/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.91 | +7410.6% | 47.5% | 3.30 |
+| 2026-11-24 23:31 | wide-18 | huber52 | variant | train | 1994-02-01 | 2025-10-31 | 1.04 | +20286.7% | 40.1% | 3.68 |
+| 2026-11-24 23:31 | wide-18 | huber52/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.07 | +23383.1% | 36.5% | 3.66 |
+| 2026-11-24 23:31 | wide-18 | vclock12@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.56 | +227.1% | 23.3% | 2.87 |
+| 2026-11-24 23:31 | wide-18 | huber52@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.56 | +251.1% | 27.5% | 3.29 |
+| 2026-11-24 23:31 | wide-18 | vclock12@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.68 | +3839.4% | 39.6% | 2.77 |
+| 2026-11-24 23:31 | wide-18 | huber52@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.62 | +3436.0% | 34.7% | 2.44 |
+| 2026-11-24 23:32 | wide-18 | hann12: tapered FIR trend filter (killed in step 1: sma200 / e4 / trend-tune overlap; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | kalman-llt: local-linear-trend Kalman slope (killed: per-asset lookback, wf-asset; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | cusum-exit: CUSUM / SPRT drift-change exit (killed: changepoint-momentum, coin-fast-exit, drawdown-control; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | pd-trend: derivative action on the 12-month return (killed: turning-points, e4, fast-reentry; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | gain-schedule: volatility-scheduled lookback (merged into vclock12; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | perm-entropy: permutation-entropy / Lempel-Ziv gate (killed: hurst-entropy-gate parked; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | ib-soft: rate-distortion soft slot (killed: kelly-shrunk, ml-sizing; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | mst-length: correlation-network MST length trigger (killed: absorption-ratio, turbulence; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | spillover: Diebold-Yilmaz connectedness (killed: absorption-ratio, transfer-entropy; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | centrality-tilt: weight peripheral assets (killed: multi-signal BAB wrong sign; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | tail-index: Hill exponent crash warning (killed: critical-slowing, volatility in disguise; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | irreversibility: Zumbach time-reversal asymmetry for sizing (killed: a volatility target; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | post hoc (not a try): vclock12 window by asset (lib/wide18_posthoc.py); median 1.22-1.30 y on BTC, ETH, QQQ, GLD, 0.92-0.94 on SPY, TLT | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.63 | +369.0% | 27.4% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-in-vxth-bills@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.74 | +357.9% | 18.7% | 11.56 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-x2@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.34 | +182.2% | 43.5% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-cost50@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.59 | +325.2% | 28.1% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-cash0+vxth-leg@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.61 | +344.9% | 29.9% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-delever-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.74 | +369.0% | 22.3% | 1.63 |
+| 2026-11-24 23:32 | vix-call-1 | mix-tsmom12-pput-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.65 | +377.6% | 42.0% | 13.63 |
+| 2026-11-24 23:34 | xs-century-1 | tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12) | baseline | train | 1928-07-01 | 2025-10-31 | 0.55 | +49427.7% | 44.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | book (primary): alpha vs tsmom12 IR +0.31 z +2.75 (monthly excess x sqrt12) | variant | train | 1928-07-01 | 2025-10-31 | 0.40 | +501.1% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R1 gross: alpha vs tsmom12 IR +0.88 z +7.39 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.96 | +9139.5% | 18.8% | - |
+| 2026-11-24 23:34 | xs-century-1 | R2 UMD cost 0.34%/mo: alpha vs tsmom12 IR +0.51 z +4.44 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.59 | +1440.5% | 24.6% | - |
+| 2026-11-24 23:34 | xs-century-1 | R3 bond/FX costs x2: alpha vs tsmom12 IR +0.25 z +2.22 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.34 | +353.6% | 34.5% | - |
+| 2026-11-24 23:34 | xs-century-1 | R4 + commodity spot: alpha vs tsmom12 IR +0.31 z +2.61 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.39 | +366.3% | 25.1% | - |
+| 2026-11-24 23:34 | xs-century-1 | R5 1994-01..2025-10: alpha vs tsmom12 IR +0.19 z +0.75 (monthly excess x sqrt12) | robustness | train | 1994-01-01 | 2025-10-31 | 0.20 | +21.1% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R6 vs six-asset tsmom12: alpha vs tsmom12 IR +0.22 z +0.84 (monthly excess x sqrt12) | robustness | train | 1994-03-01 | 2025-10-31 | 0.20 | +21.6% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R7 bonds + FX only: alpha vs tsmom12 IR +0.43 z +2.63 (monthly excess x sqrt12) | robustness | train | 1962-04-01 | 2025-10-31 | 0.45 | +274.8% | 23.2% | - |
+| 2026-11-24 23:37 | e4-anatomy-1 | re-score (not a try): e4 minus tsmom12 Sharpe per market split by regime and leg (pooled-1/pooled-2 series and code; d reproduced to 6e-16). Card split, 25% zigzag: equity D +0.063 = risk part +0.087 + return part -0.024 (rebound +0.092, fast +0.022, slow +0.003, whipsaw +0.018, calm -0.159); bonds+FX +0.010 = +0.035 - 0.025. Post hoc vs vol-matched tsmom12: equity rebound +0.117 (SE 0.041, 39 of 41 markets > 0), slow bear -0.037, calm -0.043, fast +0.009. Equity-vs-other gap +0.053 = risk part +0.052 (card reading B), not regime mix (research/e4-anatomy-1.md) | note | train | 1927-04-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:35 | temperature-premium | SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade (b +3.25%/deg C, t +1.63, rank 9/41, gate fail) | screen | train | 1993-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:35 | outbreak-premium | SPY 4-week return on detrended Anscombe count of WHO Disease Outbreak News reports (b +0.065%/unit, t +1.68, rank 9/41, gate fail) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit without the 6 weeks with >= 60 WHO items (re-dated archive weeks) (b +0.159%/unit, t +1.11, rank 12/41, placebo SD 1.64) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit on Fridays 2005-01..2019-12 only, before the re-dated years (b +0.082%/unit, t +0.48, rank 21/41, placebo SD 1.16) | screen | train | 2005-01-07 | 2020-01-27 | - | - | - | - |
+| 2026-11-24 23:45 | wide-19 | cred-xs | variant | train | 1994-02-01 | 2025-10-31 | 1.09 | +29621.4% | 39.9% | 1.83 |
+| 2026-11-24 23:45 | wide-19 | cred-xs/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.11 | +33497.4% | 38.8% | 1.82 |
+| 2026-11-24 23:45 | wide-19 | cred-lr | variant | train | 1994-02-01 | 2025-10-31 | 0.95 | +20355.6% | 48.6% | 1.72 |
+| 2026-11-24 23:45 | wide-19 | cred-lr/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +21459.4% | 47.5% | 1.73 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.62 | +325.1% | 23.6% | 2.12 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.53 | +284.1% | 36.2% | 0.96 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.70 | +4868.1% | 26.0% | 2.13 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.65 | +7530.4% | 51.9% | 0.89 |
+| 2026-11-24 23:50 | wide-19 | brier-verify: Brier skill / Murphy decomposition of the in/out signal (killed in step 1: multi-signal / info-1 IC, insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | rev-costloss: relative economic value of the exit (new, descriptive; a reframing of insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | mos-calibrate: logistic MOS soft slot (killed: kelly-shrunk, ml-linear, ml-sizing; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | damped-persistence: persistence/climatology blend (killed: combo-1 blend-iv, bet-hedge-seedbank; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bma-lookbacks: BMA / lagged ensemble of lookbacks (killed: e4, wf-pooled, tranching; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | xl-layer: reinsurance layer / aggregate stop-loss (killed: drawdown-control, cppi-floor, stop-0.25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bonus-malus: exposure ladder by monthly outcome (killed: ensemble-tsmom, slew-limit, arm3-12; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | cred-forward: credibility of the forward record, Esscher/Wang premium (killed: power-map-1, insure-4; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | stop-reentry: optimal-stopping re-entry, real-options band (killed: fast-reentry, bear-legs, eu-4 dz25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | robust-lookback: worst-case lookback set, minimax regret, newsvendor size (killed: ensemble-tsmom, wf-pooled, ib-soft; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | post hoc (not a try): Z at 2025-10-31 with the noise term corrected for correlation, V (1 - rho): six 0.00, etf 0.03, idx 0.16 (lib/wide19_posthoc.py) | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:55 | hedge-books-1 | book/buy_hold_btc | robustness | train | 1994-02-01 | 2025-10-31 | 0.87 | +2384778.8% | 84.9% | 0.00 |
+| 2026-11-24 23:55 | hedge-books-1 | book/buy_hold_spy | robustness | train | 1994-02-01 | 2025-10-31 | 0.63 | +2398.0% | 55.2% | 0.01 |
+| 2026-11-24 23:55 | hedge-books-1 | book/sixty_forty | robustness | train | 1994-02-01 | 2025-10-31 | 0.77 | +1126.1% | 30.5% | 0.47 |
+| 2026-11-24 23:55 | hedge-books-1 | book/equal_weight | robustness | train | 1994-02-01 | 2025-10-31 | 1.01 | +57602.8% | 66.7% | 1.51 |
+| 2026-11-24 23:55 | hedge-books-1 | book/ts_momentum | robustness | train | 1994-02-01 | 2025-10-31 | 1.10 | +6236.9% | 28.4% | 4.38 |
+| 2026-11-24 23:55 | hedge-books-1 | book/xs_momentum | robustness | train | 1994-02-01 | 2025-10-31 | 0.94 | +582644.9% | 77.5% | 3.57 |
+| 2026-11-24 23:55 | hedge-books-1 | book/vol_target_spy | robustness | train | 1994-02-01 | 2025-10-31 | 0.74 | +864.0% | 33.4% | 3.94 |
+| 2026-11-24 23:55 | hedge-books-1 | book/risk_parity | robustness | train | 1994-02-01 | 2025-10-31 | 0.83 | +3688.5% | 62.0% | 0.58 |
+| 2026-11-24 23:55 | hedge-books-1 | book/crypto_mean_reversion | robustness | train | 1994-02-01 | 2025-10-31 | 0.13 | +28.1% | 51.7% | 7.05 |
+| 2026-11-24 23:55 | hedge-books-1 | book/preset_careful | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +1606.2% | 22.0% | 4.78 |
+| 2026-11-24 23:55 | hedge-books-1 | book/preset_middle | robustness | train | 1994-02-01 | 2025-10-31 | 1.04 | +6760.6% | 30.9% | 4.91 |
+| 2026-11-24 23:55 | hedge-books-1 | book/own_vol_70 | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +4300.6% | 27.7% | 1.86 |
+| 2026-11-24 23:55 | hedge-books-1 | book/tsmom12 | baseline | train | 1994-02-01 | 2025-10-31 | 1.05 | +18641.3% | 37.0% | 2.80 |
+| 2026-11-24 23:55 | hedge-books-1 | book/halving-alone | robustness | train | 1994-02-01 | 2025-10-31 | 1.29 | +70158.9% | 29.5% | 2.57 |
+| 2026-11-24 23:55 | hedge-books-1 | book/where-vol | robustness | train | 1994-02-01 | 2025-10-31 | 1.07 | +24569.7% | 35.4% | 1.89 |
+| 2026-11-24 23:55 | hedge-books-1 | book/stop-0.25 | robustness | train | 1994-02-01 | 2025-10-31 | 1.09 | +9925.7% | 28.9% | 3.84 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge16 | variant | train | 1994-02-01 | 2025-10-31 | 1.13 | +20836.8% | 33.5% | 2.96 |
+| 2026-11-24 23:55 | hedge-books-1 | ew16 | baseline | train | 1994-02-01 | 2025-10-31 | 1.16 | +15095.3% | 33.0% | 3.19 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge-pair | variant | train | 1994-02-01 | 2025-10-31 | 1.05 | +9239.2% | 32.9% | 2.34 |
+| 2026-11-24 23:55 | hedge-books-1 | ew-pair | baseline | train | 1994-02-01 | 2025-10-31 | 1.05 | +9073.0% | 32.8% | 2.31 |
+| 2026-11-24 23:55 | hedge-books-1 | book/tsmom12/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +18290.3% | 37.4% | 2.81 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.12 | +20488.7% | 33.5% | 2.94 |
+| 2026-11-24 23:55 | hedge-books-1 | ew16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.15 | +14775.1% | 33.0% | 3.19 |
+| 2026-11-24 23:55 | hedge-books-1 | hedge-pair/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +9021.0% | 33.2% | 2.33 |
+| 2026-11-24 23:50 | air-disaster-mood | SPY daily return on log2(deaths/25) of Wikidata aviation accidents >= 50 deaths, days 0-1, HC1 (b -0.038%/day/unit, t -0.59, rank 10/41, gate fail) | screen | train | 2008-01-02 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:55 | jackpot-substitution | wide-20 candidate, scored before any price, no number computed: P2, score 5, parked: no keyless jackpot history | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | panic-words | wide-20 candidate, scored before any price, no number computed: P3, score 4, parked: about 2,000 Chronicling America calls | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | mass-casualty-mood | wide-20 candidate, scored before any price, no number computed: P4, score 4, parked: P1's channel, data terms unclear | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | my-ratio | wide-20 candidate, scored before any price, no number computed: P5, filtered (F1: age structure known decades ahead) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | conception-lead | wide-20 candidate, scored before any price, no number computed: P6, filtered (F1: births read as news) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | dst-sleep | wide-20 candidate, scored before any price, no number computed: P7, filtered (F1: scheduled dates, no dose) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | sad-onset | wide-20 candidate, scored before any price, no number computed: P8, filtered (F1: fixed calendar, no dose) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | experience-weighted | wide-20 candidate, scored before any price, no number computed: P9, filtered (F2: weighted past returns) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | consumer-sentiment | wide-20 candidate, scored before any price, no number computed: P10, filtered (F1 and F2) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | skyscraper-index | wide-20 candidate, scored before any price, no number computed: P11, score 0, dead (literature) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | strike-idleness | wide-20 candidate, scored before any price, no number computed: P12, score 4, parked: BLS refuses scripts | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:47 | ownvol-anatomy-1 | re-score (not a try): vt-own-70-x minus tsmom12 split into exposure E (fixed-share twin), mean channel M and risk channel R; equity 41 d +0.022 = E +0.001 + M -0.003 + R +0.024; judged 21 d -0.010 = E +0.000 + M -0.015 + R +0.005; FX9 d -0.052 = E +0.000 + M -0.056 + R +0.004; COM8 d +0.056 = E -0.001 + M -0.018 + R +0.075; six d +0.101 = E +0.003 + M -0.153 + R +0.251 (research/ownvol-anatomy-1.md) | note | train | 1913-01-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 00:07 | breadth-anatomy-1 | re-score (not a try): why breadth-book-1's wider tsmom12 books score lower (same bars, rule, universes; Sharpe above bills 2008-01..2025-10). Gap L-12/L-20/L-all - six -0.23/-0.36/-0.54 = ETF breadth with coins at the six's weight (K - six) -0.17/-0.17/-0.17 (z -2.6 to -3.2) + coin dilution -0.06/-0.19/-0.37 (coin share 26/54/68%). Coin-free: four 0.82 vs four+6/14/29 added 0.38/0.36/0.37. Added sleeves' own tsmom12 Sharpe mean 0.17 (six 0.65; FX -0.31, intl eq 0.04, cmdty 0.06); A-29 book 0.29 vs rho 0.38 x 1.19 = 0.45: marginal test fails, best weight 0 (vs four: rho 0.73). Crisis rho(A-29, six) 0.66 vs 0.37. Inverse-vol widens the gap (-0.81). 2008-09 gap -0.19, 2010-25 -0.54 (research/breadth-anatomy-1.md) | note | train | 2008-01-02 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 00:03 | vm-style-1 | tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12) | baseline | train | 1938-07-01 | 2025-10-31 | 0.57 | +23363.4% | 31.0% | - |
+| 2026-11-25 00:03 | vm-style-1 | xs-century-1 book (unmanaged, same months): alpha vs tsmom12 full IR +0.35 z +2.92; out-of-paper IR +0.38 z +2.46 (monthly excess x sqrt12) | baseline | train | 1938-07-01 | 2025-10-31 | 0.43 | +450.1% | 29.3% | - |
+| 2026-11-25 00:03 | vm-style-1 | CMV (primary: theta = a + b / market vol): alpha vs tsmom12 full IR +0.31 z +2.40; out-of-paper IR +0.28 z +1.58 (monthly excess x sqrt12) | variant | train | 1938-07-01 | 2025-10-31 | 0.34 | +2953.9% | 69.0% | - |
+| 2026-11-25 00:03 | vm-style-1 | UMV (control: b = 0): alpha vs tsmom12 full IR +0.29 z +2.29; out-of-paper IR +0.28 z +1.56 (monthly excess x sqrt12) | variant | train | 1938-07-01 | 2025-10-31 | 0.32 | +2240.3% | 66.5% | - |
+| 2026-11-25 00:03 | vm-style-1 | own-vol twin (theta = a + b / own vol): alpha vs tsmom12 full IR +0.27 z +2.08; out-of-paper IR +0.27 z +1.51 (monthly excess x sqrt12) | variant | train | 1938-07-01 | 2025-10-31 | 0.28 | +1327.3% | 74.7% | - |
+| 2026-11-25 00:03 | vm-style-1 | R1 CMV gross: alpha vs tsmom12 full IR +1.00 z +8.00; out-of-paper IR +0.99 z +5.40 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 1.06 | +364976050745.5% | 52.9% | - |
+| 2026-11-25 00:03 | vm-style-1 | R1 UMV gross: alpha vs tsmom12 full IR +0.90 z +7.17; out-of-paper IR +0.99 z +5.84 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 0.95 | +7177729375.7% | 63.5% | - |
+| 2026-11-25 00:03 | vm-style-1 | R2 CMV UMD 0.34%/mo: alpha vs tsmom12 full IR +0.46 z +3.65; out-of-paper IR +0.48 z +2.87 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 0.51 | +72263.4% | 73.7% | - |
+| 2026-11-25 00:03 | vm-style-1 | R2 UMV UMD 0.34%/mo: alpha vs tsmom12 full IR +0.45 z +3.59; out-of-paper IR +0.48 z +2.85 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 0.50 | +56336.9% | 71.6% | - |
+| 2026-11-25 00:03 | vm-style-1 | R3a CMV kappa US 0.25%: alpha vs tsmom12 full IR +0.32 z +2.46; out-of-paper IR +0.29 z +1.59 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 0.35 | +3452.6% | 69.9% | - |
+| 2026-11-25 00:03 | vm-style-1 | R3b CMV kappa US 1.0%: alpha vs tsmom12 full IR +0.27 z +2.09; out-of-paper IR +0.24 z +1.35 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 0.30 | +1736.0% | 70.9% | - |
+| 2026-11-25 00:03 | vm-style-1 | R4 CMV market variance (1 / sigma^2): alpha vs tsmom12 full IR +0.28 z +2.23; out-of-paper IR +0.27 z +1.53 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 0.32 | +2324.6% | 68.9% | - |
+| 2026-11-25 00:03 | vm-style-1 | CMV sample out-of-paper: alpha vs tsmom12 IR +0.28 z +1.58; CMV-UMV Sharpe +0.00 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 2025-10-31 | 0.38 | +354.1% | 36.4% | - |
+| 2026-11-25 00:03 | vm-style-1 | CMV sample in-paper 1977-2020: alpha vs tsmom12 IR +0.33 z +1.85; CMV-UMV Sharpe +0.03 (monthly excess x sqrt12) | robustness | train | 1977-01-01 | 2020-12-31 | 0.33 | +572.5% | 60.0% | - |
+| 2026-11-25 00:03 | vm-style-1 | CMV sample pre 1939-1976: alpha vs tsmom12 IR +0.39 z +2.10; CMV-UMV Sharpe +0.00 (monthly excess x sqrt12) | robustness | train | 1938-07-01 | 1976-12-31 | 0.48 | +478.3% | 36.4% | - |
+| 2026-11-25 00:03 | vm-style-1 | CMV sample post 2021-2025: alpha vs tsmom12 IR -0.53 z -1.32; CMV-UMV Sharpe +0.02 (monthly excess x sqrt12) | robustness | train | 2021-01-01 | 2025-10-31 | -0.41 | -21.5% | 25.7% | - |
+| 2026-11-25 00:43 | evalue-forward | anytime-valid sequential test for the forward record (betting e-process ONS, mixture SPRT) vs fixed horizon: on iid data no faster (d +0.10 rho 0.95 alpha 0.025: fixed 78 y, E1 median 79 y, 11% by 20 y; d +0.30 median 10.5 y vs fixed 9 y); on the store's block-resampled null E1 rejects 13.5-14.1% at nominal 2.5% (serial dependence, 52-week variance ratio median 1.34), fixed iid t-test 4.2-6.6%; do not adopt; simulation only (research/evalue-forward-1.md) | note | - | - | - | - | - | - | - |
+| 2026-11-25 00:04 | reentry-reconcile-1 | re-score (not a try): e4, or3-12, arm3-12 minus tsmom12 on pooled-1's 41 equity markets (d reproduced exactly), e4's gap split into buy-back ((1-h12)h) and trims (h12(h-1)). Card split, 25% zigzag: e4 buy-back rebound +0.134 = or3-12's +0.134, slow bear -0.065; trims slow bear +0.069, rebound -0.042, calm -0.157. Per 25% fall (491, log pts): e4 dI +1.88 dB +3.54 (K 1.53); e4 buy-back alone -4.35 / +6.32 (K 0.31); or3-12 -6.48 / +8.43 (K 0.23); arm3-12 -5.75 / +7.78 (K 0.26). per fall, in log points, e4's buy-back leaks like the old rules and its trims pay for the bear rallies; in Sharpe the graded, smaller buy-back matters about as much (e4-re +0.045 of e4's +0.063) (research/reentry-reconcile-1.md) | note | train | 1927-07-05 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 00:04 | reentry-reconcile-1 | diagnostic sleeves (not tries, not selectable; a later card on any counts these 10): e4-re (h12 + (1-h12) e4) D +0.045, e4-trim (h12 e4) +0.014, or3-12 x 0.25/0.5/0.75/w* (w* 0.735) +0.015/+0.022/+0.023/+0.023, arm3-12 x 0.25/0.5/0.75/w* (w* 0.914) +0.012/+0.018/+0.019/+0.017, Sharpe per market vs tsmom12 on 41 equity markets; e4-re minus size-matched sleeves +0.022 / +0.028 (paired SE 0.010 / 0.014) | note | train | 1927-07-05 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 00:24 | rev-costloss-1 | re-score (not a try): tsmom12 exit as a binary crash warning (out = warn), event = 10% fall below the Friday close within 13 weeks; US market 1927-2025 H 0.49 F 0.21 Peirce +0.28 (random dates -0.01, p 0.000), V > 0 for C/L 0.105-0.290, holder's C/L 0.27, V there +0.06, money V -0.01; 11 French series Peirce +0.23; SPY +0.32, QQQ +0.28, GLD -0.00, TLT +0.06, BTC -0.04, ETH -0.03; grid 5/10/20% x 4/13/26 weeks in research/results/rev-costloss-1.md | note | train | 1927-07-08 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 00:07 | tick-tier-1 | re-score (not a try): tsmom12/e4 Sharpe above bills 1995-2008 vs 2009-2025-10 by asset class on pooled-1/pooled-2 series (65 eligible); tsmom12 class means EQ +0.42->+0.22 / FX +0.36->-0.20 / BD +0.52->+0.28 / CM +0.28->+0.28; contrast C = (dEQ+dFX)/2 - dBD: tsmom12 -0.14 (SE 0.36), timing part -0.77 (SE 0.23), e4 +0.10 (SE 0.40), e4 timing -0.53 (SE 0.19); reading: inconclusive (research/tick-tier-1.md) | note | train | 1995-01-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 00:50 | omori-1 | omori-clock: exit as tsmom12, re-enter when an Omori fit K/(t+c)^p of post-peak large-move counts gives an expected rate below a fraction of the pre-crash rate (killed in step 1: a volatility-calm re-entry in other words; bear-legs volatility / vol ratio / duration AUC 0.47-0.54, arm3-12, vol-calm, hawkes-clustering overlap; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-25 01:06 | drought-inflation | W32: TLT log return months m+2..m+4 on -PDSI (contiguous US, NOAA nClimDiv), NW 3 lags (b -0.784%/unit, t -3.71, rank 1/41, kill-only gate PASS; killed by replication R32) | screen | train | 2002-07-31 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 01:06 | margin-susceptibles | W33: GSPC month m+1 on min(r(m),0) x detrended ln(Z.1 broker customer receivables / equities market value), controls, NW 3 lags (b3 +0.017, t +0.05, rank 41/41, gate fail) | screen | train | 1964-12-31 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 01:10 | drought-inflation | R32 replication of W32: 10-year yield change end m+1..end m+4 on -PDSI, dose months 1962-01..2002-03, NW 3 lags (b -0.32 bp/unit, t -0.19, rank 21/41, gate fail: W32 dead) | screen | train | 1962-02-28 | 2002-07-31 | - | - | - | - |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-AUS | insure-check | train | 1871-12-31 | 1965-12-31 | 1.03 | +282094.5% | 8.2% | 0.32 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-BEL | insure-check | train | 1871-12-31 | 1965-12-31 | 0.47 | +27669.8% | 31.7% | 0.39 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-CHE | insure-check | train | 1901-12-31 | 1965-12-31 | 0.68 | +8843.8% | 17.7% | 0.38 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-DEU | insure-check | train | 1871-12-31 | 1965-12-31 | 0.16 | +6290934.2% | 26.6% | 0.38 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-DNK | insure-check | train | 1876-12-31 | 1965-12-31 | 0.88 | +56652.3% | 8.3% | 0.38 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-ESP | insure-check | train | 1901-12-31 | 1965-12-31 | 0.67 | +10290.2% | 29.1% | 0.36 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-FIN | insure-check | train | 1897-12-31 | 1965-12-31 | 0.53 | +47295.9% | 18.8% | 0.49 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-FRA | insure-check | train | 1871-12-31 | 1965-12-31 | 0.45 | +28853.8% | 30.0% | 0.40 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-GBR | insure-check | train | 1872-12-31 | 1965-12-31 | 0.62 | +16428.4% | 21.3% | 0.35 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-ITA | insure-check | train | 1886-12-31 | 1965-12-31 | 0.48 | +93796.2% | 58.8% | 0.28 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-JPN | insure-check | train | 1887-12-31 | 1965-12-31 | 0.49 | +150889.5% | 39.1% | 0.46 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-NLD | insure-check | train | 1901-12-31 | 1965-12-31 | 0.39 | +1990.8% | 28.9% | 0.49 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-NOR | insure-check | train | 1882-12-31 | 1965-12-31 | 0.71 | +11196.4% | 19.0% | 0.33 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-PRT | insure-check | train | 1881-12-31 | 1965-12-31 | 0.66 | +53036.7% | 13.3% | 0.33 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-SWE | insure-check | train | 1872-12-31 | 1965-12-31 | 0.85 | +182344.6% | 19.8% | 0.32 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-USA | insure-check | train | 1873-12-31 | 1926-12-31 | 0.43 | +1078.0% | 28.8% | 0.52 |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-check-full: Check 1: full span 1870-2020; Holds; I > 0 in 17 of 17 anchored falls, S 0.70 vs random 0.50 (p 0.024), P 1.27 | insure-check | train | 1871-12-31 | 2020-12-31 | - | - | - | - |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-check-real: Check 2: events on the real index; Holds; I > 0 in 11 of 11 anchored falls, S 0.45 vs random 0.28 (p 0.000), P 1.19 | insure-check | train | 1871-12-31 | 1965-12-31 | - | - | - | - |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-check-t20: Check 3a: 20% fall / 20% rise; Holds; I > 0 in 14 of 15 anchored falls, S 0.73 vs random 0.48 (p 0.016), P 1.16 | insure-check | train | 1871-12-31 | 1965-12-31 | - | - | - | - |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-check-t40: Check 3b: 40% fall / 25% rise; Holds; I > 0 in 8 of 8 anchored falls, S 0.80 vs random 0.43 (p 0.014), P 1.26 | insure-check | train | 1871-12-31 | 1965-12-31 | - | - | - | - |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-check-cash0: Check 4: cash at 0 when out; Holds; I > 0 in 9 of 9 anchored falls, S 0.60 vs random 0.38 (p 0.020), P 2.49 | insure-check | train | 1871-12-31 | 1965-12-31 | - | - | - | - |
+| 2026-11-25 00:44 | insure-1870-1 | tsmom12a@insure-1870-check-nohyper: Check 5: years with CPI > 50% dropped; Holds; I > 0 in 9 of 9 anchored falls, S 0.76 vs random 0.44 (p 0.036), P 1.12 | insure-check | train | 1871-12-31 | 1965-12-31 | - | - | - | - |
+| 2026-11-25 01:16 | coin-drift-run | tsmom12@cd2 (band 0.01; coin-drift-2's six coins to 2019-03) | baseline | train | 2015-01-25 | 2019-03-30 | 1.93 | +27485.5% | 77.5% | 8.39 |
+| 2026-11-25 01:16 | coin-drift-run | band05@cd2 (band 0.05 of equity) | robustness | train | 2015-01-25 | 2019-03-30 | 1.92 | +23114.2% | 75.0% | 3.34 |
+| 2026-11-25 01:16 | coin-drift-run | coin-drift-2 split (same run, not a try): band05@cd2 net -0.014 (z -0.50); above bills +0.011 (z 0.40); coin fills free -0.019 (z -0.69); reading: killed: no support on unseen data | note | train | 2015-01-25 | 2019-03-31 | - | - | - | - |
+| 2026-11-25 01:07 | forward-se | forward registry verdict SE (engineering, not a try): one-year Bartlett HAC with fixed-b Student-t p (b = (L + 1) / n), min_sample with lrv; null rejection at nominal 0.025 on 52-week block-resampled store paths, vs tsmom12 10 y 0.061-0.064 -> 0.043-0.058, 100 y 0.046-0.047 -> 0.031-0.036, tsmom12 vs 0 0.081/0.083 -> 0.010/0.023, Gaussian 0.024-0.027 kept; card kill condition met (3 cells > 0.040), adopted by the night lead as a deviation; remainder is skew of yearly sums (research/forward-se-1.md) | note | - | - | - | - | - | - | - |
+| 2026-11-25 02:05 | jst-autocorr-1 | descriptive note on insure-1870-1 (not a try): per-episode S 0.80 vs 0.47 random (gap +0.32) on JST 1871-1965; AR(1) phi 0.19 alone gives median gap +0.20 (observed at 98th pct), full annual averaging +0.24 (94th pct; card reading 'smoothing could explain it', narrowly); random walk +0.06; checked sources are year-end (JST US = Shiller Dec-Dec, JST Norway 1921-65 = Klovland Dec-Dec month-end, acf +0.23); origin of the 0.17-0.19 acf open (research/jst-autocorr-1.md) | note | train | 1871-12-31 | 1965-12-31 | - | - | - | - |
+| 2026-11-25 02:42 | panic-words | W34: US market (French daily, compounded) month m+1 on detrended ln share of newspaper articles with "panic" (American Stories, 1926-1963), controls c1, c12, realised vol, NW 3 lags (b +1.38%/unit, t +1.19, rank 37/41, gate fail: dead) | screen | train | 1927-07-31 | 1964-01-31 | - | - | - | - |
+| 2026-11-25 02:12 | solar-max-recession | W34: Shiller S&P 500 total return P(m+1)..P(m+2) on trailing 12-month mean SILSO sunspot number / 100, dose months 1871-01..2023-07, NW 12 (b -0.162%/month/unit, t -0.87, rank 3/41, gate fail) | screen | train | 1871-01-31 | 2023-09-30 | - | - | - | - |
+| 2026-11-25 02:14 | volcanic-veil | wide-21 candidate, scored before any price, no number computed: S2, score 4, parked: six eruptions since 1871, food channel dead (W32/R32) | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | river-freight | wide-21 candidate, scored before any price, no number computed: S3, score 5, parked: fails its size check, inflation channel dead (W32/R32) | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | pdo-regime | wide-21 candidate, scored before any price, no number computed: S4, score 3, parked: four or five regimes, ENSO and drought channels dead | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | amo-hurricane | wide-21 candidate, scored before any price, no number computed: S5, filtered: duplicate of dead channels (W15, W32) | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | cosmic-ray-cloud | wide-21 candidate, scored before any price, no number computed: S6, filtered: duplicate of W16 (Forbush decreases coincide with storms) | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | eclipse-omen | wide-21 candidate, scored before any price, no number computed: S7, filtered F1: scheduled, no dose | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | hurst-flood | wide-21 candidate, scored before any price, no number computed: S8, filtered F2 (price statistic), dead in the literature (Lo 1991) | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | kaiser-felicity | wide-21 candidate, scored before any price, no number computed: S9, filtered F2: volatility and prior highs are prices | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | stress-corrosion-calm | wide-21 candidate, scored before any price, no number computed: S10, filtered F1/F2: low volatility is a price, credit a published statistic | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | paris-law-credit | wide-21 candidate, scored before any price, no number computed: S11, filtered F1: quarterly credit statistics are public news | note | train | - | - | - | - | - | - |
+| 2026-11-25 02:14 | chemical-accident-mood | wide-21 candidate, scored before any price, no number computed: S12, filtered: mood-shock class dead (W31) | note | train | - | - | - | - | - | - |
+| 2026-11-25 09:20 | solar-max-recession | renumber at merge (not a try): wide-21's W34 = W35 (panic-words-1 merged first and keeps W34); the replication R34 = R35; the row above stays as written | note | - | - | - | - | - | - | - |

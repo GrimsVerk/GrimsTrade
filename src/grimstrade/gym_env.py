@@ -2,9 +2,9 @@
 
 The agent's action is a set of target weights; the environment replays them through the gym's own
 rules: fills at each asset's next open with slippage and fees (Kraken tiers for crypto), the 1%
-rebalance band, sells before buys, buys limited by cash, distributions, cash interest. `Replay`
-is `gym.simulate`'s event loop cut open at each decision, and calls the gym's own trade step, so
-an agent and a classic strategy are scored by the same code (a test drives the environment with
+rebalance band, sells before buys, buys limited by cash, distributions, cash interest. It steps
+`gym.Replay`, the gym's one event loop, which `gym.simulate` also runs on, so an agent and a
+classic strategy are scored by the same code (a test drives the environment with
 `ts_momentum`'s weights and gets `gym.simulate`'s result to the last fill).
 
 The observation at a decision at time T uses only bars that closed by T (`data.visible`) and the
@@ -31,8 +31,8 @@ from gymnasium import spaces
 from numpy.typing import NDArray
 
 from grimstrade import data, gym, rates
-from grimstrade.data import ETF, UNIVERSE, Bar, Dividends, History, close_time, open_time
-from grimstrade.gym import _CLOSE, _DECIDE, _DIVIDEND, _OPEN, DAYS_PER_YEAR, DECIDE_AT
+from grimstrade.data import ETF, UNIVERSE, Bar, Dividends, History, close_time
+from grimstrade.gym import DECIDE_AT, Replay
 
 # The last bar of the train period. Later bars are the held-out year, looked at once per card
 # (research/protocol.md), never by a training run.
@@ -91,131 +91,6 @@ def check_train_only(
 
 def decide_time(d: date) -> datetime:
     return datetime.combine(d, DECIDE_AT, tzinfo=UTC)
-
-
-class Replay:
-    """`gym.simulate`, one decision at a time.
-
-    The same events in the same order, the same day bookkeeping (interest, end-of-day equity)
-    and the gym's own `_execute` for the fills, so feeding it the decisions `simulate` gets gives
-    the same `Result`. Call `decide` with rising times, then `finish`.
-    """
-
-    def __init__(
-        self,
-        history: History,
-        start_cash: float = gym.START_CASH,
-        costs: Mapping[str, gym.Costs] = gym.COSTS,
-        band: float = gym.BAND,
-        dividends: Dividends | None = None,
-        cash_rates: gym.Rates = (),
-    ) -> None:
-        events: list[tuple[datetime, int, str, float]] = []
-        for sym, bars in history.items():
-            cls = UNIVERSE[sym]
-            for b in bars:
-                events.append((open_time(cls, b.date), _OPEN, sym, b.open))
-                events.append((close_time(cls, b.date), _CLOSE, sym, b.close))
-            for dv in (dividends or {}).get(sym, []):
-                events.append((open_time(cls, dv.ex_date), _DIVIDEND, sym, dv.amount))
-        events.sort(key=lambda e: (e[0], e[1]))
-        self.events = events
-        self.symbols = list(history)
-        self.costs, self.band = costs, band
-        self.res = gym.Result(
-            cash=start_cash, positions={s: 0.0 for s in history}, start_cash=start_cash
-        )
-        self.price: dict[str, float] = {}
-        self.pending: dict[str, float] = {}
-        self.unpaid: set[str] = set()
-        self.started = False
-        self.day: date | None = None
-        self.growth = 1.0  # of one dollar of cash since the last equity point (as simulate)
-        self.step_growth = 1.0  # of one dollar of cash since `take_step_growth` was last called
-        self.rates = sorted(cash_rates, key=lambda r: r[0])
-        self.known = [t for t, _ in self.rates]
-        self.i = 0
-
-    def equity(self) -> float:
-        return self.res.cash + sum(
-            q * self.price.get(s, 0.0) for s, q in self.res.positions.items()
-        )
-
-    def skip_to(self, t: datetime) -> None:
-        """Jump over every event before a decision at `t`, before the first decision. Nothing
-        but prices changes then (no positions, no orders), so only those are set."""
-        assert not self.started and self.i == 0
-        j = bisect.bisect_left(self.events, (t, _DECIDE), key=lambda e: (e[0], e[1]))
-        for _, kind, sym, px in self.events[:j]:
-            if kind != _DIVIDEND:
-                self.price[sym] = px
-        self.i = j
-
-    def _accrue(self, d: date) -> None:
-        r = gym.cash_rate(self.rates, d, self.known)
-        self.res.cash += gym.interest(self.res.cash, r)
-        self.growth *= 1 + r / DAYS_PER_YEAR
-        self.step_growth *= 1 + r / DAYS_PER_YEAR
-
-    def _new_day(self, t: datetime, kind: int) -> None:
-        ev_day = (t - timedelta(microseconds=1)).date() if kind == _CLOSE else t.date()
-        if self.started and self.day is not None and ev_day > self.day:
-            self._accrue(self.day)
-            self.res.equity.append((self.day, self.equity()))
-            self.res.cash_growth.append(self.growth - 1)
-            self.growth = 1.0
-            for k in range(1, (ev_day - self.day).days):
-                self._accrue(self.day + timedelta(days=k))
-        self.day = ev_day
-
-    def _run_until(self, t: datetime | None) -> None:
-        """Process every event that comes before a decision at `t` (all of them if None)."""
-        ev = self.events
-        while self.i < len(ev) and (t is None or ev[self.i][0] <= t):
-            et, kind = ev[self.i][0], ev[self.i][1]
-            group = []
-            while self.i < len(ev) and ev[self.i][0] == et and ev[self.i][1] == kind:
-                group.append(ev[self.i])
-                self.i += 1
-            self._new_day(et, kind)
-            if kind == _DIVIDEND:
-                for _, _, sym, amount in group:
-                    if (paid := self.res.positions[sym] * amount) > 0:
-                        self.res.cash += paid
-                        self.res.income.append((et, sym, paid))
-                continue
-            for _, _, sym, px in group:
-                self.price[sym] = px
-            if kind == _OPEN:
-                syms = [g[2] for g in group if g[2] in self.pending]
-                gym._execute(
-                    et, syms, self.pending, self.unpaid, self.res, self.price, self.costs, self.band
-                )
-
-    def advance(self, t: datetime) -> None:
-        """Bring the account up to a decision at `t`, without deciding."""
-        self._run_until(t)
-        self._new_day(t, _DECIDE)
-
-    def decide(self, t: datetime, weights: Mapping[str, float]) -> None:
-        gym.validate(weights)
-        self.advance(t)
-        self.started = True
-        self.pending = {s: weights.get(s, 0.0) for s in self.symbols}
-        self.unpaid.clear()
-
-    def finish(self, stop: datetime | None = None) -> gym.Result:
-        """Run the events before a decision at `stop` (all of them if None) and close the last
-        day, as `simulate` does after its last event: that day's interest is not credited."""
-        self._run_until(stop)
-        if self.started and self.day is not None:
-            self.res.equity.append((self.day, self.equity()))
-            self.res.cash_growth.append(self.growth - 1)
-        return self.res
-
-    def take_step_growth(self) -> float:
-        g, self.step_growth = self.step_growth, 1.0
-        return g
 
 
 @dataclass(frozen=True)
@@ -325,7 +200,7 @@ class TradingEnv(gymnasium.Env[Obs, Action]):
             "costs": costs,
             "band": band,
             "dividends": {s: list((dividends or {}).get(s, [])) for s in self.symbols},
-            "cash_rates": cash_rates,
+            "rates": cash_rates,
         }
         self._close_times = {
             s: [close_time(UNIVERSE[s], b.date) for b in bars] for s, bars in self.history.items()

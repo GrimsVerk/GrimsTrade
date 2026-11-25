@@ -9,7 +9,9 @@ Ideas not started yet. Move one to `next-steps.md` when you start it; delete it 
   (check the exact path when building; Binance/Bybit block US IPs, i.e. GitHub runners).
 - A second daily run just after 00:00 UTC for crypto-only strategies, so a crypto signal fills
   ~22 hours sooner (see DECISIONS, execution timing). Changing the timing of a live strategy is a
-  new try: register it under a new name.
+  new try: register it under a new name. Measured (`research/lagcost-1.md`, 2026-11-24): not
+  worth it now; for `crypto_mean_reversion` it would recover +0.07 Sharpe (95% -0.17..+0.34) on
+  2012-2025, and it needs a gym change to fill at a price after a 00:15 run.
 - Alpaca free market data / FRED macro as extra sources (keys via Actions secrets).
 - Macro and cycle research lane (owner idea, 2026-11-12). Investors watch slow, years-long forces;
   test whether knowing which phase we are in helps the agent. Not yet tested by any research run

@@ -1,4 +1,4 @@
-# eu-2: `tsmom12` for a Dutch retail account: per-order fees, book size, currency hedge
+# eu-2: `tsmom12` for a euro-area retail account: per-order fees, book size, currency hedge
 
 Lane `eu-2` (DEEPER), night of 2026-11-18. Research only, fake money, train period only.
 Branch `eu-2` from `eu-1`. Card: `cards/eu-2.md` (two amendments to the eu-1 card, each pushed
@@ -6,20 +6,20 @@ before its numbers). Tables: `results/eu-2-fees.md`, `results/eu-2-hedge.md`, da
 `results/eu-2-data.md`.
 
 **Why.** eu-1 showed the house rule keeps its character on European UCITS funds in euros, but
-charged the Dutch broker as a percentage, and found the coin-free book trailing equal weight by
-0.21 Sharpe in EUR (0.04 in USD), half of it currency. Two failure modes for a real Dutch
+charged the retail broker as a percentage, and found the coin-free book trailing equal weight by
+0.21 Sharpe in EUR (0.04 in USD), half of it currency. Two failure modes for a real euro-area
 account: (1) real brokers charge a fixed amount per order, which bites small books; (2) the
 dollar in an unhedged US equity fund changes what the trend filter sees.
 
 ## 1. Fixed per-order fees by book size (amendment 1)
 
-**Fees (public pages, read 2026-11-18).** DEGIRO NL (`degiro.nl/tarieven`, "Peildatum
-01.10.2025"): ETF core selection EUR 0 commission + EUR 1 handling fee per order; other ETFs
-EUR 2 + EUR 1 = EUR 3; EUR 2.50 a year per exchange outside Euronext Amsterdam/Brussels (Xetra
+**Fees (public pages, read 2026-11-18).** DEGIRO (public fee page,
+as of 2025-10-01): ETF core selection EUR 0 commission + EUR 1 handling fee per order; other ETFs
+EUR 2 + EUR 1 = EUR 3; EUR 2.50 a year per exchange outside the broker's home exchanges (Xetra
 here). Trade Republic (own page did not load; curvo.eu, 2026-09-18): EUR 1 per order when it is
 the counterparty, EUR 2 per order routed to an exchange (since July 2026). Schedules: `dg1`
 (EUR 1 + 2.50/yr), `tr2` (EUR 2), `dg3` (EUR 3 + 2.50/yr), and `slip` (no fee) as reference;
-ETF slippage 0.05% a side in all; coins 0.25% + 0.05% (a Dutch exchange's percentage fee).
+ETF slippage 0.05% a side in all; coins 0.25% + 0.05% (a European exchange's percentage fee).
 
 **Model.** A constant book of EUR 5k, 25k or 100k: every ETF order costs fee / book of equity
 (the owner skims gains or tops up losses). The gym is untouched; `lib/eu2.py` wraps its order
@@ -72,10 +72,10 @@ larger slots; neither was tested here (a new card).
 
 ## 2. Currency hedge (amendment 2)
 
-IUSE (iShares S&P 500 EUR Hedged) in place of SXR8, window W, Dutch percentage costs as in
+IUSE (iShares S&P 500 EUR Hedged) in place of SXR8, window W, retail percentage costs as in
 eu-1 so eu-1's rows compare directly; 10 new rows. Full tables: `results/eu-2-hedge.md`.
 
-| Book (EUR, `nl`) | `tsmom12` Sharpe | EW Sharpe | Gap | `tsmom12` max DD | EW max DD |
+| Book (EUR, `retail`) | `tsmom12` Sharpe | EW Sharpe | Gap | `tsmom12` max DD | EW max DD |
 |---|---:|---:|---:|---:|---:|
 | euw (SXR8, unhedged; eu-1) | 0.56 | 0.77 | -0.21 | 14.3% | 19.8% |
 | **euw-h** (IUSE, hedged) | 0.53 | 0.75 | **-0.21** | 14.3% | 19.8% |

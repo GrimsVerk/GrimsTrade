@@ -175,7 +175,7 @@ Run in the worktree with `uv sync`, after the last merge (`8692e23`) and the fix
 What failed before the fix commit (7451a19), and what was done (mechanical only; no research
 number or result changed):
 
-- ruff: 4 findings in `research/exit-plan-2026/scripts/` (from `research/exit-1`, #50): two
+- ruff: 4 findings in scripts since moved out of the public repo (from `research/exit-1`, #50): two
   over-long f-strings split into shorter pieces (same output), two `zip()` calls given an
   explicit `strict=False` (same behaviour).
 - pytest: `tests/test_evo_score.py::test_fast_scorer_matches_the_gym` (evo-1) failed: growth gap
@@ -317,7 +317,7 @@ first: `summary-1` (#28) and any lane still running may have moved past the arch
 
 Public repo. `research/exit-1` (#50) is included like any other tip, as it stands on its
 branch; this file quotes nothing from it beyond its title. The only
-change to it here is the mechanical ruff fix above.
+change to it here was the mechanical ruff fix above; its files later left the public repo.
 
 ## How to rebuild or refresh
 
