@@ -1,0 +1,161 @@
+# Wide 27: thirteen mechanisms from patent administration, research integrity, standard-setting, statistical agencies, open-data operations, central-bank research, spectrum management, aviation networks, postal systems, measurement standards and information science, scored before any price, the top gateable one gated
+
+Research run wide-27, 2026-11-25 (night run, WIDER lane). Branch `wide-27` (from `main`
+a4914b8), PR into `main`. Research only: fake money, keyless public data, no change to the gym,
+the daily runner or the live strategies. Train only: no bar, vintage or event after 2025-10-31
+is used.
+
+Angle of this lane: mechanisms from **organisational and information processes** (how an
+office, agency or standards body produces and releases information) rather than physical
+ones, where the timing or quality of the information is set by the organisation, not by
+prices.
+
+Fields already mined are left out (from the headers of `wide-1` .. `wide-25`, and wide-26,
+PR #223, open, `origin/wide-26` read 2026-11-25 23:25 UTC): physics, signal processing,
+control, information theory, networks of prices; ecology, epidemiology, immunology,
+neuroscience, queueing, reliability; pharmacokinetics, seismology, actuarial science,
+materials, metrology, astronomy, chronobiology, hydraulics; demography, calendars, tax law,
+catastrophe meteorology, heliophysics, release engineering (scheduled upgrades), sport,
+oceanography; procurement, agricultural economics, securities law, real estate, payments;
+conflict, bank regulation, FX intervention; public finance, administrative law (Federal
+Register), legislative studies (roll calls), power systems, hydrology x mining; biology,
+climate; meteorology, operations research; economic history, psychology, sociology, word
+counts; hydrology and river freight, volcanology, solar physics, chemistry; energy systems,
+freight, game theory, frost; cybercrime, courts, news novelty, cloud outages, influenza, soil
+moisture; seismology as damage, supply networks, mega-events, shipping, livestock epidemics,
+supply-chain pressure, critical minerals, extreme values (wide-24); comparative politics,
+air quality, software engineering, night lights, process safety, rail traffic, recalls,
+Beige Book tone, quantum risk (wide-25); agronomy, crop physiology, glaciology, hydropower,
+vegetation remote sensing, ozone, plant pathology, fisheries, wind and solar resource,
+limnology, fire science, coastal flooding, livestock physiology (wide-26). Mechanisms scored
+there are not scored again.
+
+**New fields tonight**: patent administration (grant flows and backlog), research integrity
+(retractions), technical standard-setting, statistical-agency revision processes, open-data
+operations (release blackouts), central-bank staff research, spectrum management, aviation
+route networks, postal systems, measurement standards (statistical methodology changes) and
+information science (attention, one duplicate).
+
+**Count carried in** (provisional): `main` after #221 reads **109 mechanisms, 29 tested by a
+strategy, none passed; 37 gates, two kill-only passes (W32, W36), each killed by its
+replication (R32, R36).** wide-26 (#223, open) adds +1 mechanism and +2 gates if merged first.
+As in wide-12 .. wide-26, only mechanisms that get a gate or a strategy test enter the count.
+
+Project-wide bar (`research/register/BAR.md`, as quoted by wide-25 and wide-26: rows through
+2026-11-25 22:31): **N_eff 509 (measured rho 0.55): a new rule needs z >= 4.70 against
+`tsmom12`, Bonferroni p <= 9.8e-5.** Family bar with this run's gate: p < 0.10 / 111 = 0.00090
+(0.10 / 110 = 0.00091 if #223 has not merged).
+
+Method as wide-21 .. wide-26: wide-11's filters F1 (not announced: an unscheduled flow (a) or
+a premium (b)) and F2 (not price-driven; passing only with controls costs 1 point), then
+wide-10's points (structural cause 1, dose 2, post-sample 1, power 1, unseen 1, not killed 1),
+plus keyless data, a size check and a duplicate check against the record. Gates follow
+`research/gate-null.md` (40 placebos, the rank decides, t >= 2 also required, rule pushed
+before any number, one dry run with counts only, then one real run). gate-null-2's proposed
+"both families" rule applies when the dose's lag-1 autocorrelation is 0.8 or more; **this
+lane's card adopts it** (stricter than gate-null.md alone). `[memory]` marks a literature fact
+not checked tonight.
+
+## Step 1. What the record already holds near these fields
+
+Searched `research/` and `docs/` on 2026-11-25 for: patent, retraction, peer review, 3GPP,
+shutdown, funding lapse / funding gap, real-time / vintage, payroll, spectrum, postal / mail
+strike, airline / aviation, Wikipedia / page view, archive, data uncertainty / noisy data /
+measurement noise. Found:
+
+- **Patents**: only a search term in wide-22's step 1; no candidate, no gate.
+- **Government shutdowns**: only as dropped windows (info-1, wide-11 X1, wide-23): report dates
+  inside the 2013 and 2018-19 shutdowns are removed from other tests. No shutdown or
+  data-blackout mechanism.
+- **Real-time vintages and payrolls**: ALFRED and Philadelphia Fed vintages are used to date
+  macro inputs as the market knew them (`lib/macro.py`, macro-1, data-long-3/4, fx-value-real-1);
+  `announcement-premium` (Savor-Wilson; scheduled releases, dead by event study) and wide-15
+  X4 `withheld-nowcast` (payroll taxes as a nowcast) touch payrolls. **No mechanism uses the
+  size of revisions themselves** (data quality) as a dose.
+- **Wikipedia attention**: `attention-peak` (coin page views, dead, tested); wide-20 reads
+  Wikidata only for event dates.
+- "spectrum" hits are spectral analysis (gate-null, wide-1), "aviation" hits are W31
+  `air-disaster-mood` (crash mood, dead), "archive" hits are data archives, "peer review" hits
+  are the literature surveys. Retractions, standards bodies, postal systems: nothing.
+
+## Step 2. Thirteen mechanisms, scored (2026-11-25, written before the card's commit at 23:29 UTC, before any price was read)
+
+**Disclosure.** Before this table, format and coverage only (no price, no return, no dose
+value): the sheet name, size and first/last vintage column of the cached Philadelphia Fed
+`employmvmd.xlsx`; search-result titles for USPTO country-of-origin patent tables; HTTP status
+codes of four USPTO PTMT pages (all 404 to a script, 2026-11-25 23:27 UTC, robots.txt read
+first: only `/cgi-bin/`, `/includes/`, `/cybertraining/`, `/ebc/portal/`, `/images/` are
+disallowed) and of two ALFRED patent series (connection reset, no data).
+
+### The mechanisms (cause story each)
+
+- **O1 `patent-surge`** (patent administration: grant flows). A country's US utility-patent
+  grants (by the first inventor's residence) rise faster than its peers'; grants are public
+  weekly in the Official Gazette, the aggregate is slow-moving and under-weighted. Firm-level
+  analogues: Hirshleifer, Hsu and Li (JFE 2013, "innovative efficiency") and Cohen, Diether and
+  Malloy (RFS 2013, "misvaluing innovation") `[memory]`. Tradable form: the country's market
+  against the other developed markets in the year after the count is public.
+- **O2 `grant-backlog`** (patent administration: pendency). The USPTO's backlog and examiner
+  staffing set when innovation becomes a property right; a backlog shock delays grants for all
+  firms at once.
+- **O3 `retraction-wave`** (research integrity: Retraction Watch database). Waves of retracted
+  papers in a field (oncology, Alzheimer's 2022) as a shock to firms built on that science.
+- **O4 `standard-freeze`** (technical standard-setting: 3GPP release freezes, Wi-Fi and USB
+  generations) as a demand cycle for the firms that build to the new standard.
+- **O5 `data-blackout`** (open-data operations: appropriation lapses that stop federal
+  statistics, 1995-96, 2013, 2018-19) as an information-uncertainty premium.
+- **O6 `revision-noise`** (statistical-agency revision processes). Payroll employment is
+  first published from an incomplete survey and revised twice more and at the benchmark; when
+  revisions run large for a spell, the data investors read the state of the economy from are
+  noisier. In learning models (Veronesi 1999; Pastor and Veronesi `[memory]`) noisier signals
+  raise the uncertainty investors bear; if priced, the US market earns more afterwards. The
+  noise comes from the agency's process (response rates, the birth-death model, benchmark),
+  not from prices.
+- **O7 `fed-research-tone`** (central-bank staff research: the count or tone of Fed working
+  papers on a topic as a lead on policy).
+- **O8 `spectrum-auction`** (spectrum management: FCC auction outcomes as a cost shock to
+  carriers and a revenue shock to tower firms).
+- **O9 `route-network`** (aviation route networks: new direct routes between country pairs as a
+  lead on trade and tourism).
+- **O10 `postal-disruption`** (postal systems: national mail strikes delaying payments and
+  documents).
+- **O11 `method-change`** (measurement standards: statistical methodology changes, hedonic CPI
+  adjustments, BEA comprehensive revisions) as a shift in measured inflation or growth.
+- **O12 `benchmark-revision`** (statistical agencies: the annual payroll benchmark, preliminary
+  in August/September, final in February) as a revision of the economy's level.
+- **O13 `wiki-attention`** (information science: Wikipedia page views as investor attention;
+  Moat et al., Sci. Rep. 2013 `[memory]`).
+
+### Score
+
+| # | F1 not announced | F2 not price-driven | Cause | Dose | Post | Power | Unseen | Not killed | F2 cost | Score | Prior |
+|---:|---|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|---:|---:|
+| O1 `patent-surge` | pass (b): a slow state, public weekly in the Gazette, not a scheduled market event | with controls: patenting follows R&D, which follows booms and market levels | 1 (under-weighted innovation output, firm-level evidence) | 2 | 1 (country-level, after the firm papers' samples) | 1 (about 20 countries x 40 years, annual) | 1 | 1 | -1 | **6** | 2%; **parked: data** (USPTO PTMT country tables 404 to a script tonight; FRED's copies, release 486, unreachable: ALFRED reset the connection, fredgraph did not answer this machine before (data-long-3); PatentsView bulk tables over 1 GB). Data lead for a later lane |
+| O2 `grant-backlog` | pass (b) | pass | 0 (no channel from pendency to index returns) | 1 | 0 | **0** (one US series) | 1 | 1 | 0 | - | filtered (cause, power) |
+| O3 `retraction-wave` | pass (a) | pass | - | - | - | - | - | **no reach**: single papers, single firms; no index-level exposure | - | - | filtered (reach) |
+| O4 `standard-freeze` | **fail**: release freezes are scheduled years ahead by the bodies | - | - | - | - | - | - | duplicate of release engineering (wide-9) | - | - | filtered (F1) |
+| O5 `data-blackout` | pass (a) | with controls (shutdowns follow budget fights, not prices) | 1 | 1 | 0 | **0** (three or four data-stopping lapses in the train window) | 1 | 1 | -1 | - | filtered (power) |
+| O6 `revision-noise` | fails as a flow (each revision arrives in a scheduled release); **passes as a premium (b)**: a state of data quality | with controls: revisions are larger in recessions and at turning points, when expected returns are high for other reasons | 1 (noisier state signals, priced uncertainty in learning models) | 2 (a graded size) | 0 (no return paper known to me) | 1, weakly (monthly 1990-2025, but a persistent dose: perhaps 30-40 independent stretches; earlier years free for replication) | 1 (no revision-size dose in the record) | 1 (the political-uncertainty premium is dead, W27 and W41; data-quality uncertainty is a different source, not tested) | -1 | **5** | 2% |
+| O7 `fed-research-tone` | pass (b) | pass | 0 (staff papers do not set policy; no channel to returns) | 1 | 0 | 1 | 1 | 1 | 0 | 4 | 0.3%; no keyless dated corpus scored by script tonight |
+| O8 `spectrum-auction` | the auction calendar is announced; outcomes are a flow | pass | 1 | 1 | 0 | **0** (about ten large auctions since 1994, one sector) | 1 | 1 | 0 | - | filtered (power, reach) |
+| O9 `route-network` | timetables are filed months ahead | pass | - | - | - | - | - | - | - | - | filtered (data: OAG and similar route data are paid) |
+| O10 `postal-disruption` | pass (a) | pass | - | - | - | **0** (a handful of national strikes in cached markets) | - | **no reach** at index level since electronic payments | - | - | filtered (power, reach) |
+| O11 `method-change` | **fail**: methodology changes are announced well ahead | - | - | - | - | - | - | duplicate of metrology (wide-1 .. wide-6) | - | - | filtered (F1, duplicate) |
+| O12 `benchmark-revision` | **fail**: the benchmark dates are scheduled; the preliminary estimate is a scheduled release | - | - | - | - | - | - | **same channel as O6** (benchmark months are inside O6's dose) | - | - | folded into O6 |
+| O13 `wiki-attention` | pass (a) | **fail**: attention follows prices | - | - | - | - | - | **duplicate**: `attention-peak` (coin page views, dead, tested) | - | - | filtered (F2, duplicate) |
+
+**Size check (shown, not part of the rule).** O6: the three-month US market excess return
+has an SD near 8%; a learning-model premium would have to be of the order of 1-3% over three
+months per SD of the noise state to be seen with a persistent dose; that is large for a
+second-order data property, so the prior is low. O1 would need a few percent a year of
+country excess return per SD of patent growth, in line with the firm-level spreads `[memory]`.
+
+**Picked by the rule.** O1 scores highest (6) but is parked on data: no keyless,
+script-readable country-by-year patent table answered tonight. O6 is next (5) and has keyless
+data already cached, dated as the market saw it (the Philadelphia Fed's monthly vintages, each
+as recorded in the middle of its month, after that month's payroll release), and earlier
+years free for a replication. **Gated: O6 as W44 `revision-noise`** (card
+`cards/wide-27.md`, pushed at 23:29 UTC before any return was read; W44 / R44 provisional: W42
+is unused by wide-25, W43 is wide-26's in #223; the merging lead may renumber). The
+replication **R44** is fixed in the same card: the same rule on rows 1976-01 .. 1989-09
+(outcomes end before the gate's first). No second gate (W45 not used).
