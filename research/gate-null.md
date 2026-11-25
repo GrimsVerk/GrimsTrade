@@ -227,7 +227,7 @@ higher food prices) was absent in both periods. So a persistent monthly dose pas
 before: a narrow placebo null does not make a 20-year sample of a slow dose rich in independent
 episodes. Keep the replication step for every future pass.
 
-**Count after W34 (panic-words-1, 2026-11-25).** One mechanism and one gate added: from #191's
-corrected count (101 mechanisms, 28 tested by a strategy, 28 gates) to **102 mechanisms, 29
-gates**; W34 failed (wrong sign), so still one kill-only pass (W32, killed by R32) and every
-gated idea dead. Family bar p < 0.10 / 102 = 0.00098.
+**Count after W34 (panic-words-1, 2026-11-25).** One mechanism and one gate added to the count
+above (summary-6, #191: 101 mechanisms, 29 tested by a strategy, 28 gates): **102 mechanisms, 29
+tested by a strategy, 29 gates**; W34 failed (wrong sign), so still one kill-only pass (W32,
+killed by R32) and every gated idea dead. Family bar p < 0.10 / 102 = 0.00098.

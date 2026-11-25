@@ -85,10 +85,10 @@ gate needs no replication.
 
 ## Family count
 
-From #191's corrected count (101 mechanisms, 28 tested by a strategy, 28 gates; #191 open at
-writing; main's SUMMARY still says 95 / 23 / 25): **102 mechanisms, 28 tested by a strategy,
-none passed; 29 gates, one kill-only pass (W32), killed by its replication; every idea gated so
-far is dead.** Family bar for the next test: p < 0.10 / 102 = 0.00098. Parked candidates left:
+From summary-6's count (#191, merged while this lane ran: 101 mechanisms, 29 tested by a
+strategy, 28 gates; the card, written before the merge, quoted #191's earlier 101 / 28 / 28):
+**102 mechanisms, 29 tested by a strategy, none passed; 29 gates, one kill-only pass (W32),
+killed by its replication; every idea gated so far is dead.** Family bar for the next test: p < 0.10 / 102 = 0.00098. Parked candidates left:
 P4 `mass-casualty-mood`, P12 `strike-idleness`, Y3 `monsoon-gold`.
 
 ## Cache left behind
