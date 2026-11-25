@@ -1,6 +1,6 @@
 # wide-27 card: `revision-noise`, does the US market earn more after a spell of noisy payroll data?
 
-Lane wide-27, written 2026-11-25 (about 23:45 UTC), **before any return was read for this
+Lane wide-27, written 2026-11-25 (about 23:29 UTC), **before any return was read for this
 rule** (card pushed first; the commit time is in git). Field: statistical-agency revision
 patterns (data quality as an organisational process) x a data-uncertainty premium. Candidate
 O6 of `research/wide-27.md`, step 2. Gate **W44** (provisional: W42 unused by wide-25, W43
