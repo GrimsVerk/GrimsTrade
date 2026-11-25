@@ -115,7 +115,7 @@ fresh Opus review found no required fix (fixes applied by the lane, then merged;
 after a daily dry run on a copy of paper-trail). Head branches re-pushed after each merge; lane
 worktrees removed after merge.
 
-Merged (in order): #196 reconcile-reuse-1, #197 fx-value-real-1, #198 e4-indep-1, #200
+Merged: #196 reconcile-reuse-1, #197 fx-value-real-1, #198 e4-indep-1, #200
 registry-lrv-1, #201 survey-8, #202 wide-22, #203 calm-drag-1, #204 jst-autocorr-2, #199
 runner-faults-2 (three review rounds: per-request cap with `read1`, early-EOF `IncompleteRead`
 restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 registry-moments-1,
@@ -124,14 +124,18 @@ restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 regis
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
-  terms say "academic research only, no redistribution". Cached locally by data-wide-2, counts
+  terms: "supplied solely for academic research purposes; any commercial use or redistribution
+  without the authorization of the authors and the International Center for Finance at Yale is
+  prohibited". Cached locally by data-wide-2, counts
   only. No rule test may use them until the owner decides or Yale authorizes (#206).
 - robots.txt: data.nber.org, api.db.nomics.world and Riksbank `*.xls` disallow scripts. The lead
   ruled no exemption for API hosts (DBnomics cache deleted, #206). Earlier lanes (data-long-1,
   e4-indep-1) fetched a few data.nber.org files by script before this was noticed; NBER files
   are manual-download only from now on.
-- gate-null-2 (#207) PROPOSES (not adopted) a second placebo family (phase surrogates) for gate
-  doses with lag-1 acf >= 0.8; adopted by its card's rule by a margin within noise.
+- gate-null-2 (#207) PROPOSES (not adopted): for gate doses with lag-1 acf >= 0.8, a pass must
+  also rank <= 2 of 41 among 40 phase-randomised surrogates (IAAFT for skewed doses), on top of the
+  shifted calendars. "Both" beat surrogates alone by a margin within noise, and the 0.8 threshold
+  rests on one borderline cell (about 0.3 SE).
 
 ## Lane queue (each from `main`)
 
@@ -143,17 +147,21 @@ restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 regis
    #214, wide-24, survey-9 to SUMMARY night 6 (counts after #210: 107 mechanisms / 29 / 35 gates,
    bar 0.10/107).
 2. Closed tonight, do not redo: `e4` (contradicted on pre-1927 stocks, #198: no longer a lead;
-   the clean keyless independent monthly stock data are nearly used up), real-rate FX value and
+   the clean keyless independent monthly stock data are nearly used up, apart from the Yale IMM stocks, data-wide-2
+   rank 2, which wait on the owner's ruling), real-rate FX value and
    sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
-   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W39.
-3. DEEPER next: (a) a sovereign-bond pool with its own crash calendar (data-wide-2 rank 1) only
+   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W39. The previous
+   night's do-not-redo list is in the night-lead 2026-11-24/25 section above and in SUMMARY.
+3. DEEPER next: (a) a sovereign-bond pool (Yale IMM bonds) or the IMM stocks with its own crash calendar (data-wide-2 rank 1) only
    after the owner rules on the Yale terms; otherwise Norges Bank bonds/FX (allowed) or the BoE
    millennium sheet's consols and FX (OGL); (b) a peg filter before any currency trend test on
    the long FX histories; (c) the US railroad stocks 1857-1870 (NBER: manual download) are the
    only unspent pre-1871 US stock months.
 4. WIDER next: further fields per wide-21..24 conventions (events dated as the market could
    know them; robots.txt read before the first fetch; crawl delays kept); `crackdown-shock`
-   (wide-23 C2) needs a hindsight-free dated list first.
+   (wide-23 C2) needs a hindsight-free dated list first. `strike-idleness` (still not
+   run) needs BLS, which asks for a contact e-mail in the User-Agent: never send a personal one;
+   skip it unless the owner provides a generic project contact.
 5. Engineering: `insure1.infer_pos` mislabels zero-return flip days (docstring note, #203; fix
    upstream if any record needs it); tests that `fetch_from` moves on after `IncompleteRead`
    (#199 nit); `REVISION_DAYS` repeats a problem line for up to 5 runs per Kraken hole (#199
