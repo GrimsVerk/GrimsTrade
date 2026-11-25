@@ -6,7 +6,8 @@ A buy the cash cannot fully pay for keeps waiting and buys the rest at that asse
 until a newer decision replaces it; while a decision's buys need more cash than there is, assets
 above their target are sold down to it even inside the rebalance band (DECISIONS, audit G2).
 Cash earns the rate passed in `rates`, accrued daily (DECISIONS, 2026-11-18, cash interest).
-The same replay serves the live ledger and backtests, so they can't disagree on the rules.
+The same replay (`Replay`, one event loop) serves the live ledger, backtests and the RL
+environment (`gym_env`), so they can't disagree on the rules.
 Distributions are paid as cash at the open of the ex-date, on the units held before that open
 (DECISIONS, audit G4); paid out, they are cash and earn the cash rate like any other.
 """
@@ -133,6 +134,141 @@ def interest(cash: float, rate: float) -> float:
     return cash * rate / DAYS_PER_YEAR
 
 
+class Replay:
+    """The gym's event loop, one decision at a time: the one copy of the replay rules.
+
+    `simulate` is a loop of `decide` calls over it, and the RL environment
+    (`gym_env.TradingEnv`) steps it, so both score by the same code. Events in time order (at
+    one timestamp: closes, distributions, opens, then the decision); each UTC day that ends
+    credits its interest on the closing cash and marks the account; days with no event at all
+    (weekends, holidays) earn their interest too; the trades at each open go through
+    `_execute`. Call `decide` with non-decreasing times, then `finish` once.
+
+    No held-out guard: it replays whatever bars, distributions and rates it is given (the daily
+    runner replays the record up to today). A train-only caller checks its inputs itself
+    (`gym_env.check_train_only`).
+    """
+
+    def __init__(
+        self,
+        history: History,
+        start_cash: float = START_CASH,
+        costs: Mapping[str, Costs] = COSTS,
+        band: float = BAND,
+        dividends: Dividends | None = None,
+        rates: Rates = (),
+    ) -> None:
+        events: list[tuple[datetime, int, str, float]] = []
+        for sym, bars in history.items():
+            cls = UNIVERSE[sym]
+            for b in bars:
+                events.append((open_time(cls, b.date), _OPEN, sym, b.open))
+                events.append((close_time(cls, b.date), _CLOSE, sym, b.close))
+            for dv in (dividends or {}).get(sym, []):
+                events.append((open_time(cls, dv.ex_date), _DIVIDEND, sym, dv.amount))
+        events.sort(key=lambda e: (e[0], e[1]))
+        self.events = events
+        self.symbols = list(history)
+        self.costs, self.band = costs, band
+        self.res = Result(
+            cash=start_cash, positions={s: 0.0 for s in history}, start_cash=start_cash
+        )
+        self.price: dict[str, float] = {}
+        self.pending: dict[str, float] = {}  # symbol -> target weight not yet executed
+        self.unpaid: set[str] = set()  # pending buys left over from an open whose cash ran out
+        self.started = False  # a decision has been made (before it, no day is marked)
+        self.day: date | None = None  # the UTC day of the last event or decision
+        self.growth = 1.0  # of one dollar of cash since the last equity point
+        self.step_growth = 1.0  # of one dollar of cash since `take_step_growth` was last called
+        self.rates = sorted(rates, key=lambda r: r[0])
+        self.known = [t for t, _ in self.rates]
+        self.i = 0  # the next event to process
+
+    def equity(self) -> float:
+        """Cash plus positions at the latest known prices."""
+        return self.res.cash + sum(
+            q * self.price.get(s, 0.0) for s, q in self.res.positions.items()
+        )
+
+    def skip_to(self, t: datetime) -> None:
+        """Jump over every event before a decision at `t`, before the first decision. Nothing
+        but prices changes then (no positions, no orders), so only those are set."""
+        assert not self.started and self.i == 0
+        j = bisect.bisect_left(self.events, (t, _DECIDE), key=lambda e: (e[0], e[1]))
+        for _, kind, sym, px in self.events[:j]:
+            if kind != _DIVIDEND:
+                self.price[sym] = px
+        self.i = j
+
+    def _accrue(self, d: date) -> None:  # day d is over: credit its interest on the closing cash
+        r = cash_rate(self.rates, d, self.known)
+        self.res.cash += interest(self.res.cash, r)
+        self.growth *= 1 + r / DAYS_PER_YEAR
+        self.step_growth *= 1 + r / DAYS_PER_YEAR
+
+    def _new_day(self, t: datetime, kind: int) -> None:
+        # A close at midnight ends the previous day; everything else belongs to its own date.
+        ev_day = (t - timedelta(microseconds=1)).date() if kind == _CLOSE else t.date()
+        if self.started and self.day is not None and ev_day > self.day:
+            self._accrue(self.day)
+            self.res.equity.append((self.day, self.equity()))
+            self.res.cash_growth.append(self.growth - 1)
+            self.growth = 1.0
+            for k in range(1, (ev_day - self.day).days):  # days with no event (weekends) earn too
+                self._accrue(self.day + timedelta(days=k))
+        self.day = ev_day
+
+    def _run_until(self, t: datetime | None) -> None:
+        """Process every event that comes before a decision at `t` (all of them if None)."""
+        ev, res, price = self.events, self.res, self.price
+        while self.i < len(ev) and (t is None or ev[self.i][0] <= t):
+            et, kind = ev[self.i][0], ev[self.i][1]
+            group = []
+            while self.i < len(ev) and ev[self.i][0] == et and ev[self.i][1] == kind:
+                group.append(ev[self.i])
+                self.i += 1
+            self._new_day(et, kind)
+            if kind == _DIVIDEND:
+                for _, _, sym, amount in group:
+                    if (paid := res.positions[sym] * amount) > 0:
+                        res.cash += paid
+                        res.income.append((et, sym, paid))
+                continue
+            for _, _, sym, px in group:
+                price[sym] = px
+            if kind == _OPEN:
+                syms = [g[2] for g in group if g[2] in self.pending]
+                _execute(et, syms, self.pending, self.unpaid, res, price, self.costs, self.band)
+
+    def advance(self, t: datetime) -> None:
+        """Bring the account up to a decision at `t`, without deciding."""
+        self._run_until(t)
+        self._new_day(t, _DECIDE)
+
+    def decide(self, t: datetime, weights: Mapping[str, float]) -> None:
+        """A decision at `t`: from now on these target weights replace any order still open. A
+        second decision at the same `t` replaces the first."""
+        validate(weights)
+        self.advance(t)
+        self.started = True
+        self.pending = {s: weights.get(s, 0.0) for s in self.symbols}
+        self.unpaid.clear()
+
+    def finish(self, stop: datetime | None = None) -> Result:
+        """Run the events before a decision at `stop` (all of them if None) and mark the last
+        day. Its interest is not credited: the day is not over."""
+        self._run_until(stop)
+        if self.started and self.day is not None:
+            self.res.equity.append((self.day, self.equity()))
+            self.res.cash_growth.append(self.growth - 1)
+        return self.res
+
+    def take_step_growth(self) -> float:
+        """What one dollar of cash grew to since the last call (RL rewards above cash)."""
+        g, self.step_growth = self.step_growth, 1.0
+        return g
+
+
 def simulate(
     decisions: Iterable[Decision],
     history: History,
@@ -142,78 +278,16 @@ def simulate(
     dividends: Dividends | None = None,
     rates: Rates = (),
 ) -> Result:
-    events: list[tuple[datetime, int, str, float, int]] = []
-    for sym, bars in history.items():
-        cls = UNIVERSE[sym]
-        for b in bars:
-            events.append((open_time(cls, b.date), _OPEN, sym, b.open, 0))
-            events.append((close_time(cls, b.date), _CLOSE, sym, b.close, 0))
-        for dv in (dividends or {}).get(sym, []):
-            events.append((open_time(cls, dv.ex_date), _DIVIDEND, sym, dv.amount, 0))
+    """Replay `decisions` over `history` (module docstring for the rules). Every decision is
+    checked before anything runs; decisions at one time count in the order given, the last one
+    in force."""
     decs = sorted(decisions, key=lambda d: d.time)
-    for i, d in enumerate(decs):
+    for d in decs:
         validate(d.weights)
-        events.append((d.time, _DECIDE, "", 0.0, i))
-    events.sort(key=lambda e: (e[0], e[1]))
-
-    res = Result(cash=start_cash, positions={s: 0.0 for s in history}, start_cash=start_cash)
-    price: dict[str, float] = {}
-    pending: dict[str, float] = {}  # symbol -> target weight not yet executed
-    unpaid: set[str] = set()  # pending buys left over from an open whose cash ran out
-    started = False
-    day: date | None = None
-    growth = 1.0  # of one dollar of cash since the last equity point
-    rates = sorted(rates, key=lambda r: r[0])
-    known = [t for t, _ in rates]
-
-    def equity() -> float:
-        return res.cash + sum(q * price.get(s, 0.0) for s, q in res.positions.items())
-
-    def accrue(d: date) -> None:  # day d is over: credit its interest on the closing cash
-        nonlocal growth
-        r = cash_rate(rates, d, known)
-        res.cash += interest(res.cash, r)
-        growth *= 1 + r / DAYS_PER_YEAR
-
-    i = 0
-    while i < len(events):
-        t, kind = events[i][0], events[i][1]
-        group = []
-        while i < len(events) and events[i][0] == t and events[i][1] == kind:
-            group.append(events[i])
-            i += 1
-        # A close at midnight ends the previous day; everything else belongs to its own date.
-        ev_day = (t - timedelta(microseconds=1)).date() if kind == _CLOSE else t.date()
-        if started and day is not None and ev_day > day:
-            accrue(day)
-            res.equity.append((day, equity()))
-            res.cash_growth.append(growth - 1)
-            growth = 1.0
-            for k in range(1, (ev_day - day).days):  # days with no event (weekends) earn too
-                accrue(day + timedelta(days=k))
-        day = ev_day
-
-        if kind == _DECIDE:
-            started = True
-            w = decs[group[-1][4]].weights
-            pending = {s: w.get(s, 0.0) for s in history}
-            unpaid.clear()
-            continue
-        if kind == _DIVIDEND:
-            for _, _, sym, amount, _ in group:
-                if (paid := res.positions[sym] * amount) > 0:
-                    res.cash += paid
-                    res.income.append((t, sym, paid))
-            continue
-        for _, _, sym, px, _ in group:
-            price[sym] = px
-        if kind == _OPEN:
-            syms = [g[2] for g in group if g[2] in pending]
-            _execute(t, syms, pending, unpaid, res, price, costs, band)
-    if started and day is not None:  # the last day's interest comes once the day is over
-        res.equity.append((day, equity()))
-        res.cash_growth.append(growth - 1)
-    return res
+    replay = Replay(history, start_cash, costs, band, dividends, rates)
+    for d in decs:
+        replay.decide(d.time, d.weights)
+    return replay.finish()
 
 
 def _execute(

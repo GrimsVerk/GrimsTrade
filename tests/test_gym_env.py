@@ -166,6 +166,55 @@ def test_weekly_decisions_repeat_daily_like_simulate() -> None:
     assert_same(got, want)
 
 
+def cut_at(hist: dict[str, list[Bar]], stop: datetime) -> dict[str, list[Bar]]:
+    """The bars as an episode that stops at `stop` sees them: a bar open by `stop` whose close
+    is later keeps only its open (its close is set to the open, so the last price is the same)."""
+    out = {}
+    for s, bars in hist.items():
+        cls = UNIVERSE[s]
+        out[s] = [
+            b if close_time(cls, b.date) <= stop else replace(b, close=b.open)
+            for b in bars
+            if open_time(cls, b.date) <= stop
+        ]
+    return out
+
+
+@pytest.mark.parametrize("weekday", [None, 2])
+def test_a_short_episode_window_stops_where_simulate_on_the_cut_history_stops(
+    weekday: int | None,
+) -> None:
+    # `episode_steps`: the last step runs the replay only up to one period after the last
+    # decision (`Replay.finish(stop)`), not to the end of the bars. The same decisions through
+    # `simulate`, on the history as it stands at that stop, give the same result exactly.
+    hist = make_history()
+    env = TradingEnv(hist, weekday=weekday, episode_steps=12, dividends=DIVIDENDS,
+                     cash_rates=RATES)  # fmt: skip
+    for seed in (3, 4, 5):
+        _, info = env.reset(seed=seed)
+        first = info["time"]
+        steps, done = [], False
+        while not done:
+            *_, term, trunc, info = env.step(np.full(4, 0.3))
+            steps.append(info)
+            done = term or trunc
+        got, stop = info["result"], info["next_time"]
+        assert stop < decide_time(END)  # a window that ends before the bars do
+        assert stop == first + timedelta(days=12 * env.period)
+        decisions = [
+            Decision(s["time"] + timedelta(days=k), s["weights"])
+            for s in steps
+            for k in range(env.period)
+        ]
+        paid_by_stop = {
+            s: [d for d in ds if open_time(UNIVERSE[s], d.ex_date) <= stop]
+            for s, ds in DIVIDENDS.items()
+        }
+        want = gym.simulate(decisions, cut_at(hist, stop), dividends=paid_by_stop, rates=RATES)
+        assert got.fills  # it trades
+        assert got == want  # equal to the last bit: equity, cash growth, fills, income
+
+
 def test_action_is_long_only_unlevered_and_masked() -> None:
     env = TradingEnv(make_history(), start=date(2022, 3, 1))
     t = decide_time(date(2022, 3, 1))
