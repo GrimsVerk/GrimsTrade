@@ -333,6 +333,9 @@
     "C:fast",
     "C:slow"
    ],
+   "carrying_against": [
+    "C:rebound"
+   ],
    "class": {
     "L": -0.14022279399931045,
     "persist": 0.4154337027777252,
@@ -686,6 +689,9 @@
     "C:fast",
     "C:slow"
    ],
+   "carrying_against": [
+    "C:rebound"
+   ],
    "class": {
     "L": -0.13786224844323286,
     "persist": 0.505328786225382,
@@ -1034,6 +1040,7 @@
    "reading_a": "within noise",
    "reading_b": "not holding less",
    "carrying_regimes": [],
+   "carrying_against": [],
    "class": {
     "L": -0.1381906088778482,
     "persist": 0.3830816593955237,
@@ -1388,6 +1395,10 @@
     "C:fast",
     "C:slow"
    ],
+   "carrying_against": [
+    "B:calm",
+    "C:rebound"
+   ],
    "class": {
     "L": -0.1452213855250673,
     "persist": 0.4306048477957269,
@@ -1738,6 +1749,7 @@
    "carrying_regimes": [
     "C:rebound"
    ],
+   "carrying_against": [],
    "class": {
     "L": -0.14022753735958768,
     "persist": 0.33667298769172926,
@@ -2089,6 +2101,10 @@
     "B:calm",
     "C:calm"
    ],
+   "carrying_against": [
+    "B:slow",
+    "C:slow"
+   ],
    "class": {
     "L": -0.014356937094574796,
     "persist": 0.2415472633457433,
@@ -2439,6 +2455,7 @@
    "carrying_regimes": [
     "C:slow"
    ],
+   "carrying_against": [],
    "class": {
     "L": -0.040145972671729833,
     "persist": 0.47250037244418824,
@@ -2790,6 +2807,7 @@
     "B:slow",
     "C:slow"
    ],
+   "carrying_against": [],
    "class": {
     "L": -0.00874684406777724,
     "persist": 0.12264735079357106,
@@ -3141,6 +3159,7 @@
     "B:calm",
     "C:calm"
    ],
+   "carrying_against": [],
    "class": {
     "L": -0.011370684928987341,
     "persist": 0.28346280619843395,
@@ -3493,6 +3512,7 @@
     "B:calm",
     "C:calm"
    ],
+   "carrying_against": [],
    "class": {
     "L": 0.007637802061202034,
     "persist": 0.4136462960219069,
@@ -3841,6 +3861,10 @@
    "reading_a": "within noise",
    "reading_b": "not holding less",
    "carrying_regimes": [],
+   "carrying_against": [
+    "B:calm",
+    "C:calm"
+   ],
    "class": {
     "L": -0.026577474521138837,
     "persist": 0.17931601433965566,
@@ -4192,6 +4216,10 @@
     "A:slow",
     "B:slow",
     "C:slow"
+   ],
+   "carrying_against": [
+    "B:calm",
+    "C:rebound"
    ],
    "class": {
     "L": -0.08660509127744623,
@@ -17032,5 +17060,5 @@
   }
  },
  "repro": "per-series d equals pooled-1's and pooled-2's published d (max |diff| 3.3e-16 / 2.2e-16); the six d +0.1013",
- "runtime_s": 20.710076093673706
+ "runtime_s": 21.022581815719604
 }

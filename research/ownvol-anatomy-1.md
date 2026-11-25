@@ -34,8 +34,8 @@ stocks and the nine currencies, +0.053 is the mean channel and +0.020 the risk c
 ("through the mean channel"). Commodity spot gains (+0.056) through the risk channel (+0.075):
 volatile PPI spells have 2.6 times the variance at less than twice the mean. Bonds are small either way.
 Leverage correlation (return now against the change in volatility next): stocks -0.14,
-currencies -0.01, commodities -0.09. Volatility persistence is positive in every class (0.18 to
-0.42), so the risk channel works everywhere; what differs is whether volatile spells pay.
+currencies -0.01, commodities -0.09. Volatility persistence is positive in every pool (0.12 on
+foreign bonds to 0.51 on US industries), so the risk channel works everywhere; what differs is whether volatile spells pay.
 
 Everything here describes D values already reported (pooled-1 +0.022, z 1.37; pooled-2 -0.010,
 z -0.57); it cannot make them significant. The SEs are a linearised calendar bootstrap, a
@@ -72,8 +72,10 @@ Each term is a sum over periods, so regimes, volatility states and trend phases 
 | The six (#110, daily) | 1 | +0.101 | +0.003 | -0.153 | +0.251 | 0.65 | - (one series) |
 
 Reproduction (card check): every per-series d equals pooled-1's and pooled-2's published d
-(max difference 3e-16); the six's d is +0.101 (1.035 - 0.933; #110 printed 1.036 - 0.937, the
-gap is later bill-rate code, not this lane). The replayed own-vol loops give the frozen code's
+(max difference 3e-16); the six's d is +0.101 (1.035 - 0.933; #110 printed 1.036 - 0.937). The
+gap is later gym code, not this lane: `cash_interest.py` is unchanged since #110, and the later
+fee tiers alone move `tsmom12` to 0.9336 (review of #172). The card's guess that it was
+bill-rate code was wrong. The replayed own-vol loops give the frozen code's
 returns exactly (checked on every series and in the tests).
 
 ## (b) Is the lead just holding less? No.
@@ -127,10 +129,10 @@ M + R by regime, primary reading A (25% / 25% zigzag on the traded level; share 
 
 | Pool | Fast crash | Slow bear | Rebound | Whipsaw | Calm |
 |---|---|---|---|---|---|
-| Equity 41 | +0.016 (0.007), 1% | **+0.033** (0.013), 20% | -0.008 (0.006), 20% | -0.001 (0.003), 14% | -0.018 (0.012), 45% |
-| US industries | +0.019 (0.007), 1% | +0.039 (0.016), 18% | -0.007 (0.009), 18% | +0.006 (0.004), 12% | +0.000 (0.013), 52% |
-| Commodity currencies | 0% | -0.026 (0.026), 36% | -0.002 (0.010), 8% | -0.029 (0.020), 20% | **-0.066** (0.037), 36% |
-| Commodity spot | +0.002, 0% | **+0.087** (0.037), 31% | -0.012 (0.007), 11% | +0.004 (0.006), 6% | -0.025 (0.020), 52% |
+| Equity 41 | +0.016 (0.007), 1% | **+0.033** (0.014), 20% | -0.008 (0.006), 20% | -0.001 (0.003), 14% | -0.018 (0.013), 45% |
+| US industries | +0.019 (0.008), 1% | +0.039 (0.017), 18% | -0.007 (0.010), 18% | +0.006 (0.004), 12% | +0.000 (0.015), 52% |
+| Commodity currencies | 0% | -0.026 (0.025), 36% | -0.002 (0.011), 8% | -0.029 (0.020), 20% | **-0.066** (0.033), 36% |
+| Commodity spot | +0.002 (0.006), 0% | **+0.087** (0.034), 31% | -0.012 (0.007), 11% | +0.004 (0.006), 6% | -0.025 (0.021), 52% |
 | The six | +0.027, 0% | +0.197, 16% | -0.075, 17% | -0.014, 33% | -0.037, 33% |
 
 - **Stocks: falls give, rebounds and calm take.** Slow bears (+0.033) and fast crashes (+0.016)
@@ -145,10 +147,20 @@ M + R by regime, primary reading A (25% / 25% zigzag on the traded level; share 
   reset inside a crash month already sees part of it, or that volatility was already up before
   some crashes.
 - **Commodity currencies lose in calm and whipsaw spells**, not in falls (falls of their
-  excess-return level are slow and long here). Calm is when their volatile up-trends run; what
+  excess-return level are slow and long here). Calm (-0.066, SE 0.033) carries by the card's
+  rule, only just: 2.01 SE, in all three readings. Calm is when their volatile up-trends run; what
   drives those (commodity cycles, carry) was not examined.
 - **The six**: slow bears +0.197 of the hold-the-six level, given back in rebounds (-0.075)
   and calm (-0.037). Which episodes carry it was not split out.
+
+**Regimes that carry against D.** The card's regime rule (above 2 SE and above half of |D|)
+has no sign condition; the code first applied reading (a)'s same-sign condition to regimes too,
+which was a deviation from the card. Fixed: the results table now lists both. Carrying against
+the pool's D (a regime that pulls the other way, strongly enough to count): equity 41 C rebound
+(-0.038, SE 0.012); US industries C rebound; wider 10 B calm and C rebound; bonds + FX (judged
+21) B and C slow bears (a gain against a pool D of -0.010); other currencies B and C calm;
+commodity spot B calm and C rebound. On stocks this is the rebound give-back described above,
+large enough to count under the 15% zigzag.
 
 Readings B (zigzag at 1.5 x the series' volatility) and C (15% / 15%) agree in sign for the
 stock pool in every regime (B: slow +0.035, rebound -0.004, calm -0.018; C: fast +0.033, slow
@@ -173,7 +185,8 @@ slow bears (GOV9 +0.045 under B) and lose in calm stretches.
 | Commodity spot 8 | -0.087 | +0.291 | +0.86 / +1.19 |
 
 - Volatility persists in every class (the sigma own-vol uses predicts next month's volatility
-  with a correlation of 0.18 to 0.42), so the risk channel is positive or zero everywhere.
+  with a correlation of 0.12 (foreign bonds) to 0.51 (US industries) by pool), so the risk channel is positive
+  or about zero everywhere.
 - The classes differ in where the return is. On stocks and commodities return per unit of
   variance is lower in volatile spells (2.35 against 4.77; 0.86 against 1.19), so cutting there
   is cheap. On the commodity currencies it is twenty times higher in volatile spells (6.63
@@ -194,17 +207,21 @@ slow bears (GOV9 +0.045 under B) and lose in calm stretches.
 - Stocks lose in rebounds and the entry phase, gain in slow bears: rebounds and slow bears yes;
   the entry phase is positive on stocks (+0.005; US industries +0.025), not negative.
 - Fast crashes about zero: no, positive (+0.016 / +0.033).
-- Currencies: risk channel small, mean channel negative, in the entry phase and the low-share
-  tercile of the commodity currencies: yes (-0.075 entry, -0.096 low-share M).
+- Currencies: risk channel small, mean channel negative, concentrated in the entry phase and
+  the low-share tercile of the commodity currencies: risk small and mean negative yes; in the
+  low-share tercile yes (M -0.096); in the entry phase only partly (-0.075 over 25% of the time,
+  against -0.049 over 28% for later held periods: more per unit of time, not concentrated).
 - L negative for stocks, near zero for currencies: yes; positive for JPY and CHF: no.
 
 ## How sure
 
-- One run. Card, code and tests pushed before the numbers; the card was not amended. A first
+- One run. Card and engine pushed before the numbers; tests and the E-SE change were committed
+  with the results. The card was not amended. A first
   run with 200 draws showed that the exact E terms with fixed standard deviations give E a
   spurious SE (0.035: F is a scaled `tsmom12`, and that linearisation is not scale-free), so E's
-  SE (and d's) uses the delta-method Sharpe influence instead (scale-free; d's SE then matches
-  pooled-1's 0.016 for this rule). Point numbers and the M, R splits are unchanged by that, and
+  SE (and d's) uses the delta-method Sharpe influence instead (scale-free; d's SE, 0.017, is
+  then close to pooled-1's 0.016 for this rule). The per-label E values in the json are still
+  the exact, non-scale-free per-period terms; no reading uses them. Point numbers and the M, R splits are unchanged by that, and
   the card's readings do not use E's SE. Noted here as the one change after a number was seen.
 - The SEs are linearised (means and sds held at full-sample values), on 12-month calendar
   blocks. They say how much the split moves with the calendar. Several splits are read from the

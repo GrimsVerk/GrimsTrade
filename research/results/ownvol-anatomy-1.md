@@ -6,21 +6,21 @@ Reproduction: per-series d equals pooled-1's and pooled-2's published d (max |di
 
 ## Pools: d = E + M + R
 
-| Pool | n | d | E exposure | M mean channel | R risk channel | Timing M + R | Avg share | Reading (a) | Reading (b) | Carrying regimes |
-|---|---:|---|---|---|---|---|---:|---|---|---|
-| equity 41 | 41 | +0.022 (0.017) | +0.001 (0.001) | -0.003 (0.018) | +0.024 (0.011) | +0.021 (0.017) | 0.73 | risk channel carries | not holding less | A:fast, A:slow, B:slow, C:fast, C:slow |
-| US10 | 10 | +0.061 (0.025) | +0.003 (0.001) | +0.012 (0.028) | +0.046 (0.021) | +0.058 (0.025) | 0.71 | risk channel carries | not holding less | A:slow, B:slow, C:fast, C:slow |
-| DEV13 | 13 | +0.026 (0.025) | -0.000 (0.001) | +0.011 (0.029) | +0.016 (0.014) | +0.026 (0.025) | 0.71 | within noise | not holding less | - |
-| WIDE10 | 10 | +0.016 (0.026) | +0.001 (0.001) | -0.009 (0.025) | +0.024 (0.015) | +0.015 (0.026) | 0.77 | within noise | not holding less | A:fast, A:slow, B:slow, C:fast, C:slow |
-| ETF8 | 8 | -0.027 (0.023) | -0.002 (0.001) | -0.036 (0.026) | +0.010 (0.013) | -0.026 (0.023) | 0.70 | within noise | not holding less | C:rebound |
-| judged 21 | 21 | -0.010 (0.018) | +0.000 (0.000) | -0.015 (0.018) | +0.005 (0.006) | -0.010 (0.017) | 0.65 | within noise | not holding less | B:calm, C:calm |
-| USB3 | 3 | +0.023 (0.038) | -0.000 (0.001) | -0.001 (0.047) | +0.024 (0.021) | +0.023 (0.038) | 0.64 | within noise | not holding less | C:slow |
-| GOV9 | 9 | +0.022 (0.025) | -0.000 (0.000) | +0.022 (0.027) | -0.000 (0.011) | +0.022 (0.025) | 0.70 | within noise | not holding less | B:slow, C:slow |
-| FX9 | 9 | -0.052 (0.033) | +0.000 (0.001) | -0.056 (0.035) | +0.004 (0.009) | -0.052 (0.033) | 0.61 | within noise | not holding less | B:calm, C:calm |
-| FX commodity 4 | 4 | -0.123 (0.047) | -0.000 (0.001) | -0.132 (0.051) | +0.009 (0.014) | -0.123 (0.047) | 0.56 | mean channel carries | not holding less | A:calm, B:calm, C:calm |
-| FX other 5 | 5 | +0.006 (0.030) | +0.001 (0.001) | +0.005 (0.032) | -0.000 (0.007) | +0.005 (0.030) | 0.65 | within noise | not holding less | - |
-| COM8 | 8 | +0.056 (0.037) | -0.001 (0.000) | -0.018 (0.034) | +0.075 (0.024) | +0.057 (0.037) | 0.61 | risk channel carries | not holding less | A:slow, B:slow, C:slow |
-| the six (#110 book, daily) | 1 | +0.101 | +0.003 | -0.153 | +0.251 | +0.098 | 0.65 | - | not holding less | - |
+| Pool | n | d | E exposure | M mean channel | R risk channel | Timing M + R | Avg share | Reading (a) | Reading (b) | Carrying regimes (with D) | Carrying (against D) |
+|---|---:|---|---|---|---|---|---:|---|---|---|---|
+| equity 41 | 41 | +0.022 (0.017) | +0.001 (0.001) | -0.003 (0.018) | +0.024 (0.011) | +0.021 (0.017) | 0.73 | risk channel carries | not holding less | A:fast, A:slow, B:slow, C:fast, C:slow | C:rebound |
+| US10 | 10 | +0.061 (0.025) | +0.003 (0.001) | +0.012 (0.028) | +0.046 (0.021) | +0.058 (0.025) | 0.71 | risk channel carries | not holding less | A:slow, B:slow, C:fast, C:slow | C:rebound |
+| DEV13 | 13 | +0.026 (0.025) | -0.000 (0.001) | +0.011 (0.029) | +0.016 (0.014) | +0.026 (0.025) | 0.71 | within noise | not holding less | - | - |
+| WIDE10 | 10 | +0.016 (0.026) | +0.001 (0.001) | -0.009 (0.025) | +0.024 (0.015) | +0.015 (0.026) | 0.77 | within noise | not holding less | A:fast, A:slow, B:slow, C:fast, C:slow | B:calm, C:rebound |
+| ETF8 | 8 | -0.027 (0.023) | -0.002 (0.001) | -0.036 (0.026) | +0.010 (0.013) | -0.026 (0.023) | 0.70 | within noise | not holding less | C:rebound | - |
+| judged 21 | 21 | -0.010 (0.018) | +0.000 (0.000) | -0.015 (0.018) | +0.005 (0.006) | -0.010 (0.017) | 0.65 | within noise | not holding less | B:calm, C:calm | B:slow, C:slow |
+| USB3 | 3 | +0.023 (0.038) | -0.000 (0.001) | -0.001 (0.047) | +0.024 (0.021) | +0.023 (0.038) | 0.64 | within noise | not holding less | C:slow | - |
+| GOV9 | 9 | +0.022 (0.025) | -0.000 (0.000) | +0.022 (0.027) | -0.000 (0.011) | +0.022 (0.025) | 0.70 | within noise | not holding less | B:slow, C:slow | - |
+| FX9 | 9 | -0.052 (0.033) | +0.000 (0.001) | -0.056 (0.035) | +0.004 (0.009) | -0.052 (0.033) | 0.61 | within noise | not holding less | B:calm, C:calm | - |
+| FX commodity 4 | 4 | -0.123 (0.047) | -0.000 (0.001) | -0.132 (0.051) | +0.009 (0.014) | -0.123 (0.047) | 0.56 | mean channel carries | not holding less | A:calm, B:calm, C:calm | - |
+| FX other 5 | 5 | +0.006 (0.030) | +0.001 (0.001) | +0.005 (0.032) | -0.000 (0.007) | +0.005 (0.030) | 0.65 | within noise | not holding less | - | B:calm, C:calm |
+| COM8 | 8 | +0.056 (0.037) | -0.001 (0.000) | -0.018 (0.034) | +0.075 (0.024) | +0.057 (0.037) | 0.61 | risk channel carries | not holding less | A:slow, B:slow, C:slow | B:calm, C:rebound |
+| the six (#110 book, daily) | 1 | +0.101 | +0.003 | -0.153 | +0.251 | +0.098 | 0.65 | - | not holding less | - | - |
 
 ## Holding less: Sharpe, growth a year, worst loss (pool means)
 

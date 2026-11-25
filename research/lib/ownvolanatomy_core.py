@@ -489,7 +489,13 @@ def reading_b(D: float, E: float) -> str:
 
 
 def carries(D: float, x: float, se: float) -> bool:
-    return bool(np.sign(x) == np.sign(D) and abs(x) >= 0.5 * abs(D) and abs(x) > 2 * se)
+    """Reading (a): a channel carries D if it has D's sign, is >= half of |D| and > 2 SE."""
+    return bool(np.sign(x) == np.sign(D) and big(D, x, se))
+
+
+def big(D: float, x: float, se: float) -> bool:
+    """Reading (c), the card's rule: a regime term above 2 SE and above half of |D| (any sign)."""
+    return bool(abs(x) >= 0.5 * abs(D) and abs(x) > 2 * se)
 
 
 def reading_a(D: float, M: float, R: float, se_m: float, se_r: float) -> str:

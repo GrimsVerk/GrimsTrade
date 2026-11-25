@@ -311,13 +311,14 @@ def analyse(series: list[oc.Series], six: oc.Series, draws: int = 2000) -> dict[
         tot = se[li[0]]
         pt["reading_a"] = oc.reading_a(pt["d"], pt["M"], pt["R"], tot["M"], tot["R"])
         pt["reading_b"] = oc.reading_b(pt["d"], pt["E"])
-        carry = []
+        carry, against = [], []
         for rd in oc.READINGS:
             for nm in oc.REGIMES:
                 x = pt[rd][nm]["M"] + pt[rd][nm]["R"]
-                if oc.carries(pt["d"], x, se[(rd, nm)]["timing"]):
-                    carry.append(f"{rd}:{nm}")
+                if oc.big(pt["d"], x, se[(rd, nm)]["timing"]):
+                    (carry if np.sign(x) == np.sign(pt["d"]) else against).append(f"{rd}:{nm}")
         pt["carrying_regimes"] = carry
+        pt["carrying_against"] = against
         pt["class"] = class_measures(series, mk[p])
         res["pools"][p] = pt
     eq = res["pools"]["equity 41"]
@@ -404,8 +405,9 @@ def report(res: dict[str, Any]) -> str:
         "## Pools: d = E + M + R",
         "",
         "| Pool | n | d | E exposure | M mean channel | R risk channel | Timing M + R | "
-        "Avg share | Reading (a) | Reading (b) | Carrying regimes |",
-        "|---|---:|---|---|---|---|---|---:|---|---|---|",
+        "Avg share | Reading (a) | Reading (b) | Carrying regimes (with D) | "
+        "Carrying (against D) |",
+        "|---|---:|---|---|---|---|---|---:|---|---|---|---|",
     ]
     for p in POOLS:
         x = P[p]
@@ -414,12 +416,14 @@ def report(res: dict[str, Any]) -> str:
             f"| {p} | {x['n']} | {ws(x['d'], se['d'])} | {ws(x['E'], se['E'])} | "
             f"{ws(x['M'], se['M'])} | {ws(x['R'], se['R'])} | "
             f"{ws(x['M'] + x['R'], se['timing'])} | {x['class']['sbar']:.2f} | "
-            f"{x['reading_a']} | {x['reading_b']} | {', '.join(x['carrying_regimes']) or '-'} |"
+            f"{x['reading_a']} | {x['reading_b']} | {', '.join(x['carrying_regimes']) or '-'} | "
+            f"{', '.join(x['carrying_against']) or '-'} |"
         )
     s6 = res["six"]
     L.append(
         f"| the six (#110 book, daily) | 1 | {f3(s6['d'])} | {f3(s6['E'])} | {f3(s6['M'])} | "
-        f"{f3(s6['R'])} | {f3(s6['M'] + s6['R'])} | {s6['sbar']:.2f} | - | {s6['reading_b']} | - |"
+        f"{f3(s6['R'])} | {f3(s6['M'] + s6['R'])} | {s6['sbar']:.2f} | - | {s6['reading_b']} "
+        "| - | - |"
     )
     L += [
         "",
