@@ -54,14 +54,14 @@ rebounds and calm years per unit saved in falls.)
   The 1931-09 fall (sterling left gold) was also a single month. A monthly 12-month rule is
   always in before such a jump: I = 0, a tie, counted against the rule. Five of A1's 11 falls
   are of this kind. The two other losses are 1825-26 (the rule lost 2 log points more) and
-  1980-81 (0.02 log points more: in throughout, minus one round trip's cost). This matches the equity record, where trend fails in fast falls (1720, 1987),
+  1980-81 (0.02 log points more: about one trade's cost of 2 bps). This matches the equity record, where trend fails in fast falls (1720, 1987),
   but here the fast falls are half the sample.
 - **Timing: not shown on any reading.** No reading has p_rot < 0.05. Consols come closest:
   S 0.42 against 0.24 for the same average exposure and 0.20 at random dates (p_rot 0.069). Its
   gap G = +0.20 is at the 93rd percentile of AR(1) worlds and the 90th of block-bootstrap
   worlds. Lag-1 autocorrelation is small in every source period except Norway's 1822-1842
   quotations abroad (+0.13, with 23% unchanged-yield months: "stale-suspect") and the 1940-45
-  occupation (-0.26). So the AR nulls hardly differ from the iid reference here. Unlike the
+  occupation (-0.26), and consols 1914-26 (-0.13). So the AR nulls hardly differ from the iid reference here. Unlike the
   equity series, autocorrelation is not what keeps the bond timing from passing: the effect is
   small and the falls are few.
 - **The insurance is handed back.** In both series most of the saving goes in the 12 months
