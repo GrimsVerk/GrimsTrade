@@ -31,8 +31,10 @@ committed row is ever replaced or removed, and each try has one series in it.
   strategy's `code_hash` as in the ledger, and a hash of `gym.py` and `data.py`). Changed
   live code gives a new series; the old one stays as the record of what the old code did. A
   re-run of the same code (other prices, other machine) is not added. `estimate` uses one
-  series per live strategy, the current code's version, and warns when the store has none
-  (the older rows tagged `live@<commit>` come from before this rule).
+  series per live strategy, the current code's version; failing that, one with the current
+  `code-<code_hash>` under another simulator hash (register-8), and warns for each such
+  fallback and when the store has none (the older rows tagged `live@<commit>` come from
+  before this rule; `pick_live` in `research/register2.py` has the full order).
 - A re-simulated baseline is added only if it is the first series of its idea, variant and
   start, or fits a register row no stored series fits. Drift re-runs are not added.
 - `register2.py tree`, `baselines` and `all` read the harness of `--ref` (default `HEAD`, this
