@@ -193,7 +193,8 @@ gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 2 with the predicted sign *and* ranks among the top 2 of 41. Removing contaminated placebos can
 only narrow the null on the side that matters, so it could turn a fail into a pass only where
 the true t cleared 2 with the right sign and the rank alone failed. No gate is in that position:
-every one failed on its own t (wrong sign or t < 2). Where a null is widened instead (stricter
+every one failed on its own t (wrong sign or t < 2), except W32 (parked-gates-1), which passed
+outright and was killed by its replication R32. Where a null is widened instead (stricter
 placebos, kill-only labels), passing only gets harder. The clustered gates above (few episodes:
 W15, W16, W19, W21-W26, weather-1) would be kill-only by the new step 7, so the count "19 tested, none passed" is weaker evidence against
 borrowed ideas than it sounds, because several gates had little power by design (review-2, 5d).
