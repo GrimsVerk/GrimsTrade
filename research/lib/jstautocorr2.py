@@ -347,6 +347,8 @@ def per_source_rows(
         th = THINNESS.get((iso, src), UNK)
         us = usability(tim, th, ax, nx)
         tally[us] = tally.get(us, 0) + len(yrs)
+        kept = sum(not disrupted(iso, int(y), h) for y in yrs)
+        tally[us + ", undisrupted years"] = tally.get(us + ", undisrupted years", 0) + kept
         line = Z / math.sqrt(n1) if n1 else math.nan
         rows.append(
             f"| {iso} | {src} | {int(yrs.min())}-{int(yrs.max())} | {tl} | {th} | "
@@ -464,6 +466,9 @@ def main(argv: Sequence[str]) -> None:
     g2: dict[str, np.ndarray] = {"all pairs": np.ones(len(pr2.u), dtype=bool)}
     for lab in (YE, DAVG, AAVG, INTP, UNK, "mixed"):
         g1[f"timing: {lab}"], g2[f"timing: {lab}"] = lt1 == lab, lt2 == lab
+    for lab in (YE, DAVG, UNK):  # added after review: the card's undisrupted sample
+        g1[f"timing: {lab}, undisrupted"] = (lt1 == lab) & ~f_dis.on(pr)
+        g2[f"timing: {lab}, undisrupted"] = (lt2 == lab) & ~f_dis.on(pr2)
     for lab in (THIN, BROAD, UNK):
         g1[f"market: {lab}"], g2[f"market: {lab}"] = lh1 == lab, lh2 == lab
     g1["disrupted"], g2["disrupted"] = d1, d2

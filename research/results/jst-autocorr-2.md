@@ -30,6 +30,9 @@ Permutation: 10,000 draws, seed 0; source-level flags shuffled across the 46 sou
 | timing: interpolated | 4 | +0.13 | +0.26 | 2 | - |
 | timing: unknown | 764 | +0.09 | +0.08 | 734 | -0.14 |
 | timing: mixed | 4 | -0.70 | -0.80 | 8 | -0.76 |
+| timing: year-end, undisrupted | 258 | +0.14 | +0.14 | 243 | -0.03 |
+| timing: Dec-average, undisrupted | 112 | +0.03 | +0.02 | 106 | -0.23 |
+| timing: unknown, undisrupted | 643 | +0.21 | +0.20 | 605 | -0.20 |
 | market: thin | 275 | +0.26 | +0.26 | 265 | -0.01 |
 | market: broad | 241 | +0.16 | +0.16 | 230 | -0.03 |
 | market: unknown | 702 | +0.10 | +0.10 | 678 | -0.13 |
@@ -103,7 +106,7 @@ Noise line = 1.645 / sqrt(pairs). Undisrupted = pairs with neither year in a war
 | SWE | OMXSGI | 2003-2020 | unknown | unknown | no | 17 | -0.10 | 0.40 | -0.10 | 17 | -0.41 | AR-preserving null only (labels unknown) |
 | USA | Shiller | 1873-2020 | Dec-average | unknown | yes | 147 | +0.05 | 0.14 | +0.06 | 133 | -0.21 | not usable (averaged / interpolated) |
 
-Scored years per usability class (full span): AR-preserving null only (acf above noise line) 291; AR-preserving null only (labels unknown) 1308; AR-preserving null only (thin) 191; not usable (averaged / interpolated) 271; too short to judge: AR-preserving null only 28; usable 91.
+Scored years per usability class (full span): AR-preserving null only (acf above noise line) 291; AR-preserving null only (acf above noise line), undisrupted years 261; AR-preserving null only (labels unknown) 1308; AR-preserving null only (labels unknown), undisrupted years 1210; AR-preserving null only (thin) 191; AR-preserving null only (thin), undisrupted years 181; not usable (averaged / interpolated) 271; not usable (averaged / interpolated), undisrupted years 248; too short to judge: AR-preserving null only 28; too short to judge: AR-preserving null only, undisrupted years 18; usable 91; usable, undisrupted years 71.
 
 ## Independent series: UK (description)
 

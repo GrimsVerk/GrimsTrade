@@ -11,24 +11,32 @@ Taylor 2019). The Bank of England's "A millennium of macroeconomic data" v3.1 mo
 
 ## The answer on one screen
 
-**Averaging is ruled out, and no documented flag explains the autocorrelation.** By the
-card's rule, none of averaging/interpolation, war/closure/hyperinflation, thin market, or the
-three together explains it. The remaining autocorrelation sits in data with no flag, and its
-origin is open: it could be real, or it could come from construction the documentation does not
-describe. About half of it is common across countries.
+**Averaging is ruled out by the documentation, and no documented flag explains the
+autocorrelation.** By the card's rule, none of averaging/interpolation, war/closure/
+hyperinflation, thin market, or the three together explains it. The remaining autocorrelation
+sits in data with no flag, and its origin is open: it could be real, or it could come from
+construction the documentation does not describe. A post-hoc description (added after the first
+run, not on the card) puts roughly half to two-thirds of it in a component common across
+countries.
 
-- **No early source is documented as an annual average.** The documentation (JST appendix,
-  plus the original sources found keyless) states a single point in time for every source whose
-  price timing is stated:
-  - year-end: Sweden from 1891, Germany (Ronge), France, Switzerland, Norway from 1921, and
-    Madrid 1927-1940;
+- **No source is documented as an annual average.** This is the basis for "averaging ruled
+  out". The documentation (JST appendix, plus the original sources found keyless) states a
+  single point in time for every source whose price timing is stated:
+  - year-end: Sweden from 1891, Germany (Ronge), Switzerland 1926-1959 (Pictet), Norway from
+    1921. Three more are judgement calls: Switzerland 1900-1925 (Moore) and Madrid 1927-1940
+    are labelled year-end from JST's war-closure footnote ("December 1913-July 1914",
+    "end-1936"), and France (Le Bris-Hautcoeur, "first Friday of each month", chained January
+    to January) is counted year-end in substance. These labels feed only the descriptive
+    timing groups; none of them enters the averaged flag;
   - a December average: the US (Shiller) and Australia (Brailsford et al.). A one-month average
     adds about +0.01 of lag-1 autocorrelation (Working's formula with averaging over 1/12 of the
     year: (1/72) / (1 - 1/36) = 0.014).
-  - The documented year-end pairs are the *most* autocorrelated group: +0.25 over 316 pairs,
-    against +0.09 for unknown timing and +0.00 for the December-average pairs. So the
-    Working-1960 story (annual averages give about 0.25) does not fit the data where the timing
-    is known.
+  - The ranking by timing label does not separate them (description). On the card's
+    undisrupted pairs: year-end +0.14 (258 pairs), unknown timing +0.21 (643), December average
+    +0.03 (112). On all pairs the year-end group shows +0.25 (316), but about 48% of its
+    autocovariance comes from Germany's Ronge 1914-1959 run (35 pairs), whose war and
+    hyperinflation years have 4-10 times the normal variance; that figure is not a usable
+    ranking.
 - **Flag tests on insure-1870-1's decisive sample.** Pooled lag-1 acf of log returns over bills
   is A0 = +0.138 over 1,218 pairs. The 1966-2020 value on the same pairing is +0.033.
 
@@ -39,18 +47,24 @@ describe. About half of it is common across countries.
   | disrupted (wars, closures, hyperinflation) | +0.06 (205) | +0.18 (1013) | 0.75 | not explained |
   | union of the three | +0.08 (520) | +0.19 (698) | 0.76 | not explained |
 
-  Thin-market periods are the most autocorrelated (+0.26). The difference is not significant
-  across the 46 source runs (p 0.19), and the rest stays at +0.12, far above its noise line of
-  0.05. War and closure years *lower* the autocorrelation: the undisrupted pairs show +0.18.
-- **Half of it is common across countries (description, not on the card).** The equal-weighted
-  cross-country mean return has lag-1 acf +0.38 in 1872-1965 (93 years). By era it is +0.26
-  in 1872-1913, +0.42 in 1919-1938 and +0.29 in 1946-1965; in 1966-2020 it is -0.02. Take
-  each country's return minus that year's cross-country mean: the remainder has acf +0.066,
-  against +0.138 for the raw returns. The thin periods keep more of it (+0.136), which is
-  what country-specific stale prices would produce. The common half cannot be one country's
+  Thin-market pairs are more autocorrelated than the rest (+0.26). The difference is not significant
+  across the 46 shuffle units (46 source runs from 40 source periods; p 0.19), and the rest
+  stays at +0.12, above its nominal noise line of 0.05. That line assumes independent pairs;
+  pairs within a run and across countries in the same year are not independent, so the margin
+  is smaller than it looks. War and closure years *lower* the autocorrelation: the undisrupted
+  pairs show +0.18.
+- **Common across countries (post hoc description, added after the first run).** The
+  equal-weighted cross-country mean return has lag-1 acf +0.38 in 1872-1965 (93 years). By era
+  it is +0.26 in 1872-1913, +0.42 in 1919-1938 and +0.29 in 1946-1965; in 1966-2020 it is
+  -0.02. Take each country's return minus that year's cross-country mean: the remainder has
+  acf +0.066, against +0.138 for the raw returns, a ratio of 0.48. Measured on the lag-1
+  autocovariance instead, the idiosyncratic part is 36% of the total, so the common part is
+  nearer two-thirds. The thin periods keep more idiosyncratic autocorrelation (+0.136), which
+  is what country-specific stale prices would produce. The common part cannot be one country's
   index construction. It could be real multi-year co-movement (the 1920s boom and the 1929-32
   slide, post-war re-rating), or construction that was common to many early indices.
-- **Independent UK series (description).** JST's UK capital gain is not the Bank of England's
+- **Independent UK series (description; the Jan-Jan column was fixed after the first run, when
+  it had been one year out of step).** JST's UK capital gain is not the Bank of England's
   spliced monthly index. JST is closer to a point-in-time sample of it than to an annual
   average:
   - 1871-1907: correlation 0.69 with the Dec-Dec change, 0.71 with Jan-Jan and 0.46 with the
@@ -62,14 +76,17 @@ describe. About half of it is common across countries.
   1908-1963, against JST's +0.21 and +0.20. So the UK autocorrelation also shows up in a second
   series sampled at year-end. How the BoE index is built before 1914 was not read.
 
-**Recommendation for timing tests on JST annual data:**
+**Recommendation for timing tests on JST annual data.** One rule: a *pooled* timing test across
+countries or source periods before 1966 always needs an autocorrelation-preserving null; a
+*single-source* test may use a standard null only on the rows cleared in point 4.
 
-1. **Never use a rotation or random-date null on JST annual equity before 1966.** The pooled
+1. **Pooled tests before 1966: never a rotation or random-date null.** The pooled
    autocorrelation (+0.14 to +0.19 depending on pairing) is not explained by any documented
-   construction feature, and half of it is common across countries. A rotation null assumes
-   zero autocorrelation and so turns it into "timing" (jst-autocorr-1: most of insure-1870-1's
-   gap). Use an AR(1)-matched or block-bootstrap null that keeps each country's (and the
-   common) lag-1 structure. This applies to every row, usable or not.
+   construction feature, and (post hoc description) a large part of it is common across
+   countries, which a per-country null does not remove. A rotation null assumes zero
+   autocorrelation and so turns it into "timing" (jst-autocorr-1: most of insure-1870-1's gap).
+   Use an AR(1)-matched or block-bootstrap null that keeps each country's and the common lag-1
+   structure. This holds even when every pooled row is one of point 4's.
 2. **Drop these years from any timing test:**
    - war, closure and hyperinflation years: 1914-1918 and 1939-1945 everywhere, plus the
      documented closures, the Spanish civil war, the Portuguese revolution, German and
@@ -77,44 +94,52 @@ describe. About half of it is common across countries.
    - the interpolated or non-calendar years: Switzerland 1914-16, the Netherlands 1944-46,
      Spain 1937-40, Portugal 1975-77.
 3. **Exclude these periods, or use them only with an AR-preserving null and flag them as
-   suspect.** Each has a high acf on the undisrupted pairs, above its noise line, and a
-   documented or likely stale-price mechanism:
-   - Norway 1881-1920 (JST Oslo microdata, 22 shares quoted monthly in 1881): +0.65.
-   - Portugal 1870-1987 (JST Lisbon microdata, timing not stated): +0.38.
-   - Belgium 1870-1914 (SCOB): +0.38. Annaert and Van Hyfte (2006): "Infrequent trading of
-     stocks induces serial correlation in the indices".
-   - Germany 1890-1913 (Eube): +0.42. Eube notes that his replacement of missing prices
-     "zu einer Versteifung des Indextrends (Autokorrelation) führt", though for at most 1% of
-     prices.
-   - Spain IGBM 1941-2017: +0.29, timing not stated.
-4. **Usable with a standard null by the card's rule** (documented year-end, broad, acf at or
-   below its noise line, 91 scored years): Switzerland 1926-1959 (Pictet), Germany 1871-1889
-   and 1914-1959 (Ronge, without the war and price-freeze years). Two more meet the substance
-   of the rule but not its letter:
+   suspect.** Each has a high acf on the undisrupted pairs, above its noise line:
+   - Norway 1881-1920 (JST Oslo microdata, thin: 22 shares quoted monthly in 1881): +0.65.
+     Stale prices likely.
+   - Belgium 1870-1914 (SCOB, thin): +0.38. Annaert and Van Hyfte (2006): "Infrequent trading
+     of stocks induces serial correlation in the indices".
+   - Germany 1890-1913 (Eube, labelled broad by the card's rule: 415 titles): +0.42. Eube notes
+     that his replacement of missing prices "zu einer Versteifung des Indextrends
+     (Autokorrelation) führt", but for at most 1% of prices, so this is no full explanation.
+   - Portugal 1870-1987 (JST Lisbon microdata): +0.38. Timing and depth not stated; no
+     mechanism documented.
+   - Spain IGBM 1941-2017: +0.29. Timing and depth not stated; no mechanism documented.
+4. **Cleared for a single-source test with a standard null by the card's rule** (documented
+   year-end, broad, undisrupted acf at or below its noise line): Switzerland 1926-1959 (Pictet)
+   and Germany 1871-1889 and 1914-1959 (Ronge). That is 91 scored years, 71 after dropping the
+   war and price-freeze years as point 2 requires. Two more meet the substance of the rule but
+   not its letter:
    - the US (Shiller, December average of daily closes; the card rule says "averaged", but the
      smoothing is about 0.01; acf +0.06);
    - Norway 1921-2000 (Klovland, latest bid of December, acf -0.09; thin label unknown).
-5. **Everything else (1,308 scored years): AR-preserving null only.** The price timing or the
-   market depth is not stated, so these rows are not cleared, even where their own acf is
-   small: Denmark 1923-1999 +0.01, Japan 1887-1940 +0.02, Netherlands 1901-1995 +0.16.
+5. **All other rows: AR-preserving null only, also for a single-source test.** By class (scored
+   years 1871-2020, undisrupted years in brackets): labels unknown 1,308 (1,210); acf above its
+   noise line 291 (261); thin 191 (181); too short to judge 28 (18); averaged or interpolated
+   271 (248, which point 4 discusses for the US). Rows with unknown labels are not cleared even
+   where their own acf is small: Denmark 1923-1999 +0.01, Japan 1887-1940 +0.02, Netherlands
+   1901-1995 +0.16.
 
 **For insure-1870-1 and the SUMMARY claim.** jst-autocorr-1's reading stands, now with the
 source question answered as far as the documentation allows. The early timing evidence
-(p_S 0.020) is "consistent with autocorrelation that is not an averaging artefact, of
-unknown origin (partly common across countries, highest in thin markets)". It is not
-independent evidence of timing. A re-test would need the AR-preserving null of point 1.
-Nothing changes for the live rule.
+(p_S 0.020) is "consistent with autocorrelation that is not documented as an averaging
+artefact, of unknown origin (highest in thin markets; by a post-hoc description largely common
+across countries)". It is not independent evidence of timing. A re-test would need the
+AR-preserving null of point 1. Nothing changes for the live rule.
 
 ## How sure
 
 - **Most labels are "unknown".** A label needed a quote. Timing is stated for 12 of 56
-  source periods (plus four interpolated spans), and thin/broad for 17. The Italian, Japanese, Portuguese, Dutch and Danish
-  sources, Grossman (2002), Barclays and the IGBM were not reachable keyless or say nothing.
+  source periods (plus four interpolated spans), and thin/broad for 17. The Italian,
+  Japanese, Portuguese, Dutch and Danish sources, Grossman (2002), Barclays and the IGBM were
+  not reachable keyless or say nothing.
   The flag tests therefore compare documented-flagged data against a mix of unflagged and
   unknown data, and an undocumented averaged source hidden in "unknown" cannot be excluded.
-  But "unknown" is the *less* autocorrelated group (+0.09), so a hidden averaged source would
-  have to be offset by others.
-- **Power.** The thin split has 275 flagged pairs and 46 shuffle units. A real thin-market
+  On undisrupted pairs "unknown" is the *more* autocorrelated group (+0.21 against +0.14
+  for documented year-end), so a hidden averaged or stale source in "unknown" is possible; the
+  documentation simply does not say.
+- **Power.** The thin split has 275 flagged pairs and 46 shuffle units (source runs; 40 source
+  periods). A real thin-market
   effect of the observed size (+0.13) is not significant at that size, so "not explained" is
   partly "not shown". The other flags point the wrong way (flagged acf lower), so more data
   would not turn them into explanations.
@@ -133,6 +158,16 @@ Nothing changes for the live rule.
     and is broad.
   - Australia's 1941-47 price controls (Brailsford et al.) and Germany's price freeze to 1948
     (Ronge) were added to the disruption years.
+- **Added after the first run (post hoc, in 0a1ebaf and the review fix):**
+  - the idiosyncratic split (each return minus the year's cross-country mean) and the world-mean
+    acf by era;
+  - the UK Jan-Jan column fix: the first run compared January y-1 to January y with year y, one
+    year out of step; now January y to January y+1;
+  - after review: the timing groups on undisrupted pairs, and the usability tally without the
+    disrupted years.
+  None of these changes a label, a flag test or a card reading.
+- **Card time.** The card says "written ~21:15 UTC"; its commit (467f9b3) is 21:09:21 UTC. It
+  was in any case pushed before the documentation was re-read and before any number.
 - **Versions of the JST documentation disagree.** The QJE appendix (`RORE_documentation.pdf`,
   used here) splits the UK at 1908 and Norway at 1921. The 2017 FRBSF working-paper appendix
   splits the UK at 1929, Norway at 1915 and Denmark at 1893, and its Table A.29 also gives the
