@@ -100,3 +100,44 @@ def monthly_known(quarterly: Mapping[int, float], lag: int) -> dict[int, float]:
 def fall(r: float) -> float:
     """Trigger F = min(r, 0) (NaN stays NaN)."""
     return r if math.isnan(r) else min(r, 0.0)
+
+
+# ---------------------------------------------------------------- R32 replication
+
+
+def parse_fred_daily(text: str, last: date) -> dict[date, float]:
+    """Daily FRED graph CSV -> value by day; '.' cells and days after `last` left out."""
+    out: dict[date, float] = {}
+    for r in csv.reader(io.StringIO(text)):
+        if len(r) < 2:
+            continue
+        try:
+            d = date.fromisoformat(r[0].strip())
+            v = float(r[1])
+        except ValueError:
+            continue
+        if d <= last:
+            out[d] = v
+    return out
+
+
+def parse_fred_monthly(text: str, last: date) -> dict[int, float]:
+    """Monthly FRED graph CSV (first day of the month) -> value by month index; months after
+    the month of `last` left out."""
+    out: dict[int, float] = {}
+    cut = month_index(last)
+    for d, v in parse_fred_daily(text, date.max).items():
+        m = month_index(d)
+        if m <= cut:
+            out[m] = v
+    return out
+
+
+def month_end_values(daily: Mapping[date, float]) -> dict[int, float]:
+    """Value on the last day with a value in each month, by month index."""
+    out: dict[int, tuple[date, float]] = {}
+    for d, v in daily.items():
+        m = month_index(d)
+        if m not in out or d > out[m][0]:
+            out[m] = (d, v)
+    return {m: v for m, (_, v) in out.items()}

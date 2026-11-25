@@ -78,3 +78,20 @@ def test_fall_is_min_of_return_and_zero() -> None:
     ev = _ev()
     assert ev.fall(0.03) == 0.0 and ev.fall(-0.04) == -0.04
     assert math.isnan(ev.fall(math.nan))
+
+
+def test_month_end_values_take_the_last_day_with_a_value() -> None:
+    ev = _ev()
+    text = "observation_date,DGS10\n2025-01-30,4.0\n2025-01-31,.\n2025-02-03,4.5\n2025-11-03,9\n"
+    daily = ev.parse_fred_daily(text, date(2025, 10, 31))
+    assert date(2025, 11, 3) not in daily and date(2025, 1, 31) not in daily
+    m = ev.month_end_values(daily)
+    assert m == {2025 * 12: 4.0, 2025 * 12 + 1: 4.5}
+
+
+def test_parse_fred_monthly_keys_by_month_and_cuts() -> None:
+    text = "observation_date,CPI\n2025-09-01,100\n2025-10-01,101\n2025-11-01,102\n"
+    assert _ev().parse_fred_monthly(text, date(2025, 10, 31)) == {
+        2025 * 12 + 8: 100.0,
+        2025 * 12 + 9: 101.0,
+    }
