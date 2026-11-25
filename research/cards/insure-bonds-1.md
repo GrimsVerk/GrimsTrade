@@ -204,7 +204,7 @@ idea `insure-bonds-1`): one row per primary series (`tsmom12m@insure-bonds-norwa
 `tsmom12m@insure-bonds-consols`) and one per check; the before-scoring table gets a `note` row.
 Rotations, null worlds and the fixed control are re-scorings: no rows.
 
-## Amendment A (2026-11-25 ~23:15 UTC, after the before-scoring fall counts, before any rule position, episode or outcome was read)
+## Amendment A (2026-11-25 22:56-22:59 UTC, after the before-scoring fall counts, before any rule position, episode or outcome was read)
 
 The before-scoring table (`results/insure-bonds-1.md`, this commit) gives, at the card's
 ladder, Norway (10-year par bond) 0/0/0/2 falls at 25/20/15/10% and consols 0/2/2/4. By the

@@ -390,7 +390,7 @@ def before_rows(
     if amend:
         out += [
             "**Amendment A (card, after the counts above, before any rule position was read):** "
-            "with 2 and 4 falls at 10%, both card verdicts are fixed as \"Too few falls\". The "
+            'with 2 and 4 falls at 10%, both card verdicts are fixed as "Too few falls". The '
             "readings below are added, with the same tests, nulls and verdict table, reported "
             "next to (not instead of) the card's verdicts.",
             "",
@@ -407,9 +407,7 @@ def before_rows(
         out += [
             "",
             "Norway with a perpetuity total return, lag-1 acf by period (AR-null input): "
-            + ", ".join(
-                f"{st.p.label.split(' ')[0]} {st.acf1:+.3f} ({st.n1})" for st in perp.stats
-            )
+            + ", ".join(f"{st.p.label.split(' ')[0]} {st.acf1:+.3f} ({st.n1})" for st in perp.stats)
             + ".",
             "",
         ]
@@ -477,9 +475,7 @@ def null_gaps(s: Series, kind: str, worlds: int, seed: int) -> np.ndarray:
     rng = np.random.default_rng(seed)
     m = np.array([st.mean for st in s.stats])
     sd = np.array([st.sd for st in s.stats])
-    phi = np.array(
-        [0.0 if kind == "iid" else float(np.clip(st.acf1, -0.9, 0.9)) for st in s.stats]
-    )
+    phi = np.array([0.0 if kind == "iid" else float(np.clip(st.acf1, -0.9, 0.9)) for st in s.stats])
     out = np.full(worlds, np.nan)
     for w in range(worlds):
         if kind == "bb":
@@ -567,27 +563,48 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
         "says otherwise.",
         "",
     ]
-    text += before_rows(d, nor, con, note)
+    amend = amended(d)
+    text += before_rows(d, nor, con, note, amend)
     evs: list[tuple[str, i17.Eval]] = []
     verdicts = {}
-    for s, title in ((nor, "Norway (primary)"), (con, "UK consols (secondary)")):
+    readings = [
+        ("card", s.name, s, f"{'Norway (primary)' if s.name == 'norway' else 'UK consols'}")
+        for s in (nor, con)
+    ] + [(f"A{j + 1}", lab, a, lab) for j, (lab, a) in enumerate(amend)]
+    amend_evs = []
+    for tag, _, s, title in readings:
         ev = i17.evaluate(s.name, s.segs, s.d, s.d)
-        nl = nulls(s, ev.t.gap, worlds)
-        v = i17.verdict(ev, nl.p_ar)
-        verdicts[s.name] = v
-        text += [f"## {title}: falls of {s.d:.0%} (rise {s.d:.0%})", ""]
+        if sum(e.ins != 0 for e in ev.eps) < 5:
+            nl = None
+            v = "Too few falls"
+        else:
+            nl = nulls(s, ev.t.gap, worlds)
+            v = i17.verdict(ev, nl.p_ar)
+        key = s.name if tag == "card" else tag
+        verdicts[key] = v
+        head = "Card" if tag == "card" else f"Amendment {tag}"
+        text += [f"## {head}: {title}, falls of {s.d:.1%} (rise {s.d:.1%})", ""]
         text += i17.episode_rows(ev, s.stats) + i17.test_rows(ev) + i17.control_rows(ev)
-        text += null_rows(nl, worlds)
+        text += (
+            null_rows(nl, worlds)
+            if nl
+            else ["Nulls not run: fewer than 5 falls with I != 0 (the verdict is fixed).", ""]
+        )
         text += [
-            f"**Verdict by the card ({s.name}): {v}** ({i17.qualifiers(ev)}). Headline: lost "
-            f"less in {ev.k} of {ev.n} falls (ties against).",
+            f"**Verdict ({head.lower()}, {title}): {v}** ({i17.qualifiers(ev)}). Headline: "
+            f"lost less in {ev.k} of {ev.n} falls (ties against).",
             "",
         ]
-        evs.append((f"tsmom12m@insure-bonds-{s.name}", ev))
+        if tag == "card":
+            evs.append((f"tsmom12m@insure-bonds-{s.name}", ev))
+        else:
+            v_name = {"A1": "norway-5pct", "A2": "consols-5pct", "A3": "norway-perpetuity-15pct"}
+            evs.append((f"tsmom12m@insure-bonds-{v_name[tag]}", ev))
+            amend_evs.append(ev)
 
-    groups = i1.link(evs[0][1].eps + evs[1][1].eps)
+    groups = i1.link(amend_evs[0].eps + amend_evs[1].eps)
     text += [
-        "## Pooled description: Norway and consols, linked clusters",
+        "## Pooled description: Norway and consols at 5% (A1 + A2), linked clusters",
         "",
         "| # | First peak | Last trough | Series | Mean I | Mean S | Mean N |",
         "|---:|---|---|---|---:|---:|---:|",
@@ -605,27 +622,29 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
     text += [
         "",
         f"Clusters with mean I > 0: {k} of {n} non-zero (sign p {p:.3g}), bootstrap p "
-        f"{i1.boot(vals)[1]:.3f}." if vals else "No clusters.",
+        f"{i1.boot(vals)[1]:.3f}."
+        if vals
+        else "No clusters.",
         "",
     ]
 
     # checks
     checks: list[tuple[str, i17.Eval]] = []
-    nd, cd = nor.d, con.d
+    nd, cd = amend[0][1].d, amend[1][1].d  # checks at A1/A2's 5% (at 10% they are empty)
     checks.append((
         "norway perpetuity",
-        i17.evaluate("Norway, perpetuity total return", make_segs(
-            "norway", tr_levels(d.nor_y, perp_return), d.nor_cash), nd, nd),
+        i17.evaluate("Norway, perpetuity total return, 10%", make_segs(
+            "norway", tr_levels(d.nor_y, perp_return), d.nor_cash), nor.d, nor.d),
     ))  # fmt: skip
     checks.append((
         "consols price only",
-        i17.evaluate("consols, price only (1/y)", make_segs(
+        i17.evaluate("consols, price only (1/y), 5%", make_segs(
             "consols", tr_levels(d.con_y, price_return), d.con_cash), cd, cd),
     ))  # fmt: skip
     for s in (nor, con):
-        for x in neighbours(s.d):
+        for x in neighbours(s.d) + [0.075]:
             checks.append(
-                (f"{s.name} {x:.0%}", i17.evaluate(f"{s.name}, falls of {x:.0%}", s.segs, x, x))
+                (f"{s.name} {x:.1%}", i17.evaluate(f"{s.name}, falls of {x:.1%}", s.segs, x, x))
             )
     for lab, lo, hi in (
         ("1822-1914", NOR_LO, ym(1914, 12)),
@@ -633,37 +652,31 @@ def run(d: Data, log: bool, worlds: int = WORLDS) -> None:
     ):
         segs = make_segs("norway", nor.lev, d.nor_cash, lo=lo, hi=hi)
         if segs:
-            checks.append((f"norway {lab}", i17.evaluate(f"Norway {lab} alone", segs, nd, nd)))
-    no_int = {m: v for m, v in d.nor_y.items() if not ym(1843, 1) <= m <= ym(1844, 12)}
-    checks.append((
-        "norway without 1843-1844",
-        i17.evaluate("Norway, interpolated 1843-1844 removed", make_segs(
-            "norway", tr_levels(no_int, par_return), d.nor_cash), nd, nd),
-    ))  # fmt: skip
+            checks.append((f"norway {lab}", i17.evaluate(f"Norway {lab} alone, 5%", segs, nd, nd)))
     checks.append((
         "norway A1 GOV 1820-1920",
-        i17.evaluate("Norway A1 GOV 1820-1920 (overlapping)", make_segs(
+        i17.evaluate("Norway A1 GOV 1820-1920 (overlapping), 5%", make_segs(
             "norway", tr_levels(d.gov_y, par_return), d.nor_cash), nd, nd),
     ))  # fmt: skip
-    for s in (nor, con):
+    for s, a in ((nor, amend[0][1]), (con, amend[1][1])):
         checks.append((
             f"{s.name} lag 1",
-            i17.evaluate(f"{s.name}, signal one month older (stale check)",
-                         make_segs(s.name, s.lev, s.cash, lag=1), s.d, s.d),
+            i17.evaluate(f"{s.name}, signal one month older (stale check), 5%",
+                         make_segs(s.name, s.lev, s.cash, lag=1), a.d, a.d),
         ))  # fmt: skip
 
     text += ["## Checks (description)", ""] + i17.CHECK_HEAD
-    text.append(i17.check_line(evs[0][1]))
-    text.append(i17.check_line(evs[1][1]))
-    text.append(i17.tb_eval(evs[0][1]))
-    text.append(i17.tb_eval(evs[1][1]))
+    for _, ev in evs:
+        text.append(i17.check_line(ev))
+    for _, ev in evs:
+        text.append(i17.tb_eval(ev))
     text += [i17.check_line(ev) for _, ev in checks]
     text += [
         "",
         "p_rot: share of 1,000 rotations with mean S at least the rule's. Fixed exposure: the "
-        "rule's mean position, no costs. Each check uses its series' card threshold unless its "
-        "label names another. Cash at the discount rate: Norges Bank's (Norway), the BoE "
-        "prime-paper rate (consols).",
+        "rule's mean position, no costs. The first rows are the card and amendment readings, "
+        "then the same with cash at the discount rate (Norges Bank's for Norway, the BoE "
+        "prime-paper rate for consols), then the checks at the threshold in their label.",
         "",
     ]
     for key, ev in checks:

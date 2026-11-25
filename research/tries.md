@@ -4358,3 +4358,20 @@ Never edit or delete a row.
 | 2026-11-25 22:31 | asset-ledger-1 | re-score (not a try): 30y Treasury rebuild DGS30 (TLT proxy, insure-1 paper rule) I +1.66, B -1.54, C -2.24, N -2.12 (bills -0.67); since 2002 N -2.49 (research/asset-ledger-1.md) | note | train | 1978-02-27 | 2025-10-31 | - | - | - | - |
 | 2026-11-25 22:31 | asset-ledger-1 | re-score (not a try): gold monthly averages (GLD proxy, trend-where-long monthly tsmom12) I +3.08, B -1.89, C -0.96, N +0.22; 2005-2025 N -1.43 vs GLD -2.33 (averaging flatters) (research/asset-ledger-1.md) | note | train | 1972-02-01 | 2025-10-01 | - | - | - | - |
 | 2026-11-25 22:31 | asset-ledger-1 | re-score (not a try): six-asset gym books, worst drawdown split by asset (cash 0): equal-weight 68.8% 2000-03..2002-10 (QQQ 74%, SPY 26%); tsmom12 37.4% 2018-01..2020-03 (BTC 34%, ETH 73%, TLT/GLD -11%), equal-weight over those dates 27.1% (research/asset-ledger-1.md) | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-25 23:01 | insure-bonds-1 | before scoring (card), monthly log total returns: norway lag-1 acf N1 +0.13, N3 -0.02, N4 +0.05, N5 -0.26, N6 -0.05; falls 25/20/15/10% 0/0/0/2, threshold 10%; consols lag-1 acf C2 +0.02, C3 -0.13; falls 25/20/15/10% 0/2/2/4, threshold 10% (research/results/insure-bonds-1.md) | note | train | - | - | - | - | - | - |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-norway | insure-check | train | 1823-04-30 | 1984-12-31 | 1.43 | +46475.3% | 18.8% | 0.27 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-consols | insure-check | train | 1867-01-31 | 1926-12-31 | 0.46 | +219.6% | 34.3% | 1.07 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-norway-5pct | insure-check | train | 1823-04-30 | 1984-12-31 | 1.43 | +46475.3% | 18.8% | 0.27 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-consols-5pct | insure-check | train | 1867-01-31 | 1926-12-31 | 0.46 | +219.6% | 34.3% | 1.07 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-norway-perpetuity-15pct | insure-check | train | 1823-04-30 | 1984-12-31 | 0.61 | +20720.4% | 35.3% | 0.76 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-perpetuity | insure-check | train | 1823-04-30 | 1984-12-31 | 0.61 | +20720.4% | 35.3% | 0.76 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-consols-price-only | insure-check | train | 1867-01-31 | 1926-12-31 | 0.04 | +4.1% | 29.3% | 1.65 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-15.0% | insure-check | train | 1823-04-30 | 1984-12-31 | 1.43 | +46475.3% | 18.8% | 0.27 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-7.5% | insure-check | train | 1823-04-30 | 1984-12-31 | 1.43 | +46475.3% | 18.8% | 0.27 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-consols-15.0% | insure-check | train | 1867-01-31 | 1926-12-31 | 0.46 | +219.6% | 34.3% | 1.07 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-consols-7.5% | insure-check | train | 1867-01-31 | 1926-12-31 | 0.46 | +219.6% | 34.3% | 1.07 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-1822-1914 | insure-check | train | 1823-04-30 | 1914-08-31 | 2.09 | +3005.2% | 8.0% | 0.12 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-1915-1984 | insure-check | train | 1915-11-30 | 1984-12-31 | 1.10 | +1399.9% | 18.8% | 0.46 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-A1-GOV-1820-1920 | insure-check | train | 1823-04-30 | 1920-12-31 | 2.04 | +3458.8% | 8.0% | 0.15 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-norway-lag-1 | insure-check | train | 1823-05-31 | 1984-12-31 | 1.43 | +49976.7% | 13.9% | 0.27 |
+| 2026-11-25 23:01 | insure-bonds-1 | tsmom12m@insure-bonds-check-consols-lag-1 | insure-check | train | 1867-02-28 | 1926-12-31 | 0.57 | +336.7% | 21.6% | 1.07 |
