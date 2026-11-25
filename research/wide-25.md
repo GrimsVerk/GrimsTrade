@@ -265,7 +265,7 @@ cabinets in established democracies", development version (4 Nov 2023), parlgov.
 data: Döring and Manow, Harvard Dataverse, doi 10.7910/dvn/2vz5zc. parlgov.org's data and
 about pages (read 2026-11-25 23:15 UTC, generic UA) give the citation but state no licence;
 the Dataverse page answered the script with a bot challenge (HTTP 202, no content), so its
-licence was not read (Dataverse releases are often CC0 `[memory]`, unchecked). Only statistics
+licence was not read and is not stated here; check it in a browser before any redistribution. Only statistics
 derived from the table are committed. `view_cabinet.csv` sha256
 bd39f73335e8bc49c00d5000ab5a68e7a8c41ca0eb17d8c89ff6d05ba93e6063 (1,783,351 bytes; manifest
 `wide-25/parlgov/2026-11-25/`). CPDS (not used by the rule): Armingeon, Klaus, Sarah Engler,
