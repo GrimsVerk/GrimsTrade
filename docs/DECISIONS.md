@@ -2,6 +2,55 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-25 (lane `forward-se-1`; fixed before any live verdict: the forward registry holds no
+  frozen line): the forward registry's `mean` and `sharpe` verdicts use a dependence-robust
+  standard error. Rule (`forward.hac_t`, `forward.lag`, recorded as `"se": "bartlett-1y"` on each
+  new line): Bartlett (Newey-West) long-run variance with L = min(round(per_year) - 1, n // 4)
+  lags, i.e. one year of observations (51 for weekly bars, 7 for 8 events a year), scaled by
+  n / (n - 1); p from Student-t with nu = 1.5 / b after scaling T by sqrt(1 - b + b^2 / 3),
+  b = (L + 1) / n (fixed-b, Kiefer and Vogelsang 2005, bandwidth M = L + 1; the approximation's
+  97.5% critical value is within 1% of theirs, and its 95% one within 1.2%, at b <= 0.1, and
+  conservative at b = 0.25); with L = 0 it is the ordinary t-test. `sharpe` tests with the same
+  T (Lo 2002 at the null Sharpe 0). `min_sample` uses that test's critical value at n and a new
+  plan field `lrv` (long-run variance ratio assumed true, at least 1, default 1; measure it on
+  the train record at each freeze). `win_rate` keeps its exact sign test. Why one year, fixed:
+  the store's dependence shows at 52 weeks (variance ratio median 1.34, `tsmom12` 3.3;
+  evalue-forward-1), a data-driven bandwidth would choose about 5 lags at 10 years of weekly
+  data and miss it, and a rule chosen after seeing a verdict could be chosen to pass it. A
+  registration frozen before this change (none exists) keeps its recorded alpha and
+  `min_sample`; only the standard error changes. The four proposals in
+  `research/forward/candidates.jsonl` (not frozen) got new numbers at lrv 1: `carry-3-band@1`
+  752 weeks (14.5 years, was 12.7), `fomc-bond-drift@1` 639 events (79.9, was 78.1),
+  `coin-stop-0.25@1` unchanged (42), `eu-monthly-vs-weekly@1` 1732 weeks (33.3, was 31.5).
+  **Card kill condition met (3 cells > 0.040); adopted anyway by the night lead as an
+  improvement over the old iid test (every resampled cell falls, iid controls keep their
+  level); a deviation from the card, reversible by the owner.** Measured level
+  (research/forward-se-1.md): on 52-week block-resampled store nulls at nominal 2.5% it rejects
+  4.3-5.8% at 10 years and 3.1-3.6% at 100 years for a book against `tsmom12` (iid SE: 6.1-6.4%
+  / 4.6-4.7%), and 1.0% / 2.3% for `tsmom12` against zero (iid: 8.1% / 8.3%). The rest at 10
+  years is the skewness of yearly sums (difference series median -0.3, `tsmom12` +1.8): about
+  10 yearly sums make a one-sided t lopsided whatever the standard error. A 10-year forward
+  verdict on a difference against `tsmom12` is therefore read as about a 5%-level test, not
+  2.5%. Against zero the one-sided upper test is very conservative (0.9% above +cv against
+  11.7% below -cv at 10 years), and with lrv left at 1 a trend-like book is under-powered (0.65
+  instead of 0.80), so `lrv` must be measured at each freeze. The daily runner does not import
+  the registry; the scoreboard is unchanged.
+
+- 2026-11-24 (lane `reconcile-daily-1`): every daily run reconciles the record it just wrote
+  (`grimstrade.reconcile`, a light permanent form of `research/reconcile-1.md`). (1) Every book,
+  whole record: each fill of the replay is at the open of a stored bar of its asset, after a
+  decision that counts (`ledger.in_force`), at open x (1 +/- slippage), with the tier fee; and
+  `state/portfolio.json` as stored is rebuilt from those fills at the rule prices and fees, the
+  stored distributions and cash rate: cash and equity to the cent, units, fill count, never below
+  zero. (2) Each ledger line this run appended holds what its strategy returns on the bars stored
+  now, visible at the line's time. A failure is a problem line (`ledger/problems.jsonl`, exit 1,
+  the record is still committed), one per broken fill or gap, at most 3 per book and check plus
+  a count; never an exception. Why: research assumes live == gym and reconcile-1 showed it once;
+  without a standing check a later runner or gym bug would corrupt the record silently. It
+  re-derives the rules (cost table, interest, distributions) rather than calling
+  `gym.simulate`, so a rule change in the gym needs the same change here, or every run reports
+  it. Cost on the record of 2026-11-24: about 0.05 s.
+
 - 2026-11-24 (lane `daily-nodev-1`): the daily job installs only the runtime dependencies
   (`uv sync --locked --no-dev`, and `uv run --no-dev` for both run steps, since a plain `uv run`
   syncs `dev` back in). Why: `grimstrade.run_daily` and `grimstrade.intraday` use only the
