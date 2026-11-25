@@ -1,4 +1,4 @@
-"""Pure functions for the wide-21 gate W34 `solar-max-recession` (research/cards/wide-21.md).
+"""Pure functions for the wide-21 gate W35 `solar-max-recession` (research/cards/wide-21.md).
 No function here reads a file, a price or the network. Months are indexed as in
 `wide17_events.month_index` (January 2000 -> 24000)."""
 
@@ -15,7 +15,7 @@ from wide17_events import month_index
 # slip, see research/wide-21.md).
 SHIFTS: list[int] = [s * k for k in range(19, 96, 4) for s in (1, -1)]
 CYCLE = 132
-# R34 (only if W34 passes): years, multiples of the cycle (10-12, 21-23) left out.
+# R35 (only if W35 passes): years, multiples of the cycle (10-12, 21-23) left out.
 SHIFTS_YEARS: list[int] = [
     s * k for k in [*range(2, 10), *range(13, 21), *range(24, 28)] for s in (1, -1)
 ]

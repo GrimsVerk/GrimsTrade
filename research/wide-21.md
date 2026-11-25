@@ -18,7 +18,7 @@ enter the count.
 Project-wide bar (`research/register/BAR.md`, rows through 2026-11-25 01:16): **4,126 tries,
 N 1,116 for a new pick; measured rho 0.55 gives N_eff 506: a new rule needs z >= 4.70 against
 `tsmom12` (+0.31 close rule, +0.56 far rule), Bonferroni p <= 9.9e-5.** Family bar after this
-run's gate: p < 0.10 / 102 = 0.00098.
+run's gate: p < 0.10 / 103 = 0.00097 (W35, after panic-words-1's W34).
 
 Method as wide-20: wide-11's filters F1 (not announced: an unscheduled flow (a) or a premium
 (b)) and F2 (not price-driven; passing only with controls costs 1 point), then wide-10's points
@@ -129,16 +129,18 @@ TLT. S1 and S2 are macro-shock stories (recessions, harvests), not flows; their 
 how often the shock really follows the dose.
 
 **Picked by the rule.** S1 scores 6 (highest), with keyless data covering the whole long
-history (sunspots from 1749, Shiller's S&P 500 from 1871). **Gated: S1 as W34
-`solar-max-recession`** (card `cards/wide-21.md`, pushed before any return was read; W34 is the
+history (sunspots from 1749, Shiller's S&P 500 from 1871). **Gated: S1 as W35
+`solar-max-recession`** (card `cards/wide-21.md`, pushed before any return was read; W34 was the
 next free id on `main`'s `gate-null.md`; parallel lanes may take it too, the lead renumbers).
+**Renumbered from W34 to W35 at merge** (panic-words-1 took W34 first); the card says W34
+(provisional) and stays unchanged; the replication is R35.
 The next candidate (S3, score 5) fails its own size check and its channel (inflation) died in
 W32/R32; S2 has six events, so even a pass could say nothing. Neither is gated; both are parked,
 not counted.
 
-## Step 3. W34 `solar-max-recession` gate
+## Step 3. W35 `solar-max-recession` gate
 
-The rule, data, placebo family, gate, the replication R34 (run only after a pass), shown cells,
+The rule, data, placebo family, gate, the replication R35 (run only after a pass), shown cells,
 power and guess are in [`cards/wide-21.md`](cards/wide-21.md), pushed before any number. Code:
 `research/lib/wide21_events.py` (pure functions, tested offline in `tests/test_wide21.py`) and
 `research/lib/wide21.py` (fetch and run). Results: `research/results/solar-max-recession.md`.
@@ -165,7 +167,7 @@ BTC 165, ETH 113.
 
 ## What came out (one real run, 2026-11-25 02:12:26 UTC)
 
-### W34 `solar-max-recession`: fails
+### W35 `solar-max-recession`: fails
 
 **A hundred more sunspots in the trailing year goes with -0.16% a month on the S&P 500 over the
 next month (t -0.87, 1,831 months, 1871-01 .. 2023-07): the predicted sign, but t far from -2;
@@ -208,18 +210,19 @@ card for a strategy.** Held-out year untouched. Table: `results/solar-max-recess
   above.
 
 Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the family bar
-0.00098 and the register's 9.9e-5; about 14 cycles). A kill. R34 (JST replication) was fixed
+0.00097 and the register's 9.9e-5; about 14 cycles). A kill. R35 (JST replication) was fixed
 in the card to run only after a pass; it is not run.
 
 ## Family count and status
 
-One mechanism added and closed by its gate (W34 `solar-max-recession`). The eleven others are
+One mechanism added and closed by its gate (W35 `solar-max-recession`). The eleven others are
 parked, filtered or dead in the literature and are **not counted**, as in wide-12 .. wide-20;
 each has a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
 
-**Count: 102 mechanisms (101 carried in + W34), 29 tested by a strategy, none passed; 29 gates,
-one kill-only pass (W32, killed by its replication R32).** The next strategy test is read at
-p < 0.10 / 102 = 0.00098 (family) and the register's bar. Published effects tested after
+**Count: 103 mechanisms (102 carried in, with panic-words-1's W34, + W35), 29 tested by a
+strategy, none passed; 30 gates, one kill-only pass (W32, killed by its replication R32).** The
+next strategy test is read at
+p < 0.10 / 103 = 0.00097 (family) and the register's bar. Published effects tested after
 publication: 1 more (Jevons' sunspot cycle, in Gorbanev's 2012 recession form, on US stocks
 1871-2023): dead.
 
@@ -228,7 +231,7 @@ candidate scored but not gated).
 
 ## Next
 
-1. **Natural-cycle doses are now dead three times** (W3 moon, W16 geomagnetic storms, W34 the
+1. **Natural-cycle doses are now dead three times** (W3 moon, W16 geomagnetic storms, W35 the
    sunspot cycle). The natural-science fields searched tonight give no further candidate with
    both a real channel and enough independent episodes: the ones with real physics (S2
    volcanic cooling, S3 river freight) either have six events or fail their own size check, and

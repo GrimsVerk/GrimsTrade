@@ -1,4 +1,4 @@
-"""Lane wide-21: gate W34 `solar-max-recession` (research/cards/wide-21.md; rule pushed before
+"""Lane wide-21: gate W35 `solar-max-recession` (research/cards/wide-21.md; rule pushed before
 this script's first run).
 
 Descriptive only: no strategy, no backtest. Train bars only, cut at 2025-10-31 (this night's
@@ -183,7 +183,7 @@ def run() -> None:
     ]
     xs = np.array([x[m] for m in months])
     out = [
-        "# Solar activity and next-month US stock returns (wide-21, W34 `solar-max-recession`)",
+        "# Solar activity and next-month US stock returns (wide-21, W35 `solar-max-recession`)",
         "",
         "Rule: `research/cards/wide-21.md` (pushed before this ran). Script",
         "`research/lib/wide21.py`. Dose x(m) = trailing 12-month mean SILSO total sunspot number",
@@ -217,7 +217,7 @@ def run() -> None:
         "",
     ]
     if passed:
-        out += ["R34 replication: run `GATE=R34` (card: run at once after a pass).", ""]
+        out += ["R35 replication: run `GATE=R35` (card: run at once after a pass).", ""]
     RESULTS.mkdir(exist_ok=True)
     (RESULTS / "solar-max-recession.md").write_text("\n".join(out))
     print("\n".join(out))

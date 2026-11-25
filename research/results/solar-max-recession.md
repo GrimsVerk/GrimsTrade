@@ -1,4 +1,4 @@
-# Solar activity and next-month US stock returns (wide-21, W34 `solar-max-recession`)
+# Solar activity and next-month US stock returns (wide-21, W35 `solar-max-recession`)
 
 Rule: `research/cards/wide-21.md` (pushed before this ran). Script
 `research/lib/wide21.py`. Dose x(m) = trailing 12-month mean SILSO total sunspot number
