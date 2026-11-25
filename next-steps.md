@@ -120,7 +120,14 @@ registry-lrv-1, #201 survey-8, #202 wide-22, #203 calm-drag-1, #204 jst-autocorr
 runner-faults-2 (three review rounds: per-request cap with `read1`, early-EOF `IncompleteRead`
 restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 registry-moments-1,
 #207 gate-null-2, #209 rl-7, #206 data-wide-2, #212 insure-1709-1, #211 summary-8 (SUMMARY night 6),
-#210 jst-gates-1. Verdicts: `research/SUMMARY.md` (night 6; #210 and later PRs not yet in it).
+#210 jst-gates-1. Verdicts: `research/SUMMARY.md` (night 6).
+
+Lead 2 (from ~22:50 UTC) merged: #214 asset-ledger-1, #213 lead-next-1126 (the night's handoff), #215
+wide-24 (W40 dead), #216 survey-9, #217 summary-9, #218 eng-nits-1 (infer_pos flat-day fix, sign-test
+ties), #219 insure-bonds-1, #220 stale-checks-1, #221 wide-25 (W41 dead), #222 fx-peg-1, #223
+wide-26 (W43 dead, W18 closed dead), #225 insure-jstbonds-1, #224 dw2-dates-1 (data-wide-2 date
+parse and BoE $/£ 1857-10 spike), #226 wide-27 (W44 dead; counts 111/29/40). SUMMARY night 6
+covers #218-#226 (summary-10).
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
@@ -139,23 +146,18 @@ restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 regis
 
 ## Lane queue (each from `main`)
 
-1. Open at this handoff (lead 1 of the night handed off at ~22:50 UTC for context): #214
-   asset-ledger-1 (review fixes in progress, text only; then merge), #213 this handoff, and the
-   PRs of the lanes still running: wide-24 (WIDER, gate ids W40/W41 provisional) and survey-9
-   (literature on long-history trend evidence vs the project's insurance finding). Each needs a
-   fresh review verdict before merging (`gh pr list`). Then a short summary-9 lane: add #210,
-   #214, wide-24, survey-9 to SUMMARY night 6 (counts after #210: 107 mechanisms / 29 / 35 gates,
-   bar 0.10/107).
+1. ~~Open at the first handoff: #214, #213, wide-24, survey-9, summary-9~~: all merged (#213-#217).
 2. Closed tonight, do not redo: `e4` (contradicted on pre-1927 stocks, #198: no longer a lead;
    the clean keyless independent monthly stock data are nearly used up, apart from the Yale IMM stocks, data-wide-2
    rank 2, which wait on the owner's ruling), real-rate FX value and
    sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
-   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W39. The previous
+   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W43, W18, W44, the insurance
+   on long bonds and floating FX (#219, #222, #225: exposure only) and the stale checks (#220). The previous
    night's do-not-redo list is in the night-lead 2026-11-24/25 section above and in SUMMARY.
 3. DEEPER next: (a) a sovereign-bond pool (Yale IMM bonds) or the IMM stocks with its own crash calendar (data-wide-2 rank 1) only
-   after the owner rules on the Yale terms; otherwise Norges Bank bonds/FX (allowed) or the BoE
-   millennium sheet's consols and FX (OGL); (b) a peg filter before any currency trend test on
-   the long FX histories; (c) the US railroad stocks 1857-1870 (NBER: manual download) are the
+   after the owner rules on the Yale terms; Norges Bank bonds and BoE consols done (#219), JST
+   bonds (#225), floating FX (#222): the insurance there is exposure only; (b) ~~a peg filter
+   before any currency trend test on the long FX histories~~: done in #222; (c) the US railroad stocks 1857-1870 (NBER: manual download) are the
    only unspent pre-1871 US stock months.
 4. WIDER next: further fields per wide-21..24 conventions (events dated as the market could
    know them; robots.txt read before the first fetch; crawl delays kept); `crackdown-shock`
@@ -166,3 +168,14 @@ restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 regis
 6. Data, owner only: World Bank Pink Sheet and CBOE SPXTR (403 to scripts), NBER ch. IV
    commodities and non-US bonds, IFS/OECD via DBnomics, Riksbank: manual browser download if
    wanted.
+7. New from lead 2's lanes:
+   (a) `patent-surge` (wide-27 O1, scored 6) is parked on data: it needs FRED release 486
+   per-country patent grants once ALFRED/fredgraph answers scripts again.
+   (b) MeasuringWorth's DJIA could replace stale-checks-1's OCR series (#220) only with
+   permission for scripted use (owner).
+   (c) ParlGov's licence was not read (Dataverse bot challenge): check it in a browser before
+   redistributing anything derived from it (#221).
+   (d) W41's unpredicted negative 12-month side (t -2.60, post hoc) needs a new card on
+   independent JST years 1921-1959 (b < 0), if anyone wants it.
+   (e) mypy reports 21 errors in `tests/test_wide25.py` on main (from #221): fix in an
+   engineering lane.
