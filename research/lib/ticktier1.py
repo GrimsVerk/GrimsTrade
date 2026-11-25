@@ -262,9 +262,13 @@ def published_check(eq0: list[qc.Mkt], ne: list[qc.Mkt]) -> dict[str, Any]:
     logged: dict[str, float] = {}
     for line in text.splitlines():
         cells = [x.strip() for x in line.split("|")]
-        if len(cells) > 8 and cells[2] in ("pooled-1", "pooled-2") and cells[4] == "robustness":
-            if cells[3].startswith("tsmom12@"):
-                logged[cells[2] + ":" + cells[3]] = float(cells[8])
+        if (
+            len(cells) > 8
+            and cells[2] in ("pooled-1", "pooled-2")
+            and cells[4] == "robustness"
+            and cells[3].startswith("tsmom12@")
+        ):
+            logged[cells[2] + ":" + cells[3]] = float(cells[8])
     worst, n = 0.0, 0
     for m in eq0:
         k = f"pooled-1:tsmom12@{m.group[3:]}-{m.name}"
@@ -452,7 +456,8 @@ def log_note(res: dict[str, Any]) -> None:
     now = f"{datetime.now(UTC):%Y-%m-%d %H:%M}"
     with tries.open("a") as f:
         f.write(
-            f"| {now} | {IDEA} | {body} | note | train | 1995-01-01 | 2025-10-31 | - | - | - | - |\n"
+            f"| {now} | {IDEA} | {body} | note | train | 1995-01-01 | 2025-10-31 "
+            "| - | - | - | - |\n"
         )
     print("logged 1 note row", file=sys.stderr)
 
