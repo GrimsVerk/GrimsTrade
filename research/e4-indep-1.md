@@ -26,20 +26,24 @@ FR -0.040).
 - **It is not only the monthly design.** Post hoc, the same monthly code on pooled-1's own 41
   markets gives +0.050 (no gap) and +0.023 (one-month gap), against pooled-1's weekly
   +0.063. A gap costs `e4` about 0.03 there. The pre-1927 pool (two of its four markets need
-  the gap) is still about 0.07-0.09 below that, roughly 2 SE.
+  the gap) is still about 0.07-0.09 below that, roughly 2 SE. Its one-sided upper bound
+  (+0.002) is below both matched monthly-design figures (+0.050 with no gap, +0.023 with a
+  one-month gap), not only below the weekly +0.063.
 - **The secondary pool agrees with the 41, not with the pre-1927 pool.** Five markets never
   scored but in years that overlap the 41 (Denmark, Finland, Ireland, Norway, Sweden; French
   country files, 1975-2025) give **D = +0.067 (SE 0.057, z +1.18), 4 of 5 positive**. That is
   "not confirmed, not contradicted". The new markets that share the 41's crash calendar
-  (1987, 2000-02, 2008, 2020) show the lead; the old calendar does not. That fits a lead that
+  (1987, 2000-02, 2008, 2020) show the lead; the old calendar does not. N5 is not fully
+  independent of the 41 either: pooled-1's EFA (one of its 8 ETFs) holds Nordic and Irish
+  stocks. That fits a lead that
   belongs to the post-1975 calendar more than to stock markets in general. With 4 and 5
   markets this is a reading, not a finding.
 - **Combined with the 41 (not deciding):** an inverse-variance mean of pooled-1 (+0.063, SE
   0.041) and the pre-1927 pool gives D -0.001, SE 0.029, z -0.04.
 
 **What it means for the queue:** by the card, `e4` moves from "open lead" to "no evidence of
-an edge on stocks in general": the +0.063 did not carry to the only clean independent stock
-data found keylessly. It is not a retune trigger. The 41's D stands as measured, and it is
+an edge on stocks in general": the +0.063 did not carry to nearly all the clean independent
+stock data found keylessly (what is left: a small US-only pool before 1871, section 1). It is not a retune trigger. The 41's D stands as measured, and it is
 not killed there. Expected power was low (0.26 at +0.063), so this test could not confirm
 much. It still contradicted the pooled-1 size, and that is the informative direction.
 
@@ -56,7 +60,9 @@ tick-tier-1 (the same series).
 |---|---|---|---|
 | Shiller / Cowles US monthly 1871-1926 | no | same market, earlier years: yes in time | **used (P4)** |
 | NBER Macrohistory ch. XI: GB industrial shares 1867-1914, 1919-34; Germany 1870-1913, 1924-35; France 1899-1914, 1919-39 | no | before 1927-07: yes in time; GB/DE/FR after 1966 are in the 41 | **used (P4), cut at 1927-06** |
-| NBER US railroad stocks 1857-1929, Frickey 1902-23, Dow 1897- | no | same US market and years as Cowles | not used (duplicate) |
+| NBER US railroad stocks m11005a 1857-1929 (m11005 from 1855) | no | from 1871 the same US market and years as Cowles; **1857-01..1870-12 (168 monthly levels, no gap, cached) overlaps neither Shiller nor the 41** | not used: missed when the card was written (review of #198). About 14 US years, so a US-only pool before 1871 is still unspent |
+| Goetzmann-Ibbotson-Peng NYSE 1815-1925 (Yale ICF) | no | 1815-1870 would overlap nothing scored | **not checked** (probably keyless; not fetched or verified tonight) |
+| NBER Frickey 1902-23, Dow-Jones 1897- | no | same US market and years as Cowles | not used (duplicate) |
 | French international country files, 1975- | DK, FI, IE, NO, SE never | new markets, same years as the 41 | **used as secondary (N5)**; the other 16 countries are in the 41 |
 | French US sector / style portfolios, 1926- | no | same market and years as the 10 industries | not independent |
 | JST Macrohistory, annual 1870-2020 | yes (tsmom12 only, insure-1870-1) | annual: cannot carry the 1/3/6-month legs | not usable |
@@ -125,9 +131,17 @@ Post hoc (not in the card, run after the result, reported, not deciding):
 
 - **Small and lopsided.** Four markets, one of them (DE) about 0.26 below the rest. Germany
   1870-1889 is an unweighted index of "representative stocks" and its observation date is not
-  stated (g = 1). France's 1899-1914 index was adjusted by its compilers so that its annual
-  averages match an annual series. Each can bend monthly returns. The card counted DE as
-  listed, and without it the pool reads zero, not positive.
+  stated (g = 1). The early-period check (1867-1897, D -0.175) leans on that unweighted
+  German index. The card counted DE as listed, and without it the pool reads zero, not
+  positive.
+- **France is a patched series.** m11024 chains several baskets in 1898-1914 (new bases or
+  baskets in 1900, 1901, 1905 and 1908). Its compilers adjusted it so its annual averages
+  match an annual series. The 1919-1927 segment holds a level-matched splice to the revised
+  index in January 1926 (first computed 1922 on 194 securities; 288 securities from 1926).
+  Levels are whole points: 65 of the 287 one-month changes through 1927-06 are exactly zero.
+  The rules' strict `>` counts a zero change as "not up", so in France `e4`'s 1-month leg is
+  pulled toward flat by rounding alone. France is a quarter of the pool's weight; without it D is -0.073 (upper bound
+  +0.002), so the reading holds.
 - **Old data.** Smoothed or stale old indices add positive autocorrelation to monthly
   returns. That should help `e4`'s fast legs, so smoothing is unlikely to explain the
   shortfall. The g = 1 check shows how much those legs depend on fresh data (-0.124 if every
