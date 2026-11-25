@@ -171,3 +171,52 @@ def test_new_years_respect_the_scored_coverage() -> None:
     assert dw.seen("fx", "JPN", 1971) and not dw.seen("fx", "IND", 1990)
     # JST annual equity scored by insure-1870-1 counts as seen (Norway from 1882)
     assert dw.seen("stock", "NOR", 1930) and not dw.seen("stock", "NOR", 1880)
+
+
+def test_small_excel_serials_are_dates() -> None:
+    """Norges Bank Table A2 labels 1914-01..1927-04 with serials 5145..9982 (below 10,000);
+    they must parse, not drop (the series then starts in 1914, not 1927-05)."""
+    dw = _dw()
+    rows = [
+        ["Month", "GBP", "USD"],
+        [5145.0, 18.22, ""],  # 1914-01-31
+        [9982.0, 18.2, 3.74],  # 1927-04-30
+        [10013.0, 18.19, 3.74],  # 1927-05-31
+        [45930.0, 13.5, 10.0],  # 2025-09-30
+    ]
+    assert dw.parse_labelled_columns(rows, 1) == [
+        (dw.ym(1914, 1), 18.22),
+        (dw.ym(1927, 4), 18.2),
+        (dw.ym(1927, 5), 18.19),
+        (dw.ym(2025, 9), 13.5),
+    ]
+    assert [m for m, _ in dw.parse_labelled_columns(rows, 2)] == [
+        dw.ym(1927, 4), dw.ym(1927, 5), dw.ym(2025, 9)
+    ]  # fmt: skip
+
+
+def test_excel_serials_before_march_1900() -> None:
+    """Excel counts a fictitious 1900-02-29 (serial 60): serials 1..59 are one day later than
+    a plain 1899-12-30 epoch gives, so the first of a month must not slip into the month before."""
+    dw = _dw()
+    assert str(dw.excel_serial(1)) == "1900-01-01"
+    assert str(dw.excel_serial(32)) == "1900-02-01"
+    assert str(dw.excel_serial(59)) == "1900-02-28"
+    assert str(dw.excel_serial(61)) == "1900-03-01"
+    assert str(dw.excel_serial(5145)) == "1914-01-31"
+    assert dw.parse_labelled_columns([[1.0, 2.0], [32.0, 3.0]], 1) == [
+        (dw.ym(1900, 1), 2.0), (dw.ym(1900, 2), 3.0)
+    ]  # fmt: skip
+
+
+def test_boe_drop_leaves_out_documented_errors() -> None:
+    dw = _dw()
+    text = (
+        "period,year,month,variable_id,variable,value\n"
+        "1857M09,1857,9,usd-gbp-exchange-rate,$/£,4.876\n"
+        "1857M10,1857,10,usd-gbp-exchange-rate,$/£,8.924\n"
+        "1857M11,1857,11,usd-gbp-exchange-rate,$/£,4.843\n"
+    )
+    s = dw.parse_boe_long_csv(text, "usd-gbp-exchange-rate", "fx", drop=[dw.ym(1857, 10)])
+    assert s.months == [dw.ym(1857, 9), dw.ym(1857, 11)]
+    assert len(dw.parse_boe_long_csv(text, "usd-gbp-exchange-rate", "fx").months) == 3

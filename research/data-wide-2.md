@@ -17,7 +17,7 @@ country-year once per asset class; `results/data-wide-2.md`):
 |---|---:|---:|
 | Government bonds (77 sovereigns in London 1869-1929; UK consols 1753-; Norway 1820-; Swiss 1943-) | 2,946 | 88 |
 | Stocks (London-listed country indices 1869-1929; UK 1709-1866; US 1815-1870; Russia 1865-1917) | 1,620 | 94 |
-| Currencies (USD/GBP 1791-1970; NOK 1819-1970) | 367 | 5 |
+| Currencies (USD/GBP 1791-1970; NOK 1819-1970) | 379 (was 367 before the #224 date fix) | 4 (was 5 before #224 left out the BoE $/£ 1857-10 spike) |
 | Commodity futures (AQR aggregate 1877-1912) | 36 | 2 |
 
 What decides the ranking:
@@ -63,7 +63,8 @@ What decides the ranking:
 4. BoE millennium monthly sheet: 707 new market-years, 540 of them before 1927, and 262 new
    calendar years. Cached; Open Government Licence.
 5. Norges Bank government bond yields from 1820 (96 new years, 46 new calendar years) and
-   exchange rates from 1819 (187 and 140). End of month, clean. Fetched.
+   exchange rates from 1819 (199 and 152; were 187 and 140 before the #224 date fix). End of
+   month to 1914, monthly averages after. Fetched.
 6. Yale NYSE 1815-1925 (56 new years, 52 new calendar years) and St Petersburg 1865-1917
    (50). Fetched; owner decision needed.
 7. IMF IFS exchange rates (about 217 currencies from the 1950s, mostly long pegs) and OECD
@@ -235,3 +236,21 @@ allowed (total < 3 GB), with a loader in `research/lib/` and an offline test on 
   kept (3 s between its 3 calls). About 10 calls per host in all.
 - Review fixes (22:00-22:20 UTC): `SEEN` extended with the JST annual equity coverage that
   insure-1870-1 scored, DBnomics and Riksbank data removed, counts regenerated.
+- Date fix (dw2-dates-1, #224, found by fx-peg-1): the label parser read Excel serial dates
+  only above 10,000 (1927-05-18), so Norges Bank Table A2 (NOK in USD) lost its 1914-01..1927-04
+  rows and started in 1927-05. It now reads serials of any size (and Excel's 1900 leap-day
+  quirk for serials below 60). Every other sheet the module reads (Norges Bank stocks, bonds
+  A1, FX A1; SNB; AQR; the BoE long CSV) has text labels or its own year/month columns and was
+  unchanged. With the fix the USD series starts 1914-09 (the USD column is blank 1914-01..08):
+  +152 months, +12 new market-years and new calendar years (1915-1926), no new falls. Moved:
+  currencies union 367 -> 379; Norges Bank FX 187 -> 199 new market-years, 96 -> 108 before
+  1927, 140 -> 152 new calendar years, 2,232 -> 2,384 months.
+- BoE $/£ spike (#224, found in the fx-peg-1 review): the BoE millennium sheet's $/£ (M15) reads
+  8.924 in 1857-10, between 4.876 (1857-09) and 4.843 (1857-11), a one-month data error: gold
+  par is about 4.87, and a sterling rate 83% above par is impossible under convertibility, even
+  in the 1857 panic. It made a 48% "fall" from 1857-10 to 1861-01 with its trough in a new year.
+  `datawide2_run.py` now leaves that month out (`BOE_USD_BAD`; the cached source is unchanged;
+  the results header states the exclusion). Moved: BoE $/£ falls new / all 2 / 3 -> 1 / 2; BoE
+  source row falls in new years 7 -> 6, before 1927 5 -> 4, all years 18 -> 17; currencies union
+  falls 5 -> 4. The remaining $/£ falls are 1809-02..1812-04 (27%, new years) and
+  1864-07..1985-02 (91%, trough in a seen year).
