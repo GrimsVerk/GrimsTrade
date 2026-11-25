@@ -62,9 +62,18 @@ def load(syms: Sequence[str]) -> None:
     BILLS = [(t, r) for t, r in harness.bill_rates() if t.date() <= END_BAR]
 
 
+def nonempty(strat: harness.ResearchStrategy) -> harness.ResearchStrategy:
+    """Cash while no asset of the book has a bar yet (a coin sleeve before its first bar)."""
+
+    def f(view: View) -> Weights:
+        return strat(view) if any(len(view.close(s)) for s in view.syms) else {}
+
+    return f
+
+
 def book(name: str, syms: Sequence[str], strat: harness.ResearchStrategy) -> B:
     hist = {s: H[s] for s in syms}
-    run = harness.run(IDEA, name, strat, kind="variant", panel=Panel(hist), history=hist,
+    run = harness.run(IDEA, name, nonempty(strat), kind="variant", panel=Panel(hist), history=hist,
                       start=W[0], end=W[1], log=False)  # fmt: skip
     res = gym.simulate(run.decisions, hist, rates=BILLS)
     return B(name, list(syms), run.days, bbook1.excess_calendar(res, run.days), run.rets,
@@ -129,10 +138,11 @@ def weight_sum(b: B, syms: Sequence[str]) -> float:
 
 
 def coin_var_share(b: B, sleeves: dict[str, B]) -> float:
-    """cov(coin part, book) / var(book); coin part = slot size (1 / eligible assets that day) x
-    the coin's own `tsmom12` sleeve return."""
+    """cov(coin part, book) / var(book); coin part = slot size (1 / eligible assets that day; for
+    a `K` book 1 / eligible six assets) x the coin's own `tsmom12` sleeve return."""
     days = b.days[1:]
-    n = np.array([sum(eligible_from(s) <= d for s in b.syms) for d in days], float)
+    pool = core.SIX if b.name.startswith("K-") else b.syms  # a K book gives coins the six's slot
+    n = np.array([sum(eligible_from(s) <= d for s in pool) for d in days], float)
     part = np.zeros(len(days))
     for s in b.syms:
         if s in COINS:
