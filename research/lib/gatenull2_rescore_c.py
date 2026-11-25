@@ -17,6 +17,7 @@ import sys
 from collections.abc import Callable, Mapping
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gatenull2 as g  # noqa: E402
@@ -34,11 +35,28 @@ def at(src: Mapping[int, float], k: int = 0) -> list[Col]:
     return [lambda _s, m: e17.shifted_month(src, m, k)]
 
 
-def save(rec: dict[str, object]) -> None:
+TOL = 0.02  # card: the rebuilt true t must be within 0.02 of the stored one
+
+
+def save(rec: dict[str, Any]) -> None:
+    """Check the rebuild (true t within TOL of the stored t, shift rank equal to the stored
+    rank); write the record, or a `reproduced: false` note instead of it."""
+    ok = abs(rec["true_t"] - rec["stored_t"]) <= TOL and rec["shift_rank"] == rec["stored_rank"]
+    if not ok:
+        rec = {
+            "gate": rec["gate"],
+            "reproduced": False,
+            "note": f"rebuild t {rec['true_t']:+.3f} (stored {rec['stored_t']:+.2f}), shift rank"
+            f" {rec['shift_rank']} (stored {rec['stored_rank']}); not re-scored.",
+        }
+        print(rec)
+    else:
+        rec["reproduced"] = True
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f"{rec['gate']}.json").write_text(json.dumps(rec, indent=1) + "\n")
-    keys = ("gate", "true_t", "stored_rank", "shift_rank", "phase_rank", "iaaft_rank")
-    print({k: rec.get(k) for k in keys}, f"acf1 {rec['dose_acf1']:.3f}")
+    if ok:
+        keys = ("gate", "true_t", "stored_rank", "shift_rank", "phase_rank", "iaaft_rank")
+        print({k: rec.get(k) for k in keys}, f"acf1 {rec['dose_acf1']:.3f}")
 
 
 def w32(px: dict[str, e13.Closes]) -> None:

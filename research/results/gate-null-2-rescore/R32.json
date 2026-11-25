@@ -167,5 +167,6 @@
   "min": -2.3684698512293094,
   "max": 1.6483456505716219
  },
- "iaaft_pass": false
+ "iaaft_pass": false,
+ "reproduced": true
 }

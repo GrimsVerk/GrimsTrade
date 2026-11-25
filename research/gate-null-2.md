@@ -9,8 +9,10 @@ before any number, commit `09d665d`). Numbers: `results/gate-null-2.md`. Code:
 ## Answer in four lines
 
 1. **Yes, the rank part of the gate is mis-sized for persistent doses.** Under a true null, the
-   true t ranks among the top 2 of 41 earlier-dose calendars (F1) in 7.5-8% of samples at
-   dose autocorrelation phi 0.8-0.9, and in 13-19% at phi 0.98-0.99 (nominal 4.9%). Rank 1
+   true t ranks among the top 2 of 41 earlier-dose calendars (F1) in 5.4-7.5% of samples at
+   dose autocorrelation phi 0.8 (three of the four cells under the 7.3% mis-size line),
+   7.5-10.7% at phi 0.9 and 13-19% at phi 0.98-0.99 (nominal 4.9%; ranges over R1/R2 and
+   both T). Rank 1
    alone: 11-16% at phi 0.98-0.99 against 2.4%.
 2. **The gate's t >= 2 condition hides almost all of it.** With realistic returns (GARCH-t or
    real French market months) the full gate rule (t >= 2 and rank <= 2) passes a null 0.9-3.1%
@@ -27,8 +29,11 @@ before any number, commit `09d665d`). Numbers: `results/gate-null-2.md`. Code:
    (R^2 1%, T = 600). It changes no verdict on main: W32 ranks 1 in all three families, and every
    other gate fails its own t.
 
-**Recommendation (by the card's rule): adopt "both" for future gates whose dose has lag-1
-autocorrelation >= 0.8 at the gate's own step.** A pass then needs t >= 2 with the predicted
+**Recommendation (by the card's rule, adopted by a margin within noise): adopt "both" for
+future gates whose dose has lag-1 autocorrelation >= 0.8 at the gate's own step.** The 0.8
+threshold rests on one cell (7.5% against the 7.3% line, about 0.3 SE), and the power margin
+that picks "both" over F2 alone is 4.79 points (SE 0.17) against a 5-point line (Choice,
+below). A pass then needs t >= 2 with the predicted
 sign and rank <= 2 of 41 in the shifted calendars and in 40 phase-randomised surrogates (IAAFT
 when the dose is skewed or mostly zeros). Do not expect it to stop passes dying in replication:
 W32 passes it, and two passes among about 32 gates is what chance gives at this per-gate size.
@@ -89,7 +94,8 @@ The effect is planted in R1 and R2 so the dose explains R^2 of next month's vari
 | 0.98 | 67.2 / 65.2 | 58.3 / 56.5 | 57.8 / 56.8 | 58.0 / 57.4 | 52.6 / 50.5 | 52.5 / 51.2 |
 | 0.99 | 66.3 / 66.1 | 53.2 / 52.8 | 52.8 / 55.3 | 53.0 / 55.1 | 45.6 / 47.5 | 45.2 / 46.7 |
 
-- F1 and F2 have the same power. Both lose some at high phi, because a planted persistent effect
+- At T = 600, F1 and F2 have the same power (58.6% each, averaged over phi 0.9-0.99 and R1/R2).
+  At T = 300, F1 has more (35.9% against 32.7%). Both lose some at high phi, because a planted persistent effect
   also lifts the near shifts (F1) and the persistent surrogates (F2).
 - "Both" costs 2-3 points up to phi 0.95 and 5-8 points at 0.98-0.99.
 - F1b (both ways) loses the most at high phi: 39% at phi 0.99, because its near shifts (k = +-13)
@@ -116,8 +122,11 @@ The effect is planted in R1 and R2 so the dose explains R^2 of next month's vari
 - **Choice**, for phi >= 0.8, R^2 1%, T = 600, averaged over phi 0.9-0.99 and R1/R2:
   - Every option has gate false passes <= 4.9% in R1/R2.
   - Power: F1 alone 58.6%, F2 alone 58.6%, both 53.8%.
-  - "Both" is within 5 points of F2 alone (4.8), so the card's rule says **"both"**. The margin
-    is thin: at phi 0.98-0.99 alone the cost is 5-8 points.
+  - "Both" is within 5 points of F2 alone, so the card's rule says **"both"**. The margin is
+    within noise: the paired gap (F2 alone minus "both", same simulations) is 4.79 points with
+    SE 0.17, 1.2 SE under the line. The averaging over phi 0.9-0.99 was not fixed in the card;
+    including phi 0.8 the gap is 4.37 (SE 0.14). At phi 0.98-0.99 alone the gap is 5-8 points.
+    The card's rule governs, so "both" stands, adopted by a margin within noise.
 
 ## Part 3: re-score of the gates on main (descriptive, no new verdict)
 
@@ -182,10 +191,15 @@ For a gate whose dose has lag-1 autocorrelation >= 0.8 at its own step (monthly,
 dose with its own cycle:
 
 - Add a second placebo family to the rule before any number: 40 phase-randomised surrogates of
-  the dose's full series (IAAFT when the dose is skewed or mostly zeros), seed fixed.
+  the dose's full series (IAAFT when the dose is skewed or mostly zeros), seed fixed. For a
+  near-unit-root dose (W29 acf 0.99, W35 0.998), detrend or end-match the series before the
+  Fourier step, or use IAAFT: the circular wrap of a series whose ends differ adds spurious
+  high frequencies.
 - A pass needs t >= 2 with the predicted sign and rank <= 2 of 41 in both the shifted family and
   the surrogate family.
 - Report both nulls' widths.
 - Below 0.8 the surrogate family is optional (shown).
 - Expected cost: 2-3 points of power at phi 0.9-0.95, 5-8 at 0.98-0.99.
+- Caveats: the 0.8 threshold rests on one cell (about 0.3 SE over the line), and "both" won on
+  power by a margin within noise (4.79 points, SE 0.17, against 5).
 - Keep the replication step.
