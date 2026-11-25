@@ -163,3 +163,82 @@ means the first row is 2016-06-21, so the frozen rule leaves out the one G event
 (the DAO theft, listed 2016-06-17, USD 60 m): a consequence of the card's rows, not changed.
 R37 (not run unless W37 passes): BTC 5,050 closes, 4,976 rows 2012-01-30 .. 2025-10-23, one gap,
 54 event days.
+
+## What came out (one real run, 2026-11-25 21:35:44 UTC)
+
+### W37 `hack-drift`: fails (wrong sign)
+
+**One doubling of the USD stolen from non-exchange targets goes with +0.28% on ETH over the
+week after the news (t +0.68, 3,412 days, 109 event days, 2016-06 .. 2025-10): the wrong sign;
+the true t ranks 38 of 41 earlier-dose calendars. Dead by the gate: no card for a strategy.
+R37 is not run** (the card runs it only after a pass). Held-out year untouched. Table:
+`results/hack-drift.md`.
+
+| Cell (ETH, 7 days from the end of day d+1, controls r7 and r30, unless named) | b, % per unit | t | Rows |
+|---|---:|---:|---:|
+| **Gate: log2(USD stolen / 5 m), non-exchange thefts of USD 10 m or more** | **+0.278** | **+0.68** | **3,412** |
+| Reaction, days d-1 .. d+1, no controls (the channel's first link) | -0.056 | -0.27 | 3,412 |
+| BTC, gate design (BTC rows from 2012) | -0.002 | -0.01 | 4,976 |
+| ETH minus BTC | +0.175 | +0.89 | 3,412 |
+| 30-day horizon, NW 30 | -0.784 | -0.86 | 3,389 |
+| Binary dose (per event day, not per unit) | -0.816 | -0.59 | 3,412 |
+| Events of USD 50 m or more only | +0.590 | +1.30 | 3,412 |
+| After Liu and Tsyvinski's sample (d >= 2018-06-01) | +0.403 | +0.98 | 2,702 |
+
+- **There is no reaction to continue.** Over the theft day and the day after, ETH moves
+  -0.06% per doubling (t -0.27): even a USD 600 m theft (about 7 units) goes with about -0.4%
+  over two days, inside ETH's daily noise of about 4%. The channel's first link (the market
+  notices) is absent at index level, so a drift was unlikely; the week after leans positive,
+  and the largest thefts (USD 50 m or more) lean further positive (t +1.30).
+- **Post-sample** (after Liu and Tsyvinski's 2018 sample, nearly all the events) the sign is
+  positive (t +0.98). Their hack-attention result is not reproduced by the thefts themselves
+  on ETH; BTC is flat (t -0.01). (Their measure is Google searches, not thefts; this gate
+  tests the thefts.)
+- The 30-day horizon and the binary dose have the predicted sign but |t| under 1: noted only.
+- **The null is close to normal and slightly left-shifted** (earlier-dose placebos: SD 1.02,
+  5% with |t| >= 2; 5/50/95% -1.85 / -0.60 / +1.19; extremes -3.61 at k = 368 days, +1.74).
+  The two surrogate families agree with it on width and on the verdict: phase-randomised SD
+  1.13, 10% past |t| 2, rank 27 of 41; random-day SD 1.08, 8%, rank 30 of 41. For an
+  independent-event dose, unlike wide-22's persistent macro dose, the families do not
+  disagree (the phase surrogate turns the spike train into a smooth series, so it is the
+  weaker model here). The one far placebo (-3.61) is a single shifted calendar, the kind of
+  draw a 40-placebo family shows; it does not bear on the verdict.
+- My guess (b < 0, t between -1.5 and +0.5, middle rank, placebo SD 0.9-1.2, pass 2%) was wrong
+  on the sign and the rank (t +0.68, rank 38), right on the null's width (1.02).
+
+Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the family bar and
+the register's 9.9e-5). A kill on its own t and sign. The disclosure-date caveat in the card
+could only have produced a false pass; with b > 0 it does not arise.
+
+## Family count and status
+
+One mechanism added and closed by its gate (W37 `hack-drift`). The thirteen others are parked,
+filtered or dead by size or channel and are **not counted**, as in wide-12 .. wide-22; each has
+a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
+
+**Count relative to `main`: 104 mechanisms (103 + W37), 29 tested by a strategy, none passed;
+31 gates (30 + W37), one kill-only pass (W32, killed by its replication R32).** Family bar
+p < 0.10 / 104 = 0.00096. **If #202 (wide-22) lands first:** 105 mechanisms, 29 tested by a
+strategy, 33 gates (with W36 and R36), two kill-only passes (W32, W36), each killed by its
+replication; family bar 0.10 / 105 = 0.00095. W37 keeps its id either way unless another lane
+took W37; the merging lead renumbers if so. Published effects tested after publication: 1 more
+(the hack channel of Liu and Tsyvinski 2021 / Corbet et al. 2020, in its theft form on ETH and
+BTC, 2018-2025): dead.
+
+Rows logged in `tries.md`: 1 `screen` (`hack-drift`) and 13 `note` rows (one per candidate
+scored but not gated). Data downloaded: 0.8 MB (the hack list; one call, plus one format probe
+of the same size).
+
+## Next
+
+1. **The crypto-crime channel is closed at index level.** Thefts of up to USD 0.6 bn do not
+   move ETH or BTC measurably on the day, so the flow and run channels are too small, as the
+   size check said. A test on the hacked protocols' own tokens (where Corbet et al. find their
+   effects `[memory]`) needs token prices this project does not hold and is not a live asset.
+2. **C2 `crackdown-shock`** (unscheduled regulatory actions against crypto) is the one parked
+   candidate with a real channel and published effects; it needs a dated event list built
+   without hindsight (a source that lists every action, not the remembered ones).
+3. **Method**: for an independent-event dose the earlier-dose placebos, phase surrogates and
+   random-day surrogates gave the same width (SD 1.02-1.13). wide-22's disagreement belongs to
+   persistent doses; for event doses the random-day family is the natural surrogate, the
+   phase family the weaker one.

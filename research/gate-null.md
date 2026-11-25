@@ -44,6 +44,7 @@ shows how wide the real null is:
 | GSPC next month on this month's fall x detrended ln(broker customer receivables / equity value), four controls, Newey-West 3 lags, 729 months (parked-gates-1, W33) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.58 | **30%** | **off-centre**: all 40 placebo t positive (median +1.70, 95% +3.06): an earlier-only family can be biased; the rank is the reference |
 | US market (French daily) next month on detrended ln share of newspaper articles with "panic", three price controls, Newey-West 3 lags, 438 months 1927-1963 (panic-words-1, W34) | 40 earlier-dose calendars, k = 25-103 months (odd) | 1.18 | 10% | earlier-only family, centred this time (median -0.10, 5/95% -2.03/+1.47); panic peaks cluster in 1929-1933 |
 | Shiller S&P 500 next month (monthly averages) on trailing 12-month mean sunspot number, Newey-West 12 lags, 1,831 months 1871-2023 (wide-21, W35) | 40 calendars moved k = 19-95 months, both ways | 1.16 | 25% | **off-centre** (median +1.25, 95% +2.83, max +3.11): a cyclic dose shifted 4-8 years becomes its own anti-phase, so the family repeats one weak pattern with the opposite sign; about 14 cycles |
+| ETH 7-day return from the end of day d+1 on log2(USD stolen / 5 m) of DefiLlama non-exchange thefts >= USD 10 m on day d, controls r7 r30, Newey-West 7 lags, 3,412 days 2016-2025 (wide-23, W37) | 40 earlier-dose calendars, k = 23-920 days (step 23) | 1.02 | 5% | 109 nearly independent event days: about normal, slightly left (median -0.60, 5/95% -1.85/+1.19, min -3.61); phase surrogates SD 1.13 (10%), random-day surrogates SD 1.08 (8%): the families agree for an event dose |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -194,6 +195,7 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W33 `margin-susceptibles` (parked-gates-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +0.05, rank 41 | no: t < 2 |
 | W34 `panic-words` (panic-words-1) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t +1.19 (predicted < 0), rank 37 | no: wrong sign |
 | W35 `solar-max-recession` (wide-21) | k = +-19..95 months (step 4), both ways | no: the sun does not answer prices | t -0.87, rank 3 | no: t > -2 |
+| W37 `hack-drift` (wide-23; id provisional) | k = 23..920 days, earlier only | not used (earlier only, as step 1 asks: the loot scales with prices) | t +0.68 (predicted < 0), rank 38 | no: wrong sign |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -239,6 +241,16 @@ killed by R32) and every gated idea dead. Family bar p < 0.10 / 102 = 0.00098.
 (provisional)).** One more mechanism and gate: **103 mechanisms, 29 tested by a strategy, 30
 gates**; W35 failed (t -0.87 > -2), so still one kill-only pass (W32, killed by R32) and every
 gated idea dead. Family bar p < 0.10 / 103 = 0.00097.
+
+**Count after W37 (wide-23, 2026-11-25; relative to `main`, id provisional).** One more
+mechanism and gate: **104 mechanisms, 29 tested by a strategy, 31 gates**; W37 failed (wrong
+sign, rank 38), so still one kill-only pass (W32, killed by R32) and every gated idea dead.
+Family bar p < 0.10 / 104 = 0.00096. If PR #202 (wide-22: W36, R36) lands first, the count is
+105 / 29 / 33 with two kill-only passes (W32, W36), each killed by its replication, and the
+bar 0.10 / 105 = 0.00095; the merging lead adjusts this paragraph. For this event dose the
+phase-randomised and random-day surrogate families (shown) gave the same width as the
+earlier-dose placebos (SD 1.13 and 1.08 against 1.02) and the same verdict (ranks 27 and 30):
+the disagreement wide-22 found is a property of persistent doses, not of the surrogate method.
 
 ## Cyclic doses need another placebo family (wide-21, 2026-11-25)
 
