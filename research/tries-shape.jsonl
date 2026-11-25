@@ -332,6 +332,14 @@
 {"excess_kurtosis":6.9016,"row":"| 2026-11-24 19:49 | seasonal-20y | seasonal-20y-alone | variant | train | 1994-02-01 | 2025-11-09 | 0.81 | +7486.9% | 50.8% | 4.53 |","sharpe_weekly":0.8462,"skew":-0.0074,"weeks":1657}
 {"excess_kurtosis":10.6172,"row":"| 2026-11-24 19:49 | seasonal-20y | tsmom12 | baseline | train | 1994-02-01 | 2025-11-09 | 1.04 | +18044.5% | 37.4% | 2.81 |","sharpe_weekly":1.0584,"skew":0.0633,"weeks":1657}
 {"excess_kurtosis":5.1698,"row":"| 2026-11-24 19:49 | seasonal-20y | hold | baseline | train | 1994-02-01 | 2025-11-09 | 0.88 | +20054.9% | 68.8% | 1.46 |","sharpe_weekly":0.9161,"skew":-0.1731,"weeks":1657}
+{"excess_kurtosis":9.2489,"row":"| 2026-11-24 23:45 | wide-19 | cred-xs | variant | train | 1994-02-01 | 2025-10-31 | 1.09 | +29621.4% | 39.9% | 1.83 |","sharpe_weekly":1.1272,"skew":-0.0143,"weeks":1657}
+{"excess_kurtosis":9.2334,"row":"| 2026-11-24 23:45 | wide-19 | cred-xs/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.11 | +33497.4% | 38.8% | 1.82 |","sharpe_weekly":1.1501,"skew":-0.0158,"weeks":1657}
+{"excess_kurtosis":6.9012,"row":"| 2026-11-24 23:45 | wide-19 | cred-lr | variant | train | 1994-02-01 | 2025-10-31 | 0.95 | +20355.6% | 48.6% | 1.72 |","sharpe_weekly":0.9832,"skew":-0.099,"weeks":1657}
+{"excess_kurtosis":6.9038,"row":"| 2026-11-24 23:45 | wide-19 | cred-lr/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +21459.4% | 47.5% | 1.73 |","sharpe_weekly":0.9921,"skew":-0.1057,"weeks":1657}
+{"excess_kurtosis":7.0832,"row":"| 2026-11-24 23:45 | wide-19 | cred-xs@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.62 | +325.1% | 23.6% | 2.12 |","sharpe_weekly":0.6394,"skew":-0.885,"weeks":1275}
+{"excess_kurtosis":7.794,"row":"| 2026-11-24 23:45 | wide-19 | cred-lr@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.53 | +284.1% | 36.2% | 0.96 |","sharpe_weekly":0.5438,"skew":-0.9763,"weeks":1275}
+{"excess_kurtosis":8.0537,"row":"| 2026-11-24 23:45 | wide-19 | cred-xs@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.70 | +4868.1% | 26.0% | 2.13 |","sharpe_weekly":0.65,"skew":-0.9487,"weeks":3331}
+{"excess_kurtosis":6.2396,"row":"| 2026-11-24 23:45 | wide-19 | cred-lr@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.65 | +7530.4% | 51.9% | 0.89 |","sharpe_weekly":0.6181,"skew":-0.8463,"weeks":3331}
 {"excess_kurtosis":12.6223,"row":"| 2026-11-24 23:31 | wide-18 | vclock12 | variant | train | 1994-02-01 | 2025-10-31 | 0.88 | +6123.2% | 48.3% | 3.32 |","sharpe_weekly":0.8907,"skew":0.0634,"weeks":1657}
 {"excess_kurtosis":12.6613,"row":"| 2026-11-24 23:31 | wide-18 | vclock12/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.91 | +7410.6% | 47.5% | 3.30 |","sharpe_weekly":0.9277,"skew":0.0567,"weeks":1657}
 {"excess_kurtosis":10.0732,"row":"| 2026-11-24 23:31 | wide-18 | huber52 | variant | train | 1994-02-01 | 2025-10-31 | 1.04 | +20286.7% | 40.1% | 3.68 |","sharpe_weekly":1.0652,"skew":0.056,"weeks":1657}
