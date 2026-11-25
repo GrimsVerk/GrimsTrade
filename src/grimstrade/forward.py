@@ -48,6 +48,10 @@ REGISTRY = Path("research/forward/registry.jsonl")
 CANDIDATES = Path("research/forward/candidates.jsonl")
 METRICS = ("sharpe", "mean", "win_rate")
 SE_RULE = "bartlett-1y"  # recorded on each new line; the rule lives in `hac_t` and `lag`
+# The measured lrv a line is sized with is this upper confidence value of the train record's
+# estimate, not the estimate itself (`lrv_upper`; level sized by research/registrymoments1.py,
+# DECISIONS 2026-11-25, lane registry-moments-1).
+LRV_LEVEL = 0.65
 _N = NormalDist()
 
 
@@ -74,6 +78,11 @@ class NotFrozen(ForwardError):
 class LrvNotMeasured(ForwardError):
     """A `mean` or `sharpe` line without the long-run variance ratio measured on the train record
     given to `freeze`, or with a smaller `lrv` than that record's."""
+
+
+class MomentsNotMeasured(ForwardError):
+    """A `sharpe` line without the skew and kurtosis measured on the train record given to
+    `freeze`, or with a plan whose Mertens factor k is below that record's (more optimistic)."""
 
 
 class MissingFreezeTime(ForwardError):
@@ -119,6 +128,10 @@ class Plan:
             raise ValueError("the effect to detect must be positive (one-sided test)")
         if not self.lrv >= 1:
             raise ValueError("lrv (long-run variance ratio) must be at least 1; write 1 if lower")
+        # equality holds for any two-valued record; a relative tolerance keeps float rounding of
+        # a measured pair (`measure_moments`) from failing it
+        if not self.kurtosis >= (1 + self.skew**2) * (1 - 1e-12):
+            raise ValueError("raw kurtosis is at least 1 + skew^2 (3 for a normal distribution)")
 
 
 def _z(alpha: float, power: float) -> float:
@@ -232,14 +245,37 @@ def train_hash(values: Sequence[float]) -> str:
     return sha256(_canonical([float(v) for v in values]))
 
 
+def lrv_upper(point: float, nu: float, level: float = LRV_LEVEL) -> float:
+    """Upper `level` confidence value of a long-run variance ratio estimated as `point` with
+    `nu` degrees of freedom: the verdict's own fixed-b approximation (`_ref`) treats the
+    Bartlett estimate over its mean as chi^2_nu / nu, so the truth is at most
+    point * nu / chi^2_nu(1 - level) with probability `level`. The chi^2 quantile is
+    Wilson-Hilferty's, nu (1 - a - z sqrt(a))^3 with a = 2 / (9 nu), z = z(level): within 1.5%
+    of the exact one at nu >= 3 (the shortest record `measure_lrv` accepts), 0.3% at nu >= 7.5
+    (five years of weekly values). `level` is a
+    tuning value sized by simulation (`LRV_LEVEL`), not a promised coverage: at 0.65 the value
+    is below the truth in about 39% of five-year weekly AR(1) records, not 35%."""
+    a = 2 / (9 * nu)
+    base = 1 - a - _N.inv_cdf(level) * math.sqrt(a)
+    if not base > 0:
+        raise ValueError(f"nu {nu} is too small for an upper {level} value")
+    return point / base**3
+
+
 def measure_lrv(train: Sequence[float], per_year: float) -> dict[str, Any]:
     """The long-run variance ratio of a train record, measured the way the verdict measures
     dependence: Bartlett long-run variance at `lag(n, per_year)` lags (one year) over the sample
     variance, divided by the fixed-b mean factor c of `_ref` (the Bartlett estimate's mean is
-    about c = 1 - b + b^2 / 3 of the true value, 0.81 at five years of weekly bars), then
-    floored at 1 (`Plan` needs at least 1). Refuses a record too short to hold a year of lags
+    about c = 1 - b + b^2 / 3 of the true value, 0.81 at five years of weekly bars): the
+    `point` estimate. The line is sized with its upper `LRV_LEVEL` confidence value
+    (`lrv_upper`, nu of `_ref`), floored at 1 (`Plan` needs at least 1): five years of weekly
+    values measure a true 3 with sd about 1.4, and sized with the point estimate a dependent
+    line's power averages 0.70-0.77 instead of 0.80
+    (research/results/registry-moments-1.md). With no lags (under two observations a year)
+    nothing is measured and `lrv` is 1. Refuses a record too short to hold a year of lags
     (n < 4 (round(per_year) - 1)) or with no variation. Returns the numbers a frozen line keeps
-    under `lrv_train`: n, lags, the raw ratio, c, the floored `lrv`, and the values' sha256."""
+    under `lrv_train`: n, lags, the raw ratio, c, nu, the point estimate, the level, the
+    floored `lrv`, and the values' sha256."""
     n = len(train)
     full = max(1, round(per_year)) - 1
     if n < max(2, 4 * full):
@@ -253,13 +289,43 @@ def measure_lrv(train: Sequence[float], per_year: float) -> dict[str, Any]:
         raise ValueError("the train record has no variation")
     lags = lag(n, per_year)
     ratio = long_run_variance(values, lags) / var
-    c, _ = _ref(n, lags)
+    c, nu = _ref(n, lags)
+    point = ratio / c
     return {
         "n": n,
         "lags": lags,
         "ratio": ratio,
         "c": c,
-        "lrv": max(1.0, ratio / c),
+        "nu": nu,
+        "point": point,
+        "level": LRV_LEVEL,
+        "lrv": max(1.0, lrv_upper(point, nu)) if lags > 0 else 1.0,
+        "sha256": train_hash(values),
+    }
+
+
+def k_factor(skew: float, kurtosis: float, sharpe: float, per_year: float) -> float:
+    """Mertens' (2002) factor k = 1 - skew sr + (kurtosis - 1) / 4 sr^2 at the annual Sharpe
+    `sharpe` (sr = sharpe / sqrt(per_year), per period): n times the variance of an iid Sharpe
+    estimate (1 + sr^2 / 2 for normal returns). Negative skew and fat tails raise it; a larger
+    k needs a larger sample."""
+    sr = sharpe / math.sqrt(per_year)
+    return 1 - skew * sr + (kurtosis - 1) / 4 * sr**2
+
+
+def measure_moments(train: Sequence[float]) -> dict[str, Any]:
+    """Skew and raw kurtosis (population moments, `stats.moments`) of a train record, for the
+    Mertens factor k of a `sharpe` line's sample. Kept on the line under `moments_train` with
+    n and the values' sha256 (the same hash as `lrv_train`). Refuses a record with no
+    variation."""
+    values = [float(v) for v in train]
+    m = stats.moments(values)
+    if m is None:
+        raise ValueError("the train record has no variation")
+    return {
+        "n": len(values),
+        "skew": m.skew,
+        "kurtosis": m.kurtosis,
         "sha256": train_hash(values),
     }
 
@@ -296,7 +362,7 @@ def min_periods_sharpe(
     dependence-robust test's critical value at that n instead of z(1 - alpha):
     n = 1 + lrv k ((cv(n) + z_power) / sr)^2, k = 1 - skew sr + (kurtosis - 1) / 4 sr^2."""
     sr = sharpe / math.sqrt(per_year)
-    k = 1 - skew * sr + (kurtosis - 1) / 4 * sr**2
+    k = k_factor(skew, kurtosis, sharpe, per_year)
     zp = _N.inv_cdf(power)
 
     def need(n: int) -> float:
@@ -452,17 +518,28 @@ def entry(
     """A registry line without its freeze time (the shape of a proposal too).
 
     `train`: the rule's values on its train record, in the unit of its forward observations.
-    For `mean` and `sharpe` its long-run variance ratio is measured (`measure_lrv`) and the
-    line's `lrv` is the larger of the plan's and the measured one: a caller may assume more
-    dependence than one year of lags can see, never less. The measurement is kept under
-    `lrv_train`. `freeze` needs it; a proposal without `train` keeps the plan's `lrv`. The exact
-    sign test of `win_rate` does not use `lrv`, so `train` is ignored there."""
+    For `mean` and `sharpe` its long-run variance ratio is measured (`measure_lrv`, the upper
+    `LRV_LEVEL` value) and the line's `lrv` is the larger of the plan's and the measured one: a
+    caller may assume more dependence than one year of lags can see, never less. The
+    measurement is kept under `lrv_train`. For `sharpe` the record's skew and kurtosis are
+    measured too (`measure_moments`, kept under `moments_train`): if the plan's pair gives a
+    smaller Mertens factor k at the plan's effect than the measured pair (`k_factor`), the line
+    takes the measured pair; a caller may assume a larger k, never a smaller one. `freeze`
+    needs both; a proposal without `train` keeps the plan's numbers. The `mean` test's sample
+    does not use skew or kurtosis, and the exact sign test of `win_rate` uses neither them nor
+    `lrv`, so nothing is measured there."""
     if not code:
         raise ValueError("a rule with no code files cannot be frozen")
-    measured = None
+    measured = moments = None
     if train is not None and plan.metric != "win_rate":
         measured = measure_lrv(train, plan.per_year)
         plan = replace(plan, lrv=max(plan.lrv, measured["lrv"]))
+    if train is not None and plan.metric == "sharpe":
+        moments = measure_moments(train)
+        mine = k_factor(plan.skew, plan.kurtosis, plan.effect, plan.per_year)
+        theirs = k_factor(moments["skew"], moments["kurtosis"], plan.effect, plan.per_year)
+        if mine < theirs:
+            plan = replace(plan, skew=moments["skew"], kurtosis=moments["kurtosis"])
     line: dict[str, Any] = {
         "id": rule_id,
         "rule_hash": rule_hash(code, params, data),
@@ -487,6 +564,8 @@ def entry(
     }
     if measured is not None:
         line["lrv_train"] = measured
+    if moments is not None:
+        line["moments_train"] = moments
     return line
 
 
@@ -527,13 +606,42 @@ def check_lrv(row: Mapping[str, Any], train: Sequence[float] | None) -> None:
         )
 
 
+def check_moments(row: Mapping[str, Any], train: Sequence[float] | None) -> None:
+    """Raise `MomentsNotMeasured` unless a `sharpe` line's `moments_train` is what
+    `measure_moments` gives on `train` and its skew and kurtosis give a Mertens factor k at
+    least the measured pair's at the line's effect (other metrics pass: their samples do not
+    use skew or kurtosis)."""
+    if row["metric"] != "sharpe":
+        return
+    if train is None:
+        raise MomentsNotMeasured(
+            f"{row['id']}: a sharpe rule is frozen with its train record, so that its skew and "
+            "kurtosis are measured, not assumed"
+        )
+    measured = measure_moments(train)
+    if row.get("moments_train") != measured:
+        raise MomentsNotMeasured(
+            f"{row['id']}: moments_train is not the measurement of this train record "
+            "(build the line with entry(..., train=...))"
+        )
+    effect, per_year = float(row["effect"]), float(row["per_year"])
+    mine = k_factor(float(row["skew"]), float(row["kurtosis"]), effect, per_year)
+    theirs = k_factor(measured["skew"], measured["kurtosis"], effect, per_year)
+    if mine < theirs:
+        raise MomentsNotMeasured(
+            f"{row['id']}: skew {row['skew']} and kurtosis {row['kurtosis']} give k "
+            f"{mine:.4f}, below the train record's {theirs:.4f}"
+        )
+
+
 def freeze(
     path: Path, row: Mapping[str, Any], now: datetime, train: Sequence[float] | None = None
 ) -> dict[str, Any]:
     """Append `row` (from `entry`) to the registry, stamped `now`. Refuses a known id, a file
-    whose committed lines were ever changed, a `min_sample` that is not the calculator's, and a
+    whose committed lines were ever changed, a `min_sample` that is not the calculator's, a
     `mean` or `sharpe` line whose `lrv` was not measured on `train`, the same train record
-    `entry` got (`check_lrv`)."""
+    `entry` got (`check_lrv`), and a `sharpe` line whose skew and kurtosis are not that
+    record's or give a smaller k (`check_moments`)."""
     ledger.check_append_only(path)  # raises LedgerTampered
     if any(r["id"] == row["id"] for r in read(path)):
         raise AlreadyFrozen(f"{row['id']}: already frozen; a changed rule needs a new id")
@@ -542,6 +650,7 @@ def freeze(
     if row["min_sample"] != min_sample(plan_of(row)):
         raise ValueError(f"{row['id']}: min_sample is not what its test needs")
     check_lrv(row, train)
+    check_moments(row, train)
     line = {**row, "frozen_at": ledger.iso(now)}
     ledger._append(path, line)
     return line
