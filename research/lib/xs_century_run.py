@@ -172,8 +172,10 @@ def build(
     cost_mult: float = 1.0,
     with_com: bool = False,
     with_us: bool = True,
+    fx_value: Sig | None = None,
 ) -> tuple[dict[date, float], dict[str, M]]:
-    """The card's book. Returns (book, every sleeve's net return)."""
+    """The card's book. Returns (book, every sleeve's net return). `fx_value` replaces the
+    currency-value signal (fx-value-real-1); default = this card's spot-reversal proxy."""
     sleeves: dict[str, M] = {}
     classes: dict[str, list[M]] = {}
     if with_us:
@@ -197,7 +199,7 @@ def build(
     fr, spot, frate, usr = data["fx"]  # type: ignore[misc]
     cf = 0.0 if gross else COST["fx"] * cost_mult
     fsig = {
-        "fx-value": lambda a, t: xc.reversal_value(spot[a], t, FX_SPOT_LAG),
+        "fx-value": fx_value or (lambda a, t: xc.reversal_value(spot[a], t, FX_SPOT_LAG)),
         "fx-mom": lambda a, t: xc.momentum(fr[a], t, FX_SPOT_LAG),
         "fx-carry": lambda a, t: xc.spread_value(frate[a], usr, t, RATE_LAG),
     }
