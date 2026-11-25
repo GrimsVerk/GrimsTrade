@@ -36,7 +36,7 @@ import json
 import math
 import subprocess
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime
 from pathlib import Path
 from statistics import NormalDist
@@ -71,6 +71,11 @@ class NotFrozen(ForwardError):
     """The rule has no committed freeze line, so there is no proven freeze time."""
 
 
+class LrvNotMeasured(ForwardError):
+    """A `mean` or `sharpe` line without the long-run variance ratio measured on the train record
+    given to `freeze`, or with a smaller `lrv` than that record's."""
+
+
 class MissingFreezeTime(ForwardError):
     """A registry line has no valid `frozen_at`: it was not written by `freeze` (a proposal
     copied in, or a hand edit), so nothing says when it was meant to count from."""
@@ -97,7 +102,7 @@ class Plan:
     sd: float | None = None
     skew: float = 0.0
     kurtosis: float = 3.0  # raw, 3 for a normal distribution
-    lrv: float = 1.0  # long-run variance / variance assumed true (train record's, at least 1)
+    lrv: float = 1.0  # long-run variance / variance assumed true; `entry(train=...)` measures it
 
     def __post_init__(self) -> None:
         if self.metric not in METRICS:
@@ -219,6 +224,44 @@ def hac_t(values: Sequence[float], per_year: float) -> tuple[float, float] | Non
     t = (math.fsum(values) / n) / math.sqrt(w / n)
     c, nu = _ref(n, lags)
     return t, t_sf(t * math.sqrt(c), nu)
+
+
+def train_hash(values: Sequence[float]) -> str:
+    """sha256 of a train record's values (canonical JSON of the floats), so a frozen line names
+    the record its `lrv` was measured on."""
+    return sha256(_canonical([float(v) for v in values]))
+
+
+def measure_lrv(train: Sequence[float], per_year: float) -> dict[str, Any]:
+    """The long-run variance ratio of a train record, measured the way the verdict measures
+    dependence: Bartlett long-run variance at `lag(n, per_year)` lags (one year) over the sample
+    variance, divided by the fixed-b mean factor c of `_ref` (the Bartlett estimate's mean is
+    about c = 1 - b + b^2 / 3 of the true value, 0.81 at five years of weekly bars), then
+    floored at 1 (`Plan` needs at least 1). Refuses a record too short to hold a year of lags
+    (n < 4 (round(per_year) - 1)) or with no variation. Returns the numbers a frozen line keeps
+    under `lrv_train`: n, lags, the raw ratio, c, the floored `lrv`, and the values' sha256."""
+    n = len(train)
+    full = max(1, round(per_year)) - 1
+    if n < max(2, 4 * full):
+        raise ValueError(
+            f"a train record of {n} values cannot measure a year of dependence "
+            f"({full} lags need at least {max(2, 4 * full)})"
+        )
+    values = [float(v) for v in train]
+    var = long_run_variance(values, 0)
+    if not var > 0:
+        raise ValueError("the train record has no variation")
+    lags = lag(n, per_year)
+    ratio = long_run_variance(values, lags) / var
+    c, _ = _ref(n, lags)
+    return {
+        "n": n,
+        "lags": lags,
+        "ratio": ratio,
+        "c": c,
+        "lrv": max(1.0, ratio / c),
+        "sha256": train_hash(values),
+    }
 
 
 def critical(n: int, per_year: float, alpha: float) -> float:
@@ -404,11 +447,23 @@ def entry(
     plan: Plan,
     source: str,
     note: str = "",
+    train: Sequence[float] | None = None,
 ) -> dict[str, Any]:
-    """A registry line without its freeze time (the shape of a proposal too)."""
+    """A registry line without its freeze time (the shape of a proposal too).
+
+    `train`: the rule's values on its train record, in the unit of its forward observations.
+    For `mean` and `sharpe` its long-run variance ratio is measured (`measure_lrv`) and the
+    line's `lrv` is the larger of the plan's and the measured one: a caller may assume more
+    dependence than one year of lags can see, never less. The measurement is kept under
+    `lrv_train`. `freeze` needs it; a proposal without `train` keeps the plan's `lrv`. The exact
+    sign test of `win_rate` does not use `lrv`, so `train` is ignored there."""
     if not code:
         raise ValueError("a rule with no code files cannot be frozen")
-    return {
+    measured = None
+    if train is not None and plan.metric != "win_rate":
+        measured = measure_lrv(train, plan.per_year)
+        plan = replace(plan, lrv=max(plan.lrv, measured["lrv"]))
+    line: dict[str, Any] = {
         "id": rule_id,
         "rule_hash": rule_hash(code, params, data),
         "code": dict(code),
@@ -430,6 +485,9 @@ def entry(
         "source": source,
         "note": note,
     }
+    if measured is not None:
+        line["lrv_train"] = measured
+    return line
 
 
 def plan_of(row: Mapping[str, Any]) -> Plan:
@@ -446,9 +504,36 @@ def plan_of(row: Mapping[str, Any]) -> Plan:
     )
 
 
-def freeze(path: Path, row: Mapping[str, Any], now: datetime) -> dict[str, Any]:
+def check_lrv(row: Mapping[str, Any], train: Sequence[float] | None) -> None:
+    """Raise `LrvNotMeasured` unless a `mean` or `sharpe` line's `lrv_train` is what
+    `measure_lrv` gives on `train` and its `lrv` is at least the measured one (a `win_rate`
+    line passes: its sign test does not use `lrv`)."""
+    if row["metric"] == "win_rate":
+        return
+    if train is None:
+        raise LrvNotMeasured(
+            f"{row['id']}: a {row['metric']} rule is frozen with its train record, so that its "
+            "lrv is measured, not assumed"
+        )
+    measured = measure_lrv(train, float(row["per_year"]))
+    if row.get("lrv_train") != measured:
+        raise LrvNotMeasured(
+            f"{row['id']}: lrv_train is not the measurement of this train record "
+            "(build the line with entry(..., train=...))"
+        )
+    if not float(row["lrv"]) >= measured["lrv"]:
+        raise LrvNotMeasured(
+            f"{row['id']}: lrv {row['lrv']} is below the train record's {measured['lrv']:.3f}"
+        )
+
+
+def freeze(
+    path: Path, row: Mapping[str, Any], now: datetime, train: Sequence[float] | None = None
+) -> dict[str, Any]:
     """Append `row` (from `entry`) to the registry, stamped `now`. Refuses a known id, a file
-    whose committed lines were ever changed, and a `min_sample` that is not the calculator's."""
+    whose committed lines were ever changed, a `min_sample` that is not the calculator's, and a
+    `mean` or `sharpe` line whose `lrv` was not measured on `train`, the same train record
+    `entry` got (`check_lrv`)."""
     ledger.check_append_only(path)  # raises LedgerTampered
     if any(r["id"] == row["id"] for r in read(path)):
         raise AlreadyFrozen(f"{row['id']}: already frozen; a changed rule needs a new id")
@@ -456,6 +541,7 @@ def freeze(path: Path, row: Mapping[str, Any], now: datetime) -> dict[str, Any]:
         raise HashMismatch(f"{row['id']}: rule_hash does not match its code, params and data")
     if row["min_sample"] != min_sample(plan_of(row)):
         raise ValueError(f"{row['id']}: min_sample is not what its test needs")
+    check_lrv(row, train)
     line = {**row, "frozen_at": ledger.iso(now)}
     ledger._append(path, line)
     return line
