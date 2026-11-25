@@ -175,7 +175,10 @@ def shown_cells(events: Sequence[ev.Event], px: Mapping[str, Closes], last: int)
     r30 = ev.rows(ce, last, ahead=31)
     y30, c30 = design(ce, r30, ahead=31)
     row("30-day horizon ln C(d+31) - ln C(d+1), NW 30", fit(r30, y30, c30, x(dz), 30))
-    row("Binary dose (1 per event day)", fit(rs, y, ctl, x(ev.dose(events, binary=True)), 7))
+    row(
+        "Binary dose (1 per event; 114 events on 109 days)",
+        fit(rs, y, ctl, x(ev.dose(events, binary=True)), 7),
+    )
     row("Events of USD 50 m or more only", fit(rs, y, ctl, x(ev.dose(events, min_usd=5e7)), 7))
     rp = [i for i, d in enumerate(rs) if d >= POST_LT]
     row(
@@ -233,9 +236,62 @@ def run(r37: bool = False) -> None:
     print("wrote", path)
 
 
+# Post hoc (review of PR #205, after the real run; not a rule): events not public at their
+# listed date. LuBian (USD 3.5 bn, listed 2020-12-28) became public in 2025-08; Mirror (USD 90 m,
+# listed 2021-10-08) by its own description was discovered 2022-05-17.
+LATE = {"LuBian": (date(2020, 12, 28), 3.5e9), "Mirror": (date(2021, 10, 8), 89.7e6)}
+
+
+def drop(events: Sequence[ev.Event], names: Sequence[str]) -> list[ev.Event]:
+    """Events without the named LATE ones (matched on day and amount within 1%)."""
+    keys = [LATE[n] for n in names]
+    out = [
+        e
+        for e in events
+        if not any(e[0] == d.toordinal() and abs(e[1] / a - 1) < 0.01 for d, a in keys)
+    ]
+    if len(out) != len(events) - len(names):
+        raise SystemExit(f"post hoc: expected to drop {names}, dropped {len(events) - len(out)}")
+    return out
+
+
+MARK = "## Post hoc: events not public at their listed date"
+
+
+def posthoc() -> None:
+    events, px = load()
+    g, _ = ev.split(events)
+    last = LAST.toordinal()
+    stamp = datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
+    text = [
+        MARK,
+        "",
+        f"`research/lib/wide23.py posthoc`, {stamp}, added after the gate's number on review of"
+        " PR #205 (not a rule, not a gate). Same code path, events dropped only.",
+        "",
+    ]
+    for names in (["LuBian"], ["LuBian", "Mirror"]):
+        gg = drop(g, names)
+        _, lines = gate_cells(f"W37 design without {' and '.join(names)}", px["ETH"], gg, last)
+        text += ["#" + lines[0], *lines[1:4]] + [
+            ln for ln in lines[4:] if not ln.startswith(("| k", "| placebo", "|---|---:|"))
+        ]
+        if names == ["LuBian"]:
+            sc = shown_cells(gg, px, last)
+            text += ["### Shown cells without LuBian", *sc[1:]]
+    path = RESULTS / "hack-drift.md"
+    old = path.read_text()
+    if MARK in old:
+        old = old[: old.index(MARK)].rstrip() + "\n"
+    path.write_text(old.rstrip() + "\n\n" + "\n".join(text).rstrip() + "\n")
+    print("wrote", path)
+
+
 if __name__ == "__main__":
     arg = sys.argv[1] if len(sys.argv) > 1 else ""
     if arg == "fetch":
         fetch()
+    elif arg == "posthoc":
+        posthoc()
     else:
         run(r37=arg == "r37")

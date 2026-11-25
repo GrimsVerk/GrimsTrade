@@ -65,6 +65,48 @@ Rows 3412 (days 2016-06-21 .. 2025-10-23), event days in rows 109, sum of weight
 | BTC, gate design (BTC's own rows and controls) | -0.002 | -0.01 | 4976 |
 | ETH minus BTC, ETH's controls | +0.175 | +0.89 | 3412 |
 | 30-day horizon ln C(d+31) - ln C(d+1), NW 30 | -0.784 | -0.86 | 3389 |
-| Binary dose (1 per event day) | -0.816 | -0.59 | 3412 |
+| Binary dose (1 per event; 114 events on 109 days) | -0.816 | -0.59 | 3412 |
 | Events of USD 50 m or more only | +0.590 | +1.30 | 3412 |
 | After Liu-Tsyvinski's sample (d >= 2018-06-01) | +0.403 | +0.98 | 2702 |
+
+## Post hoc: events not public at their listed date
+
+`research/lib/wide23.py posthoc`, 2026-11-25 21:57:06 UTC, added after the gate's number on review of PR #205 (not a rule, not a gate). Same code path, events dropped only.
+
+### W37 design without LuBian
+
+Rows 3412 (days 2016-06-21 .. 2025-10-23), event days in rows 108, sum of weights 318.7.
+
+**b -0.003% over the week per unit of dose (one doubling of the USD stolen), t -0.01, rank 31 of 41 earlier-dose calendars: FAIL (b < 0: True, t <= -2: False, rank <= 2: False).**
+
+**Earlier-dose placebos (the decider)**: true t -0.01, rank 31 of 41 from the lowest; SD of the 40 t 1.02, share with |t| >= 2 12%; quantiles 5% -2.14, 50% -0.41, 95% +0.88; smallest -3.23, largest +1.93.
+
+
+**Phase-randomised surrogates (shown)**: true t -0.01, rank 20 of 41 from the lowest; SD of the 40 t 1.14, share with |t| >= 2 10%; quantiles 5% -1.97, 50% +0.01, 95% +1.79; smallest -2.19, largest +2.64.
+
+**Random-day surrogates (shown)**: true t -0.01, rank 27 of 41 from the lowest; SD of the 40 t 0.94, share with |t| >= 2 2%; quantiles 5% -1.91, 50% -0.46, 95% +1.07; smallest -2.04, largest +1.41.
+
+### Shown cells without LuBian
+
+| Cell | b, % | t | Rows |
+|---|---:|---:|---:|
+| Reaction: ETH ln C(d+1) - ln C(d-1), no controls, NW 2 | -0.110 | -0.51 | 3412 |
+| BTC, gate design (BTC's own rows and controls) | -0.145 | -0.49 | 4976 |
+| ETH minus BTC, ETH's controls | +0.050 | +0.29 | 3412 |
+| 30-day horizon ln C(d+31) - ln C(d+1), NW 30 | -1.240 | -1.37 | 3389 |
+| Binary dose (1 per event; 114 events on 109 days) | -1.165 | -0.86 | 3412 |
+| Events of USD 50 m or more only | +0.234 | +0.65 | 3412 |
+| After Liu-Tsyvinski's sample (d >= 2018-06-01) | +0.110 | +0.32 | 2702 |
+
+### W37 design without LuBian and Mirror
+
+Rows 3412 (days 2016-06-21 .. 2025-10-23), event days in rows 107, sum of weights 314.6.
+
+**b -0.023% over the week per unit of dose (one doubling of the USD stolen), t -0.06, rank 31 of 41 earlier-dose calendars: FAIL (b < 0: True, t <= -2: False, rank <= 2: False).**
+
+**Earlier-dose placebos (the decider)**: true t -0.06, rank 31 of 41 from the lowest; SD of the 40 t 1.00, share with |t| >= 2 5%; quantiles 5% -2.00, 50% -0.48, 95% +0.90; smallest -3.23, largest +1.96.
+
+
+**Phase-randomised surrogates (shown)**: true t -0.06, rank 20 of 41 from the lowest; SD of the 40 t 1.12, share with |t| >= 2 8%; quantiles 5% -1.87, 50% -0.03, 95% +1.70; smallest -2.16, largest +2.49.
+
+**Random-day surrogates (shown)**: true t -0.06, rank 16 of 41 from the lowest; SD of the 40 t 0.89, share with |t| >= 2 0%; quantiles 5% -1.38, 50% +0.08, 95% +1.51; smallest -1.88, largest +1.82.

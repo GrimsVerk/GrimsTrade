@@ -46,7 +46,7 @@ shows how wide the real null is:
 | Shiller S&P 500 next month (monthly averages) on trailing 12-month mean sunspot number, Newey-West 12 lags, 1,831 months 1871-2023 (wide-21, W35) | 40 calendars moved k = 19-95 months, both ways | 1.16 | 25% | **off-centre** (median +1.25, 95% +2.83, max +3.11): a cyclic dose shifted 4-8 years becomes its own anti-phase, so the family repeats one weak pattern with the opposite sign; about 14 cycles |
 | French Mkt-RF of month m+3 on year-on-year growth of EIA industrial electricity sales, Newey-West 3 lags, 619 months 1974-2025 (wide-22, W36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.91 | 2% | persistent macro dose, centred (median -0.44, 5/95% -1.38/+1.40); 40 phase-randomised surrogates (shown) are wider: SD 1.10, 10%, smallest -2.62, and rank the true t 3, not 1 |
 | Same on yoy growth of NBER utility electricity production (spliced), 357 months 1926-1955 (wide-22, R36) | 40 earlier-dose calendars, k = 25-103 months (odd) | 0.55 | 0% | narrower than N(0, 1) (5/95% -1.36/+0.60, extremes -1.78/+0.66); phase surrogates SD 1.10 |
-| ETH 7-day return from the end of day d+1 on log2(USD stolen / 5 m) of DefiLlama non-exchange thefts >= USD 10 m on day d, controls r7 r30, Newey-West 7 lags, 3,412 days 2016-2025 (wide-23, W37) | 40 earlier-dose calendars, k = 23-920 days (step 23) | 1.02 | 5% | 109 nearly independent event days: about normal, slightly left (median -0.60, 5/95% -1.85/+1.19, min -3.61); phase surrogates SD 1.13 (10%), random-day surrogates SD 1.08 (8%): the families agree for an event dose |
+| ETH 7-day return from the end of day d+1 on log2(USD stolen / 5 m) of DefiLlama non-exchange thefts >= USD 10 m on day d, controls r7 r30, Newey-West 7 lags, 3,412 days 2016-2025 (wide-23, W37) | 40 earlier-dose calendars, k = 23-920 days (step 23) | 1.02 | 5% | 109 nearly independent event days: about normal, slightly left (median -0.60, 5/95% -1.85/+1.19, min -3.61); phase surrogates SD 1.13 (10%), random-day surrogates SD 1.08 (8%); without the one event not public at its date (LuBian, post hoc) placebo SD 1.02, random-day 0.94 |
 
 \* Pseudo-t: the stored placebo effects divided by the true cell's standard error (effect / t,
 from rounded stored values, good to about 5%). These gates stored effects, not placebo t.
@@ -199,7 +199,7 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W35 `solar-max-recession` (wide-21) | k = +-19..95 months (step 4), both ways | no: the sun does not answer prices | t -0.87, rank 3 | no: t > -2 |
 | W36 `grid-load-premium` (wide-22) | k = 25..103 months, earlier only | not used (earlier only, as step 1 asks) | t -2.31, rank 1, post-sample b < 0: **pass (kill-only)** | killed by its replication R36 (1926-1955: t -0.32, rank 13) |
 | R36, replication of W36 (wide-22, `cards/wide-22b.md`) | k = 25..103 months, earlier only | not used | t -0.32 (predicted < 0), rank 13 | no: t > -2; W36 dead (low power: see `wide-22.md`) |
-| W37 `hack-drift` (wide-23) | k = 23..920 days, earlier only | not used (earlier only, as step 1 asks: the loot scales with prices) | t +0.68 (predicted < 0), rank 38 | no: wrong sign |
+| W37 `hack-drift` (wide-23) | k = 23..920 days, earlier only | not used (earlier only, as step 1 asks: the loot scales with prices) | t +0.68 (predicted < 0), rank 38; post hoc without LuBian (USD 3.5 bn, not public at its listed date) t -0.01, rank 31 | no: t near 0 (the positive sign is one event) |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
@@ -260,11 +260,13 @@ better currency-value definition for the same book), not a new mechanism, so 104
 
 **Count after W37 (wide-23, 2026-11-25).** One more mechanism and gate after W36/R36:
 **105 mechanisms, 29 tested by a strategy, 33 gates, two kill-only passes (W32, W36), each
-killed by its replication (R32, R36)**; W37 failed (wrong sign, rank 38), so every gated idea
-is dead. Family bar p < 0.10 / 105 = 0.00095. For this event dose the
-phase-randomised and random-day surrogate families (shown) gave the same width as the
-earlier-dose placebos (SD 1.13 and 1.08 against 1.02) and the same verdict (ranks 27 and 30):
-the disagreement wide-22 found is a property of persistent doses, not of the surrogate method.
+killed by its replication (R32, R36)**; W37 failed (t +0.68, rank 38; post hoc t -0.01 without
+its one event that was not public at its listed date, so no effect rather than a wrong sign),
+so every gated idea is dead. Family bar p < 0.10 / 105 = 0.00095. In this one event gate the
+phase-randomised and random-day surrogate families (shown) agreed with the earlier-dose
+placebos on width (SD 1.13 and 1.08 against 1.02; without LuBian random-day 0.94) and on the
+verdict (ranks 27 and 30). One gate does not say when the families disagree; gate-null-2
+(PR #207, open) studies exactly that.
 
 ## Cyclic doses need another placebo family (wide-21, 2026-11-25)
 
