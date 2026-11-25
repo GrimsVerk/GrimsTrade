@@ -26,7 +26,7 @@ Small-tick equal-risk Sharpe about 0.8 before and about 0 after; large-tick abou
 z -0.38). `e4`: +0.10, "not seen". But the paper's pattern shows up clearly in the timing part
 (the rule's Sharpe minus holding's): C = -0.77 (SE 0.23, z -3.40), `e4` -0.53 (z -2.87). Against
 holding, the rule lost ground after 2009 on 33 of 34 stock series and 8 of 9 currencies, and on
-none of 14 bond series. Part of that bond result is one episode (2022). Holding stocks got
+none of 14 bond series. Part of that bond result is one episode (2022) (post hoc). Holding stocks got
 better after 2009 and holding bonds got worse, so this is consistent with the paper at the
 class level but cannot tell its mechanism from a change of regime.**
 
@@ -54,7 +54,8 @@ reproduces the logged pooled-1/pooled-2 rows exactly (2 decimals).
 
 - **Currencies are the clean case.** `tsmom12` lost Sharpe on all 9 currencies (mean -0.56),
   while holding them barely changed (-0.11). Long-only currency trend went from about 0.36 to
-  below zero. This is the paper's small-tick result, here at the 12-month horizon.
+  below zero. This matches the sign of the paper's small-tick result, here at the 12-month
+  horizon (class is not tick).
 - **Stocks: the rule held up, holding got better.** The rule's own Sharpe fell on 25 of 34 stock
   series (most of the foreign indices, for example France 0.61 to -0.13, Mexico 0.70 to -0.09;
   US industries only 5 of 10). Holding's Sharpe rose on almost all of them (mean +0.34): a long
@@ -102,14 +103,19 @@ tested here).
 - What it says: since 2009, the 12-month rule's crash insurance has cost much more against
   holding on stock indices than before, and it has been worth more on bonds. This fits
   `gap-2002-1` (#162: about 1 point a year behind holding on the US index since 2002, the calm
-  drag being most of the cost) and `insure-2`'s "not shown since 2002". On the class level, the
-  price of the insurance on SPY/QQQ should be expected to stay high, and the TLT slot is where
-  the rule has earned its keep recently (mostly 2022).
+  drag being most of the cost) and `insure-2`'s "not shown since 2002". Since 2009 the
+  insurance has cost more against holding on SPY/QQQ, and the TLT slot is where the rule earned
+  its keep (mostly 2022). By the card's pre-stated mapping (deciding reading inconclusive), this
+  gives no forecast for the stock slot.
 - What it does not say: nothing here is a rule or an edge, so nothing changes live. The rule's
   own Sharpe fell about as much on bonds as on stocks. Whether the stock-slot gap is
   microstructure or just a calm bull market cannot be decided from 17 years.
 
 ## Logged
+
+Order of commits: the write-up commit preceded the post hoc results commit by two minutes; the
+numbers quoted here are from the scratch run of the same code, and the committed post hoc
+results (`results/tick-tier-1-posthoc.md`) reproduce them.
 
 `tries.md`: one `note` row, idea `tick-tier-1` (re-score, not a try). `ideas.md`: a
 `tick-tier-trend` line.
