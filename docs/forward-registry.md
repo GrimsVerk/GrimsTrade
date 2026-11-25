@@ -32,6 +32,7 @@ checked with `ledger.check_append_only`, the same check the paper-trail ledger g
 | `rule_hash` | sha256 over `code`, `params` and `data` (canonical JSON): the rule's fingerprint |
 | `metric` | `sharpe` (per-period values, annualised), `mean` (per-event values) or `win_rate` (share of events above 0, against 1/2) |
 | `effect`, `sd`, `skew`, `kurtosis` | the effect assumed true, used for power (and the noise, for `mean`) |
+| `lrv`, `lrv_train`, `se` | long-run variance ratio used for the sample (`mean`, `sharpe`), its measurement on the train record (`freeze` refuses a line without one), and the standard-error rule |
 | `per_year` | observations a year (52 weekly bars, 8 FOMC meetings, ...) |
 | `alpha`, `power` | one-sided significance level and power, fixed in advance |
 | `min_sample`, `years_needed` | the sample the effect needs at that alpha and power (the calculator's numbers; `freeze` refuses others) |
@@ -88,8 +89,19 @@ standard error rejected a true null 4-9% of the time at nominal 2.5% (evalue-for
   `sharpe` base = 1 + (1 - skew sr + (kurtosis - 1)/4 sr^2) ((cv + z(power)) / sr)^2, sr per
   period (Mertens' variance under the alternative); `mean` base = ((cv + z(power)) sd /
   effect)^2. `lrv` (plan field, at least 1, default 1) is the long-run variance ratio assumed
-  true: measure it on the train record at each freeze (Bartlett, same lags; `tsmom12`'s is
-  2.14; left at 1, a trend-like book is under-powered: 0.65 instead of 0.80).
+  true (`tsmom12`'s is 2.14; left at 1, a trend-like book is under-powered: 0.65 instead of
+  0.80). Since lane `registry-lrv-1` it is measured at every freeze (`forward.measure_lrv`):
+  the rule's values on its train record, in the unit of its forward observations, Bartlett
+  long-run variance at the verdict's lag rule (`lag(n, per_year)`) over the sample variance,
+  divided by the fixed-b mean factor c = 1 - b + b^2 / 3 (b = (L + 1) / n; without it five
+  years of weekly train values would read about 20% low), floored at 1. The record must hold a
+  full year of lags (n >= 4 (round(per_year) - 1): 204 weekly values, 28 events at 8 a year).
+  `entry(..., train=values)` records the measurement under `lrv_train` (n, lags, raw ratio, c,
+  floored lrv, sha256 of the values) and sets `lrv` = max(the plan's, measured); `freeze(...,
+  train=values)` re-measures and refuses (`LrvNotMeasured`) a `mean` or `sharpe` line without
+  `train`, with a `lrv_train` that is not this record's, or with a `lrv` below it. A caller may
+  set a larger `lrv` (dependence longer than a year, which a one-year window cannot see), never
+  a smaller one. Lines without `lrv` (none frozen) read as 1. `win_rate` does not use `lrv`.
 - Measured level (research/forward-se-1.md): on 52-week block-resampled store nulls it rejects
   4.3-5.8% at 10 years and 3.1-3.6% at 100 years for a difference against `tsmom12` (was
   6.1-6.4% / 4.6-4.7%), 1.0% / 2.3% for `tsmom12` against zero (was 8.1% / 8.3%; the upper test
