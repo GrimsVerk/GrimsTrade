@@ -108,33 +108,64 @@ line conflicts with that (owner/CoS to settle).
   before the site began to 403 scripts; local cache only, nothing committed; the loader now
   treats it as a hand download (`--jst <path>`).
 
+## Night lead 2026-11-25/26 (window 21:00 UTC -> weekly reset 09:00 UTC)
+
+Lanes run in parallel, each with its own worktree and PR to main; every PR merged only after a
+fresh Opus review found no required fix (fixes applied by the lane, then merged; runner PRs also
+after a daily dry run on a copy of paper-trail). Head branches re-pushed after each merge; lane
+worktrees removed after merge.
+
+Merged: #196 reconcile-reuse-1, #197 fx-value-real-1, #198 e4-indep-1, #200
+registry-lrv-1, #201 survey-8, #202 wide-22, #203 calm-drag-1, #204 jst-autocorr-2, #199
+runner-faults-2 (three review rounds: per-request cap with `read1`, early-EOF `IncompleteRead`
+restored; daily dry runs exit 0, 0 reconcile problems), #205 wide-23, #208 registry-moments-1,
+#207 gate-null-2, #209 rl-7, #206 data-wide-2, #212 insure-1709-1, #211 summary-8 (SUMMARY night 6),
+#210 jst-gates-1. Verdicts: `research/SUMMARY.md` (night 6; #210 and later PRs not yet in it).
+
+**For the owner (decisions, not acted on):**
+- Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
+  terms: "supplied solely for academic research purposes; any commercial use or redistribution
+  without the authorization of the authors and the International Center for Finance at Yale is
+  prohibited". Cached locally by data-wide-2, counts
+  only. No rule test may use them until the owner decides or Yale authorizes (#206).
+- robots.txt: data.nber.org, api.db.nomics.world and Riksbank `*.xls` disallow scripts. The lead
+  ruled no exemption for API hosts (DBnomics cache deleted, #206). Earlier lanes (data-long-1,
+  e4-indep-1) fetched a few data.nber.org files by script before this was noticed; NBER files
+  are manual-download only from now on.
+- gate-null-2 (#207) PROPOSES (not adopted): for gate doses with lag-1 acf >= 0.8, a pass must
+  also rank <= 2 of 41 among 40 phase-randomised surrogates (IAAFT for skewed doses), on top of the
+  shifted calendars. "Both" beat surrogates alone by a margin within noise, and the 0.8 threshold
+  rests on one borderline cell (about 0.3 SE).
+
 ## Lane queue (each from `main`)
 
-1. DONE 2026-11-25 morning: daily run checked, reconcile-1 rerun, #149, #153, #155, #161
-   merged one at a time (see "Morning merges" above).
-2. Engineering, after #161: fix its two strict xfails (Kraken answering from a later day must
-   fall back to Coinbase; duplicate same-day bars in one answer must be refused or logged), and
-   the smaller notes in #161's PR body (rate gap with no problem line; no overall fetch time cap).
-3. Optional: `reconcile.py` reuses `gym.cash_rate` / `gym.interest` (review of #153).
-4. Research, DEEPER: `e4` stays the only open lead (+0.063 on 41 stock markets, z 1.55). Its lead
-   is explained (#168, #178): a graded buy-back after the low plus earlier partial exits; per fall
-   its buy-back leaks like the old re-entry rules. Do not retune it; test again only on new
-   independent data, pre-registered. The "legs agree" buy-back (+0.022/+0.028 in #178) is a
-   diagnostic, not a lead, unless carded on independent data.
-5. Research: fast-crash cover is closed for now (puts #160, puts-while-in #165, VIX calls #167:
-   all a net cost). The century long-short style book (#170) is the closest thing to the bar
-   (gross z 7.39, net 2.75; variance management #179 does not help). With data-long-4's real
-   exchange rates (#174), a pre-registered rerun with the published currency-value definition
-   would be a new counted try, not a fix: only if someone writes the card first and accepts it
-   is close to retesting a failed book.
-6. Done tonight, do not redo: tick-size split of trend (#181, inconclusive by its card), the exit
-   as a crash warning (#182), insurance out of sample 1870-1965 (#186, holds narrowly on timing),
-   sequential tests (#184), registry SE fix (#189), coin-drift-run (#190, dead), Omori re-entry
-   (#187, a vol-calm rule in disguise), drought gate (#188, passed then killed by replication).
-7. Next WIDER ideas not yet run: `panic-words` (wide-20 P3, ~2,000 loc.gov calls: be polite);
-   `strike-idleness` needs BLS, which asks for a contact e-mail in the User-Agent: never send a
-   personal one; skip unless the owner provides a generic project contact. Next DEEPER: why the
-   annual early-sample returns autocorrelate (index smoothing?) before any further use of JST
-   annual data (#186 caveat).
-8. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
-   manual browser download if wanted (data-long-3, insure-3).
+1. Open at this handoff (lead 1 of the night handed off at ~22:50 UTC for context): #214
+   asset-ledger-1 (review fixes in progress, text only; then merge), #213 this handoff, and the
+   PRs of the lanes still running: wide-24 (WIDER, gate ids W40/W41 provisional) and survey-9
+   (literature on long-history trend evidence vs the project's insurance finding). Each needs a
+   fresh review verdict before merging (`gh pr list`). Then a short summary-9 lane: add #210,
+   #214, wide-24, survey-9 to SUMMARY night 6 (counts after #210: 107 mechanisms / 29 / 35 gates,
+   bar 0.10/107).
+2. Closed tonight, do not redo: `e4` (contradicted on pre-1927 stocks, #198: no longer a lead;
+   the clean keyless independent monthly stock data are nearly used up, apart from the Yale IMM stocks, data-wide-2
+   rank 2, which wait on the owner's ruling), real-rate FX value and
+   sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
+   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W39. The previous
+   night's do-not-redo list is in the night-lead 2026-11-24/25 section above and in SUMMARY.
+3. DEEPER next: (a) a sovereign-bond pool (Yale IMM bonds) or the IMM stocks with its own crash calendar (data-wide-2 rank 1) only
+   after the owner rules on the Yale terms; otherwise Norges Bank bonds/FX (allowed) or the BoE
+   millennium sheet's consols and FX (OGL); (b) a peg filter before any currency trend test on
+   the long FX histories; (c) the US railroad stocks 1857-1870 (NBER: manual download) are the
+   only unspent pre-1871 US stock months.
+4. WIDER next: further fields per wide-21..24 conventions (events dated as the market could
+   know them; robots.txt read before the first fetch; crawl delays kept); `crackdown-shock`
+   (wide-23 C2) needs a hindsight-free dated list first. `strike-idleness` (still not
+   run) needs BLS, which asks for a contact e-mail in the User-Agent: never send a personal one;
+   skip it unless the owner provides a generic project contact.
+5. Engineering: `insure1.infer_pos` mislabels zero-return flip days (docstring note, #203; fix
+   upstream if any record needs it); tests that `fetch_from` moves on after `IncompleteRead`
+   (#199 nit); `REVISION_DAYS` repeats a problem line for up to 5 runs per Kraken hole (#199
+   review: expect several red runs per hole).
+6. Data, owner only: World Bank Pink Sheet and CBOE SPXTR (403 to scripts), NBER ch. IV
+   commodities and non-US bonds, IFS/OECD via DBnomics, Riksbank: manual browser download if
+   wanted.
