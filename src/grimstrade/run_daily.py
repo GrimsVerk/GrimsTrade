@@ -23,8 +23,20 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from itertools import groupby
 from pathlib import Path
+from typing import Any
 
-from grimstrade import data, gym, intraday, ledger, rates, report, signals, sources, weekly
+from grimstrade import (
+    data,
+    gym,
+    intraday,
+    ledger,
+    rates,
+    reconcile,
+    report,
+    signals,
+    sources,
+    weekly,
+)
 from grimstrade.strategies import LIVE, NOTES
 
 # First run: fetch this much history (Kraken serves at most 720 daily bars).
@@ -92,6 +104,17 @@ def fingerprint(decide: gym.Strategy) -> str:
     return hashlib.sha256(text.encode()).hexdigest()[:12]
 
 
+def state_row(r: gym.Result) -> dict[str, Any]:
+    """One book's row in `state/portfolio.json`."""
+    return {
+        "cash": round(r.cash, 2),
+        "positions": {s: q for s, q in r.positions.items() if q},
+        "equity": round(r.equity[-1][1], 2) if r.equity else gym.START_CASH,
+        "marked_on": r.equity[-1][0].isoformat() if r.equity else None,
+        "fills": len(r.fills),
+    }
+
+
 def run(
     root: Path, now: datetime, get: sources.Get = sources.http_get, repo: Path = Path(".")
 ) -> list[str]:
@@ -130,6 +153,7 @@ def run(
     history = data.load_all(root)
     seen = data.visible_history(history, now)
     through = {s: b[-1].date.isoformat() for s, b in seen.items() if b}
+    lines_before = len(ledger.decisions(root))
     for name, decide in LIVE.items():
         ledger.register_try(root, name, NOTES[name], now)
         previous = ledger.decisions(root, name)
@@ -147,21 +171,25 @@ def run(
         print(f"{name}: {weights} ({reason})")
 
     ledger.record_research(root, repo, now)
-    ledger.record_problems(root, now, problems)
-    results = report.live_results(root, history)
-    state = {
-        name: {
-            "cash": round(r.cash, 2),
-            "positions": {s: q for s, q in r.positions.items() if q},
-            "equity": round(r.equity[-1][1], 2) if r.equity else gym.START_CASH,
-            "marked_on": r.equity[-1][0].isoformat() if r.equity else None,
-            "fills": len(r.fills),
-        }
-        for name, r in results.items()
-    }
-    state_path = root / "state" / "portfolio.json"
-    state_path.parent.mkdir(parents=True, exist_ok=True)
-    state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
+    # The source problems are saved even if the replay, the state write or the check raises.
+    try:
+        results = report.live_results(root, history)
+        state = {name: state_row(r) for name, r in results.items()}
+        state_path = root / "state" / "portfolio.json"
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
+        # The record just written, checked against the rules (`grimstrade.reconcile`): a failure
+        # is a problem line like a failed source, so the run exits 1 and the record is committed.
+        new_lines = ledger.decisions(root)[lines_before:]
+        checked = reconcile.check_state(root, results)
+        checked += reconcile.check_lines(new_lines, data.load_all(root), LIVE)
+        for line in checked:
+            print(f"FAILED {line}", file=sys.stderr)
+        books, n_new = len(results), len(new_lines)
+        print(f"reconcile: {books} books, {n_new} new lines, {len(checked)} problems")
+        problems += checked
+    finally:
+        ledger.record_problems(root, now, problems)
     reports = root / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "scoreboard.md").write_text(report.render(root, history, repo))

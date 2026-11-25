@@ -50,6 +50,9 @@ SUFFIX = ".csv.gz"
 HEADER = ("source", "idea", "variant", "start", "sharpe", "first_friday", "micro_returns")
 SCALE = 1_000_000  # returns are kept in millionths
 BUDGET = 5_000_000  # bytes for the whole store (card register-4)
+# register-7: kinds whose curves are not stored by default (never selectable; the harness hook
+# skips them and `register2.py export` needs `--robustness`). Rows already stored stay.
+NOT_STORED_BY_DEFAULT = frozenset({"robustness"})
 FRIDAY = 4
 
 

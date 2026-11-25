@@ -72,10 +72,32 @@ value edited) raises `LedgerTampered` and nothing is scored.
 
 ### Power and minimum sample
 
-- `sharpe`: n = 1 + (1 - skew sr + (kurtosis - 1)/4 sr^2) ((z(1-alpha) + z(power)) / sr)^2 with
-  sr the per-period Sharpe: the variance `stats.probabilistic_sharpe` already uses (Mertens), so
-  the test and its power calculation agree. Verdict p = 1 - PSR(0).
-- `mean`: n = ((z(1-alpha) + z(power)) sd / effect)^2 (normal approximation to the t-test).
+Since 2026-11-25 (lane forward-se-1, `docs/DECISIONS.md`) the `sharpe` and `mean` verdicts use
+a dependence-robust test, because weekly strategy returns are serially dependent and an iid
+standard error rejected a true null 4-9% of the time at nominal 2.5% (evalue-forward-1):
+
+- Statistic: T = mean / sqrt(w / n), w the Bartlett (Newey-West) long-run variance with
+  L = min(round(per_year) - 1, n // 4) lags (one year of observations; 51 for weekly bars),
+  scaled by n / (n - 1) so that L = 0 is the ordinary t-test (`forward.hac_t`).
+- p = P(t_nu > T sqrt(c)), b = (L + 1) / n (Kiefer and Vogelsang's bandwidth M = L + 1),
+  c = 1 - b + b^2 / 3, nu = 1.5 / b: a Student-t approximation to the fixed-b distribution
+  (Kiefer and Vogelsang 2005). Its 97.5% critical value is within 1% of theirs and its 95% one
+  within 1.2% for b <= 0.1; at b = 0.25 it is conservative. For `sharpe` the same T (Lo 2002 at the null Sharpe 0); the
+  estimate shown is the annualised sample Sharpe.
+- min_sample: the smallest n with n >= lrv * base(cv(n)), cv(n) the test's critical value at n:
+  `sharpe` base = 1 + (1 - skew sr + (kurtosis - 1)/4 sr^2) ((cv + z(power)) / sr)^2, sr per
+  period (Mertens' variance under the alternative); `mean` base = ((cv + z(power)) sd /
+  effect)^2. `lrv` (plan field, at least 1, default 1) is the long-run variance ratio assumed
+  true: measure it on the train record at each freeze (Bartlett, same lags; `tsmom12`'s is
+  2.14; left at 1, a trend-like book is under-powered: 0.65 instead of 0.80).
+- Measured level (research/forward-se-1.md): on 52-week block-resampled store nulls it rejects
+  4.3-5.8% at 10 years and 3.1-3.6% at 100 years for a difference against `tsmom12` (was
+  6.1-6.4% / 4.6-4.7%), 1.0% / 2.3% for `tsmom12` against zero (was 8.1% / 8.3%; the upper test
+  is very conservative there: 0.9% above +cv, 11.7% below -cv at 10 years). What remains at 10
+  years is the skewness of yearly sums, which no standard error removes: read a 10-year verdict
+  against `tsmom12` as about a 5%-level test. The card's kill condition was met (3 cells
+  > 0.040); the night lead adopted the rule anyway as an improvement over the iid test, a
+  deviation from the card, reversible by the owner.
 - `win_rate`: exact binomial sign test; the first n at which the exact power reaches the target
   (exact power saw-tooths in n).
 

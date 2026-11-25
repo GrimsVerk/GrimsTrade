@@ -342,8 +342,8 @@ def _log(run: Run, kind: str, start: date, end: date) -> None:
         tryshape.log(SHAPES, row, run.days, [float(e) for e in run.equity])
     except (OSError, ValueError, ZeroDivisionError) as e:
         print(f"harness: try shape not logged ({e})", file=sys.stderr)
-    if run.period == "train":
-        _store(run, sharpe)
+    if run.period == "train" and kind not in returnstore.NOT_STORED_BY_DEFAULT:
+        _store(run, sharpe)  # register-7: robustness curves are not stored by default
 
 
 def _store(run: Run, sharpe: float) -> None:

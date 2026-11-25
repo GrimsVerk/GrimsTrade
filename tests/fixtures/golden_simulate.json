@@ -1,0 +1,357 @@
+{
+ "paper_trail": {
+  "buy_hold_btc": {
+   "cash": 0.0,
+   "days": 712,
+   "equity": 6066.772862859898,
+   "fills": 1,
+   "sha256": "03546206df728036a2fe8442efb8e81d6c4e55e1dd77142a69cb06cc0c597a00"
+  },
+  "buy_hold_btc+div+rates": {
+   "cash": -1.8361379588051473e-12,
+   "days": 712,
+   "equity": 6067.022182292616,
+   "fills": 1,
+   "sha256": "a00002d114a9e8d0fc95b9e65514a7a56fd3cb9090450741310d6eb5328d3439"
+  },
+  "buy_hold_spy": {
+   "cash": 0.0,
+   "days": 712,
+   "equity": 11908.732187392927,
+   "fills": 1,
+   "sha256": "ba4eaf41eba53a1aeeeadb70aa3115bb9f90bedf2edff2a13f1881339b9ed789"
+  },
+  "buy_hold_spy+div+rates": {
+   "cash": 56.813957717310814,
+   "days": 712,
+   "equity": 12115.363776092045,
+   "fills": 2,
+   "sha256": "519547e5167011c7918cdcdfedbaae28b283160c79fe455e95be47027fabcef0"
+  },
+  "crypto_mean_reversion": {
+   "cash": 10651.796554232888,
+   "days": 712,
+   "equity": 10651.796554232888,
+   "fills": 53,
+   "sha256": "3815b4a080d9b1c5166fec1cfb980df33d77555f40ceff179f22abadab20ecbc"
+  },
+  "crypto_mean_reversion+div+rates": {
+   "cash": 10752.28878660488,
+   "days": 712,
+   "equity": 10752.28878660488,
+   "fills": 54,
+   "sha256": "fc96a30f35ca2d7c6d51e43cc2058f7c5462c7986581ecf64d82a6625ab34550"
+  },
+  "equal_weight": {
+   "cash": 35.35012755780616,
+   "days": 712,
+   "equity": 9334.819712358872,
+   "fills": 247,
+   "sha256": "02d8e47856ec63370a5674a513fe9529d102ae0439ec67a444a0be565d27d166"
+  },
+  "equal_weight+div+rates": {
+   "cash": 25.67852396247792,
+   "days": 712,
+   "equity": 9439.527919914233,
+   "fills": 256,
+   "sha256": "b67fe85adfbc36b7e7449d3b6dd9ab47a3247f431c28896926bbe95f99167951"
+  },
+  "ledger:buy_hold_btc": {
+   "cash": 0.0,
+   "days": 14,
+   "equity": 8210.382080069514,
+   "fills": 1,
+   "sha256": "4b49370ad9cbf81bdf9cd03098f74a06a9a037012d55fe2928ab62fe1ebed35d"
+  },
+  "ledger:buy_hold_spy": {
+   "cash": 0.0,
+   "days": 14,
+   "equity": 9577.781474630157,
+   "fills": 1,
+   "sha256": "e8da0113de667385fc81d54c77134ae82e3fa8bf1557374afd4117be11a632b6"
+  },
+  "ledger:crypto_mean_reversion": {
+   "cash": 10000.0,
+   "days": 13,
+   "equity": 10000.0,
+   "fills": 0,
+   "sha256": "950d12890281478d7def113324d138dd6204dc327edc444a57c3ae8813e62925"
+  },
+  "ledger:equal_weight": {
+   "cash": 91.31359613119996,
+   "days": 14,
+   "equity": 9158.790271473952,
+   "fills": 13,
+   "sha256": "bf97c7d1ba5639fb81de63f92b16bab5fe67682a90c68024a5c8b29e7ed17e59"
+  },
+  "ledger:preset_careful": {
+   "cash": 7126.140006524269,
+   "days": 12,
+   "equity": 9831.592932911277,
+   "fills": 4,
+   "sha256": "79f4276b2b06f9a94beba8207a4266aecafbbfb71904149e8edfca994b9fb0e6"
+  },
+  "ledger:preset_middle": {
+   "cash": 5999.200000000001,
+   "days": 12,
+   "equity": 9790.832992513875,
+   "fills": 2,
+   "sha256": "ef400af57e19eee11ad808f0bb4946b8e62560609fa3f72b61aa0895383ff57b"
+  },
+  "ledger:risk_parity": {
+   "cash": 124.27212450900979,
+   "days": 13,
+   "equity": 9561.462293904031,
+   "fills": 11,
+   "sha256": "97e49bcc99882a1f81cac87d691886664e5a1d415a135d62d4ff2255f8bcea66"
+  },
+  "ledger:sixty_forty": {
+   "cash": 0.0,
+   "days": 14,
+   "equity": 9792.474433085377,
+   "fills": 4,
+   "sha256": "6a483544c1fa929b8a2dd0b0e6b093bd1a35117281121777404e6cc8e9f63864"
+  },
+  "ledger:ts_momentum": {
+   "cash": 6666.0,
+   "days": 13,
+   "equity": 9857.527444672807,
+   "fills": 2,
+   "sha256": "1febd0aa95782bfb576a8f491c4e5a425cc178af69ec593ab07b096f42c271a3"
+  },
+  "ledger:vol_target_spy": {
+   "cash": 5984.585434371351,
+   "days": 13,
+   "equity": 9810.269106650241,
+   "fills": 2,
+   "sha256": "7b5fe70eb30b275bc4dd456a9af1727b57849b015003263f9a3f42d3ec4201e4"
+  },
+  "ledger:xs_momentum": {
+   "cash": 6.472941747297426,
+   "days": 13,
+   "equity": 9372.514966755372,
+   "fills": 6,
+   "sha256": "ebdc9048268fa89e46423250015d1c20799e6bdba10c36f5ff4f5c29f4820104"
+  },
+  "own_vol_70": {
+   "cash": 7775.147156129477,
+   "days": 712,
+   "equity": 10133.684720633,
+   "fills": 28,
+   "sha256": "e4a5381286d0ede04d8f6829686c76869e1dc8222d5c0565298c2b57f7dab85e"
+  },
+  "own_vol_70+div+rates": {
+   "cash": 7864.359785158786,
+   "days": 712,
+   "equity": 10243.708667614816,
+   "fills": 28,
+   "sha256": "d31d64dd1402ba82cce76369e9050ec783f08ebf68c5ee3992c7fbb1b3cd5a75"
+  },
+  "preset_careful": {
+   "cash": 7219.70941915371,
+   "days": 712,
+   "equity": 9960.691741649787,
+   "fills": 120,
+   "sha256": "a6ce6884bf17eadffdefd55eab63c2330c4060085cf15dd2174fd121dd037a01"
+  },
+  "preset_careful+div+rates": {
+   "cash": 7302.3798763333125,
+   "days": 712,
+   "equity": 10074.74811132959,
+   "fills": 119,
+   "sha256": "55f265091539a176ac8369fa2b1614d124f882708664cbe18e70e8caab453098"
+  },
+  "preset_middle": {
+   "cash": 6044.914061207738,
+   "days": 712,
+   "equity": 10090.858420843499,
+   "fills": 70,
+   "sha256": "9fb753c2e1d0e1ef1b333c1f652d9f333b87c39c88d352467e2ca9220a6c3b34"
+  },
+  "preset_middle+div+rates": {
+   "cash": 6109.735332887956,
+   "days": 712,
+   "equity": 10197.351645125536,
+   "fills": 68,
+   "sha256": "cb2a770b44d60ae7308bb59abfcebb810677c873fe1af4ab1d71ec7cf63b6ddc"
+  },
+  "risk_parity": {
+   "cash": 121.54094240702014,
+   "days": 712,
+   "equity": 9381.673586736399,
+   "fills": 90,
+   "sha256": "043c7f15c74da1a8fc017ff061afa8ce394c42b9c465fbdaecdf4769fdf83230"
+  },
+  "risk_parity+div+rates": {
+   "cash": 154.41508297149386,
+   "days": 712,
+   "equity": 9504.069480049484,
+   "fills": 83,
+   "sha256": "84ef91df00a8029e988999b7df538a9453cdd1db3b664c9c25824ef3524dda4c"
+  },
+  "sixty_forty": {
+   "cash": 0.0,
+   "days": 712,
+   "equity": 10738.85503857872,
+   "fills": 62,
+   "sha256": "45abf02d34c46b7a9b2072668a967867755fb7310882e2545f23c5735f986644"
+  },
+  "sixty_forty+div+rates": {
+   "cash": 0.0,
+   "days": 712,
+   "equity": 10962.678332484636,
+   "fills": 61,
+   "sha256": "09acc8c3142364e4d126f7577104a8b286100d840283a95d9a40ccee22306080"
+  },
+  "ts_momentum": {
+   "cash": 6714.467442691598,
+   "days": 712,
+   "equity": 10024.406431382917,
+   "fills": 65,
+   "sha256": "13d7248a483ca21bd5f9b0c40dce97c6326f4df4fabce250e3954628f9d61a39"
+  },
+  "ts_momentum+div+rates": {
+   "cash": 6797.326572873335,
+   "days": 712,
+   "equity": 10134.177311918667,
+   "fills": 65,
+   "sha256": "ffc64970c10d3f33ef4efc7481194be4f6fb7639fff9e19d106149f16f3e474d"
+  },
+  "vol_target_spy": {
+   "cash": 6714.633535564826,
+   "days": 712,
+   "equity": 11007.004967417628,
+   "fills": 202,
+   "sha256": "4417bfef99ece5c94696e9464a7da8bfb8ec1604db55dcf67493a3ca4164f375"
+  },
+  "vol_target_spy+div+rates": {
+   "cash": 6845.864248558259,
+   "days": 712,
+   "equity": 11222.125413114223,
+   "fills": 202,
+   "sha256": "2091e38d24351503d081c5b86915c6a7eae40b4b404e78119439201423850eaf"
+  },
+  "xs_momentum": {
+   "cash": 4.550467120753098,
+   "days": 712,
+   "equity": 6688.253978340516,
+   "fills": 204,
+   "sha256": "63bd975e0db0a78670c5343c08cee8e9d7a77e48eb9ea568156357b515089694"
+  },
+  "xs_momentum+div+rates": {
+   "cash": 4.6712199646179995,
+   "days": 712,
+   "equity": 6740.175359137367,
+   "fills": 195,
+   "sha256": "ccb21d27939f2b3eab69ba5bae832dfbb0b5c131238e0ac9beb263aa240e51dc"
+  }
+ },
+ "synthetic": {
+  "buy_hold_btc": {
+   "cash": 0.0,
+   "days": 365,
+   "equity": 8328.515829934071,
+   "fills": 1,
+   "sha256": "03fe1b1d880ec50e1c15fa7ae508caacf58dcf41519efa57b45eed49f5c8b319"
+  },
+  "buy_hold_spy": {
+   "cash": 1.42696842118561e-14,
+   "days": 365,
+   "equity": 8828.327024572027,
+   "fills": 5,
+   "sha256": "894745b3aed282315ce042d195fc6b66ce0adaad322734eae16752710daa9ae6"
+  },
+  "crypto_mean_reversion": {
+   "cash": 9509.457363628491,
+   "days": 365,
+   "equity": 9509.457363628491,
+   "fills": 51,
+   "sha256": "7f7a6338c10e98dc654c9d732ac402dc9d76c597363f562a8267e0a650e9d21a"
+  },
+  "edges": {
+   "cash": 4770.454018421575,
+   "days": 1644,
+   "equity": 13237.454009293217,
+   "fills": 730,
+   "sha256": "b1e06cc3cbd96aac864993b016df617e6ce2585a5ada01bdcb70f1e007d09be3"
+  },
+  "edges_no_costs_band0": {
+   "cash": 7275.328094622736,
+   "days": 1644,
+   "equity": 20149.899972547817,
+   "fills": 752,
+   "sha256": "cbc15b819dba6ba6a0d2c39e55bfc2483468f0886e762d5a4453d69ec39f4ab1"
+  },
+  "equal_weight": {
+   "cash": 264.95144321758664,
+   "days": 365,
+   "equity": 12250.977970095364,
+   "fills": 170,
+   "sha256": "812e93c7b59793e2066271097c8f4e029e2ed7b29dc56c6372abc9ce8c27ec23"
+  },
+  "no_decisions": {
+   "cash": 10000.0,
+   "days": 0,
+   "equity": null,
+   "fills": 0,
+   "sha256": "6815218dd3c31a8e96e33938b8cf5be069af9d2bffdce58b01712fd03c0356bb"
+  },
+  "own_vol_70": {
+   "cash": 7519.280965135006,
+   "days": 365,
+   "equity": 11426.812266313911,
+   "fills": 65,
+   "sha256": "39c8b75a0acc9230e714de7dc4c652ab785ac5ef76cab88bcd816b5e66e644f4"
+  },
+  "preset_careful": {
+   "cash": 6476.801147093756,
+   "days": 365,
+   "equity": 11613.686136594652,
+   "fills": 157,
+   "sha256": "86b4d6d79985a829a369d748b1643729d929dfb8c1c52530c132159a7f4195fa"
+  },
+  "preset_middle": {
+   "cash": 5935.2725007479,
+   "days": 365,
+   "equity": 11867.344149195396,
+   "fills": 110,
+   "sha256": "17839ad831d3e0e779f3303feabb55b53058e4a6188d6a72275222605014f346"
+  },
+  "risk_parity": {
+   "cash": 194.5206926955165,
+   "days": 365,
+   "equity": 11926.061723914872,
+   "fills": 136,
+   "sha256": "ea8a4dbdf1634281f99c87309e27f66518ab1da570634173f493f01655b0864e"
+  },
+  "sixty_forty": {
+   "cash": 0.0,
+   "days": 365,
+   "equity": 9563.461818070242,
+   "fills": 64,
+   "sha256": "6c4fccc1519d87e410f021f1f2abb978a7b3a1089d29fbe05c4a07b33d1f779c"
+  },
+  "ts_momentum": {
+   "cash": 6521.024883285932,
+   "days": 365,
+   "equity": 11850.203897221096,
+   "fills": 113,
+   "sha256": "7b3123faf6fc2d356c9d6e50824a52ba6e8d0767551c1c392ff26f8b2bc68535"
+  },
+  "vol_target_spy": {
+   "cash": 3738.365665750655,
+   "days": 365,
+   "equity": 10085.128810969753,
+   "fills": 122,
+   "sha256": "6e3b746301903d9840ec56771fdc42fb8e355d01be15a033970582787108cabe"
+  },
+  "xs_momentum": {
+   "cash": 5.686771704362388e-14,
+   "days": 365,
+   "equity": 15058.372378267892,
+   "fills": 235,
+   "sha256": "bb53a4b00f4260b5804227034f9768f4a3f71be1667fa207e83a0c0e78bd8fef"
+  }
+ },
+ "trail_commit": "9e58ad6527a80646fe70bfcd760f9e34d711d3fd"
+}
