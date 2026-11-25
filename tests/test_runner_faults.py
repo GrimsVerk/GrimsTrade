@@ -587,3 +587,65 @@ def test_a_body_cut_short_is_an_error_not_a_shorter_answer(
 
 def test_the_runner_caps_each_request_by_default() -> None:
     assert inspect.signature(run_daily.run).parameters["get"].default is sources.runner_get
+
+
+class Answer:
+    """A response carrying `body` (Content-Length: all of it) whose connection closes after
+    `sent` bytes (all of them if None), as `http.client` reports it (see `Sized`)."""
+
+    def __init__(self, body: bytes, sent: int | None = None) -> None:
+        self.rest = body[: len(body) if sent is None else sent]
+        self.length = len(body)
+
+    def __enter__(self) -> "Answer":
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        return None
+
+    def read1(self, n: int) -> bytes:
+        out, self.rest = self.rest[:n], self.rest[n:]
+        self.length -= len(out)
+        return out
+
+
+def cut_at(needles: tuple[str, ...]) -> Callable[..., Answer]:
+    """`urlopen` answering like `market()`, but cutting each body whose URL contains one of
+    `needles` off halfway."""
+    whole = market()
+
+    def urlopen(req: urllib.request.Request, timeout: float) -> Answer:
+        b = whole(req.full_url)
+        return Answer(b, len(b) // 2 if any(x in req.full_url for x in needles) else None)
+
+    return urlopen
+
+
+@pytest.mark.parametrize(
+    ("symbol", "cut", "second"),
+    [("BTC", "kraken", "coinbase"), ("SPY", "query1.finance.yahoo.com", "stooq")],
+)
+def test_a_body_cut_short_at_the_first_source_falls_back_to_the_second(
+    monkeypatch: pytest.MonkeyPatch, symbol: str, cut: str, second: str
+) -> None:
+    """`fetch_from` moves on after `http.client.IncompleteRead` (#199): the cut answer is a
+    failed source, not a shorter answer and not the end of the symbol's fetch."""
+    monkeypatch.setattr(urllib.request, "urlopen", cut_at((cut,)))
+    since = date(2026, 10, 30)
+    name, bars = sources.fetch_from(symbol, since, FIRST, sources.runner_get)
+    assert name == second and bars[0].date == since
+    assert bars == sources.fetch_from(symbol, since, FIRST, market())[1]
+
+
+def test_a_body_cut_short_at_every_source_is_one_problem_line_naming_it(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(urllib.request, "urlopen", cut_at(("kraken", "coinbase")))
+    with pytest.raises(RuntimeError, match=r"BTC: all sources failed: kraken: IncompleteRead"):
+        sources.fetch_from("BTC", date(2026, 10, 30), FIRST, sources.runner_get)
+    problems = run_daily.run(tmp_path, FIRST, sources.runner_get, tmp_path)
+    mine = [p for p in problems if p.startswith("BTC")]
+    assert len(mine) == 1 and "kraken: IncompleteRead" in mine[0]
+    assert "coinbase: IncompleteRead" in mine[0]
+    assert data.load(tmp_path, "BTC") == []
+    assert all(data.load(tmp_path, s) for s in data.UNIVERSE if s not in ("BTC", "ETH"))
