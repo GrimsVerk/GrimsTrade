@@ -1,4 +1,4 @@
-"""Lane wide-20, gate W29 `air-disaster-mood` (research/cards/wide-20.md): pure functions.
+"""Lane wide-20, gate W31 `air-disaster-mood` (research/cards/wide-20.md): pure functions.
 
 Parse the Wikidata aviation-accident list, build the event dose on a bar calendar, move the
 event calendar for the placebos, and fit OLS with HC1 standard errors. No function here reads a

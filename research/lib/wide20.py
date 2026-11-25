@@ -1,4 +1,4 @@
-"""Lane wide-20: gate W29 `air-disaster-mood` (research/cards/wide-20.md; rule pushed before
+"""Lane wide-20: gate W31 `air-disaster-mood` (research/cards/wide-20.md; rule pushed before
 this script's first run).
 
 Descriptive only: no strategy, no backtest. Train bars only: load_history("train") cuts at
@@ -183,7 +183,7 @@ def main() -> None:
     rank = ev.rank_lowest(t, plac)
     met = [b < 0, t <= -2, rank <= 2]
     out = [
-        "# W29 `air-disaster-mood`: result",
+        "# W31 `air-disaster-mood`: result",
         "",
         "Card: `research/cards/wide-20.md` (pushed before this run). Script:"
         " `research/lib/wide20.py`. Train only: bars to 2025-10-31; held-out year unread.",

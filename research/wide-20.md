@@ -9,15 +9,18 @@ processing / control / networks (wide-18), meteorology / actuarial science / ope
 (wide-19) and the 2024-2026 finance literature (survey-7); candidates in those fields are left
 out here (sunshine and air-pollution mood, for example, are meteorology and environment).
 
-**Count carried in.** wide-15 (`wide-15.md`, "Family count"): **87 mechanisms, 18 tested by a
-strategy, none passed; 22 gates, all failed.** Parallel lanes may add gates tonight; the lead
-reconciles the count. As in wide-12/13/15, only mechanisms that get a gate or a strategy test
-enter the count.
+**Count carried in** (recomputed after merging `main` with wide-17, wide-18 and wide-19; the
+first draft carried in wide-15's 87 / 18 / 22, stale by then). wide-17 ("Family count"): 90
+mechanisms, 19 tested by a strategy, 24 gates; wide-18 ("Count") adds 2 strategy tests
+(`vclock12`, `huber52`); wide-19 ("Count") adds 2 more (`cred-xs`, `cred-lr`). **Carried in: 94
+mechanisms, 23 tested by a strategy, none passed; 24 gates, all failed.** As in wide-12/13/15,
+only mechanisms that get a gate or a strategy test enter the count.
 
 Project-wide bar (`research/register/BAR.md`, rows through 2026-11-24 20:01): **3,855 tries,
 N 1,083; measured rho 0.54 gives N_eff 500: a new rule needs z >= 4.70 against `tsmom12`
 (+0.31 close rule, +0.56 far rule), Bonferroni p <= 1.0e-4.** Family bar after this run's gate:
-p < 0.10 / 88 = 0.0011.
+p < 0.10 / 95 = 0.00105 (the card, written on the stale count, says 0.10 / 88 = 0.0011; either
+is far below what a 40-placebo rank can reach).
 
 Method as wide-15: wide-11's filters F1 (not announced: an unscheduled flow (a) or a premium
 (b)) and F2 (not price-driven; passing only with controls costs 1 point), then wide-10's six
@@ -118,13 +121,14 @@ reservation values, not net buying), so the check does not apply; P1's published
 **Picked by the rule.** P1 and P2 score 5. Tie-break (wide-10): fewest data fetches, then the
 higher prior. P1 needs one keyless Wikidata query; **P2 has no keyless jackpot history** (the
 probed files have no jackpot; jackpots cannot be rebuilt without per-draw winner counts), so it
-is parked for data. **Gated: P1 as W29 `air-disaster-mood`** (card: `cards/wide-20.md`, pushed
-before any price was read). The task allowed one or two gates; the next candidates (P3, P4, P12
+is parked for data. **Gated: P1 as W31 `air-disaster-mood`** (card: `cards/wide-20.md`, pushed
+before any price was read; the card calls it W29 (provisional), renumbered W31 after wide-17's
+W29/W30; card not edited). The task allowed one or two gates; the next candidates (P3, P4, P12
 at 4) need, in turn, about 2,000 Chronicling America API calls (the service moved to loc.gov in
 2025 `[memory]`), a dataset with unclear redistribution terms, and a BLS server that refuses
 scripts (data-wide-1). None is gated; all are parked, not counted.
 
-## Step 3. W29 `air-disaster-mood` gate
+## Step 3. W31 `air-disaster-mood` gate
 
 The rule, data, placebo family, gate, shown cells, power and guess are in
 [`cards/wide-20.md`](cards/wide-20.md), pushed before any number. Code:
@@ -159,10 +163,21 @@ Extra list fetched (Wikipedia pageprops, then Wikidata `wbgetentities`, both key
 under `wide-20/`): 15 of the 18 titles resolved to items; three titles were wrong as written
 (`2015 Medan Hercules crash`, `2021 Philippine Air Force Lockheed C-130 crash`, `2024 Belgorod
 Ilyushin Il-76 crash`) and are left out rather than corrected, so the list stays as fixed.
+PS752 (Ukraine International Airlines 752), named above as missing, resolved but was **not
+added**: its Wikidata item gives 0 deaths, under the 50 cut (US-Bangla 211 was not added either: its item gives 49).
 
-## What came out (one real run, 2026-11-24 about 23:50 UTC)
+**Caveat on the card's dates (found in review, no number changes).** The card says the dates are
+"UTC calendar days"; Wikidata's P585 is the **local** date of the accident. For a crash in the
+US evening after the close (Colgan 3407 on 2009-02-12, the Potomac collision on 2025-01-29) day
+0 is then a session before the news and only day 1 carries it. That dilutes the dose (a
+pre-news day counted as dosed); it brings no look-ahead.
 
-### W29 `air-disaster-mood`: fails
+## What came out (one real run, 2026-11-24 23:54:27 UTC)
+
+The real run started at 23:54:27 UTC (the first draft said "about 23:50", and the `screen` row
+in `tries.md` carries 23:50; rows are never edited, so the slip is noted here).
+
+### W31 `air-disaster-mood`: fails
 
 **One more unit of log2(deaths / 25) on the two sessions after a large aviation accident goes
 with -0.038% a day on SPY (a typical 100-death accident: about -0.15% over two days; t -0.59,
@@ -206,18 +221,19 @@ a strategy.** Held-out year untouched. Table: `results/air-disaster-mood.md`.
   held on all four.
 
 Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the family bar
-0.0011 and the register's 1.0e-4; 34 events). A kill.
+0.00105 and the register's 1.0e-4; 34 events). A kill.
 
 ## Family count and status
 
-One mechanism added and closed by its gate (W29 `air-disaster-mood`; number provisional, see
-the card). The eleven others are parked, filtered or dead in the literature and are **not
+One mechanism added and closed by its gate (W31 `air-disaster-mood`; the card calls it W29
+(provisional), renumbered W31 after wide-17's W29/W30; card not edited; family bar corrected to
+p < 0.10 / 95 = 0.00105). The eleven others are parked, filtered or dead in the literature and are **not
 counted**, as in wide-12/13/15; each has a `note` row in `tries.md` (no number computed) and a
 line in `ideas.md`.
 
-**Count: 88 mechanisms (87 carried in + W29), 18 tested by a strategy, none passed; 23 gates,
-all failed** (before any gates other lanes post tonight). Published effects tested after
-publication: 1 more (Kaplanski-Levy's aviation mood effect, with this run's own event list):
+**Count: 95 mechanisms (94 carried in + W31), 23 tested by a strategy, none passed; 25 gates,
+all failed.** The next strategy test is read at p < 0.10 / 95 = 0.00105 (family) and the
+register's bar. Published effects tested after publication: 1 more (Kaplanski-Levy's aviation mood effect, with this run's own event list):
 dead.
 
 Rows logged in `tries.md`: 1 `screen` (`air-disaster-mood`) and 11 `note` rows (one per

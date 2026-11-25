@@ -1,4 +1,4 @@
-# W29 `air-disaster-mood`: result
+# W31 `air-disaster-mood`: result
 
 Card: `research/cards/wide-20.md` (pushed before this run). Script: `research/lib/wide20.py`. Train only: bars to 2025-10-31; held-out year unread.
 Events: Wikidata aviation accidents with >= 50 deaths, day precision (460 in all years to 2025-10-31; 34 in the gate window).
