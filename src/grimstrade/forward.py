@@ -185,11 +185,12 @@ def lag(n: int, per_year: float) -> int:
 
 def _ref(n: int, lags: int) -> tuple[float, float]:
     """(c, nu): T * sqrt(c) is about Student-t with nu degrees of freedom. Fixed-b (Kiefer and
-    Vogelsang 2005): the Bartlett estimator's mean is c = 1 - b + b^2 / 3 of the true long-run
-    variance at b = lags / n, its variance 4b / 3 (Andrews 1991), so nu = 1.5 / b."""
+    Vogelsang 2005): with bandwidth M = lags + 1 (their kernel weight 1 - j / M) and b = M / n,
+    the Bartlett estimator's mean is c = 1 - b + b^2 / 3 of the true long-run variance, its
+    variance 4b / 3 (Andrews 1991), so nu = 1.5 / b."""
     if lags == 0:
         return 1.0, n - 1.0
-    b = lags / n
+    b = (lags + 1) / n
     return 1 - b + b * b / 3, 1.5 / b
 
 

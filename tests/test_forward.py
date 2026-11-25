@@ -83,7 +83,7 @@ def days(first: datetime, n: int) -> list[datetime]:
 def test_sharpe_sample_matches_the_closed_form_and_rl6() -> None:
     """A true annual Sharpe of 0.79 on weekly bars: the iid closed form n = 1 + ((z_a + z_b) /
     sr)^2 gives ~7 years at alpha 0.10 (rl-6's number) and ~12.6 at 0.025; the one-year HAC
-    test's wider critical value (fixed-b, b = 51 / n) adds 1-2 years."""
+    test's wider critical value (fixed-b, b = 52 / n) adds 1-2 years."""
     n10 = forward.min_periods_sharpe(0.79, 52, alpha=0.10, power=0.8)
     n025 = forward.min_periods_sharpe(0.79, 52, alpha=0.025, power=0.8)
     sr = 0.79 / 52**0.5
@@ -91,7 +91,7 @@ def test_sharpe_sample_matches_the_closed_form_and_rl6() -> None:
     iid025 = 1 + ((forward._z(0.025, 0.8)) / sr) ** 2
     assert 7.0 < iid10 / 52 < 7.5 and 12.4 < iid025 / 52 < 12.8
     assert iid10 < n10 < 1.25 * iid10 and iid025 < n025 < 1.2 * iid025
-    assert n025 == forward.min_periods_sharpe(0.79, 52, alpha=0.025) == 750
+    assert n025 == forward.min_periods_sharpe(0.79, 52, alpha=0.025) == 752
     fat = forward.min_periods_sharpe(0.79, 52, alpha=0.10, power=0.8, skew=-1, kurtosis=8)
     assert fat > n10  # fat tails and negative skew need more data, never less
 
@@ -434,9 +434,10 @@ def test_t_distribution_matches_known_values() -> None:
 
 def test_fixed_b_critical_value_matches_kiefer_vogelsang() -> None:
     """Kiefer and Vogelsang (2005) Bartlett 97.5% critical value 1.96 + 2.9694 b + 0.4160 b^2
-    - 0.5324 b^3: within 1% at b = 0.1 and 0.01; with no lags, the t quantile."""
+    - 0.5324 b^3, bandwidth M = lags + 1, b = M / n: within 1% at b = 0.1 and 0.01; with no
+    lags, the t quantile."""
     for n in (520, 5200):
-        b = 51 / n
+        b = 52 / n
         kv = 1.96 + 2.9694 * b + 0.4160 * b**2 - 0.5324 * b**3
         assert forward.critical(n, 52, 0.025) == pytest.approx(kv, rel=0.01)
     assert forward.critical(30, 1, 0.025) == pytest.approx(forward.t_ppf(0.975, 29))
