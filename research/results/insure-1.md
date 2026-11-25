@@ -233,8 +233,8 @@ Same 11 series, card 1's 25% episodes and market-anchored clusters, cash at 0. T
 |---|---:|---:|---:|
 | `tsmom12` (paper series) | +0.50 | -0.3 | 1.07 |
 | Fixed exposure (x = rule's average position, mean 73%) | +0.29 | +2.5 | 1.63 |
-| Random timing (rotated positions) | +0.27 (+0.21 to +0.34) | +1.28 (-1.44 to +4.19) | +1.82 (+1.44 to +2.57) |
-| p: rotations at least as good as the rule | 0.000 | 0.816 | 0.000 |
+| Random timing (rotated positions) | +0.27 (+0.21 to +0.34) | +1.28 (-1.42 to +4.18) | +1.82 (+1.44 to +2.57) |
+| p: rotations at least as good as the rule | 0.000 | 0.817 | 0.000 |
 
 Average position per series: Mkt 75%, NoDur 76%, Durbl 67%, Manuf 73%, Enrgy 72%, HiTec 74%, Telcm 74%, Shops 74%, Hlth 73%, Utils 74%, Other 71%.
 

@@ -118,3 +118,5 @@ costs much less growth outside the falls.
    episode); a re-entry rule fixed on a card, judged on N across these 50 effective episodes.
 3. The same count on non-US stocks (French international indices, or the Yahoo country indices
    1994-2025), to see whether 50 US episodes generalise.
+
+2026-11-25 (eng-nits-1, #218): `infer_pos` now dates a flip on a day the holding did not move on that day (it was one session late). `results/insure-1.md` was regenerated: card 2's random-timing N band moved from -1.44 to +4.19 to -1.42 to +4.18, and its p from 0.816 to 0.817 (0.82 above still holds). No verdict changed.

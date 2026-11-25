@@ -113,3 +113,5 @@ choice, not an edge).
 - Bar for scale only (BAR.md): N 504, z >= 4.70, Bonferroni p <= 9.9e-05 for a new pick. Not
   applicable: nothing picked; 1,000 rotations cannot reach it. One `tries.md` row of kind
   `note`; nothing for `ledger/tries.jsonl` (no strategy try).
+
+2026-11-25 (eng-nits-1, #218): `insure1.infer_pos` now dates a flip on a day the holding did not move on that day (it was one session late). `results/rev-costloss-1.md` was regenerated: some French-series rows moved in the last digit (e.g. pooled money V -4.78 to -4.79, 1962-2001 p 0.001 to 0.002, counts by 1-3). None of the numbers quoted above changed, and no conclusion did.
