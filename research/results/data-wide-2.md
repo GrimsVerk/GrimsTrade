@@ -5,25 +5,25 @@ no strategy). A market-year counts with at least 6 monthly points; 'new' = not i
 (`research/lib/datawide2.py`); falls are peak-to-trough >= 25% of the monthly level, one per
 episode, counted when the trough falls in a new year. Months after 2025-10 are dropped.
 
-| Source | Series | Months | New market-years | New calendar years | Falls 25%+ in new years | Falls 25%+ all years |
-|---|---:|---:|---:|---:|---:|---:|
-| IMF IFS exchange rates vs USD (DBnomics) | 217 | 150,607 | 12,117 | 31 | 188 | 213 |
-| Yale IMM government bonds 1869-1929 | 77 | 32,175 | 2,666 | 2 | 84 | 88 |
-| Yale IMM common stocks 1869-1929 (file truncated) | 50 | 20,318 | 1,608 | 0 | 97 | 100 |
-| Yale IMM government bonds, 3+ quotes a month | 49 | 15,402 | 1,271 | 2 | 33 | 34 |
-| OECD MEI share prices (DBnomics) | 47 | 26,411 | 1,061 | 0 | 114 | 223 |
-| IMF IFS government bond yields (DBnomics) | 44 | 14,860 | 903 | 0 | 84 | 136 |
-| BoE millennium monthly sheet | 4 | 11,526 | 761 | 262 | 11 | 18 |
-| Yale IMM common stocks, 3+ quotes a month | 23 | 8,606 | 663 | 0 | 26 | 28 |
-| IMF IFS share prices (DBnomics) | 30 | 13,044 | 610 | 0 | 76 | 124 |
-| Norges Bank exchange rates 1819- | 2 | 2,232 | 187 | 140 | 3 | 3 |
-| Norges Bank government bond yields 1820- | 1 | 1,142 | 96 | 46 | 2 | 2 |
-| Norges Bank stocks 1914-2001 | 1 | 1,050 | 61 | 0 | 2 | 6 |
-| Yale NYSE 1815-1925 | 1 | 1,331 | 56 | 52 | 2 | 6 |
-| SNB Swiss equity 1924-1997 | 1 | 879 | 51 | 0 | 2 | 3 |
-| Yale St Petersburg SE 1865-1917 | 1 | 597 | 50 | 2 | 4 | 5 |
-| AQR Commodities for the Long Run 1877- | 1 | 1,780 | 36 | 36 | 2 | 7 |
-| SNB Swiss bond price index 1943-1981 | 1 | 468 | 12 | 0 | 0 | 0 |
+| Source | Series | Months | New market-years | of which before 1927 | New calendar years | Falls 25%+ in new years | of which before 1927 | Falls 25%+ all years |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| IMF IFS exchange rates vs USD (DBnomics) | 217 | 150,607 | 12,117 | 0 | 31 | 188 | 0 | 213 |
+| Yale IMM government bonds 1869-1929 | 77 | 32,175 | 2,666 | 2,463 | 2 | 84 | 82 | 88 |
+| Yale IMM common stocks 1869-1929 (file truncated) | 50 | 20,318 | 1,608 | 1,496 | 0 | 97 | 85 | 100 |
+| Yale IMM government bonds, 3+ quotes a month | 49 | 15,402 | 1,271 | 1,162 | 2 | 33 | 32 | 34 |
+| OECD MEI share prices (DBnomics) | 47 | 26,411 | 1,061 | 0 | 0 | 114 | 0 | 223 |
+| IMF IFS government bond yields (DBnomics) | 44 | 14,860 | 903 | 0 | 0 | 84 | 0 | 136 |
+| BoE millennium monthly sheet | 4 | 11,526 | 761 | 546 | 262 | 11 | 6 | 18 |
+| Yale IMM common stocks, 3+ quotes a month | 23 | 8,606 | 663 | 618 | 0 | 26 | 23 | 28 |
+| IMF IFS share prices (DBnomics) | 30 | 13,044 | 610 | 0 | 0 | 76 | 0 | 124 |
+| Norges Bank exchange rates 1819- | 2 | 2,232 | 187 | 96 | 140 | 3 | 2 | 3 |
+| Norges Bank government bond yields 1820- | 1 | 1,142 | 96 | 96 | 46 | 2 | 2 | 2 |
+| Norges Bank stocks 1914-2001 | 1 | 1,050 | 61 | 13 | 0 | 2 | 0 | 6 |
+| Yale NYSE 1815-1925 | 1 | 1,331 | 56 | 56 | 52 | 2 | 2 | 6 |
+| SNB Swiss equity 1924-1997 | 1 | 879 | 51 | 3 | 0 | 2 | 0 | 3 |
+| Yale St Petersburg SE 1865-1917 | 1 | 597 | 50 | 50 | 2 | 4 | 4 | 5 |
+| AQR Commodities for the Long Run 1877- | 1 | 1,780 | 36 | 36 | 36 | 2 | 2 | 7 |
+| SNB Swiss bond price index 1943-1981 | 1 | 468 | 12 | 0 | 0 | 0 | 0 | 0 |
 
 Union across sources (a country-year counted once per asset class; markets by first 3 letters):
 

@@ -438,6 +438,8 @@ class Count:
     new_calendar_years: int
     falls_new: int
     falls_all: int
+    new_pre1927: int  # new years before 1927: e4-indep-1's "no time overlap with the 41" window
+    falls_pre1927: int
 
 
 def count_new(s: Monthly, threshold: float = 0.25) -> Count:
@@ -450,6 +452,7 @@ def count_new(s: Monthly, threshold: float = 0.25) -> Count:
         s.name, s.asset, s.market,
         ym_str(s.months[0]) if s.months else "-", ym_str(s.months[-1]) if s.months else "-",
         len(s.months), len(new), len(cal), len(fl_new), len(fl),
+        sum(1 for y in new if y < 1927), sum(1 for f in fl_new if f[1] // 12 < 1927),
     )  # fmt: skip
 
 

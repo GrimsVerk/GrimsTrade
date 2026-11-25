@@ -188,6 +188,8 @@ def main() -> None:
             ),
             "falls_new": sum(c.falls_new for c in cs),
             "falls_all": sum(c.falls_all for c in cs),
+            "new_pre1927": sum(c.new_pre1927 for c in cs),
+            "falls_pre1927": sum(c.falls_pre1927 for c in cs),
         }
         table.append(tot)
         detail[name] = [asdict(c) for c in cs]
@@ -211,12 +213,12 @@ def main() -> None:
         "(`research/lib/datawide2.py`); falls are peak-to-trough >= 25% of the monthly level, one per",
         "episode, counted when the trough falls in a new year. Months after 2025-10 are dropped.",
         "",
-        "| Source | Series | Months | New market-years | New calendar years | Falls 25%+ in new years | Falls 25%+ all years |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "| Source | Series | Months | New market-years | of which before 1927 | New calendar years | Falls 25%+ in new years | of which before 1927 | Falls 25%+ all years |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for r in table:
         lines.append(
-            f"| {r['source']} | {r['series']} | {r['months']:,} | {r['new_market_years']:,} | {r['new_calendar_years']} | {r['falls_new']} | {r['falls_all']} |"
+            f"| {r['source']} | {r['series']} | {r['months']:,} | {r['new_market_years']:,} | {r['new_pre1927']:,} | {r['new_calendar_years']} | {r['falls_new']} | {r['falls_pre1927']} | {r['falls_all']} |"
         )
     lines += [
         "",
