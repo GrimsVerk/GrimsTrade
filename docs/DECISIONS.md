@@ -2,6 +2,44 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-25 (lane `runner-faults-2`, fixing PR #161's open findings): how the daily run
+  treats a source answer that is data but cannot all be stored. (1) A crypto answer that leaves
+  out a day (it starts after the day after the newest stored bar, or skips a day inside) is not
+  used while the next source may have the day (`sources.skipped_day`, `fetch_from`): BTC/ETH go
+  to Coinbase when Kraken lacks a day. Only if no source has an unbroken answer is the first
+  broken one taken, as before: the days before the hole are stored and the rest is a problem
+  line (the store can never hold a crypto gap). The bars stored then come from Coinbase
+  (`data/sources.jsonl` says so); Kraken's own hole still shows as "kraken lists no such day"
+  in the revision check. Trade-off on a first run (nothing stored yet): only a gap inside an
+  answer counts, but a Kraken hole there sends the run to Coinbase, which serves about 300 days
+  instead of Kraken's 700. (2) An answer that lists one day twice with different numbers is
+  **refused** (`check_sane`: like a nonsense bar, the next source is asked; if every source
+  does it, nothing is stored and it is one "all sources failed" line). Why refuse rather than
+  store one version and log the other: stored rows are never rewritten, so a wrong pick stays
+  for good, and nothing in the answer says which version is right (first, last, or neither);
+  the answer contradicts itself, so the rest of it is not trusted either. A refused fetch costs
+  one day's delay at worst (the next run asks again; the overdue line names it), a wrong row
+  costs the record. But a source that keeps sending the same twin every day (with the other
+  source down) stalls that symbol until a person acts; the daily problem line and then the
+  overdue line show it. The same bar listed twice is harmless and stored once, as before. (3) A
+  cash-rate session with no row before the newest stored one, while the Treasury request
+  failed, is a problem line ("a holiday, or a gap that stays"): with the Treasury down a
+  holiday and a hole in Yahoo's answer look the same, and the gap would otherwise be silent.
+  (4) All fetching in one run is capped at `run_daily.FETCH_CAP` = 600 s (`--fetch-cap
+  SECONDS`; `sources.Budget`): later calls fail without being sent, as problem lines, and the
+  run still decides on what is stored, instead of the 20-minute job timeout killing it between
+  the bars and the decisions. The runner's requests (`sources.runner_get`, the default of
+  `run_daily.run`) also get `sources.REQUEST_CAP` = 90 s each for the body: `http_get(cap=...)`
+  reads with `read1` (returns as soon as some bytes arrive) and checks the time between reads,
+  so a body trickled byte by byte stops at the cap plus at most one socket timeout (30 s, if
+  the server then goes silent). `urlopen`'s 30 s timeout alone is per socket operation, so a
+  trickled body was unbounded. Not covered: a server trickling the status line or headers
+  (only the per-operation socket timeout applies there; the overall cap stops further calls).
+  Scripts and the intraday step call `http_get` without a cap, as before (large downloads). A
+  body that ends before its Content-Length still raises `IncompleteRead`, as `read()` did (with
+  or without a cap): a CSV cut inside its newest row must never pass as data. A normal run
+  fetches in well under a minute.
+
 - 2026-11-25 (lane `registry-lrv-1`; before any freeze, the registry holds no line): the
   forward registry measures `lrv` on the train record at every freeze instead of assuming it.
   `forward.measure_lrv(train, per_year)`: Bartlett long-run variance at the verdict's own lag
