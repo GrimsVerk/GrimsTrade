@@ -266,12 +266,52 @@ def real_fx(
     ]
 
 
+def known_monthly(s: Sequence[tuple[date, float]], kind: str, last: date = LAST) -> Series:
+    """The value of `s` as known at the end of each month: dated d, the latest observation whose
+    `available(kind, ...)` is on or before the 1st of the month after d. Runs from the first
+    month anything is known to the month of `last`.
+
+    For AU/NZ CPI pass `quarter_ends(s)` with kind "cpi-quarterly": the BIS months of a quarter
+    repeat the quarter's value (2025-07 already holds Q3 2025, published late October), so the
+    monthly m+2 rule on the repeated months would look ahead."""
+    obs = sorted(s)
+    out: Series = []
+    if not obs:
+        return out
+    d, end, i = obs[0][0].replace(day=1), last.replace(day=1), 0
+    cur: float | None = None
+    while d <= end:
+        while i < len(obs) and available(kind, obs[i][0]) <= _next_month(d):
+            cur = obs[i][1]
+            i += 1
+        if cur is not None:
+            out.append((d, cur))
+        d = _next_month(d)
+    return out
+
+
+def real_fx_known(
+    usd_per_unit: Sequence[tuple[date, float]],
+    cpi_foreign: Sequence[tuple[date, float]],
+    cpi_us: Sequence[tuple[date, float]],
+    quarterly_foreign: bool,
+) -> Series:
+    """`real_fx` with each CPI as known at the end of the spot's month (`known_monthly`): the
+    foreign index by "cpi-quarterly" on its quarter values when `quarterly_foreign` (AU, NZ),
+    else by "cpi-monthly"; the US index by "cpi-monthly". The spot is the month-end rate."""
+    if quarterly_foreign:
+        pf = known_monthly(quarter_ends(cpi_foreign), "cpi-quarterly")
+    else:
+        pf = known_monthly(cpi_foreign, "cpi-monthly")
+    return real_fx(usd_per_unit, pf, known_monthly(cpi_us, "cpi-monthly"))
+
+
 def available(kind: str, d: date) -> date:
     """First day the value dated d was public (conservative, see research/data-long-4.md)."""
-    if kind == "cpi-monthly":  # CPI of month m: published within 2-7 weeks
+    if kind == "cpi-monthly":  # CPI of month m: published 2-7 weeks after the end of m
         return _add_months(d, 2)
-    if kind == "cpi-quarterly":  # AU/NZ: quarter starting d, published 3-5 weeks after it
-        return _add_months(d, 5)
+    if kind == "cpi-quarterly":  # AU/NZ: quarter starting d, published 3-5 weeks after the end
+        return _add_months(d, 5)  # of the quarter; coded as quarter start + 5 months
     if kind == "policy-monthly":  # announced on the day: known at the end of the month
         return _next_month(d)
     if kind == "french-monthly":  # dividends and prices of month m: known at its end

@@ -134,9 +134,16 @@ def us_yields() -> dict[str, Series]:
     return {"D/P": dp, "E/P": ep}
 
 
-def real_fx_series(cur: str) -> Series:
+def real_fx_series(cur: str, as_known: bool = True) -> Series:
     """ln(S x P_f / P_us), monthly, from data-long-3's month-end spot and BIS CPI. The euro
-    before 1999 is the mark (monthly average) with German CPI."""
+    before 1999 is the mark (monthly average) with German CPI.
+
+    as_known=True (default, the only form a signal may use): each CPI as known at the end of the
+    spot's month (`lm.real_fx_known`). AUD and NZD use the quarter's CPI (`lm.quarter_ends`)
+    only from `lm.available("cpi-quarterly", quarter start)`, not the m+2 monthly rule: BIS's
+    AU/NZ "monthly" CPI repeats the quarter's value, so 2025-07 already holds Q3 2025, which
+    was published in late October. as_known=False pairs spot and CPI of the same month
+    (descriptive only: it looks ahead)."""
     spot, _ = lxb.fx_spot_month_end(cur)
     area = CUR_AREA[cur]
     pf = cpi(area)
@@ -146,6 +153,8 @@ def real_fx_series(cur: str) -> Series:
         # rescale the euro-area index to continue the German one at 1999-01
         k = dict(cpi("DE"))[date(1999, 1, 1)] / xm[date(1999, 1, 1)]
         pf += [(d, v * k) for d, v in sorted(xm.items()) if d >= date(1999, 1, 1)]
+    if as_known:
+        return lm.real_fx_known(spot, pf, cpi("US"), quarterly_foreign=area in lm.QUARTERLY)
     return lm.real_fx(spot, pf, cpi("US"))
 
 
@@ -389,7 +398,10 @@ def render(res: dict[str, Any]) -> str:
     L.append("|---|---|---|---:|")
     for s, sp in res["shares"].items():
         L.append(f"| `{s}` | {sp['start']} | {sp['end']} | {sp['n']} |")
-    L.append("\n## Real exchange rate inputs (month-end spot x BIS CPI ratio)\n")
+    L.append(
+        "\n## Real exchange rate inputs (month-end spot x BIS CPI ratio, each CPI as known at"
+        " the month's end; AUD, NZD by quarter)\n"
+    )
     L.append("| Currency | From | to | Months |")
     L.append("|---|---|---|---:|")
     for c, sp in res["real_fx"].items():

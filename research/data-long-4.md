@@ -51,7 +51,9 @@ Derived series and checks (method fixed now):
 - **Policy rate**: BIS monthly; check against the cached OECD 3-month rate (correlation of
   levels, mean gap) where both exist.
 - `available()` timing for each kind (conservative): BIS monthly CPI of month m from the 1st of
-  m+2; quarterly CPI from the 1st of the second month after the quarter; policy rate at the
+  m+2; quarterly CPI from the 1st of the second month after the quarter [as coded, and stricter:
+  quarter start + 5 months, i.e. the 1st of the third month after the quarter ends; note added
+  2026-11-25 in review]; policy rate at the
   end of its month; French monthly dividends at the end of the month; French annual ratios of
   year t from 1 July of year t (accounting data of fiscal t-1; French forms the portfolios at
   the end of each December); JST annual values of year t from 1 July of t+1.
@@ -89,7 +91,7 @@ Tables: `results/data-long-4.md` (+ `.json`; statistics only, no levels).
 
 | Series | Areas | Start | End | Freq | Source | Licence / terms | Gaps and notes |
 |---|---|---|---|---|---|---|---|
-| CPI, all items (index 2010 = 100) | US, GB, CA, CH, NO | 1913-01, 1915-01, 1914-01, 1921-01, 1926-02 | 2025-09 | monthly | BIS long CPI (`WS_LONG_CPI`) | BIS: non-commercial redistribution, cite BIS; not committed | NO one missing month (1926-01) |
+| CPI, all items (index 2010 = 100) | US, GB, CA, CH, NO | 1913-01, 1915-01, 1914-01, 1921-01, 1920-03 | 2025-09 | monthly | BIS long CPI (`WS_LONG_CPI`) | BIS: non-commercial redistribution, cite BIS; not committed | NO starts 1920-03 with one missing month (1926-01), unbroken from 1926-02 |
 | | JP, DE, SE, XM | 1946-08, 1949-01, 1954-06, 1990-01 | 2025-09 | monthly | BIS | as above | SE quarterly 1918-03..1954-03 |
 | | AU, NZ | 1922-04, 1925-07 | 2025-Q3 | quarterly (repeated over the quarter's months) | BIS | as above | use `lm.quarter_ends` and `cpi-quarterly` timing |
 | CPI, annual | GB, SE, NO, others | 1661, 1830, 1865, 1913-1946 | 2024 | annual | BIS | as above | |
@@ -101,9 +103,9 @@ Tables: `results/data-long-4.md` (+ `.json`; statistics only, no levels).
 | Dividend yield, trailing 12 months (derived) | JP, GB, CH, DE, AU, SE, NO; CA; NZ | 1975-12; 1977-12; 1988-12 | 2025-10 | monthly | Kenneth R. French international country files, with and without dividends | free for research; no redistribution grant; not committed | value-weight market of French's sample (all firms, local currency) |
 | B/M, E/P, CE/P, D/P (value-weight averages) | same 9 | 1975 (CA 1977, NZ 1988) | 2025 (row t = December t-1) | annual | French | as above | |
 | US D/P, E/P | US | 1871-01 | 2023-06 | monthly | Shiller `ie_data.xls` (cache of 2026-11-12) | not committed (earlier lanes) | the cached file stops at 2023-06 for D and E; a fresh download would extend it |
-| JST R6: CPI, short and long rate, eq_dp, equity and bond returns | US, JP, GB, CH, CA, DE, AU, SE, NO (no NZ) | 1870 (eq_dp CH 1900, JP 1886, NO 1880; CA none) | 2020 | annual | Jorda-Schularick-Taylor Macrohistory Database R6 | CC BY-NC-SA 4.0; not committed | hand download (see fetch); cite Jorda, Schularick and Taylor (2017) |
+| JST R6: CPI, short and long rate, eq_dp, equity and bond returns | US, JP, GB, CH, CA, DE, AU, SE, NO (no NZ) | 1870 (eq_dp CH 1900, JP 1886, NO 1880; CA none) | 2020 | annual | Jorda-Schularick-Taylor Macrohistory Database R6 | CC BY-NC-SA 4.0; not committed | not fetched by the script (403 to urllib's default agent); the cached copy is this lane's own plain curl download (curl's default agent) from the source probes, made before the 403 was seen; reproduce by downloading in a browser and `long_macro_fetch.py --jst <path>`; cite Jorda, Schularick and Taylor (2017) |
 | Share price index | 11 (EZ, NO from 1986) | 1950-1967 | 2025-09 | monthly average | OECD MEI `SPASTT01<cc>M661N` via ALFRED | OECD terms; not committed | price only, averaged |
-| Real exchange rate input | 9 currencies | 1971-01 | 2025-09 | monthly | data-long-3 month-end spot x BIS CPI | derived, not committed | EUR before 1999 = mark (monthly average) with German CPI |
+| Real exchange rate input | 9 currencies | 1971-01 | 2025-10 | monthly | data-long-3 month-end spot x BIS CPI as known at month end (AUD, NZD: quarterly CPI from its availability) | derived, not committed | EUR before 1999 = mark (monthly average) with German CPI |
 
 Not used, but open-licence fallbacks if BIS ever goes away: national statistics offices (UK ONS
 under the Open Government Licence, Statistics Canada under the Open Government Licence - Canada,
@@ -151,8 +153,14 @@ query, so they were not fetched.
 ## For the next lane (xs-century-2 or similar, own card)
 
 - Currency value: `real_fx_series(cur)` (ln real exchange rate) for 9 currencies from 1971;
-  the card fixes the lookback (AMP 2013 use the 5-year change) and the CPI lag
-  (`lm.available("cpi-monthly")`: CPI of month m from the 1st of m+2).
+  the card fixes the lookback (AMP 2013 use the 5-year change). By default it uses each CPI as
+  known at the end of the spot's month: `lm.available("cpi-monthly")` (CPI of month m from the
+  1st of m+2) for seven currencies and the US. **AUD and NZD must use the quarter's value only
+  from `lm.available("cpi-quarterly", quarter start)` (quarter start + 5 months) via
+  `lm.quarter_ends`, not the m+2 monthly rule**: BIS's AU/NZ "monthly" CPI repeats the
+  quarter's value, so the month 2025-07 already holds Q3 2025, published in late October.
+  `real_fx_series` enforces this (`lm.real_fx_known`, tested); `as_known=False` pairs spot and
+  CPI of the same month and looks ahead (descriptive use only).
 - Equity value and carry across countries: `dividend_yield(cc)` monthly from 1975 (9 markets)
   plus US from Shiller; `french_ratios(cc)` for B/M or E/P annually; JST `eq_dp` for a
   1900-1975 annual extension. The equity returns themselves: French's country market returns

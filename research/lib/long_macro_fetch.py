@@ -2,6 +2,7 @@
 
     uv run python -I research/lib/long_macro_fetch.py            # everything not yet cached
     uv run python -I research/lib/long_macro_fetch.py --list     # print the plan only
+    uv run python -I research/lib/long_macro_fetch.py --jst <path>   # register a JST download
 
 Keyless public sources only. Every file is written once through `grimstrade.cache.write_once`
 (manifest line with URL, time, size, SHA-256) under `<cache_root>/data-long-4/`. Nothing here is
@@ -14,10 +15,12 @@ committed: none of the licences below clearly allows redistribution inside an MI
   the disk: monthly CPI to 2025-09 (the October 2025 prints were published after 2025-11-10),
   annual CPI to 2024, policy rates to 2025-10 (known on the day).
 - Jorda-Schularick-Taylor Macrohistory Database, release 6 (annual 1870-2020, 18 countries),
-  CC BY-NC-SA 4.0. NOT fetched by this script: the site answers 403 to urllib's agent
-  (2026-11-24) and serves browsers and curl. Download `JST` by hand into
-  `<cache_root>/data-long-4/jst/JSTdatasetR6.xlsx` (`register_manual` records it in the
-  manifest); `long_macro.parse_jst` reads it.
+  CC BY-NC-SA 4.0. NOT fetched by this script: the site answered 403 to urllib's default
+  agent (2026-11-24). The cached copy is the lane's own plain curl download (curl's default
+  agent), made during the source probes before the 403 was seen. To reproduce, download `JST`
+  in a browser and register it with `--jst <path>` (`register_manual`: write-once copy into
+  `<cache_root>/data-long-4/jst/JSTdatasetR6.xlsx` with a manifest line);
+  `long_macro.parse_jst` reads it.
 - Kenneth R. French, international country files with and without dividends (monthly
   value-weight market and B/M, E/P, CE/P, D/P sorted portfolios from 1975, plus annual
   value-weight averages of B/M, E/P, CE/P and dividend yield). The files run past the train

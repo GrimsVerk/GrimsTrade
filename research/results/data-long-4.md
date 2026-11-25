@@ -84,16 +84,16 @@ US (Shiller, monthly D/P 1871-01..2023-06, E/P 1871-01..2023-06): December D/P a
 | `SPASTT01SEM661N` | 1950-01 | 2025-09 | 909 |
 | `SPASTT01NOM661N` | 1986-01 | 2025-09 | 477 |
 
-## Real exchange rate inputs (month-end spot x BIS CPI ratio)
+## Real exchange rate inputs (month-end spot x BIS CPI ratio, each CPI as known at the month's end; AUD, NZD by quarter)
 
 | Currency | From | to | Months |
 |---|---|---|---:|
-| JPY | 1971-01 | 2025-09 | 657 |
-| GBP | 1971-01 | 2025-09 | 657 |
-| CHF | 1971-01 | 2025-09 | 657 |
-| CAD | 1971-01 | 2025-09 | 657 |
-| EUR | 1971-01 | 2025-09 | 657 |
-| AUD | 1971-01 | 2025-09 | 657 |
-| NZD | 1971-01 | 2025-09 | 657 |
-| SEK | 1971-01 | 2025-09 | 657 |
-| NOK | 1971-01 | 2025-09 | 657 |
+| JPY | 1971-01 | 2025-10 | 658 |
+| GBP | 1971-01 | 2025-10 | 658 |
+| CHF | 1971-01 | 2025-10 | 658 |
+| CAD | 1971-01 | 2025-10 | 658 |
+| EUR | 1971-01 | 2025-10 | 658 |
+| AUD | 1971-01 | 2025-10 | 658 |
+| NZD | 1971-01 | 2025-10 | 658 |
+| SEK | 1971-01 | 2025-10 | 658 |
+| NOK | 1971-01 | 2025-10 | 658 |

@@ -183,3 +183,30 @@ def test_available(lm: ModuleType) -> None:
 def test_no_network_in_parser_module() -> None:
     src = PATH.read_text()
     assert "urllib" not in src and "requests" not in src
+
+
+def test_known_monthly_quarterly_cpi_waits_for_publication(lm: ModuleType) -> None:
+    # BIS AU style: each quarter's value repeated over its three months
+    vals = {date(2025, 4, 1): 147.5, date(2025, 7, 1): 149.5}
+    s = [(date(2025, m, 1), vals[date(2025, 4 if m < 7 else 7, 1)]) for m in range(4, 10)]
+    known = dict(lm.known_monthly(lm.quarter_ends(s), "cpi-quarterly"))
+    # Q2 (from 2025-04) is public from 2025-09-01: known at the end of 2025-08
+    assert date(2025, 7, 1) not in known
+    assert known[date(2025, 8, 1)] == 147.5
+    # Q3 2025 would be public 2025-12-01: never inside the train window
+    assert known[date(2025, 10, 1)] == 147.5
+    assert max(known) == date(2025, 10, 1)
+
+
+def test_real_fx_known_does_not_use_the_repeated_quarter(lm: ModuleType) -> None:
+    months = [date(2025, m, 1) for m in range(1, 11)]
+    q = {1: 100.0, 4: 110.0, 7: 121.0}
+    au = [(d, q[(d.month - 1) // 3 * 3 + 1]) for d in months if d.month < 10]
+    us = [(d, 100.0) for d in months]
+    spot = [(d, 1.0) for d in months]
+    rx = dict(lm.real_fx_known(spot, au, us, quarterly_foreign=True))
+    # month 2025-07 must carry Q1 (public 2025-06-01), not Q3 (in the repeated months)
+    assert rx[date(2025, 7, 1)] == pytest.approx(math.log(1.0))
+    assert rx[date(2025, 10, 1)] == pytest.approx(math.log(1.1))  # Q2, public 2025-09-01
+    naive = dict(lm.real_fx(spot, au, us))
+    assert naive[date(2025, 7, 1)] == pytest.approx(math.log(1.21))  # the look-ahead trap
