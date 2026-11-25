@@ -367,6 +367,21 @@ def test_a_kraken_answer_skipping_a_day_inside_is_filled_from_coinbase(tmp_path:
     assert data.load(tmp_path, "ETH")[-1].date == date(2026, 11, 4)  # same Kraken answer: "PAIR"
 
 
+def test_a_lasting_kraken_hole_is_said_on_several_runs_then_no_more(tmp_path: Path) -> None:
+    """Expected, not a fault (#199 review): the revision check looks REVISION_DAYS back from the
+    newest stored bar on every run, so a day Kraken never lists is a problem line (a red run) on
+    each daily run while it is inside that window: REVISION_DAYS - 1 daily runs here, more if a
+    run is repeated on the same day."""
+    run_daily.run(tmp_path, FIRST, market(), tmp_path)
+    holed = body(kraken_rows([d for d in DAYS if d != date(2026, 11, 3)]))
+    said = []
+    for k in range(3, 10):
+        later = FIRST + timedelta(days=k)
+        problems = run_daily.run(tmp_path, later, market(kraken=holed), tmp_path)
+        said.append(any(p.startswith("BTC 2026-11-03:") for p in problems))
+    assert said == [True] * (data.REVISION_DAYS - 1) + [False] * (8 - data.REVISION_DAYS)
+
+
 def test_when_no_source_has_the_missing_day_what_comes_before_it_is_stored_and_said(
     tmp_path: Path,
 ) -> None:

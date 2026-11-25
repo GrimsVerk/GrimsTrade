@@ -336,7 +336,10 @@ def _revisions(root: Path, now: datetime, get: sources.Get) -> list[str]:
     """Ask each symbol's first-choice source again for the last few stored days and log what it
     now says differently (a bar is stored soon after its close; sources correct theirs later).
     Best effort: a failure here is not a data problem, the ingest above already reported those.
-    Returns a problem line for each new difference of 1 basis point or more."""
+    Returns a problem line for each new difference of 1 basis point or more. A stored day the
+    source does not list is said on every run while it lies inside the REVISION_DAYS window, so
+    one Kraken hole makes several red runs in a row (about REVISION_DAYS - 1 daily runs); that is
+    expected, not a new fault each time."""
     out = []
     for sym in data.UNIVERSE:
         stored = data.load(root, sym)

@@ -84,19 +84,35 @@ def parse_vw(lines: Sequence[str], last: date = LAST) -> tuple[list[str], dict[d
 
 
 def infer_pos(ret: np.ndarray, bar: np.ndarray, cost: float) -> np.ndarray:
-    """The paper series' position from its returns: ret = pos * bar - cost * flip.
+    """The paper series' position from its returns: ret = pos * bar - cost * |pos - prev|.
 
-    Known limitation (calm-drag-1): on a flip day whose return is 0 or exactly the cost both
-    positions fit, and the old position is kept, so the flip is dated one session late (the
-    cost lands on the next day). `calmdrag1.repair` fixes it. Other merged users: insure-1's
-    bills series (d_tb), gap-2002-1's bills series, rev-costloss-1's `french()`, insure-2's
-    geo indices; the effect is negligible (one day per affected flip).
+    Each session is read on its own first (in: ret is bar or bar - cost; out: 0 or -cost), so a
+    window that opens already in the market or an off-model day does not carry over. When both
+    fit (a flip on a day the holding did not move: -cost; or a return of exactly +-cost), the
+    position that reproduces the return given the session before is taken; if both still fit,
+    the next session decides; failing that, the old position is kept. Before eng-nits-1 a tie
+    always kept the old position, so a flip on a flat day was dated one session late (calm-drag-1's
+    note, #203); `calmdrag1.repair` worked around it and leaves this output as it is. The
+    merged results of insure-1, insure-2, gap-2002-1 and rev-costloss-1 were written with the old
+    reading; rerun now, some of their numbers move in the last digit (eng-nits-1's PR lists them).
     """
-    pos = np.zeros(len(ret))
-    for i in range(1, len(ret)):
+    n = len(ret)
+
+    def fits(i: int, v: float, prev: float) -> bool:
+        return abs(v * bar[i] - cost * abs(v - prev) - ret[i]) < 1e-12
+
+    pos = np.zeros(n)
+    for i in range(1, n):
+        prev = pos[i - 1]
         fit1 = min(abs(ret[i] - bar[i]), abs(ret[i] - bar[i] + cost)) < 1e-12
         fit0 = min(abs(ret[i]), abs(ret[i] + cost)) < 1e-12
-        pos[i] = pos[i - 1] if fit1 == fit0 else (1.0 if fit1 else 0.0)
+        if fit1 != fit0:
+            pos[i] = 1.0 if fit1 else 0.0
+            continue
+        cand = [v for v in (prev, 1.0 - prev) if fit1 and fits(i, v, prev)]
+        if len(cand) > 1 and i + 1 < n:
+            cand = [v for v in cand if fits(i + 1, 0.0, v) or fits(i + 1, 1.0, v)] or cand
+        pos[i] = cand[0] if cand else prev
     return pos
 
 
