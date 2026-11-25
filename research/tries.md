@@ -4019,4 +4019,65 @@ Never edit or delete a row.
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills@insure4 | variant | train | 1986-06-30 | 2025-10-31 | 0.75 | +1847.8% | 18.6% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-bills-cost10@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.75 | +1780.3% | 18.9% | 10.92 |
 | 2026-11-24 21:47 | insure-4 | tsmom12-pput-cash0@insure4 | robustness | train | 1986-06-30 | 2025-10-31 | 0.71 | +1495.5% | 22.8% | 10.92 |
+| 2026-11-24 23:31 | wide-18 | vclock12 | variant | train | 1994-02-01 | 2025-10-31 | 0.88 | +6123.2% | 48.3% | 3.32 |
+| 2026-11-24 23:31 | wide-18 | vclock12/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.91 | +7410.6% | 47.5% | 3.30 |
+| 2026-11-24 23:31 | wide-18 | huber52 | variant | train | 1994-02-01 | 2025-10-31 | 1.04 | +20286.7% | 40.1% | 3.68 |
+| 2026-11-24 23:31 | wide-18 | huber52/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.07 | +23383.1% | 36.5% | 3.66 |
+| 2026-11-24 23:31 | wide-18 | vclock12@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.56 | +227.1% | 23.3% | 2.87 |
+| 2026-11-24 23:31 | wide-18 | huber52@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.56 | +251.1% | 27.5% | 3.29 |
+| 2026-11-24 23:31 | wide-18 | vclock12@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.68 | +3839.4% | 39.6% | 2.77 |
+| 2026-11-24 23:31 | wide-18 | huber52@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.62 | +3436.0% | 34.7% | 2.44 |
+| 2026-11-24 23:32 | wide-18 | hann12: tapered FIR trend filter (killed in step 1: sma200 / e4 / trend-tune overlap; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | kalman-llt: local-linear-trend Kalman slope (killed: per-asset lookback, wf-asset; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | cusum-exit: CUSUM / SPRT drift-change exit (killed: changepoint-momentum, coin-fast-exit, drawdown-control; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | pd-trend: derivative action on the 12-month return (killed: turning-points, e4, fast-reentry; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | gain-schedule: volatility-scheduled lookback (merged into vclock12; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | perm-entropy: permutation-entropy / Lempel-Ziv gate (killed: hurst-entropy-gate parked; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | ib-soft: rate-distortion soft slot (killed: kelly-shrunk, ml-sizing; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | mst-length: correlation-network MST length trigger (killed: absorption-ratio, turbulence; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | spillover: Diebold-Yilmaz connectedness (killed: absorption-ratio, transfer-entropy; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | centrality-tilt: weight peripheral assets (killed: multi-signal BAB wrong sign; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | tail-index: Hill exponent crash warning (killed: critical-slowing, volatility in disguise; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | irreversibility: Zumbach time-reversal asymmetry for sizing (killed: a volatility target; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:32 | wide-18 | post hoc (not a try): vclock12 window by asset (lib/wide18_posthoc.py); median 1.22-1.30 y on BTC, ETH, QQQ, GLD, 0.92-0.94 on SPY, TLT | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.63 | +369.0% | 27.4% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-in-vxth-bills@vixcall1 | variant | train | 2006-03-31 | 2025-10-31 | 0.74 | +357.9% | 18.7% | 11.56 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-x2@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.34 | +182.2% | 43.5% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12+vxth-leg-cost50@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.59 | +325.2% | 28.1% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-cash0+vxth-leg@vixcall1 | robustness | train | 2006-03-31 | 2025-10-31 | 0.61 | +344.9% | 29.9% | 13.63 |
+| 2026-11-24 23:32 | vix-call-1 | tsmom12-delever-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.74 | +369.0% | 22.3% | 1.63 |
+| 2026-11-24 23:32 | vix-call-1 | mix-tsmom12-pput-matched@vixcall1 | control | train | 2006-03-31 | 2025-10-31 | 0.65 | +377.6% | 42.0% | 13.63 |
+| 2026-11-24 23:34 | xs-century-1 | tsmom12@us-mkt-monthly (comparator, above bills, monthly x sqrt12) | baseline | train | 1928-07-01 | 2025-10-31 | 0.55 | +49427.7% | 44.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | book (primary): alpha vs tsmom12 IR +0.31 z +2.75 (monthly excess x sqrt12) | variant | train | 1928-07-01 | 2025-10-31 | 0.40 | +501.1% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R1 gross: alpha vs tsmom12 IR +0.88 z +7.39 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.96 | +9139.5% | 18.8% | - |
+| 2026-11-24 23:34 | xs-century-1 | R2 UMD cost 0.34%/mo: alpha vs tsmom12 IR +0.51 z +4.44 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.59 | +1440.5% | 24.6% | - |
+| 2026-11-24 23:34 | xs-century-1 | R3 bond/FX costs x2: alpha vs tsmom12 IR +0.25 z +2.22 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.34 | +353.6% | 34.5% | - |
+| 2026-11-24 23:34 | xs-century-1 | R4 + commodity spot: alpha vs tsmom12 IR +0.31 z +2.61 (monthly excess x sqrt12) | robustness | train | 1928-07-01 | 2025-10-31 | 0.39 | +366.3% | 25.1% | - |
+| 2026-11-24 23:34 | xs-century-1 | R5 1994-01..2025-10: alpha vs tsmom12 IR +0.19 z +0.75 (monthly excess x sqrt12) | robustness | train | 1994-01-01 | 2025-10-31 | 0.20 | +21.1% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R6 vs six-asset tsmom12: alpha vs tsmom12 IR +0.22 z +0.84 (monthly excess x sqrt12) | robustness | train | 1994-03-01 | 2025-10-31 | 0.20 | +21.6% | 29.3% | - |
+| 2026-11-24 23:34 | xs-century-1 | R7 bonds + FX only: alpha vs tsmom12 IR +0.43 z +2.63 (monthly excess x sqrt12) | robustness | train | 1962-04-01 | 2025-10-31 | 0.45 | +274.8% | 23.2% | - |
+| 2026-11-24 23:37 | e4-anatomy-1 | re-score (not a try): e4 minus tsmom12 Sharpe per market split by regime and leg (pooled-1/pooled-2 series and code; d reproduced to 6e-16). Card split, 25% zigzag: equity D +0.063 = risk part +0.087 + return part -0.024 (rebound +0.092, fast +0.022, slow +0.003, whipsaw +0.018, calm -0.159); bonds+FX +0.010 = +0.035 - 0.025. Post hoc vs vol-matched tsmom12: equity rebound +0.117 (SE 0.041, 39 of 41 markets > 0), slow bear -0.037, calm -0.043, fast +0.009. Equity-vs-other gap +0.053 = risk part +0.052 (card reading B), not regime mix (research/e4-anatomy-1.md) | note | train | 1927-04-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:35 | temperature-premium | SPY next-but-one month return on GISTEMP 12-month anomaly minus prior decade (b +3.25%/deg C, t +1.63, rank 9/41, gate fail) | screen | train | 1993-02-01 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:35 | outbreak-premium | SPY 4-week return on detrended Anscombe count of WHO Disease Outbreak News reports (b +0.065%/unit, t +1.68, rank 9/41, gate fail) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit without the 6 weeks with >= 60 WHO items (re-dated archive weeks) (b +0.159%/unit, t +1.11, rank 12/41, placebo SD 1.64) | screen | train | 2005-01-07 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:47 | outbreak-premium | review check: W30 gate fit on Fridays 2005-01..2019-12 only, before the re-dated years (b +0.082%/unit, t +0.48, rank 21/41, placebo SD 1.16) | screen | train | 2005-01-07 | 2020-01-27 | - | - | - | - |
+| 2026-11-24 23:45 | wide-19 | cred-xs | variant | train | 1994-02-01 | 2025-10-31 | 1.09 | +29621.4% | 39.9% | 1.83 |
+| 2026-11-24 23:45 | wide-19 | cred-xs/bills | robustness | train | 1994-02-01 | 2025-10-31 | 1.11 | +33497.4% | 38.8% | 1.82 |
+| 2026-11-24 23:45 | wide-19 | cred-lr | variant | train | 1994-02-01 | 2025-10-31 | 0.95 | +20355.6% | 48.6% | 1.72 |
+| 2026-11-24 23:45 | wide-19 | cred-lr/bills | robustness | train | 1994-02-01 | 2025-10-31 | 0.96 | +21459.4% | 47.5% | 1.73 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.62 | +325.1% | 23.6% | 2.12 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@etf | robustness | train | 2001-05-27 | 2025-10-31 | 0.53 | +284.1% | 36.2% | 0.96 |
+| 2026-11-24 23:45 | wide-19 | cred-xs@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.70 | +4868.1% | 26.0% | 2.13 |
+| 2026-11-24 23:45 | wide-19 | cred-lr@idx | robustness | train | 1962-01-02 | 2025-10-31 | 0.65 | +7530.4% | 51.9% | 0.89 |
+| 2026-11-24 23:50 | wide-19 | brier-verify: Brier skill / Murphy decomposition of the in/out signal (killed in step 1: multi-signal / info-1 IC, insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | rev-costloss: relative economic value of the exit (new, descriptive; a reframing of insure-1; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | mos-calibrate: logistic MOS soft slot (killed: kelly-shrunk, ml-linear, ml-sizing; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | damped-persistence: persistence/climatology blend (killed: combo-1 blend-iv, bet-hedge-seedbank; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bma-lookbacks: BMA / lagged ensemble of lookbacks (killed: e4, wf-pooled, tranching; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | xl-layer: reinsurance layer / aggregate stop-loss (killed: drawdown-control, cppi-floor, stop-0.25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | bonus-malus: exposure ladder by monthly outcome (killed: ensemble-tsmom, slew-limit, arm3-12; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | cred-forward: credibility of the forward record, Esscher/Wang premium (killed: power-map-1, insure-4; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | stop-reentry: optimal-stopping re-entry, real-options band (killed: fast-reentry, bear-legs, eu-4 dz25; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | robust-lookback: worst-case lookback set, minimax regret, newsvendor size (killed: ensemble-tsmom, wf-pooled, ib-soft; not run) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:50 | wide-19 | post hoc (not a try): Z at 2025-10-31 with the noise term corrected for correlation, V (1 - rho): six 0.00, etf 0.03, idx 0.16 (lib/wide19_posthoc.py) | note | train | 1994-02-01 | 2025-10-31 | - | - | - | - |
 | 2026-11-24 23:47 | ownvol-anatomy-1 | re-score (not a try): vt-own-70-x minus tsmom12 split into exposure E (fixed-share twin), mean channel M and risk channel R; equity 41 d +0.022 = E +0.001 + M -0.003 + R +0.024; judged 21 d -0.010 = E +0.000 + M -0.015 + R +0.005; FX9 d -0.052 = E +0.000 + M -0.056 + R +0.004; COM8 d +0.056 = E -0.001 + M -0.018 + R +0.075; six d +0.101 = E +0.003 + M -0.153 + R +0.251 (research/ownvol-anatomy-1.md) | note | train | 1913-01-01 | 2025-10-31 | - | - | - | - |
