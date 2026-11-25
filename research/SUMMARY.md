@@ -80,8 +80,8 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   publication (median about 28% over six factors), and long-only funds built on them matched
   their index after fees (#91). Our own tests of published effects: 0 for 9 (tonight's two:
   the aviation-disaster mood effect #176, market-volatility management of style factors #179).
-- **The bar for a new rule is measured, and rebuilds on any computer.** 4,119 tries logged
-  (264 new since night 4), worth between 11 and 506 independent shots depending on how they are
+- **The bar for a new rule is measured, and rebuilds on any computer.** 4,126 tries logged
+  (271 new since night 4), worth between 11 and 506 independent shots depending on how they are
   counted; the bar uses the cautious 506. A new rule must beat `tsmom12` at z >= 4.70, which is
   +0.31 to +0.56 Sharpe for rules correlated 0.77-0.93 with `tsmom12` (others use the z column
   in `BAR.md`) (#92, #100). The growth did not move it (night 4: 3,855 tries, N_eff 500,
@@ -103,9 +103,19 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   fails the bar (z 2.75, IR +0.31; momentum's cost decides). Since 1994 its alpha is
   insignificant (z 0.75), negative in the 2010s. Managing it by market volatility does not help
   (#179). It needs shorts in any case (B7).
-- **Borrowed ideas: 95 mechanisms listed, 23 tested by a strategy, 25 gates, none passed** (many
-  gates can only kill an idea, never pass one, by design: few independent episodes; #124).
-  Tonight's wide-17 to wide-20 added 7 (#169, #171, #173, #176). New candidates must pass two
+- **Borrowed ideas: 101 mechanisms listed, 29 tested by a strategy, none passed; 28 gates, one
+  kill-only pass, killed by its own replication** (many gates can only kill an idea, never pass
+  one, by design: few independent episodes; #124). The pass was W32 `drought-inflation`
+  (t -3.71, rank 1 of 41 on TLT 2002-2025); its replication R32 on the 10-year yield 1962-2002
+  showed nothing (t -0.19, rank 21) (#188). Tonight's wide-17 to wide-20 added 7 (#169, #171,
+  #173, #176), parked-gates-1 2 mechanisms and 3 gates (#188); every gate is listed in
+  [`gate-null.md`](gate-null.md). A bookkeeping pass (#191) applied the rule the count states
+  (a mechanism enters once it gets a gate or a strategy test; descriptive re-scores do not) and
+  added six strategy tests the count had missed: `vm-style-book` (#179), the century style
+  book (#170), Hedge across the books (#175) and `coin-drift-run` (#157, #190; read as one
+  mechanism with `cost-band` the count is 100 / 28), each a new mechanism, and two of mechanisms
+  already counted: the strategy form of `seasonal-20y` (#148; listed by survey-4) and
+  `turbulence-1` (#134; wide-1's M1, which collapsed into `turbulence`). Family bar for the next strategy test: p < 0.10 / 101 = 0.00099. New candidates must pass two
   filters first: not announced, not driven by price (#109). A literature survey listed 11 more
   from 2024-2026, none tested by it (#177).
 
@@ -179,17 +189,48 @@ and run this repo; 7 pull requests are open (listed under "Still open").
   dependence the e-processes over-reject. Side finding: the registry's read-once test rejects
   4.2-6.6% at a nominal 2.5% against `tsmom12` (8-9% against zero), so its p-values are
   optimistic for trend-like books. Recommendation: fix the verdict's standard error for
-  dependence (lane `forward-se-1` running); do not adopt an e-process as the verdict.
+  dependence (done as #189, below); do not adopt an e-process as the verdict.
 - The `tsmom12` exit as a crash warning (#182, descriptive): **a real but narrow warning**,
   worth about nothing to a plain holder on the US market and pooled sets (SPY/QQQ +0.17 / +0.20
   of a perfect warning, -0.05 / +0.05 in money); see "What we know now".
+- Two parked candidates gated (#188). **W32 `drought-inflation` passed its kill-only gate, then
+  failed its replication: dead.** One more Palmer-index unit of US drought went with -0.78% on
+  TLT over the next quarter (t -3.71, rank 1 of 41 shifted calendars, 2002-2025): the first gate
+  pass in this record. Kill-only by design, so its replication R32, carded after the W32 number
+  and before its own, ran the same dose on the 10-year yield over the 40 years before TLT
+  (1962-2002): t -0.19, rank 21 of 41, and drought did not predict food prices (1962-2002 t -1.82, 1962-2025 t -1.68).
+  Verdict as the R32 card fixed it: a one-period result. **W33 `margin-susceptibles` fails:**
+  this month's fall times the stock of broker customer receivables over equity value has no
+  slope on next month's S&P 500, 1965-2025 (t +0.05, rank 41 of 41; its earlier-dose placebo null
+  is off-centre, all 40 placebo t positive). parked-gates-1 counted 97 mechanisms, 23 tested
+  by a strategy, 28 gates (R32 included); corrected by #191 to 101 / 29 / 28 (see "What we know
+  now").
+- A dependence-robust standard error for the forward registry's verdict (#189, engineering):
+  **adopted as an improvement, not a fix.** The verdict's standard error now allows a year of
+  serial dependence (Bartlett / Newey-West, one year of lags; p from Kiefer-Vogelsang fixed-b).
+  It reduces the over-rejection but does not remove it: at a nominal 2.5% on block-resampled
+  store paths, a book against `tsmom12` over 10 years now rejects 4.3-5.8% (old 6.1-6.4%), so a
+  10-year verdict against `tsmom12` reads as about a 5% test; over 100 years 3.1-3.6%;
+  `tsmom12` against zero 1.0% at 10 years (old 8%); iid controls keep their level. The card's
+  kill condition was met (three 10-year cells above 0.040); the night lead adopted it anyway, a
+  disclosed deviation the owner may reverse. What remains at 10 years is the skew of about 10
+  yearly sums, not the standard error; the long-run variance ratio (`lrv`) must be measured at
+  each freeze. Nothing live changes (the registry holds no frozen line).
+- `coin-drift-run` on six coins neither earlier test traded (#190): **killed by its card.**
+  wide-16's 0.05 rebalance band against the gym's 0.01, unchanged, on XEM, XMR, ZEC, DOGE, DCR
+  and REP, 2015-2019: dSharpe -0.014 (z -0.50) net, -0.019 with coin fills free; it lost in the
+  2016-17 rallies, the opposite of the story. The coins were picked by their January 2018 size
+  (survivorship), which if anything favours the wide band, so the kill is conservative. Dead
+  after two tests on data that did not suggest it (#157, #190); no case for changing the band.
 - Data (#174): keyless monthly consumer prices for 11 economies (from 1913-1954 (euro area
   1990); annual back to 1661 for one), country equity yields from 1975 and policy rates from
   1946-1960. A real exchange rate can now replace the spot-reversal proxy for currency value
   (own card needed).
 - Engineering (#166): the register stores the current live code versions (12 live series) and
   falls back to a series with the same code hash; the bar was regenerated (3,982 tries, N_eff
-  504, z 4.70, before tonight's research lanes merged).
+  504, z 4.70, before tonight's research lanes merged). Regenerated again after #190 in the
+  order `research/register/README.md` states (`grimstrade.register`, `register2.py estimate`,
+  `grimstrade.register`): 4,126 tries, N 1,116, N_eff 506, z 4.70 (#191).
 
 Also landed between the night-4 summary and tonight: the alpha-form re-score (#154, above), the
 keyless long histories for rates, FX and commodities (#152), letting coin slots drift on about
@@ -203,10 +244,11 @@ z -1.67).
 - Held until after the 2026-11-25 daily run: one replay engine for the gym and the learning
   environment (#149), the daily run reconciling its own record (#153), the scoreboard's
   live-start-delay note (#155), daily-run robustness tests for misbehaving sources (#161).
-- Tonight's lanes still open: gates for two parked candidates, drought-inflation and
-  margin-susceptibles (#188), the night lead's handoff (#185), this summary (#183).
+- Tonight's lanes still open: the night lead's handoff (#185), this summary update (#191), whether
+  insure-1870-1's timing result is a smoothed-index artefact (#192).
 - Leads still open: `e4` (unsettled, leaning positive, from stocks; #159, #168, #178); the halving
-  window's one forward score (#137). `coin-drift-run` is closed: not confirmed (#157).
+  window's one forward score (#137). `coin-drift-run` is dead: not confirmed (#157), then killed
+  on six unseen coins (#190).
 - Live: 11 books trade fake money daily; `own_vol_70` joins on its first run (#135). The record
   is days old: description only.
 
@@ -233,7 +275,8 @@ None of the rows is a proven edge.
 - Tonight: `research/xs-century-1.md`, `vm-style-1.md`, `vix-call-1.md`, `hedge-books-1.md`,
   `e4-anatomy-1.md`, `reentry-reconcile-1.md`, `ownvol-anatomy-1.md`, `rev-costloss-1.md`,
   `tick-tier-1.md`, `omori-1.md`, `insure-1870-1.md`, `evalue-forward-1.md`,
-  `breadth-anatomy-1.md`, `wide-17.md` to `wide-20.md`, `survey-7b.md`, `data-long-4.md`.
+  `breadth-anatomy-1.md`, `wide-17.md` to `wide-20.md`, `survey-7b.md`, `data-long-4.md`,
+  `parked-gates-1.md`, `forward-se-1.md`, `coin-drift-2.md`.
 - Shorts: #83, #89. Coins: #69, #82. Euro books: #59, #62, #63, #68, #73, #77, #80, #85.
 - Corrections after the independent review (#119): [`errata-2.md`](errata-2.md).
 - Earlier runs (machine learning, macro, carry, papers): [`README.md`](README.md) and this

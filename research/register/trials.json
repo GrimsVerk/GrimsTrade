@@ -173,15 +173,15 @@
       20
     ]
   ],
-  "rows_backfilled": 1587,
+  "rows_backfilled": 1589,
   "rows_backfilled_by_source": {
     "curve": 1126,
     "harness": 87,
     "live": 12,
-    "logged": 374
+    "logged": 376
   },
-  "rows_backfilled_selectable": 465,
-  "sample_series": 421,
+  "rows_backfilled_selectable": 466,
+  "sample_series": 422,
   "seed": 20261118,
   "sensitivity_one_per_family": {
     "cluster_sharpe_mean": 1.0862,
@@ -209,10 +209,10 @@
     "weeks": 722
   },
   "shape": {
-    "excess_kurtosis_median": 9.02,
+    "excess_kurtosis_median": 9.005,
     "excess_kurtosis_p90": 17.427,
-    "series": 477,
-    "skew_median": -0.023,
+    "series": 478,
+    "skew_median": -0.021,
     "skew_p10": -1.032
   },
   "windows": {
