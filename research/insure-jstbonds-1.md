@@ -1,6 +1,6 @@
 # insure-jstbonds-1: does trend's crash insurance hold on JST annual government-bond returns?
 
-Lane `insure-jstbonds-1`, 2026-11-25 (UTC). Branch `insure-jstbonds-1`. Research only: fake
+Lane `insure-jstbonds-1`, 2026-11-25 (UTC). Branch `insure-jstbonds-1`, PR #225. Research only: fake
 money, keyless data already cached (JST Macrohistory R6, data-long-4's copy), no change to the
 gym, the daily runner or the live strategies. Card:
 [`cards/insure-jstbonds-1.md`](cards/insure-jstbonds-1.md) (commit c6bffee, before any number);
@@ -149,7 +149,7 @@ Proposed wording (for the summary lane): "On JST annual government-bond returns 
 bond falls of 10%+. The 12 of 13 slow falls account for that. In one-year falls such as 1994 it
 was fully in. It shows no timing: per fall it avoided 0.70 of the loss against 0.68 for the same
 exposure held fixed, below what AR(1) and block-bootstrap worlds give (p 0.58 / 0.68). On bonds
-the insurance is what holding less gives (#PR)." Nothing changes for the live rule.
+the insurance is what holding less gives (#225)." Nothing changes for the live rule.
 
 ## Logged
 
