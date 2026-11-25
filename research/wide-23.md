@@ -15,14 +15,14 @@ inattention, game theory, freight, prime-age demography, frost, habituation). Me
 
 **Count carried in** (`gate-null.md` on `main`, count after W35): **103 mechanisms, 29 tested
 by a strategy, none passed; 30 gates, one kill-only pass (W32), killed by its replication
-R32.** PR #202 (wide-22, not merged when this was written) adds W36 and R36 (104 / 29 / 32);
-if it lands first the lead renumbers this lane's gate and adds one to every count below. As in
+R32.** PR #202 (wide-22, open when this lane started, merged before this lane's PR) adds W36
+and R36: **104 mechanisms, 29 tested by a strategy, 32 gates, two kill-only passes (W32, W36),
+each killed by its replication.** The counts below are final after #202. As in
 wide-12 .. wide-22, only mechanisms that get a gate or a strategy test enter the count.
 
 Project-wide bar (`research/register/BAR.md`, rows through 2026-11-25 01:16): **4,126 tries,
 N 1,116 for a new pick; measured rho 0.55 gives N_eff 506: a new rule needs z >= 4.70 against
-`tsmom12`, Bonferroni p <= 9.9e-5.** Family bar with this run's gate: p < 0.10 / 104 = 0.00096
-relative to `main` (0.10 / 105 = 0.00095 if #202 lands first).
+`tsmom12`, Bonferroni p <= 9.9e-5.** Family bar with this run's gate: p < 0.10 / 105 = 0.00095.
 
 Method as wide-21 and wide-22: wide-11's filters F1 (not announced: an unscheduled flow (a) or
 a premium (b)) and F2 (not price-driven; passing only with controls costs 1 point), then
@@ -133,8 +133,8 @@ form), which is what the 7-day drift after the news measures. C9 fails the size 
 
 **Picked by the rule.** C1 scores 6, the only candidate at 6 with keyless data and more than
 a handful of independent events. **Gated: C1 as W37 `hack-drift`** (card `cards/wide-23.md`,
-pushed before any return was read; W37 is provisional: W36 is taken by #202, and the merging
-lead may renumber). The replication **R37** is fixed in the same card before any number:
+pushed before any return was read; the card calls W37 provisional because #202 had taken W36
+and was still open; no other branch took W37, so the id stands). The replication **R37** is fixed in the same card before any number:
 the same design on BTC with the **other** events (thefts from centralised exchanges, 2012-2025),
 so it adds independent events, as gate-null's replication step asks. C2 (5) has no event list;
 C4 and C8 score 5 only with cause 0 and fail their reach. No second gate (W38 is not used).
@@ -216,12 +216,10 @@ One mechanism added and closed by its gate (W37 `hack-drift`). The thirteen othe
 filtered or dead by size or channel and are **not counted**, as in wide-12 .. wide-22; each has
 a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
 
-**Count relative to `main`: 104 mechanisms (103 + W37), 29 tested by a strategy, none passed;
-31 gates (30 + W37), one kill-only pass (W32, killed by its replication R32).** Family bar
-p < 0.10 / 104 = 0.00096. **If #202 (wide-22) lands first:** 105 mechanisms, 29 tested by a
-strategy, 33 gates (with W36 and R36), two kill-only passes (W32, W36), each killed by its
-replication; family bar 0.10 / 105 = 0.00095. W37 keeps its id either way unless another lane
-took W37; the merging lead renumbers if so. Published effects tested after publication: 1 more
+**Count: 105 mechanisms (104 after #202 + W37), 29 tested by a strategy, none passed; 33 gates
+(32 + W37), two kill-only passes (W32, W36), each killed by its replication (R32, R36).** The
+next strategy test is read at p < 0.10 / 105 = 0.00095 (family) and the register's bar.
+Published effects tested after publication: 1 more
 (the hack channel of Liu and Tsyvinski 2021 / Corbet et al. 2020, in its theft form on ETH and
 BTC, 2018-2025): dead.
 
