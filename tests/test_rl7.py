@@ -65,7 +65,9 @@ def test_up12_is_tsmom12_sign() -> None:
 
 
 class _S:
-    def __init__(self, name: str, group: str, segs: list, gap: int = 0) -> None:
+    def __init__(
+        self, name: str, group: str, segs: list[tuple[int, np.ndarray]], gap: int = 0
+    ) -> None:
         self.name, self.group, self.cls, self.gap, self.segs = name, group, "equity", gap, segs
         self.cost = 0.001
 
@@ -101,7 +103,7 @@ def test_learners_find_planted_and_ignore_noise() -> None:
     pg = rl7.fit_pg(X, y)
     assert pg.w[0] > 0 and abs(pg.w[0]) > 3 * np.abs(pg.w[1:]).max()
     p = pg.position(X)
-    assert 0 < p.min() and p.max() < 1
+    assert p.min() > 0 and p.max() < 1
 
 
 def test_split_rule() -> None:

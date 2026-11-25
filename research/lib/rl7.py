@@ -111,9 +111,17 @@ def build_rows(series: Sequence[object]) -> Rows:
             gid += 1
     cat = {c: np.concatenate(v) for c, v in cols.items()}
     return Rows(
-        cat["m"], cat["g"], cat["k"], cat["X"], cat["y"], cat["r"], cat["c"],
-        names, groups, classes,
-    )  # fmt: skip
+        cat["m"],
+        cat["g"],
+        cat["k"],
+        cat["X"],
+        cat["y"],
+        cat["r"],
+        cat["c"],
+        names,
+        groups,
+        classes,
+    )
 
 
 # --------------------------------------------------------------------------- split
@@ -129,8 +137,9 @@ def split(rows: Rows, seed: int = SPLIT_SEED) -> np.ndarray:
     train[(post < MIN_SIDE)] = True
     rng = np.random.default_rng(seed)
     for g in GROUP_ORDER:
-        idx = sorted((i for i in range(n) if rows.groups[i] == g and span[i]),
-                     key=lambda i: rows.names[i])  # fmt: skip
+        idx = sorted(
+            (i for i in range(n) if rows.groups[i] == g and span[i]), key=lambda i: rows.names[i]
+        )
         if not idx:
             continue
         perm = rng.permutation(len(idx))
@@ -142,7 +151,9 @@ def split(rows: Rows, seed: int = SPLIT_SEED) -> np.ndarray:
 # --------------------------------------------------------------------------- learners
 
 
-def purged_folds(k: np.ndarray, n: int = FOLDS, purge: int = PURGE) -> list[tuple[np.ndarray, np.ndarray]]:
+def purged_folds(
+    k: np.ndarray, n: int = FOLDS, purge: int = PURGE
+) -> list[tuple[np.ndarray, np.ndarray]]:
     """n contiguous blocks of calendar months with about equal row counts; fit rows exclude
     months within `purge` of the validation block."""
     ks = np.sort(k)
@@ -193,7 +204,9 @@ def _lasso(Z: np.ndarray, y: np.ndarray, alpha: float) -> tuple[np.ndarray, floa
     return np.asarray(m.coef_, dtype=float), float(m.intercept_)
 
 
-def fit_lasso(X: np.ndarray, y: np.ndarray, k: np.ndarray, alphas: Sequence[float] = ALPHAS) -> Model:
+def fit_lasso(
+    X: np.ndarray, y: np.ndarray, k: np.ndarray, alphas: Sequence[float] = ALPHAS
+) -> Model:
     yc = np.clip(y, -Y_CLIP, Y_CLIP)
     if len(alphas) == 1:
         a = alphas[0]
@@ -316,14 +329,22 @@ def peek(rows: Rows, cell: np.ndarray, s: float, seed: int = PEEK_SEED) -> np.nd
     return s * yz + math.sqrt(1 - s * s) * e
 
 
-def oof(learner: str, X: np.ndarray, y: np.ndarray, k: np.ndarray, ols: bool = False) -> tuple[np.ndarray, list[dict[str, object]]]:
+def oof(
+    learner: str, X: np.ndarray, y: np.ndarray, k: np.ndarray, ols: bool = False
+) -> tuple[np.ndarray, list[dict[str, object]]]:
     p = np.full(len(y), np.nan)
     info = []
     for fit_i, val_i in purged_folds(k):
         m = fit(learner, X[fit_i], y[fit_i], k[fit_i], ols)
         p[val_i] = m.position(X[val_i])
-        info.append({"alpha": m.alpha, "w": [round(float(x), 4) for x in m.w], "b": m.b,
-                     "mean_p": float(p[val_i].mean())})  # fmt: skip
+        info.append(
+            {
+                "alpha": m.alpha,
+                "w": [round(float(x), 4) for x in m.w],
+                "b": m.b,
+                "mean_p": float(p[val_i].mean()),
+            }
+        )
     return p, info
 
 
@@ -370,12 +391,17 @@ def gate(rows: Rows, train: np.ndarray) -> dict[str, object]:
         g3 = L10["D"] > 0 and L10["p_one"] < 0.10  # type: ignore[index, operator]
         g4 = noise["D"] >= -0.025 and not (noise["D"] > 0 and noise["p_one"] < 0.10)  # type: ignore[index, operator]
         gates[ln] = {
-            "lift_0.05": _short(L5), "lift_0.10": _short(L10),
-            "ceil_0.05": _short(C5), "ceil_0.10": _short(ceil[f"{ln}-ceil@0.10"]),
+            "lift_0.05": _short(L5),
+            "lift_0.10": _short(L10),
+            "ceil_0.05": _short(C5),
+            "ceil_0.10": _short(ceil[f"{ln}-ceil@0.10"]),
             "noise_cost": _short(noise),
-            "G1": bool(g1), "G2": bool(g2), "G3": bool(g3), "G4": bool(g4),
+            "G1": bool(g1),
+            "G2": bool(g2),
+            "G3": bool(g3),
+            "G4": bool(g4),
             "passes": bool(g1 and g2 and g3 and g4),
-        }  # fmt: skip
+        }
     res["gate"] = gates
     return res
 
@@ -395,8 +421,11 @@ def final(rows: Rows, train: np.ndarray, learners: Sequence[str]) -> dict[str, o
     models = {}
     for ln in learners:
         m = fit(ln, rows.X[tcell], rows.y[tcell], rows.k[tcell])
-        models[ln] = {"alpha": m.alpha, "w": dict(zip(FEATURES, map(float, m.w), strict=True)),
-                      "b": m.b}  # fmt: skip
+        models[ln] = {
+            "alpha": m.alpha,
+            "w": dict(zip(FEATURES, map(float, m.w), strict=True)),
+            "b": m.b,
+        }
         pos[ln] = m.position(rows.X)
     res["models"] = models
     allrows = np.ones(len(rows.k), dtype=bool)
@@ -413,8 +442,10 @@ def final(rows: Rows, train: np.ndarray, learners: Sequence[str]) -> dict[str, o
         ms = markets(rows, sel, {r: v[sel] for r, v in nets.items()})
         cmp_ = compare(ms, list(pos))
         cmp_["mean_sharpe"] = {r: mean_sharpe(ms, r) for r in pos}
-        cmp_["span"] = [ed.month_of(int(rows.k[sel].min())).isoformat(),
-                        ed.month_of(int(rows.k[sel].max())).isoformat()]  # fmt: skip
+        cmp_["span"] = [
+            ed.month_of(int(rows.k[sel].min())).isoformat(),
+            ed.month_of(int(rows.k[sel].max())).isoformat(),
+        ]
         cmp_["mean_position"] = {r: float(p[sel].mean()) for r, p in pos.items()}
         cmp_["turnover_per_year"] = {r: _turnover(rows, sel, p) for r, p in pos.items()}
         out[name] = cmp_
@@ -456,9 +487,18 @@ def _row(when: str, idea: str, variant: str, kind: str, lo: str, hi: str, sh: st
 def gate_rows(res: dict, when: str, lo: str) -> list[str]:  # type: ignore[type-arg]
     hi = "1989-12-01"
     ms, vs, g = res["mean_sharpe"], res["vs_tsmom12"], res["gate"]
-    out = [_row(when, "rl-7-control", "tsmom12@rl7-trainingcell (reference for the gate; 23 "
-                "train markets x before 1990, mean per-market Sharpe)", "control", lo, hi,
-                f"{ms['tsmom12']:.2f}")]  # fmt: skip
+    out = [
+        _row(
+            when,
+            "rl-7-control",
+            "tsmom12@rl7-trainingcell (reference for the gate; 23 "
+            "train markets x before 1990, mean per-market Sharpe)",
+            "control",
+            lo,
+            hi,
+            f"{ms['tsmom12']:.2f}",
+        )
+    ]
     for ln in FITTERS:
         for tag in ("none", "0.00", "0.05", "0.10"):
             for ceil in ("", "-ceil"):
@@ -466,7 +506,9 @@ def gate_rows(res: dict, when: str, lo: str) -> list[str]:  # type: ignore[type-
                 if r not in ms:
                     continue
                 v = vs[r]
-                txt = f"{r} (planted gate, out of fold; vs tsmom12 D {v['D']:+.3f}, SE {v['se']:.3f}"
+                txt = (
+                    f"{r} (planted gate, out of fold; vs tsmom12 D {v['D']:+.3f}, SE {v['se']:.3f}"
+                )
                 if tag in ("0.05", "0.10"):
                     lift = g[ln][f"{'ceil' if ceil else 'lift'}_{tag}"]
                     txt += f"; lift over @0.00 {lift['D']:+.3f}, z {lift['z']:+.2f}"
@@ -474,8 +516,7 @@ def gate_rows(res: dict, when: str, lo: str) -> list[str]:  # type: ignore[type-
                     txt += f"; gate {'PASSES' if g[ln]['passes'] else 'fails'}"
                     txt += " (" + ", ".join(k for k in ("G1", "G2", "G3", "G4") if g[ln][k])
                     txt += " met)"
-                out.append(_row(when, "rl-7-control", txt + ")", "control", lo, hi,
-                                f"{ms[r]:.2f}"))  # fmt: skip
+                out.append(_row(when, "rl-7-control", txt + ")", "control", lo, hi, f"{ms[r]:.2f}"))
     return out
 
 
@@ -488,24 +529,53 @@ def final_rows(res: dict, when: str) -> list[str]:  # type: ignore[type-arg]
         if not prim:
             tag = "trainmkts-post1990" if name.startswith("train") else "holdmkts-pre1990"
         ms = c["mean_sharpe"]
-        out.append(_row(when, "rl-7", f"tsmom12@rl7-{tag} (comparator, mean per-market Sharpe; "
-                        f"{name})", "baseline" if prim else "robustness", lo, hi,
-                        f"{ms['tsmom12']:.2f}"))  # fmt: skip
+        out.append(
+            _row(
+                when,
+                "rl-7",
+                f"tsmom12@rl7-{tag} (comparator, mean per-market Sharpe; {name})",
+                "baseline" if prim else "robustness",
+                lo,
+                hi,
+                f"{ms['tsmom12']:.2f}",
+            )
+        )
         for ln in res["learners"]:
             v = c[ln]
-            txt = (f"{ln}@rl7-{tag} ({name}; frozen fit on the training cell; pooled dSharpe vs "
-                   f"tsmom12 {v['D']:+.3f}, SE {v['se']:.3f}, z {v['z']:+.2f}, d>0 in "
-                   f"{v['n_pos']}/{v['n']}")
+            txt = (
+                f"{ln}@rl7-{tag} ({name}; frozen fit on the training cell; pooled dSharpe vs "
+                f"tsmom12 {v['D']:+.3f}, SE {v['se']:.3f}, z {v['z']:+.2f}, d>0 in "
+                f"{v['n_pos']}/{v['n']}"
+            )
             if prim:
                 vd = res["verdicts"][ln]
                 txt += f"; one-sided 95% upper {vd['hi95']:+.3f}; {vd['verdict']}"
-            out.append(_row(when, "rl-7", txt + ")", "variant" if prim else "robustness", lo, hi,
-                            f"{ms[ln]:.2f}"))  # fmt: skip
+            out.append(
+                _row(
+                    when,
+                    "rl-7",
+                    txt + ")",
+                    "variant" if prim else "robustness",
+                    lo,
+                    hi,
+                    f"{ms[ln]:.2f}",
+                )
+            )
             if prim:
                 for cl, b in v["by_class"].items():
-                    out.append(_row(when, "rl-7", f"{ln}@rl7-primary-{cl} (class slice of the "
-                                    f"primary cell; dSharpe {b['D']:+.3f}, SE {b['se']:.3f}, d>0 "
-                                    f"in {b['n_pos']}/{b['n']})", "robustness", lo, hi, "-"))  # fmt: skip
+                    out.append(
+                        _row(
+                            when,
+                            "rl-7",
+                            f"{ln}@rl7-primary-{cl} (class slice of the "
+                            f"primary cell; dSharpe {b['D']:+.3f}, SE {b['se']:.3f}, d>0 "
+                            f"in {b['n_pos']}/{b['n']})",
+                            "robustness",
+                            lo,
+                            hi,
+                            "-",
+                        )
+                    )
     return out
 
 
@@ -527,7 +597,8 @@ def main() -> None:
         for i, nm in enumerate(rows.names):
             pre = int(((rows.market == i) & (rows.k < CUT_K)).sum())
             post = int(((rows.market == i) & (rows.k >= CUT_K)).sum())
-            print(f"{nm:22s} {rows.groups[i]:7s} {'TRAIN' if train[i] else 'hold '} pre {pre:5d} post {post:5d}")
+            side = "TRAIN" if train[i] else "hold "
+            print(f"{nm:22s} {rows.groups[i]:7s} {side} pre {pre:5d} post {post:5d}")
         tc = train[rows.market] & (rows.k < CUT_K)
         pc_ = ~train[rows.market] & (rows.k >= CUT_K)
         print("training cell rows", int(tc.sum()), "markets", int(train.sum()))
@@ -555,7 +626,9 @@ def main() -> None:
         (out / "rl-7-final.json").write_text(json.dumps(res, indent=1, default=float) + "\n")
         print(json.dumps({k: v for k, v in res.items() if k != "cells"}, indent=1))
         for name, c in res["cells"].items():  # type: ignore[attr-defined]
-            print(name, {ln: {x: c[ln][x] for x in ("D", "se", "z", "n", "n_pos")} for ln in passed})
+            print(
+                name, {ln: {x: c[ln][x] for x in ("D", "se", "z", "n", "n_pos")} for ln in passed}
+            )
 
 
 if __name__ == "__main__":
