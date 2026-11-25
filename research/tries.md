@@ -4104,3 +4104,15 @@ Never edit or delete a row.
 | 2026-11-24 23:55 | hedge-books-1 | hedge16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.12 | +20488.7% | 33.5% | 2.94 |
 | 2026-11-24 23:55 | hedge-books-1 | ew16/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.15 | +14775.1% | 33.0% | 3.19 |
 | 2026-11-24 23:55 | hedge-books-1 | hedge-pair/gymcost | robustness | train | 1994-02-01 | 2025-10-31 | 1.05 | +9021.0% | 33.2% | 2.33 |
+| 2026-11-24 23:50 | air-disaster-mood | SPY daily return on log2(deaths/25) of Wikidata aviation accidents >= 50 deaths, days 0-1, HC1 (b -0.038%/day/unit, t -0.59, rank 10/41, gate fail) | screen | train | 2008-01-02 | 2025-10-31 | - | - | - | - |
+| 2026-11-24 23:55 | jackpot-substitution | wide-20 candidate, scored before any price, no number computed: P2, score 5, parked: no keyless jackpot history | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | panic-words | wide-20 candidate, scored before any price, no number computed: P3, score 4, parked: about 2,000 Chronicling America calls | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | mass-casualty-mood | wide-20 candidate, scored before any price, no number computed: P4, score 4, parked: P1's channel, data terms unclear | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | my-ratio | wide-20 candidate, scored before any price, no number computed: P5, filtered (F1: age structure known decades ahead) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | conception-lead | wide-20 candidate, scored before any price, no number computed: P6, filtered (F1: births read as news) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | dst-sleep | wide-20 candidate, scored before any price, no number computed: P7, filtered (F1: scheduled dates, no dose) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | sad-onset | wide-20 candidate, scored before any price, no number computed: P8, filtered (F1: fixed calendar, no dose) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | experience-weighted | wide-20 candidate, scored before any price, no number computed: P9, filtered (F2: weighted past returns) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | consumer-sentiment | wide-20 candidate, scored before any price, no number computed: P10, filtered (F1 and F2) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | skyscraper-index | wide-20 candidate, scored before any price, no number computed: P11, score 0, dead (literature) | note | train | - | - | - | - | - | - |
+| 2026-11-24 23:55 | strike-idleness | wide-20 candidate, scored before any price, no number computed: P12, score 4, parked: BLS refuses scripts | note | train | - | - | - | - | - | - |
