@@ -39,7 +39,15 @@ branch re-pushed after each merge. Verdicts: `research/SUMMARY.md` (night 5, #18
 Lead 2 merged: #166 register-8, #167 vix-call-1, #168 e4-anatomy-1, #169 wide-18, #170
 xs-century-1, #171 wide-17, #172 ownvol-anatomy-1, #173 wide-19, #174 data-long-4, #175
 hedge-books-1, #176 wide-20, #177 survey-7b, #178 reentry-reconcile-1, #179 vm-style-1, #180
-breadth-anatomy-1, #182 rev-costloss-1. LATE (see end of night log in this section).
+breadth-anatomy-1, #181 tick-tier-1, #182 rev-costloss-1, #183 summary-5 (SUMMARY night 5, BAR
+regenerated), #184 evalue-forward-1, #186 insure-1870-1, #187 omori-1, #188 parked-gates-1, #189
+forward-se-1, #190 coin-drift-2, and #191 summary-6 if its review passed (check `gh pr list`).
+
+**Lead decision to check (owner may reverse):** #189 changed the forward registry's verdict SE to
+HAC/Newey-West with fixed-b p-values although its card's kill condition was met (3 of the
+10-year null cells > 0.040). Adopted because every resampled cell moved toward nominal and the
+iid controls keep their level; a 10-year verdict vs `tsmom12` still reads as about a 5% test.
+Disclosed in `docs/DECISIONS.md` (2026-11-25). `run_daily` does not import `grimstrade.forward`.
 
 **Held until after the 2026-11-25 daily run** (first run on tonight's new main; check it passed,
 then merge in this order, each with `gh pr merge --merge`, then re-push the head branch): #149
@@ -85,9 +93,14 @@ line conflicts with that (owner/CoS to settle).
    exchange rates (#174), a pre-registered rerun with the published currency-value definition
    would be a new counted try, not a fix: only if someone writes the card first and accepts it
    is close to retesting a failed book.
-6. Survey-7b's other lead: tick-size split of trend (#181 tick-tier-1: by asset class the
-   deciding statistic is inconclusive; against holding the paper's pattern is clear).
-7. Evaluation: #184 evalue-forward-1 (anytime-valid sequential test for the forward registry):
-   if it recommends adoption, an engineering lane implements it in `research/forward/`.
+6. Done tonight, do not redo: tick-size split of trend (#181, inconclusive by its card), the exit
+   as a crash warning (#182), insurance out of sample 1870-1965 (#186, holds narrowly on timing),
+   sequential tests (#184), registry SE fix (#189), coin-drift-run (#190, dead), Omori re-entry
+   (#187, a vol-calm rule in disguise), drought gate (#188, passed then killed by replication).
+7. Next WIDER ideas not yet run: `panic-words` (wide-20 P3, ~2,000 loc.gov calls: be polite);
+   `strike-idleness` needs BLS, which asks for a contact e-mail in the User-Agent: never send a
+   personal one; skip unless the owner provides a generic project contact. Next DEEPER: why the
+   annual early-sample returns autocorrelate (index smoothing?) before any further use of JST
+   annual data (#186 caveat).
 8. Data, owner only: the World Bank Pink Sheet (403 to scripts) and CBOE SPXTR (403) need a
    manual browser download if wanted (data-long-3, insure-3).
