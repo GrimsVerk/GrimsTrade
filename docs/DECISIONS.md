@@ -2,6 +2,33 @@
 
 Settled decisions and why, newest first. Don't relitigate; update an entry if the owner changes it.
 
+- 2026-11-25 (lane `forward-se-1`; fixed before any live verdict: the forward registry holds no
+  frozen line): the forward registry's `mean` and `sharpe` verdicts use a dependence-robust
+  standard error. Rule (`forward.hac_t`, `forward.lag`, recorded as `"se": "bartlett-1y"` on each
+  new line): Bartlett (Newey-West) long-run variance with L = min(round(per_year) - 1, n // 4)
+  lags, i.e. one year of observations (51 for weekly bars, 7 for 8 events a year), scaled by
+  n / (n - 1); p from Student-t with nu = 1.5 / b after scaling T by sqrt(1 - b + b^2 / 3),
+  b = L / n (fixed-b, Kiefer and Vogelsang 2005); with L = 0 it is the ordinary t-test.
+  `sharpe` tests with the same T (Lo 2002 at the null Sharpe 0). `min_sample` uses that test's
+  critical value at n and a new plan field `lrv` (long-run variance ratio assumed true, at
+  least 1, default 1; measure it on the train record at freeze). `win_rate` keeps its exact
+  sign test. Why one year, fixed: the store's dependence shows at 52 weeks (variance ratio
+  median 1.34, `tsmom12` 3.3; evalue-forward-1), a data-driven bandwidth would choose about 5
+  lags at 10 years of weekly data and miss it, and a rule chosen after seeing a verdict could be
+  chosen to pass it. A registration frozen before this change (none exists) keeps its recorded
+  alpha and `min_sample`; only the standard error changes. The four proposals in
+  `research/forward/candidates.jsonl` (not frozen) got new numbers at lrv 1: `carry-3-band@1`
+  750 weeks (14.4 years, was 12.7), `fomc-bond-drift@1` 637 events (79.6, was 78.1),
+  `coin-stop-0.25@1` unchanged (42), `eu-monthly-vs-weekly@1` 1730 weeks (33.3, was 31.5).
+  Measured level, and a known limit (research/forward-se-1.md, card bar failed): on 52-week
+  block-resampled store nulls at nominal 2.5% it rejects 4.4-5.9% at 10 years and 3.1-3.6% at
+  100 years for a book against `tsmom12` (iid SE: 6.1-6.4% / 4.6-4.7%), and 1.0% / 2.3% for
+  `tsmom12` against zero (iid: 8.1% / 8.3%). The rest at 10 years is the skewness of yearly sums
+  (difference series median -0.3, `tsmom12` +1.8): about 10 yearly sums make a one-sided t
+  lopsided whatever the standard error. A 10-year forward verdict on a difference against
+  `tsmom12` is therefore read as a 5%-level test, not 2.5%. The daily runner does not import
+  the registry; the scoreboard is unchanged.
+
 - 2026-11-24 (lane `daily-nodev-1`): the daily job installs only the runtime dependencies
   (`uv sync --locked --no-dev`, and `uv run --no-dev` for both run steps, since a plain `uv run`
   syncs `dev` back in). Why: `grimstrade.run_daily` and `grimstrade.intraday` use only the
