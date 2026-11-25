@@ -151,7 +151,7 @@ between the true and placebo 12-month windows, but the cycle keeps the two doses
 the nearest placebos lean toward the true t; that widens the null on the true side and can only
 make a pass harder.
 
-### Dry run (counts only, 2026-11-25 02:4x UTC)
+### Dry run (counts only, 2026-11-25 02:11 UTC)
 
 SILSO file fetched once (`wide-21/silso/2026-11-25/SN_m_tot_V2.0.csv`): 3,322 months read,
 1749-01 .. 2025-10 (none later). Shiller: 1,833 months, 1871-01 .. 2023-09. **Gate rows: 1,831
@@ -162,3 +162,80 @@ look-ahead shown cell: 1883-12, 1894-01, 1906-02, 1917-08, 1928-04, 1937-04, 194
 published cycle maxima to within a few months `[memory]`). Shown month-end rows: GSPC 909
 (1950-01 .. 2025-09; the cache starts in 1950, not 1928), SPY 393, QQQ 319, TLT 279, GLD 251,
 BTC 165, ETH 113.
+
+## What came out (one real run, 2026-11-25 02:12:26 UTC)
+
+### W34 `solar-max-recession`: fails
+
+**A hundred more sunspots in the trailing year goes with -0.16% a month on the S&P 500 over the
+next month (t -0.87, 1,831 months, 1871-01 .. 2023-07): the predicted sign, but t far from -2;
+the true t ranks 3 of 41 shifted calendars (empirical one-sided p 0.073). Dead by the gate: no
+card for a strategy.** Held-out year untouched. Table: `results/solar-max-recession.md`.
+
+| Cut (Shiller S&P 500, next month, unless named) | b, % a month per 100 sunspots | t | Rows |
+|---|---:|---:|---:|
+| **Gate: trailing 12-month mean sunspot number** | **-0.162** | **-0.87** | **1,831** |
+| Gorbanev window (max -12 .. +24 months), indicator (look-ahead) | -0.426 | -1.63 | 1,831 |
+| Phase: x(m) - x(m-12) | +0.135 | +0.47 | 1,831 |
+| 12-month horizon (% a year), NW 18 | -2.21 | -1.24 | 1,820 |
+| Crash: 20% fall within 12 months (pp per unit, predicted > 0) | +0.97 | +0.40 | 1,821 |
+| GSPC month-end, 1950-01 .. 2025-09 | -0.136 | -0.60 | 909 |
+| GSPC month-end, post-Gorbanev dose months 2012-01 .. 2025-09 | +0.247 | +0.52 | 165 |
+| SPY / QQQ month-end | -0.50 / -1.09 | -0.92 / -1.00 | 393 / 319 |
+| TLT / GLD month-end | -0.05 / -0.08 | -0.15 / -0.10 | 279 / 251 |
+| BTC / ETH month-end | -0.67 / -3.50 | -0.18 / -0.75 | 165 / 113 |
+
+- **No solar-cycle premium in 153 years of US stocks.** The slope has the sign Gorbanev's form
+  predicts and the size my card guessed (-0.16 against -0.3 if the claim were true at full
+  size), but t -0.87. From a quiet to an active year (about 1.4 units of dose) the slope means
+  about -2.7% a year, with a standard error of about 3.1%; a pass needed about -6%.
+- **Post-sample it flips**: after Gorbanev's 2012 paper the sign is positive (+0.25, t +0.52,
+  one cycle), and the crash cell (a 20% fall within a year) shows nothing (t +0.40). Crash
+  timing by the sun is not there.
+- **The look-ahead window cell (-1.63) is noted only**: it uses maxima dated from the smoothed
+  series (six months of future data at each peak) and is 1 of 12 shown cells.
+- **The null is off-centre** (SD of placebo t 1.16, 25% with |t| >= 2; quantiles 5/50/95%
+  -0.58 / +1.25 / +2.83; extremes -1.18 / +3.11). A cyclic dose shifted by 4-8 years turns into
+  its own anti-phase, so the placebos at k = -39 .. -59 and +71 .. +83 carry the true pattern
+  with the opposite sign (t +2.3 to +3.1). The family therefore measures one weak cyclic
+  pattern, not 40 independent nulls; that is why the true t ranks 3 with |t| under 1. The rank
+  alone would have been a near miss; the t condition (gate-null step 4) decides, as it should
+  for such a family. Next time a cyclic dose is gated, the placebo family should keep phase
+  away from anti-phase too (for example shifts within a quarter cycle and, in addition, whole
+  cycles permuted), or use a phase-randomised surrogate (Theiler et al. 1992 `[memory]`).
+- My guess (either sign, |t| < 1.5, middle rank, placebo SD 1.2-1.7, pass 1%) held on t and
+  the null's width (1.16, just under); the rank (3) was less middle than guessed, for the reason
+  above.
+
+Label: **kill-only** by `gate-null.md` step 7 (smallest p 1/41 = 0.024 above the family bar
+0.00098 and the register's 9.9e-5; about 14 cycles). A kill. R34 (JST replication) was fixed
+in the card to run only after a pass; it is not run.
+
+## Family count and status
+
+One mechanism added and closed by its gate (W34 `solar-max-recession`). The eleven others are
+parked, filtered or dead in the literature and are **not counted**, as in wide-12 .. wide-20;
+each has a `note` row in `tries.md` (no number computed) and a line in `ideas.md`.
+
+**Count: 102 mechanisms (101 carried in + W34), 29 tested by a strategy, none passed; 29 gates,
+one kill-only pass (W32, killed by its replication R32).** The next strategy test is read at
+p < 0.10 / 102 = 0.00098 (family) and the register's bar. Published effects tested after
+publication: 1 more (Jevons' sunspot cycle, in Gorbanev's 2012 recession form, on US stocks
+1871-2023): dead.
+
+Rows logged in `tries.md`: 1 `screen` (`solar-max-recession`) and 11 `note` rows (one per
+candidate scored but not gated).
+
+## Next
+
+1. **Natural-cycle doses are now dead three times** (W3 moon, W16 geomagnetic storms, W34 the
+   sunspot cycle). The natural-science fields searched tonight give no further candidate with
+   both a real channel and enough independent episodes: the ones with real physics (S2
+   volcanic cooling, S3 river freight) either have six events or fail their own size check, and
+   their inflation channel already died in W32/R32.
+2. **Method note for the next cyclic dose** (above): the shifted-calendar family is off-centre
+   for a dose with its own cycle; a phase-randomised surrogate or a whole-cycle permutation is
+   the better placebo. Worth a line in `gate-null.md` (added there).
+3. **S3 `river-freight`** is the only parked candidate with daily keyless data back to 1861
+   (USGS 07010000). If a later lane wants it, the natural outcome is a grain or commodity index,
+   not the six live assets; expect a kill by size.
