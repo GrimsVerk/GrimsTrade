@@ -142,7 +142,7 @@ def treasury(since: date, now: datetime, get: sources.Get) -> list[Rate]:
     return sorted(out, key=lambda r: r.date)
 
 
-def _lacking(since: date, now: datetime, have: set[date]) -> list[date]:
+def lacking(since: date, now: datetime, have: set[date]) -> list[date]:
     """Weekdays from `since` on whose session has settled by `now` and that `have` lacks."""
     out, d = [], since
     while close_time(ETF, d) + SETTLE <= now:
@@ -166,7 +166,7 @@ def fetch(
         answered = True
     except Exception as e:  # noqa: BLE001 - the Treasury is there for exactly this
         failed.append(f"yahoo ^IRX: {e}")
-    if _lacking(since, now, set(found)):
+    if lacking(since, now, set(found)):
         try:
             for r in treasury(since, now, get):
                 found.setdefault(r.date, (TREASURY, r))
