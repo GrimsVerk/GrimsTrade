@@ -1,11 +1,13 @@
 """stale-checks-1: are the pre-1926 insurance results artefacts of averaged or stale prices?
 Card: research/cards/stale-checks-1.md.
 
-    GRIMSTRADE_DATA=~/data/grimstrade uv run python -I research/lib/stalechecks1.py [--log]
+    uv run python -I research/lib/stalechecks1.py [--log]   # cache root: macro.cache_root()
 
 (a) US 1885-1925 monthly: Shiller's averaged (Cowles) prices against Schwert's (1990) appendix
-    index, whose 1885-03..1925-12 price changes are Dow Jones end-of-month closes (OCR of the
-    cached NBER WP 2985 PDF, corrected by eye; `<cache_root>/stale-checks-1/`, not committed).
+    index, whose 1885-03..1925-12 price changes are those of his Dow Jones composite
+    (end-of-month closes). The transcription `<cache_root>/stale-checks-1/schwert-appendix-
+    1884-1926.csv` is not committed; `stalechecks1_ocr.py` rebuilds it from the cached PDF and
+    the committed eye-read corrections.
 (b) insure-1870-1's annual JST rule with the signal one year older.
 (c) monthly `tsmom12` on AQR's 1877-1912 commodity aggregate, with and without a one-month
     execution delay.
@@ -41,6 +43,7 @@ ym = m9.ym
 
 # --- (a) data ---
 
+SCHWERT_CSV = "schwert-appendix-1884-1926.csv"  # sha256 4ea58998...94cf3a78 (write-up)
 A_FIRST, A_LAST = ym(1885, 2), ym(1925, 12)  # level months; returns 1885-03..1925-12
 CLOSED = frozenset(ym(1914, k) for k in range(8, 12))  # NYSE closed Aug-Nov 1914
 
@@ -548,10 +551,18 @@ def log_tries(rows: Sequence[str]) -> int:
 
 def main(argv: Sequence[str]) -> None:
     root = m9.cache_root()
+    dj_path = root / IDEA / SCHWERT_CSV
+    if not dj_path.exists():
+        raise SystemExit(
+            f"missing {dj_path}: rebuild it with `uv run python -I "
+            f"research/lib/stalechecks1_ocr.py <cache_root>/survey-9/schwert/w2985.pdf "
+            f"{dj_path}` (needs pdftoppm, magick, "
+            "tesseract; the PDF is NBER WP 2985 from www.nber.org)"
+        )
     sh = shiller_tr(
         ja.shiller_monthly(root / "shiller" / "2026-11-12" / "ie_data.xls"), A_FIRST, A_LAST
     )
-    dj = load_schwert(root / IDEA / "schwert-appendix-1884-1926.csv")
+    dj = load_schwert(dj_path)
     a = part_a(sh, dj)
     b = part_b()
     import datawide2 as dw

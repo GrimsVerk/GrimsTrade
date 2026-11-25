@@ -7,6 +7,7 @@ import math
 import sys
 from pathlib import Path
 from types import ModuleType
+from typing import Any
 
 import numpy as np
 import pytest
@@ -56,7 +57,7 @@ def test_window_drops_the_1914_closure(m: ModuleType) -> None:
     assert sorted(out) == [m.ym(1914, k) for k in (1, 2, 3, 4, 5, 6, 7, 12)]
 
 
-def _seg(m: ModuleType, pos: list[float]) -> object:
+def _seg(m: ModuleType, pos: list[float]) -> Any:
     n = len(pos)
     return m.ins.Seg(
         "AAA", list(range(1900, 1901 + n)), np.full(n, 0.05), np.zeros(n), np.zeros(n),
@@ -90,3 +91,52 @@ def test_readings_follow_the_card(m: ModuleType) -> None:
     assert m.reading_a(0.12).startswith("averaging inflates")
     assert m.reading_a(-0.03).startswith("no measurable")
     assert m.reading_a(0.07).startswith("small")
+
+
+@pytest.fixture(scope="module")
+def ocr() -> ModuleType:
+    p = ROOT / "research" / "lib" / "stalechecks1_ocr.py"
+    spec = importlib.util.spec_from_file_location("stalechecks1_ocr_under_test", p)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_ocr_tokens_get_their_decimal_point(ocr: ModuleType) -> None:
+    assert ocr.norm("1.27T19", None) is None  # a letter inside: not 6 digits after cleaning
+    assert ocr.norm("211315", 2.05) == pytest.approx(2.11315)
+    assert ocr.norm("108301", 10.4414) == pytest.approx(10.8301)  # 4 decimals above 10
+    assert ocr.norm("10.1598", 9.7) == pytest.approx(10.1598)
+    assert ocr.norm("72", 2.9) is None
+
+
+def test_vote_flags_disagreement_and_large_moves(ocr: ModuleType) -> None:
+    years = range(ocr.FIRST, ocr.LAST + 1)
+    good = {y: [["1.00000", "1.00000"]] * 12 for y in years}
+    pages = [{y: ["1.00000"] * 12 for y in years} for _ in range(3)]
+    pages[0][1914] = ["1.00000"] * 8
+    res, flags = ocr.vote(good, pages)
+    assert flags == []
+    assert res[1914][7:11] == [None] * 4
+    bad = {y: [list(c) for c in r] for y, r in good.items()}
+    bad[1900][0] = ["1.20000", "1.20000"]  # +18% move, and only 2 of 5 readings
+    _, flags = ocr.vote(bad, pages)
+    assert (1900, 1) in flags
+
+
+def test_corrections_cover_the_lanes_flagged_cells(ocr: ModuleType) -> None:
+    fix = ocr.corrections()
+    assert len(fix) == 74
+    assert fix[(1919, 1)] == pytest.approx(9.73197)
+    assert all(ocr.FIRST <= y <= ocr.LAST and 1 <= mo <= 12 for y, mo in fix)
+    assert not any(k in ocr.CLOSED for k in fix)
+
+
+def test_main_fails_clearly_without_the_transcription(
+    m: ModuleType, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("GRIMSTRADE_DATA", str(tmp_path))
+    with pytest.raises(SystemExit, match="stalechecks1_ocr.py"):
+        m.main([])

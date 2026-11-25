@@ -14,17 +14,17 @@ autocorrelation can explain the timing statistic.
 
 ## The answer on one screen
 
-**Averaging is real and exactly as large as Working (1960) predicts, but it barely moves the
-12-month timing statistic. The annual JST timing disappears with a year-older signal. The early
+**Averaging is real and about as large as averaging predicts (Working 1960: mean 0.249,
+high-low midrange 0.302), but it barely moves the 12-month timing statistic. The annual JST timing disappears with a year-older signal. The early
 commodity timing partly survives a one-month delay.** No part turns the insurance count around:
 the rule lost less than holding in every 25% fall in (a) and (c). What is at stake is only the
 timing evidence (beating random dates), and that is weak on all three samples, as before.
 
 | Part | What was compared | Key numbers | Card reading |
 |---|---|---|---|
-| (a) US 1885-1925, monthly | Shiller (Cowles monthly averages) against Dow Jones month-end closes (Schwert 1990 appendix) | lag-1 acf **+0.250** against **+0.015** (Working: 0.249); timing gap G **+0.435** against **+0.380**, 4 falls each | dG +0.055: **small, not separable from noise** |
+| (a) US 1885-1925, monthly | Shiller (Cowles monthly averages) against Schwert's (1990) Dow Jones composite, month-end closes | lag-1 acf **+0.250** against **+0.015** (Working: 0.249); timing gap G **+0.435** against **+0.380**, 4 falls each | dG +0.055: **small, not separable from noise** |
 | (b) JST annual 1871-1965 | signal from year t-1 (as #186) against t-2, same years | S 0.72 against random 0.45 (p_S 0.010) → **0.37 against 0.44 (p_S 0.732)**; anchored falls lost less 9 of 9 → 5 of 9 | **timing rests on the last year's return** |
-| (c) AQR commodities 1877-1912, monthly | signal at month end against a month later | lag-1 acf +0.116; G **+0.186** (p_rot 0.061) → **+0.121** (p_rot 0.167); 6 of 6 falls lost less either way | ratio 0.65: **partly** |
+| (c) AQR commodities 1877-1912, monthly | signal at month end against a month later | lag-1 acf +0.116; G **+0.186** (p_rot 0.061) → **+0.121** (p_rot 0.167); 6 of 6 falls lost less either way (with the 1877-02 return restored: +0.185 → +0.119) | ratio 0.65 (0.64 restored): **partly** |
 
 ## (a) Averaged against point prices, US 1885-1925
 
@@ -33,19 +33,37 @@ timing evidence (beating random dates), and that is weak on all three samples, a
   purposes if proper credit is given. For other permission, please Contact Us"; nothing on
   scripted download, so unclear, and the task rule says skip. data.nber.org (Dow Jones in the
   Macrohistory files) is disallowed by robots.txt. Instead: Schwert (1990, NBER WP 2985, PDF on
-  www.nber.org, cached by survey-9), whose appendix index uses Dow Jones *end-of-month* price
-  changes plus the Cowles dividend yield for March 1885 to December 1925 (his text, section
-  6.4). The appendix is a scan with no text layer: pages 50-51 were OCR'd at 300, 400 and 500
-  dpi, the readings voted, and the 64 cells without agreement or with a monthly move above 12%
-  read off the page image by eye. Three moves above 15% or sharp reversals remain (1893-07
-  -20%, 1907-10 -15%, 1915-04/05); all are known panics and were checked on the image. A
-  wrong fourth or fifth digit would add only a tiny negative autocorrelation. The transcription
-  is cached at `<cache_root>/stale-checks-1/schwert-appendix-1884-1926.csv`, not committed.
+  www.nber.org, cached by survey-9), whose appendix index uses the *end-of-month* price changes
+  of his Dow Jones composite plus the Cowles dividend yield for March 1885 to December 1925 (his
+  text, section 6.4). The composite is not the 12/20-stock industrial average: for 1885-1896 it
+  is Dow Jones' single average, dominated by railroads with a few industrials; from 1897 Schwert
+  combines the railroad (transportation) and industrial averages, weighting each by its number
+  of stocks (his description of the Dow Jones data, before equation 2). The card's description ("12-20 price-weighted stocks") was wrong.
+- **Transcription.** The appendix is a scan with no text layer. `lib/stalechecks1_ocr.py`
+  rebuilds it: PDF pages 50-51 rendered at 300, 400 and 500 dpi (the 500 dpi one thresholded at
+  60%, digit whitelist), whole-page tesseract (--psm 6) at each, plus a per-cell OCR of the 400
+  dpi page (two thresholds, --psm 7); a cell takes the most common reading and is flagged unless
+  3+ readings agree, no second value has 2+ readings, and the move from the previous month is at
+  most 12% in logs. All 64 flagged cells and the full rows 1897-1899 (74 cells) were read off
+  the page image by eye; they are committed as `results/stale-checks-1-ocr-corrections.csv`
+  (year, month, value) and override the vote. Rerunning the script reproduces the lane's file
+  byte for byte. sha256: `w2985.pdf`
+  a509de9dc4079d969cc19251cae41208c7d7b1e6f09b580c2c7d8e2c19f94842;
+  `schwert-appendix-1884-1926.csv`
+  4ea58998266120ecda4a983599eadbebf5441c775684230d9a783d2484cf3a78. The CSV is cached at
+  `<cache_root>/stale-checks-1/`, not committed; `stalechecks1.py` stops with a rebuild hint
+  when it is missing. Three moves above 15% or sharp reversals remain (1893-07 -20%, 1907-10
+  -15%, 1915-04/05); all are known panics and were checked on the image. A wrong fourth or
+  fifth digit would add only a tiny negative autocorrelation.
 - **Averaged series.** Shiller's monthly price and dividend (`ie_data.xls`, cached), total return
   `(P_t + D_t/12)/P_{t-1} - 1`. Before 1926 Shiller's prices are Cowles', which average the
   month's high and low (Schwert 1990).
-- Same return months on both (1885-03..1925-12, 487 returns); August-November 1914 (exchange
-  closed) dropped from both, so each series has two segments.
+- Same months on both: levels 1885-02..1925-12 (487 months), returns 1885-03..1925-12 (485
+  returns). August-November 1914 (exchange closed; Schwert has no values) are dropped from both,
+  a **deviation from the card**, which said 490 months and did not plan for the closure. So
+  each series has two segments, and the 12-month signal restarts after the reopening: its first
+  signal is at the end of 1915-12, so the second segment is scored from 1916-01 on, and the
+  return from July to December 1914 is not scored.
 
 **Autocorrelation, before scoring.** Shiller's monthly returns have lag-1 acf **+0.250**, the
 Dow Jones month-end series **+0.015** (483 pairs; noise line 0.075). Working's formula for a
@@ -74,9 +92,10 @@ correlate 0.70.
   25% fall, on the Dow 36%; the Dow has a 25% fall in 1895-96 that Shiller does not; Shiller has
   a 28% fall in 1916-17 that stays below 25% on the Dow. Each G is scored on its own series'
   falls.
-- **A month-older signal:** Shiller's gap drops to +0.329, a little *below* the Dow's (secondary
-  card criterion |G(A3) - G(A2)| < 0.05: 0.051, just missed). The Dow's own gap barely moves
-  (+0.361). So a one-month delay removes what averaging adds, and a bit more.
+- **A month-older signal (description):** Shiller's gap drops to +0.329, a little *below* the
+  Dow's +0.380 (secondary card criterion |G(A3) - G(A2)| < 0.05: 0.051, just missed). The delay
+  costs Shiller 0.106 of gap and the Dow 0.019 (+0.380 to +0.361): on these numbers a one-month
+  delay takes out what averaging adds, and a bit more.
 - **A5 is the tradable question,** since an average up to month end is known at month end:
   Shiller's averaged signal timed the Dow's own falls as well as the Dow's signal did (+0.417
   against +0.380). Here averaging did not mislead a 12-month rule.
@@ -99,12 +118,14 @@ are scored on the same years.
 | L2: year t-2 | **5 of 9** | **0.37** / 0.50 / 0.44 | **0.732** | 3.17 / 2.22 / 3.01 | Does not hold |
 
 - **By the card: the timing rests on the last year's return.** With the year-older signal the
-  rule avoids *less* of each fall than random dates and than the same exposure held fixed, and
-  its insurance count fails (5 of 9). The premium is worse than holding less.
+  rule avoids, on average, *less* of a fall than random dates and than the same exposure held
+  fixed (5 of 9 anchored clusters still lost less than holding), and its insurance tests fail.
+  The premium is worse than holding less.
 - Per episode (jst-autocorr-1's statistic) against Gaussian AR(1) worlds with each country's own
   acf: L1's gap +0.309 sits at p 0.045 (median of the worlds +0.206), close to jst-autocorr-1's
   98th percentile on the untrimmed sample;
-  L2's gap +0.091 is well inside the AR(1) worlds (median +0.060, p 0.321) and in random-walk
+  L2's gap +0.091 is inside the AR(1) worlds' 5-95% band (-0.040 to +0.167; median +0.060,
+  p 0.321) and in random-walk
   worlds at p 0.100 (median +0.004). The per-episode and anchored statistics differ in sign for
   L2 (+0.09 against -0.07), because anchoring averages episodes into clusters.
 - **What this does and does not say.** It is what lag-1 autocorrelation predicts, artefact or
@@ -120,7 +141,11 @@ No earlier record ran a trend test on this series (grep of tries.md and SUMMARY:
 data-wide-2's data note), so the project's monthly insurance statistic was run on it here for
 the first time, with and without the delay. AQR "Commodities for the Long Run", excess return of
 the equal-weight commodity futures portfolio (cached by data-wide-2), level months 1877-02 to
-1912-12; rule out = zero excess return.
+1912-12; rule out = zero excess return. **Disclosure:** `datawide2.parse_aqr_comlr` chains the
+returns from the first one, so the first level is 1877-02 and the first return used is 1877-03,
+not 1877-02 as the card's window implies. The review reran with the 1877-02 return restored
+(base level at 1877-01), and this lane reproduced it: G +0.185 (C0) and +0.119 (C1), p_rot 0.061
+and 0.160, ratio 0.64, still "partly". The tables keep the run as committed.
 
 - **Before scoring:** lag-1 acf +0.116 (noise line 0.079), lag-2 -0.081. That is positive but
   half of what full averaging gives (0.25-0.30): consistent with partly averaged early prices or
@@ -147,7 +172,9 @@ the equal-weight commodity futures portfolio (cached by data-wide-2), level mont
 - **Few falls.** (a) has 4 falls per series, (c) 6, (b) 9 anchored clusters (about 7
   independent events). None of the timing gaps in (a) or (c) beats an autocorrelation-preserving
   null at 0.05.
-- **(a) mixes averaging with composition:** the Dow is 12 (later 20) price-weighted stocks,
+- **(a) mixes averaging with composition:** Schwert's Dow Jones composite is a few dozen
+  price-weighted stocks (railroad-dominated to 1896, then the railroad and industrial averages
+  weighted by their number of stocks; not the 12/20-stock industrial average the card named),
   Cowles hundreds, value-weighted. The acf difference matches Working's number so closely that
   averaging is the plain reading of the acf; for the timing gap the two cannot be separated.
 - **OCR.** The Dow series is a transcription of a scanned table, corrected by eye where the
@@ -158,8 +185,8 @@ the equal-weight commodity futures portfolio (cached by data-wide-2), level mont
 ## What changes in the project's claim
 
 - The pre-1926 *monthly* US timing is not an averaging artefact: on Dow Jones month-end prices
-  the gap is about the same (+0.38 against +0.44), and a signal from averaged prices times the
-  point-sampled falls as well. Averaging inflates the lag-1 acf by +0.25, which matters for
+  the gap is about the same (+0.38 against +0.44), though not beyond an AR(1) null (p 0.106, 4
+  falls), and a signal from averaged prices times the point-sampled falls as well. Averaging inflates the lag-1 acf by +0.25, which matters for
   short signals, not much for `tsmom12`.
 - The *annual* JST timing (#186) has nothing beyond the last year's return: a year-older signal
   loses it entirely. Together with #192/#204 this keeps "timing before 1966 not shown".
@@ -168,8 +195,10 @@ the equal-weight commodity futures portfolio (cached by data-wide-2), level mont
 
 ## Files and data
 
-- `research/lib/stalechecks1.py`, `tests/test_stalechecks1.py`, `research/results/stale-checks-1.md`,
-  card, 15 rows in `research/tries.md` (11 runs, 4 notes).
+- `research/lib/stalechecks1.py`, `research/lib/stalechecks1_ocr.py` (rebuilds the
+  transcription), `research/results/stale-checks-1-ocr-corrections.csv` (74 eye-read cells),
+  `tests/test_stalechecks1.py`, `research/results/stale-checks-1.md`, card, 15 rows in
+  `research/tries.md` (11 runs, 4 notes).
 - New local data: the Schwert appendix transcription (`<cache_root>/stale-checks-1/`, 12 kB;
   OCR images in the lane's scratch directory). No new download: the PDF is survey-9's cache.
   MeasuringWorth: robots.txt and the DJA page read only (2 requests), no data fetched.
