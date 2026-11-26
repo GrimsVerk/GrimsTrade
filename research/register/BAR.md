@@ -9,21 +9,21 @@ re-run is not added, changed live code is a new series (the old one stays as its
 record) and the estimate uses one series per live strategy; robustness-only curves are
 not stored by default (`research/register/README.md`, register-7).
 
-Rows through 2026-11-26 00:10. Remote branches with a `research/tries.md`: 135.
+Rows through 2026-11-26 08:17. Remote branches with a `research/tries.md`: 139.
 
 ## Counts
 
 | What | Count |
 |---|---:|
-| Distinct tries, project-wide (`research/register/tries.jsonl`) | **4,555** |
-| Families (the `Idea` column) | 347 |
-| Tries without a Sharpe | 792 |
+| Distinct tries, project-wide (`research/register/tries.jsonl`) | **4,571** |
+| Families (the `Idea` column) | 355 |
+| Tries without a Sharpe | 808 |
 | Selectable tries (`variant` or `baseline`, period `train`) | 1,113 |
 | Live strategies | 12 (lines of `ledger/tries.jsonl` on the remote `paper-trail`) |
 | **N for a new pick** (selectable + live) | **1,125** |
 | Tries whose shape the harness logged (`research/tries-shape.jsonl`) | 376 (53 selectable) |
 
-By kind: robustness 2,180, variant 667, control 532, baseline 468, screen 265, note 224, insure-check 175, replication 25, live-check 19.
+By kind: robustness 2,188, variant 667, control 532, baseline 468, screen 266, note 231, insure-check 175, replication 25, live-check 19.
 
 ## The bar for a new pick at N = 1,125
 
