@@ -177,8 +177,13 @@ from Lane queue items 3-4, 7 (a)-(c) and 8.
    commodities and non-US bonds, IFS/OECD via DBnomics, Riksbank: manual browser download if
    wanted.
 7. New from lead 2's lanes:
-   (a) `patent-surge` (wide-27 O1, scored 6) is parked on data: it needs FRED release 486
-   per-country patent grants once ALFRED/fredgraph answers scripts again.
+   (a) `patent-surge` (wide-27 O1, scored 6) is parked on data. 2026-11-26 (patent-1): FRED
+   and ALFRED do answer scripts with curl's default User-Agent (the browser-like UA was reset
+   by the CDN), and `fredgraph.csv` gives release 486 per-country series
+   (`PATENT4N<ISO2>UTILITY`, annual 1992-2020). But ALFRED's first vintage is 2021-03-19 for the
+   whole history and the series ends in 2020: no as-known vintages, no live feed. Needs either a
+   lead/owner decision to accept a fixed release lag (count of year t usable from ~1 April t+1)
+   or a dated source (PatentsView bulk, > 1 GB). See `research/patent-1.md`.
    (b) MeasuringWorth's DJIA could replace stale-checks-1's OCR series (#220) only with
    permission for scripted use (owner).
    (c) ParlGov's licence was not read (Dataverse bot challenge): check it in a browser before

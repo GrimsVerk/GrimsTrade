@@ -4597,3 +4597,4 @@ Never edit or delete a row.
 | 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-NO | robustness | train | 1976-01-01 | 2025-10-01 | 0.54 | +3015.1% | 33.3% | - |
 | 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-N5-SE | robustness | train | 1976-01-01 | 2025-10-01 | 0.59 | +8609.9% | 44.7% | - |
 | 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-SE | robustness | train | 1976-01-01 | 2025-10-01 | 0.60 | +2901.6% | 32.2% | - |
+| 2026-11-26 08:15 | patent-1 | data lane (not a try): FRED release 486 (1,245 series, `PATENT4N<ISO2><TYPE>`, annual 1992-2020) answers scripts with curl's default UA (browser-like UA reset by the CDN); ALFRED first vintage 2021-03-19 for the whole history, last update 2021-05: no as-known series, no live feed; patent-surge stays parked (fixed-lag convention is a lead/owner decision); no card, no return read (research/patent-1.md) | note | - | - | - | - | - | - | - |
