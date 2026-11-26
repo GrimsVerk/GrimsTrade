@@ -100,7 +100,7 @@ def par_price(coupon: float, y: float, m: float) -> float:
     if m <= 0:
         return 1.0
     n = 2.0 * m
-    v = (1.0 + y / 2.0) ** (-n)
+    v: float = (1.0 + y / 2.0) ** (-n)
     if abs(y) < 1e-12:
         return coupon * m + 1.0
     return coupon / y * (1.0 - v) + v
