@@ -10,7 +10,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
 
-import wide28 as w  # noqa: E402
+import wide28 as w  # type: ignore[import-not-found]  # noqa: E402
 
 
 def test_parse_nics_sums_states_and_treats_empty_as_zero() -> None:
