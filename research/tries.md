@@ -4604,7 +4604,7 @@ Never edit or delete a row.
 | 2026-11-26 08:17 | ipo-heat | W46 shown: no controls (b -2.643, t -0.78) | robustness | train | 1991-01-31 | 2025-10-31 | - | - | - | - |
 | 2026-11-26 08:17 | ipo-heat | W46 shown: without rv (b -3.556, t -1.21) | robustness | train | 1991-01-31 | 2025-10-31 | - | - | - | - |
 | 2026-11-26 08:17 | ipo-heat | W46 shown: dose from the 12-month mean first-day return, column C (b -0.320, t -1.86, 81 rows: column C blank in many months) | robustness | train | 1991-01-31 | 2025-10-31 | - | - | - | - |
-| 2026-11-26 08:17 | ipo-heat | W46 shown: rows 1991-01..2007-12 (b +0.066, t +0.01, 204 rows) | robustness | train | 1991-01-31 | 2008-12-31 | - | - | - | - |
+| 2026-11-26 08:17 | ipo-heat | W46 shown: rows 1991-01..2007-12 (b +0.066, t +0.01, 204 rows) | robustness | train | 1991-01-31 | 2009-01-31 | - | - | - | - |
 | 2026-11-26 08:17 | ipo-heat | W46 shown: rows 2008-01..2024-09 (b -9.802, t -3.08, 201 rows; post hoc, one long stretch) | robustness | train | 2008-01-31 | 2025-10-31 | - | - | - | - |
 | 2026-11-26 08:17 | ipo-heat | W46 shown: without rows 1998-01..2001-12 (b -4.645, t -1.67, 357 rows) | robustness | train | 1991-01-31 | 2025-10-31 | - | - | - | - |
 | 2026-11-26 08:15 | launch-cadence | wide-29 candidate, scored before any price, no number computed: Q2, filtered: cause 0 | note | train | - | - | - | - | - | - |

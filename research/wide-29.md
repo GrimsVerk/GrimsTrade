@@ -79,7 +79,8 @@ Results: `research/results/ipo-heat.md`.
 
 ### Dry run (counts only, 2026-11-26 08:17 UTC)
 
-The file runs to 2026-10; the first dry run showed this, and before the real run the IPO
+The file runs to 2026-10; the first dry run (run once before the cut, not committed, counts
+only) showed this, and before the real run the IPO
 months were cut at 2025-10 (the project's train window; the card's text names only the return
 window). IPO months 1960-01 .. 2025-10 (790); dose defined 1965-12 .. 2025-10 (719, no gaps).
 **Gate rows 405 (1991-01 .. 2024-09)**, every shift defined. **Lag-1 acf of the dose 0.995**:
@@ -118,7 +119,7 @@ run.** Held-out data untouched.
 - **Dating.** The net count is Ritter's later screen (SPACs, units, penny stocks and more
   excluded, CRSP-listed only): the market saw each IPO on its day but not this exact count.
   Not material to the verdict (fail).
-- My guess (b negative, t -2.5 .. -0.5, middle-to-high ranks; pass 5%) was right.
+- My guess (b negative, t -2.5 .. -0.5, middle-to-high ranks; pass 5%) matched.
 
 Label: **fail** (gate-null: b < 0 holds, t > -2, ranks 10 and 14).
 
@@ -134,7 +135,8 @@ replication.** Gate id W46 (R46 not run). Family bar p < 0.10 / 113 = 0.00088. P
 effects tested after publication: one (the IPO-volume part of Baker-Wurgler sentiment; fails
 here on 1991-2024).
 
-**Data terms.** Jay Ritter's IPO data (University of Florida, public on his site), one xlsx of
+**Data terms.** Jay Ritter's IPO data (University of Florida, public on his site; no terms of use stated on the ipo-data
+page), one xlsx of
 43 KB downloaded 2026-11-26 08:15 UTC (sha256 in the card), cached outside the repo. Ken French
 Data Library factors (cached 2026-11-12). Only statistics are committed. finra.org was not
 fetched (Cloudflare block to scripts).
