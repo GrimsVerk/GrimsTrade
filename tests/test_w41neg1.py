@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
-import w41neg1 as w  # noqa: E402
+import w41neg1 as w  # type: ignore[import-not-found]  # noqa: E402
 
 
 def test_dose_years_marks_event_years_from_first_cabinet_to_end() -> None:
