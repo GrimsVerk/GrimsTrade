@@ -8,8 +8,8 @@ W36 inputs through `wide22.load()`; no download. Run: `uv run python -I research
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 from collections.abc import Sequence
+from pathlib import Path
 
 import numpy as np
 
