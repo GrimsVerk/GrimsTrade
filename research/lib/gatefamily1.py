@@ -20,21 +20,23 @@ class Gate:
     monthly_persistent: bool  # monthly, slow dose (acf1 about 0.8 or more by the records)
     persistent: bool  # any slow dose (weekly/monthly/quarterly/annual), by the records
     passed: bool
-    nominal: float = 0.025  # used when n_placebo == 0
+    nominal: float = 0.025  # used when n_placebo == 0 (bounded: nominal one-sided level)
+    cap: float | None = None  # extra bootstrap p <= cap condition (W38, W41n)
 
 
 # Rank rules from gate-null.md step 4 (rank <= 2 of 41, plus t >= 2 with the predicted sign)
-# for wide-9 on; N = 20 gates (W38, W41n) read as rank 1 of 21 (about 0.048, as step 4's 0.05).
-# Gates before wide-9: the placebo counts stored in the gate-null.md tables; their own rank
-# threshold is not restated there, so k = 2 is used (an upper bound for p if theirs was k = 1).
+# for wide-9 on. From the gates' own records: W3 top 3 of 29 (wide-6.md), W13 top 3 of 15
+# (wide-7.md), W15 top 2 of 23 (wide-8.md), W16 2 of 31; W38 and W41n rank 1 or 2 of 21 plus
+# a bootstrap p <= 0.05 (cards/jst-gates-1.md, cards/w41-neg-1.md). ann-1, critical-slowing
+# and W14 used N(0, 1): bounded at the nominal one-sided 0.025; W12 a permutation p at 0.05.
 GATES: list[Gate] = [
     Gate("ann-1", 0, 0, None, False, False, False),
     Gate("critical-slowing", 0, 0, None, False, False, False),
-    Gate("W3", 28, 2, 0.11, False, False, False),
+    Gate("W3", 28, 3, 0.11, False, False, False),
     Gate("W12", 0, 0, None, False, False, False, nominal=0.05),
-    Gate("W13", 14, 1, 0.0, False, False, False),
+    Gate("W13", 14, 3, 0.0, False, False, False),
     Gate("W14", 0, 0, None, False, False, False),
-    Gate("W15", 22, 1, None, False, False, False),
+    Gate("W15", 22, 2, None, False, False, False),
     Gate("W16", 30, 2, 0.20, False, False, False),
     Gate("W17", 40, 2, 0.02, False, False, False),
     Gate("W19", 40, 2, 0.20, True, True, False),
@@ -59,35 +61,37 @@ GATES: list[Gate] = [
     Gate("W35", 40, 2, 0.25, True, True, False),
     Gate("W36", 40, 2, 0.02, True, True, True),
     Gate("W37", 40, 2, 0.05, False, False, False),
-    Gate("W38", 20, 1, 0.05, False, True, False),
+    Gate("W38", 20, 2, 0.05, False, True, False, cap=0.05),
     Gate("W39", 40, 2, 0.12, False, True, False),
     Gate("W40", 40, 2, 0.05, False, False, False),
     Gate("W41", 40, 2, 0.08, False, False, False),
     Gate("W43", 40, 2, 0.08, True, True, False),
     Gate("W18", 40, 2, 0.0, False, False, False),
     Gate("W44", 40, 2, None, True, True, False),
-    Gate("W41n", 20, 1, None, False, True, False),
+    Gate("W41n", 20, 2, None, False, True, False, cap=0.05),
     Gate("W45", 40, 2, 0.40, True, True, True),
 ]
 
 
-def p_rank(g: Gate) -> float:
+def p_rank(g: Gate, use_cap: bool = False) -> float:
     """Null pass probability from the rank rule alone (exchangeability): k / (N + 1); the
-    nominal one-sided level for N(0, 1) or permutation gates. An upper bound when the rule adds
-    t / sign / post-sample / second-family conditions."""
-    return g.nominal if g.n_placebo == 0 else g.k / (g.n_placebo + 1)
+    nominal one-sided level for N(0, 1) or permutation gates. With `use_cap`, gates with an
+    extra bootstrap condition are capped at its level (P(both) <= min of the two)."""
+    p = g.nominal if g.n_placebo == 0 else g.k / (g.n_placebo + 1)
+    return min(p, g.cap) if use_cap and g.cap is not None else p
 
 
 def p_own_t(g: Gate) -> float:
     """Rank rule and t >= 2 together, from the gate's own placebo null: under exchangeability
     P(rank <= k and t >= 2) = E[min(m, k)] / (N + 1), m = draws past 2 on the predicted side.
     Estimated with m = (share_t2 / 2) * (N + 1) (half the two-sided share; a zero share is set
-    to half a draw). Falls back to p_rank when no share is stored."""
+    to half a draw). Falls back to p_rank when no share is stored; a bootstrap cap applies."""
     if g.n_placebo == 0 or g.share_t2 is None:
-        return p_rank(g)
+        return p_rank(g, use_cap=True)
     n1 = g.n_placebo + 1
     m = max(g.share_t2 / 2 * n1, 0.5)
-    return min(m, g.k) / n1
+    p = min(m, g.k) / n1
+    return min(p, g.cap) if g.cap is not None else p
 
 
 def poisson_binomial(ps: list[float]) -> list[float]:
@@ -114,7 +118,8 @@ def all_in_subset(n: int, m: int, r: int) -> float:
 def scenarios(gates: list[Gate]) -> dict[str, list[float]]:
     n = len(gates)
     out = {
-        "rank rule alone (upper bound)": [p_rank(g) for g in gates],
+        "rank rule alone": [p_rank(g) for g in gates],
+        "rank rule, W38/W41n capped at bootstrap 0.05": [p_rank(g, True) for g in gates],
         "rank and t >= 2, own placebo null": [p_own_t(g) for g in gates],
     }
     for p in (0.01, 0.02, 0.03, 0.055):

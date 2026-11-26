@@ -47,3 +47,13 @@ def test_pass_probabilities() -> None:
     assert math.isclose(g.p_own_t(by["W32"]), 0.5 / 41)  # zero share: half a draw
     assert math.isclose(g.p_own_t(by["W45"]), 2 / 41)  # wide null: rank binds
     assert all(g.p_own_t(x) <= g.p_rank(x) + 1e-12 for x in g.GATES)
+
+
+def test_recorded_thresholds_and_bootstrap_cap() -> None:
+    g = _mod()
+    by = {x.gid: x for x in g.GATES}
+    assert math.isclose(g.p_rank(by["W3"]), 3 / 29)
+    assert math.isclose(g.p_rank(by["W13"]), 3 / 15)
+    assert math.isclose(g.p_rank(by["W15"]), 2 / 23)
+    assert math.isclose(g.p_rank(by["W41n"]), 2 / 21)
+    assert math.isclose(g.p_rank(by["W41n"], use_cap=True), 0.05)

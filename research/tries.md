@@ -4597,4 +4597,4 @@ Never edit or delete a row.
 | 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-NO | robustness | train | 1976-01-01 | 2025-10-01 | 0.54 | +3015.1% | 33.3% | - |
 | 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-N5-SE | robustness | train | 1976-01-01 | 2025-10-01 | 0.59 | +8609.9% | 44.7% | - |
 | 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-SE | robustness | train | 1976-01-01 | 2025-10-01 | 0.60 | +2901.6% | 32.2% | - |
-| 2026-11-26 08:16 | gate-family-1 | gate-family count check, descriptive, no new data, not a gate: 40 first gates, 3 kill-only passes; P(>= 3) 0.007-0.12 at #207 1-3% (0.046 at 2%), 0.18-0.30 at rank bound / own nulls; all 3 in 10 monthly slow-dose gates, P 0.012 at equal p (post hoc) | note | train | - | - | - | - | - | - |
+| 2026-11-26 08:16 | gate-family-1 | gate-family count check, descriptive, no new data, not a gate: 40 first gates, 3 kill-only passes; P(>= 3) 0.007-0.12 at #207 1-3% (0.046 at 2%), 0.36-0.39 at rank rule, 0.19 own nulls: ordinary (card band 1); all 3 in 10 monthly slow-dose gates, P 0.012 at equal p (post hoc) | note | train | - | - | - | - | - | - |
