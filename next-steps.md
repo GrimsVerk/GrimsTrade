@@ -209,7 +209,8 @@ summary-12 for #233-#235, then new WIDER + DEEPER lanes from Lane queue items 3-
    in the FBI's monthly PDF (not needed: W45 is closed).
    (d) Q3 `margin-leverage` (wide-29, scored 4) is parked: finra.org serves scripts a Cloudflare
    block page; FINRA margin statistics would need a manual download.
-   (e) gate-family-1 (#234): any new kill-only gate on a slow, persistent monthly dose should
-   expect a false-pass rate of 10% or more under the current rank rule (#207's proposal, not
+   (e) gate-family-1 (#234): any new kill-only gate on a slow, persistent monthly dose may have
+   a false-pass rate well above nominal under the current rank rule (post hoc: 3 passes in the 10
+   such gates implies 10% or more; #207 measured 5.4-19% rank-only) (#207's proposal, not
    adopted, would tighten it); replication remains the guard.
 
