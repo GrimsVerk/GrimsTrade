@@ -92,7 +92,11 @@ and run this repo; open pull requests are listed under "Still open".
   `tsmom12`'s 0.94 over 1994-2025. A lead of +0.03 to +0.10 is about one paired standard error
   (about 0.1) or less: noise (#110). Pooled over 41 other stock markets its 70% form leads by
   +0.022 a market, not shown (#142); on bonds and currencies it is -0.010 and killed: "equity-only
-  at best" (#159). Where the lead comes from (#172, descriptive): not holding less and not the
+  at best" (#159). On independent pre-1927 stocks (US, GB, DE, FR; 171 market-years) it trails
+  by 0.007 (SE 0.021, upper bound +0.028): not shown, not contradicted; combined with the 41,
+  +0.012 (SE 0.013), not distinguishable from zero. The reading stays "equity-only at best,
+  unconfirmed", and those data are now spent for own-vol (#231) (left: NBER railroads before 1871 and
+  Yale ICF, which waits on the owner). Where the lead comes from (#172, descriptive): not holding less and not the
   leverage effect, but risk removal. On stocks the sleeve earns about the same in volatile as in
   calm spells at twice the variance, so cutting then removes risk, not return (risk channel
   +0.024 a market); it gains in falls `tsmom12` is still in and pays some back in rebounds and
@@ -117,13 +121,14 @@ and run this repo; open pull requests are listed under "Still open".
   (Atanasov, Møller and Priestley 2020, Melone 2022; t -0.57 with a dose known at the time,
   #210), the post-quake drift (Scholtens and Voorhorst 2013, #215), the political-uncertainty
   premium after mid-term cabinet changes (Pastor and Veronesi, in the spirit of Bernhard and
-  Leblang 2006; wrong sign, t -1.74, #221), drought under-reaction in food stocks (Hong, Li
+  Leblang 2006; wrong sign, t -1.74, #221; the negative side, fixed in advance, also
+  fails on unseen JST years 1921-1959, t -1.27, #229), drought under-reaction in food stocks (Hong, Li
   and Xu 2019, US industry form, t +0.07) and the sport-elimination mood effect (Edmans, Garcia
   and Norli 2007; t -0.95, far from the published fall, #223).
-- **The bar for a new rule is measured, and rebuilds on any computer.** 4,492 tries logged
-  (366 new since night 5; the register reads every pushed branch, open ones included), worth
-  between 11 and 509 independent shots depending on how they are counted; the bar uses the
-  cautious 509. A new rule must beat `tsmom12` at z >= 4.70, which is
+- **The bar for a new rule is measured, and rebuilds on any computer.** 4,555 tries logged
+  (429 new since night 5; the register reads every pushed branch, open ones included), worth
+  between 11 and 510 independent shots depending on how they are counted; the bar uses the
+  cautious 510. A new rule must beat `tsmom12` at z >= 4.70, which is
   +0.31 to +0.56 Sharpe for rules correlated 0.77-0.93 with `tsmom12` (others use the z column
   in `BAR.md`) (#92, #100). The growth did not move it (night 5: 4,126 tries, N_eff 506,
   z 4.70). The weekly returns behind it are committed, so `BAR.md` regenerates from a clean
@@ -145,23 +150,27 @@ and run this repo; open pull requests are listed under "Still open".
   insignificant (z 0.75), negative in the 2010s. Managing it by market volatility does not help
   (#179), and neither does the published real-rate currency value in place of the proxy (z 2.74,
   #197). It needs shorts in any case (B7).
-- **Borrowed ideas: 111 mechanisms counted, 29 tested by a strategy, none passed; 40 gates, two
+- **Borrowed ideas: 112 mechanisms counted, 29 tested by a strategy, none passed; 43 gates, three
   kill-only passes, each killed by its own replication** (many gates can only kill an idea,
   never pass one, by design: few independent episodes; #124). The passes: W32
   `drought-inflation` (t -3.71, rank 1 of 41 on TLT 2002-2025; its replication R32 on the
   10-year yield 1962-2002 t -0.19, rank 21; #188) and W36 `grid-load-premium` (t -2.31, rank 1
-  of 41 on the US market 1974-2025; R36 on 1926-1955 t -0.32, rank 13; #202). Both were
-  persistent monthly macro doses. W32 ranks 1 in every placebo family; W36 would have failed a
-  phase-surrogate family (rank 3). Two passes in about 32 gates is what chance gives (#207), and
-  replication caught both. Night 6 added W36 with R36 (#202), W37 `hack-drift` (#205), W38
+  of 41 on the US market 1974-2025; R36 on 1926-1955 t -0.32, rank 13; #202) and W45
+  `arms-fear` (US gun-check growth, t +3.50, rank 2 of 41 among both earlier-dose calendars and
+  IAAFT surrogates, 2008-2023, leaning on few episodes; R45 on 2000-2008 t +0.54, rank 13;
+  #230). All three are persistent monthly doses. W32 ranks 1 in every placebo family; W36 would
+  have failed a phase-surrogate family (rank 3). Three passes in about 40 first gates. #207 puts a null gate's
+  false-pass rate at 1-3%, up to 5.5% with a slow premium in returns, so about 0.4-2 chance
+  passes are expected; three is at the high end of that, and replication caught all three. Night 6 added W36 with R36 (#202), W37 `hack-drift` (#205), W38
   `consumption-cycle` and W39 `bank-capital-premium` (#210), W40 `quake-drift` (#215), W41
   `cabinet-collapse` (#221), W43 `drought-food-margin` and the first gate of wide-8's W18
-  `elimination-mood` (#223) and W44 `revision-noise` (#226); all but W36 failed at the gate. W42 is unused. Every gate is
+  `elimination-mood` (#223), W44 `revision-noise` (#226), W41n (W41's negative side, #229)
+  and W45 with R45 (#230); all but W36 and W45 failed at the gate. W42 is unused. Every gate is
   listed in [`gate-null.md`](gate-null.md). A
   mechanism enters the count once it gets a gate or a strategy test; descriptive re-scores and
   listed-only ideas do not (#191), and #197 counts as part of the century style book's
-  mechanism. Family bar for the next strategy test: p < 0.10 / 111 = 0.00090 (these counts
-  checked against `gate-null.md` on main, "Count after W44"). New candidates must pass two filters
+  mechanism. Family bar for the next strategy test: p < 0.10 / 112 = 0.00089 (these counts
+  checked against `gate-null.md` on main, after W45). New candidates must pass two filters
   first: not announced, not driven by price (#109). Two literature surveys listed 11 more each
   (#177, #201); survey-8's only two testable ones became W38 and W39.
 
@@ -251,6 +260,18 @@ and run this repo; open pull requests are listed under "Still open".
   (kill-only, both placebo families): payroll revision noise (Philadelphia Fed vintages) and the
   US market over three months, 1990-2025: t +0.24 (predicted > 0), rank 23 of 41 shifted and 19
   of 41 phase surrogates. The top-scored `patent-surge` is parked on data.
+- w41-neg-1 (#229, kill-only): **W41's negative side is dead on independent years** (annual
+  JST 1921-1959, b < 0 fixed in advance: b -2.9% a year, t -1.27, rank 5 of 21 earlier-dose
+  calendars, AR bootstrap p 0.140). The postwar half (t -3.23) is post hoc, not a lead. Power
+  about 26% against W41's -3.1%: a weak kill against a small drift.
+- wide-28 (#230): 13 mechanisms scored before any price. **W45 `arms-fear` passed its kill-only
+  gate, then failed its replication: dead** (FBI NICS gun-check growth and the US market two to
+  four months on: t +3.50, rank 2 of 41 in both families; without the pandemic months t +1.95;
+  R45 2000-2008 t +0.54, rank 13). `approval-mood` is parked: its only keyless source
+  disallows AI agents in robots.txt.
+- ownvol-indep-1 (#231): **own-vol on independent pre-1927 stocks: not shown, not
+  contradicted** (D -0.007, SE 0.021, upper bound +0.028, below #110's +0.06; +0.010 with US
+  dividends; five new markets 1975-2025 +0.010). See "What we know now".
 - Data fix (eng-nits-1, #218): `infer_pos` dated a flip on a flat day one session late (78 of
   8,427 flips), and rounding-sized insurance values counted as wins or losses; ties now count
   as ties. Counts regenerated (US market 20 of 20 not tied, 13 developed 17 of 17); no verdict
@@ -265,9 +286,10 @@ and run this repo; open pull requests are listed under "Still open".
   Kraken hole repeats as a problem line for about four runs. The forward registry measures
   `lrv` at freeze, sizes lines with an upper value of it (expected power 0.80 in all ten weekly
   cells), and measures skew and kurtosis for Sharpe lines (#200, #208); dependence slower than
-  a year still needs a larger `lrv` set by hand. Nothing live changes.
+  a year still needs a larger `lrv` set by hand. mypy is clean on main again (#228, test
+  annotations only). Nothing live changes.
 - `BAR.md` regenerated by this update in the order `research/register/README.md` states:
-  4,492 tries, N 1,123, N_eff 509, z 4.70 (rows through 2026-11-25 23:32 UTC).
+  4,555 tries, N 1,125, N_eff 510, z 4.70 (rows through 2026-11-26 00:10 UTC).
 
 Night 5's verdicts, in short (records and this file's git history have the detail): the century
 long-short style book fails net of costs (#170, z 2.75); managing it by market volatility is
@@ -287,7 +309,8 @@ live code versions (#166).
 
 - Daily run: the 2026-11-25 run passed (its snapshot matches the gym on `main` for all 12
   books). The next one is the first with #196 and #199 (fetch caps, source fallback).
-- Open research PRs: none at the time of writing (#226 merged: W44 fails).
+- Open research PRs: none at the time of writing (#231 merged: own-vol not shown on
+  independent stocks).
 - Leads still open: the halving window's one forward score (#137). `e4` is closed as a lead
   (#198); `coin-drift-run` is dead (#157, #190).
 - Live: 12 books trade fake money daily, `own_vol_70` included (#135). The record is days old:
