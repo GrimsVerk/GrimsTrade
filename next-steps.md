@@ -151,7 +151,7 @@ covers #218-#226 (summary-10).
    the clean keyless independent monthly stock data are nearly used up, apart from the Yale IMM stocks, data-wide-2
    rank 2, which wait on the owner's ruling), real-rate FX value and
    sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
-   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W43, W18, W44, the insurance
+   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W43, W18, W44, W45 (`arms-fear`: kill-only pass, killed by R45, wide-28), the insurance
    on long bonds and floating FX (#219, #222, #225: exposure only) and the stale checks (#220). The previous
    night's do-not-redo list is in the night-lead 2026-11-24/25 section above and in SUMMARY.
 3. DEEPER next: (a) a sovereign-bond pool (Yale IMM bonds) or the IMM stocks with its own crash calendar (data-wide-2 rank 1) only
