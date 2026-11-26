@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
 
-import wide29 as w  # noqa: E402
+import wide29 as w  # type: ignore[import-not-found]  # noqa: E402
 
 SHEET = (
     '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>'
