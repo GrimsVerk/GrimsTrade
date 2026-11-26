@@ -1,6 +1,6 @@
 # wide-28 card: `arms-fear`, does the US market earn more after a surge in household gun buying?
 
-Lane wide-28, written 2026-11-26 (about 00:10 UTC), **before any return was read for this
+Lane wide-28, written 2026-11-26 (about 00:05 UTC), **before any return was read for this
 rule** (card pushed first; the commit time is in git). Field: criminology and firearm-policy
 research (gun purchases as a measure of household fear) x a fear premium. Candidate P1 of
 `research/wide-28.md`, step 2. Gate **W45** (next free number: W44 was wide-27; open PRs #228
