@@ -484,7 +484,7 @@ Count after this run (after #223's W43 and W18): 111 mechanisms, 29 tested by a 
 
 ## wide-28: criminology, public-opinion research, emergency management, road safety, entrepreneurship, cinema, musicology, trade law, religion, education, geodesy, media studies, forensic statistics
 
-Count after this run (after #226's W44): 112 mechanisms, 29 tested by a strategy, 42 gates (W45 and R45), three kill-only passes (W32, W36, W45), each killed by its replication; family bar p < 0.10 / 112 = 0.00089. Write-up [wide-28.md](wide-28.md).
+Count after this run (after #229's W41n): 112 mechanisms, 29 tested by a strategy, 43 gates (W45 and R45), three kill-only passes (W32, W36, W45), each killed by its replication; family bar p < 0.10 / 112 = 0.00089. Write-up [wide-28.md](wide-28.md).
 
 | Idea | Field | Status | Card | Note |
 |---|---|---|---|---|

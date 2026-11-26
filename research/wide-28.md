@@ -18,9 +18,9 @@ index are wide-20's, cosmic rays and eclipses wide-21's).
 emergency management, road-safety epidemiology, entrepreneurship (firm births), cinema,
 musicology, trade law, religion, education, geodesy, media studies and forensic statistics.
 
-**Count carried in** from `main` after #226 = **111 / 29 / 40** (111 mechanisms, 29 tested
-by a strategy, none passed; 40 gates, two kill-only passes (W32, W36), each killed by its
-replication (R32, R36)). Only mechanisms that get a gate or a strategy test enter the count.
+**Count carried in** from `main` after #229 = **111 / 29 / 41** (111 mechanisms, 29 tested
+by a strategy, none passed; 41 gates incl. W41n (counted under W41's mechanism), two kill-only
+passes (W32, W36), each killed by its replication (R32, R36)). Only mechanisms that get a gate or a strategy test enter the count.
 
 Project-wide bar (`research/register/BAR.md` as quoted by wide-27): **N_eff 509 (rho 0.55): a
 new rule needs z >= 4.70 against `tsmom12`, Bonferroni p <= 9.8e-5.** Family bar with this
@@ -128,6 +128,10 @@ are in [`cards/wide-28.md`](cards/wide-28.md), pushed before any number (commit 
 the real run). Code: `research/lib/wide28.py` (pure functions tested offline in
 `tests/test_wide28.py`). Results: `research/results/arms-fear.md`.
 
+**Sales proxy.** The card's S(m) = handgun + long_gun + multiple is a common unweighted proxy;
+BuzzFeed and Brauer use 1.1 x (handgun + long_gun) + 2 x multiple and drop California's
+multiples. The card is frozen; the `totals` cell is the only other dose shown.
+
 ### Dry run (counts only, 2026-11-26 00:07 UTC)
 
 NICS months 1998-11 .. 2023-09 (299); the dose is defined 2000-01 .. 2023-09 (285 months).
@@ -171,10 +175,11 @@ card's R45 text names). Dead: no card for a strategy.** Held-out data untouched.
 - **The nulls are wide.** Earlier-dose calendars: SD 1.95, 40% past |t| 2, 5/50/95% -2.34 /
   +0.30 / +3.19, extremes -3.35 / +3.71 (k 53). The shifted t move in a wave across k (k 25-31
   near -2, k 49-55 +2.6 to +3.7, k 73-81 near -2 to -3.4, k 91-99 near +3): the dose has a
-  strong cycle of a few years (election and policy cycles in gun buying), and shifting it lines
+  strong cycle of a few years (election and policy cycles in gun buying: a guess, not tested), and shifting it lines
   it up with the market's own swings. IAAFT surrogates: SD 1.52, 23% past 2, 5/50/95% -2.05 /
   +0.53 / +2.79, max +3.50. A null this wide is what gate-null.md's rank rule is for: a plain
-  t +3.50 would have looked far stronger than it is.
+  t +3.50 would have looked far stronger than it is. IAAFT was the stricter choice: 40 phase
+  surrogates (seed 2745, checked once after the review, 2026-11-26) rank the gate's t 1 of 41.
 - **The replication.** R45's 101 months carry the 2000-2008 cycle (gun sales rose through the
   2000s, the 2003-2007 bull market): b keeps the sign at half the size and t +0.54. With SE(b)
   about 9% per unit there, R45 is weak (the card said so); it cannot confirm the gate, and by
@@ -182,7 +187,10 @@ card's R45 text names). Dead: no card for a strategy.** Held-out data untouched.
 - **Event dates.** Row m enters at the end of month m+1, after the FBI's table for month m is
   out (first days of m+1 `[memory]`); the outcome starts at m+2. The CSV stops at 2023-09
   (BuzzFeed News stopped updating it), so the train window's last 25 months (2023-10 ..
-  2025-10) were not used; they sit in the FBI's own monthly PDF, not fetched tonight.
+  2025-10) were not used; they sit in the FBI's own monthly PDF, not fetched tonight. The
+  publication lag (also in 2000-2008) and the "not revised" claim are from memory, untested,
+  and the CSV is a 2023 vintage of a cumulative PDF; the verdict is unaffected, since R45
+  failed.
 - My guess (b slightly positive, t between -1 and +1.5, middle ranks; pass 3%) was wrong on the
   gate and right on the replication.
 
@@ -195,8 +203,8 @@ One mechanism added and closed (W45 `arms-fear`, gate passed kill-only, replicat
 failed). The twelve others are parked (P2 on its host's robots.txt) or filtered and are **not
 counted**; each has a `note` row in `tries.md` and a line in `ideas.md`.
 
-**Count:** carried in from `main` after #226 = 111 / 29 / 40; **after W45 = 112 mechanisms,
-29 tested by a strategy, none passed, 42 gates (W45 and its replication R45 both count, as
+**Count:** carried in from `main` after #229 = 111 / 29 / 41; **after W45 = 112 mechanisms,
+29 tested by a strategy, none passed, 43 gates (W45 and its replication R45 both count, as
 R32 and R36 do in gate-null.md's table), three kill-only passes (W32, W36, W45), each killed by its
 replication** (R32, R36, R45). Gate id W45 / R45. Family bar p < 0.10 / 112 = 0.00089.
 Published effects tested after publication: none new (no paper on gun purchases and index
@@ -208,7 +216,7 @@ UTC (sha256 in the card), cached outside the repo. Ken French Data Library month
 factors (cached 2026-11-12). Only statistics are committed. presidency.ucsb.edu was not
 fetched: its robots.txt disallows AI agents by name.
 
-Rows logged in `tries.md`: 1 `screen` (`arms-fear` W45), 1 `robustness` row for R45, 10
+Rows logged in `tries.md`: 2 `screen` (`arms-fear` W45 and its replication R45, as R36), 10
 `robustness` rows (the shown cells), 12 `note` rows (one per candidate scored but not gated).
 
 ## Next
