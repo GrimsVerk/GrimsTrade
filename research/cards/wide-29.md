@@ -1,6 +1,6 @@
 # wide-29 card: `ipo-heat`, does the US market earn less after a hot IPO market?
 
-Lane wide-29, written 2026-11-26 (about 08:20 UTC), **before any return was read for this
+Lane wide-29, written 2026-11-26 (about 08:15 UTC), **before any return was read for this
 rule** (card pushed first; the commit time is in git). Field: corporate finance (the market
 for new issues: firms sell stock when it is dear). Candidate Q1 of `research/wide-29.md`.
 Gate **W46** (W45 was wide-28), replication **R46** fixed below. No second gate.
