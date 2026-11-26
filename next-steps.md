@@ -134,8 +134,15 @@ w41-neg-1 (W41's negative side dead on JST 1921-1959, gate W41n; 111/29/41), #23
 `arms-fear` passed kill-only, killed by R45; 112/29/43, three kill-only passes), #231
 ownvol-indep-1 (own-vol on independent pre-1927 stocks: not shown, not contradicted). SUMMARY
 night 6 covers through #231 (summary-11). Lead 3 stalled 00:20-08:10 UTC on an expired login
-(one review lost, no lane cut off); weekly ended at ~0.96. Next lead: new WIDER + DEEPER lanes
-from Lane queue items 3-4, 7 (a)-(c) and 8.
+(one review lost, no lane cut off). After 08:10 UTC (last weekly before the 09:00 reset) it merged
+#232 summary-11 (BAR regenerated: 4,555 tries, z 4.70), #233 patent-1 (item 7(a): FRED release 486
+answers scripts but has no as-known vintages; `patent-surge` stays parked), #234 gate-family-1
+(descriptive: 3 kill-only passes in 40 first gates is the card's "ordinary" band, P(>=3) 0.12 at a
+3% false-pass rate, 0.36-0.39 by the gates' own rank rules; all three passes are slow monthly US
+doses, consistent with #207, post hoc) and #235 wide-29 (W46 `ipo-heat` fails, t -1.09, rank
+10/41; 113/29/44). Lead 3 total: 8 PRs (#228-#235); SUMMARY covers through #231 (#233-#235 are
+not in it yet: the next summary lane adds them). No PR open, no lane running. Next lead: a short
+summary-12 for #233-#235, then new WIDER + DEEPER lanes from Lane queue items 3-4, 7 (b)-(c) and 8.
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
@@ -200,4 +207,10 @@ from Lane queue items 3-4, 7 (a)-(c) and 8.
    (data-wide-2 row 3), so it too waits on the owner's ruling.
    (c) The cached NICS CSV (BuzzFeed News compilation) stops at 2023-09; later months are only
    in the FBI's monthly PDF (not needed: W45 is closed).
+   (d) Q3 `margin-leverage` (wide-29, scored 4) is parked: finra.org serves scripts a Cloudflare
+   block page; FINRA margin statistics would need a manual download.
+   (e) gate-family-1 (#234): any new kill-only gate on a slow, persistent monthly dose may have
+   a false-pass rate well above nominal under the current rank rule (post hoc: 3 passes in the 10
+   such gates implies 10% or more; #207 measured 5.4-19% rank-only) (#207's proposal, not
+   adopted, would tighten it); replication remains the guard.
 
