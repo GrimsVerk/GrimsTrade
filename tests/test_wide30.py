@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
 
-import wide30 as w  # noqa: E402
+import wide30 as w  # type: ignore[import-not-found]  # noqa: E402
 
 
 def test_parse_shiller_keeps_positive_d_and_e_only() -> None:
