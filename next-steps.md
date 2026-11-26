@@ -140,9 +140,8 @@ answers scripts but has no as-known vintages; `patent-surge` stays parked), #234
 (descriptive: 3 kill-only passes in 40 first gates is the card's "ordinary" band, P(>=3) 0.12 at a
 3% false-pass rate, 0.36-0.39 by the gates' own rank rules; all three passes are slow monthly US
 doses, consistent with #207, post hoc) and #235 wide-29 (W46 `ipo-heat` fails, t -1.09, rank
-10/41; 113/29/44). Lead 3 total: 8 PRs (#228-#235); SUMMARY covers through #231 (#233-#235 are
-not in it yet: the next summary lane adds them). No PR open, no lane running. Next lead: a short
-summary-12 for #233-#235, then new WIDER + DEEPER lanes from Lane queue items 3-4, 7 (b)-(c) and 8.
+10/41; 113/29/44). Lead 3 total: 8 PRs (#228-#235); SUMMARY covers through #235
+(summary-12). No PR open, no lane running. Next lead: new WIDER + DEEPER lanes from Lane queue items 3-4, 7 (b)-(c) and 8.
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):

@@ -114,7 +114,7 @@ and run this repo; open pull requests are listed under "Still open".
   publication (median about 28% over six factors), and long-only funds built on them matched
   their index after fees (#91). Our own tests of published effects: 0 for 9 by night 5 (its
   last two: the aviation-disaster mood effect #176, market-volatility management of style
-  factors #179). Night 6 adds eight that did not hold up: the industrial-electricity premium
+  factors #179). Night 6 adds nine that did not hold up: the industrial-electricity premium
   (Da, Huang and Yun 2017; passed its gate, died in replication, #202), real-rate currency value
   (Asness, Moskowitz and Pedersen 2013; no better than the proxy, #197), the crypto-theft
   channel (Liu and Tsyvinski 2021, Corbet et al. 2020; no effect, #205), the consumption cycle
@@ -123,10 +123,11 @@ and run this repo; open pull requests are listed under "Still open".
   premium after mid-term cabinet changes (Pastor and Veronesi, in the spirit of Bernhard and
   Leblang 2006; wrong sign, t -1.74, #221; the negative side, fixed in advance, also
   fails on unseen JST years 1921-1959, t -1.27, #229), drought under-reaction in food stocks (Hong, Li
-  and Xu 2019, US industry form, t +0.07) and the sport-elimination mood effect (Edmans, Garcia
-  and Norli 2007; t -0.95, far from the published fall, #223).
-- **The bar for a new rule is measured, and rebuilds on any computer.** 4,555 tries logged
-  (429 new since night 5; the register reads every pushed branch, open ones included), worth
+  and Xu 2019, US industry form, t +0.07), the sport-elimination mood effect (Edmans, Garcia
+  and Norli 2007; t -0.95, far from the published fall, #223) and IPO-market heat (the IPO-volume
+  part of the Baker-Wurgler sentiment index; t -1.09 on 1991-2024, #235).
+- **The bar for a new rule is measured, and rebuilds on any computer.** 4,571 tries logged
+  (445 new since night 5; the register reads every pushed branch, open ones included), worth
   between 11 and 510 independent shots depending on how they are counted; the bar uses the
   cautious 510. A new rule must beat `tsmom12` at z >= 4.70, which is
   +0.31 to +0.56 Sharpe for rules correlated 0.77-0.93 with `tsmom12` (others use the z column
@@ -150,7 +151,7 @@ and run this repo; open pull requests are listed under "Still open".
   insignificant (z 0.75), negative in the 2010s. Managing it by market volatility does not help
   (#179), and neither does the published real-rate currency value in place of the proxy (z 2.74,
   #197). It needs shorts in any case (B7).
-- **Borrowed ideas: 112 mechanisms counted, 29 tested by a strategy, none passed; 43 gates, three
+- **Borrowed ideas: 113 mechanisms counted, 29 tested by a strategy, none passed; 44 gates, three
   kill-only passes, each killed by its own replication** (many gates can only kill an idea,
   never pass one, by design: few independent episodes; #124). The passes: W32
   `drought-inflation` (t -3.71, rank 1 of 41 on TLT 2002-2025; its replication R32 on the
@@ -159,18 +160,20 @@ and run this repo; open pull requests are listed under "Still open".
   `arms-fear` (US gun-check growth, t +3.50, rank 2 of 41 among both earlier-dose calendars and
   IAAFT surrogates, 2008-2023, leaning on few episodes; R45 on 2000-2008 t +0.54, rank 13;
   #230). All three are persistent monthly doses. W32 ranks 1 in every placebo family; W36 would
-  have failed a phase-surrogate family (rank 3). Three passes in about 40 first gates. #207 puts a null gate's
+  have failed a phase-surrogate family (rank 3). Three passes in the 40 first gates before W46. #207 puts a null gate's
   false-pass rate at 1-3%, up to 5.5% with a slow premium in returns, so about 0.4-2 chance
-  passes are expected; three is at the high end of that, and replication caught all three. Night 6 added W36 with R36 (#202), W37 `hack-drift` (#205), W38
+  passes are expected; by #234's count three is ordinary (P(>= 3) 0.12 at a 3% false-pass
+  rate, 0.36-0.39 by the gates' own rank rules), and replication caught all three. All three
+  are slow monthly US doses, the design #207 found liberal (post hoc, #234). Night 6 added W36 with R36 (#202), W37 `hack-drift` (#205), W38
   `consumption-cycle` and W39 `bank-capital-premium` (#210), W40 `quake-drift` (#215), W41
   `cabinet-collapse` (#221), W43 `drought-food-margin` and the first gate of wide-8's W18
-  `elimination-mood` (#223), W44 `revision-noise` (#226), W41n (W41's negative side, #229)
-  and W45 with R45 (#230); all but W36 and W45 failed at the gate. W42 is unused. Every gate is
+  `elimination-mood` (#223), W44 `revision-noise` (#226), W41n (W41's negative side, #229),
+  W45 with R45 (#230) and W46 `ipo-heat` (#235); all but W36 and W45 failed at the gate. W42 is unused. Every gate is
   listed in [`gate-null.md`](gate-null.md). A
   mechanism enters the count once it gets a gate or a strategy test; descriptive re-scores and
   listed-only ideas do not (#191), and #197 counts as part of the century style book's
-  mechanism. Family bar for the next strategy test: p < 0.10 / 112 = 0.00089 (these counts
-  checked against `gate-null.md` on main, after W45). New candidates must pass two filters
+  mechanism. Family bar for the next strategy test: p < 0.10 / 113 = 0.00088 (these counts
+  checked against `gate-null.md` on main, after W46). New candidates must pass two filters
   first: not announced, not driven by price (#109). Two literature surveys listed 11 more each
   (#177, #201); survey-8's only two testable ones became W38 and W39.
 
@@ -272,6 +275,15 @@ and run this repo; open pull requests are listed under "Still open".
 - ownvol-indep-1 (#231): **own-vol on independent pre-1927 stocks: not shown, not
   contradicted** (D -0.007, SE 0.021, upper bound +0.028, below #110's +0.06; +0.010 with US
   dividends; five new markets 1975-2025 +0.010). See "What we know now".
+- patent-1 (#233): FRED release 486 now answers scripts, but has no as-known vintages (ALFRED's
+  real-time period starts 2021-03-19). **`patent-surge` stays parked**, no gate.
+- gate-family-1 (#234, descriptive): **three kill-only passes in 40 first gates is the card's
+  "ordinary" band**: P(>= 3) 0.12 at #207's 3% false-pass rate (0.046 at 2%), 0.36-0.39 by the
+  gates' own rank rules. All three passes are slow monthly US doses (1 time in 80 by chance if
+  every gate had the same rate; post hoc), consistent with #207. Nothing is revived.
+- wide-29 (#235): six mechanisms scored before any price. **W46 `ipo-heat` fails** (IPO-market
+  heat and the US market over the next twelve months, 1991-2024: b -3.45%, t -1.09, rank 10 of
+  41 earlier-dose calendars and 14 of 41 phase surrogates; R46 not run). Counts 113/29/44.
 - Data fix (eng-nits-1, #218): `infer_pos` dated a flip on a flat day one session late (78 of
   8,427 flips), and rounding-sized insurance values counted as wins or losses; ties now count
   as ties. Counts regenerated (US market 20 of 20 not tied, 13 developed 17 of 17); no verdict
@@ -289,7 +301,7 @@ and run this repo; open pull requests are listed under "Still open".
   a year still needs a larger `lrv` set by hand. mypy is clean on main again (#228, test
   annotations only). Nothing live changes.
 - `BAR.md` regenerated by this update in the order `research/register/README.md` states:
-  4,555 tries, N 1,125, N_eff 510, z 4.70 (rows through 2026-11-26 00:10 UTC).
+  4,571 tries, N 1,125, N_eff 510, z 4.70 (rows through 2026-11-26 08:17 UTC).
 
 Night 5's verdicts, in short (records and this file's git history have the detail): the century
 long-short style book fails net of costs (#170, z 2.75); managing it by market volatility is
@@ -309,8 +321,7 @@ live code versions (#166).
 
 - Daily run: the 2026-11-25 run passed (its snapshot matches the gym on `main` for all 12
   books). The next one is the first with #196 and #199 (fetch caps, source fallback).
-- Open research PRs: none at the time of writing (#231 merged: own-vol not shown on
-  independent stocks).
+- Open research PRs: none at the time of writing (#235 merged: W46 `ipo-heat` dead).
 - Leads still open: the halving window's one forward score (#137). `e4` is closed as a lead
   (#198); `coin-drift-run` is dead (#157, #190).
 - Live: 12 books trade fake money daily, `own_vol_70` included (#135). The record is days old:
