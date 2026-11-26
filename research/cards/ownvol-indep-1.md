@@ -1,6 +1,6 @@
 # ownvol-indep-1: does `own_vol_70` beat `tsmom12` on stock data it has never seen?
 
-Lane `ownvol-indep-1`, written 2026-11-26 00:25 UTC **before any own-vol return on any series
+Lane `ownvol-indep-1`, written 2026-11-26 00:08 UTC **before any own-vol return on any series
 is computed in this lane** (no calibration run either: the power section uses only published
 SEs). Seen before writing: the segment spans of e4-indep-1's data (first/last month, gap,
 scored months; no rule run) and e4-indep-1's published `e4` and `tsmom12` numbers (#198).
