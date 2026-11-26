@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
-import wide25 as w  # noqa: E402
+import wide25 as w  # type: ignore[import-not-found]  # noqa: E402
 
 DAT = """
      Value-Weight Dollar Returns      All 4 Data Items Not Reqd
@@ -26,7 +26,7 @@ DAT = """
 """
 
 
-def test_parse_block_reads_the_named_monthly_block_and_skips_missing():
+def test_parse_block_reads_the_named_monthly_block_and_skips_missing() -> None:
     usd = w.parse_block(DAT, 0)
     assert usd == {w.mi(1975, 1): 0.10, w.mi(1975, 3): 0.05}
     loc = w.parse_block(DAT, 1)
@@ -34,7 +34,9 @@ def test_parse_block_reads_the_named_monthly_block_and_skips_missing():
     assert w.parse_block(DAT, 0, last=w.mi(1975, 1)) == {w.mi(1975, 1): 0.10}
 
 
-def row(cid, country, start, election, prev="", caretaker="0"):
+def row(
+    cid: str, country: str, start: str, election: str, prev: str = "", caretaker: str = "0"
+) -> dict[str, str]:
     return {
         "cabinet_id": cid,
         "country_name_short": country,
@@ -57,7 +59,7 @@ ROWS = [
 ]
 
 
-def test_events_are_new_cabinets_in_the_same_parliament():
+def test_events_are_new_cabinets_in_the_same_parliament() -> None:
     cabs = w.parse_cabinets(ROWS)
     assert len(cabs) == 7
     ev = w.events(cabs)
@@ -66,7 +68,7 @@ def test_events_are_new_cabinets_in_the_same_parliament():
     assert w.first_start(cabs) == {"AAA": w.mi(1990, 1), "BBB": w.mi(1992, 3)}
 
 
-def test_dose_is_defined_from_first_start_and_marks_event_months():
+def test_dose_is_defined_from_first_start_and_marks_event_months() -> None:
     cabs = w.parse_cabinets(ROWS)
     ev = w.events(cabs)
     d = w.dose_months(ev, w.first_start(cabs), ["AAA", "BBB", "CCC"], end=w.mi(1999, 12))
@@ -78,7 +80,7 @@ def test_dose_is_defined_from_first_start_and_marks_event_months():
     assert sum(d["BBB"].values()) == 0.0
 
 
-def test_excess_subtracts_the_mean_of_the_other_markets():
+def test_excess_subtracts_the_mean_of_the_other_markets() -> None:
     rets = {"A": {0: 0.10, 1: 0.0}, "B": {0: 0.0, 1: 0.0}, "C": {0: 0.0}}
     e = w.excess(rets)
     la = math.log1p(0.10)
@@ -87,7 +89,9 @@ def test_excess_subtracts_the_mean_of_the_other_markets():
     assert math.isclose(e["A"][1], 0.0) and 1 not in e["C"]
 
 
-def synthetic(effect: float, seed: int = 1):
+def synthetic(
+    effect: float, seed: int = 1
+) -> tuple[dict[str, dict[int, float]], dict[str, dict[int, float]]]:
     """Two countries, 400 months; an event every 20 months in A; e = noise + effect spread
     over the six months after each event."""
     rng = np.random.default_rng(seed)
@@ -102,7 +106,7 @@ def synthetic(effect: float, seed: int = 1):
     return e, dose
 
 
-def test_fit_finds_a_planted_premium_and_its_sign():
+def test_fit_finds_a_planted_premium_and_its_sign() -> None:
     e, dose = synthetic(0.05)
     spec = w.Spec(first_row=12, last_dose=390)
     rows = w.base_rows(e, dose, spec)
@@ -121,7 +125,7 @@ def test_fit_finds_a_planted_premium_and_its_sign():
     assert abs(ts) < t and ns <= n
 
 
-def test_fit_drops_rows_whose_shifted_dose_is_undefined():
+def test_fit_drops_rows_whose_shifted_dose_is_undefined() -> None:
     e, dose = synthetic(0.0)
     spec = w.Spec(first_row=12, last_dose=390)
     rows = w.base_rows(e, dose, spec)
@@ -130,7 +134,7 @@ def test_fit_drops_rows_whose_shifted_dose_is_undefined():
     assert n1 == n0 - 2 * (50 - 12)
 
 
-def test_reaction_rows_use_the_event_month_and_the_one_before():
+def test_reaction_rows_use_the_event_month_and_the_one_before() -> None:
     e = {"A": {m: 0.0 for m in range(40)}}
     e["A"][20] = 0.03
     e["A"][19] = 0.01
@@ -140,7 +144,7 @@ def test_reaction_rows_use_the_event_month_and_the_one_before():
     assert math.isclose(rows[20], 0.04) and math.isclose(rows[21], 0.03)
 
 
-def test_surrogate_keeps_each_countrys_event_count_on_its_rows():
+def test_surrogate_keeps_each_countrys_event_count_on_its_rows() -> None:
     e, dose = synthetic(0.0)
     spec = w.Spec(first_row=12, last_dose=390)
     rows = w.base_rows(e, dose, spec)
@@ -150,13 +154,13 @@ def test_surrogate_keeps_each_countrys_event_count_on_its_rows():
     assert set(s["A"]) == {r[1] for r in rows if r[0] == "A"}
 
 
-def test_shift_set_and_null_stats():
+def test_shift_set_and_null_stats() -> None:
     assert len(w.SHIFTS) == 40 and all(k % 2 == 1 and k % 12 for k in w.SHIFTS)
     ns = w.null_stats([-2.5, 0.0, 1.0, 2.0, float("nan")])
     assert ns["n"] == 4 and ns["share2"] == 0.5 and ns["min"] == -2.5 and ns["max"] == 2.0
 
 
-def test_month_index_round_trip():
+def test_month_index_round_trip() -> None:
     assert w.ym(w.mi(2022, 12)) == "2022-12"
     assert w.mi(1976, 1) - w.mi(1975, 12) == 1
     assert date(2022, 12, 1).month == 12
