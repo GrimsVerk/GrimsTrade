@@ -133,7 +133,9 @@ Lead 3 (from ~00:00 UTC) merged: #228 eng-mypy-1 (mypy clean on main, item 7(e))
 w41-neg-1 (W41's negative side dead on JST 1921-1959, gate W41n; 111/29/41), #230 wide-28 (W45
 `arms-fear` passed kill-only, killed by R45; 112/29/43, three kill-only passes), #231
 ownvol-indep-1 (own-vol on independent pre-1927 stocks: not shown, not contradicted). SUMMARY
-night 6 covers through #231 (summary-11).
+night 6 covers through #231 (summary-11). Lead 3 stalled 00:20-08:10 UTC on an expired login
+(one review lost, no lane cut off); weekly ended at ~0.96. Next lead: new WIDER + DEEPER lanes
+from Lane queue items 3-4, 7 (a)-(c) and 8.
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
