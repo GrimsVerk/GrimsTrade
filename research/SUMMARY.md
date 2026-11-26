@@ -114,7 +114,7 @@ and run this repo; open pull requests are listed under "Still open".
   publication (median about 28% over six factors), and long-only funds built on them matched
   their index after fees (#91). Our own tests of published effects: 0 for 9 by night 5 (its
   last two: the aviation-disaster mood effect #176, market-volatility management of style
-  factors #179). Night 6 adds eight that did not hold up: the industrial-electricity premium
+  factors #179). Night 6 adds nine that did not hold up: the industrial-electricity premium
   (Da, Huang and Yun 2017; passed its gate, died in replication, #202), real-rate currency value
   (Asness, Moskowitz and Pedersen 2013; no better than the proxy, #197), the crypto-theft
   channel (Liu and Tsyvinski 2021, Corbet et al. 2020; no effect, #205), the consumption cycle
@@ -123,8 +123,9 @@ and run this repo; open pull requests are listed under "Still open".
   premium after mid-term cabinet changes (Pastor and Veronesi, in the spirit of Bernhard and
   Leblang 2006; wrong sign, t -1.74, #221; the negative side, fixed in advance, also
   fails on unseen JST years 1921-1959, t -1.27, #229), drought under-reaction in food stocks (Hong, Li
-  and Xu 2019, US industry form, t +0.07) and the sport-elimination mood effect (Edmans, Garcia
-  and Norli 2007; t -0.95, far from the published fall, #223).
+  and Xu 2019, US industry form, t +0.07), the sport-elimination mood effect (Edmans, Garcia
+  and Norli 2007; t -0.95, far from the published fall, #223) and IPO-market heat (the IPO-volume
+  part of the Baker-Wurgler sentiment index; t -1.09 on 1991-2024, #235).
 - **The bar for a new rule is measured, and rebuilds on any computer.** 4,571 tries logged
   (445 new since night 5; the register reads every pushed branch, open ones included), worth
   between 11 and 510 independent shots depending on how they are counted; the bar uses the
@@ -166,7 +167,7 @@ and run this repo; open pull requests are listed under "Still open".
   are slow monthly US doses, the design #207 found liberal (post hoc, #234). Night 6 added W36 with R36 (#202), W37 `hack-drift` (#205), W38
   `consumption-cycle` and W39 `bank-capital-premium` (#210), W40 `quake-drift` (#215), W41
   `cabinet-collapse` (#221), W43 `drought-food-margin` and the first gate of wide-8's W18
-  `elimination-mood` (#223), W44 `revision-noise` (#226), W41n (W41's negative side, #229)
+  `elimination-mood` (#223), W44 `revision-noise` (#226), W41n (W41's negative side, #229),
   W45 with R45 (#230) and W46 `ipo-heat` (#235); all but W36 and W45 failed at the gate. W42 is unused. Every gate is
   listed in [`gate-null.md`](gate-null.md). A
   mechanism enters the count once it gets a gate or a strategy test; descriptive re-scores and
