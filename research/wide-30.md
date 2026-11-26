@@ -92,6 +92,8 @@ run.** Held-out data untouched.
   t and on both ranks.
 - **Dating.** Shiller's monthly E interpolates quarterly S&P earnings; the four-month slack is
   meant to cover it. Not material to a fail.
+  An October row uses the December quarter, whose 10-K deadline (60 days) falls at the end of
+  m+4; a 5-month lag would be safer.
 - My guess (b positive, t +0.5 .. +2.5, middle-to-high ranks; pass 5%) matched.
 
 Label: **fail** (gate-null: b > 0 holds, t < 2, ranks 18 and 20).

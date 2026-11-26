@@ -140,7 +140,7 @@ def main() -> None:  # pragma: no cover - needs the cache
     cell("No controls", Spec(h=12, lags=12, ctrl=(), first=ROW_FIRST, last=ROW_LAST))
     cell("Without rv", Spec(h=12, lags=12, ctrl=("c12", "c1"), first=ROW_FIRST, last=ROW_LAST))
     cell("Rows 1991-01 .. 2007-12", Spec(h=12, lags=12, first=ROW_FIRST, last=HALF - 1))
-    cell("Rows 2008-01 .. 2024-06", Spec(h=12, lags=12, first=HALF, last=ROW_LAST))
+    cell("Rows 2008-01 .. 2023-06", Spec(h=12, lags=12, first=HALF, last=ROW_LAST))
     cell(
         "Without rows 2008-07 .. 2010-06",
         Spec(h=12, lags=12, drop=GFC, first=ROW_FIRST, last=ROW_LAST),

@@ -15,7 +15,7 @@ Row months below are the card's m (the code's m' minus 3).
 | No controls | +2.150 | +0.65 | 390 |
 | Without rv | +2.511 | +0.82 | 390 |
 | Rows 1991-01 .. 2007-12 | +0.497 | +0.05 | 204 |
-| Rows 2008-01 .. 2024-06 | +1.163 | +0.56 | 186 |
+| Rows 2008-01 .. 2023-06 | +1.163 | +0.56 | 186 |
 | Without rows 2008-07 .. 2010-06 | -3.641 | -0.62 | 366 |
 
 | Null | SD | share \|t\|>=2 | 5% | 50% | 95% | min | max |
