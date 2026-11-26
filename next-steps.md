@@ -140,8 +140,14 @@ answers scripts but has no as-known vintages; `patent-surge` stays parked), #234
 (descriptive: 3 kill-only passes in 40 first gates is the card's "ordinary" band, P(>=3) 0.12 at a
 3% false-pass rate, 0.36-0.39 by the gates' own rank rules; all three passes are slow monthly US
 doses, consistent with #207, post hoc) and #235 wide-29 (W46 `ipo-heat` fails, t -1.09, rank
-10/41; 113/29/44). Lead 3 total: 8 PRs (#228-#235); SUMMARY covers through #235
-(summary-12). No PR open, no lane running. Next lead: new WIDER + DEEPER lanes from Lane queue items 3-4, 7 (b)-(c) and 8.
+10/41; 113/29/44). Then #236 (handoff), #237 summary-12, #238 eng-mypy-2
+(annotation fixes in research/lib/long_x.py and gatepower.py; mypy import ignores in three tests;
+CI-scope mypy clean), #239 gate-null-3 (descriptive: #207's proposed surrogate rule, not adopted,
+would have blocked 1 of the 3 replication-killed passes, W36, single seed; W32 and W45 pass it) and
+#240 wide-30 (W47 `payout-ratio` fails, t +0.80, rank 18/41; 114/29/45; Q2 `card-credit` parked,
+FRED not reached). Lead 3 total: 13 PRs (#228-#240); SUMMARY covers through #235 (summary-12;
+#238-#240 are not in it yet). No PR open, no lane running. Next lead: a short summary-13 for
+#238-#240, then new WIDER + DEEPER lanes from Lane queue items 3-4, 7 (b)-(c) and 8.
 
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
