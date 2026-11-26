@@ -129,6 +129,12 @@ wide-26 (W43 dead, W18 closed dead), #225 insure-jstbonds-1, #224 dw2-dates-1 (d
 parse and BoE $/£ 1857-10 spike), #226 wide-27 (W44 dead; counts 111/29/40). SUMMARY night 6
 covers #218-#226 (summary-10).
 
+Lead 3 (from ~00:00 UTC) merged: #228 eng-mypy-1 (mypy clean on main, item 7(e)), #229
+w41-neg-1 (W41's negative side dead on JST 1921-1959, gate W41n; 111/29/41), #230 wide-28 (W45
+`arms-fear` passed kill-only, killed by R45; 112/29/43, three kill-only passes), #231
+ownvol-indep-1 (own-vol on independent pre-1927 stocks: not shown, not contradicted). SUMMARY
+night 6 covers through #231 (summary-11).
+
 **For the owner (decisions, not acted on):**
 - Yale ICF data (London Investor's Monthly Manual 1869-1929, NYSE 1815-1925, St Petersburg):
   terms: "supplied solely for academic research purposes; any commercial use or redistribution
@@ -151,7 +157,7 @@ covers #218-#226 (summary-10).
    the clean keyless independent monthly stock data are nearly used up, apart from the Yale IMM stocks, data-wide-2
    rank 2, which wait on the owner's ruling), real-rate FX value and
    sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
-   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W43, W18, W44, W45 (`arms-fear`: kill-only pass, killed by R45, wide-28), the insurance
+   calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W41n (#229), W43, W18, W44, W45 (`arms-fear`: kill-only pass, killed by R45, wide-28), the insurance
    on long bonds and floating FX (#219, #222, #225: exposure only) and the stale checks (#220); own_vol_70 on the pre-1927 independent stocks (#231: not shown, D -0.007, upper bound +0.028). The previous
    night's do-not-redo list is in the night-lead 2026-11-24/25 section above and in SUMMARY.
 3. DEEPER next: (a) a sovereign-bond pool (Yale IMM bonds) or the IMM stocks with its own crash calendar (data-wide-2 rank 1) only
@@ -178,4 +184,13 @@ covers #218-#226 (summary-10).
    (d) ~~W41's unpredicted negative 12-month side (t -2.60, post hoc) needs a new card on
    independent JST years 1921-1959 (b < 0), if anyone wants it~~: done in #229 (dead).
    (e) ~~mypy reports 21 errors in `tests/test_wide25.py` on main (from #221): fix in an
-   engineering lane.~~ Done in this PR (eng-mypy-1).
+   engineering lane.~~ Done in #228 (eng-mypy-1).
+8. From lead 3's lanes:
+   (a) P2 `approval-mood` (wide-28) is parked: the only keyless approval source found
+   (presidency.ucsb.edu) disallows AI agents in robots.txt.
+   (b) Own-vol's clean independent stock data left (#231): a US-only pool before 1871 (NBER
+   railroads, cached) and Yale ICF; the GIP NYSE 1815-1925 index is Yale ICF data
+   (data-wide-2 row 3), so it too waits on the owner's ruling.
+   (c) The cached NICS CSV (BuzzFeed News compilation) stops at 2023-09; later months are only
+   in the FBI's monthly PDF (not needed: W45 is closed).
+
