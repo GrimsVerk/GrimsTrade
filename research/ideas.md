@@ -501,3 +501,15 @@ Count after this run: 113 mechanisms, 29 tested by a strategy, 44 gates (W46), t
 | ipo-heat | Corporate finance (IPO volume as insiders' market timing; Baker-Wurgler, Lowry) | dead (gate W46, wide-29) | [card](cards/wide-29.md) | US French Mkt-RF over months m+2..m+13 on ln(1 + 12-month net IPO count, Ritter IPOALL) minus its past 60-month mean, row m entering at the end of m+1, controls market c12, c1, realised variance, 405 months 1991-2024: b -3.45% per unit (SD 0.886), t -1.09, rank 10/41 shifted and 14/41 phase surrogates. 1991-2007 t +0.01, 2008-2024 t -3.08 (post hoc). R46 not run. [result](results/ipo-heat.md), [write-up](wide-29.md) |
 | margin-leverage | Brokerage regulation (household margin debt) | new (scored 4, parked: data) | - | wide-29's Q3: finra.org answers scripts with a Cloudflare block; F2 weak (margin debt moves with prices); published. |
 | wide-29-filtered-set | Astronautics, tourism, pharmaceutical regulation, numismatics | filtered (wide-29) | - | Q2 `launch-cadence` (cause), Q4 `tourism-arrivals` (data, cause), Q5 `drug-approvals` (reach), Q6 `coin-hoarding` (cause, data). [write-up](wide-29.md) |
+
+## wide-30: accounting, household finance, gambling economics, bankruptcy law, asset management
+
+Count after this run: 114 mechanisms, 29 tested by a strategy, 45 gates (W47), three kill-only passes (W32, W36, W45), each killed by its replication; family bar p < 0.10 / 114 = 0.00088. Write-up [wide-30.md](wide-30.md).
+
+| Idea | Field | Status | Card | Note |
+|---|---|---|---|---|
+| payout-ratio | Accounting (payout ratio D/E as temporarily low earnings; Lamont 1998) | dead (gate W47, wide-30) | [card](cards/wide-30.md) | US French Mkt-RF over months m+5..m+16 on ln(D/E, Shiller) minus its past 60-month mean, row m entering at the end of m+4, controls c12, c1, rv, 390 months 1991-2023: b +2.44% per unit, t +0.80, ranks 18 and 20 of 41; sign gone without 2008-07..2010-06. Do not redo. |
+| card-credit | Household finance (revolving consumer credit growth) | parked (data blocked: no FRED connection from the script; needs ALFRED vintages) | - | wide-30 Q2, score 4 |
+| jackpot-speculation | Gambling economics (lottery jackpots vs lottery-type stocks) | filtered (reach 0 at index level; no keyless jackpot history) | - | wide-30 Q3 |
+| bankruptcy-filings | Bankruptcy law (business filing waves) | filtered (no script-readable monthly series) | - | wide-30 Q4 |
+| fund-flows | Asset management (equity fund flows) | filtered (ICI not keyless; flows chase returns) | - | wide-30 Q5 |

@@ -217,19 +217,20 @@ backward shifts of a dose that prices can move, and whether the verdict could fl
 | W45 `arms-fear` (wide-28) | k = 25..103 months, earlier only, plus 40 IAAFT surrogates (both gating) | not used (earlier only) | t +3.50, rank 2; surrogate rank 2: **pass (kill-only)** | killed by its replication R45 (2000-2008: t +0.54, rank 13) |
 | R45, replication of W45 (wide-28, `cards/wide-28.md`) | 40 IAAFT surrogates (shifts cannot be built) | not used | t +0.54 (predicted > 0), rank 13 (17 among phase surrogates) | no: t < 2; W45 dead (phase surrogates would have ranked the gate 1, so IAAFT was the stricter family) |
 | W46 `ipo-heat` (wide-29) | k = 25..103 months, earlier only, plus 40 phase surrogates (both gating) | not used (earlier only) | t -1.09 (predicted < 0), rank 10; surrogate rank 14 | no: t > -2 |
+| W47 `payout-ratio` (wide-30) | k = 25..103 months, earlier only, plus 40 IAAFT surrogates (both gating) | not used (earlier only) | t +0.80 (predicted > 0), rank 18; surrogate rank 20 | no: t < 2 |
 
 W23-W26 rows sit on branches made after this one (`wide-12`, `wide-13`); the facts are read
 from their write-ups. weather-2 (#117) uses winter derangements (allowed) but its "bar, if the
 gate passes" section leans on the old step 7; with 13 winters it is kill-only.
 
-The table holds all **44 gates** of the family count (`parked-gates-1.md`, "Family count";
+The table holds all **45 gates** of the family count (`parked-gates-1.md`, "Family count";
 family after summary-6's correction: 101 mechanisms, 29 tested by a strategy, 28 gates;
 panic-words-1 adds W34, wide-21 adds W35, wide-22 adds W36 and its replication R36, wide-23
 adds W37, jst-gates-1 W38 and W39, wide-24 W40, wide-25 W41, wide-26 W43 and the first gate of
-wide-8's W18, wide-27 W44, w41-neg-1 W41n, wide-28 W45 and its replication R45, wide-29 W46; W42 is unused: **113 mechanisms, 29 tested by a strategy, 44 gates,
-family bar p < 0.10 / 113 = 0.00088**; the "Count after" paragraphs below give each step):
+wide-8's W18, wide-27 W44, w41-neg-1 W41n, wide-28 W45 and its replication R45, wide-29 W46, wide-30 W47; W42 is unused: **114 mechanisms, 29 tested by a strategy, 45 gates,
+family bar p < 0.10 / 114 = 0.00088**; the "Count after" paragraphs below give each step):
 the 11 through survey-7 (ann-1, wide-6 x 2, wide-7 x 3, wide-8 x 2, wide-9 x 2, survey-7), W20-W26,
-weather-1 and weather-2, W27-W41, W43, W44, W45, W46, W18 and the replications R32, R36 and R45 (summary-6 added the
+weather-1 and weather-2, W27-W41, W43, W44, W45, W46, W47, W18 and the replications R32, R36 and R45 (summary-6 added the
 `seasonal-20y`, weather-2 and R32 rows from their write-ups, 2026-11-25). Three passed (W32, W36
 and W45, all kill-only), and each was killed by its replication (R32, R36, R45).
 
@@ -413,3 +414,12 @@ mechanism and one more gate row: **113 mechanisms, 29 tested by a strategy, none
 gates, three kill-only passes (W32, W36, W45), each killed by its replication; family bar
 p < 0.10 / 113 = 0.00088.** The only strong cell (2008-2024, t -3.08) is a post hoc half.
 
+## Count after W47 (wide-30, 2026-11-26)
+
+W47 `payout-ratio` (accounting: ln(D/E), Shiller, minus its past five-year mean, US market over
+months m+5..m+16, controls the market's past return and realised variance) **fails**: b +2.44%
+per unit, t +0.80, rank 18 of 41 earlier-dose calendars and 20 of 41 IAAFT surrogates (end
+mismatch 1.02 SD; acf1 0.990). R47 not run. Count after wide-29: one more mechanism and one
+more gate row: **114 mechanisms, 29 tested by a strategy, none passed; 45 gates, three
+kill-only passes (W32, W36, W45), each killed by its replication; family bar p < 0.10 / 114 =
+0.00088.** Without 2008-07..2010-06 the sign turns (t -0.62).
