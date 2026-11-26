@@ -1,4 +1,4 @@
-"""Lane w41-neg-1: kill-only gate `cabinet-drift` (provisional W41n), card
+"""Lane w41-neg-1: kill-only gate `cabinet-drift` (W41n), card
 research/cards/w41-neg-1.md (pushed before this script's first run).
 
     uv run python -I research/lib/w41neg1.py        (DRY=1: counts only)
@@ -182,7 +182,7 @@ def main() -> None:
     per_c = {i: sum(1 for r in rows if r[0] == i) for i in COUNTRIES}
     ev_c = {i: int(sum(z[i][t1 - 1] for j, t1 in rows if j == i)) for i in COUNTRIES}
     lines = [
-        "# cabinet-drift (w41-neg-1, provisional W41n): statistics only",
+        "# cabinet-drift (w41-neg-1, W41n): statistics only",
         "",
         f"Rows {len(rows)}, event rows {int(ev_rows)}, dose lag-1 acf {lag1(z, rows):+.3f}.",
         "Rows / event rows per country: "

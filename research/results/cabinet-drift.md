@@ -1,4 +1,4 @@
-# cabinet-drift (w41-neg-1, provisional W41n): statistics only
+# cabinet-drift (w41-neg-1, W41n): statistics only
 
 Rows 305, event rows 97, dose lag-1 acf +0.178.
 Rows / event rows per country: AUS 26/0, BEL 28/11, CAN 0/0, CHE 28/2, DEU 18/7, DNK 28/3, FIN 27/16, FRA 22/20, GBR 28/5, IRL 0/0, ITA 9/6, JPN 8/4, NLD 27/4, NOR 28/11, SWE 28/8
