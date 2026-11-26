@@ -10,7 +10,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
 
-import wide27 as w  # noqa: E402
+import wide27 as w  # type: ignore[import-not-found]  # noqa: E402
 
 
 def test_vintage_month_two_digit_years() -> None:
@@ -81,7 +81,9 @@ def test_fit_recovers_slope_and_shift() -> None:
     rng = np.random.default_rng(0)
     months = range(1000, 1400)
     dose = {v: float(rng.normal()) for v in range(900, 1400)}
-    rows = {v: (2.0 * dose[v] + float(rng.normal()) * 0.1, {}) for v in months}
+    rows: dict[int, tuple[float, dict[str, float]]] = {
+        v: (2.0 * dose[v] + float(rng.normal()) * 0.1, {}) for v in months
+    }
     spec = w.Spec(ctrl=(), first=1000, last=1399)
     b, t, n = w.fit(rows, dose, spec)
     assert n == 400 and abs(b - 2.0) < 0.05 and t > 20

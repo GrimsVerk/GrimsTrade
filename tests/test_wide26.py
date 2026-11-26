@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "research" / "lib"))
-import wide26_events as ev  # noqa: E402
+import wide26_events as ev  # type: ignore[import-not-found]  # noqa: E402
 
 BLOCK = """header line
   Average Value Weighted Returns -- Monthly

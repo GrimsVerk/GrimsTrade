@@ -177,5 +177,5 @@ covers #218-#226 (summary-10).
    redistributing anything derived from it (#221).
    (d) W41's unpredicted negative 12-month side (t -2.60, post hoc) needs a new card on
    independent JST years 1921-1959 (b < 0), if anyone wants it.
-   (e) mypy reports 21 errors in `tests/test_wide25.py` on main (from #221): fix in an
-   engineering lane.
+   (e) ~~mypy reports 21 errors in `tests/test_wide25.py` on main (from #221): fix in an
+   engineering lane.~~ Done in this PR (eng-mypy-1).
