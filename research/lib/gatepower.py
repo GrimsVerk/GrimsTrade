@@ -56,7 +56,7 @@ def position(z: np.ndarray, h: int, mask: np.ndarray) -> np.ndarray:
     c = np.concatenate([[0.0], np.cumsum(zz)])
     i = np.arange(len(zz))
     lo = np.maximum(i - h + 1, 0)
-    x = (c[i + 1] - c[lo]) / h
+    x: np.ndarray = (c[i + 1] - c[lo]) / h
     sd = float(x[mask].std())
     return x / sd if sd > 0 else x
 
