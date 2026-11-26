@@ -14,8 +14,9 @@ counts are unchanged.
 ## What was tried (2026-11-26, 08:13-08:15 UTC)
 
 One request at a time, 3-5 s apart (FRED's robots.txt asks for a 1 s crawl delay, ALFRED's 2 s).
-Two User-Agents: a generic browser-like string with no contact, and curl's default
-(`curl/8.23.0`). Neither carries anything personal.
+Two User-Agents: a generic browser-like string (`Mozilla/5.0 (research script)`, not a copy of
+any real person's or service's UA, no contact), dropped once curl's default (`curl/8.23.0`)
+worked. Neither carries anything personal.
 
 | Request | UA | Result |
 |---|---|---|
@@ -30,7 +31,7 @@ Two User-Agents: a generic browser-like string with no contact, and curl's defau
 | `fred.stlouisfed.org/series/PATENT4NJPUTILITY` | curl default | 200 |
 | `alfred.stlouisfed.org/series?seid=PATENT4NJPUTILITY` | curl default | 200 |
 
-So the earlier failures (wide-27, data-long-3) were most likely the CDN refusing the
+So the earlier failures (wide-27, data-long-3, data-wide-2) were most likely the CDN refusing the
 browser-like User-Agent, not a site-wide block: the same paths answer at once to curl's own UA.
 That is a useful lesson for other FRED/ALFRED lanes.
 
@@ -57,7 +58,7 @@ The brief's stop rule: if a vintage-dated (as-known) series isn't obtainable, re
 stop. It isn't, so I stopped before writing a card and before reading any return.
 
 A later lane could argue a fixed release lag instead of vintages: grants are public weekly in
-the Official Gazette and annual grant counts are barely revised, so "count for year t is usable
+the Official Gazette and annual grant counts are barely revised (both unverified here), so "count for year t is usable
 from, e.g., 1 April t+1" would be a defensible as-known proxy (USPTO's PTMT country tables were
 usually out in the first months of t+1, unverified here). That is a convention change for the
 lead or the owner to accept, not one to take on my own. Costs to weigh against it: about 28
