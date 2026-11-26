@@ -115,8 +115,8 @@ def fit(
     x = np.array(cols)
     yy = np.array([100.0 * d[i][t1] for i, t1 in rs])
     per = np.array([t1 for _, t1 in rs])
-    b, t = gp.dk_fit(x, yy, per, LAGS, 0)
-    return Fit(float(b), float(t), len(rs))
+    bb, tt = gp.dk_fit(x, yy, per, LAGS, 0)
+    return Fit(float(bb), float(tt), len(rs))
 
 
 def rank_low(true: float, others: Sequence[float]) -> int:
@@ -198,7 +198,7 @@ def main() -> None:
     active = [i for i in COUNTRIES if per_c[i]]  # JST R6 has no CAN or IRL
     bm = jg.boot_model(active, xr, z, *SPAN, hyper)
     rng = np.random.default_rng(SEED)
-    zyears = {i: sorted(z[i]) for i in active}
+    zyears: dict[str, Sequence[int]] = {i: sorted(z[i]) for i in active}
     boot = []
     for _ in range(B_BOOT):
         ys, _zs = jg.simulate(bm, rng, zyears)
