@@ -152,7 +152,7 @@ covers #218-#226 (summary-10).
    rank 2, which wait on the owner's ruling), real-rate FX value and
    sleeve swaps of #170's book (#197 kill rules), the RL line for price-only inputs (#209), the
    calm-drag split (#203), JST source timing (#204), the gate-null size study (#207), W36-W41, W43, W18, W44, the insurance
-   on long bonds and floating FX (#219, #222, #225: exposure only) and the stale checks (#220). The previous
+   on long bonds and floating FX (#219, #222, #225: exposure only) and the stale checks (#220); own_vol_70 on the pre-1927 independent stocks (#231: not shown, D -0.007, upper bound +0.028). The previous
    night's do-not-redo list is in the night-lead 2026-11-24/25 section above and in SUMMARY.
 3. DEEPER next: (a) a sovereign-bond pool (Yale IMM bonds) or the IMM stocks with its own crash calendar (data-wide-2 rank 1) only
    after the owner rules on the Yale terms; Norges Bank bonds and BoE consols done (#219), JST
@@ -175,7 +175,7 @@ covers #218-#226 (summary-10).
    permission for scripted use (owner).
    (c) ParlGov's licence was not read (Dataverse bot challenge): check it in a browser before
    redistributing anything derived from it (#221).
-   (d) W41's unpredicted negative 12-month side (t -2.60, post hoc) needs a new card on
-   independent JST years 1921-1959 (b < 0), if anyone wants it.
-   (e) mypy reports 21 errors in `tests/test_wide25.py` on main (from #221): fix in an
-   engineering lane.
+   (d) ~~W41's unpredicted negative 12-month side (t -2.60, post hoc) needs a new card on
+   independent JST years 1921-1959 (b < 0), if anyone wants it~~: done in #229 (dead).
+   (e) ~~mypy reports 21 errors in `tests/test_wide25.py` on main (from #221): fix in an
+   engineering lane.~~ Done in this PR (eng-mypy-1).

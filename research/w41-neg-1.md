@@ -1,0 +1,88 @@
+# w41-neg-1: W41's post-hoc negative side, tested on independent years (annual JST 1921-1959): dead
+
+Lane w41-neg-1, 2026-11-26 (night run, DEEPER lane), next-steps lane queue item 7(d). Branch
+`w41-neg-1` (from `main` d03cc1a), PR into `main`. Research only: no change to the gym, the
+daily runner or the live strategies. Card `research/cards/w41-neg-1.md` (commit 7aede80,
+pushed 2026-11-26 00:01 UTC, before any return was read). Code `research/lib/w41neg1.py`,
+tests `tests/test_w41neg1.py`, table `research/results/cabinet-drift.md`.
+
+## Question
+
+W41 `cabinet-collapse` (wide-25, PR #221) predicted a premium (b > 0) after mid-term cabinet
+starts in 18 developed markets, 1976-2022, and failed with the wrong sign (b -1.66% over six
+months, t -1.74, lowest of 41 placebos; 12-month cell b -3.12%, t -2.60, post hoc). Does the
+negative drift hold on years W41 never used, with the sign fixed in advance (b < 0)?
+
+## Feasibility (step 1)
+
+ParlGov (wide-25's cached `view_cabinet.csv`) has mid-term cabinet starts back to 1900 for the
+older democracies: about 150 event years in 1919-1958 in the 15 JST-and-ParlGov countries. JST
+R6 as cached has **no Canada and no Ireland** (16 countries: AUS BEL CHE DEU DNK ESP FIN FRA
+GBR ITA JPN NLD NOR PRT SWE USA), found in the dry run before any number; the card's list is
+kept and those two simply give no rows. Dry run: **305 rows, 97 event rows, 13 countries**
+(rows / event rows: AUS 26/0, BEL 28/11, CHE 28/2, DEU 18/7, DNK 28/3, FIN 27/16, FRA 22/20, GBR
+28/5, ITA 9/6, JPN 8/4, NLD 27/4, NOR 28/11, SWE 28/8), dose lag-1 acf +0.178. Testable, low
+power. One fix after the first attempt, before any number was printed: the bootstrap failed on
+the two countries without returns, so it runs on the 13 with rows (the statistic was unchanged).
+
+## Result (one real run, 2026-11-26 00:02 UTC)
+
+**Dead. In the year after a year with a mid-term cabinet start the country's market did 2.9%
+worse than the others (b -2.895% per event year, t -1.27, 305 rows), the predicted sign but far
+from the gate: shift rank 5 of 21 (needed 1-2), AR-preserving bootstrap p 0.140 (needed <=
+0.05), t above -2. The interwar half is flat (b -0.81, t -0.27).**
+
+| Cell (next-year excess over the cross-country mean, controls own 1/3-year, country dummies, DK 2) | b, % per event year | t | Rows |
+|---|---:|---:|---:|
+| **Gate** | **-2.895** | **-1.27** | **305** |
+| Outcomes 1921-1938 | -0.805 | -0.27 | 178 |
+| Outcomes 1947-1959 | -8.006 | -3.23 | 127 |
+| No controls | -3.051 | -1.40 | 305 |
+| Without France | -2.119 | -0.82 | 283 |
+| Without wide-25's post-election formations | -3.024 | -1.35 | 305 |
+| Count dose | -3.017 | -1.40 | 305 |
+
+- **Nulls.** Earlier-dose calendars k = 2..21 years: SD 1.22, 5% past |t| 2, 5/50/95% -1.82 /
+  -0.21 / +1.55, extremes -3.48 (k 5) / +1.62. AR-preserving bootstrap (jstgates1 model, real
+  dose, 199 paths, seed 4101): SD 1.18, 8% past |t| 2, 5/50/95% -1.86 / -0.06 / +1.91. Both
+  nulls are close to unit width; the true t sits in their lower quarter, not their tail.
+  Disclosure: for Italy and Japan before about 1946 (dose undefined) the bootstrap's
+  whole-year draw falls back to the country's own pool (jstgates1's `simulate`, as the card
+  specifies), which partly loses the cross-country structure; the verdict is unaffected.
+- **The postwar half (t -3.23) is post hoc and not a lead.** It rests on 127 rows, 13 years,
+  and on a handful of event rows per country (Italy and Japan enter only from 1947, with 6 and
+  4 event rows); the half was a gate condition (sign only), not a test. The interwar half,
+  with more rows, shows nothing. W41's own later half was already weak (2001-2022, t -1.08);
+  on independent years the pooled t is -1.27 and the interwar half -0.27; the one strong cell
+  is a 13-year postwar slice.
+- **Power, measured.** SE(b) about 2.3% a year (b / t), as the card guessed (about 2%): a pass
+  needed about -5% a year. W41's post-hoc -3.1% a year would have passed about a quarter of the time (power ~26% at SE 2.28, true b -3.1);
+  the point estimate (-2.9%) is near it, so this kill is weak against a small drift and strong
+  only against a large one (upper 95% bound near +1.6%, lower near -7.4%).
+- My guess (b between -3% and +2%, |t| < 1.5, a middle rank, pass 5%) was mostly right (rank 5 of 21, lower than the middle rank guessed).
+
+Label: **kill-only** (`gate-null.md` step 7; smallest p a rank shows 1/21 = 0.048, far above the
+family bar, which under the lead's count ruling is 0.10 / 111 = 0.00090, not the card's / 112;
+the verdict is unaffected). **The negative-drift reading of W41 is closed**; wide-25's `Next` item 2 is done.
+
+## Count
+
+Counted under W41's mechanism (lead ruling): +1 gate, no new mechanism. **111 mechanisms, 29
+tested by a strategy, none passed; 41 gates, two kill-only passes (W32, W36), each killed by
+its replication** (`research/SUMMARY.md` before: 111 / 29 / 40). Gate id `W41n` is final.
+`research/register/BAR.md` is generated by `grimstrade.register`, not edited here.
+
+Rows logged in `tries.md`: 1 `screen` (`cabinet-drift`), 6 `robustness` (the shown cells).
+
+## Data terms
+
+- ParlGov development version (Döring, Quaas, Hesse and Manow 2023, parlgov.org), wide-25's
+  cached copy (sha256 bd39f733...). **Its licence was never read** (wide-25: parlgov.org states
+  none; the Dataverse page was a bot challenge). This lane used the cached copy for counts and
+  statistics only and **commits no ParlGov-derived event list or data file**. No download.
+- JST Macrohistory Database R6 (Jordà, Schularick and Taylor), CC BY-NC-SA 4.0: statistics only.
+
+## Next
+
+Nothing on cabinet changes. A third sample (CPDS 1960-2023) would overlap W41's years and is not
+independent; the idea should stay closed unless a new, independent event source appears.

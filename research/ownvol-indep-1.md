@@ -16,24 +16,26 @@ contradicted".** On e4-indep-1's four stock markets before 1927-07 (US, GB, DE, 
 market-years that overlap nothing own-vol was scored on), own-vol (pooled-2's monthly
 `vt-own-70-x`) trails `tsmom12` by **D = -0.007 Sharpe a market (SE 0.021, z -0.34)**. The
 one-sided 95% upper bound is **+0.028**, just above the 41-market +0.022 (so not
-contradicted), and **below #110's +0.06**: an edge of the six-asset size is unlikely on stocks
-in general. Own-vol wins in 2 of 4 markets (GB +0.048, FR +0.015; US -0.083, DE -0.009).
+contradicted), and **below #110's +0.06**: an edge of the six-asset size is unlikely on these
+four markets (N5's upper bound, +0.052, points the same way). Own-vol wins in 2 of 4 markets (GB +0.048, FR +0.015; US -0.083, DE -0.009).
 
-- **What this does to "equity-only at best":** nothing changes in the label, but its content
-  shrinks. The stock lean has no independent support (D about zero on clean data), the 41's
+- **What this does to "equity-only at best":** by the card the reading stays "equity-only at
+  best, unconfirmed", and these independent data are spent for own-vol; what is left of the
+  label shrinks. The stock lean has no independent support (D about zero on clean data), the 41's
   +0.022 is neither confirmed nor ruled out, and anything as large as +0.06 on stocks is
   unlikely. Combined with the 41 (inverse variance, not deciding): **+0.012, SE 0.013, z
-  +0.90**. Reading: a risk dial whose Sharpe edge on stocks, if any, is about +0.01. Not a
+  +0.90**. Reading: a risk dial; best combined estimate of its stock edge +0.012 (SE 0.013),
+  not distinguishable from zero. Not a
   retune trigger; nothing goes live or changes in the paper book from this lane.
 - **It is the US, not Germany.** e4-indep-1's pool leaned on Germany; this one leans on the US
   (Shiller monthly averages, g 1): without US D is +0.018 (SE 0.020), without DE -0.007,
   without GB -0.026 (upper +0.015, the only leave-one-out cell below +0.022), without FR -0.015.
 - **Warm-up dilution does not hide an edge.** Sized months only (each segment's first 60 + g
   scored months dropped): D +0.001 (SE 0.028).
-- **Dividends help own-vol slightly.** US with Shiller's dividends: D +0.010 (SE 0.018), the
-  same direction as e4-indep-1's dividend check (price-only returns understate the Sharpe of
-  a fractional position).
-- **Early and late halves differ.** 1867-1897: -0.078 (SE 0.051, 0 of 3 positive); 1898-1927:
+- **The US loss is mostly a price-only effect.** With Shiller's dividends US d is -0.013 (not
+  -0.083) and D +0.010 (SE 0.018); the cause is not tested.
+- **Early and late halves differ.** 1867-1897: -0.078 (SE 0.051, 0 of 3 positive; its upper
+  bound, +0.005, is also below +0.022); 1898-1927:
   +0.024 (SE 0.016, z 1.48, 3 of 4 positive). Shown, not deciding; two halves of one test.
 - **Secondary pool N5** (DK, FI, IE, NO, SE, French country files 1975-2025: new markets, the
   41's calendar): **D +0.010 (SE 0.026, z +0.39), 4 of 5 positive**, upper +0.052. Same
@@ -97,8 +99,9 @@ e4-indep-1 logged them), 18 `robustness` per market and rule (P4 4 x 2, N5 5 x 2
   Germany's unweighted early index; the 1914 closures). Dividends are only in the US check.
 - **Monthly sigma.** The live rule uses a 52-week sigma from daily data; here 36 monthly
   returns (pooled-2's frozen form). A slower, coarser sigma is a weaker version of the rule;
-  that the monthly form gave +0.022 on pooled-2's monthly markets (#159) suggests the form
-  alone does not erase the effect, but it is a stated deviation, not tested here.
+  the monthly form gave +0.022 on pooled-2's 10 monthly markets (#159: nine foreign
+  government bonds and FX-EUR, a non-stock set), so the form alone does not erase the effect
+  there, but it is a stated deviation, not tested here.
 - **What is left.** e4-indep-1's list: a US-only pool before 1871 (NBER railroads, cached),
   GIP NYSE 1815-1925 (not checked), and Yale ICF data (owner decision on its terms pending,
   data-wide-2). Clean independent stock data for own-vol are otherwise spent.
