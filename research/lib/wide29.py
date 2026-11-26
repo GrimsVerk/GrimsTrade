@@ -25,7 +25,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parents[1] / "src"))
 
-from wide27 import acf1, mi, null_stats, parse_factors, rank_high, ym  # noqa: E402
+from wide27 import acf1, null_stats, parse_factors, rank_high, ym  # noqa: E402
+from wide27 import mi as mi  # noqa: E402
 from wide28 import Spec, build, fit, parse_daily  # noqa: E402
 
 RESULTS = HERE.parent / "results"
@@ -94,7 +95,9 @@ def parse_ipo(rows: Sequence[Mapping[str, str]], col: str = "D") -> dict[int, fl
     return out
 
 
-def heat(n: Mapping[int, float], window: int = 12, base: int = 60, mean: bool = False) -> dict[int, float]:
+def heat(
+    n: Mapping[int, float], window: int = 12, base: int = 60, mean: bool = False
+) -> dict[int, float]:
     """H(m) = L(m) - mean(L(m-base) .. L(m-1)), L = ln(1 + sum of `window` months) (or, with
     mean=True, the plain mean of `window` months). Months with a gap are undefined."""
     lv: dict[int, float] = {}
@@ -165,16 +168,21 @@ def main() -> None:  # pragma: no cover - needs the cache
         rr = {m: r for m, r in build(mkt, daily, sp).items() if m in d}
         cells.append((name, *fit(rr, d, sp)))
 
-    g = {"first": ROW_FIRST, "last": ROW_LAST}
-    cell("Horizon 3 months (NW 3)", Spec(h=3, lags=3, **g), dose)
-    cell("Horizon 6 months (NW 6)", Spec(h=6, lags=6, **g), dose)
-    cell("No controls", Spec(h=12, lags=12, ctrl=(), **g), dose)
-    cell("Without rv", Spec(h=12, lags=12, ctrl=("c12", "c1"), **g), dose)
+    cell("Horizon 3 months (NW 3)", Spec(h=3, lags=3, first=ROW_FIRST, last=ROW_LAST), dose)
+    cell("Horizon 6 months (NW 6)", Spec(h=6, lags=6, first=ROW_FIRST, last=ROW_LAST), dose)
+    cell("No controls", Spec(h=12, lags=12, ctrl=(), first=ROW_FIRST, last=ROW_LAST), dose)
+    cell(
+        "Without rv", Spec(h=12, lags=12, ctrl=("c12", "c1"), first=ROW_FIRST, last=ROW_LAST), dose
+    )
     c_ret = {m: v for m, v in parse_ipo(rows, "C").items() if m <= LAST}
     cell("Dose from first-day return (col C)", spec, heat(c_ret, mean=True))
     cell("Rows 1991-01 .. 2007-12", Spec(h=12, lags=12, first=ROW_FIRST, last=HALF - 1), dose)
     cell("Rows 2008-01 .. 2024-09", Spec(h=12, lags=12, first=HALF, last=ROW_LAST), dose)
-    cell("Without rows 1998-01 .. 2001-12", Spec(h=12, lags=12, drop=DOTCOM, **g), dose)
+    cell(
+        "Without rows 1998-01 .. 2001-12",
+        Spec(h=12, lags=12, drop=DOTCOM, first=ROW_FIRST, last=ROW_LAST),
+        dose,
+    )
     rep = None
     if ok:
         rsp = Spec(h=12, lags=12, first=REP_FIRST, last=REP_LAST)
