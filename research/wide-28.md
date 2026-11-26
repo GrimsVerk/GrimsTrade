@@ -118,3 +118,108 @@ of m+1; the rule waits to the end of m+1). **Gated: P1 as W45 `arms-fear`** (car
 `cards/wide-28.md`, pushed 00:05:56 UTC before any return was read). The replication **R45** is
 fixed in the same card: rows 2000-01 .. 2008-05, outcomes ending before the gate's first. No
 second gate.
+
+## Step 3. W45 `arms-fear` gate
+
+The rule, data, both placebo families, gate, the replication R45, shown cells, power and guess
+are in [`cards/wide-28.md`](cards/wide-28.md), pushed before any number (commit 5088300,
+00:05:56 UTC; code and offline tests 608c20e, 00:07 UTC, card header time corrected 00:10 ->
+00:05 there, no rule text changed; steps 1-2 of this write-up 8558eee, 00:08 UTC, all before
+the real run). Code: `research/lib/wide28.py` (pure functions tested offline in
+`tests/test_wide28.py`). Results: `research/results/arms-fear.md`.
+
+### Dry run (counts only, 2026-11-26 00:07 UTC)
+
+NICS months 1998-11 .. 2023-09 (299); the dose is defined 2000-01 .. 2023-09 (285 months).
+**Gate rows 182 (2008-08 .. 2023-09)**; every earlier-dose shift k = 25 .. 103 is defined on
+every row. **Lag-1 acf of the dose 0.935**: the surrogate family gates. |end - start| of the
+dose is **4.46 SD** (gun sales grew much faster in 2000-01 than they fell in 2023), over the
+card's 1 SD switch, so the surrogates are **IAAFT**, as the card says.
+
+## What came out (one real run, 2026-11-26 00:08 UTC)
+
+### W45 `arms-fear`: passes the kill-only gate, killed by its replication R45
+
+**In the three months after a surge in gun buying the US market earned more: b +10.18% per
+unit of the dose (+1.82% per SD of the dose, SD 0.179), t +3.50, 182 months 2008-2023; the
+true t ranks 2 of 41 among earlier-dose calendars and 2 of 41 among IAAFT surrogates. That is
+the third kill-only pass of the family (after W32 and W36). The replication R45, fixed in the
+card, then fails: rows 2000-01 .. 2008-05, b +4.95% per unit (+0.89% per SD), t +0.54, rank 13
+of 41 among the gate's IAAFT surrogates (17 of 41 among phase surrogates, the family the
+card's R45 text names). Dead: no card for a strategy.** Held-out data untouched.
+
+| Cell (US Mkt-RF, % over months m+2 .. m+4, per unit of D; controls c12, c1, rv; NW 3, unless named) | b | t | Rows |
+|---|---:|---:|---:|
+| **Gate** | **+10.177** | **+3.50** | **182** |
+| Horizon 1 month (NW 0) | +3.403 | +1.86 | 182 |
+| Horizon 6 months (NW 6) | +19.487 | +4.03 | 182 |
+| Horizon 12 months (NW 12) | +29.877 | +3.90 | 182 |
+| No controls | +10.659 | +4.13 | 182 |
+| Without rv | +10.753 | +4.16 | 182 |
+| One-month dose ln(S(m)/S(m-12)) | +7.457 | +3.05 | 182 |
+| Dose from `totals` | +13.096 | +3.76 | 182 |
+| Rows 2008-08 .. 2015-12 | +6.121 | +1.16 | 89 |
+| Rows 2016-01 .. 2023-09 | +13.111 | +3.21 | 93 |
+| Without rows 2020-02 .. 2021-06 | +7.919 | +1.95 | 165 |
+| **R45: rows 2000-01 .. 2008-05** | **+4.947** | **+0.54** | **101** |
+
+- **The pass rests on few episodes.** The first half (2008-2015, with the late-2008 and
+  early-2013 surges) gives t +1.16; the second half gives +3.21, and dropping the 17 pandemic
+  months (2020-02 .. 2021-06: the spring-2020 buying surge, then the rebound) takes t to
+  +1.95. The controls change little (no controls +4.13): the market's own past return and
+  variance do not absorb it.
+- **The nulls are wide.** Earlier-dose calendars: SD 1.95, 40% past |t| 2, 5/50/95% -2.34 /
+  +0.30 / +3.19, extremes -3.35 / +3.71 (k 53). The shifted t move in a wave across k (k 25-31
+  near -2, k 49-55 +2.6 to +3.7, k 73-81 near -2 to -3.4, k 91-99 near +3): the dose has a
+  strong cycle of a few years (election and policy cycles in gun buying), and shifting it lines
+  it up with the market's own swings. IAAFT surrogates: SD 1.52, 23% past 2, 5/50/95% -2.05 /
+  +0.53 / +2.79, max +3.50. A null this wide is what gate-null.md's rank rule is for: a plain
+  t +3.50 would have looked far stronger than it is.
+- **The replication.** R45's 101 months carry the 2000-2008 cycle (gun sales rose through the
+  2000s, the 2003-2007 bull market): b keeps the sign at half the size and t +0.54. With SE(b)
+  about 9% per unit there, R45 is weak (the card said so); it cannot confirm the gate, and by
+  the fixed rule it kills it, as R32 and R36 did before.
+- **Event dates.** Row m enters at the end of month m+1, after the FBI's table for month m is
+  out (first days of m+1 `[memory]`); the outcome starts at m+2. The CSV stops at 2023-09
+  (BuzzFeed News stopped updating it), so the train window's last 25 months (2023-10 ..
+  2025-10) were not used; they sit in the FBI's own monthly PDF, not fetched tonight.
+- My guess (b slightly positive, t between -1 and +1.5, middle ranks; pass 3%) was wrong on the
+  gate and right on the replication.
+
+Label: **kill-only pass, killed by R45** (gate-null step 7: smallest p 1/41 = 0.024, above the
+family bar and the register's 9.8e-5).
+
+## Family count and status
+
+One mechanism added and closed (W45 `arms-fear`, gate passed kill-only, replication R45
+failed). The twelve others are parked (P2 on its host's robots.txt) or filtered and are **not
+counted**; each has a `note` row in `tries.md` and a line in `ideas.md`.
+
+**Count:** carried in from `main` after #226 = 111 / 29 / 40; **after W45 = 112 mechanisms,
+29 tested by a strategy, none passed, 42 gates (W45 and its replication R45 both count, as
+R32 and R36 do in gate-null.md's table), three kill-only passes (W32, W36, W45), each killed by its
+replication** (R32, R36, R45). Gate id W45 / R45. Family bar p < 0.10 / 112 = 0.00089.
+Published effects tested after publication: none new (no paper on gun purchases and index
+returns is known to me).
+
+**Data terms.** FBI NICS firearm checks (US government work), as compiled by BuzzFeed News,
+`nics-firearm-background-checks` (GitHub, MIT), one CSV of 1.2 MB downloaded 2026-11-26 00:04
+UTC (sha256 in the card), cached outside the repo. Ken French Data Library monthly and daily
+factors (cached 2026-11-12). Only statistics are committed. presidency.ucsb.edu was not
+fetched: its robots.txt disallows AI agents by name.
+
+Rows logged in `tries.md`: 1 `screen` (`arms-fear` W45), 1 `robustness` row for R45, 10
+`robustness` rows (the shown cells), 12 `note` rows (one per candidate scored but not gated).
+
+## Next
+
+1. **Do not redo W45** with other windows, doses or horizons: the gate passed, the fixed
+   replication failed, and the halves and the pandemic drop show the pass leans on a few
+   episodes. The FBI's own PDF months 2023-10 .. 2025-10 (25 months) are too few for a third
+   test.
+2. **Method, for gate-null.md**: a dose with a multi-year cycle (here election and policy
+   cycles) gives an earlier-dose null with SD near 2 and 40% of placebos past |t| 2; the rank
+   rule held the false-positive door (the true t +3.50 ranked only 2). A third case, after W32
+   and W36, where a kill-only pass did not survive its earlier-years replication.
+3. **P2 `approval-mood`** stays parked: the one keyless approval history found blocks AI
+   agents in robots.txt; only a source that allows scripted use would reopen it.
