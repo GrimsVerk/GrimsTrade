@@ -4534,3 +4534,35 @@ Never edit or delete a row.
 | 2026-11-25 23:28 | method-change | wide-27 candidate, scored before any price, no number computed: O11, filtered: F1 fail (methodology changes announced ahead), duplicate of metrology | note | train | - | - | - | - | - | - |
 | 2026-11-25 23:28 | benchmark-revision | wide-27 candidate, scored before any price, no number computed: O12, folded into O6 (same channel; benchmark dates scheduled) | note | train | - | - | - | - | - | - |
 | 2026-11-25 23:28 | wiki-attention | wide-27 candidate, scored before any price, no number computed: O13, filtered: F2 fail (attention follows prices), duplicate of attention-peak | note | train | - | - | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4 (P4 pre-1927 stock markets US/GB/DE/FR, monthly, never scored for own-vol, DECIDING; pooled dSharpe vs tsmom12 -0.007, SE 0.021, z -0.34, one-sided 95% upper +0.028, d>0 in 2/4; not confirmed, not contradicted (too little power to tell); upper bound below #110's +0.06) | variant | train | 1868-08-01 | 1927-06-01 | 0.42 | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-P4-US | robustness | train | 1872-03-01 | 1927-06-01 | 0.41 | +387.8% | 29.3% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-US | robustness | train | 1872-03-01 | 1927-06-01 | 0.33 | +103.3% | 21.4% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-P4-GB | robustness | train | 1868-08-01 | 1924-12-01 | 0.39 | +126.5% | 31.0% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-GB | robustness | train | 1868-08-01 | 1924-12-01 | 0.44 | +99.2% | 22.4% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-P4-DE | robustness | train | 1871-03-01 | 1913-12-01 | 0.54 | +375.1% | 23.9% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-DE | robustness | train | 1871-03-01 | 1913-12-01 | 0.53 | +235.5% | 21.0% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-P4-FR | robustness | train | 1900-02-01 | 1927-06-01 | 0.35 | +94.0% | 32.1% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-FR | robustness | train | 1900-02-01 | 1927-06-01 | 0.37 | +64.3% | 23.5% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-without-US (pooled dSharpe vs tsmom12 +0.018, SE 0.020, z +0.91, one-sided 95% upper +0.051, d>0 in 2/3) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-without-GB (pooled dSharpe vs tsmom12 -0.026, SE 0.025, z -1.04, one-sided 95% upper +0.015, d>0 in 1/3) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-without-DE (pooled dSharpe vs tsmom12 -0.007, SE 0.024, z -0.27, one-sided 95% upper +0.033, d>0 in 2/3) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-without-FR (pooled dSharpe vs tsmom12 -0.015, SE 0.028, z -0.53, one-sided 95% upper +0.031, d>0 in 1/3) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-sized-months-only (pooled dSharpe vs tsmom12 +0.001, SE 0.028, z +0.05, one-sided 95% upper +0.047, d>0 in 2/4) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-gap-1-everywhere (pooled dSharpe vs tsmom12 -0.009, SE 0.021, z -0.45, one-sided 95% upper +0.025, d>0 in 2/4) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-cost-50-bps (pooled dSharpe vs tsmom12 -0.010, SE 0.021, z -0.46, one-sided 95% upper +0.025, d>0 in 2/4) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-blocks-6 (pooled dSharpe vs tsmom12 -0.007, SE 0.024, z -0.30, one-sided 95% upper +0.032, d>0 in 2/4) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-blocks-24 (pooled dSharpe vs tsmom12 -0.007, SE 0.021, z -0.34, one-sided 95% upper +0.027, d>0 in 2/4) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-US-with-dividends (pooled dSharpe vs tsmom12 +0.010, SE 0.018, z +0.60, one-sided 95% upper +0.039, d>0 in 2/4) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-1867-1897 (pooled dSharpe vs tsmom12 -0.078, SE 0.051, z -1.54, one-sided 95% upper +0.005, d>0 in 0/3) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-P4-check-1898-1927 (pooled dSharpe vs tsmom12 +0.024, SE 0.016, z +1.48, one-sided 95% upper +0.051, d>0 in 3/4) | robustness | train | 1868-08-01 | 1927-06-30 | - | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5 (N5 DK/FI/IE/NO/SE French country files 1975-2025, new markets but years overlap the 41, secondary; pooled dSharpe vs tsmom12 +0.010, SE 0.026, z +0.39, one-sided 95% upper +0.052, d>0 in 4/5; not confirmed, not contradicted (too little power to tell); upper bound below #110's +0.06) | variant | train | 1976-01-01 | 2025-10-01 | 0.58 | - | - | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-N5-DK | robustness | train | 1990-01-01 | 2025-10-01 | 0.71 | +2566.0% | 31.0% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-DK | robustness | train | 1990-01-01 | 2025-10-01 | 0.74 | +1138.4% | 19.0% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-N5-FI | robustness | train | 1989-01-01 | 2025-10-01 | 0.57 | +2584.1% | 41.8% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-FI | robustness | train | 1989-01-01 | 2025-10-01 | 0.54 | +875.5% | 35.2% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-N5-IE | robustness | train | 1992-01-01 | 2025-10-01 | 0.46 | +707.4% | 55.3% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-IE | robustness | train | 1992-01-01 | 2025-10-01 | 0.50 | +392.7% | 39.4% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-N5-NO | robustness | train | 1976-01-01 | 2025-10-01 | 0.54 | +6956.6% | 39.9% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-NO | robustness | train | 1976-01-01 | 2025-10-01 | 0.54 | +3015.1% | 33.3% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | tsmom12@indep-N5-SE | robustness | train | 1976-01-01 | 2025-10-01 | 0.59 | +8609.9% | 44.7% | - |
+| 2026-11-26 00:10 | ownvol-indep-1 | own_vol_70@indep-N5-SE | robustness | train | 1976-01-01 | 2025-10-01 | 0.60 | +2901.6% | 32.2% | - |

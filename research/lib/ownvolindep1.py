@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import e4indep1 as ei  # noqa: E402
 import e4indep1_data as ed  # noqa: E402
 import long_bond  # noqa: E402
+import pooled1_core as pc  # noqa: E402
 import pooled2_core as qc  # noqa: E402
 
 RESEARCH = Path(__file__).resolve().parents[1]
@@ -42,7 +43,7 @@ def mean_share(r_ret: np.ndarray, gap: int, cost: float) -> tuple[float, float]:
     pos, start = qc.decide_monthly(r_ret, gap)
     p = pos["tsmom12"]
     net = p * r_ret - cost * np.abs(np.diff(p, prepend=0.0))
-    _, plan = qc.own_vol_monthly(net, p, start, gap, qc.TARGET, qc.pc.RESET_COST)
+    _, plan = qc.own_vol_monthly(net, p, start, gap, qc.TARGET, pc.RESET_COST)
     sh = np.array([plan.get(t, qc.TARGET) for t in range(start, len(r_ret))])
     held = p[start:] > 0
     return float(sh.mean()), float(sh[held].mean()) if held.any() else math.nan
