@@ -4684,3 +4684,39 @@
 {"idea":"wiki-attention","seen":"2026-11-26T04:14:36Z","sharpe":null,"variant":"wide-27 candidate, scored before any price, no number computed: o13, filtered: f2 fail (attention follows prices), duplicate of attention-peak"}
 {"idea":"wildfire-liability","seen":"2026-11-26T04:14:36Z","sharpe":null,"variant":"wide-26 candidate, scored before any price, no number computed: h12, filtered: power 0 (a handful of utility fires, single firms)"}
 {"idea":"wind-drought","seen":"2026-11-26T04:14:36Z","sharpe":null,"variant":"wide-26 candidate, scored before any price, no number computed: h9, filtered: power 0 (about 15 annual doses), owners' prices not cached"}
+{"idea":"bankruptcy-filings","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-30 candidate, scored before any price, no number computed: q4, filtered: no script-readable monthly series"}
+{"idea":"bankruptcy-filings","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":null}
+{"idea":"card-credit","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-30 candidate, scored before any price, no number computed: q2, parked: data blocked (no connection to fred from the script; latest vintage revised)"}
+{"idea":"card-credit","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":null}
+{"idea":"coin-hoarding","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-29 candidate, scored before any price, no number computed: q6, filtered: cause 0, no script-readable monthly series"}
+{"idea":"drug-approvals","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-29 candidate, scored before any price, no number computed: q5, filtered: reach 0 at index level (one sector)"}
+{"idea":"fund-flows","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-30 candidate, scored before any price, no number computed: q5, filtered: ici data not keyless; f2 fails without strong controls"}
+{"idea":"fund-flows","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":null}
+{"idea":"gate-family-1","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"gate-family count check, descriptive, no new data, not a gate: 40 first gates, 3 kill-only passes; p(>= 3) 0.007-0.12 at #207 1-3% (0.046 at 2%), 0.36-0.39 at rank rule, 0.19 own nulls: ordinary (card band 1); all 3 in 10 monthly slow-dose gates, p 0.012 at equal p (post hoc)"}
+{"idea":"gate-null-3","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"retro-check of gate-null-2's proposed surrogate rule (#207) on the three kill-only passes, descriptive, no new data: w32 acf1 0.94, phase/iaaft rank 1/1, still passes; w36 acf1 0.878 (computed now, 619 cached rows), phase rank 3/41, blocked; w45 acf1 0.935, iaaft 2/41, phase 1/41, still passes; rule saves 1 of 3 replications (r36); cannot change any failed gate; no adoption decision"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: dose from the 12-month mean first-day return, column c (b -0.320, t -1.86, 81 rows: column c blank in many months)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: horizon 3 months, nw 3 (b -0.790, t -0.79)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: horizon 6 months, nw 6 (b -1.802, t -0.93)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: no controls (b -2.643, t -0.78)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: rows 1991-01..2007-12 (b +0.066, t +0.01, 204 rows)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: rows 2008-01..2024-09 (b -9.802, t -3.08, 201 rows; post hoc, one long stretch)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: without rows 1998-01..2001-12 (b -4.645, t -1.67, 357 rows)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46 shown: without rv (b -3.556, t -1.21)"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w46, wide-29: us french mkt-rf over months m+2..m+13 on h(m) = ln(1 + 12-month net ipo count, ritter ipoall.xlsx, months to 2025-10) minus its mean over m-60..m-1; row m enters at the end of m+1; controls market c12, c1 and ln realised variance rv; nw 12; 405 months 1991-01..2024-09 (b -3.451% per unit of h, sd of h 0.886, t -1.09, -t rank 10/41 among earlier-dose calendars k = 25..103 odd (null sd 1.38, 17% past 2) and 14/41 among 40 phase surrogates (sd 1.58, 25% past 2); dose acf1 0.995): fail, dead; r46 not run"}
+{"idea":"ipo-heat","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":null}
+{"idea":"jackpot-speculation","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-30 candidate, scored before any price, no number computed: q3, filtered: reach 0 at index level, no keyless jackpot history"}
+{"idea":"jackpot-speculation","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":null}
+{"idea":"launch-cadence","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-29 candidate, scored before any price, no number computed: q2, filtered: cause 0"}
+{"idea":"margin-leverage","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-29 candidate, scored before any price, no number computed: q3, scored 4, parked: finra.org answers scripts with a cloudflare block; f2 weak; published"}
+{"idea":"patent-1","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"data lane (not a try): fred release 486 (1,245 series, `patent4n<iso2><type>`, annual 1992-2020) answers scripts with curl's default ua (browser-like ua reset by the cdn); alfred first vintage 2021-03-19 for the whole history, last update 2021-05: no as-known series, no live feed; patent-surge stays parked (fixed-lag convention is a lead/owner decision); no card, no return read (research/patent-1.md)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47 shown: horizon 3 months, nw 3 (b +1.087, t +0.84, 390 rows)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47 shown: horizon 6 months, nw 6 (b +1.399, t +0.59, 390 rows)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47 shown: no controls (b +2.150, t +0.65, 390 rows)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47 shown: rows 1991-01..2007-12 (b +0.497, t +0.05, 204 rows)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47 shown: rows 2008-01..2023-06 (b +1.163, t +0.56, 186 rows)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47 shown: without rows 2008-07..2010-06 (b -3.641, t -0.62, 366 rows)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47 shown: without rv (b +2.511, t +0.82, 390 rows)"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"w47, wide-30: us french mkt-rf over months m+5..m+16 on h(m) = ln(d/e) (shiller ie_data.xls 12-month dividends over 12-month earnings, e to 2023-06) minus its mean over m-60..m-1; row m enters at the end of m+4; controls market c12 (m-7..m+4), c1 (m+4) and ln realised variance rv (m+2..m+4); nw 12; 390 months 1991-01..2023-06 (b +2.437% per unit of h, sd of h 0.268, t +0.80, t rank 18/41 among earlier-dose calendars k = 25..103 odd (null sd 1.61, 23% past 2) and 20/41 among 40 iaaft surrogates (sd 2.00, 25% past 2); dose acf1 0.990): fail, dead; r47 not run"}
+{"idea":"payout-ratio","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":null}
+{"idea":"tourism-arrivals","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":"wide-29 candidate, scored before any price, no number computed: q4, filtered: no keyless monthly history found, cause 0"}
+{"idea":"wide-29-filtered-set","seen":"2026-11-27T04:24:03Z","sharpe":null,"variant":null}
