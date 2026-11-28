@@ -1,34 +1,34 @@
 {
   "buy_hold_btc": {
     "cash": 0.0,
-    "equity": 8114.47,
+    "equity": 8029.23,
     "fills": 1,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "BTC": 0.13412523021695116
     }
   },
   "buy_hold_spy": {
     "cash": 0.0,
-    "equity": 9503.66,
+    "equity": 9657.74,
     "fills": 1,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "SPY": 13.260299555572086
     }
   },
   "crypto_mean_reversion": {
-    "cash": 10001.14,
-    "equity": 10001.14,
+    "cash": 10002.28,
+    "equity": 10002.28,
     "fills": 0,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {}
   },
   "equal_weight": {
-    "cash": 91.32,
-    "equity": 9056.45,
+    "cash": 91.33,
+    "equity": 9095.73,
     "fills": 13,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "BTC": 0.024290170744463203,
       "ETH": 0.8659729634348913,
@@ -39,40 +39,40 @@
     }
   },
   "own_vol_70": {
-    "cash": 7667.08,
-    "equity": 10054.62,
+    "cash": 7667.95,
+    "equity": 10107.03,
     "fills": 2,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "QQQ": 1.890563462685142,
       "SPY": 1.6590822616811682
     }
   },
   "preset_careful": {
-    "cash": 7467.42,
-    "equity": 9792.33,
+    "cash": 7468.27,
+    "equity": 9840.71,
     "fills": 6,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "QQQ": 1.4513138871194362,
       "SPY": 1.9602028273903582
     }
   },
   "preset_middle": {
-    "cash": 5863.92,
-    "equity": 9730.8,
+    "cash": 5864.59,
+    "equity": 9815.36,
     "fills": 3,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "QQQ": 3.1249537268332706,
       "SPY": 2.631336562063383
     }
   },
   "risk_parity": {
-    "cash": 124.29,
-    "equity": 9488.34,
+    "cash": 124.3,
+    "equity": 9536.88,
     "fills": 11,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "BTC": 0.013536947412785666,
       "ETH": 0.2683880734198789,
@@ -84,38 +84,38 @@
   },
   "sixty_forty": {
     "cash": 0.0,
-    "equity": 9773.36,
+    "equity": 9821.4,
     "fills": 4,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "SPY": 8.135999611050629,
       "TLT": 47.93638555217223
     }
   },
   "ts_momentum": {
-    "cash": 6556.48,
-    "equity": 9807.01,
+    "cash": 6557.23,
+    "equity": 9878.29,
     "fills": 3,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "QQQ": 2.6284791323254044,
       "SPY": 2.2104919359138666
     }
   },
   "vol_target_spy": {
-    "cash": 6646.75,
-    "equity": 9779.85,
+    "cash": 6647.51,
+    "equity": 9831.41,
     "fills": 3,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "SPY": 4.371564394507001
     }
   },
   "xs_momentum": {
     "cash": 6.47,
-    "equity": 9205.67,
+    "equity": 9356.37,
     "fills": 6,
-    "marked_on": "2026-11-27",
+    "marked_on": "2026-11-28",
     "positions": {
       "ETH": 0.8820177299257614,
       "QQQ": 7.263010704144022,

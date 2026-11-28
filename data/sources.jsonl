@@ -74,3 +74,10 @@
 {"first":"2026-11-25","last":"2026-11-25","rows":1,"seen":"2026-11-26T04:14:36Z","source":"yahoo","symbol":"rates"}
 {"first":"2026-11-26","last":"2026-11-26","rows":1,"seen":"2026-11-27T04:24:03Z","source":"kraken","symbol":"BTC"}
 {"first":"2026-11-26","last":"2026-11-26","rows":1,"seen":"2026-11-27T04:24:03Z","source":"kraken","symbol":"ETH"}
+{"first":"2026-11-27","last":"2026-11-27","rows":1,"seen":"2026-11-28T04:03:49Z","source":"kraken","symbol":"BTC"}
+{"first":"2026-11-27","last":"2026-11-27","rows":1,"seen":"2026-11-28T04:03:49Z","source":"kraken","symbol":"ETH"}
+{"first":"2026-11-27","last":"2026-11-27","rows":1,"seen":"2026-11-28T04:03:49Z","source":"yahoo","symbol":"SPY"}
+{"first":"2026-11-27","last":"2026-11-27","rows":1,"seen":"2026-11-28T04:03:49Z","source":"yahoo","symbol":"QQQ"}
+{"first":"2026-11-27","last":"2026-11-27","rows":1,"seen":"2026-11-28T04:03:49Z","source":"yahoo","symbol":"GLD"}
+{"first":"2026-11-27","last":"2026-11-27","rows":1,"seen":"2026-11-28T04:03:49Z","source":"yahoo","symbol":"TLT"}
+{"first":"2026-11-27","last":"2026-11-27","rows":1,"seen":"2026-11-28T04:03:49Z","source":"yahoo","symbol":"rates"}
